@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/chartStudio'
 import dynamic from 'next/dynamic'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {

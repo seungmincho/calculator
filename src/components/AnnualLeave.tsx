@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/annualLeave'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import ShareResult from '@/components/ShareResult'

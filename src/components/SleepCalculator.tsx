@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/sleepCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { AlertTriangle, Copy, Check } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import JsBarcode from 'jsbarcode'
 import { AlertCircle, AlertTriangle, Download, Copy, Printer, ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/barcodeGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import {

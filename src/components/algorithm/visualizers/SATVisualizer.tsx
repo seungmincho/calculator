@@ -1,6 +1,8 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
+import '@/lib/i18n/ns/satVisualizer'
 import { type Polygon, createRegularPolygon } from '@/utils/algorithm/geometry'
 import { testSAT, testSATStep, type SATResult } from '@/utils/algorithm/sat'
 import dynamic from 'next/dynamic'

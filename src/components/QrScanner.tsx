@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/qrScanner'
 import { Camera, Image as ImageIcon, Copy, Check, ExternalLink, Trash2, ScanLine, BookOpen, QrCode } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

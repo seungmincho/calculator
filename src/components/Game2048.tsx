@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/game2048'
 import { RotateCcw, Trophy } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import { useGameAchievements } from '@/hooks/useGameAchievements'

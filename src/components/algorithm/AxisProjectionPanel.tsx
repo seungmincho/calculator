@@ -1,5 +1,6 @@
 'use client'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
 import { type SATResult } from '@/utils/algorithm/sat'
 
 interface AxisProjectionPanelProps {

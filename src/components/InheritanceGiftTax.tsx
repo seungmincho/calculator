@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef, type ReactNode } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/inheritanceGiftTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import {

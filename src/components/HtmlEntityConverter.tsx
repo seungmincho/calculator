@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/htmlEntityConverter'
 import { Code2, Copy, Check, BookOpen, ArrowRightLeft, Search } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
 

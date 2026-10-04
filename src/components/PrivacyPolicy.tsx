@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/privacy'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 
 export default function PrivacyPolicy() {

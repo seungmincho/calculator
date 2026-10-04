@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/interiorCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Plus, Trash2, ChevronDown, ChevronUp, Copy, Check } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

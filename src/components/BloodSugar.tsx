@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/bloodSugar'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Trash2, Download, AlertTriangle, Link, Check } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceArea } from 'recharts'

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, DragEvent } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/imageOcr'
 import { Copy, Check, Download, Upload, Camera, RotateCcw, RotateCw, X, Loader2, AlertCircle } from 'lucide-react'
 import type { Worker } from 'tesseract.js'
 import { cleanOcrText, preprocessPixels, prepScale, type PrepMode, type CleanOptions } from '@/utils/ocr'

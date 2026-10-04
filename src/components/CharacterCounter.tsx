@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/characterCounter'
 import { Copy, Check, Trash2, Undo2, ExternalLink } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import {

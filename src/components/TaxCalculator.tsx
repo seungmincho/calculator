@@ -12,6 +12,7 @@ import CalculationHistory from '@/components/CalculationHistory';
 import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 import { calc as yearEndCalc, DEFAULT_INPUT as YEAR_END_DEFAULT } from '@/utils/yearEndTax'
 import { calcCgt, ymd } from '@/utils/capitalGainsTax'
+import '@/lib/i18n/ns/tax'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 

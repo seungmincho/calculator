@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/pensionCalculator'
 import { Calculator, Info, ChevronDown, ChevronUp, Link, Check } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { INSURANCE, pct } from '@/utils/insuranceRates'

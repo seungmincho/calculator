@@ -7,6 +7,7 @@ import { GitBranch, Play, RefreshCw, Share2, Check, Save, Users, Target, Zap, Bo
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/ladder'
 import GuideSection from '@/components/GuideSection'
 
 interface LadderLine {

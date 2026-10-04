@@ -1,0 +1,1 @@
+{"linuxCommand":{"title":"Linux 명령어 빌더","description":"체크박스로 옵션을 선택하면 완성된 명령어가 자동 생성됩니다. 15가지 필수 Linux 명령어 레퍼런스.","selectCommand":"명령어 선택","synopsis":"개요 (Synopsis)","options":"옵션 선택","clearAll":"전체 해제","arguments":"인수 입력","generatedCommand":"생성된 명령어","copy":"복사","copied":"복사됨!","selectOptionsHint":"위에서 옵션을 선택하거나 인수를 입력하세요.","examples":"실전 예제","allOptions":"전체 옵션 레퍼런스"}}

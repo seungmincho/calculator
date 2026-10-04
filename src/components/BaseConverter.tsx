@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, Fragment } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/baseConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RotateCcw, AlertTriangle } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

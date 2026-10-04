@@ -9,6 +9,7 @@
 import { useState, useEffect, useRef, useMemo, type ReactNode } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/yearEndTaxCalc'
 import { ChevronDown } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'

@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect, useRef, type KeyboardEvent, type ChangeEv
 import QRCode from 'qrcode'
 import { Download, Copy, Printer, X, Eye, EyeOff } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/qrGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import {

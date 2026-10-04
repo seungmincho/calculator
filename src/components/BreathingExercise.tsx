@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/breathingExercise'
 import { Play, Square, ChevronDown, ChevronUp, Wind } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

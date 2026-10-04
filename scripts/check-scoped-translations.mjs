@@ -10,23 +10,25 @@ import { generate, sharedNamespaces, toolNamespaces } from './generate-scoped-me
 const require = createRequire(import.meta.url), ts = require('typescript')
 const root = fileURLToPath(new URL('..', import.meta.url))
 const ko = JSON.parse(readFileSync(resolve(root, 'messages/ko.json'), 'utf8'))
-assert.equal(generate(true), 12, 'both canonical languages match all generated subsets')
+const toolNs = Object.keys(ko).filter(key => !sharedNamespaces.includes(key))
+const generatedFiles = 2 * (1 + toolNamespaces.length) + 2 * toolNs.length
+assert.equal(generate(true), generatedFiles, 'both canonical languages match all generated subsets and per-namespace modules')
 const shared = JSON.parse(readFileSync(resolve(root, 'messages/generated/ko/shared.json'), 'utf8'))
 assert.deepEqual(Object.keys(shared), sharedNamespaces)
-for (const locale of ['ko', 'en']) {
-  const read = name => JSON.parse(readFileSync(resolve(root, `messages/${name}.json`), 'utf8'))
-  assert.deepEqual({ ...read(`generated/${locale}/shared`), ...read(`generated/${locale}/legacy`) }, read(locale), 'legacy and shared subsets reconstruct the complete source')
-}
+const nsMessages = toolNs.map(ns => JSON.parse(readFileSync(resolve(root, `messages/generated/ko/ns/${ns}.json`), 'utf8')))
+assert.deepEqual(Object.assign({}, shared, ...nsMessages), ko, 'shared and per-namespace subsets reconstruct the complete source')
 assert.ok(Buffer.byteLength(JSON.stringify(shared)) < Buffer.byteLength(JSON.stringify(ko)) * 0.05, 'shared messages stay below 5% of full catalogue')
 
-// The unchanged legacy implementation is the compatibility oracle.
+// src/lib/i18n.ts (registry) is the compatibility oracle; ns modules register into it.
 const legacySource = readFileSync(resolve(root, 'src/lib/i18n.ts'), 'utf8')
 const compiled = ts.transpileModule(legacySource, { compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true } }).outputText
 const exports = {}
 runInNewContext(compiled, { exports, require: spec => {
-  assert.ok(['../../messages/generated/ko/shared.json', '../../messages/generated/ko/legacy.json'].includes(spec))
+  assert.equal(spec, '../../messages/generated/ko/shared.json', 'registry statically imports only shared messages')
   return JSON.parse(readFileSync(resolve(root, spec.replace('../../', '')), 'utf8'))
 } })
+assert.equal(exports.useTranslations('loan')('title'), 'title', 'unregistered namespace falls back to the key')
+for (const messages of [...nsMessages, ...nsMessages]) exports.registerMessages(messages) // twice: idempotent
 let compared = 0
 function paths(object, prefix = '') {
   return Object.entries(object).flatMap(([key, value]) => {
@@ -65,7 +67,7 @@ for (const entry of ['src/app/layout.tsx', 'src/app/page.tsx', 'src/app/loan-cal
   function visit(file) {
     if (visited.has(file)) return
     visited.add(file)
-    assert.notEqual(file, resolve(root, 'src/lib/i18n.ts'), `${entry} imports legacy full catalogue`)
+    assert.notEqual(file, resolve(root, 'src/lib/i18n.ts'), `${entry} imports the namespace registry instead of a scoped module`)
     assert.notEqual(file, resolve(root, 'messages/ko.json'), `${entry} imports full messages directly`)
     if (file.endsWith('.json')) return
     const tree = ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true)
@@ -81,4 +83,4 @@ for (const entry of ['src/app/layout.tsx', 'src/app/page.tsx', 'src/app/loan-cal
   }
   visit(resolve(root, entry))
 }
-console.log(`check-scoped-translations OK: 12 generated files, complete legacy reconstruction, ${compared} legacy parity cases, missing/interpolation/raw contract, 6 dependency graphs`)
+console.log(`check-scoped-translations OK: ${generatedFiles} generated files, complete reconstruction, ${compared} registry parity cases, missing/interpolation/raw contract, 6 dependency graphs`)

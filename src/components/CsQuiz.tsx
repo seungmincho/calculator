@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/csQuiz'
 import {
   BookOpen, Check, X, ChevronLeft, ChevronRight,
   RotateCcw, Share2, Clock, Trophy, Target,

@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { Volume2, VolumeX, Copy, Check, RotateCcw, BarChart3, Delete, X } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/numberBaseball'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
 import NameInputModal from '@/components/NameInputModal'

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, useId } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/imageConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Upload, Download, X, Loader2, Image as ImageIcon } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'

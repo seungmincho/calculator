@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/urlEncoder'
 import { Copy, Check, ArrowRightLeft, Trash2, Link, Unlink } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
 

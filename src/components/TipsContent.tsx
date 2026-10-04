@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Search, Calendar, Tag, TrendingUp } from 'lucide-react';
 import { glassCard, glassInset } from '@/lib/glass';
 import { useTranslations } from '@/lib/i18n';
+import '@/lib/i18n/ns/tipsPage';
 
 interface Tip {
   id: number;

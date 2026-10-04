@@ -6,6 +6,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/pcElectricity'
 import { marginalCost, yearlyMarginal, pcMonthlyKwh, TARIFF, type Season, type Bill } from '@/utils/pcElectricity'
 
 // 제조사 공식 TDP/PBP·TBP 대략값 (W). 같은 W는 한 줄로 묶어 선택 표시가 겹치지 않게 함

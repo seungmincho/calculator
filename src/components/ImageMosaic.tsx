@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/imageMosaic'
 import {
   Upload, ClipboardPaste, ImagePlus, MousePointer2, Square, Circle, Paintbrush, Hand,
   Undo2, Redo2, ZoomIn, ZoomOut, Maximize, Trash2, Download, Copy, Check, ScanFace,

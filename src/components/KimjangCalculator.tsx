@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Copy, Check, RotateCcw } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/kimjangCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import {

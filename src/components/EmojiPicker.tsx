@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/emojiPicker'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Search, X, Copy, Check } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'

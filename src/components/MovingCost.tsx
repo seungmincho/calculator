@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/movingCost'
 import { RotateCcw, ChevronLeft, ChevronRight, CheckSquare, Square, AlertTriangle } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import {

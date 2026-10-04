@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/adminFeedback'
 import { Lock, Eye, EyeOff, Trash2, Filter, ChevronDown, ChevronUp, Inbox, Clock, LogOut } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

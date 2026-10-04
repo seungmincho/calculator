@@ -14,6 +14,7 @@ import {
   laterClauses, standardSpecials, textPx, paginate, LINE, BODY_PX,
   type Kind, type ContractType, type MgmtItem,
 } from '@/utils/leaseContract'
+import '@/lib/i18n/ns/leaseContract'
 
 interface V {
   kind: Kind

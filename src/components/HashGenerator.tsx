@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/hashGenerator'
 import { Copy, Check, Trash2, Upload, Hash, RefreshCw } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
 

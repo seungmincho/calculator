@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/passwordGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RefreshCw, Eye, EyeOff, X, ExternalLink } from 'lucide-react'
 import { WORD_LIST } from '@/utils/wordlist'

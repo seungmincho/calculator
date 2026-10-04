@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/pyeongCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RotateCcw, ArrowRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

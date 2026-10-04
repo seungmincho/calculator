@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/nutritionCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Search, Plus, Trash2, Copy, Check, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/chmodCalculator'
 import { Copy, Check, Terminal, Shield, BookOpen, Zap } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

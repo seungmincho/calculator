@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/militaryDischarge'
 import { X, Plus } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import { todayKST, addMonths, weekday, ddayLabel, isValidDate, daysBetween } from '@/utils/dday'

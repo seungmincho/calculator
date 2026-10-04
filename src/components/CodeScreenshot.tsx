@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/codeScreenshot'
 import {
   Copy,
   Check,

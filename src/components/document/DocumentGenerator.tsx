@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState, type ComponentType } from 're
 import Link from 'next/link'
 import { Download, Printer, RotateCcw, Link2, Check as CheckIcon } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/documentGenerator'
 import { todayKST } from '@/utils/dday'
 import { mergeSaved } from '@/utils/document'
 import { PAPER_W, exportPdf, printPaper, nameStamp, loadStampImage } from './paper'

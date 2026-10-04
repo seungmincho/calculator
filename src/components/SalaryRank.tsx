@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/salaryRank'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Check, RotateCcw, BookOpen, ChevronDown, ChevronUp, Loader2, AlertCircle, ChevronRight } from 'lucide-react'
 import { AreaChart, Area, XAxis, ResponsiveContainer, ReferenceLine } from 'recharts'

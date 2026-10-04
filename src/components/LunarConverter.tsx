@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/lunarConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { ArrowRightLeft, Copy, Check, RotateCcw, Link } from 'lucide-react'
 import {

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Plus, X, AlertTriangle } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/dsrCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import {

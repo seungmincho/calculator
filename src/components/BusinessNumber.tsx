@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/businessNumber'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, ShieldCheck, ShieldX, Trash2, Download, ExternalLink, Search, Loader2 } from 'lucide-react'
 import {

@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/crossword'
+import '@/lib/i18n/ns/gameSounds'
 import { Clock, RotateCcw, ChevronLeft, ChevronRight, Volume2, VolumeX, Copy, Check, Shuffle } from 'lucide-react'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import { useGameSounds } from '@/hooks/useGameSounds'

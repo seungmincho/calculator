@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/leaderboard'
 import { Trophy, X } from 'lucide-react'
 import { glassInput } from '@/lib/glass'
 

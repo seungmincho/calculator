@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/koreanWordle'
 import { BarChart3, HelpCircle, Copy, Check, X, Delete, RotateCcw } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'

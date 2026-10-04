@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/invoiceGenerator'
 import { Plus, Trash2, Download, Printer, FilePlus2, X } from 'lucide-react'
 import { formatBizNo, validate as validateBizNo } from '@/utils/businessNumber'
 import {

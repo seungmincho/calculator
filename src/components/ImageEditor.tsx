@@ -5,6 +5,7 @@ import { glassCard, glassInset } from '@/lib/glass';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Upload, Download, RotateCw, RotateCcw, Square, Type, Palette, Sliders, Undo, Redo, Maximize, X, Save, Image as ImageIcon } from 'lucide-react';
 import GuideSection from '@/components/GuideSection';
+import '@/lib/i18n/ns/imageEditor';
 
 interface ImageDimensions {
   width: number;

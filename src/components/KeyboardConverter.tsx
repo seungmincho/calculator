@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/keyboardConverter'
 import { Copy, Check, ArrowUpDown, RotateCcw, BookOpen } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { engToKorConvert, korToEngConvert, detectMode } from '@/utils/keyboardConvert'

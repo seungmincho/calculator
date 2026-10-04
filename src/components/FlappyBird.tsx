@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/flappyBird'
 import { Trophy, RotateCcw } from 'lucide-react'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'

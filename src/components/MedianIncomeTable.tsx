@@ -5,6 +5,7 @@ import { Users, TrendingUp, Info, ChevronRight, Calculator, Building2, Heart, Gr
 import GuideSection from '@/components/GuideSection';
 import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import { useTranslations } from '@/lib/i18n';
+import '@/lib/i18n/ns/medianIncome';
 import { MEDIAN_INCOME, MEDIAN_YEARS, yearInForce } from '@/utils/medianIncome';
 
 // 중위소득 데이터 (월/원) - [1인, 2인, 3인, 4인, 5인, 6인 가구] — 고시 출처는 utils/medianIncome.ts

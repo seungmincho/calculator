@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/csVisualizerHub'
 import Link from 'next/link'
 import { LayoutGrid, List } from 'lucide-react'
 import { csVisualizers, csCategoryColors, csCategoryLabels, difficultyLabels, type CsCategory } from '@/config/csVisualizerConfig'

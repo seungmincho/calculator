@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameHub'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/omok'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, AlertCircle, X, Undo2 } from 'lucide-react'
 import OmokBoardComponent from '@/components/OmokBoard'
 import GameConfetti from '@/components/GameConfetti'

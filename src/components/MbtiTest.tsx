@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/mbtiTest'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { ChevronLeft, RotateCcw, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

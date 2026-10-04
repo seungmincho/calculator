@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/diffViewer'
 import { Copy, Check, Trash2, ArrowLeftRight, FileText } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
 

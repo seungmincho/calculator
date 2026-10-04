@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo, useDeferredValue } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/notepad'
 import { FileText, Plus, Trash2, Download, Pin, PinOff, Menu, X, Search, Maximize2, Minimize2, Upload, Archive, Replace } from 'lucide-react'
 import { analyze } from '@/utils/charCount'
 import {

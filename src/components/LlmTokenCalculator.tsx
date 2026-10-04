@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/llmTokenCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Upload, Trash2, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

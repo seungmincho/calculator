@@ -567,7 +567,8 @@ export default function NewToolPage() {
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/newTool' // 이 도구 네임스페이스 등록 (없으면 키가 그대로 노출됨)
 import { Copy, Check, BookOpen /* 필요한 아이콘 */ } from 'lucide-react'
 
 export default function NewTool() {
@@ -737,6 +738,7 @@ export default function NewTool() {
 - [ ] sitemap.ts에 URL 추가됨
 - [ ] 디자인 토큰 사용 (text-fg/bg-surface/ui-card 등 — 색상 light/dark 쌍 하드코딩 금지)
 - [ ] 모바일 반응형 (lg:grid-cols 등)
+- [ ] 번역 네임스페이스 등록: `npm run messages:generate` → `node scripts/i18n-namespaces.cjs --apply` → `--audit` 미해결 0건 (페이지는 shared + 등록한 네임스페이스만 받음, legacy 통합 번역 없음)
 - [ ] TypeScript 에러 없음 (`npx tsc --noEmit`)
 
 ## Development Notes

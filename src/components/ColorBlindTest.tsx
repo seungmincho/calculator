@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/colorBlindTest'
 import { Delete, RotateCcw, Check, X, ArrowRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'

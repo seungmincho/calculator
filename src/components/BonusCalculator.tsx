@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/bonusCalculator'
 import { RotateCcw, Copy, Check } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import GuideSection from '@/components/GuideSection'

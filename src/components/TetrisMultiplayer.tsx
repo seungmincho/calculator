@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/tetris'
 import {
   ArrowLeft, Trophy, RefreshCw, Users, Copy, Check, Send,
   MessageCircle, AlertCircle, X, Flag, Zap

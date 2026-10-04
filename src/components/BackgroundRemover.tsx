@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/backgroundRemover'
 import { Upload, Download, Pipette, Eraser, Paintbrush, Undo2, Redo2, X, ClipboardPaste, ImagePlus, RotateCcw } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import {

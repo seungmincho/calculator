@@ -44,6 +44,7 @@
 | 12 | P3 | 결정 도구 3종(order-picker·ladder-game·menu-roulette) SSR 복구 | 완료(배치1) |
 | 12a | P3 | 큰 Suspense 제거: SalaryCalculator.tsx:1361·HourlyWage.tsx:438·bogeumjari page.tsx:158 (+ MonthlyRentSubsidy·TaxCalculator·time-converter·chess·git-visualizer) — 원인: React 19.2가 12.8KB 넘는 완료 Suspense 경계를 `</main>` 뒤 숨김 영역으로 빼냄. 7개 Suspense 제거(+HourlyWage useState URL 읽기 → effect) | 완료(배치2) |
 | 12k | P3 | 정적 HTML에 h1 없는 페이지: /games(허브)·/pomodoro·/svg-editor·/calculation-history (tips/[id] 400개는 의도적 noindex). 점검 스크립트: `node scripts/check-static-html.cjs out` — 배포 전마다 돌릴 것 | 후보 |
+| 12l | — | /cs-hub 번역 키 노출(tools.algorithm.cta·tools.visualizer.cta·tools.quiz.cta — 분할 전부터) | 후보 |
 | 12b | P3 | 보이는 FAQ 공용 서버 컴포넌트 `ToolFaq.tsx`(JSON-LD + `<details>`) → 39개 page.tsx 교체, JSON-LD url 끝 슬래시 통일(35개 불일치) | 1번 병합 후 |
 | 12c | P3 | sitemap lastmod `updatedDate?`, RSS·_redirects를 menuConfig에서 생성(누락 /running-pace 복구), RSS 최신순·description | 완료(배치1) |
 | 12d | P3 | 사실 오류: bonus FAQ 연금 상한 590만원(→ INSURANCE 참조), omok FAQ 15×15(실제 19×19), menu-roulette FAQ 프리셋 불일치, salary featureList "산재보험"(계산 안 함), salary-rank 2024 귀속 데이터 확인 | 1번 병합 후 |
@@ -51,7 +52,7 @@
 | 12f | P3 | 내부 링크: bogeumjari·salary-rank·omok에 RelatedTools, bogeumjari 본문→dsr·취득세·복비·상환표·전세대출, RelatedTools 교차 카테고리 무작위 추천 개선 | 후보 |
 | 12g | P3 | description 80자 미만 10개 보강(number-to-korean·order-picker·ladder·fuel·keyboard·work-hours·gpa-calculator·installment·crossword·lunar), 얇은 본문(omok·ladder·crossword·salary-rank·menu-picker·bonus) | 후보 |
 | 12h | — | (사용자) 네이버 서치어드바이저 sitemap.xml·rss.xml 제출 | 사용자 액션 |
-| 13 | P4 | **번역 legacy 청크 2.3MB(전송 681KB)** 가 도구 페이지 대부분의 초기 로드에 포함 → 느린 4G에서 9~11초 조작 불가. `generate-scoped-messages.mjs`로 전 네임스페이스 생성 + `src/lib/i18n.ts` import 330곳을 네임스페이스 모듈로 codemod(패턴: `src/lib/i18n/loan.ts`). ladder-game SSR 전환으로 더 시급 | 감사 병합 후 최우선 |
+| 13 | P4 | **번역 legacy 청크 2.3MB(전송 681KB)** 가 도구 페이지 대부분의 초기 로드에 포함 → 느린 4G에서 9~11초 조작 불가. `generate-scoped-messages.mjs`로 전 네임스페이스 생성 + `src/lib/i18n.ts` import 330곳을 네임스페이스 모듈로 codemod — 레지스트리 방식(`registerMessages` + 네임스페이스별 side-effect import). 검증: 정적 HTML 358페이지 키 노출 증가 0, 브라우저 30페이지 hydration 후 노출 0. 초기 JS(gzip) 숫자한글 254KB·택시 257KB | 완료(배치3) |
 | 13a | P4 | 완료: Link prefetch 끄기(ToolsShowcase·RelatedTools·Footer·DecisionToolsBar·ladder page — 스크롤 시 최대 2.8MB 비압축 HTML), `public/_headers` `/_next/static/*` immutable, 모든 페이지의 supabase-js 제거(toolAnalytics → fetch) | 완료(배치1) |
 | 13b | P4 | AdSense·Axeptio를 lazyOnload로(TBT 1~1.5초) — 광고 수익·동의 요건 판단 필요 | 사용자 결정 |
 | 13c | P4 | Pretendard 웹폰트 385KB(woff2 16개, jsdelivr): 모바일 시스템 폰트 or 자체 호스팅 | 사용자 결정(디자인) |
@@ -83,3 +84,4 @@
 
 - 2026-10-04 배치1 · 금융·생활비 48개 도구 공식 기준 점검(국민연금 계산기 10배 과대, 택시 15개 시·도 요금, 자동차 취등록세 등록세 이중부과, 실업급여 하한>상한, 보금자리 수도권 LTV 등) + 신규 4종(관부가세·김장·연휴 플래너·건강검진) + 홈 오늘의 퍼즐·시즌 카드 + 결정 도구 SSR + 성능 소규모(prefetch·_headers·supabase-js 제거) + RSS/sitemap. 검증: check 147개·tsc 0·messages:check. 배포 11bb5f43 (SW v4.32.0, 빌드 워커 cpus:4 — 기본 19개면 메모리 감시가 빌드 종료)
 - 2026-10-04 배치2 · Suspense 7곳 제거(React 19.2 12.8KB 경계 숨김 — 연봉·시급·보금자리·세금 등), 결정 도구 9종 SSR, 사다리 공유 버그, 연말정산 미리보기, 월세지원금→청년월세 301, CLAUDE.md 템플릿 Suspense 제거, scripts/check-static-html.cjs. 검증: check 147·tsc 0·브라우저(연말정산·연봉/시급 공유·동전·5명 사다리) 배포 713f6873 (SW v4.32.1). 빌드: 사전 tsc 통과 후 SKIP_BUILD_TYPECHECK=1 (빌드 중 타입검사 ~5GB로 감시가 종료시킴)
+- 2026-10-04 배치3 · 번역 레지스트리 분할(legacy 2.3MB 제거, 345파일 ns import, scripts/i18n-namespaces.cjs --apply/--audit, CLAUDE.md 템플릿·체크리스트). 검증: messages:check·tsc 0·check 147·정적 키 노출 diff 0·브라우저 30페이지

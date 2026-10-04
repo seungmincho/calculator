@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/pomodoroTimer'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Play, Pause, RotateCcw, Settings, Volume2, VolumeX, Bell, BellOff,

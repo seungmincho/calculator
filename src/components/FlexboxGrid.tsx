@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/flexboxGrid'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Copy,

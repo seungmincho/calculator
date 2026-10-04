@@ -4,6 +4,7 @@ import { glassCard, glassInset } from '@/lib/glass'
 
 import React, { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/jwtDecoder'
 import { 
   Shield, 
   Key, 

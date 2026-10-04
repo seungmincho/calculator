@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useId } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/timer'
 import { Play, Pause, RotateCcw, Flag, Plus, Maximize, Minimize, BellOff, Copy, Check, Volume2, Bell } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import * as T from '@/utils/timer'

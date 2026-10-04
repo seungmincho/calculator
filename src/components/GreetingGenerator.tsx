@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Copy, Check, Shuffle, Link2, Star, ImageDown, Trash2 } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/greetingGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import {

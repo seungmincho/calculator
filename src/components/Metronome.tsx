@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/metronome'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Play, Square } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

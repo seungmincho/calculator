@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/randomPicker'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Maximize2, X, Trash2, SkipForward, RotateCcw } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

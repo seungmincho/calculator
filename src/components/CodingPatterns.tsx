@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/codingPatterns'
 import {
   Search, Star, Check, ChevronDown, ChevronUp, Code, Clock,
   Database, AlertTriangle, Lightbulb, BookOpen, Zap,

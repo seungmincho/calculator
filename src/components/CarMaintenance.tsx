@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/carMaintenance'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import { CalendarPlus, Check, RotateCcw, Save, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'

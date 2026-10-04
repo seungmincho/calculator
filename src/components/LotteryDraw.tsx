@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/lotteryDraw'
 import { RotateCcw, Play, Shuffle } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import GuideSection from '@/components/GuideSection'

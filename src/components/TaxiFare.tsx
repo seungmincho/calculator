@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/taxiFare'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Link as LinkIcon, Check, Download } from 'lucide-react'
 import {

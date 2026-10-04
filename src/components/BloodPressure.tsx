@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/bloodPressure'
 import { Heart, Trash2, BookOpen, Activity, Link, Check } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

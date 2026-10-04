@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/ddayCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { ArrowRightLeft, Check, ChevronLeft, ChevronRight, Copy, Pin, PinOff, Plus, Trash2 } from 'lucide-react'
 import { getKoreanHolidays } from '@/utils/koreanHolidays'

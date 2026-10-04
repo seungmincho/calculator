@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/tetris'
 import {
   Trophy, RotateCcw, RotateCw, Pause, Play, ArrowLeft, ArrowRight, ArrowDown, ChevronsDown, Volume2, VolumeX,
 } from 'lucide-react'

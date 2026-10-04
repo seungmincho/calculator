@@ -4,6 +4,8 @@
  * Synchronous i18n replacement for next-intl.
  *
  * Uses synchronous generated message subsets — no async loading, no Provider needed.
+ * Tool namespaces: add `import '@/lib/i18n/ns/<namespace>'` next to the useTranslations import
+ * (also for literal `<GuideSection namespace="x" />` props). Missing import → raw keys.
  * Drop-in compatible with next-intl's useTranslations API:
  *   - t('key')
  *   - t('nested.key')
@@ -17,10 +19,15 @@
  */
 
 import sharedMessages from '../../messages/generated/ko/shared.json'
-import toolMessages from '../../messages/generated/ko/legacy.json'
 
-// Unmigrated tools retain the complete catalogue without duplicating shared data.
-const messages: Record<string, unknown> = { ...sharedMessages, ...toolMessages }
+// Shared namespaces are always loaded. Every other namespace registers itself when a
+// component imports its generated module ('@/lib/i18n/ns/<namespace>'), so a page only
+// ships the translations its own components use.
+const messages: Record<string, unknown> = { ...sharedMessages }
+
+export function registerMessages(namespaces: Record<string, unknown>): void {
+  Object.assign(messages, namespaces)
+}
 
 function getNestedValue(obj: Record<string, unknown>, key: string): unknown {
   if (!key.includes('.')) return obj[key]

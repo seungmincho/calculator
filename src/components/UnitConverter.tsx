@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/unitConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, ArrowUpDown, Search, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

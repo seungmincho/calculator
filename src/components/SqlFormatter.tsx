@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import '@/lib/i18n/ns/sqlFormatter'
 
 const SqlFormatter = () => {
   const [input, setInput] = useState('');

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/whiteNoise'
 import { Play, Square, BookOpen, Volume2, Moon, Timer } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
 

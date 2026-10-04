@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/leaderboard'
 import { Trophy, Medal, Crown, RefreshCw } from 'lucide-react'
 import type { UseLeaderboardReturn } from '@/hooks/useLeaderboard'
 import { glassCard, glassInset } from '@/lib/glass'

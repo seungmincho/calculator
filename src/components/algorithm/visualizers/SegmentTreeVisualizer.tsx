@@ -1,6 +1,8 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
+import '@/lib/i18n/ns/segmentTreeVisualizer'
 import {
   buildSegmentTree, querySegmentTree, updateSegmentTree, generateRandomArray,
   type QueryType, type SegmentTreeStep,

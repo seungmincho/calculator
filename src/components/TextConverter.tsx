@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef, useDeferredValue } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/textConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, X, Undo2 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'

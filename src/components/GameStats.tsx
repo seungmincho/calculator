@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameHub'
+import '@/lib/i18n/ns/gameStats'
 import {
   Trophy, TrendingUp, Users, Gamepad2,
   Calendar, Clock, BarChart3, PieChart,

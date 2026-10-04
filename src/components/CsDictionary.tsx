@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef, forwardRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/csDictionary'
 import {
   Search, BookOpen, Star, Check, ChevronDown, ChevronUp,
   LayoutGrid, List, Filter, X, BookMarked, GraduationCap,

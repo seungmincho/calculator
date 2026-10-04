@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/memoryGame'
 import { RotateCcw, Trophy, Star, Clock, Zap, Volume2, VolumeX, BookOpen } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'

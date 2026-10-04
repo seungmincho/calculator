@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/jsonFormatter'
 import dynamic from 'next/dynamic'
 import { glassCard, glassInset } from '@/lib/glass'
 import {

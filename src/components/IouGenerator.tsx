@@ -12,6 +12,7 @@ import {
   schedule, withholding, giftInterestGap, giftFreePrincipal, overMaxRate,
   MAX_RATE, FAIR_RATE, type RepayMethod, type Schedule,
 } from '@/utils/iou'
+import '@/lib/i18n/ns/iouGenerator'
 
 interface Iou {
   debtor: Party

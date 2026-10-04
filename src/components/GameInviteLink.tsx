@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameInvite'
 import { Copy, Check, Share2, Link } from 'lucide-react'
 
 interface GameInviteLinkProps {

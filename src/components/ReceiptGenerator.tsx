@@ -13,6 +13,7 @@ import {
   PURPOSES, PROOF_LIMIT, CASH_RECEIPT_MIN, presetSubject, presetItems, statement, totals, bizStatus, cashReceiptDuty, overProofLimit,
   type Purpose, type Pay, type VatMode, type Item,
 } from '@/utils/receipt'
+import '@/lib/i18n/ns/receiptGenerator'
 
 interface Receipt {
   no: string

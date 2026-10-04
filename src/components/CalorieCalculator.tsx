@@ -8,6 +8,7 @@ import CalculationHistory from './CalculationHistory'
 import ShareResult from '@/components/ShareResult'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/calorie'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import {
   ACTIVITIES, ACTIVITY_FACTOR, FORMULAS, GOALS, PACES, MIN_KCAL, PROTEIN_G_PER_KG, FAT_PCT, LEGACY_GOAL,

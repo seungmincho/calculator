@@ -8,6 +8,7 @@ import { Section, DateField, TextField, Segmented, Check, PartyFields, labelCls,
 import { EMPTY_PARTY, maskId, krDate, docFileName, type Party } from '@/utils/document'
 import { addMonths } from '@/utils/dday'
 import { PURPOSES, MATTERS, matterList, checkPoa, SEAL_VALID_MONTHS, type Purpose, type PoaCode } from '@/utils/powerOfAttorney'
+import '@/lib/i18n/ns/powerOfAttorney'
 
 interface Corp {
   name: string

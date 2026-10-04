@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, ChangeEvent, DragEvent } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gifMaker'
 import { Upload, Trash2, ChevronUp, ChevronDown, Play, Pause, Download, RefreshCw, ImageIcon } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

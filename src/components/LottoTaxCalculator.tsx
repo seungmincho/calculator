@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/lottoTax'
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Link, RotateCcw, BookOpen, ChevronDown, ChevronUp, TrendingUp, Trophy, Banknote } from 'lucide-react'

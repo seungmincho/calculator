@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/yesNoDecider'
 import { RotateCcw } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

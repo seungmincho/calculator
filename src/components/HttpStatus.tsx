@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/httpStatus'
 import { Search, Copy, Check, ChevronDown, ChevronUp, BookOpen } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
 

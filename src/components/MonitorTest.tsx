@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef, type ReactNode } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/monitorTest'
 import {
   Monitor, Eye, Contrast, Type, Palette, Zap, Activity, Sun, Flame, RotateCcw, Square, CircleDot,
   Image as ImageIcon, Move, Maximize, ChevronLeft, ChevronRight, Upload, Grid3x3, Layers, Rainbow,

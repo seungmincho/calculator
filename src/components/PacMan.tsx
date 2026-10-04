@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/pacMan'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
 

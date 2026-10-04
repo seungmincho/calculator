@@ -14,6 +14,7 @@ import {
   week, minWageCheck, monthlyEstimate, minorLimit, ageAt, MIN_WAGE_2026,
   type Slot, type WageType, type Week,
 } from '@/utils/employmentContract'
+import '@/lib/i18n/ns/employmentContract'
 
 type Kind = 'regular' | 'fixed' | 'part' | 'minor'
 const KINDS: Kind[] = ['regular', 'fixed', 'part', 'minor']

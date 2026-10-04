@@ -13,6 +13,7 @@ import {
   computePay, ordinaryHourly, MIN_WAGE_2026, ROW_TYPES, ROW_NAME, TAX_FREE_LIMIT, DED_KEYS,
   type PayInput, type PayRow, type RowType, type DedKey, type Line,
 } from '@/utils/paySlip'
+import '@/lib/i18n/ns/paySlip'
 
 interface V extends PayInput {
   company: string

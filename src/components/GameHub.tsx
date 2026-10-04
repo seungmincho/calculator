@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameHub'
 import { useRouter } from 'next/navigation'
 import {
   Gamepad2, Users, Monitor, RefreshCw,

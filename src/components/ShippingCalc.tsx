@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/shippingCalc'
 import { Package, Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save, Store } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'

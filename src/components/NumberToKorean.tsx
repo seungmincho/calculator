@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/numberToKorean'
 import { Copy, Check } from 'lucide-react'
 import {
   parseAmount, toKoreanReading, toKoreanFormal, toHanja, toMixed, toEnglish,

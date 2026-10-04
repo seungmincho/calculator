@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/residentNumber'
 import { formatRrn, onlyDigits, parseRrn, type RrnResult } from '@/utils/residentNumber'
 
 // 개인정보: 입력값은 컴포넌트 state에만 존재. 네트워크 요청·localStorage·URL·히스토리·클립보드 사용 없음.

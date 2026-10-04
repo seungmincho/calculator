@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/systemDesign'
 import {
   ArrowLeft, Star, BookMarked, ChevronDown, ChevronUp,
   Play, CheckCircle, Target, Layers, Server, Zap,

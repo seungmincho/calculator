@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/regexBuilder'
 import { Copy, Check } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

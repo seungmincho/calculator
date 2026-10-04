@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/boardGamePage'
 import { Monitor, Zap, ChevronRight, Gamepad2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 

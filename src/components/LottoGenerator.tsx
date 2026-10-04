@@ -9,6 +9,7 @@ import FeedbackWidget from './FeedbackWidget'
 import PDFExport from './PDFExport'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/lotto'
 import dynamic from 'next/dynamic'
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 import { useLottoData } from '@/hooks/useLottoData'

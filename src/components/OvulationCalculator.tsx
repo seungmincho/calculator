@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/ovulationCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import GuideSection from '@/components/GuideSection'

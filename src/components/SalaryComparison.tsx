@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/salaryComparison'
 import { ArrowLeftRight, Plus, Trash2, Copy, Check, TrendingUp, TrendingDown, Minus, RotateCcw, BookOpen, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { calculateNetSalary as calcNetSalary } from '@/utils/netSalary'

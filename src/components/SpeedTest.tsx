@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/speedTest'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts'
 import { Play, Square, ChevronDown, ChevronUp } from 'lucide-react'

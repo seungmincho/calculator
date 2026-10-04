@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, DragEvent, KeyboardEvent, ReactNode } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/pdfTools'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import {
   FileUp, FileText, Download, Trash2, GripVertical, ArrowUp, ArrowDown, ArrowLeft, ArrowRight,

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/portReference'
 import { Search, Copy, Check, Shield, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

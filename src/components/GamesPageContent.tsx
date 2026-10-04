@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameHub'
 import dynamic from 'next/dynamic'
 
 const GameHub = dynamic(() => import('@/components/GameHub'), { ssr: false })

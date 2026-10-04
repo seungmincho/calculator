@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/weddingCalculator'
 import { Copy, Check, ChevronDown, ChevronUp, Plus, Trash2, RotateCcw, FileDown } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import { todayKST } from '@/utils/dday'

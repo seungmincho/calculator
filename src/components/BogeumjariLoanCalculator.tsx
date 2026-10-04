@@ -11,6 +11,7 @@ import {
   REGIONS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPE_INFO,
   getIncomeLimit, calcBogeumjari, annuity, fmtKRW, rateFor,
 } from '@/utils/bogeumjari';
+import '@/lib/i18n/ns/bogeumjariLoan';
 
 type Method = 'annuity' | 'principal';
 

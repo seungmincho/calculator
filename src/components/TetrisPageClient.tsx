@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/tetris'
 import { Gamepad2, Users } from 'lucide-react'
 import Tetris from './Tetris'
 import TetrisMultiplayer from './TetrisMultiplayer'

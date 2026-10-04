@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/koreanSyllable'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RotateCcw } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'

@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/ipChecker'
 import { Copy, Check, RefreshCw } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import {

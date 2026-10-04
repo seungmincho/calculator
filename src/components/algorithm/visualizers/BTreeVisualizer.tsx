@@ -1,6 +1,8 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
+import '@/lib/i18n/ns/bTreeVisualizer'
 import {
   insertBTree, deleteBTree, searchBTree, buildBTree, generateRandomValues,
   getTreeHeight, getNodeCount, getKeyCount, getSplitCount,

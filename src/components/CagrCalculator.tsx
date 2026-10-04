@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/cagrCalculator'
 import { Copy, Check, BookOpen, RotateCcw, ChevronDown, ChevronUp, BarChart3, TrendingUp, Clock, GitCompareArrows, Link } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'

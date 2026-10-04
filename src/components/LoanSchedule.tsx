@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback, Fragment } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/loanSchedule'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Download, Printer, ChevronDown, ChevronRight, RotateCcw, ArrowRight } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts'

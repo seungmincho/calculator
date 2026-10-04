@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/waterBill'
 import { RotateCcw, ExternalLink } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'

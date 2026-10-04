@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/mahjongSolitaire'
 import { RotateCcw, Lightbulb, Shuffle, Clock, Trophy, RotateCw } from 'lucide-react'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'

@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/savings'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'

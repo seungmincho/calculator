@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/discountCalculator'
 import { Tag, Copy, Check, RotateCcw, Plus, Percent, X, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

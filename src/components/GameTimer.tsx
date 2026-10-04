@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameTimer'
 import { RotateCcw, Play, Pause, Flag, Maximize2, Minimize2, Timer, Clock, Users } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 

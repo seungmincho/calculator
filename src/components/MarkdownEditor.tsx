@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/markdownEditor'
 import GuideSection from '@/components/GuideSection'
 import { renderMarkdown, textStats, htmlDocument, plain, MD_CSS } from '@/utils/markdown'
 

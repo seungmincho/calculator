@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/achievements'
 import { ChevronDown, ChevronUp, Trophy, X } from 'lucide-react'
 
 // ──────────────────────────────────────────────

@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/colorBlindnessSimulator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Upload, Camera, Download, Plus, X, ChevronRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'

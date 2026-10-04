@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react'
 import { Copy, Check } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
 
 interface CodeViewerProps {
   code: string

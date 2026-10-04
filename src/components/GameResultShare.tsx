@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { Share2, Copy, Check, X } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameResultShare'
 
 interface GameResultShareProps {
   gameName: string

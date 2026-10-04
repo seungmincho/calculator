@@ -10,6 +10,7 @@ import { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } fro
 import Link from 'next/link'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/percentCalculator'
 import { Copy, Check, Plus, X, RotateCcw, ArrowRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import {

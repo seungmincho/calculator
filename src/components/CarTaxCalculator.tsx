@@ -5,6 +5,7 @@ import { Car, Calculator, Percent, Receipt, DollarSign, AlertCircle, Share2, Che
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/carTax'
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'

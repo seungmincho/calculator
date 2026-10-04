@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import '@/lib/i18n/ns/enneagram'
 
 // ─── Type Data ───────────────────────────────────────────────
 interface TypeInfo {

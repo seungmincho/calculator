@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/reactionTest'
 import { RotateCcw, Trash2 } from 'lucide-react'
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine } from 'recharts'
 import { useLeaderboard } from '@/hooks/useLeaderboard'

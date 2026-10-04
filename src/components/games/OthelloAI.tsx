@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameHub'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/othello'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, BarChart3, Undo2 } from 'lucide-react'
 import GameConfetti from '@/components/GameConfetti'
 import GameResultShare from '@/components/GameResultShare'

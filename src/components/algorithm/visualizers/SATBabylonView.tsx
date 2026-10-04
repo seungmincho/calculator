@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/satVisualizer'
 
 interface AxisGap {
   x: boolean

@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/picross'
 import { RotateCcw, Clock, Copy, Check, Volume2, VolumeX, Square, X as XIcon } from 'lucide-react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useGameAchievements } from '@/hooks/useGameAchievements'

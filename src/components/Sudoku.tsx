@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/sudoku'
 import { Play, Lightbulb, Undo, Eraser, Clock, BookOpen } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import { useGameAchievements } from '@/hooks/useGameAchievements'

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/mbtiCompatibility'
 import { ArrowLeft, Share2, Check, Star, ChevronDown } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {

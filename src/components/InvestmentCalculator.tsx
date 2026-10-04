@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/investmentCalculator'
 import { RotateCcw, ArrowRight } from 'lucide-react'
 import { ComposedChart, Area, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts'
 import ShareResult from '@/components/ShareResult'

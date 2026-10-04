@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/signatureGenerator'
 import { Download, Undo2, Redo2, Eraser, Copy, Check, Save, Trash2, ShieldCheck } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import { FONTS, FONT_BY_ID, googleCssUrl } from '@/utils/fontPreview'

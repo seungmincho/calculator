@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/acquisitionTaxCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import ShareResult from '@/components/ShareResult'

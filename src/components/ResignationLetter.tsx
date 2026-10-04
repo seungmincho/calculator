@@ -8,6 +8,7 @@ import { krDate, docFileName } from '@/utils/document'
 import { addMonths, addYears, daysBetween, isValidDate } from '@/utils/dday'
 import { leaveForYears } from '@/utils/annualLeave'
 import { noticeLastDay, severance, tenure, anniversaryEve, REASONS, REASON_TEXT, type ReasonKey } from '@/utils/resignation'
+import '@/lib/i18n/ns/resignationLetter'
 
 interface Resign {
   name: string

@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/inquiry'
 import {
   MessageSquare,
   Bug,

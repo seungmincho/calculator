@@ -1,0 +1,1 @@
+{"exchange":{"title":"환율 계산기","description":"실시간 환율로 원화, 달러, 유로, 엔화 등 주요 통화를 환전 계산해보세요.","input":{"fromCurrency":"기준 통화","toCurrency":"대상 통화","amount":"금액","exchangeRate":"환율"},"result":{"convertedAmount":"환전 금액","exchangeRate":"현재 환율","lastUpdated":"마지막 업데이트"}}}

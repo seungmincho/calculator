@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
 import Link from 'next/link'
 import { type AlgorithmInfo, categoryColors, categoryLabels, difficultyLabels } from '@/config/algorithmConfig'
 

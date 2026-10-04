@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/vatCalculator'
 import { Copy, Check, Plus, Trash2, Link2 } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'

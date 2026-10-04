@@ -1,6 +1,8 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
+import '@/lib/i18n/ns/huffmanCodingVisualizer'
 import { solveHuffman, HUFFMAN_PRESETS, type HuffmanStep } from '@/utils/algorithm/huffmanCoding'
 import HuffmanCodingCanvas2D from './HuffmanCodingCanvas2D'
 import VisualizerControls from '../VisualizerControls'

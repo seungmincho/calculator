@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/envEditor'
 import { Copy, Check, Upload, Plus, Trash2, AlertTriangle, FileText, Table } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/base64Converter'
 import { Copy, Check, ArrowRightLeft, Trash2, Upload, Image } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

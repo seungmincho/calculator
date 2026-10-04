@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/colorPalette'
 import { Palette, Copy, Check, Shuffle, Save, Trash2, Download, BookOpen } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

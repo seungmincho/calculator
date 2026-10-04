@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef, createContext, useContext } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/subnetCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Link2, Download } from 'lucide-react'
 import {

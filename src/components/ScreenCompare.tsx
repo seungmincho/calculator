@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useCallback, type ReactNode } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/screenCompare'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Plus, Trash2, RotateCw } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
 import Link from 'next/link'
 import { LayoutGrid, List } from 'lucide-react'
 import { algorithms, categoryColors, categoryLabels, difficultyLabels, type AlgorithmCategory } from '@/config/algorithmConfig'

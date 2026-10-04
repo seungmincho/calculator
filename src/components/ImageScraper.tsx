@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/imageScraper'
 import {
   Search, Download, Image as ImageIcon, Check, Copy,
   ExternalLink, ChevronDown, ChevronUp, Loader2,

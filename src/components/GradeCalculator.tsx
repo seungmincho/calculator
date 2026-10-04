@@ -8,6 +8,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gradeCalc'
 import { Check, Plus, X } from 'lucide-react'
 import { gradeOf, boundaries, weightedAverage, systemForYear, CUMULATIVE, type GradeSystem } from '@/utils/gradeRank'
 

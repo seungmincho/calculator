@@ -3,6 +3,7 @@
 // 문서 작성기 입력 부품 (디자인 토큰만 사용). 라벨 문구는 호출부에서 t()로 넘김 — PartyFields만 공통 네임스페이스 사용.
 import { useId, type ReactNode } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/documentGenerator'
 import { amountText, type Party } from '@/utils/document'
 
 export const fieldCls = 'ui-field w-full min-w-0 px-3 py-2 text-sm'

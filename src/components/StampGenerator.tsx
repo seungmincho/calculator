@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/stampGenerator'
 
 type StampShape = 'circle' | 'square' | 'oval' | 'corporate'
 type StampStyle = 'traditional' | 'modern-blue' | 'black' | 'custom'

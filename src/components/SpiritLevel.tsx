@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/spiritLevel'
 import {
   upVector, toScreen, lowPass, surfaceReading, edgeReading, slopePercent, mmPerMeter, isLevel, bubbleScale,
   applyCalibration, reversalZero, nearestAxis, parseCalibration, compassHeading, smoothAngle, compassKey,

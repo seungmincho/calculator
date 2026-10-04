@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/battleship'
+import '@/lib/i18n/ns/gameHub'
+import '@/lib/i18n/ns/gameSounds'
 import { ArrowLeft, Trophy, RefreshCw, HelpCircle, RotateCw, Shuffle, BarChart3 } from 'lucide-react'
 import GameConfetti from '@/components/GameConfetti'
 import GameResultShare from '@/components/GameResultShare'

@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/hourlyWage'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { MIN_WAGE_2026, calcPay, shiftMinutes } from '@/utils/workHours'
 import { MIN_WAGE_2027 } from '@/utils/minimumWage'

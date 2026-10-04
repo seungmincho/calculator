@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/screenInfo'
 import { Copy, Check, RefreshCw, Braces } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import {

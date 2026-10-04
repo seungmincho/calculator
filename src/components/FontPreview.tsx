@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/fontPreview'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Search, Star, Pin, X, ExternalLink, Upload, Link2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
 import {

@@ -13,6 +13,7 @@ import {
   draftTitle, draftBody, paragraphsOf, paginate, letterFee, leaseWindow, prescription,
   type Letter, type Purpose, type ActionKey,
 } from '@/utils/certifiedLetter'
+import '@/lib/i18n/ns/certifiedLetter'
 
 interface V extends Letter {
   sender: Party

@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import NextLink from 'next/link'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gpaCalculator'
 import { Trash2, ChevronDown, ChevronUp, Check } from 'lucide-react'
 import {
   type Course, type Semester as BaseSemester, type GpaScale,

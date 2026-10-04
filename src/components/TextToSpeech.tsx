@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/textToSpeech'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Play, Pause, Square, ClipboardPaste, WrapText, Eraser, Link2, Check } from 'lucide-react'
 import {

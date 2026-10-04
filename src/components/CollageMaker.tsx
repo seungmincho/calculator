@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/collageMaker'
 import { Upload, Download, Share2, Trash2, Undo2, ImagePlus, RefreshCw, X, Maximize2 } from 'lucide-react'
 import { parseRatio } from '@/utils/aspectRatio'
 import {

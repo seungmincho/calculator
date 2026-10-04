@@ -1,6 +1,8 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
+import '@/lib/i18n/ns/lisVisualizer'
 import { solveLisDP, solveLisBinarySearch, LIS_PRESETS, type LisStep, type LisMethod } from '@/utils/algorithm/lis'
 import LisCanvas2D from './LisCanvas2D'
 import VisualizerControls from '../VisualizerControls'

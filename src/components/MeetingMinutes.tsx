@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/meetingMinutes'
 import {
   Plus, Trash2, Copy, Check, FileText, Download, Printer,
   Users, Calendar, ChevronDown, ChevronUp, Save, FolderOpen,

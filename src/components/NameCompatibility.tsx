@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/nameCompatibility'
 import { Heart, Copy, Check, Download, Share2, RefreshCw, BookOpen, ChevronDown } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

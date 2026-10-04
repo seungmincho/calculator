@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/faviconGenerator'
 import { Upload, Download, Copy, Check, Image, Trash2, BookOpen, FileCode, Smartphone, Monitor, Globe, Crop, Pipette, RotateCcw } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 

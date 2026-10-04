@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/minesweeper'
 import { Flag, Volume2, VolumeX, Copy, Check } from 'lucide-react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useLeaderboard } from '@/hooks/useLeaderboard'

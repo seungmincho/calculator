@@ -12,6 +12,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gpaConverterCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Link as LinkIcon, Download } from 'lucide-react'
 import NextLink from 'next/link'

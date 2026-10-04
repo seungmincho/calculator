@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/capitalGainsTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Check, X, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'

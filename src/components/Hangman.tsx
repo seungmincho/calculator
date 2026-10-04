@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { Volume2, VolumeX, Copy, Check, RotateCcw } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/gameSounds'
+import '@/lib/i18n/ns/hangman'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import { useGameSounds } from '@/hooks/useGameSounds'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'

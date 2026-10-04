@@ -1,6 +1,8 @@
 'use client'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/algorithmHub'
+import '@/lib/i18n/ns/editDistanceVisualizer'
 import { solveEditDistance, ED_PRESETS, type EDStep, type EDResult } from '@/utils/algorithm/editDistance'
 import EditDistanceCanvas2D from './EditDistanceCanvas2D'
 import VisualizerControls from '../VisualizerControls'

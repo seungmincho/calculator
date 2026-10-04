@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/omok'
 import { ArrowLeft, Trophy, RefreshCw, Flag, Users, Copy, Check, Send, MessageCircle, AlertCircle, X } from 'lucide-react'
 import { useGameRoom } from '@/hooks/useGameRoom'
 import { usePeerConnection } from '@/hooks/usePeerConnection'
