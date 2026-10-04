@@ -7,7 +7,8 @@ import '@/lib/i18n/ns/weeklyHolidayPay'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import { calculateNetSalary } from '@/utils/netSalary'
-import { requiredBreak } from '@/utils/workHours'
+import { requiredBreak, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM } from '@/utils/workHours'
+import { todayKST } from '@/utils/dday'
 import {
   calcWeek, evenDays, netDayHours, monthlyDeduction, MIN_WAGE_2026, type DeductMode,
 } from '@/utils/weeklyHolidayPay'
@@ -48,6 +49,10 @@ export default function WeeklyHolidayPay() {
     const d = sp.get('ded') as DeductMode
     return DEDUCTS.includes(d) ? d : 'none'
   })
+
+  // 법 개정 안내는 마운트 후 KST 날짜로 (첫 렌더 = 정적 HTML)
+  const [today, setToday] = useState('')
+  useEffect(() => setToday(todayKST()), [])
 
   const wage = parseInt(wageText.replace(/,/g, '')) || 0
   const stay = mode === 'even' ? evenDays(days, hours) : perDay
@@ -201,6 +206,7 @@ export default function WeeklyHolidayPay() {
                 />
               </div>
               <p className="text-xs text-muted mt-1.5">{t('u.breakHint')}</p>
+              {today && <p className="text-xs text-muted mt-1">{t(today >= BREAK_WAIVER_FROM ? 'u.law.breakAfter' : 'u.law.breakBefore')}</p>}
             </div>
 
             <div>
@@ -287,6 +293,7 @@ export default function WeeklyHolidayPay() {
                   <span className="text-xl font-bold text-primary tabular-nums">{won(netMonthly)}{t('u.won')}</span>
                 </div>
                 <p className="text-xs text-muted">{t(deduct === 'tax33' ? 'u.ded.tax33Note' : 'u.ded.insNote')}</p>
+                {deduct === 'ins' && today && <p className="text-xs text-muted">{t(today >= EI_INCOME_BASIS_FROM ? 'u.law.eiAfter' : 'u.law.eiBefore')}</p>}
               </div>
             )}
 
@@ -295,7 +302,7 @@ export default function WeeklyHolidayPay() {
                 {!r.eligible && <p>{t('u.warnUnder15', { need: hrs(Math.max(0, 15 - r.contractHours)) })}</p>}
                 {belowMin && <p>{t('u.warnMinWage', { min: won(MIN_WAGE_2026), diff: won(MIN_WAGE_2026 - wage) })}</p>}
                 {r.overtimeHours > 0 && <p>{t('u.warnOvertime', { ot: hrs(r.overtimeHours) })}</p>}
-                {breakShort && <p>{t('u.warnBreak')}</p>}
+                {breakShort && <p>{t('u.warnBreak')}{today >= BREAK_WAIVER_FROM && ' ' + t('u.law.breakWaiverWarn')}</p>}
               </div>
             )}
 

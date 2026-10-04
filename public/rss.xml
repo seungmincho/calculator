@@ -5,13 +5,20 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 04 Oct 2026 11:05:50 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 12:20:00 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[해외직구 관부가세 계산기]]></title>
     <link>https://toolhub.ai.kr/customs-duty/</link>
     <guid>https://toolhub.ai.kr/customs-duty/</guid>
     <description><![CDATA[직구 면세 한도와 관세·부가세를 원화로 바로 계산]]></description>
+    <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[일용직 세금 계산기]]></title>
+    <link>https://toolhub.ai.kr/daily-wage-tax/</link>
+    <guid>https://toolhub.ai.kr/daily-wage-tax/</guid>
+    <description><![CDATA[일당으로 원천징수 소득세·지방소득세와 실수령액 계산]]></description>
     <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -40,6 +47,20 @@
     <link>https://toolhub.ai.kr/minimum-wage/</link>
     <guid>https://toolhub.ai.kr/minimum-wage/</guid>
     <description><![CDATA[2026·2027 최저시급으로 월급·연봉 환산과 내 시급 위반 여부 확인]]></description>
+    <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[1RM 계산기]]></title>
+    <link>https://toolhub.ai.kr/one-rep-max/</link>
+    <guid>https://toolhub.ai.kr/one-rep-max/</guid>
+    <description><![CDATA[든 무게와 횟수로 1회 최대 중량과 훈련 강도별 무게 계산]]></description>
+    <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[임대수익률 계산기]]></title>
+    <link>https://toolhub.ai.kr/rental-yield/</link>
+    <guid>https://toolhub.ai.kr/rental-yield/</guid>
+    <description><![CDATA[매매가·보증금·월세·대출로 연 수익률과 월 현금흐름 계산]]></description>
     <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

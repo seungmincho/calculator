@@ -16,6 +16,9 @@ export interface LeaveOptions {
   lowAttendanceMonths?: number | null
 }
 
+/** 제60조⑤ 신설: 시간단위 분할 청구 시 부여 의무 (법률 제21784호 부칙 제1조, 공포 2026.6.9 + 1년). 단위·일수는 시행령(미공포) */
+export const HOURLY_LEAVE_FROM = '2027-06-10'
+
 const round2 = (n: number) => Math.round(n * 100) / 100
 
 /** 근속 n년을 채웠을 때 발생하는 연차: 15일 + 최초 1년 초과 매 2년마다 1일, 최대 25일 (제60조 ①④) */

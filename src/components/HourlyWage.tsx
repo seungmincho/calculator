@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/hourlyWage'
 import { useSearchParams } from '@/hooks/useSearchParams'
-import { MIN_WAGE_2026, calcPay, shiftMinutes } from '@/utils/workHours'
+import { MIN_WAGE_2026, calcPay, shiftMinutes, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM } from '@/utils/workHours'
+import { todayKST } from '@/utils/dday'
 import { MIN_WAGE_2027 } from '@/utils/minimumWage'
 import { wageTable, type WageType } from '@/utils/weeklyHolidayPay'
 import { calculateNetSalary } from '@/utils/netSalary'
@@ -31,6 +32,7 @@ export default function HourlyWage() {
   const [dEnd, setDEnd] = useState('18:00')
   const [dHoliday, setDHoliday] = useState(false)
   const [small, setSmall] = useState(false)
+  const [today, setToday] = useState('') // 법 개정 안내용 KST 날짜 (마운트 후)
 
   // 공유 링크 복원은 마운트 후 1회 → 정적 HTML과 hydration 첫 렌더는 항상 기본값
   useEffect(() => {
@@ -51,6 +53,7 @@ export default function HourlyWage() {
     if (hm(de)) setDEnd(de!)
     if (sp.get('dhol') === '1') setDHoliday(true)
     if (sp.get('small') === '1') setSmall(true)
+    setToday(todayKST())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const shareUrl = useCallback(() => {
@@ -280,6 +283,7 @@ export default function HourlyWage() {
                     </tbody>
                   </table>
                   <p className="text-xs text-muted mt-2">{t('netNote')}</p>
+                  {today && <p className="text-xs text-muted mt-1">{t(today >= EI_INCOME_BASIS_FROM ? 'u.law.eiAfter' : 'u.law.eiBefore')}</p>}
                 </div>
 
                 {r.holidayHours > 0 ? (
@@ -390,6 +394,7 @@ export default function HourlyWage() {
                 ))}
               </div>
               <p className="text-xs text-muted">{small ? t('u.day.smallNote') : t('u.day.note')}</p>
+              {today && <p className="text-xs text-muted">{t(today >= BREAK_WAIVER_FROM ? 'u.law.breakAfter' : 'u.law.breakBefore')}</p>}
             </div>
           )}
         </div>

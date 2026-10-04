@@ -1,6 +1,7 @@
 // 연차 계산 회귀 체크: node scripts/check-annual-leave.ts
 import { getKoreanHolidays } from '../src/utils/koreanHolidays.ts'
-import { leaveForYears, joinGrants, fiscalGrants, total, active, summarize, settlement, timeline, dailyWage, bridges } from '../src/utils/annualLeave.ts'
+import { leaveForYears, joinGrants, fiscalGrants, total, active, summarize, settlement, timeline, dailyWage, bridges, HOURLY_LEAVE_FROM } from '../src/utils/annualLeave.ts'
+import { todayKST } from '../src/utils/dday.ts'
 
 let fail = 0
 const eq = (a: unknown, b: unknown, msg: string) => { if (JSON.stringify(a) !== JSON.stringify(b)) { fail++; console.log('FAIL', msg, JSON.stringify(a), '!=', JSON.stringify(b)) } }
@@ -56,5 +57,7 @@ eq(oct && [oct.end, oct.restDays, oct.leaveDates], ['2026-10-11', 9, ['2026-10-0
 const xmas = b.find(x => x.start === '2026-12-25')
 eq(xmas && [xmas.end, xmas.restDays, xmas.leaveDates.length], ['2027-01-03', 10, 4], '성탄~신정')
 
+// 시간단위 연차 안내 전환: KST 2027-06-10 0시 (law.go.kr 법률 제21784호 부칙 제1조)
+eq([todayKST(Date.UTC(2027, 5, 9, 14, 59)) >= HOURLY_LEAVE_FROM, todayKST(Date.UTC(2027, 5, 9, 15, 0)) >= HOURLY_LEAVE_FROM], [false, true], '시간단위 연차 시행일 게이트')
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-annual-leave: all passed')

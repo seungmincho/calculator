@@ -10,7 +10,7 @@ import ShareResult from '@/components/ShareResult'
 import { getKoreanHolidays } from '@/utils/koreanHolidays'
 import { todayKST, addMonths, addDays, ymd, isValidDate } from '@/utils/dday'
 import {
-  summarize, settlement, timeline, dailyWage, bridges, MIN_WAGE_2026,
+  summarize, settlement, timeline, dailyWage, bridges, MIN_WAGE_2026, HOURLY_LEAVE_FROM,
   type WageMode, type GrantKind,
 } from '@/utils/annualLeave'
 
@@ -441,6 +441,13 @@ export default function AnnualLeave() {
           <p className="font-semibold mb-1">{t('guide.smallBiz.title')}</p>
           <p>{t('guide.smallBiz.body')}</p>
         </section>
+
+        {today && (
+          <section className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <p className="font-semibold text-body mb-1">{t('guide.hourlyLeave.title')}</p>
+            <p>{t(today >= HOURLY_LEAVE_FROM ? 'guide.hourlyLeave.after' : 'guide.hourlyLeave.before')}</p>
+          </section>
+        )}
 
         <section>
           <h3 className="text-base font-semibold text-fg mb-3">{t('guide.basis.title')}</h3>

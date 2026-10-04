@@ -11,7 +11,8 @@ import CustomDatePicker from './CustomDatePicker'
 import CustomTimePicker from './CustomTimePicker'
 import ShareResult from './ShareResult'
 import { INSURANCE } from '@/utils/insuranceRates'
-import { MIN_WAGE_2026, WEEKS_PER_MONTH, calcPay, legalMinBreak, toMin, weekOf, type Shift } from '@/utils/workHours'
+import { MIN_WAGE_2026, WEEKS_PER_MONTH, calcPay, legalMinBreak, toMin, weekOf, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM, type Shift } from '@/utils/workHours'
+import { todayKST } from '@/utils/dday'
 
 // ─── 상수 ─────────────────────────────────────────────
 const INSURANCE_RATES = {
@@ -176,6 +177,10 @@ export default function WorkHoursCalculator() {
   }, [wageNum, autoBreak, smallBiz, inputMode, schedule, generatedDays, dailyWork])
 
   useEffect(() => { if (result) setShowSaveButton(true) }, [result])
+
+  // 법 개정 안내는 마운트 후 KST 날짜로 (첫 렌더 = 정적 HTML)
+  const [today, setToday] = useState('')
+  useEffect(() => setToday(todayKST()), [])
 
   // ─── 시급 환산 ─────────────────────────────────────────
   const convResult = useMemo<ConversionResult | null>(() => {
@@ -400,7 +405,7 @@ export default function WorkHoursCalculator() {
           <div className="rounded-2xl p-4 bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200 text-sm space-y-1">
             {over52 && <p>{t('warn.over52', { hours: fmtH(maxWeekH) })}</p>}
             {wageNum < MIN_WAGE_2026 && <p>{t('warn.belowMin', { min: fmt(MIN_WAGE_2026) })}</p>}
-            {!autoBreak && result.breakShortDays > 0 && <p>{t('warn.breakShort', { count: result.breakShortDays })}</p>}
+            {!autoBreak && result.breakShortDays > 0 && <p>{t('warn.breakShort', { count: result.breakShortDays })}{today >= BREAK_WAIVER_FROM && ' ' + t('law.breakWaiverWarn')}</p>}
           </div>
         )}
 
@@ -513,7 +518,8 @@ export default function WorkHoursCalculator() {
             <div className="space-y-2">
               <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
                 <input type="checkbox" checked={autoBreak} onChange={e => setAutoBreak(e.target.checked)} className="accent-blue-600 mt-0.5" />
-                <span>{t('input.autoBreak')}<span className="block text-xs text-muted">{t('input.autoBreakNote')}</span></span>
+                <span>{t('input.autoBreak')}<span className="block text-xs text-muted">{t('input.autoBreakNote')}</span>
+                  {today && <span className="block text-xs text-muted mt-0.5">{t(today >= BREAK_WAIVER_FROM ? 'law.breakAfter' : 'law.breakBefore')}</span>}</span>
               </label>
               <label className="flex items-start gap-2 text-sm text-body cursor-pointer">
                 <input type="checkbox" checked={smallBiz} onChange={e => setSmallBiz(e.target.checked)} className="accent-blue-600 mt-0.5" />
@@ -807,6 +813,7 @@ export default function WorkHoursCalculator() {
                   </div>
                 </div>
                 <p className="text-xs text-muted mt-3">{t('conversion.insuranceNote')}</p>
+                {today && <p className="text-xs text-muted mt-1">{t(today >= EI_INCOME_BASIS_FROM ? 'law.eiAfter' : 'law.eiBefore')}</p>}
               </div>
             </div>
           )}

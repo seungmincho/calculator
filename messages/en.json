@@ -4863,6 +4863,13 @@
     "placeholder": "Body fat calculation results will appear when you enter body information and measurements"
   },
   "workHours": {
+    "law": {
+      "breakBefore": "From Dec 10, 2026: when working hours are 4, the break may be skipped if the worker explicitly asks not to take it (new proviso to Labor Standards Act Art. 54(1)).",
+      "breakAfter": "When working hours are 4, the break may be skipped if the worker explicitly asks not to take it (LSA Art. 54(1) proviso, effective Dec 10, 2026). It requires the worker's request; the employer cannot drop it unilaterally. If you worked without a break, turn off auto-apply and enter 0 minutes.",
+      "breakWaiverWarn": "However, on days with 4 working hours the break may be skipped if the worker explicitly requested it (Art. 54(1) proviso).",
+      "eiBefore": "* Employment insurance: until Dec 31, 2026 you are covered if you work 60+ hours a month (15+ h/week) or for 3+ consecutive months. From Jan 1, 2027 coverage depends on pay (income) instead of hours; the threshold will be set by Enforcement Decree (reflected once final) (Employment Insurance Act Art. 10, Act No. 21473).",
+      "eiAfter": "* Employment insurance: from Jan 1, 2027 you are covered if your pay at that workplace meets the income threshold, regardless of hours. The threshold is set by Enforcement Decree (reflected once final). Daily workers and those employed 3+ consecutive months are covered even below it, and people with two or more jobs can apply to combine pay (Employment Insurance Act Art. 10)."
+    },
     "share": {
       "labelWeekly": "Weekly pay at {wage} KRW/h · {hours} h/week",
       "labelPeriod": "Pay at {wage} KRW/h · {days} days, {hours} h",
@@ -4985,7 +4992,7 @@
       "employmentInsurance": "Employment Insurance (0.9%)",
       "totalDeduction": "Total Deductions",
       "netMonthly": "Estimated Take-home",
-      "insuranceNote": "* Social insurance mandatory for 60+ hours/month. Income tax varies by personal deductions.",
+      "insuranceNote": "* National pension and health insurance generally apply at 60+ contracted hours a month. Income tax varies by personal deductions.",
       "hoursPerDay": "Avg hours/day",
       "eligibleWeeklyHoliday": "Eligible for weekly holiday pay (15+ hrs/week)"
     },
@@ -5004,7 +5011,7 @@
         "0": "Weekly holiday pay: 1 paid holiday guaranteed for 15+ hours/week",
         "1": "Holiday work: 1.5x pay up to 8 hours, 2x beyond 8 hours",
         "2": "Annual leave: 15 days after 1 year, +1 day for perfect attendance",
-        "3": "4 major insurances: Mandatory for 60+ hours/month workers"
+        "3": "4 major insurances: required for 60+ hours/month (employment insurance switches from hours to an income threshold on Jan 1, 2027)"
       },
       "whatIs": {
         "title": "What is the Work Hours Calculator?",
@@ -15746,6 +15753,12 @@
   },
   "hourlyWage": {
     "u": {
+      "law": {
+        "breakBefore": "From Dec 10, 2026: when working hours are 4, the break may be skipped if the worker explicitly asks not to take it (new proviso to Labor Standards Act Art. 54(1)).",
+        "breakAfter": "When working hours are 4, the break may be skipped if the worker explicitly asks not to take it (LSA Art. 54(1) proviso, effective Dec 10, 2026). It requires the worker's request; the employer cannot drop it unilaterally. The figure above deducts the legal minimum break.",
+        "eiBefore": "Employment insurance: until Dec 31, 2026 you are covered if you work 60+ hours a month (15+ h/week) or for 3+ consecutive months. From Jan 1, 2027 coverage depends on pay (income) instead of hours; the threshold will be set by Enforcement Decree (reflected once final) (Employment Insurance Act Art. 10, Act No. 21473).",
+        "eiAfter": "Employment insurance: from Jan 1, 2027 you are covered if your pay at that workplace meets the income threshold, regardless of hours. The threshold is set by Enforcement Decree (reflected once final). Daily workers and those employed 3+ consecutive months are covered even below it, and people with two or more jobs can apply to combine pay (Employment Insurance Act Art. 10)."
+      },
       "weeklyShort": "Weekly",
       "share": {
         "label": "{type} KRW {amount} · {hours} h/week",
@@ -16459,7 +16472,7 @@
       "dailyFromHourly": "Daily wage = KRW {amount} × {hours} h = KRW {daily}",
       "dailyDirect": "Uses the daily ordinary wage you entered.",
       "minWage": "Below the 2026 minimum hourly wage of KRW {wage}. Please check the amount.",
-      "note": "209 hours/month = 40 h/week + 8 h weekly paid holiday (part-timers: enter hourly wage). Ordinary wage is base pay plus fixed monthly allowances; regular, uniform bonuses may be included. Rules of employment may use average wage instead (Art. 60(5)). The allowance is taxable wage income."
+      "note": "209 hours/month = 40 h/week + 8 h weekly paid holiday (part-timers: enter hourly wage). Ordinary wage is base pay plus fixed monthly allowances; regular, uniform bonuses may be included. Rules of employment may use average wage instead (Art. 60). The allowance is taxable wage income."
     },
     "table": {
       "title": "Leave accrual by year",
@@ -16547,6 +16560,11 @@
       "additional": "Additional"
     },
     "guide": {
+      "hourlyLeave": {
+        "title": "Annual leave by the hour",
+        "before": "From Jun 10, 2027, if a worker requests annual leave split into hours, the employer must grant it. The hourly unit and the day limit will be set by Enforcement Decree (reflected once final). Dismissal or other unfavorable treatment for requesting or using leave is also banned (new LSA Art. 60(5) and (9), Act No. 21784).",
+        "after": "If a worker requests annual leave split into hours, the employer must grant it (LSA Art. 60(5), effective Jun 10, 2027). The hourly unit and the day limit are set by the LSA Enforcement Decree. Dismissal or other unfavorable treatment for requesting or using leave is banned (Art. 60(9))."
+      },
       "basis": {
         "title": "Hire-date basis vs fiscal-year basis",
         "items": [
@@ -16657,7 +16675,7 @@
           },
           {
             "q": "Does parental or maternity leave count?",
-            "a": "Yes. Maternity leave, parental leave and time off for work injury count as attendance (Art. 60(6))."
+            "a": "Yes. Maternity leave, parental leave and time off for work injury count as attendance (Art. 60)."
           }
         ]
       }
@@ -29262,6 +29280,13 @@
   },
   "weeklyHolidayPay": {
     "u": {
+      "law": {
+        "breakBefore": "From Dec 10, 2026: when working hours are 4, the break may be skipped if the worker explicitly asks not to take it (new proviso to Labor Standards Act Art. 54(1)).",
+        "breakAfter": "When working hours are 4, the break may be skipped if the worker explicitly asks not to take it (LSA Art. 54(1) proviso, effective Dec 10, 2026). It requires the worker's request; the employer cannot drop it unilaterally.",
+        "breakWaiverWarn": "However, on days with 4 working hours the break may be skipped if the worker explicitly requested it (Art. 54(1) proviso).",
+        "eiBefore": "Employment insurance: until Dec 31, 2026 you are covered if you work 60+ hours a month (15+ h/week) or for 3+ consecutive months. From Jan 1, 2027 coverage depends on pay (income) instead of hours; the threshold will be set by Enforcement Decree (reflected once final) (Employment Insurance Act Art. 10, Act No. 21473).",
+        "eiAfter": "Employment insurance: from Jan 1, 2027 you are covered if your pay at that workplace meets the income threshold, regardless of hours. The threshold is set by Enforcement Decree (reflected once final). Daily workers and those employed 3+ consecutive months are covered even below it, and people with two or more jobs can apply to combine pay (Employment Insurance Act Art. 10)."
+      },
       "subtitle": "Enter your hourly wage and hours to get weekly holiday pay, weekly pay, monthly pay (209-hour method), effective hourly wage incl. holiday pay, and estimated take-home pay. Based on the 2026 minimum wage of KRW 10,320.",
       "won": "KRW",
       "useMin": "Use minimum wage",
@@ -29306,7 +29331,7 @@
         "employment": "Employment insurance 0.9%",
         "incomeTax": "Income tax + local tax (est.)",
         "tax33Note": "3.3% is the freelancer (business income) withholding method. Part-timers working under an employer's direction are employees and are entitled to holiday pay and social insurance.",
-        "insNote": "2026 employee rates, single-dependent estimate. Part-timers under 60 hours/month (15 h/week) may be exempt from pension, health and employment insurance."
+        "insNote": "2026 employee rates, single-dependent estimate. Part-timers under 60 hours/month may be exempt from national pension and health insurance."
       },
       "warnUnder15": "Contract hours are under 15/week, so there is no weekly holiday pay. Work {need} more hours to qualify.",
       "warnMinWage": "Your hourly wage is KRW {diff} below the 2026 minimum wage of KRW {min}. Paying below minimum wage is illegal (Minimum Wage Act Art. 6).",
@@ -56835,6 +56860,578 @@
         "weekly-holiday-pay": "Weekly holiday pay calculator",
         "work-hours-calculator": "Work hours & night pay",
         "salary-calculator": "Salary take-home pay"
+      }
+    }
+  },
+  "dailyWageTax": {
+    "title": "Daily Worker Tax Calculator",
+    "subtitle": "Enter a daily wage to see the withholding income tax, local income tax, employment insurance and take-home pay for daily (day-labor) earned income. No income tax up to ₩150,000 a day, and none up to ₩187,000 when paid daily (small-amount exemption).",
+    "won": " KRW",
+    "u": {
+      "wage": "Daily wage (pre-tax)",
+      "wageHint": "Total paid per day, including non-taxable meal allowance. Up to ₩150,000 is covered by the earned income deduction.",
+      "days": "Days worked (this month)",
+      "daysUnit": "days",
+      "daysHint": "Days worked for the same employer in a month (1–31). After 3+ months of continuous employment with the same employer you count as a regular employee.",
+      "mode": {
+        "label": "Payment schedule",
+        "day": "Daily",
+        "week": "Weekly",
+        "month": "Month-end",
+        "hint_day": "Paid one day at a time: tax under ₩1,000 per payment is not collected (small-amount exemption).",
+        "hint_week": "Paid a week at a time: the daily taxes of that week are added up before the ₩1,000 test.",
+        "hint_month": "Paid the whole month at once: all daily taxes are added up before the ₩1,000 test."
+      },
+      "weekDays": "Workdays per weekly payment",
+      "weekDayOpt": "{n} days/week",
+      "meal": "Non-taxable meal allowance per day (optional)",
+      "mealHint": "Meal allowance is tax-free up to ₩200,000 a month when meals are not provided. For this many days, up to {max} KRW a day is applied.",
+      "ei": "Deduct employment insurance 0.9%",
+      "eiHint": "Daily workers are covered regardless of hours. Turn off if you were newly hired at age 65 or older (no employee share).",
+      "result": {
+        "label": "Take-home pay for {days} days",
+        "sub": "{wage} KRW × {days} days = {gross} KRW, minus {ded} KRW in taxes and insurance",
+        "perDayNet": "Take-home per day (avg.)",
+        "dayTax": "Tax per day (avg.)",
+        "effRate": "Deductions vs. pay"
+      },
+      "table": {
+        "caption": "Daily worker tax and insurance breakdown",
+        "colItem": "Item",
+        "colDay": "Per day (avg.)",
+        "colTotal": "{days}-day total"
+      },
+      "rows": {
+        "gross": "Pay (daily wage)",
+        "nonTaxable": "Non-taxable meals",
+        "incomeTax": "Income tax",
+        "localTax": "Local income tax",
+        "employment": "Employment insurance",
+        "net": "Take-home pay"
+      },
+      "formula": "Daily income tax = ({taxable} − 150,000) × 6% × (1 − 55%) = {tax} KRW, local income tax {local} KRW",
+      "formulaNone": "Taxable daily pay is ₩150,000 or less, so the ₩150,000 daily deduction leaves no income tax.",
+      "small": {
+        "exempt": "Tax per payment is under ₩1,000, so it is not collected. {amount} KRW was exempted this period (Income Tax Act Art. 86).",
+        "lump": "If the same {days} days were paid at once, the daily taxes would be added up and {tax} KRW income tax plus {local} KRW local tax would be withheld.",
+        "daily": "If paid daily, the {tax} KRW daily tax would be under ₩1,000 and not collected. Lump-sum payments are judged on the summed daily tax."
+      },
+      "separate": "Daily earned income is taxed separately and final at withholding, so it is not included in year-end settlement or the May income tax return.",
+      "share": {
+        "label": "Take-home per day, {days} days worked",
+        "headline": "{wage} KRW/day → {net} KRW take-home",
+        "sub": "{days}-day take-home {net} KRW · deductions {ded} KRW",
+        "cmp33": "Tax at 3.3%",
+        "text": "A daily wage of {wage} KRW leaves {net} KRW a day, {total} KRW for {days} days"
+      },
+      "cmp": {
+        "title": "What if 3.3% (business income) were withheld?",
+        "desc": "Compares the same {gross} KRW treated as freelancer business income with 3.3% withholding.",
+        "daily": "Daily earned income tax",
+        "rate": "{rate}% of pay",
+        "biz": "Business income 3.3%",
+        "bizDetail": "Income tax {tax} + local tax {local} KRW",
+        "more": "3.3% withholding takes {diff} KRW more.",
+        "same": "No difference at this amount.",
+        "points": [
+          "Daily earned income deducts ₩150,000 a day, applies 6% and a 55% tax credit, so the real rate is 2.7% of the excess over ₩150,000 (2.97% with local tax).",
+          "3.3% is withheld from freelance business income (lecturers, contractors) earned without an employment relationship: 3% income tax + 0.3% local tax.",
+          "3.3% is a prepayment settled in the May comprehensive income tax return (refund or extra payment); daily earned income tax is final at withholding.",
+          "Note: if you worked under the employer's direction at set times and places for a daily wage, you are likely a daily worker. Being paid as 3.3% may leave no employment insurance record for unemployment benefits."
+        ]
+      },
+      "ins": {
+        "title": "When are social insurances deducted?",
+        "items": [
+          {
+            "name": "Employment",
+            "rule": "Applies to daily workers even with short hours. Employee 0.9%; none if newly hired at 65+. From Jan 1, 2027 coverage switches from working hours to earnings (note: threshold set by decree)."
+          },
+          {
+            "name": "Pension",
+            "rule": "Workplace member if employed 1+ month and working 8+ days or 60+ hours a month, or earning ₩2.2M+ a month (employee 4.75%). Construction: 8+ days or ₩2.2M+ (from Jul 1, 2025)."
+          },
+          {
+            "name": "Health",
+            "rule": "Daily workers employed under 1 month are excluded. Employed 1+ month and working 8+ days a month makes you an employee member (3.595% + long-term care) (note)."
+          },
+          {
+            "name": "Industrial accident",
+            "rule": "Paid entirely by the employer."
+          }
+        ],
+        "estimate": "If you have worked 1+ month and 8+ days this month, about {pension} KRW pension, {health} KRW health and {care} KRW long-term care ({total} KRW total) may also be deducted (2026 rates, note). Not included above.",
+        "under8": "With fewer than 8 workdays this month you are usually not covered by pension or health insurance, though 60+ hours or ₩2.2M+ monthly earnings can trigger pension coverage."
+      },
+      "disclaimer": "Estimates based on the Income Tax Act and Local Tax Act as of October 2026 and 2026 insurance rates. Rounding and employer practice may cause small differences."
+    },
+    "guide": {
+      "title": "Daily worker tax guide",
+      "formula": {
+        "title": "The formula",
+        "items": [
+          "Daily income tax = (wage − non-taxable − ₩150,000) × 6% × 45% = 2.7% of the excess over ₩150,000",
+          "Daily deduction ₩150,000 (Income Tax Act Art. 47②), withholding rate 6% (Art. 129①4), tax credit 55% (Art. 59③)",
+          "Local income tax is 10% of income tax, so the total is 2.97% of the excess over ₩150,000.",
+          "E.g. ₩200,000/day → income tax ₩1,350 + local ₩135; ₩300,000/day → ₩4,050 + ₩405"
+        ]
+      },
+      "smallTax": {
+        "title": "Small-amount exemption and ₩187,000",
+        "items": [
+          "Withholding tax under ₩1,000 is not collected (Income Tax Act Art. 86).",
+          "At ₩187,000/day the daily tax is ₩999, so daily payment means ₩0; from ₩187,038 it reaches ₩1,000.",
+          "When several days are paid at once, the summed daily tax is tested (NTS ruling 법인46013-343). ₩187,000 × 20 days paid at month-end means ₩19,980 withheld.",
+          "No income tax means no local income tax either."
+        ]
+      },
+      "vs33": {
+        "title": "Daily 6% vs. 3.3%",
+        "items": [
+          "Daily earned income: wages from an employer, withheld at 6% × 45% and taxed separately (final).",
+          "Business income 3.3%: freelance income without employment, settled in the next May's income tax return.",
+          "₩200,000 × 20 days: daily-worker tax ₩29,700 vs. ₩132,000 at 3.3%.",
+          "3.3% withheld may be partly refunded after expenses and deductions in the May return. Try the freelancer tax calculator."
+        ]
+      },
+      "worker": {
+        "title": "Who is a daily worker?",
+        "items": [
+          "Someone paid by the day or hour and not continuously employed by the same employer for 3+ months (Income Tax Act Enforcement Decree Art. 20).",
+          "On construction sites the limit is 1 year with the same employer (note: other exceptions such as stevedoring in the decree).",
+          "After 3+ months of continuous employment you are taxed as a regular employee via the withholding table and year-end settlement (note).",
+          "Daily earned income is not part of year-end settlement or the May return, but counts as income for the earned income tax credit (note)."
+        ]
+      },
+      "employer": {
+        "title": "Employer duties",
+        "items": [
+          "Withhold income and local tax at payment and file/pay by the 10th of the following month (semiannual if approved).",
+          "Submit the daily earned income payment statement monthly by the last day of the following month (Income Tax Act Art. 164①).",
+          "File the employment/industrial accident insurance work report by the 15th of the following month; including the tax fields counts as the payment statement (note).",
+          "Late or missing statements incur a penalty (note: 0.25% of the amount paid, 0.125% if filed within 1 month of the deadline)."
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Income Tax Act Arts. 47, 59, 86, 129, 164 (law.go.kr)",
+            "url": "https://www.law.go.kr/법령/소득세법"
+          },
+          {
+            "label": "NTS withholding overview (lump-sum daily pay exemption test)",
+            "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=2289&cntntsId=7701"
+          },
+          {
+            "label": "Local Tax Act Art. 103-13 special collection (law.go.kr)",
+            "url": "https://www.law.go.kr/법령/지방세법"
+          },
+          {
+            "label": "Employment Insurance Act and Decree Art. 3 (law.go.kr)",
+            "url": "https://www.law.go.kr/법령/고용보험법"
+          },
+          {
+            "label": "National Pension Service: workplace members (daily workers)",
+            "url": "https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0016M0.do"
+          }
+        ],
+        "asOf": "Checked October 4, 2026. Results change when laws or rates change. Items marked 'note' were not separately checked against the official text."
+      },
+      "links": {
+        "title": "Related calculators",
+        "freelancer-tax": "Freelancer 3.3% tax calculator",
+        "minimum-wage": "Minimum wage calculator",
+        "weekly-holiday-pay": "Weekly holiday pay calculator",
+        "unemployment-benefit": "Unemployment benefit calculator",
+        "pay-slip": "Pay slip maker"
+      }
+    }
+  },
+  "rentalYield": {
+    "title": "Rental Yield Calculator",
+    "subtitle": "Calculate gross, net and cash-on-cash yields for officetels, retail units and homes, plus monthly cash flow, break-even rent and the price or rent needed to hit a target yield.",
+    "won": " KRW",
+    "type": {
+      "house": "Home",
+      "officetel": "Officetel",
+      "store": "Retail"
+    },
+    "in": {
+      "type": "Property type",
+      "typeHint": {
+        "house": "Acquisition tax 1–3% (8–12% surcharge for multiple homes in regulated areas), brokerage cap 0.4–0.7%.",
+        "officetel": "Acquisition tax 4.6% (incl. rural and education taxes), brokerage cap 0.5% for residential-grade officetels (0.9% otherwise).",
+        "store": "Acquisition tax 4.6% (incl. rural and education taxes), brokerage cap 0.9%."
+      },
+      "price": "Purchase price",
+      "deposit": "Tenant deposit",
+      "rent": "Monthly rent",
+      "rentHintStore": "Enter rent excluding VAT",
+      "owner": "Homes owned after purchase",
+      "ownerOpt": {
+        "1": "1 home",
+        "2": "2 homes",
+        "3": "3 homes",
+        "4": "4 or more"
+      },
+      "adjusted": "Home is in a regulated (adjusted) area",
+      "over85": "Exclusive area over 85㎡ (adds 0.2% rural tax)",
+      "heavy": "A multi-home surcharge rate of {rate}% applies. Check exceptions (e.g. assessed value under 100M KRW) in the acquisition tax calculator.",
+      "loanTitle": "Loan",
+      "loan": "Loan amount",
+      "rate": "Interest rate (annual)",
+      "repay": "Repayment",
+      "repayOpt": {
+        "interest": "Interest only",
+        "amortize": "Amortizing"
+      },
+      "years": "Loan term",
+      "yearsOpt": "{y} years",
+      "costTitle": "Operating costs",
+      "vacancy": "Vacancy rate",
+      "vacancyHint": "One empty month a year ≈ 8.3%, two months ≈ 16.7%",
+      "mgmt": "Fees paid by owner (monthly)",
+      "mgmtHint": "Management fees, insurance, etc. borne by the landlord",
+      "repair": "Repairs & upkeep (yearly)",
+      "repairHint": "Average yearly wallpaper, boiler, fixture replacement",
+      "holdTax": "Holding taxes (yearly)",
+      "holdTaxHint": "Property and comprehensive real estate tax — enter your own estimate",
+      "holdTaxLink": "Estimate holding tax",
+      "extra": "Other upfront costs",
+      "extraHint": "One-time interior, repair or appliance costs"
+    },
+    "tile": {
+      "surface": "Gross yield",
+      "surfaceHint": "Annual rent ÷ (price − deposit)",
+      "net": "Net yield",
+      "netHint": "After costs and vacancy, before loan",
+      "leveraged": "Cash-on-cash yield",
+      "leveragedHint": "On {cash} KRW of your own cash",
+      "leveragedNone": "Not available — loan and deposit exceed total cost",
+      "cf": "Monthly cash flow",
+      "cfHint": "Net operating income ÷ 12 − monthly interest",
+      "cfHintAmortize": "After principal repayment as well"
+    },
+    "result": {
+      "label": "{type} net yield",
+      "cfLine": "Monthly cash flow",
+      "breakEven": "Break-even rent",
+      "breakEvenRatio": "{p}% of current rent",
+      "breakEvenNone": "Vacancy is 100%, so break-even rent cannot be calculated.",
+      "breakEvenHint": "Rent at which costs and first-year interest leave zero profit (vacancy included)"
+    },
+    "bd": {
+      "toggle": "Show breakdown",
+      "costTitle": "Money in",
+      "yearTitle": "First-year income",
+      "price": "Purchase price",
+      "tax": "Acquisition, rural and education taxes (rate {rate}%)",
+      "broker": "Brokerage fee cap (incl. VAT)",
+      "misc": "Registration costs (bonds, stamp duty, scrivener; estimate)",
+      "extra": "Other upfront costs",
+      "deposit": "Tenant deposit",
+      "base": "Investment basis for net yield",
+      "loan": "Loan",
+      "cash": "Your cash invested",
+      "grossRent": "Annual rent",
+      "vacancyLoss": "Vacancy loss ({v}%)",
+      "opCost": "Operating costs (fees, repairs, holding tax)",
+      "noi": "Net operating income",
+      "interest": "First-year interest",
+      "profit": "Pre-tax annual profit",
+      "note": "Pre-tax figures. Rental income tax, VAT, capital gains tax and price changes are not included. Registration costs assume an assessed value of 70% of the price."
+    },
+    "share": {
+      "label": "{type} {price} KRW rental yield",
+      "headline": "Net yield {net} · Cash flow {cf} KRW/mo",
+      "sub": "Deposit {deposit} KRW / Rent {rent} KRW",
+      "text": "{type} {price} KRW rental yield — {headline}"
+    },
+    "target": {
+      "title": "Solve for a target yield",
+      "desc": "See the rent needed to reach your target net yield, or the highest price you can pay at the current rent.",
+      "input": "Custom",
+      "rent": "Rent for {target}% net yield",
+      "rentHint": "{diff} KRW vs current rent",
+      "price": "Price for {target}% net yield",
+      "priceHint": "{read} KRW · {diff} KRW vs current price (costs recalculated)",
+      "none": "Not reachable — the target must be above 0%, vacancy below 100%, and rent income must exceed operating costs."
+    },
+    "sens": {
+      "title": "Rate & vacancy sensitivity",
+      "desc": "Monthly cash flow (top) and cash-on-cash yield (bottom) when the rate moves ±1%p or vacancy rises.",
+      "descNoLoan": "No loan, so the rate has no effect. Compare cash flow (top) and yield (bottom) by vacancy.",
+      "caption": "Monthly cash flow and cash-on-cash yield by interest rate and vacancy",
+      "colRate": "Loan rate",
+      "colVacancy": "Vacancy {v}%",
+      "rowNow": "{rate}% (now)",
+      "row": "{rate}% ({d}%p)",
+      "note": "The blue cell matches your current inputs. With a variable-rate loan, check that the +1%p row still works."
+    },
+    "disclaimer": "This is a pre-tax estimate based on your inputs, not investment advice. Actual taxes, loan terms and fees vary by contract and region.",
+    "guide": {
+      "title": "Rental yield guide",
+      "formula": {
+        "title": "Three yields, three meanings",
+        "items": [
+          "Gross yield = annual rent ÷ (price − deposit). Common in sales ads; it ignores taxes, fees, vacancy and running costs, so it looks higher than reality.",
+          "Net yield = net operating income ÷ (price + acquisition costs − deposit). NOI is rent after vacancy minus owner-paid fees, repairs and holding taxes. Use this to compare properties.",
+          "Cash-on-cash yield = (NOI − first-year interest) ÷ your cash. Your cash is what you put in after the deposit and loan. A loan only boosts this when its rate is below the net yield.",
+          "Monthly cash flow = NOI ÷ 12 − monthly loan payment. With an amortizing loan, principal leaves your pocket too, so cash flow can be negative even with a positive yield.",
+          "Break-even rent is the rent at which operating costs and first-year interest leave zero profit, with vacancy included."
+        ]
+      },
+      "costs": {
+        "title": "Acquisition and holding costs",
+        "items": [
+          "Acquisition tax: officetels and retail pay 4% plus 0.2% rural tax and 0.4% education tax = 4.6% (Local Tax Act Art. 11(1)7(b), Art. 151). Homes pay 1–3%, with 8–12% surcharges for multiple homes in regulated areas.",
+          "Brokerage: the buyer's legal cap plus 10% VAT. Homes 0.4–0.7% by bracket, residential-grade officetels 0.5%, retail and other officetels up to 0.9%.",
+          "Registration costs: an estimate of the housing bond discount (assessed value assumed at 70% of price), the buyer's half of stamp duty and a 600,000 KRW scrivener fee.",
+          "Holding taxes: property and comprehensive real estate taxes depend on assessed values and the number of homes, so enter your own figure. Use the holding tax calculator first.",
+          "Vacancy: the share of the year the unit sits empty. One month ≈ 8.3%. Include re-letting brokerage and redecorating in repairs for a realistic figure."
+        ]
+      },
+      "tax": {
+        "title": "Rental income tax (reference only — not calculated)",
+        "items": [
+          "Reference: rent from a single home is tax-exempt, except homes with a standard value over 1.2B KRW and homes abroad (Income Tax Act Art. 12(2)(b)).",
+          "Reference: if total housing rent is 20M KRW or less a year, you can choose 14% separate taxation. It deducts 50% expenses (60% for registered rentals) and 2M KRW (4M registered) if other income is 20M KRW or less (Art. 14(3)7, Art. 64-2).",
+          "Reference: owners of 3+ homes with total deposits over 300M KRW are also taxed on deemed rent from deposits. Small homes (≤40㎡ and ≤200M KRW standard value) are excluded from the count through 2026 (Art. 25(1)).",
+          "Reference: commercial rent is subject to 10% VAT that the landlord collects and files; housing rent is VAT-exempt (VAT Act Art. 26(1)12).",
+          "Reference: residential officetels taxed as homes count toward the number of homes for acquisition tax surcharges (Local Tax Act Art. 13-3(4)). Confirm exact taxes with the NTS or a tax professional."
+        ]
+      },
+      "check": {
+        "title": "Before you buy",
+        "items": [
+          "Check whether an advertised '7% yield' is gross or leveraged. The same property can differ by 1–3%p depending on the formula.",
+          "If the loan rate is above the net yield, borrowing more lowers your cash-on-cash yield (negative leverage). Use the sensitivity table to test +1%p.",
+          "Guaranteed-return periods on new officetels and retail units end, and rent reverts to market. Check real nearby rents and vacancy.",
+          "When trading deposit for rent, compare with the jeonse–wolse conversion rate. The legal cap is in the rent converter.",
+          "Selling adds capital gains tax and brokerage again. Rental yield covers holding only; price gains or losses are separate."
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Korea Law Information Center — Local Tax Act (Art. 11 rates, Art. 13-3 home count, Art. 151 education tax)",
+            "url": "https://www.law.go.kr/법령/지방세법"
+          },
+          {
+            "label": "Korea Law Information Center — Income Tax Act (Art. 12, 14, 25, 64-2)",
+            "url": "https://www.law.go.kr/법령/소득세법"
+          },
+          {
+            "label": "Korea Law Information Center — VAT Act (Art. 26 exemptions)",
+            "url": "https://www.law.go.kr/법령/부가가치세법"
+          },
+          {
+            "label": "Korea Law Information Center — Enforcement Rule of the Licensed Real Estate Agents Act (Art. 20 fees)",
+            "url": "https://www.law.go.kr/법령/공인중개사법시행규칙"
+          },
+          {
+            "label": "National Tax Service — housing rental income filing",
+            "url": "https://www.nts.go.kr"
+          },
+          {
+            "label": "Wetax — acquisition and property tax",
+            "url": "https://www.wetax.go.kr"
+          }
+        ],
+        "asOf": "Checked October 4, 2026 (Local Tax Act and Income Tax Act effective Jan 1, 2026). Items marked 'Reference' are not included in the calculation."
+      },
+      "links": {
+        "title": "Related calculators",
+        "rent-converter": "Rent conversion calculator",
+        "acquisition-tax": "Acquisition tax calculator",
+        "brokerage-fee": "Brokerage fee calculator",
+        "comprehensive-property-tax": "Holding tax calculator",
+        "loan-calculator": "Loan interest calculator"
+      }
+    }
+  },
+  "oneRepMax": {
+    "title": "1RM Calculator",
+    "subtitle": "Estimate your one-rep max from the weight you lifted and your reps, then get training weights by intensity, plate loading and your big-three total.",
+    "u": {
+      "mode": {
+        "label": "Mode",
+        "one": "Estimate 1RM",
+        "total": "Big three total"
+      },
+      "ex": {
+        "label": "Exercise",
+        "bench": "Bench press",
+        "squat": "Squat",
+        "deadlift": "Deadlift",
+        "ohp": "Overhead press",
+        "other": "Other lift"
+      },
+      "unit": {
+        "label": "Unit",
+        "kg": "kg",
+        "lb": "lb"
+      },
+      "weight": "Weight lifted",
+      "reps": "Reps",
+      "repOpt": "{n}",
+      "repOne": "1 (actual 1RM)",
+      "repsWarn": "Above 10 reps the estimate gets less accurate. Retest with a weight you can lift 3–10 times for a better estimate.",
+      "repsOne": "If you lifted it once, that weight is your 1RM.",
+      "bw": "Body weight (optional)",
+      "bwPlaceholder": "e.g. 70",
+      "bwHint": "Add your body weight to see your lift as a multiple of it.",
+      "result": {
+        "label": "Estimated {ex} 1RM",
+        "basis": "{w}{u} × {r} reps · average of 4 formulas",
+        "empty": "Enter the weight you lifted to estimate your 1RM.",
+        "approx": "≈ {v}{u}",
+        "ratio": "{x}× body weight",
+        "range": "The formulas range from {min} to {max}{u}."
+      },
+      "formula": {
+        "title": "Estimate by formula",
+        "epley": "Epley",
+        "brzycki": "Brzycki",
+        "lombardi": "Lombardi",
+        "oconner": "O'Conner",
+        "epleyExpr": "w × (1 + r ÷ 30)",
+        "brzyckiExpr": "w × 36 ÷ (37 − r)",
+        "lombardiExpr": "w × r^0.10",
+        "oconnerExpr": "w × (1 + 0.025 × r)",
+        "note": "w = weight lifted, r = reps. The average of the four is used as your 1RM."
+      },
+      "table": {
+        "title": "Training weights by intensity",
+        "desc": "50–100% of your estimated 1RM, rounded to plate increments. Tap a weight to load it in the plate calculator below.",
+        "step": "Rounding",
+        "stepOpt": "{v}{u}",
+        "caption": "Weights and reps by intensity for an estimated 1RM of {v}{u}",
+        "colPct": "Intensity",
+        "colWeight": "Weight",
+        "colReps": "Reps (guide)",
+        "colZone": "Main goal",
+        "repsCell": "~{n}",
+        "pick": "Show plates for {w}{u}",
+        "note": "Reps follow the general %1RM–repetition relationship in NSCA guidance (approximated below 65%). They vary a lot between people and lifts."
+      },
+      "zone": {
+        "strength": "Strength",
+        "hypertrophy": "Hypertrophy",
+        "endurance": "Endurance · warm-up"
+      },
+      "plate": {
+        "title": "Plate calculator",
+        "desc": "Shows which plates to put on each side of the bar to reach a target weight.",
+        "target": "Target weight",
+        "targetHint": "Leave empty to use your rounded estimated 1RM ({v}{u}).",
+        "bar": "Bar weight",
+        "barOpt": "{v}{u}",
+        "perSide": "Plates per side (inside out)",
+        "barOnly": "Just the bar, no plates needed.",
+        "count": "{p}{u} × {n}",
+        "sum": "Total {total}{u} = bar {bar}{u} + {side}{u} per side × 2",
+        "short": "Loaded {v}{u} under the target because of the smallest plate size.",
+        "belowBar": "The target is lighter than the bar ({bar}{u})."
+      },
+      "total": {
+        "title": "Big three 1RMs",
+        "desc": "If you know your 1RM, set reps to 1 and enter it. Otherwise enter the weight and reps you did.",
+        "label": "Big three total (squat + bench press + deadlift)",
+        "next": "{left}{u} to go until your next goal of {goal}{u}.",
+        "direct": "1RM entered directly",
+        "est": "Estimated from {w}{u} × {r}"
+      },
+      "share": {
+        "label": "{ex} from {w}{u} × {r} reps",
+        "headline": "{ex} 1RM ≈ {v}{u}",
+        "text": "My estimated {ex} 1RM is about {v}{u}! Just enter the weight and reps to calculate yours.",
+        "totalLabel": "Squat + bench press + deadlift 1RM",
+        "totalHeadline": "Big three total {v}{u}",
+        "totalText": "My big three total is {v}{u}! Just enter the weight and reps to calculate yours."
+      },
+      "safety": {
+        "title": "Train safely",
+        "items": [
+          "Estimates are for reference only. Your real 1RM depends on how you feel, technique and sleep.",
+          "Warm up gradually with lighter weights before heavy sets.",
+          "Use a spotter or safety bars for bench press and squats.",
+          "Stop right away if you feel pain, and talk to a professional first if you have an injury or condition."
+        ]
+      },
+      "disclaimer": "This calculator is an estimation tool to help plan training and is not medical advice."
+    },
+    "guide": {
+      "title": "1RM guide",
+      "formulas": {
+        "title": "The four formulas",
+        "items": [
+          "Epley (1985): 1RM = w × (1 + r/30). From the poundage chart by Nebraska strength coach Boyd Epley, and the most widely used.",
+          "Brzycki (1993): 1RM = w × 36/(37 − r). Published by Matt Brzycki in JOPERD. It matches Epley at 10 reps and comes out lower below that.",
+          "Lombardi (1989): 1RM = w × r^0.10. Uses a power of the rep count, so it rises slowly with reps and comes out lower at high reps.",
+          "O'Conner et al. (1989): 1RM = w × (1 + 0.025r). Adds 2.5% per rep, always below Epley, so it is on the conservative side.",
+          "This calculator shows the average of the four as your 1RM, plus each formula's value and the min–max range."
+        ]
+      },
+      "howTo": {
+        "title": "Getting a more accurate estimate",
+        "items": [
+          "Test with a weight you can barely lift 3–10 times. Fewer reps mean a smaller estimation error.",
+          "Do one set close to technical failure and enter the weight and the reps you completed.",
+          "Warm up well and test on your first heavy set, before fatigue builds up.",
+          "A study comparing the bench press, squat and deadlift (LeSuer et al., 1997) found the formulas tended to underestimate the deadlift 1RM."
+        ]
+      },
+      "intensity": {
+        "title": "Choosing training weights by %1RM",
+        "items": [
+          "Strength: 85% of 1RM or more for 6 reps or fewer (NSCA guidance).",
+          "Hypertrophy: 67–85% for 6–12 reps.",
+          "Muscular endurance: 67% or less for 12+ reps. 50–60% is also common for warm-up sets.",
+          "Recalculate your 1RM every few weeks and raise your training weights as it goes up."
+        ]
+      },
+      "bigThree": {
+        "title": "What is the big three total?",
+        "items": [
+          "The sum of your squat, bench press and deadlift 1RMs, the same lifts contested in powerlifting.",
+          "People quote totals like \"500 kg\", but body weight makes a big difference, so a body-weight multiple is a fairer comparison.",
+          "Competition lifts are single successful attempts judged to strict standards (squat depth, a pause on the chest in the bench press), so they can differ from estimates."
+        ]
+      },
+      "sources": {
+        "title": "Formula sources",
+        "items": [
+          {
+            "label": "Epley, B. (1985). Poundage Chart. Boyd Epley Workout. Lincoln, NE: Body Enterprises."
+          },
+          {
+            "label": "Brzycki, M. (1993). Strength testing—Predicting a one-rep max from reps-to-fatigue. JOPERD, 64(1), 88–90.",
+            "url": "https://doi.org/10.1080/07303084.1993.10606684"
+          },
+          {
+            "label": "Lombardi, V. P. (1989). Beginning Weight Training. Dubuque, IA: W. C. Brown."
+          },
+          {
+            "label": "O'Conner, B., Simmons, J., & O'Shea, P. (1989). Weight Training Today. St. Paul, MN: West Publishing."
+          },
+          {
+            "label": "LeSuer, D. A. et al. (1997). The accuracy of prediction equations for estimating 1-RM performance in the bench press, squat, and deadlift. JSCR, 11(4), 211–213.",
+            "url": "https://doi.org/10.1519/00124278-199711000-00001"
+          },
+          {
+            "label": "Haff, G. G., & Triplett, N. T. (Eds.) (2016). Essentials of Strength Training and Conditioning (4th ed.). NSCA · Human Kinetics."
+          }
+        ],
+        "asOf": "The %1RM–rep relationship and training goals follow general guidance in the NSCA textbook."
+      },
+      "links": {
+        "title": "Related tools",
+        "exercise-calorie": "Exercise calorie calculator",
+        "calorie-calculator": "Daily calorie calculator",
+        "body-fat-calculator": "Body fat calculator"
       }
     }
   }

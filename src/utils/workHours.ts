@@ -39,6 +39,13 @@ export const toMin = (hhmm: string) => {
 /** 근로기준법 제54조: 근로 4시간 → 30분, 8시간 → 1시간 이상 */
 export const requiredBreak = (workMin: number) => workMin >= 480 ? 60 : workMin >= 240 ? 30 : 0
 
+// 법 개정 시행일 ('YYYY-MM-DD', 화면은 마운트 후 todayKST() >= 값으로 안내 전환 — 계산은 그대로)
+/** 제54조① 단서 신설: 근로시간 4시간 + 근로자의 명시적 요청 → 휴게 생략 가능 (법률 제21784호 부칙 제1조 단서).
+ *  근로자 요청이 있어야 하므로 requiredBreak·자동 휴게는 바꾸지 않는다 */
+export const BREAK_WAIVER_FROM = '2026-12-10'
+/** 고용보험법 제10조①2: 적용 제외 기준 소정근로시간(월 60h·주 15h) → 보수 '소득기준'(시행령, 미공포) (법률 제21473호 부칙 제1조 단서) */
+export const EI_INCOME_BASIS_FROM = '2027-01-01'
+
 /** 출퇴근 사이 시간(span)에서 법을 만족하는 최소 휴게 */
 export const legalMinBreak = (spanMin: number) => spanMin >= 510 ? 60 : spanMin >= 240 ? 30 : 0
 
