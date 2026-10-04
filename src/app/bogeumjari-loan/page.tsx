@@ -40,6 +40,8 @@ export default function BogeumjariLoanPage() {
       '최대 대출한도 계산 (LTV 55~80%, 지역·유형별)',
       '월 상환액·총이자 계산',
       'DTI 자동 검증 (60%, 규제지역 50%)',
+      '디딤돌대출 자격 비교',
+      '결과 이미지 공유',
     ],
   };
 
@@ -354,12 +356,12 @@ export default function BogeumjariLoanPage() {
                 </thead>
                 <tbody>
                   {[
-                    { label: '소득 기준', didim: '6천만원 이하\n(생애최초·2자녀 7천만, 신혼 8.5천만)', bogeum: '7천만원 이하\n(신혼 8.5천만)' },
+                    { label: '소득 기준', didim: '6천만원 이하\n(생애최초·2자녀 7천만, 신혼 8.5천만)', bogeum: '7천만원 이하\n(신혼 8.5천만·자녀1 9천만·2자녀+ 1억)' },
                     { label: '주택가격', didim: '5억원 이하\n(신혼·2자녀 6억)', bogeum: '6억원 이하' },
                     { label: '대출 한도', didim: '일반 2억원\n(생애최초 2.4억, 신혼·2자녀 3.2억)', bogeum: '최대 4.2억원' },
                     { label: '금리 수준', didim: '2.85~4.15%', bogeum: '4.90~5.20% (우대 시 3.90%~)' },
                     { label: '금리 유형', didim: '고정/혼합', bogeum: '고정금리' },
-                    { label: '추천 대상', didim: '소득 낮은 경우\n한도 2.5억 충분 시', bogeum: '한도 더 필요 시\n소득 6~7천만 구간' },
+                    { label: '추천 대상', didim: '소득 낮은 경우\n한도 2억(생애최초 2.4억) 충분 시', bogeum: '한도 더 필요 시\n소득 6~7천만 구간' },
                   ].map((row, i) => (
                     <tr key={row.label} className={`border-b border-line ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-body">{row.label}</td>

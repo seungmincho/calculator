@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/bonusCalculator'
-import { RotateCcw, Copy, Check } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import GuideSection from '@/components/GuideSection'
+import ShareResult from '@/components/ShareResult'
 import { calculateBonusTax, type BonusDeductions } from '@/utils/bonusTax'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -47,7 +48,6 @@ export default function BonusCalculator() {
   const [children, setChildren] = useState(0)
   const [nonTaxable, setNonTaxable] = useState('200,000')
   const [activeTab, setActiveTab] = useState(0)
-  const [copied, setCopied] = useState(false)
 
   // URL → state (구 링크 호환: bonusPercent만 있으면 연봉 대비 %)
   useEffect(() => {
@@ -121,24 +121,6 @@ export default function BonusCalculator() {
       { name: t('simulation.netBonus'), type: 'bar', data: compareRows.map(x => x.res!.final.net), itemStyle: { color: '#3182F6' } },
     ],
   }), [compareRows, t])
-
-  const copyLink = useCallback(async () => {
-    try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(window.location.href)
-      else {
-        const ta = document.createElement('textarea')
-        ta.value = window.location.href
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch { /* ignore */ }
-  }, [])
 
   const reset = () => {
     setSalary(DEFAULTS.salary); setBonusType('ps'); setMethod(DEFAULTS.method); setPercent(DEFAULTS.percent)
@@ -236,15 +218,9 @@ export default function BonusCalculator() {
                 placeholder={t('nonTaxablePlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
             </div>
 
-            <div className="flex gap-2">
-              <button type="button" onClick={copyLink} className="ui-btn flex-1 px-4 py-3">
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? t('share.copied') : t('share.copy')}
-              </button>
-              <button type="button" onClick={reset} className="ui-btn-soft px-4 py-3 flex items-center gap-2">
-                <RotateCcw className="w-4 h-4" />{t('reset')}
-              </button>
-            </div>
+            <button type="button" onClick={reset} className="ui-btn-soft w-full px-4 py-3 flex items-center justify-center gap-2">
+              <RotateCcw className="w-4 h-4" />{t('reset')}
+            </button>
           </div>
         </div>
 
@@ -265,7 +241,7 @@ export default function BonusCalculator() {
                   </div>
                   <div className="sm:border-l sm:border-white/20 sm:pl-6">
                     <p className="text-sm text-white/70">{t('result.finalNet')}</p>
-                    <p className="text-3xl font-bold tabular-nums mt-1">{fmt(r.final.net)}{t('chart.won')}</p>
+                    <p className="text-3xl font-bold tabular-nums mt-1" aria-live="polite">{fmt(r.final.net)}{t('chart.won')}</p>
                     <p className="text-sm text-white/70 mt-1 tabular-nums">{t('result.deducted', { amount: fmt(r.final.total), rate: ((r.final.net / r.bonus) * 100).toFixed(1) })}</p>
                   </div>
                 </div>
@@ -273,6 +249,23 @@ export default function BonusCalculator() {
                   {t('result.monthTotal', { amount: fmt(r.baseMonthlyNet + r.now.net) })}
                 </p>
               </div>
+
+              <ShareResult
+                fileName="bonus-net"
+                card={{
+                  tool: t('title'),
+                  label: t('share.label', { gross: fmt(r.bonus) }),
+                  headline: `${fmt(r.final.net)}${t('chart.won')}`,
+                  sub: t('share.sub', { amount: fmt(r.now.net) }),
+                  rows: [
+                    { label: t('result.bonusGross'), value: `${fmt(r.bonus)}${t('chart.won')}` },
+                    { label: t('result.totalDeduction'), value: `${fmt(r.final.total)}${t('chart.won')}` },
+                    { label: t('share.netRate'), value: `${((r.final.net / r.bonus) * 100).toFixed(1)}%` },
+                    { label: t('annualSalary'), value: `${fmt(annualSalary)}${t('chart.won')}` },
+                  ],
+                }}
+                text={t('share.text', { gross: fmt(r.bonus), net: fmt(r.final.net) })}
+              />
 
               {/* 정산 설명 */}
               <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-1.5 tabular-nums">

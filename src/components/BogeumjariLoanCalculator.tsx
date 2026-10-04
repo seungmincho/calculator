@@ -1,16 +1,20 @@
 'use client'
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Share2, Check, Save, Copy } from 'lucide-react';
+import Link from 'next/link';
+import { Check, Save, Copy, ExternalLink, ChevronRight } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
+import ShareResult from '@/components/ShareResult';
+import ToolIcon from '@/components/ToolIcon';
 import {
   type LoanType, type Owned, type HouseKind, type Region, type CheckStatus,
-  REGIONS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPE_INFO,
-  getIncomeLimit, calcBogeumjari, annuity, fmtKRW, rateFor,
+  REGIONS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPE_INFO, DIDIMDOL,
+  getIncomeLimit, calcBogeumjari, didimdolHint, annuity, fmtKRW, rateFor,
 } from '@/utils/bogeumjari';
+import { useTranslations } from '@/lib/i18n';
 import '@/lib/i18n/ns/bogeumjariLoan';
 
 type Method = 'annuity' | 'principal';
@@ -53,6 +57,8 @@ const STATUS_TEXT: Record<CheckStatus, { label: string; cls: string }> = {
 };
 
 export default function BogeumjariLoanCalculator() {
+  const t = useTranslations('bogeumjariLoan');
+  const tf = useTranslations('footer');
   const [income, setIncome] = useState(DEFAULTS.income);
   const [children, setChildren] = useState(DEFAULTS.children);
   const [price, setPrice] = useState(DEFAULTS.price);
@@ -67,7 +73,7 @@ export default function BogeumjariLoanCalculator() {
   const [method, setMethod] = useState<Method>(DEFAULTS.method);
   const [perks, setPerks] = useState<string[]>([]);
   const [urlLoaded, setUrlLoaded] = useState(false);
-  const [copied, setCopied] = useState<'result' | 'link' | null>(null);
+  const [copied, setCopied] = useState(false);
   const [showSaveButton, setShowSaveButton] = useState(false);
 
   const { histories, isLoading: historyLoading, saveCalculation, removeHistory, clearHistories, loadFromHistory } =
@@ -91,7 +97,7 @@ export default function BogeumjariLoanCalculator() {
   const applyInputs = useCallback((get: (k: string) => string | null) => {
     const num = (k: string, set: (v: string) => void) => { const v = get(k); if (v && /^\d+$/.test(v)) set(Number(v).toLocaleString()); };
     num('income', setIncome); num('price', setPrice); num('debt', setDebt); num('want', setWant);
-    const t = get('type'); if (t && t in LOAN_TYPE_INFO) setLoanType(t as LoanType);
+    const ty = get('type'); if (ty && ty in LOAN_TYPE_INFO) setLoanType(ty as LoanType);
     const pd = get('period'); if (pd && pd in PERIOD_RATES) setPeriod(pd);
     const c = get('children'); if (c && ['0', '1', '2', '3plus'].includes(c)) setChildren(c);
     const a = get('age'); if (a && /^\d{1,3}$/.test(a)) setAge(a);
@@ -119,7 +125,7 @@ export default function BogeumjariLoanCalculator() {
     window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}`);
   }, [urlLoaded, incomeNum, priceNum, loanType, children, period, age, owned, kind, region, method, debt, want, perks]);
 
-  const flash = (what: 'result' | 'link') => { setCopied(what); setTimeout(() => setCopied(null), 2000); };
+  const flash = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   const copyText = async (text: string) => {
     try {
@@ -146,23 +152,7 @@ export default function BogeumjariLoanCalculator() {
       window.location.href,
     ];
     await copyText(lines.join('\n'));
-    flash('result');
-  };
-
-  const handleShare = async () => {
-    const url = window.location.href;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: '보금자리론 계산 결과',
-          text: result ? `한도 ${fmtKRW(result.maxLoan)} · 금리 ${result.rate.toFixed(2)}%` : '',
-          url,
-        });
-        return;
-      } catch { /* fall through */ }
-    }
-    await copyText(url);
-    flash('link');
+    flash();
   };
 
   const handleSave = () => {
@@ -208,6 +198,23 @@ export default function BogeumjariLoanCalculator() {
   const hint = 'text-xs text-muted mt-1';
   const autoIncomeLimit = getIncomeLimit(loanType, childNum);
   const newbornBlocked = loanType === 'newlywed';
+  const didim = didimdolHint({ income: incomeNum, price: priceNum, type: loanType, children: childNum, owned });
+  // 다음 단계 도구: 각 도구가 이미 읽는 URL 파라미터 이름 그대로 전달
+  const nextLinks = result ? [
+    {
+      href: '/dsr-calculator', labelKey: 'links.dsrCalculator', desc: t('next.dsr'),
+      q: { inc: incomeNum, a: result.loan, r: result.rate.toFixed(2), y: period, m: method === 'annuity' ? 'equalPayment' : 'equalPrincipal', reg: region === 'local' ? 'local' : 'capital', ...(digits(debt) ? {} : { ex: '' }) },
+    },
+    {
+      href: '/acquisition-tax', labelKey: 'links.acquisitionTax', desc: t('next.acquisition', { price: fmtKRW(priceNum) }),
+      q: { price: priceNum, owner: owned === '0' ? '1' : owned === '1' ? '2temp' : '3', ...(loanType === 'first' ? { relief: 'first' } : {}) },
+    },
+    { href: '/brokerage-fee', labelKey: 'links.brokerageFee', desc: t('next.brokerage', { price: fmtKRW(priceNum) }), q: { d: 'sale', p: 'house', a: priceNum } },
+    {
+      href: '/loan-schedule', labelKey: 'links.loanSchedule', desc: t('next.schedule', { loan: fmtKRW(result.loan), years: period }),
+      q: { am: Math.round(result.loan / 10_000), r: result.rate.toFixed(2), t: period, m: method === 'annuity' ? 'equalPayment' : 'equalPrincipal' },
+    },
+  ] : [];
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
@@ -417,8 +424,8 @@ export default function BogeumjariLoanCalculator() {
                     : '자격 미충족'}
                 </span>
                 <button type="button" onClick={copyResult} className="ml-auto flex items-center gap-1.5 bg-soft hover:bg-subtle text-body rounded-lg px-3 py-1.5 text-sm">
-                  {copied === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied === 'result' ? '복사됨' : '결과 복사'}
+                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? '복사됨' : '결과 복사'}
                 </button>
               </div>
 
@@ -521,19 +528,99 @@ export default function BogeumjariLoanCalculator() {
           )}
 
           {result && (
-            <div className="flex gap-3">
-              <button type="button" onClick={handleShare} className="ui-btn flex-1 py-2.5 text-sm">
-                {copied === 'link' ? <><Check className="w-4 h-4" />링크 복사됨</> : <><Share2 className="w-4 h-4" />결과 공유</>}
-              </button>
+            <>
+              <ShareResult
+                fileName="bogeumjari-loan"
+                card={{
+                  tool: t('title'),
+                  label: t('share.label', { type: LOAN_TYPE_INFO[loanType].label }),
+                  headline: fmtKRW(result.maxLoan),
+                  sub: t('share.sub', { loan: fmtKRW(result.loan), monthly: fmtWon(result.methods[method].first), method: METHOD_LABEL[method] }),
+                  rows: [
+                    { label: t('share.rate'), value: t('share.rateValue', { rate: result.rate.toFixed(2) }) },
+                    { label: t('share.ltv'), value: t('share.ltvValue', { ltv: Math.round(result.ltv * 100), price: fmtKRW(priceNum) }) },
+                    { label: t('share.period'), value: t('share.periodValue', { years: period }) },
+                    { label: t('share.totalInterest'), value: fmtKRW(result.methods[method].interest) },
+                    { label: t('share.eligibility'), value: t(result.eligible ? 'share.eligible' : 'share.notEligible') },
+                  ],
+                }}
+                text={t('share.text', { type: LOAN_TYPE_INFO[loanType].label, limit: fmtKRW(result.maxLoan), rate: result.rate.toFixed(2), monthly: fmtWon(result.methods[method].first) })}
+              />
               {showSaveButton && (
-                <button type="button" onClick={handleSave} className="ui-btn-soft flex-1 py-2.5 text-sm">
+                <button type="button" onClick={handleSave} className="ui-btn-soft w-full py-2.5 text-sm">
                   <Save className="w-4 h-4" />저장
                 </button>
               )}
-            </div>
+            </>
           )}
         </div>
       </div>
+
+      {result && (
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* 디딤돌대출 자격 힌트 (공식 기준 비교만, 금리 계산 없음) */}
+          <section className="ui-card p-6" aria-labelledby="bg-didim-title">
+            <h2 id="bg-didim-title" className="text-lg font-semibold text-fg">{t('didimdol.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('didimdol.desc', { rate: DIDIMDOL.rate })}</p>
+            <p className={`text-sm font-semibold mt-4 ${didim.ok ? STATUS_TEXT.pass.cls : 'text-sub'}`}>
+              {t(didim.ok ? 'didimdol.likely' : 'didimdol.unlikely')}
+            </p>
+            <ul className="mt-2 divide-y divide-line text-sm">
+              {[
+                { ok: didim.incomeOk, label: t('didimdol.income'), value: t('didimdol.upTo', { amount: fmtKRW(didim.incomeLimit) }) },
+                { ok: didim.priceOk, label: t('didimdol.price'), value: t('didimdol.upTo', { amount: fmtKRW(didim.priceLimit) }) },
+                { ok: didim.ownedOk, label: t('didimdol.owned'), value: t('didimdol.ownedValue') },
+              ].map((c) => (
+                <li key={c.label} className="py-2 flex gap-3">
+                  <span className={`w-16 flex-shrink-0 font-semibold ${STATUS_TEXT[c.ok ? 'pass' : 'fail'].cls}`}>{STATUS_TEXT[c.ok ? 'pass' : 'fail'].label}</span>
+                  <span className="flex-1 text-body">{c.label}</span>
+                  <span className="text-sub tabular-nums text-right">{c.value}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="grid grid-cols-2 gap-3 mt-3 text-sm">
+              <div className="bg-subtle rounded-lg p-3">
+                <div className="text-muted text-xs mb-0.5">{t('didimdol.limit')}</div>
+                <div className="font-semibold text-fg tabular-nums">{fmtKRW(didim.maxLoan)}</div>
+              </div>
+              <div className="bg-subtle rounded-lg p-3">
+                <div className="text-muted text-xs mb-0.5">{t('didimdol.rate')}</div>
+                <div className="font-semibold text-fg tabular-nums">{t('didimdol.rateValue', { rate: DIDIMDOL.rate })}</div>
+              </div>
+            </div>
+            {didim.ok && didim.maxLoan < result.maxLoan && (
+              <p className="text-sm text-body mt-3">{t('didimdol.compareLess', { diff: fmtKRW(result.maxLoan - didim.maxLoan) })}</p>
+            )}
+            <p className="text-xs text-muted mt-3">{t('didimdol.note')}</p>
+            <a href={DIDIMDOL.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 min-h-11 text-sm font-medium text-primary hover:underline">
+              {t('didimdol.link')} <ExternalLink className="w-3.5 h-3.5" aria-hidden />
+            </a>
+          </section>
+
+          {/* 다음 단계 도구 — 입력값을 URL로 넘김 */}
+          <nav className="ui-card p-6" aria-labelledby="bg-next-title">
+            <h2 id="bg-next-title" className="text-lg font-semibold text-fg">{t('next.title')}</h2>
+            <p className="text-sm text-muted mt-1 mb-4">{t('next.desc')}</p>
+            <ul className="space-y-2">
+              {nextLinks.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={`${l.href}/?${new URLSearchParams(Object.entries(l.q).map(([k, v]) => [k, String(v)]))}`}
+                    className="flex items-center gap-3 p-3 min-h-11 bg-subtle rounded-xl hover:bg-soft transition-colors"
+                  >
+                    <ToolIcon href={l.href} size="sm" />
+                    <span className="flex-1 min-w-0">
+                      <span className="block font-medium text-fg text-sm">{tf(l.labelKey)}</span>
+                      <span className="block text-xs text-muted mt-0.5">{l.desc}</span>
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-faint shrink-0" aria-hidden />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
 
       {result && result.loan > 0 && (
         <>

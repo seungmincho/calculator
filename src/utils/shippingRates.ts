@@ -280,6 +280,23 @@ export function getCarrierPrice(
   return tier.price
 }
 
+/** 크기 단계 때문에 비싸진 경우: 세 변 합을 cut cm 줄이면 한 단계 아래 요금(price)으로 saving원 절약. 무게는 그대로 */
+export function sizeCutSaving(
+  carrier: CarrierData,
+  weight: number,
+  girth: number,
+  dest: DestinationType,
+): { cut: number; price: number; saving: number } | null {
+  const now = getCarrierPrice(carrier, weight, girth, dest)
+  if (now === null) return null
+  const sizes = [...new Set(carrier.tiers.map(t => t.maxSize ?? carrier.maxGirth))].filter(s => s < girth).sort((a, b) => b - a)
+  for (const s of sizes) {
+    const p = getCarrierPrice(carrier, weight, s, dest)
+    if (p !== null && p < now) return { cut: Math.round((girth - s) * 10) / 10, price: p, saving: now - p }
+  }
+  return null
+}
+
 export function getUnavailableReason(
   carrier: CarrierData,
   weight: number,

@@ -72,6 +72,7 @@ export const menuConfig: MenuConfig = {
       { href: '/brokerage-fee', labelKey: 'footer.links.brokerageFee', descriptionKey: 'toolsShowcase.tools.brokerageFee.description', icon: '🤝', addedDate: '2026-10-02', subcategory: 'subcategory.realEstate' },
       { href: '/water-bill', labelKey: 'footer.links.waterBill', descriptionKey: 'toolsShowcase.tools.waterBill.description', icon: '💧', subcategory: 'subcategory.livingCost' },
       { href: '/hourly-wage', labelKey: 'footer.links.hourlyWage', descriptionKey: 'toolsShowcase.tools.hourlyWage.description', icon: '💵', subcategory: 'subcategory.salaryWork' },
+      { href: '/minimum-wage', labelKey: 'footer.links.minimumWage', descriptionKey: 'toolsShowcase.tools.minimumWage.description', icon: '💵', addedDate: '2026-10-04', subcategory: 'subcategory.salaryWork' },
       { href: '/retirement-calculator', labelKey: 'footer.links.retirementCalculator', descriptionKey: 'toolsShowcase.tools.retirement.description', icon: '💼', subcategory: 'subcategory.salaryWork' },
       { href: '/annual-leave', labelKey: 'footer.links.annualLeave', descriptionKey: 'toolsShowcase.tools.annualLeave.description', icon: '🏖️', subcategory: 'subcategory.salaryWork' },
       { href: '/gas-bill', labelKey: 'footer.links.gasBill', descriptionKey: 'toolsShowcase.tools.gasBill.description', icon: '🔥', subcategory: 'subcategory.livingCost' },

@@ -123,8 +123,8 @@ type SortKey = 'date-desc' | 'date-asc' | 'tool'
 export default function AllCalculationHistory() {
   const t = useTranslations('calculationHistory')
 
+  // 서버·첫 렌더 = 빈 기록(제목·빈 화면 안내가 정적 HTML에 포함) → 마운트 후 localStorage 기록 로드
   const [histories, setHistories] = useState<CalculationHistory[]>([])
-  const [mounted, setMounted] = useState(false)
   const [search, setSearch] = useState('')
   const [filterTool, setFilterTool] = useState<string>('all')
   const [sort, setSort] = useState<SortKey>('date-desc')
@@ -134,7 +134,6 @@ export default function AllCalculationHistory() {
   // Load from localStorage on mount
   useEffect(() => {
     setHistories(historyStorage.getAll())
-    setMounted(true)
   }, [])
 
   // Delete single entry
@@ -181,18 +180,6 @@ export default function AllCalculationHistory() {
 
     return list
   }, [histories, filterTool, search, sort])
-
-  // ── SSR placeholder ──
-  if (!mounted) {
-    return (
-      <div className="space-y-6">
-        <div className={`${glassCard} ${glassInset} p-6 animate-pulse`}>
-          <div className="h-6 bg-track rounded w-1/3 mb-4" />
-          <div className="h-4 bg-track rounded w-1/2" />
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="space-y-6">

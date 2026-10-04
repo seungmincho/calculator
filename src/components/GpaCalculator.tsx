@@ -4,10 +4,12 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import NextLink from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gpaCalculator'
-import { Trash2, ChevronDown, ChevronUp, Check } from 'lucide-react'
+import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
 import {
   type Course, type Semester as BaseSemester, type GpaScale,
   GRADE_VALUES, computeStats, supersededIds, normalizeGrade, requiredAverage, minGradeFor, parseCourses,
+  encodeSemesters, decodeSemesters,
 } from '@/utils/gpa'
 
 interface Semester extends BaseSemester {
@@ -54,16 +56,25 @@ export default function GpaCalculator() {
   const [remainingCredits, setRemainingCredits] = useState('')
   const [pasteText, setPasteText] = useState('')
   const [pasteMsg, setPasteMsg] = useState('')
-  const [copiedLink, setCopiedLink] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  // 공유 링크(?c=)로 연 성적: 이 기기의 내 기록(localStorage)을 덮어쓰지 않음
+  const [fromLink, setFromLink] = useState(false)
   const [focusId, setFocusId] = useState<string | null>(null)
 
-  // 복원: localStorage → URL(scale/target) 순으로 덮어씀
+  // 복원: 공유 링크(c) 또는 localStorage → URL(scale/target/rem) 순으로 덮어씀
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const urlScale = params.get('scale')
     let nextScale: GpaScale = urlScale === '4.3' ? '4.3' : '4.5'
-    try {
+    const shared = params.get('c')
+    if (shared) {
+      setSemesters(decodeSemesters(shared, nextScale).map(courses => ({
+        id: uid(), isExpanded: true,
+        courses: courses.length ? courses.map(c => ({ ...c, id: uid() })) : [emptyCourse()],
+      })))
+      setIsSample(false)
+      setFromLink(true)
+    } else try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
       if (saved && Array.isArray(saved.semesters) && saved.semesters.length) {
         if (!urlScale && saved.scale === '4.3') nextScale = '4.3'
@@ -78,14 +89,15 @@ export default function GpaCalculator() {
       }
     } catch { /* 저장소 차단/손상 → 예시 데이터 유지 */ }
     if (params.get('target')) setTargetGpa(params.get('target') as string)
+    if (params.get('rem')) setRemainingCredits(params.get('rem') as string)
     setScale(nextScale)
     setLoaded(true)
   }, [])
 
-  // 저장 + URL 동기화 (예시 데이터는 저장하지 않음)
+  // 저장 + URL 동기화 (예시 데이터·공유받은 성적은 저장하지 않음)
   useEffect(() => {
     if (!loaded) return
-    if (!isSample) {
+    if (!isSample && !fromLink) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ scale, semesters, targetGpa, remainingCredits }))
       } catch { /* quota/차단 무시 */ }
@@ -94,8 +106,12 @@ export default function GpaCalculator() {
     url.searchParams.set('scale', scale)
     if (targetGpa) url.searchParams.set('target', targetGpa)
     else url.searchParams.delete('target')
+    if (remainingCredits) url.searchParams.set('rem', remainingCredits)
+    else url.searchParams.delete('rem')
+    // 공유받은 성적은 저장 대신 주소에 유지 (새로고침해도 그대로)
+    if (fromLink) url.searchParams.set('c', encodeSemesters(semesters))
     window.history.replaceState(window.history.state, '', url)
-  }, [loaded, isSample, scale, semesters, targetGpa, remainingCredits])
+  }, [loaded, isSample, fromLink, scale, semesters, targetGpa, remainingCredits])
 
   // Enter로 추가한 새 줄에 포커스
   useEffect(() => {
@@ -197,25 +213,14 @@ export default function GpaCalculator() {
     setPasteMsg('')
   }, [])
 
-  const copyLink = useCallback(async () => {
-    try {
-      const url = window.location.href
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = url
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-    } catch { /* ignore */ }
-    setCopiedLink(true)
-    setTimeout(() => setCopiedLink(false), 2000)
-  }, [])
+  // 공유 링크: 과목 목록은 주소창 대신 공유할 때만 담음 (window 미사용 → 첫 렌더 결정적)
+  const shareUrl = useMemo(() => {
+    const q = new URLSearchParams({ scale })
+    if (targetGpa) q.set('target', targetGpa)
+    if (remainingCredits) q.set('rem', remainingCredits)
+    q.set('c', encodeSemesters(semesters))
+    return `https://toolhub.ai.kr/gpa-calculator/?${q}`
+  }, [scale, targetGpa, remainingCredits, semesters])
 
   const segBtn = (active: boolean) =>
     `flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'}`
@@ -223,18 +228,9 @@ export default function GpaCalculator() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button
-          onClick={copyLink}
-          className="shrink-0 ui-btn-soft px-3 py-2 text-sm font-medium flex items-center gap-1.5"
-        >
-          {copiedLink && <Check className="w-4 h-4" />}
-          {copiedLink ? t('copied') : t('copyLink')}
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -350,8 +346,9 @@ export default function GpaCalculator() {
             <div className="flex items-baseline justify-between gap-3 mb-4">
               <h2 className="text-lg font-semibold text-fg">{t('result.cumulativeGpa')}</h2>
               {isSample && <span className="text-xs text-muted">{t('sampleNotice')}</span>}
+              {fromLink && <span className="text-xs text-muted">{t('sharedNotice')}</span>}
             </div>
-            <div className="flex items-baseline gap-2 mb-5">
+            <div className="flex items-baseline gap-2 mb-5" aria-live="polite" aria-atomic="true">
               <span className="text-4xl font-bold text-fg tabular-nums">{fmt(cumulative.gpa)}</span>
               <span className="text-muted">/ {maxScale}</span>
             </div>
@@ -390,6 +387,22 @@ export default function GpaCalculator() {
                 </tbody>
               </table>
             )}
+            <ShareResult
+              className="mt-5"
+              url={shareUrl}
+              card={{
+                tool: t('title'),
+                label: t('share.label', { max: maxScale }),
+                headline: `${fmt(cumulative.gpa)} / ${maxScale}`,
+                sub: t('share.sub', { credits: cumulative.earnedCredits, courses: cumulative.courses }),
+                rows: [
+                  ...(cumulative.majorCredits ? [{ label: t('majorGpa'), value: fmt(cumulative.majorGpa) }] : []),
+                  ...semesterStats.map((st, i) => ({ label: `${i + 1}${t('semester')}`, value: st.gpaCredits ? fmt(st.gpa) : '-' })),
+                ].slice(0, 5),
+              }}
+              text={t('share.text', { gpa: fmt(cumulative.gpa), max: maxScale })}
+              fileName="gpa"
+            />
           </div>
 
           {/* Semesters */}

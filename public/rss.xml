@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 04 Oct 2026 10:25:29 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 04 Oct 2026 11:05:50 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[해외직구 관부가세 계산기]]></title>
@@ -33,6 +33,13 @@
     <link>https://toolhub.ai.kr/kimjang-calculator/</link>
     <guid>https://toolhub.ai.kr/kimjang-calculator/</guid>
     <description><![CDATA[배추 포기 수로 양념 재료량과 김장 비용 계산]]></description>
+    <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[최저임금 계산기]]></title>
+    <link>https://toolhub.ai.kr/minimum-wage/</link>
+    <guid>https://toolhub.ai.kr/minimum-wage/</guid>
+    <description><![CDATA[2026·2027 최저시급으로 월급·연봉 환산과 내 시급 위반 여부 확인]]></description>
     <pubDate>Sat, 03 Oct 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

@@ -1,5 +1,5 @@
 /**
- * 최저임금 시간급 단일 출처 (최저임금법 제10조 — 고용노동부 장관이 매년 8월 5일까지 고시, 다음 해 1월 1일 시행).
+ * 최저임금 시간급 단일 출처 (최저임금법 제8조① 8월 5일까지 결정, 제10조 고시·다음 해 1월 1일 효력).
  * 근로기준·고용보험 계산기(workHours·weeklyHolidayPay·annualLeave·unemploymentBenefit·paySlip·employmentContract)가 import.
  * 매년 8월 고시가 나오면 표에 한 줄 추가. 검증: node scripts/check-unemployment-benefit.ts
  *

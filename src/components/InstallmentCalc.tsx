@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/installmentCalc'
-import { Link, Check } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
 import { calcInstallment } from '@/utils/cardInstallment'
 
 type Plan = 'normal' | 'free' | 'partial'
@@ -16,7 +16,6 @@ const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 export default function InstallmentCalc() {
   const t = useTranslations('installmentCalc')
   const searchParams = useSearchParams()
-  const [copied, setCopied] = useState(false)
 
   const [totalAmount, setTotalAmount] = useState(DEFAULTS.amount)
   const [months, setMonths] = useState(DEFAULTS.months)
@@ -46,12 +45,6 @@ export default function InstallmentCalc() {
     if (plan === 'partial') params.set('fee', String(feeMonths))
     window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
   }, [totalAmount, months, interestRate, plan, feeMonths])
-
-  const copyLink = useCallback(async () => {
-    try { await navigator.clipboard.writeText(window.location.href) } catch { /* 클립보드 차단 시 무시 */ }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }, [])
 
   const amount = parseFloat(totalAmount) || 0
   const rate = parseFloat(interestRate) || 0
@@ -83,15 +76,9 @@ export default function InstallmentCalc() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button onClick={copyLink} className="flex items-center gap-1.5 shrink-0 ui-btn-soft px-3 py-2 text-sm" title={t('copyLink')}>
-          {copied ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
-          <span className="hidden sm:inline">{copied ? t('copied') : t('copyLink')}</span>
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -152,7 +139,7 @@ export default function InstallmentCalc() {
             <div className="ui-card p-6">
               <h2 className="font-semibold text-fg mb-4">{t('result.title')}</h2>
               <div className="text-sm text-muted">{t('result.firstPayment')}</div>
-              <div className="text-3xl font-bold text-fg tabular-nums">{won(result.firstPayment)}{t('result.won')}</div>
+              <div className="text-3xl font-bold text-fg tabular-nums" aria-live="polite">{won(result.firstPayment)}{t('result.won')}</div>
               {result.firstPayment !== last.payment && (
                 <p className="text-sm text-muted mt-1 tabular-nums">
                   {t('result.lastPayment')} {won(last.payment)}{t('result.won')} · {t('result.paymentRange')}
@@ -180,6 +167,25 @@ export default function InstallmentCalc() {
                   : t('result.lumpSumSame')}
               </p>
             </div>
+          )}
+
+          {result && (
+            <ShareResult
+              fileName="card-installment"
+              card={{
+                tool: t('title'),
+                label: t('share.label', { amount: won(amount), months, plan: t(`plan.${plan}`) }),
+                headline: `${won(result.firstPayment)}${t('result.won')}`,
+                sub: result.totalFee > 0 ? t('share.sub', { fee: won(result.totalFee) }) : t('result.lumpSumSame'),
+                rows: [
+                  ...(plan !== 'free' ? [{ label: t('share.rate'), value: `${rate}%` }] : []),
+                  { label: t('result.totalInterest'), value: `${won(result.totalFee)}${t('result.won')}` },
+                  { label: t('result.totalPayment'), value: `${won(result.totalPayment)}${t('result.won')}` },
+                  { label: t('result.effectiveRate'), value: `${(result.totalFee / amount * 100).toFixed(2)}%` },
+                ],
+              }}
+              text={t('share.text', { amount: won(amount), months, payment: won(result.firstPayment), fee: won(result.totalFee) })}
+            />
           )}
 
           {/* 개월별 비교 */}

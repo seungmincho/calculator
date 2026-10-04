@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/menuPicker'
 import { RotateCcw, Search, Copy, Check, Shuffle, Trophy, Zap, Star, ArrowRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import ShareResult from '@/components/ShareResult'
 
 // ── Food Database (350+ items, 12 categories) ──
 interface FoodItem {
@@ -281,9 +282,9 @@ function shuffleArray<T>(arr: T[]): T[] {
   return shuffled
 }
 
+// 첫 렌더는 고정 목록(하이드레이션 일치) → 마운트 후 effect가 섞어서 교체
 function getInitialWheelItems(): FoodItem[] {
-  const pool = Object.values(FOOD_DB).flatMap(cat => cat.items)
-  return shuffleArray(pool).slice(0, WHEEL_ITEM_COUNT)
+  return Object.values(FOOD_DB).flatMap(cat => cat.items).slice(0, WHEEL_ITEM_COUNT)
 }
 
 // Find category for a food item
@@ -306,18 +307,9 @@ export default function MenuPicker() {
   const [situation, setSituation] = useState<string>('any')
   const [history, setHistory] = useState<FoodItem[]>([])
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [favorites, setFavorites] = useState<string[]>(() => {
-    if (typeof window === 'undefined') return []
-    try {
-      return JSON.parse(localStorage.getItem('menuPicker_favorites') || '[]')
-    } catch { return [] }
-  })
-  const [eatenToday, setEatenToday] = useState<string[]>(() => {
-    if (typeof window === 'undefined') return []
-    try {
-      return JSON.parse(sessionStorage.getItem('menuPicker_eaten') || '[]')
-    } catch { return [] }
-  })
+  // 저장소 값은 마운트 후 읽음 (첫 렌더 = 서버 HTML과 동일)
+  const [favorites, setFavorites] = useState<string[]>([])
+  const [eatenToday, setEatenToday] = useState<string[]>([])
 
   // Roulette state
   const [wheelItems, setWheelItems] = useState<FoodItem[]>(getInitialWheelItems)
@@ -372,8 +364,10 @@ export default function MenuPicker() {
     setWheelItems(pickWheelItems())
   }, [pickWheelItems])
 
-  // Read URL params on mount
+  // Read URL params + saved favorites on mount
   useEffect(() => {
+    try { setFavorites(JSON.parse(localStorage.getItem('menuPicker_favorites') || '[]')) } catch { /* 저장소 차단 */ }
+    try { setEatenToday(JSON.parse(sessionStorage.getItem('menuPicker_eaten') || '[]')) } catch { /* 저장소 차단 */ }
     const params = new URLSearchParams(window.location.search)
     const m = params.get('mode')
     if (m && ['roulette', 'tournament', 'top3'].includes(m)) {
@@ -386,6 +380,14 @@ export default function MenuPicker() {
         setSelectedCategories(new Set(parsed))
         setSituation('any')
       }
+    }
+    // 공유 링크(?menu=)로 연 결과는 룰렛 결과 카드로 보여줌
+    const menu = params.get('menu')
+    const shared = menu ? [...Object.values(FOOD_DB).flatMap(c => c.items), ...HANGOVER_ITEMS].find(f => f.name === menu) : undefined
+    if (shared) {
+      setMode('roulette')
+      setResult(shared)
+      setShowResult(true)
     }
   }, [])
 
@@ -407,6 +409,15 @@ export default function MenuPicker() {
     }
     window.history.replaceState({}, '', url)
   }, [selectedCategories])
+
+  // 지금 모드에서 고른 메뉴 → URL(menu)에 담아 공유 링크로 재현
+  const pick = mode === 'roulette' ? result : mode === 'tournament' ? tournamentWinner : top3Selected
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (pick) url.searchParams.set('menu', pick.name)
+    else url.searchParams.delete('menu')
+    window.history.replaceState({}, '', url)
+  }, [pick])
 
   // Responsive canvas size
   useEffect(() => {
@@ -810,6 +821,8 @@ export default function MenuPicker() {
         <div className="inline-flex bg-surface border border-line rounded-xl p-1 gap-1">
           <button
             onClick={() => setMode('roulette')}
+            aria-pressed={mode === 'roulette'}
+            aria-label={t('modeRoulette')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'roulette'
                 ? 'bg-surface text-orange-600 dark:text-orange-400 shadow-md'
@@ -821,6 +834,8 @@ export default function MenuPicker() {
           </button>
           <button
             onClick={() => setMode('tournament')}
+            aria-pressed={mode === 'tournament'}
+            aria-label={t('modeTournament')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'tournament'
                 ? 'bg-surface text-purple-600 dark:text-purple-400 shadow-md'
@@ -832,6 +847,8 @@ export default function MenuPicker() {
           </button>
           <button
             onClick={() => setMode('top3')}
+            aria-pressed={mode === 'top3'}
+            aria-label={t('modeTop3')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'top3'
                 ? 'bg-surface text-amber-600 dark:text-amber-400 shadow-md'
@@ -1271,6 +1288,28 @@ export default function MenuPicker() {
               {t('notEnoughTop3')}
             </p>
           )}
+        </div>
+      )}
+
+      {/* 결과 공유: 고른 메뉴 카드 이미지·링크 */}
+      <p className="sr-only" aria-live="polite">{pick ? `${t('result')}: ${pick.name}` : ''}</p>
+      {pick && (
+        <div className="flex justify-center">
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: t('result'),
+              headline: `${pick.emoji} ${pick.name}`,
+              sub: getCategoryLabelSafe(findCategory(pick)),
+              rows: [
+                { label: t('share.mode'), value: t(mode === 'roulette' ? 'modeRoulette' : mode === 'tournament' ? 'modeTournament' : 'modeTop3') },
+                { label: t('situation'), value: t(`situations.${situation}`) },
+              ],
+              cta: t('share.cta'),
+            }}
+            text={t('share.text', { menu: pick.name })}
+            fileName="today-menu"
+          />
         </div>
       )}
 

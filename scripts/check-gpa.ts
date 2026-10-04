@@ -1,5 +1,5 @@
 // 학점 계산 회귀 체크: node scripts/check-gpa.ts
-import { computeStats, normalizeGrade, parseCourses, requiredAverage, minGradeFor, supersededIds } from '../src/utils/gpa.ts'
+import { computeStats, normalizeGrade, parseCourses, requiredAverage, minGradeFor, supersededIds, encodeSemesters, decodeSemesters } from '../src/utils/gpa.ts'
 let fail = 0
 const eq = (label: string, a: unknown, b: unknown) => { if (JSON.stringify(a) !== JSON.stringify(b)) { fail++; console.log('FAIL', label, a, '!=', b) } }
 const near = (label: string, a: number, b: number) => { if (Math.abs(a - b) > 1e-9) { fail++; console.log('FAIL', label, a, '!=', b) } }
@@ -22,4 +22,12 @@ eq('parse', parseCourses('1\tCSE2010\t자료구조\t전공필수\t3\tA+\t4.5\n�
   { name: '글쓰기', credits: 2, grade: 'B0', major: false },
   { name: '체육', credits: 1, grade: 'P', major: false },
 ])
+// 공유 링크 직렬화: 왕복 보존, 구분자 제거, 빈 줄 생략, 다른 만점제 등급 정규화
+const shareSems = [{ courses: [{ name: '자료~구조|!', credits: 3, grade: 'A+', major: true, retake: false }, { name: '', credits: 3, grade: '' }] }, { courses: [{ name: '체육', credits: 1, grade: 'P', major: false, retake: true }] }]
+const enc = encodeSemesters(shareSems)
+eq('encode', enc, '자료구조~3~A+~m!체육~1~P~r')
+eq('roundtrip', decodeSemesters(enc, '4.5'), [[{ name: '자료구조', credits: 3, grade: 'A+', major: true, retake: false }], [{ name: '체육', credits: 1, grade: 'P', major: false, retake: true }]])
+eq('scale normalize', decodeSemesters('a~3~A-~', '4.5')[0][0].grade, 'A0')
+eq('empty semester', decodeSemesters('!x~2~B+~', '4.5').map(s => s.length), [0, 1])
+eq('bad credits', decodeSemesters('x~abc~B+~', '4.5')[0][0].credits, 0)
 console.log(fail ? `${fail} failed` : 'all passed'); if (fail) process.exit(1)

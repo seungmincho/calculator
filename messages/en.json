@@ -2426,6 +2426,7 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "minimumWage": "Minimum Wage Calculator",
       "customsDuty": "Overseas Purchase Duty Calculator",
       "kimjangCalculator": "Kimjang (Kimchi-Making) Calculator",
       "holidayPlanner": "Holiday & Leave Planner",
@@ -3615,6 +3616,46 @@
     }
   },
   "bogeumjariLoan": {
+    "share": {
+      "label": "Max {type} Bogeumjari loan",
+      "sub": "Monthly {monthly} for a {loan} loan ({method})",
+      "rate": "Interest rate",
+      "rateValue": "{rate}% p.a.",
+      "ltv": "LTV",
+      "ltvValue": "{ltv}% · home {price}",
+      "period": "Loan term",
+      "periodValue": "{years} years",
+      "totalInterest": "Total interest",
+      "eligibility": "Eligibility",
+      "eligible": "Met",
+      "notEligible": "Not met (check conditions)",
+      "text": "Max {type} Bogeumjari loan {limit}, {rate}% p.a., monthly payment {monthly}"
+    },
+    "didimdol": {
+      "title": "Could you get a Didimdol loan too?",
+      "desc": "Didimdol loans have a lower rate ({rate}% p.a.) but stricter income and home price limits. We only compared those limits with your inputs.",
+      "likely": "Your inputs also fit the Didimdol limits",
+      "unlikely": "Your inputs exceed the Didimdol limits",
+      "income": "Combined annual income",
+      "price": "Home price",
+      "owned": "Home ownership",
+      "ownedValue": "Homeless household heads only",
+      "upTo": "Up to {amount}",
+      "limit": "Didimdol max loan",
+      "rate": "Didimdol rate",
+      "rateValue": "{rate}% p.a.",
+      "compareLess": "The Didimdol limit is {diff} lower than your Bogeumjari max. Didimdol wins on rate, Bogeumjari on loan size.",
+      "note": "Check asset, credit and floor-area requirements and the latest rates at the Housing and Urban Fund. Actual rates depend on income, term and preferential conditions.",
+      "link": "Housing and Urban Fund: Didimdol loan"
+    },
+    "next": {
+      "title": "Next steps",
+      "desc": "Your income, home price and loan amount carry over.",
+      "dsr": "Check DSR including your other loans",
+      "acquisition": "Acquisition tax on a {price} home",
+      "brokerage": "Max brokerage fee for a {price} purchase",
+      "schedule": "{loan} · {years}-year repayment schedule"
+    },
     "title": "Bogeumjari Loan Calculator",
     "description": "Check eligibility and estimate monthly payments for the government-backed Bogeumjari housing loan",
     "guide": {
@@ -4637,6 +4678,16 @@
     "placeholder": "Body fat calculation results will appear when you enter body information and measurements"
   },
   "workHours": {
+    "share": {
+      "labelWeekly": "Weekly pay at {wage} KRW/h · {hours} h/week",
+      "labelPeriod": "Pay at {wage} KRW/h · {days} days, {hours} h",
+      "won": " KRW",
+      "sub": "Monthly {monthly} KRW · yearly {yearly} KRW",
+      "text": "Pay for {hours} hours of work: {total} KRW",
+      "convLabel": "Monthly pay at {wage} KRW/h · {hours} h/week (incl. weekly holiday pay)",
+      "convSub": "About {net} KRW after social insurance",
+      "convText": "{wage} KRW/h for {hours} h/week = {monthly} KRW per month (incl. weekly holiday pay)"
+    },
     "weekPreset": {
       "fullTime": "Mon-Fri 9-6",
       "part3": "Part-time 3 days",
@@ -6261,6 +6312,13 @@
     "placeholder": "Enter content and your QR code appears instantly"
   },
   "fuelCalculator": {
+    "share": {
+      "label": "{vehicle} · {fuel} · {km} km fuel reimbursement",
+      "won": " KRW",
+      "perLiter": " KRW/L",
+      "priceBasis": "Price basis",
+      "text": "Fuel cost for {km} km: {amount} KRW ({fuel} at {price} KRW/L)"
+    },
     "trip": {
       "mode": "One-way/Round trip",
       "oneWay": "One-way",
@@ -6655,6 +6713,10 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "minimumWage": {
+        "title": "Minimum Wage Calculator",
+        "description": "Convert the 2026–2027 minimum hourly wage to monthly/annual pay and check your wage"
+      },
       "customsDuty": {
         "title": "Overseas Purchase Duty Calculator",
         "description": "Duty-free limits, customs duty and VAT in KRW for direct purchases"
@@ -10436,6 +10498,12 @@
     }
   },
   "gpaCalculator": {
+    "sharedNotice": "Opened from a shared link · not saved to your own record on this device",
+    "share": {
+      "label": "Cumulative GPA (out of {max})",
+      "sub": "{credits} credits earned · {courses} courses",
+      "text": "My GPA is {gpa} / {max}"
+    },
     "majorGpa": "Major GPA",
     "earnedCredits": "Earned credits",
     "gpaCredits": "GPA credits",
@@ -12188,6 +12256,9 @@
     }
   },
   "lunarConverter": {
+    "share": {
+      "cta": "Convert your date →"
+    },
     "weekdays": [
       "Sunday",
       "Monday",
@@ -17140,6 +17211,12 @@
     }
   },
   "installmentCalc": {
+    "share": {
+      "label": "Monthly payment: {amount} KRW over {months} months ({plan})",
+      "sub": "Total fee {fee} KRW",
+      "rate": "Annual fee rate",
+      "text": "{amount} KRW over {months} months: {payment} KRW/month, total fee {fee} KRW"
+    },
     "copyLink": "Copy link",
     "copied": "Copied",
     "rateHint": "Issuers disclose installment fee rates of roughly 5-19.9% per year depending on term and credit (e.g. Shinhan Card 5.20-19.90%, checked 2026-10). Check your card app.",
@@ -17863,6 +17940,12 @@
     }
   },
   "shippingCalc": {
+    "sizeHint": "Trim the box by {cut}cm (sum of sides) and {carrier} drops one tier — save {saving} KRW ({from} → {to} KRW)",
+    "share": {
+      "label": "Cheapest parcel for {kg}kg · {cm}cm ({dest})",
+      "size": "Weight · Size",
+      "text": "{kg}kg·{cm}cm parcel: {carrier} is cheapest at {price}"
+    },
     "sizeRule": "The fare is set by the higher of the weight step and the size step (sum of three sides), per Korea Post and CJ Logistics rate tables. Carriers that don't publish size steps are priced by weight only.",
     "faq": {
       "items": [
@@ -30538,6 +30621,11 @@
     }
   },
   "menuPicker": {
+    "share": {
+      "mode": "Picked by",
+      "text": "Today's menu is {menu}! Pick yours too",
+      "cta": "Pick your menu →"
+    },
     "title": "What Should I Eat?",
     "description": "Can't decide what to eat? Spin the roulette to pick today's menu!",
     "spin": "Spin!",
@@ -33940,6 +34028,10 @@
     }
   },
   "gradeCalc": {
+    "share": {
+      "label": "Average grade ({system}-tier system)",
+      "text": "My average school grade is {avg} ({system}-tier system)"
+    },
     "copyLink": "Copy link",
     "copied": "Copied",
     "settings": {
@@ -34399,6 +34491,7 @@
       "yearly": "Yearly"
     },
     "share": {
+      "text": "My PC ({w}W) adds {v} KRW to the monthly power bill",
       "copy": "Copy link",
       "copied": "Copied"
     },
@@ -43926,6 +44019,10 @@
       "manwon": "M"
     },
     "share": {
+      "label": "Final take-home of a {gross} KRW bonus",
+      "sub": "Paid this month: {amount} KRW (withholding basis)",
+      "netRate": "Take-home rate",
+      "text": "A {gross} KRW bonus comes to {net} KRW after tax and insurance",
       "copy": "Copy Result Link",
       "copied": "Copied!"
     },
@@ -51289,11 +51386,13 @@
     "tools": {
       "title": "Learning Tools",
       "algorithm": {
+        "cta": "Runs right in your browser",
         "title": "Algorithm Visualizer",
         "description": "Learn 55 algorithms through interactive animations",
         "stats": "55 Algorithms"
       },
       "visualizer": {
+        "cta": "Learn how it works by clicking through",
         "title": "CS Concept Visualizer",
         "description": "Experience 10 core CS concepts like Git, CPU, and Network",
         "stats": "10 Concepts"
@@ -51304,6 +51403,7 @@
         "stats": "211 Terms"
       },
       "quiz": {
+        "cta": "Solve by topic, get scored instantly",
         "title": "CS Quiz",
         "description": "Test your skills with 251 questions across 10 categories",
         "stats": "251 Questions"
@@ -51926,6 +52026,8 @@
     }
   },
   "shareResult": {
+    "copyFailed": "Copy failed — copy from the address bar",
+    "saved": "Image saved",
     "share": "Share",
     "save": "Save image",
     "copyLink": "Copy link",
@@ -56190,6 +56292,221 @@
         "exchange-calculator": "Exchange Rate Calculator",
         "discount-calculator": "Discount Calculator",
         "vat-calculator": "VAT Calculator"
+      }
+    }
+  },
+  "minimumWage": {
+    "title": "Minimum Wage Calculator",
+    "subtitle": "Convert Korea's 2027 minimum wage of KRW 10,700/hour (announced Aug 5, 2026) into daily, weekly, monthly and annual pay, and check whether your pay falls below it.",
+    "won": " KRW",
+    "u": {
+      "year": {
+        "label": "Year",
+        "opt": "{year}",
+        "hint2027": "Effective January 1, 2027 (announced August 5, 2026)",
+        "hint2026": "Applies January 1 – December 31, 2026"
+      },
+      "mode": {
+        "label": "Work type",
+        "ft": "Full-time, 40h/week",
+        "pt": "Part-time"
+      },
+      "hours": "Hours per week",
+      "hoursUnit": "h",
+      "hourOpt": "{n}h",
+      "days": "Days per week",
+      "dayOpt": "{n} days/week",
+      "hoursHint": "{h}h per day on average · {hol}h paid weekly holiday",
+      "noHoliday": "Under 15 hours a week, so no weekly holiday pay",
+      "clipped": "With {d} days a week, contractual hours max out at 8 per day ({max}h). Extra hours count as overtime, so {max}h is used.",
+      "resultLabel": "{year} minimum hourly wage",
+      "raise": "Up {diff} KRW ({rate}%) from {prev} KRW in {prevYear}",
+      "basisFt": "40h/week · 209h/month",
+      "basisPt": "{h}h/week · {d} days/week · {mh}h/month",
+      "rows": {
+        "daily": "Daily",
+        "dailyHint": "{h}h per day",
+        "weekly": "Weekly",
+        "weeklyOn": "incl. {h}h holiday pay",
+        "weeklyOff": "no holiday pay",
+        "monthly": "Monthly",
+        "monthlyHint": "{h}h per month",
+        "yearly": "Annual",
+        "yearlyHint": "monthly × 12"
+      },
+      "monthlyRaise": "With the same schedule, monthly pay rises by {diff} KRW from {prevYear}.",
+      "note": "All amounts are pre-tax, before social insurance and income tax, and exclude overtime, night and holiday premiums.",
+      "share": {
+        "label": "{year} minimum wage",
+        "sub": "{monthly} KRW/month · {basis}",
+        "text": "Korea's {year} minimum wage is {wage} KRW/hour, or {monthly} KRW a month",
+        "belowLabel": "My pay vs the {year} minimum wage",
+        "belowHeadline": "{gap} KRW/hour short",
+        "belowSub": "{month} KRW/month · {yearly} KRW/year underpaid",
+        "belowText": "My hourly pay is {gap} KRW below Korea's {year} minimum wage",
+        "myHourly": "My hourly equivalent",
+        "minHourly": "Minimum wage"
+      },
+      "check": {
+        "title": "Is my pay below the minimum wage?",
+        "desc": "Enter your hourly or monthly pay to compare it against the year and hours selected above.",
+        "typeLabel": "Pay type",
+        "typeHourly": "Hourly",
+        "typeMonthly": "Monthly",
+        "inputHourly": "My hourly pay (pre-tax)",
+        "inputMonthly": "My monthly pay (pre-tax)",
+        "hintHourly": "Enter the hourly rate excluding weekly holiday pay.",
+        "hintMonthly": "Include base pay plus monthly regular bonuses and cash meal/transport allowances; exclude overtime, night and holiday pay and in-kind benefits. Divided by {mh}h to get an hourly rate.",
+        "probation": "I meet all probation reduction conditions (contract of 1 year or more · within 3 months of probation · not simple labor)",
+        "probationHint": "Only when all three conditions are met may pay be cut to 90% of the minimum, {wage} KRW.",
+        "empty": "Enter an amount to see right away whether it breaks the minimum wage.",
+        "below": "Below the minimum wage",
+        "belowDetail": "You are underpaid by {gap} KRW an hour, {month} KRW a month, {yearly} KRW a year.",
+        "myHourly": "Your hourly equivalent {wage} KRW · minimum {min} KRW",
+        "ok": "At or above the minimum wage",
+        "okDetail": "{surplus} KRW per hour above the minimum.",
+        "action": "Unpaid differences can be claimed within 3 years. Call the Ministry of Employment and Labor helpline (1350) or file a petition with the regional labor office covering your workplace.",
+        "reportLink": "MOEL minimum wage remedy guide"
+      },
+      "table": {
+        "title": "{year} minimum monthly pay by weekly hours",
+        "desc": "Includes weekly holiday pay · pre-tax. Your selected hours are highlighted.",
+        "colHours": "Hours/week",
+        "colHoliday": "Holiday",
+        "colMonthlyHours": "Hours/month",
+        "colMonthly": "Monthly pay",
+        "hoursCell": "{h}h",
+        "caption": "{year} minimum wage monthly equivalent by weekly hours",
+        "note": "Monthly hours = (weekly hours + holiday hours) × 365 ÷ 7 ÷ 12, rounded. No weekly holiday pay under 15 hours a week."
+      },
+      "disclaimer": "For reference only. Whether a violation exists depends on which wages count and how hours are measured — confirm with the Ministry of Employment and Labor (1350)."
+    },
+    "guide": {
+      "title": "Minimum Wage Guide",
+      "decision": {
+        "title": "How the 2027 minimum wage was set",
+        "items": [
+          "The Minimum Wage Commission (27 worker, employer and public members) voted for 10,700 KRW/hour at its 14th plenary session on July 14, 2026. The final vote was workers' 10,730 KRW vs employers' 10,700 KRW; the employers' proposal won 15 votes.",
+          "The Ministry of Employment and Labor published the proposal on July 16, took objections until July 27, and finalized it on August 5. The Minimum Wage Act requires a decision by August 5 each year (Art. 8).",
+          "An announced minimum wage takes effect on January 1 of the following year (Art. 10). From January 1 to December 31, 2027 it is 10,700 KRW/hour, up 380 KRW (3.7%) from 10,320 KRW in 2026.",
+          "The same amount applies to every workplace regardless of industry, and no separate minimum was set for piece-rate workers."
+        ]
+      },
+      "scope": {
+        "title": "Who it applies to",
+        "items": [
+          "Every business that employs workers, including those with fewer than 5 employees, part-timers and short-hour workers (Minimum Wage Act Art. 3(1)).",
+          "Exceptions: businesses employing only cohabiting relatives, domestic workers, and seafarers covered by the Seafarers' Act (Art. 3).",
+          "Any contract term below the minimum wage is void and treated as an agreement to pay the minimum wage (Art. 6(3))."
+        ]
+      },
+      "inclusion": {
+        "title": "Which wages count",
+        "items": [
+          "Only wages paid regularly at least once a month are compared (Art. 6(4)). Quarterly or annual bonuses do not count.",
+          "Monthly regular bonuses and cash welfare allowances such as meals, lodging and transport have been phased in since 2019 and count in full from 2024.",
+          "Overtime, night and holiday premiums and other pay outside contractual hours, as well as in-kind meals or housing, do not count.",
+          "For monthly salaries, divide the qualifying monthly pay by the monthly hours (209h for 40h/week) and compare it with the hourly minimum."
+        ]
+      },
+      "probation": {
+        "title": "Probation reduction",
+        "items": [
+          "Only workers on a contract of 1 year or more and within 3 months of starting probation may be paid down to 90% of the minimum (Act Art. 5(2), Enforcement Decree Art. 3) — 9,630 KRW/hour in 2027.",
+          "No reduction is allowed for contracts shorter than 1 year or after the 3-month window.",
+          "Occupations designated by the Minister as simple labor cannot be reduced even during probation. The designation follows the simple-labor group of the Korean Standard Classification of Occupations (reference)."
+        ]
+      },
+      "violation": {
+        "title": "Penalties and reporting",
+        "items": [
+          "Paying below the minimum wage, or cutting existing pay because of it, is punishable by up to 3 years in prison or a fine of up to 20 million KRW, or both (Art. 28(1)).",
+          "Unpaid amounts are wage claims and must be claimed within 3 years (Labor Standards Act Art. 49).",
+          "Call the MOEL helpline (1350) and file a petition with the regional labor office covering your workplace, or apply online through the MOEL labor portal.",
+          "Keep your contract, schedules, pay slips and bank transfer records — they help the investigation."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is Korea's 2027 minimum wage?",
+            "a": "10,700 KRW per hour, up 380 KRW (3.7%) from 10,320 KRW in 2026. For 40 hours a week that is 2,236,300 KRW a month (209 hours) or 26,835,600 KRW a year. It was announced on August 5, 2026 and applies from January 1, 2027."
+          },
+          {
+            "q": "Does the 2,236,300 KRW monthly figure include weekly holiday pay?",
+            "a": "Yes. 209 hours is 40 working hours plus 8 holiday hours (48) times the average weeks per month (365 ÷ 7 ÷ 12 ≈ 4.345). So 10,700 × 209 = 2,236,300 KRW is pre-tax pay including holiday pay. In 2026 it is 2,156,880 KRW."
+          },
+          {
+            "q": "What is the minimum monthly pay for a 20-hour part-time job?",
+            "a": "At 15 hours or more a week you get weekly holiday pay, so 20 hours adds 4 holiday hours for about 104 hours a month: 10,700 × 104 = 1,112,800 KRW in 2027. Below 15 hours a week, only hours worked are paid."
+          },
+          {
+            "q": "Can employers pay less than the minimum during probation?",
+            "a": "Only for workers on a contract of 1 year or more and within 3 months of starting probation, down to 90% (9,630 KRW/hour in 2027). No reduction is allowed for contracts under 1 year or for simple-labor occupations designated by the Minister (Act Art. 5(2), Decree Art. 3)."
+          },
+          {
+            "q": "Do businesses with fewer than 5 employees have to pay the minimum wage?",
+            "a": "Yes. The Minimum Wage Act covers every business that employs workers, even a shop with one employee. Unlike overtime premiums, there is no size exemption. Only businesses employing cohabiting relatives, domestic workers and similar cases are excluded."
+          },
+          {
+            "q": "Does the minimum wage differ by industry?",
+            "a": "No. Article 4 of the Act allows differentiation by type of business, but the 2027 minimum wage of 10,700 KRW/hour applies equally to all workplaces regardless of industry."
+          },
+          {
+            "q": "Do meal allowances and bonuses count toward the minimum wage?",
+            "a": "Regular bonuses paid at least monthly and cash welfare allowances such as meals and transport count in full from 2024. Quarterly or annual bonuses, overtime, night and holiday pay, and in-kind meals do not count."
+          },
+          {
+            "q": "How do I report unpaid minimum wage?",
+            "a": "Call the MOEL helpline (1350) and file a petition with the regional labor office covering your workplace, also possible online. Violations carry up to 3 years in prison or a 20 million KRW fine (Act Art. 28), and unpaid amounts must be claimed within 3 years."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "MOEL — 2027 minimum wage of 10,700 KRW announced (Aug 5, 2026)",
+            "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744"
+          },
+          {
+            "label": "MOEL — 2027 minimum wage proposal (Jul 16, 2026)",
+            "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19659"
+          },
+          {
+            "label": "Korea.kr — Minimum Wage Commission vote on Jul 14",
+            "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148968169"
+          },
+          {
+            "label": "Minimum Wage Commission",
+            "url": "https://www.minimumwage.go.kr"
+          },
+          {
+            "label": "Korea Law Information Center — Minimum Wage Act",
+            "url": "https://www.law.go.kr/법령/최저임금법"
+          },
+          {
+            "label": "Korea Law Information Center — Enforcement Decree",
+            "url": "https://www.law.go.kr/법령/최저임금법시행령"
+          },
+          {
+            "label": "MOEL Labor Portal — minimum wage and remedies",
+            "url": "https://labor.moel.go.kr/minwonSysInfo/minwagesys.do"
+          },
+          {
+            "label": "Full inclusion of bonuses and allowances from 2024 — Newsis",
+            "url": "https://www.newsis.com/view/NISX20240106_0002583111"
+          }
+        ],
+        "asOf": "Checked October 4, 2026. Items marked 'reference' were not confirmed against the official text."
+      },
+      "links": {
+        "title": "Related calculators",
+        "hourly-wage": "Hourly ↔ monthly/annual pay",
+        "weekly-holiday-pay": "Weekly holiday pay calculator",
+        "work-hours-calculator": "Work hours & night pay",
+        "salary-calculator": "Salary take-home pay"
       }
     }
   }

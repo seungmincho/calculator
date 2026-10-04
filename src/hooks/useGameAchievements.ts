@@ -280,13 +280,20 @@ function buildAchievements(data: AchievementData): Achievement[] {
 }
 
 export function useGameAchievements() {
-  const [data, setData] = useState<AchievementData>(() => loadData())
+  // 첫 렌더는 기본값(서버 HTML과 동일) → 마운트 후 localStorage 로드. 로드 전에는 저장하지 않음(기존 기록 덮어쓰기 방지)
+  const [data, setData] = useState<AchievementData>(() => ({ ...DEFAULT_DATA }))
+  const [loaded, setLoaded] = useState(false)
   const [newlyUnlocked, setNewlyUnlocked] = useState<Achievement[]>([])
+
+  useEffect(() => {
+    setData(loadData())
+    setLoaded(true)
+  }, [])
 
   // Persist whenever data changes
   useEffect(() => {
-    saveData(data)
-  }, [data])
+    if (loaded) saveData(data)
+  }, [data, loaded])
 
   const recordGameResult = useCallback(
     (params: {

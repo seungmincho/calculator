@@ -6,10 +6,11 @@
  * 계산 로직·근거 출처: src/utils/gradeRank.ts
  */
 
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gradeCalc'
-import { Check, Plus, X } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
 import { gradeOf, boundaries, weightedAverage, systemForYear, CUMULATIVE, type GradeSystem } from '@/utils/gradeRank'
 
 interface Row { id: number; name: string; units: string; rank: string; ties: string; total: string }
@@ -54,7 +55,6 @@ export default function GradeCalculator() {
   const [rows, setRows] = useState<Row[]>(SAMPLE)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [loaded, setLoaded] = useState(false)
-  const [copied, setCopied] = useState(false)
 
   // 복원: URL(sys, y, s) → 없으면 현재 고1 입학년도 기준 기본값
   useEffect(() => {
@@ -120,12 +120,6 @@ export default function GradeCalculator() {
   const bounds = selTotal >= 1 ? boundaries(selTotal, system) : null
   const cuts = CUMULATIVE[system]
 
-  const copyLink = useCallback(async () => {
-    try { await navigator.clipboard.writeText(window.location.href) } catch { /* 권한 거부 무시 */ }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }, [])
-
   const segBtn = (active: boolean) =>
     `flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'}`
 
@@ -134,15 +128,9 @@ export default function GradeCalculator() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
-        </div>
-        <button onClick={copyLink} className="shrink-0 ui-btn-soft px-3 py-2 text-sm font-medium flex items-center gap-1.5">
-          {copied && <Check className="w-4 h-4" />}
-          {copied ? t('copied') : t('copyLink')}
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
+        <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
@@ -176,7 +164,7 @@ export default function GradeCalculator() {
 
           <div className="ui-card p-6">
             <p className="text-sm text-muted">{t('result.average')}</p>
-            <p className="text-4xl font-bold text-fg tabular-nums mt-1">
+            <p className="text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite" aria-atomic="true">
               {average === null ? '-' : average.toFixed(2)}
               <span className="text-base font-medium text-muted ml-1">{t('result.gradeUnit')}</span>
             </p>
@@ -189,6 +177,24 @@ export default function GradeCalculator() {
                 </div>
               ))}
             </div>
+            {/* 공유: 링크(y·sys·s 파라미터)로 같은 결과 재현 — 입력한 과목·석차만 담김 */}
+            {average !== null && (
+              <ShareResult
+                className="mt-4"
+                card={{
+                  tool: t('title'),
+                  label: t('share.label', { system }),
+                  headline: `${average.toFixed(2)}${t('result.gradeUnit')}`,
+                  sub: t('result.averageHint', { count: valid.length, units: totalUnits }),
+                  rows: valid.slice(0, 5).map((x) => ({
+                    label: x.row.name || t('subjects.unnamed'),
+                    value: `${x.res!.grade}${t('result.gradeUnit')}`,
+                  })),
+                }}
+                text={t('share.text', { avg: average.toFixed(2), system })}
+                fileName="grade-average"
+              />
+            )}
           </div>
         </div>
 

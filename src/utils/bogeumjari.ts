@@ -74,6 +74,24 @@ export const LOAN_TYPE_INFO: Record<LoanType, { label: string; sublabel: string;
   general: { label: '일반', sublabel: '기본 조건', benefit: 'LTV 70% · 한도 3.6억' },
 }
 
+/**
+ * 디딤돌대출(주택도시기금) 자격 힌트 — 금리 계산 없이 소득·주택가격·무주택 여부만 비교.
+ * 기준: 소득 6천만(생애최초·2자녀 7천만, 신혼 8.5천만), 주택 5억(신혼·2자녀 6억),
+ * 한도 2억(생애최초 2.4억, 신혼·2자녀 3.2억), 금리 연 2.85~4.15%. 세부 요건은 nhuf.molit.go.kr
+ */
+export const DIDIMDOL = { rate: '2.85~4.15', url: 'https://nhuf.molit.go.kr' }
+export function didimdolHint(i: { income: number; price: number; type: LoanType; children: number; owned: Owned }) {
+  const newlywed = i.type === 'newlywed'
+  const twoKids = i.children >= 2
+  const incomeLimit = (newlywed ? 8_500 : i.type === 'first' || twoKids ? 7_000 : 6_000) * M
+  const priceLimit = (newlywed || twoKids ? 60_000 : 50_000) * M
+  const maxLoan = (newlywed || twoKids ? 32_000 : i.type === 'first' ? 24_000 : 20_000) * M
+  const incomeOk = i.income <= incomeLimit
+  const priceOk = i.price <= priceLimit
+  const ownedOk = i.owned === '0'
+  return { incomeLimit, priceLimit, maxLoan, incomeOk, priceOk, ownedOk, ok: incomeOk && priceOk && ownedOk }
+}
+
 export interface BogeumjariInput {
   income: number
   price: number

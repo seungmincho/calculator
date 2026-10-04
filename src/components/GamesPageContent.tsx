@@ -1,11 +1,11 @@
 'use client'
 
-import { Suspense } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gameHub'
 import dynamic from 'next/dynamic'
 
-const GameHub = dynamic(() => import('@/components/GameHub'), { ssr: false })
+// 허브는 서버 렌더(정적 HTML에 h1·게임 목록) — 첫 렌더가 localStorage와 무관해야 함. 코드 분할은 유지
+const GameHub = dynamic(() => import('@/components/GameHub'))
 
 // 온라인 게임 컴포넌트 동적 로드
 const Omok = dynamic(() => import('@/components/Omok'), { ssr: false })
@@ -161,16 +161,11 @@ function GamesContent() {
   return <AIGameComponent difficulty={difficulty} onBack={handleBackToHub} />
 }
 
+// Suspense로 감싸지 않음: React 19.2가 12.8KB 넘는 경계를 </main> 뒤로 빼서 정적 HTML엔 스피너만 남음
 export default function GamesPageContent() {
   return (
     <div className="min-h-screen py-8 px-4">
-      <Suspense fallback={
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
-      }>
-        <GamesContent />
-      </Suspense>
+      <GamesContent />
     </div>
   )
 }

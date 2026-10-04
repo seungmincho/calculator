@@ -20,8 +20,8 @@ export default function ShareResult({
   className?: string
 }) {
   const t = useTranslations('shareResult')
-  const [state, setState] = useState<'idle' | 'copied' | 'saved'>('idle')
-  const flash = (s: 'copied' | 'saved') => { setState(s); setTimeout(() => setState('idle'), 2000) }
+  const [state, setState] = useState<'idle' | 'copied' | 'saved' | 'failed'>('idle')
+  const flash = (s: 'copied' | 'saved' | 'failed') => { setState(s); setTimeout(() => setState('idle'), 2000) }
   const link = () => url ?? window.location.href
 
   const save = useCallback(async () => {
@@ -35,8 +35,20 @@ export default function ShareResult({
   }, [card, fileName, t])
 
   const copy = useCallback(async () => {
-    try { await navigator.clipboard.writeText(link()) } catch { /* 권한 없음: 무시 */ }
-    flash('copied')
+    const text = link()
+    let ok = false
+    try { await navigator.clipboard.writeText(text); ok = true } catch {
+      // 클립보드 API 권한 없음(인앱 브라우저 등) → textarea 복사로 재시도
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.position = 'fixed'
+      ta.style.left = '-999999px'
+      document.body.appendChild(ta)
+      ta.select()
+      try { ok = document.execCommand('copy') } catch { ok = false }
+      document.body.removeChild(ta)
+    }
+    flash(ok ? 'copied' : 'failed')
   }, [url]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const share = useCallback(async () => {
@@ -58,7 +70,7 @@ export default function ShareResult({
     await copy()
   }, [card, text, fileName, copy, t]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const btn = 'inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors'
+  const btn = 'inline-flex items-center justify-center gap-1.5 min-h-11 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors'
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
       <button onClick={share} className={`${btn} ui-btn`}>
@@ -69,8 +81,11 @@ export default function ShareResult({
       </button>
       <button onClick={copy} className={`${btn} bg-soft text-body hover:bg-track`}>
         {state === 'copied' ? <Check className="w-4 h-4 text-primary" /> : <Link2 className="w-4 h-4" />}
-        {state === 'copied' ? t('copied') : t('copyLink')}
+        {state === 'copied' ? t('copied') : state === 'failed' ? t('copyFailed') : t('copyLink')}
       </button>
+      <span className="sr-only" role="status" aria-live="polite">
+        {state === 'copied' ? t('copied') : state === 'saved' ? t('saved') : state === 'failed' ? t('copyFailed') : ''}
+      </span>
     </div>
   )
 }

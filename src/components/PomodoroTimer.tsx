@@ -570,16 +570,7 @@ export default function PomodoroTimer() {
 
   const activeTask = tasks.find(task => task.id === activeTaskId)
 
-  if (!mounted) {
-    return (
-      <div className="space-y-8">
-        <div className={`${glassCard} ${glassInset} p-8 flex flex-col items-center`}>
-          <div className="w-56 h-56 rounded-full bg-soft animate-pulse" />
-        </div>
-      </div>
-    )
-  }
-
+  // 서버·첫 렌더는 기본 설정(25분)으로 전체 화면을 그림 → 저장된 설정·통계·타이머는 마운트 effect에서 적용
   return (
     <div className="space-y-6">
       {/* Flash overlay */}
@@ -868,7 +859,7 @@ export default function PomodoroTimer() {
           <div className="flex items-end gap-2 h-32">
             {weekStats.map((stat, i) => {
               const barHeight = maxWeekCount > 0 ? (stat.count / maxWeekCount) * 100 : 0
-              const isToday = stat.date === todayStr
+              const isToday = mounted && stat.date === todayStr // 빌드 날짜 ≠ 방문 날짜 → 마운트 후에만 강조
               return (
                 <div key={stat.date} className="flex-1 flex flex-col items-center gap-1">
                   <span className="text-xs text-muted font-mono">

@@ -121,3 +121,23 @@ export function parseCourses(text: string, scale: GpaScale): Omit<Course, 'id'>[
   }
   return out
 }
+
+/** 공유 링크용 직렬화: 학기 '!' · 과목 '|' · 필드 '~' (과목명~학점~성적~플래그 m=전공 r=재수강). 빈 줄은 뺌 */
+export function encodeSemesters(semesters: { courses: Omit<Course, 'id'>[] }[]): string {
+  return semesters.map(s => s.courses.filter(c => c.name.trim() || c.grade).map(c =>
+    [c.name.replace(/[~|!]/g, '').slice(0, 30), c.credits, c.grade, (c.major ? 'm' : '') + (c.retake ? 'r' : '')].join('~'),
+  ).join('|')).join('!')
+}
+
+export function decodeSemesters(s: string, scale: GpaScale): Omit<Course, 'id'>[][] {
+  return s.split('!').slice(0, 16).map(sem => (sem ? sem.split('|').slice(0, 40).map(part => {
+    const [name = '', credits = '', grade = '', flags = ''] = part.split('~')
+    return {
+      name: name.slice(0, 30),
+      credits: Math.min(30, Math.max(0, parseFloat(credits) || 0)),
+      grade: normalizeGrade(grade, scale),
+      major: flags.includes('m'),
+      retake: flags.includes('r'),
+    }
+  }) : []))
+}

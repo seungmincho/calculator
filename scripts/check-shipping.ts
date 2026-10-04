@@ -1,7 +1,7 @@
 // 배송비 회귀 체크: node scripts/check-shipping.ts
 // 기준: 우정사업본부 국내소포 요금표(2025.6.1 적용) https://koreapost.go.kr/kpost/subIndex/201.do
 //       "중량 단계와 크기 단계가 상이한 경우 높은 단계를 기준" · CJ대한통운 "크기와 중량 중 큰 값"
-import { CARRIER_DATA, getCarrierPrice } from '../src/utils/shippingRates.ts'
+import { CARRIER_DATA, getCarrierPrice, sizeCutSaving } from '../src/utils/shippingRates.ts'
 
 let fail = 0
 const eq = (name: string, got: unknown, want: unknown) => { if (got !== want) { fail++; console.log('FAIL', name, got, '!=', want) } }
@@ -39,5 +39,17 @@ eq('gs half 1kg 80cm', price('gs_halfprice', 1, 80), 2300)
 eq('gs half 1kg 81cm', price('gs_halfprice', 1, 81), null)
 // 표 생성용 호출(크기 0)은 무게 단계 그대로
 eq('table cj 2kg', price('cj', 2, 0), 5000)
+
+// 크기 줄이기 힌트: 2kg·110cm 일반소포(10kg/120 단계 4,700) → 100cm로 10cm 줄이면 5kg/100 단계 3,200
+const cut = (id: string, kg: number, cm: number) => JSON.stringify(sizeCutSaving(c(id), kg, cm, 'mainland'))
+eq('cut regular 2kg 110cm', cut('post_regular', 2, 110), JSON.stringify({ cut: 10, price: 3200, saving: 1500 }))
+// 무게가 단계를 정하면 크기를 줄여도 그대로 → 힌트 없음
+eq('cut regular 9kg 110cm', cut('post_regular', 9, 110), 'null')
+eq('cut regular 2kg 65cm', cut('post_regular', 2, 65), 'null')
+// 소수 세 변 합은 소수 1자리 cut
+eq('cut visit 1kg 80.5cm', cut('post_visit', 1, 80.5), JSON.stringify({ cut: 0.5, price: 5000, saving: 3000 }))
+// 크기 단계 없는 업체·접수 불가는 힌트 없음
+eq('cut seven', cut('seven', 2, 150), 'null')
+eq('cut over max', cut('lotte', 2, 170), 'null')
 
 console.log(fail ? `${fail} failed` : 'all shipping checks passed'); if (fail) process.exit(1)

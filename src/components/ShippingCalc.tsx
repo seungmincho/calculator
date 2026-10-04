@@ -8,7 +8,8 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from './CalculationHistory'
 import GuideSection from '@/components/GuideSection'
-import { CARRIER_DATA, RATE_BASIS, RATE_SOURCES, getCarrierPrice, getUnavailableReason, type DestinationType, type CarrierCategoryType } from '@/utils/shippingRates'
+import ShareResult from '@/components/ShareResult'
+import { CARRIER_DATA, RATE_BASIS, RATE_SOURCES, getCarrierPrice, getUnavailableReason, sizeCutSaving, type DestinationType, type CarrierCategoryType } from '@/utils/shippingRates'
 
 const BOX_PRESETS: { id: string; w: number; h: number; d: number }[] = [
   // 우체국 택배상자 규격(cm). 6호는 단종
@@ -72,6 +73,15 @@ export default function ShippingCalc() {
   const bestOverall = allResults[0]?.price != null ? allResults[0] : null
   const availableResults = carrierResults.filter(r => r.price !== null)
   const cheapestPrice = availableResults[0]?.price ?? null
+  // 가장 싼 업체가 크기 단계 때문에 비싸졌으면 "Ncm 줄이면 한 단계 아래" 힌트
+  const sizeHint = availableResults[0] ? sizeCutSaving(availableResults[0].carrier, actualWeight, girth, destination) : null
+
+  // 공유 카드: 전체 최저가 + 다른 업체 3곳 (업체명 기준 최저가)
+  const won = (n: number) => n.toLocaleString() + t('result.won')
+  const otherCarriers = allResults
+    .filter(r => r.price !== null && r !== bestOverall)
+    .filter((r, i, arr) => r.carrier.name !== bestOverall?.carrier.name && arr.findIndex(x => x.carrier.name === r.carrier.name) === i)
+    .slice(0, 3)
 
   const updateURL = useCallback((params: Record<string, string>) => {
     const url = new URL(window.location.href)
@@ -300,6 +310,21 @@ export default function ShippingCalc() {
                   {bestOverall.price!.toLocaleString()}{t('result.won')}
                 </div>
               </div>
+              <ShareResult
+                className="mt-5"
+                card={{
+                  tool: t('title'),
+                  label: t('share.label', { kg: actualWeight, cm: girth.toFixed(0), dest: t(`destinations.${destination}`) }),
+                  headline: `${bestOverall.carrier.name} ${won(bestOverall.price!)}`,
+                  sub: `${bestOverall.carrier.serviceLabel} · ${bestOverall.carrier.deliveryDays}`,
+                  rows: [
+                    { label: t('share.size'), value: `${actualWeight}kg · ${girth.toFixed(0)}cm` },
+                    ...otherCarriers.map(r => ({ label: r.carrier.name, value: won(r.price!) })),
+                  ],
+                }}
+                text={t('share.text', { kg: actualWeight, cm: girth.toFixed(0), carrier: bestOverall.carrier.name, price: won(bestOverall.price!) })}
+                fileName="shipping-cost"
+              />
             </div>
           )}
 
@@ -395,6 +420,18 @@ export default function ShippingCalc() {
                 )
               })}
             </div>
+
+            {sizeHint && (
+              <p className="mt-4 bg-subtle rounded-2xl p-4 text-sm text-sub" aria-live="polite">
+                {t('sizeHint', {
+                  cut: sizeHint.cut,
+                  carrier: `${availableResults[0].carrier.name} ${availableResults[0].carrier.serviceLabel}`,
+                  saving: sizeHint.saving.toLocaleString(),
+                  from: availableResults[0].price!.toLocaleString(),
+                  to: sizeHint.price.toLocaleString(),
+                })}
+              </p>
+            )}
 
             {/* Price Range Summary */}
             {availableResults.length > 1 && (

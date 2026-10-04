@@ -3,8 +3,8 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/lunarConverter'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import { ArrowRightLeft, Copy, Check, RotateCcw, Link } from 'lucide-react'
+import { ArrowRightLeft, Copy, Check, RotateCcw } from 'lucide-react'
+import ShareResult from '@/components/ShareResult'
 import {
   MIN_YEAR, MAX_YEAR, leapMonth, lunarMonthDays, lunarToSolar, solarToLunar,
   yearGanzi, dayGanzi, weekday, lunarAnniversary, nextLunarAnniversary, daysBetween,
@@ -16,31 +16,41 @@ type ConversionMode = 'solarToLunar' | 'lunarToSolar'
 const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
 const clampYear = (y: number, fallback: number) => (y >= MIN_YEAR && y <= MAX_YEAR ? y : fallback)
 const fmt = (s: SolarDate) => `${s.year}.${String(s.month).padStart(2, '0')}.${String(s.day).padStart(2, '0')}`
+// 첫 렌더(정적 HTML·hydration)는 오늘 날짜·URL과 무관한 고정값(2026 설날) → 마운트 후 오늘/공유 링크 값 적용
+const INIT_LUNAR = { year: 2026, month: 1, day: 1 }
+const INIT_SOLAR = { year: 2026, month: 2, day: 17 }
 
 export default function LunarConverter() {
   const t = useTranslations('lunarConverter')
-  const searchParams = useSearchParams()
   const [copiedId, setCopiedId] = useState<string | null>(null)
-
-  const now = new Date()
-  const today: SolarDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() }
-  const todayLunar = solarToLunar(today.year, today.month, today.day)
+  // null = 마운트 전 (D-day·지난 해 표시는 마운트 후에만)
+  const [today, setToday] = useState<SolarDate | null>(null)
 
   const weekdays = t.raw('weekdays')
   const wd = (s: SolarDate) => (Array.isArray(weekdays) ? String(weekdays[weekday(s)]) : '')
 
-  // 기본값: 음력 → 양력 (음력 생일 찾기가 주 용도), 오늘의 음력 날짜로 바로 결과 표시
-  const [mode, setMode] = useState<ConversionMode>(() =>
-    searchParams.get('mode') === 'solarToLunar' ? 'solarToLunar' : 'lunarToSolar')
+  // 기본값: 음력 → 양력 (음력 생일 찾기가 주 용도), 마운트 후 오늘의 음력 날짜로 결과 표시
+  const [mode, setMode] = useState<ConversionMode>('lunarToSolar')
+  const [solarYear, setSolarYear] = useState(INIT_SOLAR.year)
+  const [solarMonth, setSolarMonth] = useState(INIT_SOLAR.month)
+  const [solarDay, setSolarDay] = useState(INIT_SOLAR.day)
+  const [lunarYear, setLunarYear] = useState(INIT_LUNAR.year)
+  const [lunarMonth, setLunarMonth] = useState(INIT_LUNAR.month)
+  const [lunarDay, setLunarDay] = useState(INIT_LUNAR.day)
+  const [isLeap, setIsLeap] = useState(false)
 
-  const [solarYear, setSolarYear] = useState(() => clampYear(Number(searchParams.get('sy')), today.year))
-  const [solarMonth, setSolarMonth] = useState(() => Number(searchParams.get('sm')) || today.month)
-  const [solarDay, setSolarDay] = useState(() => Number(searchParams.get('sd')) || today.day)
-
-  const [lunarYear, setLunarYear] = useState(() => clampYear(Number(searchParams.get('ly')), todayLunar?.year ?? today.year))
-  const [lunarMonth, setLunarMonth] = useState(() => Number(searchParams.get('lm')) || todayLunar?.month || 1)
-  const [lunarDay, setLunarDay] = useState(() => Number(searchParams.get('ld')) || todayLunar?.day || 1)
-  const [isLeap, setIsLeap] = useState(() => searchParams.get('leap') === '1')
+  // 오늘 날짜 + 공유 링크 값 적용 (마운트 시 1회, 초기화 버튼은 빈 params). URL 동기화 effect보다 먼저 선언
+  const load = useCallback((q: URLSearchParams) => {
+    const n = new Date()
+    const td = { year: n.getFullYear(), month: n.getMonth() + 1, day: n.getDate() }
+    const tl = solarToLunar(td.year, td.month, td.day)
+    setToday(td)
+    setMode(q.get('mode') === 'solarToLunar' ? 'solarToLunar' : 'lunarToSolar')
+    setSolarYear(clampYear(Number(q.get('sy')), td.year)); setSolarMonth(Number(q.get('sm')) || td.month); setSolarDay(Number(q.get('sd')) || td.day)
+    setLunarYear(clampYear(Number(q.get('ly')), tl?.year ?? td.year)); setLunarMonth(Number(q.get('lm')) || tl?.month || 1); setLunarDay(Number(q.get('ld')) || tl?.day || 1)
+    setIsLeap(q.has('lm') ? q.get('leap') === '1' : !!tl?.isLeap)
+  }, [])
+  useEffect(() => { load(new URLSearchParams(window.location.search)) }, [load])
 
   // 선택한 연도에 윤달이 없거나 날짜가 짧으면 자동 보정
   const leapInLunarYear = leapMonth(lunarYear)
@@ -65,15 +75,15 @@ export default function LunarConverter() {
   const anniversaries = useMemo(() => {
     if (!pair) return null
     const { month, day, isLeap: leap } = pair.lunar
-    const start = todayLunar?.year ?? today.year
+    const start = today ? (solarToLunar(today.year, today.month, today.day)?.year ?? today.year) : INIT_LUNAR.year
     const rows = Array.from({ length: 11 }, (_, i) => lunarAnniversary(start + i, month, day, leap)).filter(r => r !== null)
-    const next = nextLunarAnniversary(today, month, day, leap)
-    return { rows, next, dday: next ? daysBetween(today, next.solar) : null }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pair, today.year, today.month, today.day])
+    const next = today && nextLunarAnniversary(today, month, day, leap)
+    return { rows, next: today && next ? { ...next, dday: daysBetween(today, next.solar) } : null }
+  }, [pair, today])
 
-  // URL 동기화 (공유 링크)
+  // URL 동기화 (공유 링크) — 마운트 전엔 공유 링크 값을 덮어쓰지 않도록 건너뜀
   useEffect(() => {
+    if (!today) return
     const params = new URLSearchParams()
     params.set('mode', mode)
     if (mode === 'solarToLunar') {
@@ -83,7 +93,7 @@ export default function LunarConverter() {
       if (leapValid) params.set('leap', '1')
     }
     window.history.replaceState({}, '', `?${params.toString()}`)
-  }, [mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, leapValid])
+  }, [today, mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, leapValid])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -116,13 +126,7 @@ export default function LunarConverter() {
     setMode(prev => (prev === 'solarToLunar' ? 'lunarToSolar' : 'solarToLunar'))
   }, [pair])
 
-  const handleReset = useCallback(() => {
-    const n = new Date()
-    const l = solarToLunar(n.getFullYear(), n.getMonth() + 1, n.getDate())
-    setSolarYear(n.getFullYear()); setSolarMonth(n.getMonth() + 1); setSolarDay(n.getDate())
-    setLunarYear(l?.year ?? n.getFullYear()); setLunarMonth(l?.month ?? 1); setLunarDay(l?.day ?? 1); setIsLeap(l?.isLeap ?? false)
-    setMode('lunarToSolar')
-  }, [])
+  const handleReset = useCallback(() => load(new URLSearchParams()), [load])
 
   const resultText = pair
     ? `${lunarLabel(pair.lunar)} = ${solarLabel(pair.solar)} (${wd(pair.solar)}) · ${yearGanzi(pair.lunar.year).ganzi}${t('yearSuffix')} ${yearGanzi(pair.lunar.year).zodiac}${t('zodiacSuffix')}`
@@ -226,9 +230,6 @@ export default function LunarConverter() {
                 <ArrowRightLeft className="w-4 h-4" aria-hidden />
                 {t('swap')}
               </button>
-              <button onClick={() => copyToClipboard(window.location.href, 'link')} title={t('copyLink')} aria-label={t('copyLink')} className="ui-btn-soft px-4 py-2">
-                {copiedId === 'link' ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
-              </button>
               <button onClick={handleReset} title={t('reset')} aria-label={t('reset')} className="ui-btn-soft px-4 py-2">
                 <RotateCcw className="w-4 h-4" />
               </button>
@@ -244,7 +245,7 @@ export default function LunarConverter() {
             {pair ? (
               <div className="space-y-4">
                 <div className="bg-subtle rounded-2xl p-5 flex items-start justify-between gap-4">
-                  <div>
+                  <div aria-live="polite" aria-atomic="true">
                     <div className="text-sm text-sub">
                       {mode === 'solarToLunar' ? solarLabel(pair.solar) : lunarLabel(pair.lunar)}
                     </div>
@@ -275,6 +276,28 @@ export default function LunarConverter() {
                   ))}
                 </div>
                 <p className="text-xs text-muted">{t('ganziNote')}</p>
+
+                {/* 공유: 링크(mode·날짜 파라미터)로 같은 결과 재현 */}
+                <ShareResult
+                  card={{
+                    tool: t('title'),
+                    label: mode === 'solarToLunar' ? solarLabel(pair.solar) : lunarLabel(pair.lunar),
+                    headline: mode === 'solarToLunar' ? lunarLabel(pair.lunar) : solarLabel(pair.solar),
+                    sub: `${wd(pair.solar)} · ${yearGanzi(pair.lunar.year).ganzi}${t('yearSuffix')} ${yearGanzi(pair.lunar.year).zodiac}${t('zodiacSuffix')}`,
+                    rows: [
+                      { label: t('result.zodiacAnimal'), value: `${yearGanzi(pair.lunar.year).zodiac}${t('zodiacSuffix')}` },
+                      { label: t('result.sexagenary'), value: `${yearGanzi(pair.lunar.year).ganzi}${t('yearSuffix')}` },
+                      { label: t('result.dayGanzi'), value: `${dayGanzi(pair.solar)}${t('daySuffix')}` },
+                      { label: t('result.dayOfWeek'), value: wd(pair.solar) },
+                      ...(anniversaries?.next
+                        ? [{ label: t('yearly.next'), value: `${fmt(anniversaries.next.solar)} (${anniversaries.next.dday === 0 ? t('yearly.today') : `D-${anniversaries.next.dday}`})` }]
+                        : []),
+                    ],
+                    cta: t('share.cta'),
+                  }}
+                  text={resultText}
+                  fileName="lunar-date"
+                />
               </div>
             ) : (
               <div className="text-center text-muted py-12">{t('error.outOfRange')}</div>
@@ -296,14 +319,19 @@ export default function LunarConverter() {
                 </button>
               </div>
 
-              {anniversaries.next && anniversaries.dday !== null && (
+              {/* 마운트 전(오늘 날짜 모름)엔 같은 높이의 빈 자리 → 레이아웃 이동 없음 */}
+              {(!today || anniversaries.next) && (
                 <div className="bg-subtle rounded-2xl p-5 mb-4">
                   <div className="text-sm text-sub">{t('yearly.next')}</div>
                   <div className="text-2xl font-bold text-fg tabular-nums mt-1">
-                    {solarLabel(anniversaries.next.solar)} ({wd(anniversaries.next.solar)})
-                    <span className="ml-3 text-primary">
-                      {anniversaries.dday === 0 ? t('yearly.today') : `D-${anniversaries.dday}`}
-                    </span>
+                    {anniversaries.next ? (
+                      <>
+                        {solarLabel(anniversaries.next.solar)} ({wd(anniversaries.next.solar)})
+                        <span className="ml-3 text-primary">
+                          {anniversaries.next.dday === 0 ? t('yearly.today') : `D-${anniversaries.next.dday}`}
+                        </span>
+                      </>
+                    ) : <span aria-hidden>&nbsp;</span>}
                   </div>
                 </div>
               )}
@@ -321,7 +349,7 @@ export default function LunarConverter() {
                   <tbody>
                     {anniversaries.rows.map(r => {
                       const isNext = anniversaries.next?.lunarYear === r.lunarYear
-                      const past = daysBetween(today, r.solar) < 0
+                      const past = !!today && daysBetween(today, r.solar) < 0
                       const notes = [
                         r.leapFallback && t('yearly.leapFallback', { month: pair.lunar.month }),
                         r.dayFallback && t('yearly.dayFallback'),

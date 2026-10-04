@@ -54,6 +54,7 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/brokerage-fee': Handshake,
   '/water-bill': Droplet,
   '/hourly-wage': Coins,
+  '/minimum-wage': Banknote,
   '/annual-leave': Umbrella,
   '/gas-bill': Flame,
   '/taxi-fare': CarTaxiFront,

@@ -7,6 +7,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pcElectricity'
+import ShareResult from '@/components/ShareResult'
 import { marginalCost, yearlyMarginal, pcMonthlyKwh, TARIFF, type Season, type Bill } from '@/utils/pcElectricity'
 
 // 제조사 공식 TDP/PBP·TBP 대략값 (W). 같은 W는 한 줄로 묶어 선택 표시가 겹치지 않게 함
@@ -63,7 +64,6 @@ export default function PcElectricityCalculator() {
   const [s, setS] = useState<State>(DEFAULTS)
   const [season, setSeason] = useState<Season>('normal')
   const [loaded, setLoaded] = useState(false)
-  const [copied, setCopied] = useState(false)
   const set = (k: keyof State, v: number) => setS((p) => ({ ...p, [k]: clamp(k, v) }))
 
   // 공유 링크 복원 → 이후 상태를 URL에 동기화
@@ -123,12 +123,6 @@ export default function PcElectricityCalculator() {
   )
   const partEntries = (Object.keys(parts) as (keyof typeof parts)[]).filter((k) => parts[k] > 0)
 
-  const copyLink = async () => {
-    try { await navigator.clipboard.writeText(window.location.href) } catch { /* 클립보드 차단 */ }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
   const modelSelect = (label: string, models: [string, number][], value: number, onChange: (w: number) => void, extra?: [string, number]) => {
     const list = extra ? [extra, ...models] : models
     const match = list.find(([, w]) => w === value)
@@ -187,12 +181,30 @@ export default function PcElectricityCalculator() {
         <div className="space-y-4 lg:col-start-3 lg:row-start-1">
           <div className="ui-hero p-6">
             <p className="text-sm text-white/70">{flat ? t('result.flatMonthly') : t('result.addedMonthly')}</p>
-            <p className="text-3xl font-bold tabular-nums mt-1">{won(cur.monthly)}{t('result.won')}</p>
+            <p className="text-3xl font-bold tabular-nums mt-1" aria-live="polite" aria-atomic="true">{won(cur.monthly)}{t('result.won')}</p>
             <p className="text-sm text-white/70 mt-2 tabular-nums">
               {t('result.yearlyShort', { v: won(cur.yearly) })} · {fmt(cur.kwh)} {t('result.kwh')}/{t('usage.month')}
             </p>
             {!flat && <p className="text-xs text-white/70 mt-1">{t('result.yearlyNote')}</p>}
           </div>
+
+          {/* 공유: 링크(URL 파라미터)로 같은 결과 재현 */}
+          <ShareResult
+            card={{
+              tool: t('title'),
+              label: flat ? t('result.flatMonthly') : t('result.addedMonthly'),
+              headline: `${won(cur.monthly)}${t('result.won')}`,
+              sub: `${t('result.yearlyShort', { v: won(cur.yearly) })} · ${fmt(cur.kwh)} ${t('result.kwh')}/${t('usage.month')}`,
+              rows: [
+                { label: t('result.totalWatt'), value: `${won(totalWatt)}W` },
+                { label: t('usage.hoursPerDay'), value: `${fmt(hoursPerDay)}${t('usage.hours')} × ${s.d}${t('usage.days')}` },
+                { label: t('result.monthlyKwh'), value: `${fmt(cur.kwh)} ${t('result.kwh')}` },
+                ...(flat ? [] : [{ label: t('result.tierMove'), value: `${t('result.tierLabel', { n: m.before.tier })} → ${t('result.tierLabel', { n: m.after.tier })}` }]),
+              ],
+            }}
+            text={t('share.text', { w: won(totalWatt), v: won(cur.monthly) })}
+            fileName="pc-electricity"
+          />
 
           <div className="ui-card p-5 space-y-3 text-sm">
             <Row label={t('result.totalWatt')} value={`${won(totalWatt)}W`} />
@@ -240,10 +252,6 @@ export default function PcElectricityCalculator() {
               <span className="text-sm font-medium text-muted ml-2">{t('compare.yearly')} {won(Math.abs(saveYear))}{t('result.won')}</span>
             </p>
           </div>
-
-          <button type="button" onClick={copyLink} className="ui-btn-soft w-full px-4 py-2 text-sm">
-            {copied ? t('share.copied') : t('share.copy')}
-          </button>
         </div>
 
         {/* 입력 */}

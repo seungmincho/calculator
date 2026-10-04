@@ -87,7 +87,10 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
   const [isEditingNickname, setIsEditingNickname] = useState(false)
   const [tempNickname, setTempNickname] = useState('')
 
+  // 서버 렌더되므로 localStorage 값(닉네임·업적 수)은 마운트 후에만 반영 → 정적 HTML과 첫 렌더 일치
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
+    setMounted(true)
     const saved = localStorage.getItem('gameNickname')
     if (saved) setGlobalNickname(saved)
   }, [])
@@ -791,7 +794,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 업적 패널 */}
       <GameAchievements
         achievements={achievements}
-        unlockedCount={unlockedCount}
+        unlockedCount={mounted ? unlockedCount : 0}
         totalCount={totalCount}
         compact
       />

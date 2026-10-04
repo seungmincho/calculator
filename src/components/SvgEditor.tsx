@@ -456,11 +456,7 @@ export default function SvgEditor() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
-      </div>
+      {/* 제목(h1)·설명은 서버 렌더되는 래퍼(app/svg-editor/SvgEditorClient.tsx)에 있음 */}
 
       {/* Drag & Drop / File Input */}
       {!svgCode && (

@@ -9,6 +9,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/workHours'
 import CustomDatePicker from './CustomDatePicker'
 import CustomTimePicker from './CustomTimePicker'
+import ShareResult from './ShareResult'
 import { INSURANCE } from '@/utils/insuranceRates'
 import { MIN_WAGE_2026, WEEKS_PER_MONTH, calcPay, legalMinBreak, toMin, weekOf, type Shift } from '@/utils/workHours'
 
@@ -69,6 +70,18 @@ function decodeWeek(v: string | null): DaySlot[] | null {
     const m = p.match(/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{1,3})(h?)$/)
     return m ? { on: true, start: `${m[1]}:${m[2]}`, end: `${m[3]}:${m[4]}`, brk: Number(m[5]), hol: m[6] === 'h' } : base[i]
   })
+}
+
+// 날짜별 입력 URL: 'YYYYMMDDHHMMHHMM{휴게}[h]', 날짜가 있는 행만 '_'로 구분 (최대 62행)
+const encodeDays = (days: DayWork[]) =>
+  days.filter(d => d.date).slice(0, 62)
+    .map(d => `${d.date.replace(/-/g, '')}${d.startTime.replace(':', '')}${d.endTime.replace(':', '')}${d.breakTime}${d.isHoliday ? 'h' : ''}`).join('_')
+function decodeDays(v: string | null): DayWork[] | null {
+  const days = (v ?? '').split('_').slice(0, 62).flatMap(p => {
+    const m = p.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{1,3})(h?)$/)
+    return m ? [{ date: `${m[1]}-${m[2]}-${m[3]}`, startTime: `${m[4]}:${m[5]}`, endTime: `${m[6]}:${m[7]}`, breakTime: Number(m[8]), isHoliday: m[9] === 'h' }] : []
+  })
+  return days.length ? days : null
 }
 
 // 기간 + 요일 → DayWork[] 생성
@@ -198,12 +211,18 @@ export default function WorkHoursCalculator() {
       netMonthly: base - total }
   }, [convWage, convWeeklyHours, convDaysPerWeek])
 
+  // 날짜별 입력은 마운트 후 URL에서 복원 (첫 렌더는 기본값 그대로) — 아래 URL 동기화보다 먼저 선언
+  useEffect(() => {
+    const days = decodeDays(searchParams.get('dw'))
+    if (days) setDailyWork(days)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   // ─── URL 상태 동기화 ─────────────────────────────────────
   useEffect(() => {
     if (typeof window === 'undefined') return
     const url = new URL(window.location.href)
     const s = url.searchParams
-    const dailyKeys = ['mode', 'wage', 'auto', 'small', 'ws', 'start', 'end', 'days', 'st', 'et', 'break']
+    const dailyKeys = ['mode', 'wage', 'auto', 'small', 'ws', 'start', 'end', 'days', 'st', 'et', 'break', 'dw']
     ;[...dailyKeys, 'hours', 'cwage', 'chours', 'cdays'].forEach(k => s.delete(k))
     s.set('tab', activeTab)
     if (activeTab === 'daily') {
@@ -220,13 +239,14 @@ export default function WorkHoursCalculator() {
         s.set('et', periodEndTime)
         s.set('break', String(periodBreakTime))
       }
+      if (inputMode === 'individual' && encodeDays(dailyWork)) s.set('dw', encodeDays(dailyWork))
     } else {
       s.set('cwage', convWage)
       s.set('chours', convWeeklyHours)
       s.set('cdays', convDaysPerWeek)
     }
     window.history.replaceState({}, '', url)
-  }, [activeTab, inputMode, hourlyWage, autoBreak, smallBiz, schedule, periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime, convWage, convWeeklyHours, convDaysPerWeek])
+  }, [activeTab, inputMode, hourlyWage, autoBreak, smallBiz, schedule, periodStart, periodEnd, selectedWeekdays, periodStartTime, periodEndTime, periodBreakTime, dailyWork, convWage, convWeeklyHours, convDaysPerWeek])
 
   // ─── 헬퍼 ─────────────────────────────────────────────
   const fmt = (n: number) => new Intl.NumberFormat('ko-KR').format(Math.round(n))
@@ -347,7 +367,7 @@ export default function WorkHoursCalculator() {
             </div>
           </div>
           {shareError && <p role="alert" className="mb-3 text-sm text-red-600">{t('result.shareFailed')}</p>}
-          <div className="text-3xl font-bold text-fg tabular-nums">{fmt(result.totalPay)}원</div>
+          <div className="text-3xl font-bold text-fg tabular-nums" aria-live="polite">{fmt(result.totalPay)}원</div>
           <div className="text-sm text-muted mt-1">
             {t('result.totalHours')} {fmtH(result.totalHours)}{t('result.hours')} · {result.workDayCount}{t('result.days')}
             {wk.length > 1 && ` · ${t('result.weeksCount', { count: wk.length })}`}
@@ -363,6 +383,18 @@ export default function WorkHoursCalculator() {
             </div>
           </div>
         </div>
+
+        <ShareResult
+          fileName="work-hours-pay"
+          card={{
+            tool: t('title'),
+            label: t(inputMode === 'weekly' ? 'share.labelWeekly' : 'share.labelPeriod', { wage: fmt(wageNum), hours: fmtH(result.totalHours), days: result.workDayCount }),
+            headline: `${fmt(result.totalPay)}${t('share.won')}`,
+            sub: t('share.sub', { monthly: fmt(result.monthlyPay), yearly: fmt(result.monthlyPay * 12) }),
+            rows: rows.filter((r, i) => i === 0 || r.v > 0).map(r => ({ label: r.label, value: `${fmt(r.v)}${t('share.won')}` })),
+          }}
+          text={t('share.text', { hours: fmtH(result.totalHours), total: fmt(result.totalPay) })}
+        />
 
         {(over52 || wageNum < MIN_WAGE_2026 || (!autoBreak && result.breakShortDays > 0)) && (
           <div className="rounded-2xl p-4 bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200 text-sm space-y-1">
@@ -730,6 +762,23 @@ export default function WorkHoursCalculator() {
                   ))}
                 </div>
               </div>
+
+              <ShareResult
+                fileName="hourly-to-monthly"
+                card={{
+                  tool: t('title'),
+                  label: t('share.convLabel', { wage: fmt(parseFloat(convWage)), hours: convWeeklyHours }),
+                  headline: `${fmt(convResult.monthlyWithHoliday)}${t('share.won')}`,
+                  sub: t('share.convSub', { net: fmt(convResult.netMonthly) }),
+                  rows: [
+                    { label: `${t('conversion.weekly')} ${t('conversion.withHoliday')}`, value: `${fmt(convResult.weeklyWithHoliday)}${t('share.won')}` },
+                    { label: t('result.weeklyHolidayPay'), value: `${fmt(convResult.weeklyHolidayPay)}${t('share.won')}` },
+                    { label: `${t('conversion.yearly')} ${t('conversion.withHoliday')}`, value: `${fmt(convResult.yearlyWithHoliday)}${t('share.won')}` },
+                    { label: t('conversion.netMonthly'), value: `${fmt(convResult.netMonthly)}${t('share.won')}` },
+                  ],
+                }}
+                text={t('share.convText', { wage: fmt(parseFloat(convWage)), hours: convWeeklyHours, monthly: fmt(convResult.monthlyWithHoliday) })}
+              />
 
               <div className="ui-card p-5">
                 <h3 className="text-sm font-bold text-fg mb-4">{t('conversion.insuranceTitle')}</h3>

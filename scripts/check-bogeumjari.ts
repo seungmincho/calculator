@@ -1,7 +1,7 @@
 // 보금자리론 회귀 체크: node scripts/check-bogeumjari.ts
 // 기준: hf.go.kr 상품안내(sub01_01_01/02)·금리안내(2026-10-01 공시), 금융위 10.15 FAQ, 6.27 대책
 import assert from 'node:assert/strict'
-import { calcBogeumjari, getLtv, getIncomeLimit, PERIOD_RATES, MIN_RATE, type BogeumjariInput } from '../src/utils/bogeumjari.ts'
+import { calcBogeumjari, didimdolHint, getLtv, getIncomeLimit, PERIOD_RATES, MIN_RATE, type BogeumjariInput } from '../src/utils/bogeumjari.ts'
 
 const base: BogeumjariInput = {
   income: 60_000_000, price: 400_000_000, type: 'general', children: 0, period: '30', age: 35,
@@ -69,5 +69,15 @@ assert.ok(!run({}).checks.some((c) => c.label === '전입 의무'))
 // DTI 역산: 연 6천 × 60% = 월 300만 여력 → 5.1% 30년 원리금균등
 r = run({ price: 600_000_000, income: 60_000_000, type: 'first' })
 assert.ok(r.monthly <= 3_000_000 && r.dti <= 60)
+
+// 디딤돌 자격 힌트: 소득 6천/7천(생애최초·2자녀)/8.5천(신혼), 주택 5억/6억, 한도 2억/2.4억/3.2억
+const dd = (x: Partial<Parameters<typeof didimdolHint>[0]>) => didimdolHint({ income: 50_000_000, price: 400_000_000, type: 'general', children: 0, owned: '0', ...x })
+assert.deepEqual([dd({}).incomeLimit, dd({}).priceLimit, dd({}).maxLoan, dd({}).ok], [60_000_000, 500_000_000, 200_000_000, true])
+assert.deepEqual([dd({ type: 'first' }).incomeLimit, dd({ type: 'first' }).priceLimit, dd({ type: 'first' }).maxLoan], [70_000_000, 500_000_000, 240_000_000])
+assert.deepEqual([dd({ type: 'newlywed' }).incomeLimit, dd({ type: 'newlywed' }).priceLimit, dd({ type: 'newlywed' }).maxLoan], [85_000_000, 600_000_000, 320_000_000])
+assert.deepEqual([dd({ children: 2 }).incomeLimit, dd({ children: 2 }).priceLimit, dd({ children: 2 }).maxLoan], [70_000_000, 600_000_000, 320_000_000])
+assert.equal(dd({ income: 65_000_000 }).ok, false)
+assert.equal(dd({ price: 550_000_000 }).priceOk, false)
+assert.equal(dd({ owned: '1' }).ok, false)
 
 console.log('check-bogeumjari: all passed')
