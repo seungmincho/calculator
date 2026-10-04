@@ -39,7 +39,7 @@ export default function FontPreviewPage() {
         name: '한국어 웹 폰트 추천은?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '본고딕(Noto Sans KR): 구글 무료 폰트, 가장 널리 사용, 9가지 굵기. 프리텐다드(Pretendard): 애플 SF Pro 스타일의 한국어 폰트, 깔끔한 디자인. 나눔고딕/나눔스퀘어: 네이버 무료 폰트, 가독성 우수. IBM Plex Sans KR: 코딩/기술 문서에 적합. 최적화 팁: ① subset으로 필요한 글자만 로드 ② woff2 형식 사용(크기 30% 감소) ③ font-display: swap 적용 ④ preload로 빠른 로딩.',
+          text: '본고딕(Noto Sans KR): 구글 무료 폰트, 가장 널리 사용, 9가지 굵기. 프리텐다드(Pretendard): Inter와 본고딕을 바탕으로 만든 시스템 글꼴 대체용 한국어 폰트, 깔끔한 디자인. 나눔고딕/나눔스퀘어: 네이버 무료 폰트, 가독성 우수. IBM Plex Sans KR: 코딩/기술 문서에 적합. 최적화 팁: ① subset으로 필요한 글자만 로드 ② woff2 형식 사용(크기 30% 감소) ③ font-display: swap 적용 ④ preload로 빠른 로딩.',
         },
       },
     ],
@@ -70,7 +70,7 @@ export default function FontPreviewPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>한글 본문 가독성 비교:</strong> 실제 본문 문단 텍스트를 입력하여 가독성이 높은 폰트를 빠르게 비교하세요.</li>
-            <li><strong>CSS 코드 복사:</strong> 마음에 드는 폰트를 선택하고 CSS 코드를 복사하면 Google Fonts 링크와 font-family 선언이 바로 생성됩니다.</li>
+            <li><strong>CSS 코드 복사:</strong> 마음에 드는 폰트를 선택하고 CSS 코드를 복사하면 웹폰트 링크(Google Fonts 또는 jsDelivr)와 font-family 선언이 바로 생성됩니다.</li>
             <li><strong>굵기 테스트:</strong> 제목(700~900)과 본문(400~500) 굵기를 각각 확인하여 웹사이트 타이포그래피를 완성하세요.</li>
             <li><strong>줄간격 조절:</strong> line-height를 1.5~1.8로 조절하면 한글 본문의 가독성이 크게 향상됩니다.</li>
           </ul>

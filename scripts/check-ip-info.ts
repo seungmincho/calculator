@@ -28,6 +28,9 @@ assert.equal(fullIPv6('1.2.3.4'), null)
 
 // 분류
 assert.equal(classifyIp('8.8.8.8'), 'public')
+for (const ip of ['192.0.2.1', '198.51.100.7', '203.0.113.9', '198.18.0.1', '198.19.255.1']) assert.equal(classifyIp(ip), 'reserved', ip) // 문서용·벤치마크
+assert.equal(classifyIp('198.20.0.1'), 'public')
+assert.equal(classifyIp('203.0.114.1'), 'public')
 assert.equal(classifyIp('10.0.0.1'), 'private')
 assert.equal(classifyIp('172.16.0.1'), 'private')
 assert.equal(classifyIp('172.32.0.1'), 'public')

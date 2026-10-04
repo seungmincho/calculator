@@ -45,13 +45,15 @@ export type IpClass = 'public' | 'private' | 'loopback' | 'linkLocal' | 'cgnat' 
 export function classifyIp(ip: string): IpClass | null {
   const v = ipVersion(ip)
   if (v === 4) {
-    const [a, b] = ip.trim().split('.').map(Number)
+    const [a, b, c] = ip.trim().split('.').map(Number)
     if (a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168)) return 'private'
     if (a === 127) return 'loopback'
     if (a === 169 && b === 254) return 'linkLocal'
     if (a === 100 && b >= 64 && b <= 127) return 'cgnat'
     if (a >= 224 && a <= 239) return 'multicast'
     if (a === 0 || a >= 240) return 'reserved'
+    // 문서용 RFC 5737(192.0.2/24·198.51.100/24·203.0.113/24)·벤치마크 RFC 2544(198.18/15) — IPv6 2001:db8과 같게
+    if ((a === 192 && b === 0 && c === 2) || (a === 198 && b === 51 && c === 100) || (a === 203 && b === 0 && c === 113) || (a === 198 && (b === 18 || b === 19))) return 'reserved'
     return 'public'
   }
   if (v === 6) {

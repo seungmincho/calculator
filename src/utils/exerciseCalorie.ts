@@ -179,7 +179,7 @@ export const FOODS: Food[] = [
   { id: 'samgyeopsal', kcal: 660 },
   { id: 'gimbap', kcal: 480 },
   { id: 'burger', kcal: 550 },
-  { id: 'soju', kcal: 400 },
+  { id: 'soju', kcal: 315 }, // 360ml × 15.7%(2026 참이슬·처음처럼) × 0.789g/ml × 7.1kcal/g ≈ 315 (옛 20%대 기준 400은 과대)
   { id: 'beer', kcal: 210 },
   { id: 'latte', kcal: 190 },
   { id: 'cola', kcal: 150 },

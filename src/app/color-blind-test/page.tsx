@@ -24,7 +24,7 @@ export default function ColorBlindTestPage() {
         name: '색맹과 색약의 차이는?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '색맹(Color Blindness)은 특정 색상을 전혀 구분하지 못하는 상태이고, 색약(Color Weakness)은 구분은 되지만 정상보다 약하게 인식하는 상태입니다. 가장 흔한 유형: 적록 색약(남성 8%, 여성 0.5%) - 빨강과 초록 구분 어려움. 청황 색약 - 파랑과 노랑 구분 어려움. 전색맹 - 모든 색을 회색으로 인식(매우 드묾). X염색체 연관 유전이므로 남성에게 훨씬 많습니다.',
+          text: '색맹(Color Blindness)은 특정 색상을 전혀 구분하지 못하는 상태이고, 색약(Color Weakness)은 구분은 되지만 정상보다 약하게 인식하는 상태입니다. 가장 흔한 유형: 적록 색약(국내 남성 약 5.9%, 여성 약 0.4%가 선천성 색각 이상) - 빨강과 초록 구분 어려움. 청황 색약 - 파랑과 노랑 구분 어려움. 전색맹 - 모든 색을 회색으로 인식(매우 드묾). X염색체 연관 유전이므로 남성에게 훨씬 많습니다.',
         },
       },
       {
@@ -77,7 +77,7 @@ export default function ColorBlindTestPage() {
               <li><strong>스크리닝 용도:</strong> 이 테스트는 참고용이며 정확한 진단은 안과 전문의에게 받아야 합니다.</li>
               <li><strong>디자이너 활용:</strong> 색각 이상자를 위한 접근성 디자인을 고려할 때 <Link href="/color-blindness-simulator/" className="text-primary underline">색맹 시뮬레이터</Link>와 함께 활용하세요.</li>
               <li><strong>필터 끄기:</strong> 야간 모드, 블루라이트 필터, 트루톤 같은 화면 색 보정을 끄지 않으면 정상 색각도 틀릴 수 있습니다.</li>
-              <li><strong>어린이 검사:</strong> 만 4세 이상 어린이도 테스트할 수 있으며 조기 발견이 교육에 도움이 됩니다.</li>
+              <li><strong>어린이 검사:</strong> 두 자리 숫자를 읽을 수 있는 어린이라면 보호자와 함께 해 볼 수 있습니다. 조기 발견이 교육에 도움이 되니 의심되면 안과 검사로 확인하세요.</li>
             </ul>
           </div>
         </section>

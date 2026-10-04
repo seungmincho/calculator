@@ -8,13 +8,13 @@ import fancyTextMessages from '../../../messages/generated/ko/ns/fancyText.json'
 export const metadata: Metadata = {
   title: '텍스트 꾸미기 - 인스타·카톡 닉네임 특수문자 | 툴허브',
   description:
-    '입력하면 30가지 글꼴(볼드·필기체·프랙처·동그라미·뒤집기)과 한글 꾸미기(초성·자음 분리), ꧁ ꧂ ★彡 닉네임 테두리 26종이 바로 보이고 누르면 복사. 인스타 소개 150자·카톡 닉네임 20자 글자 수 확인, 즐겨찾기까지.',
+    '입력하면 영문 글꼴 23종(볼드·필기체·프랙처·동그라미·뒤집기)과 한글 꾸미기(초성·자음 분리), ꧁ ꧂ ★彡 닉네임 테두리 26종이 바로 보이고 누르면 복사. 인스타 소개 150자·카톡 닉네임 20자 글자 수 확인, 즐겨찾기까지.',
   keywords:
     '텍스트 꾸미기, 닉네임 꾸미기, 특수문자 닉네임, 인스타 폰트, 카톡 닉네임 특수문자, 한글 꾸미기, 초성 꾸미기, 유니코드 폰트, 볼드 텍스트, 필기체 폰트, 취소선, ꧁꧂',
   openGraph: {
     title: '텍스트 꾸미기 - 닉네임 특수문자 | 툴허브',
     description:
-      '영문 글꼴 30종 + 한글 꾸미기 + ꧁ ꧂ 닉네임 테두리. 누르면 바로 복사, 인스타·카톡에 붙여넣기.',
+      '영문 글꼴 23종 + 한글 꾸미기 + ꧁ ꧂ 닉네임 테두리. 누르면 바로 복사, 인스타·카톡에 붙여넣기.',
     url: 'https://toolhub.ai.kr/fancy-text',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '텍스트 꾸미기 - 닉네임 특수문자 | 툴허브',
-    description: '영문 글꼴 30종 + 한글 꾸미기 + 닉네임 테두리. 누르면 바로 복사.',
+    description: '영문 글꼴 23종 + 한글 꾸미기 + 닉네임 테두리. 누르면 바로 복사.',
     images: ['https://toolhub.ai.kr/og/fancy-text.png'],
   },
   alternates: {
@@ -38,7 +38,7 @@ export default function FancyTextPage() {
     '@type': 'WebApplication',
     name: '텍스트 꾸미기',
     description:
-      '영문 유니코드 글꼴 30종, 한글 꾸미기, 닉네임 테두리를 실시간 미리보기하고 한 번에 복사하는 무료 도구',
+      '영문 유니코드 글꼴 23종, 한글 꾸미기, 닉네임 테두리를 실시간 미리보기하고 한 번에 복사하는 무료 도구',
     url: 'https://toolhub.ai.kr/fancy-text/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -92,7 +92,7 @@ export default function FancyTextPage() {
             텍스트 꾸미기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            텍스트 꾸미기는 영문 알파벳과 숫자를 유니코드 수학 기호 블록(Mathematical Alphanumeric Symbols) 등의 특수 문자로 바꿔 볼드·이탤릭·필기체·프랙처·이중선 등 30가지 스타일로 꾸미고, 한글은 자음 분리·초성·닉네임 테두리로 꾸미는 무료 온라인 도구입니다. 변환된 텍스트는 인스타그램·X(트위터)·유튜브·틱톡 등 SNS 프로필, 닉네임, 게시물에 별도 앱 없이 그대로 붙여넣기해서 사용할 수 있어 SNS 텍스트 꾸미기 도구로 인기입니다.
+            텍스트 꾸미기는 영문 알파벳과 숫자를 유니코드 수학 기호 블록(Mathematical Alphanumeric Symbols) 등의 특수 문자로 바꿔 볼드·이탤릭·필기체·프랙처·이중선 등 23가지 스타일로 꾸미고, 한글은 자음 분리·초성·닉네임 테두리로 꾸미는 무료 온라인 도구입니다. 변환된 텍스트는 인스타그램·X(트위터)·유튜브·틱톡 등 SNS 프로필, 닉네임, 게시물에 별도 앱 없이 그대로 붙여넣기해서 사용할 수 있어 SNS 텍스트 꾸미기 도구로 인기입니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             유니코드 텍스트 꾸미기 활용 팁

@@ -38,7 +38,7 @@ export default function TextToSpeechPage() {
             텍스트 읽어주기(TTS)란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            텍스트 읽어주기(TTS, Text-to-Speech)는 입력한 텍스트를 브라우저의 Web Speech API를 이용해 음성으로 변환해 주는 무료 온라인 도구입니다. 한국어, 영어, 일본어 등 다국어를 지원하며 읽기 속도와 음높이(피치)를 조절할 수 있어 외국어 발음 확인, 문서 청취, 접근성 개선, 콘텐츠 제작 등 다양한 용도로 활용할 수 있습니다.
+            텍스트 읽어주기(TTS, Text-to-Speech)는 입력한 텍스트를 브라우저의 Web Speech API를 이용해 음성으로 변환해 주는 무료 온라인 도구입니다. 기기·브라우저에 설치된 음성에 따라 한국어, 영어, 일본어 등 여러 언어로 읽을 수 있으며 읽기 속도와 음높이(피치)를 조절할 수 있어 외국어 발음 확인, 문서 청취, 접근성 개선, 콘텐츠 제작 등 다양한 용도로 활용할 수 있습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             텍스트 읽어주기 활용 팁

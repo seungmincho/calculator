@@ -67,10 +67,10 @@ export default function BaseConverterPage() {
             진법 변환기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>색상 코드 변환:</strong> 웹 색상 #FF5733은 16진수이므로 10진수로 변환하면 RGB(255, 87, 51) 값과 일치합니다.</li>
+            <li><strong>색상 코드 변환:</strong> 웹 색상 #FF5733은 16진수 두 자리씩(FF·57·33) 10진수로 변환하면 RGB(255, 87, 51) 값과 일치합니다.</li>
             <li><strong>chmod 권한 계산:</strong> Unix/Linux 파일 권한 755는 8진수이며, 이를 2진수로 변환하면 rwxr-xr-x(111 101 101) 구조를 바로 이해할 수 있습니다.</li>
             <li><strong>메모리 주소 분석:</strong> 16진수 메모리 주소(예: 0x1A2B)를 10진수로 변환하면 실제 메모리 위치 계산에 도움이 됩니다.</li>
-            <li><strong>비트 연산 학습:</strong> 2진수 시각화 기능으로 AND, OR, XOR, NOT 비트 연산의 결과를 직관적으로 이해할 수 있습니다.</li>
+            <li><strong>비트 구조 학습:</strong> 비트 보기에서 비트를 눌러 0↔1을 바꾸면 값과 2의 보수·1의 보수 해석이 바로 바뀌어 비트 구조를 직관적으로 이해할 수 있습니다.</li>
             <li><strong>IP 주소 분석:</strong> IPv4 주소의 서브넷 마스크를 2진수로 변환하면 네트워크 범위와 호스트 수를 쉽게 계산할 수 있습니다.</li>
           </ul>
         </div>
