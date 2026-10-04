@@ -1302,13 +1302,12 @@ const SalaryCalculatorContent = () => {
           <h3 className="text-2xl font-bold text-fg mb-6 text-center">{t('yearEndTax.title')}</h3>
           <div className="grid lg:grid-cols-2 gap-8">
             <div>
-              <h4 className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 mb-4 flex items-center">
-                
+              <h4 className="text-lg font-semibold text-fg mb-4">
                 {t('yearEndTax.schedule.title')}
               </h4>
               <div className="space-y-4">
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-indigo-600 mb-2">{t('yearEndTax.schedule.timeline.title')}</h5>
+                  <h5 className="font-semibold text-body mb-2">{t('yearEndTax.schedule.timeline.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.schedule.timeline.details.${index}`)}</p>
@@ -1316,7 +1315,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                 </div>
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-indigo-600 mb-2">{t('yearEndTax.schedule.documents.title')}</h5>
+                  <h5 className="font-semibold text-body mb-2">{t('yearEndTax.schedule.documents.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.schedule.documents.details.${index}`)}</p>
@@ -1326,13 +1325,12 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
-                
+              <h4 className="text-lg font-semibold text-fg mb-4">
                 {t('yearEndTax.tips.title')}
               </h4>
               <div className="space-y-4">
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-purple-600 mb-2">{t('yearEndTax.tips.receiptManagement.title')}</h5>
+                  <h5 className="font-semibold text-body mb-2">{t('yearEndTax.tips.receiptManagement.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.tips.receiptManagement.details.${index}`)}</p>
@@ -1340,7 +1338,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                 </div>
                 <div className="border-b border-line pb-4">
-                  <h5 className="font-semibold text-purple-600 mb-2">{t('yearEndTax.tips.taxSavingProducts.title')}</h5>
+                  <h5 className="font-semibold text-body mb-2">{t('yearEndTax.tips.taxSavingProducts.title')}</h5>
                   <div className="text-sm text-sub space-y-1">
                     {[0, 1, 2, 3].map((index) => (
                       <p key={index}>• {t(`yearEndTax.tips.taxSavingProducts.details.${index}`)}</p>
@@ -1350,6 +1348,17 @@ const SalaryCalculatorContent = () => {
               </div>
             </div>
           </div>
+          {/* 연말정산 항목별 계산기 (시즌 랜딩 클러스터) */}
+          <nav aria-labelledby="salary-yet-links" className="mt-6">
+            <h4 id="salary-yet-links" className="text-sm font-semibold text-muted mb-2">{t('yearEndTax.links.title')}</h4>
+            <ul className="flex flex-wrap gap-2">
+              {([['card', '/card-deduction/'], ['medical', '/medical-tax-credit/'], ['rent', '/rent-tax-credit/'], ['pension', '/pension-tax-credit/'], ['all', '/year-end-tax/']] as const).map(([k, href]) => (
+                <li key={k}>
+                  <Link prefetch={false} href={href} className="inline-flex items-center min-h-11 px-4 py-2 rounded-xl bg-soft hover:bg-subtle text-sm text-body">{t(`yearEndTax.links.${k}`)}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </div>

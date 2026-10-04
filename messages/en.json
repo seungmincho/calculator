@@ -428,7 +428,7 @@
       },
       "taxSaving": {
         "title": "Tax Saving Methods",
-        "content": "You can increase your take-home pay by utilizing tax credit benefits such as IRP and pension savings."
+        "content": "Money put into pension savings or an IRP by Dec 31 returns 13.2–16.5% at year-end settlement. It raises your year-end refund, not your monthly take-home pay."
       }
     },
     "table": {
@@ -693,25 +693,33 @@
       }
     },
     "yearEndTax": {
+      "links": {
+        "title": "Calculate each item in detail",
+        "card": "Card income deduction",
+        "medical": "Medical expense credit",
+        "rent": "Monthly rent credit",
+        "pension": "Pension savings·IRP credit",
+        "all": "Full year-end refund"
+      },
       "title": "Perfect Year-End Tax Settlement Preparation Guide",
       "schedule": {
         "title": "Year-End Tax Settlement Schedule",
         "timeline": {
           "title": "Key Dates",
           "details": {
-            "0": "January: Issuance of withholding tax receipt",
-            "1": "February: Year-end tax settlement filing (workplace)",
-            "2": "March: Refund payment or additional payment",
-            "3": "May: Individual income tax final return (applicable persons)"
+            "0": "Jan 15: Hometax simplified year-end service opens — check and download your deduction data",
+            "1": "Jan–Feb: submit the deduction form and receipts not in the simplified data to your employer (deadlines vary)",
+            "2": "Feb–Mar: refund or extra tax through payroll (employers file by Mar 10)",
+            "3": "May: claim missed items in the income tax return; after that, file a correction within 5 years"
           }
         },
         "documents": {
           "title": "Required Documents",
           "details": {
-            "0": "Medical, education, donation receipts",
-            "1": "Credit card and debit card usage records",
-            "2": "Housing subscription and pension savings certificates",
-            "3": "Dependent registration related documents"
+            "0": "Receipts not in the simplified data: glasses/contacts, monthly rent (lease and transfer records), some donations",
+            "1": "Credit card, debit card and cash receipt spending (shown in the simplified data)",
+            "2": "Pension savings, IRP and housing subscription payments (mostly in the simplified data)",
+            "3": "Consent from adult dependents to share data; family relation certificate for parents at another address"
           }
         }
       },
@@ -720,19 +728,19 @@
         "receiptManagement": {
           "title": "Thorough Receipt Management",
           "details": {
-            "0": "Check items not automatically collected by Hometax",
-            "1": "All medical expenses except cosmetic/plastic surgery",
-            "2": "Education expenses include academy fees and textbook costs",
-            "3": "Always get cash receipts"
+            "0": "Collect items the simplified data misses (rent, glasses, some donations) yourself",
+            "1": "Medical: cosmetic surgery, health supplements, caregivers and treatment abroad don't count",
+            "2": "Education: preschool academy fees, arts/sports academies for 1st–2nd graders (from 2026), middle/high school uniforms (500K each), field trips (300K) and after-school classes count; other K-12 academy fees don't",
+            "3": "Ask for a cash receipt when paying cash (30% deduction, same as debit cards)"
           }
         },
         "taxSavingProducts": {
           "title": "Active Use of Tax-Saving Products",
           "details": {
-            "0": "Pension savings: 13.2-16.5% tax credit up to 6 million KRW annually",
-            "1": "Housing subscription: 40% income deduction up to 3 million KRW annually",
-            "2": "Small business support: Higher deduction rate than credit cards",
-            "3": "Donations: 100% for political donations up to 100,000 KRW"
+            "0": "Pension savings·IRP: 13.2–16.5% credit on up to 9M KRW a year (6M for pension savings)",
+            "1": "Housing subscription: 40% income deduction on up to 3M KRW (homeless household heads, salary up to 70M)",
+            "2": "Traditional markets and public transit: 40% deduction, higher than credit cards (15%)",
+            "3": "Donations: political and hometown donations up to 100K KRW come back almost in full"
           }
         }
       }

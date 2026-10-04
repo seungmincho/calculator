@@ -68,7 +68,7 @@ export function upcomingDeadlines(now: Date, picks: SeasonPick[] = [], within = 
     { key: 'incomeTax', href: '/freelancer-tax', date: nextFiling(new Date(`${today}T00:00`)).dateStr },
     ...[y, y + 1].flatMap(yy => [
       { key: 'jongbu', href: '/comprehensive-property-tax', date: jongbuDates(yy).due },
-      { key: 'yearEnd', href: '/year-end-tax', date: `${yy}-12-31` },
+      { key: 'yearEnd', href: '/pension-tax-credit', date: `${yy}-12-31` }, // 연금저축·IRP 납입 마감 → 전용 페이지
       { key: 'simplified', href: '/year-end-tax', date: `${yy}-01-15` },
     ]),
   ]
