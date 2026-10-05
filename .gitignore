@@ -44,7 +44,6 @@ next-env.d.ts
 # local config
 .claude/settings.local.json
 .claude/skills/
-.omc/
 
 # wrangler pages dev 임시 번들
 .wrangler/
