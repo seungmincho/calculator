@@ -7,7 +7,7 @@
 | # | 역할 | 파일 | 서브에이전트 타입 |
 |---|------|------|-----------------|
 | 1 | Advocate (옹호자) | `agents/advocate.md` | general-purpose |
-| 2 | Critic (비판자) | `agents/critic.md` | oh-my-claudecode:critic |
+| 2 | Critic (비판자) | `agents/critic.md` | general-purpose |
 | 3 | Synthesizer (종합자) | `agents/synthesizer.md` | general-purpose |
 
 ## 5인 프리셋 (Balanced)
@@ -17,9 +17,9 @@
 | # | 역할 | 파일 | 서브에이전트 타입 |
 |---|------|------|-----------------|
 | 1 | Advocate (옹호자) | `agents/advocate.md` | general-purpose |
-| 2 | Critic (비판자) | `agents/critic.md` | oh-my-claudecode:critic |
-| 3 | UX Advocate (유저 대변인) | `agents/ux-advocate.md` | oh-my-claudecode:analyst |
-| 4 | Architect (기술 설계자) | `agents/architect.md` | oh-my-claudecode:architect |
+| 2 | Critic (비판자) | `agents/critic.md` | general-purpose |
+| 3 | UX Advocate (유저 대변인) | `agents/ux-advocate.md` | general-purpose |
+| 4 | Architect (기술 설계자) | `agents/architect.md` | general-purpose |
 | 5 | Synthesizer (종합자) | `agents/synthesizer.md` | general-purpose |
 
 ## 8인 프리셋 (Deep)
@@ -30,10 +30,10 @@
 |---|------|------|-----------------|
 | 1 | Visionary (비전가) | `agents/visionary.md` | general-purpose |
 | 2 | Advocate (옹호자) | `agents/advocate.md` | general-purpose |
-| 3 | Critic (비판자) | `agents/critic.md` | oh-my-claudecode:critic |
-| 4 | UX Advocate (유저 대변인) | `agents/ux-advocate.md` | oh-my-claudecode:analyst |
-| 5 | Architect (기술 설계자) | `agents/architect.md` | oh-my-claudecode:architect |
-| 6 | QA Devil (품질 악마) | `agents/qa-devil.md` | oh-my-claudecode:critic |
+| 3 | Critic (비판자) | `agents/critic.md` | general-purpose |
+| 4 | UX Advocate (유저 대변인) | `agents/ux-advocate.md` | general-purpose |
+| 5 | Architect (기술 설계자) | `agents/architect.md` | general-purpose |
+| 6 | QA Devil (품질 악마) | `agents/qa-devil.md` | general-purpose |
 | 7 | Pragmatist (현실주의자) | `agents/pragmatist.md` | general-purpose |
 | 8 | Synthesizer (종합자) | `agents/synthesizer.md` | general-purpose |
 
