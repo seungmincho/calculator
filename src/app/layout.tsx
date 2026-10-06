@@ -141,6 +141,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-canvas text-fg">
         {/* 테마 깜빡임 방지: 첫 페인트 전에 .dark 적용 (ThemeToggle과 동일 규칙) */}
         <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}` }} />
+        {/* 페이지뷰 부풀림 방지: 도구가 입력마다 replaceState 로 쿼리를 바꾸면 Cloudflare beacon 이
+            Navigation API navigate 이벤트를 페이지뷰로 센다. 같은 경로 안의 이동은 beacon 리스너보다 먼저 막는다
+            (주소 변경 자체는 그대로 일어난다). beacon 은 body 끝에 있으므로 이 리스너가 먼저 등록된다. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{navigation.addEventListener('navigate',function(e){if(e.destination.sameDocument&&new URL(e.destination.url).pathname===location.pathname)e.stopImmediatePropagation()})}catch(e){}` }} />
         {/* Axeptio Cookie Consent Script with Google Consent Mode */}
         <Script
           id="axeptio-settings"
