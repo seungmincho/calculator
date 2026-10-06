@@ -2486,7 +2486,7 @@
       "barcodeGenerator": "Barcode Generator",
       "fuelCalculator": "Fuel Calculator",
       "monthlyRentSubsidy": "LH Monthly Rent Subsidy Calculator",
-      "bogeumjariLoan": "LH Bogeumjari Loan Calculator",
+      "bogeumjariLoan": "Bogeumjari Loan Calculator",
       "medianIncome": "Median Income Lookup",
       "3dConverter": "3D Converter",
       "omok": "Online Omok",
@@ -7243,7 +7243,7 @@
         "description": "Youth & newlywed rent subsidy calculation"
       },
       "bogeumjariLoan": {
-        "title": "LH Bogeumjari Loan",
+        "title": "Bogeumjari Loan",
         "description": "First-time homebuyer loan rates"
       },
       "stock": {
@@ -14151,6 +14151,8 @@
       "display": "Display",
       "coding": "Coding"
     },
+    "moreStyle": "More: weight, spacing, align",
+    "lessStyle": "Hide style options",
     "previewBg": "Preview background",
     "light": "Light",
     "dark": "Dark",

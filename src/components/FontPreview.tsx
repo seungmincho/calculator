@@ -129,6 +129,9 @@ export default function FontPreview() {
   const [cat, setCat] = useState<FontCat | 'all'>('all')
   const [q, setQ] = useState('')
   const [favOnly, setFavOnly] = useState(false)
+  // 모바일: 스타일 설정 6개가 첫 화면을 다 차지해 글꼴 목록이 안 보인다 → 글자 크기만 두고 접는다
+  const [moreStyle, setMoreStyle] = useState(false)
+  const more = moreStyle ? '' : 'hidden sm:block'
   const [favs, setFavs] = useState<string[]>([])
   const [pins, setPins] = useState<string[]>([])
   const [ready, setReady] = useState(false)
@@ -275,23 +278,23 @@ export default function FontPreview() {
             <input id="fp-size" type="range" min={12} max={120} value={look.size}
               onChange={e => set('size', Number(e.target.value))} className="w-full accent-blue-600" />
           </div>
-          <div>
+          <div className={more}>
             <label htmlFor="fp-weight" className={label}>{t('fontWeight')}</label>
             <select id="fp-weight" value={look.weight} onChange={e => set('weight', Number(e.target.value))} className="ui-field px-3 py-2">
               {WEIGHTS.map(w => <option key={w} value={w}>{w}</option>)}
             </select>
           </div>
-          <div>
+          <div className={more}>
             <label htmlFor="fp-lh" className={label}>{t('lineHeight')}: {look.lh.toFixed(1)}</label>
             <input id="fp-lh" type="range" min={0.8} max={3} step={0.1} value={look.lh}
               onChange={e => set('lh', Number(e.target.value))} className="w-full accent-blue-600" />
           </div>
-          <div>
+          <div className={more}>
             <label htmlFor="fp-ls" className={label}>{t('letterSpacing')}: {look.ls}%</label>
             <input id="fp-ls" type="range" min={-10} max={20} step={1} value={look.ls}
               onChange={e => set('ls', Number(e.target.value))} className="w-full accent-blue-600" />
           </div>
-          <div>
+          <div className={more}>
             <span className={label}>{t('textAlign')}</span>
             <div className="flex gap-2">
               {([['left', AlignLeft, 'alignLeft'], ['center', AlignCenter, 'alignCenter'], ['right', AlignRight, 'alignRight']] as const).map(([a, Icon, k]) => (
@@ -302,7 +305,7 @@ export default function FontPreview() {
               ))}
             </div>
           </div>
-          <div>
+          <div className={more}>
             <span className={label}>{t('previewBg')}</span>
             <div className="flex gap-2">
               <button onClick={() => set('dark', false)} aria-pressed={!look.dark} className={`flex-1 ${chip(!look.dark)}`}>{t('light')}</button>
@@ -311,7 +314,10 @@ export default function FontPreview() {
           </div>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-between sm:justify-end gap-2">
+          <button onClick={() => setMoreStyle(v => !v)} aria-expanded={moreStyle} className="sm:hidden ui-btn-soft px-4 py-2 text-sm">
+            {moreStyle ? t('lessStyle') : t('moreStyle')}
+          </button>
           <button onClick={() => copyToClipboard(window.location.href, 'link')} className="ui-btn-soft px-4 py-2 text-sm">
             {copiedId === 'link' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
             {copiedId === 'link' ? t('linkCopied') : t('shareLink')}

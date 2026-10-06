@@ -265,6 +265,17 @@ export default function GpaConverter() {
                 <span className="text-sm text-muted whitespace-nowrap">/ {SCALE_MAX[scale]}</span>
               </div>
               <p className="text-xs text-faint mt-1">{t('input.help')}</p>
+              {/* 모바일: 결과 표가 입력 카드 아래라 입력하자마자 다른 만점 기준 값을 보여 준다 */}
+              {result && !invalid && (
+                <div className="lg:hidden mt-3 grid grid-cols-3 gap-2" aria-hidden="true">
+                  {SCALES.filter((s) => s !== scale).map((s) => (
+                    <div key={s} className="bg-primary-soft rounded-xl px-2 py-2 text-center">
+                      <div className="text-xs text-primary">{scaleLabel(s)}</div>
+                      <div className="text-lg font-bold text-fg tabular-nums">{fmt(s, result.ratio[s])}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="space-y-2 pt-2">

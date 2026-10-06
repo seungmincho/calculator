@@ -122,6 +122,8 @@ export default function ColorBlindTest() {
           <div className="flex flex-col items-center">
             <PlateCanvas plate={plates[0]} size={300} />
             <p className="text-sm text-muted mt-3">{t('intro.preview', { n: plates[0].normal })}</p>
+            {/* 모바일: 아래 안내까지 내려가면 시작 버튼이 첫 화면 밖(약 1000px)이라 검사판 바로 아래에 둔다 */}
+            <button onClick={start} className="ui-btn md:hidden w-full mt-4 px-4 py-3">{t('intro.start')}</button>
           </div>
           <div className="space-y-5">
             <div>
@@ -133,7 +135,7 @@ export default function ColorBlindTest() {
                 <li key={i} className="flex gap-2"><Check className="w-4 h-4 mt-0.5 shrink-0 text-primary" />{item}</li>
               ))}
             </ul>
-            <button onClick={start} className="ui-btn w-full px-4 py-3">{t('intro.start')}</button>
+            <button onClick={start} className="ui-btn hidden md:inline-flex w-full px-4 py-3">{t('intro.start')}</button>
             <p className="text-xs text-muted">{t('intro.note')}</p>
           </div>
         </div>

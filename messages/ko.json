@@ -3651,7 +3651,7 @@
       "barcodeGenerator": "바코드 생성기",
       "fuelCalculator": "유류비 계산기",
       "monthlyRentSubsidy": "LH 월세지원금 계산기",
-      "bogeumjariLoan": "LH 보금자리론 계산기",
+      "bogeumjariLoan": "보금자리론 계산기",
       "medianIncome": "기준 중위소득 조회",
       "3dConverter": "3D 변환기",
       "omok": "온라인 오목",
@@ -7242,7 +7242,7 @@
         "description": "청년·신혼부부 월세지원금 계산"
       },
       "bogeumjariLoan": {
-        "title": "LH 보금자리론",
+        "title": "보금자리론",
         "description": "생애최초 우대대출 한도·금리"
       },
       "stock": {
@@ -14152,6 +14152,8 @@
       "display": "디스플레이",
       "coding": "코딩"
     },
+    "moreStyle": "굵기·간격·정렬 더보기",
+    "lessStyle": "스타일 접기",
     "previewBg": "미리보기 배경",
     "light": "밝게",
     "dark": "어둡게",
