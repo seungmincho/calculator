@@ -130,6 +130,13 @@ export default function NumberToKorean() {
                 className="ui-field px-4 py-3 text-lg tabular-nums"
               />
               <p className="text-xs text-muted mt-2">{t('inputHint')}</p>
+              {/* 모바일: 결과 카드가 입력 카드 아래라 입력하는 동안 결과를 바로 보여 준다 */}
+              {formal && (
+                <div className="lg:hidden mt-3 flex items-start justify-between gap-3 bg-primary-soft rounded-2xl px-4 py-3">
+                  <div className="min-w-0 text-lg font-bold text-fg break-all" aria-hidden="true">{formal}</div>
+                  <CopyButton id="formal-mobile" value={formal} label={t('koreanFormal')} />
+                </div>
+              )}
               {!parsed && /[\d가-힣]/.test(input) && <p className="text-xs text-red-600 mt-1">{t('invalidNumber')} · {t('maxNumber')}</p>}
             </div>
 

@@ -779,7 +779,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               {orderResult.length === 0 && !isShuffling && (
                 <div className="flex flex-col items-center justify-center py-16 text-faint">
                   <Shuffle size={48} className="mb-3 opacity-30" />
-                  <p className="text-sm">왼쪽에서 뽑기를 시작하세요</p>
+                  <p className="text-sm">뽑기를 누르면 여기에 순서가 나와요</p>
                 </div>
               )}
 

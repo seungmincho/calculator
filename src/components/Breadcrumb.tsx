@@ -6,6 +6,8 @@ import { ChevronRight, Home } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n/navigation'
 import { menuConfig, categoryKeys, categoryHubs, type CategoryKey } from '@/config/menuConfig'
 
+const GENERIC_SUBCATEGORIES = ['subcategory.others', 'subcategory.otherTools']
+
 export default function Breadcrumb() {
   const rawPathname = usePathname()
   const pathname = rawPathname.replace(/\/$/, '') || '/'
@@ -21,7 +23,13 @@ export default function Breadcrumb() {
     const found = category.items.find((item) => item.href === pathname)
     if (found) {
       currentTool = { label: t(found.labelKey), href: found.href }
-      categoryLabel = t(category.titleKey)
+      // 상위 분류 이름("개발 도구"·"금융 계산기")은 디데이·택시비 같은 생활 도구와 맞지 않아 세부 분류를 먼저 쓴다.
+      // '기타' 세부 분류는 이름이 없는 것과 같으므로 넓은 이름으로.
+      categoryLabel = found.subcategory && !GENERIC_SUBCATEGORIES.includes(found.subcategory)
+        ? t(found.subcategory)
+        : catKey === 'calculators' ? t('navigation.calculators')
+        : catKey === 'tools' ? t('toolsShowcase.categories.utility')
+        : t(category.titleKey)
       categoryKey = catKey
       break
     }

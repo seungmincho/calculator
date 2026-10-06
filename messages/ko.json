@@ -7095,6 +7095,7 @@
   },
   "navigation": {
     "financialCalculators": "금융 계산기",
+    "calculators": "계산기",
     "developmentTools": "개발 도구",
     "healthTools": "건강 도구",
     "mediaTools": "이미지/미디어 도구",
@@ -13288,7 +13289,7 @@
     "integerOnly": "금액 표기는 양의 정수만 지원합니다",
     "copyLink": "링크 복사",
     "wonUnit": "원",
-    "title": "숫자 한글 변환",
+    "title": "금액 한글표기 변환기",
     "description": "숫자를 한글 금액 표기로 변환합니다. 수표, 계약서, 영수증 작성 시 유용합니다.",
     "inputNumber": "숫자 입력",
     "placeholder": "변환할 숫자를 입력하세요",
@@ -17574,6 +17575,7 @@
     },
     "boardingTime": "탑승 시각",
     "nowButton": "현재 시각",
+    "jumpToResult": "자세히",
     "hourUnit": "시",
     "minUnit": "분",
     "tier": {
@@ -18459,7 +18461,7 @@
       "note": "* 개인 발송 요금(타권역). 동일권역은 보통 500~1,000원 저렴합니다. 제주·도서산간 요금은 계산기에서 지역을 선택해 확인하세요. 최신 요금은 각 택배사 홈페이지에서 확인하세요.",
       "sources": "출처:"
     },
-    "title": "배송비 계산기",
+    "title": "택배비 계산기",
     "description": "2026년 최신 요금 기반 택배사·편의점택배 배송비 비교",
     "weight": "무게 (kg)",
     "weightPlaceholder": "무게 입력",
@@ -18468,6 +18470,10 @@
     "depth": "높이 (cm)",
     "dimensionPlaceholder": "cm",
     "carrier": "택배사",
+    "carrierType": "택배 유형",
+    "carrierStandard": "일반 택배",
+    "carrierCvs": "편의점 택배",
+    "jumpToResult": "업체별 비교",
     "carriers": {
       "cj": "CJ대한통운",
       "hanjin": "한진택배",

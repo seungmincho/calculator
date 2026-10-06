@@ -7096,6 +7096,7 @@
   },
   "navigation": {
     "financialCalculators": "Financial Calculators",
+    "calculators": "Calculators",
     "developmentTools": "Development Tools",
     "healthTools": "Health Tools",
     "mediaTools": "Image/Media Tools",
@@ -17573,6 +17574,7 @@
     },
     "boardingTime": "Boarding Hour",
     "nowButton": "Now",
+    "jumpToResult": "Details",
     "hourUnit": "h",
     "minUnit": "min",
     "tier": {
@@ -18459,7 +18461,7 @@
       "sources": "Sources:"
     },
     "title": "Shipping Calculator",
-    "description": "Compare Korean courier & convenience store shipping rates (2025 pricing)",
+    "description": "Compare Korean courier & convenience store shipping rates (2026 rates)",
     "weight": "Weight (kg)",
     "weightPlaceholder": "Enter weight",
     "width": "Width (cm)",
@@ -18467,6 +18469,10 @@
     "depth": "Depth (cm)",
     "dimensionPlaceholder": "cm",
     "carrier": "Carrier",
+    "carrierType": "Service type",
+    "carrierStandard": "Courier",
+    "carrierCvs": "Convenience store",
+    "jumpToResult": "Compare carriers",
     "carriers": {
       "cj": "CJ Logistics",
       "hanjin": "Hanjin",

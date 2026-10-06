@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/shippingCalc'
-import { Package, Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save, Store } from 'lucide-react'
+import { Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save, Store } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from './CalculationHistory'
@@ -144,10 +144,7 @@ export default function ShippingCalc() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Package className="w-7 h-7 text-blue-600" />
-          {t('title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
@@ -156,6 +153,16 @@ export default function ShippingCalc() {
         {/* ── Input Panel ── */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+            {/* 모바일: 결과가 입력 아래 한참 밑이라 첫 화면에 최저가를 보여 준다 */}
+            {bestOverall && (
+              <a href="#shipping-result" className="lg:hidden flex items-center justify-between gap-3 bg-primary-soft rounded-2xl px-4 py-3">
+                <span className="min-w-0 text-sm text-primary truncate">{bestOverall.carrier.name}</span>
+                <span className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-fg tabular-nums">{won(bestOverall.price!)}</span>
+                  <span className="text-xs text-primary whitespace-nowrap">{t('jumpToResult')} ↓</span>
+                </span>
+              </a>
+            )}
 
             {/* Weight */}
             <div>
@@ -245,7 +252,7 @@ export default function ShippingCalc() {
             {/* Carrier Category */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                택배 유형
+                {t('carrierType')}
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -257,7 +264,7 @@ export default function ShippingCalc() {
                   }`}
                 >
                   <Truck className="w-3.5 h-3.5" />
-                  일반 택배
+                  {t('carrierStandard')}
                 </button>
                 <button
                   onClick={() => { setCarrierCategory('cvs'); setShowSaveButton(true) }}
@@ -268,7 +275,7 @@ export default function ShippingCalc() {
                   }`}
                 >
                   <Store className="w-3.5 h-3.5" />
-                  편의점 택배
+                  {t('carrierCvs')}
                 </button>
               </div>
             </div>
@@ -289,7 +296,7 @@ export default function ShippingCalc() {
 
           {/* Overall Best Pick (일반 + 편의점) */}
           {bestOverall && (
-            <div className={`${glassCard} p-6`}>
+            <div id="shipping-result" className={`${glassCard} p-6 scroll-mt-20`}>
               <div className="text-sm text-muted">{t('bestOverall.title')}</div>
               <div className="mt-1 flex items-end justify-between gap-3 flex-wrap">
                 <div className="min-w-0">
@@ -382,7 +389,7 @@ export default function ShippingCalc() {
                           </span>
                           <span className="text-xs text-muted">{carrier.serviceLabel}</span>
                           {isCheapest && (
-                            <span className="px-1.5 py-0.5 text-xs bg-green-500 text-white rounded-full font-medium">최저가</span>
+                            <span className="px-1.5 py-0.5 text-xs bg-primary text-white rounded-full font-medium">{t('result.cheapest')}</span>
                           )}
                           {carrier.cvsPickupOnly && !isUnavailable && (
                             <span className="px-1.5 py-0.5 text-xs bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 rounded-full">편의점 수령</span>
