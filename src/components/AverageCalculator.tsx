@@ -31,6 +31,7 @@ import { Copy, Check, Calculator, Plus, Trash2, BookOpen, BarChart3 } from 'luci
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import MobileResultLink from '@/components/MobileResultLink'
 
 interface WeightedPair {
   id: number
@@ -259,6 +260,7 @@ export default function AverageCalculator() {
         {/* Left: Input */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
+            {averageCards[isWeightedMode ? 1 : 0].value != null && <MobileResultLink href="#average-calculator-result" label={averageCards[isWeightedMode ? 1 : 0].label} value={formatNum(averageCards[isWeightedMode ? 1 : 0].value!)} />}
             {/* Weighted mode toggle */}
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -343,7 +345,7 @@ export default function AverageCalculator() {
         {/* Right: Results */}
         <div className="lg:col-span-2 space-y-6">
           {/* Average cards */}
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div id="average-calculator-result" className="grid sm:grid-cols-2 gap-4 scroll-mt-20">
             {averageCards.map(card => (
               <div
                 key={card.key}

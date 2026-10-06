@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/sleepCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { AlertTriangle, Copy, Check } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   AGES, AGE_SELECT, CYCLE, LATENCY, CAFFEINE_CUTOFF_H, DAY, clamp, parseHM, fmtHM, fmt12,
   bedtimes, wakeTimes, naps, isPast, sleepDebt, caffeineCutoff, type AgeKey, type Opt,
@@ -157,6 +158,7 @@ export default function SleepCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#sleep-calculator-result" label={mode === 'wake' ? t('u.heroBedtime') : t('u.heroAlarm')} value={heroTime} />
             <div className="grid grid-cols-3 gap-2" role="group" aria-label={t('u.modeLabel')}>
               {MODES.map((m) => (
                 <button key={m} onClick={() => { setMode(m); setPick(null) }} aria-pressed={mode === m} className={seg(mode === m)}>
@@ -242,7 +244,7 @@ export default function SleepCalculator() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6 sm:p-8">
+          <div id="sleep-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
             <p className="text-sm text-white/70">{heroLabel}</p>
             <p className="text-sm text-white/70 mt-3">{mode === 'wake' ? t('u.heroBedtime') : t('u.heroAlarm')}</p>
             <p className="text-4xl sm:text-5xl font-bold tabular-nums mt-1">{heroTime}</p>

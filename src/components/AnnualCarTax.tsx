@@ -7,6 +7,7 @@ import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/annualCarTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   KINDS, VAN_SIZES, TRUCK_TONS, LUMP_MONTHS, LUMP_RATE, calcAnnual, calcLump, calcProrated, ageSeries, ccRate, nextLumpWindow,
   type Kind, type Use, type VanSize, type TruckTon, type CarInput,
@@ -92,6 +93,7 @@ export default function AnnualCarTax() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#annual-car-tax-result" label={t('u.resultLabel', { year })} value={`${won(r.total)}${t('u.won')}`} />
             <div>
               <p className="block text-sm font-medium text-body mb-2">{t('u.kind.label')}</p>
               <div className="grid grid-cols-2 gap-2">
@@ -180,7 +182,7 @@ export default function AnnualCarTax() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="annual-car-tax-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div>
               <p className="text-sm text-muted">{t('u.resultLabel', { year })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}{t('u.won')}</p>

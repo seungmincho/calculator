@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/oneRepMax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   FORMULAS, MAX_REPS, WARN_REPS, GEAR, estimate1RM, percentTable, loadPlates, groupPlates, convertUnit, bigThree,
   round1, roundTo, type Unit,
@@ -243,6 +244,7 @@ export default function OneRepMaxCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {mode === 'one' && hasResult && <MobileResultLink href="#one-rep-max-result" label={t('u.result.label', { ex: exName })} value={`${fmt1(oneRm)}${U}`} />}
             <div>
               <p className="text-sm font-medium text-body mb-2">{t('u.mode.label')}</p>
               <Segmented label={t('u.mode.label')} options={['one', 'total'] as const} value={mode} onChange={setMode} render={(m) => t(`u.mode.${m}`)} cols="grid-cols-2" />
@@ -313,7 +315,7 @@ export default function OneRepMaxCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {mode === 'one' ? (
             <>
-              <div className="ui-card p-6 space-y-5">
+              <div id="one-rep-max-result" className="ui-card p-6 space-y-5 scroll-mt-20">
                 <div aria-live="polite">
                   <p className="text-sm text-muted">{t('u.result.label', { ex: exName })}</p>
                   {hasResult ? (

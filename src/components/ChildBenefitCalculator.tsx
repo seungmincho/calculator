@@ -98,6 +98,7 @@ export default function ChildBenefitCalculator() {
     const valid = children.every(c => c.birthYear && c.birthMonth)
     if (!valid) return
     setCalculated(true)
+    requestAnimationFrame(() => { if (window.matchMedia('(max-width: 1023px)').matches) document.getElementById('child-benefit-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) })
 
     // URL sync
     try {
@@ -285,7 +286,7 @@ export default function ChildBenefitCalculator() {
           {calculated && results.length > 0 ? (
             <>
               {/* 월/연 합계 요약 */}
-              <div className={`${glassCard} ${glassInset} p-6`}>
+              <div id="child-benefit-result" className={`${glassCard} ${glassInset} p-6 scroll-mt-20`}>
                 <h2 className="font-semibold text-fg mb-4">{t('summaryTitle')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-subtle rounded-xl p-4 text-center">

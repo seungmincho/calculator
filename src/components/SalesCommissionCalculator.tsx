@@ -14,6 +14,7 @@ import '@/lib/i18n/ns/salesCommissionCalc'
 import { Plus, X } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   PLAN_A, PLAN_B, calc, rawCommission, supplyValue, nextBoundary, niceStep, encodePlan, decodePlan,
   type Plan, type Structure, type TaxMode, type Tier,
@@ -231,10 +232,11 @@ export default function SalesCommissionCalculator() {
 
       {/* ───────────── 영업 커미션 ───────────── */}
       <section hidden={mode !== 'commission'} className="space-y-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 입력 */}
           <div className="lg:col-span-1 space-y-6">
             <div className="ui-card p-6 space-y-4">
+              <MobileResultLink href="#sales-commission-commission-result" label={heroTitle} value={`${won(headlineValue)}${t('input.unit')}`} />
               <Money id="sc-sales" label={t('sc.sales')} value={sales} onChange={(n) => { setSales(n); setChartMax(chartMaxFor(n)) }} />
               <input
                 type="range" min={0} max={chartMax} step={100_000} value={Math.min(sales, chartMax)}
@@ -346,7 +348,7 @@ export default function SalesCommissionCalculator() {
 
           {/* 결과 */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="ui-hero p-6">
+            <div id="sales-commission-commission-result" className="ui-hero p-6 scroll-mt-20">
               <div className="text-sm text-white/70">{heroLabel}</div>
               <div className="text-sm text-white/80 mt-3">{heroTitle}</div>
               <div className="text-4xl font-bold mt-1 tabular-nums">{won(headlineValue)}{t('input.unit')}</div>
@@ -566,9 +568,10 @@ export default function SalesCommissionCalculator() {
 
       {/* ───────────── 오픈마켓 판매수수료 ───────────── */}
       <section hidden={mode !== 'market'} className="space-y-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
             <div className="ui-card p-6 space-y-4">
+              {price > 0 && <MobileResultLink href="#sales-commission-result" label={t('sc.market.heroLabel', { platform: t(`platform.${best.platform}`), rate: best.effRate.toFixed(2) })} value={`${won(best.settlement)}${t('input.unit')}`} />}
               <Money id="mk-price" label={t('input.sellingPrice')} value={price} onChange={setPrice} />
               <Money id="mk-ship" label={t('input.shippingCost')} value={shipping} onChange={setShipping} />
               <div>
@@ -604,7 +607,7 @@ export default function SalesCommissionCalculator() {
           <div className="lg:col-span-2 space-y-6">
             {price > 0 ? (
               <>
-                <div className="ui-hero p-6">
+                <div id="sales-commission-result" className="ui-hero p-6 scroll-mt-20">
                   <div className="text-sm text-white/70">{t('sc.market.heroLabel', { platform: t(`platform.${best.platform}`), rate: best.effRate.toFixed(2) })}</div>
                   <div className="text-4xl font-bold mt-2 tabular-nums">{won(best.settlement)}{t('input.unit')}</div>
                   <div className="text-sm text-white/80 mt-2">{t('result.commissionAmount')} {won(best.total)}{t('input.unit')}</div>

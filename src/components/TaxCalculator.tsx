@@ -9,6 +9,7 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import GuideSection from '@/components/GuideSection'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
+import MobileResultLink from '@/components/MobileResultLink'
 import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 import { calc as yearEndCalc, DEFAULT_INPUT as YEAR_END_DEFAULT } from '@/utils/yearEndTax'
 import { calcCgt, ymd } from '@/utils/capitalGainsTax'
@@ -626,6 +627,9 @@ const TaxCalculatorContent = () => {
     }
   };
 
+  const heroLabel = activeTab === 'vat' ? '부가세 포함 금액' : '세후 금액'
+  const heroValue = result ? `${formatNumber(activeTab === 'vat' ? result.netAmount + result.totalTax : result.netAmount)}원` : ''
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
@@ -668,6 +672,7 @@ const TaxCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* 입력 섹션 */}
         <div className={`${glassCard} ${glassInset} p-8`}>
+          {result && <MobileResultLink href="#tax-calculator-result" label={heroLabel} value={heroValue} className="mb-6" />}
           <h2 className="text-2xl font-semibold mb-6 text-fg">
             {taxTypes[activeTab]} 정보 입력
           </h2>
@@ -705,19 +710,17 @@ const TaxCalculatorContent = () => {
         </div>
 
         {/* 결과 섹션 */}
-        <div className={`${glassCard} ${glassInset} p-8`}>
+        <div id="tax-calculator-result" className={`${glassCard} ${glassInset} p-8 scroll-mt-20`}>
           <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
           
           {result ? (
             <div className="space-y-6" aria-live="polite">
               <div className="text-center p-6 bg-primary rounded-xl text-white">
                 <div className="text-sm opacity-90 mb-1">
-                  {activeTab === 'vat' ? '부가세 포함 금액' : '세후 금액'}
+                  {heroLabel}
                 </div>
                 <div className="text-3xl font-bold">
-                  {activeTab === 'vat' 
-                    ? formatNumber(result.netAmount + result.totalTax)
-                    : formatNumber(result.netAmount)}원
+                  {heroValue}
                 </div>
                 <div className="mt-4 flex gap-2">
                   <button

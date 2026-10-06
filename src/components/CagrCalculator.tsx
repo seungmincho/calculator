@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/cagrCalculator'
 import { Copy, Check, BookOpen, RotateCcw, ChevronDown, ChevronUp, BarChart3, TrendingUp, Clock, GitCompareArrows, Link } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import MobileResultLink from '@/components/MobileResultLink'
 
 type Mode = 'cagr' | 'future' | 'period'
 type CompoundFreq = 'yearly' | 'monthly' | 'daily'
@@ -573,6 +574,7 @@ export default function CagrCalculator() {
         {/* Left: Input Panel */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-6`}>
+            {mode === 'cagr' && resultA && <MobileResultLink href="#cagr-calculator-result" label={t('result.cagrLabel')} value={`${(resultA as { cagr: number }).cagr.toFixed(2)}%`} className="mb-4" />}
             <h2 className="text-lg font-semibold text-fg mb-4">
               {compareMode ? t('compare.investmentA') : t('input.title')}
             </h2>
@@ -654,7 +656,7 @@ export default function CagrCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Primary Result Card */}
           {resultA ? (
-            <div className="bg-primary rounded-xl shadow-lg p-6 text-white">
+            <div id="cagr-calculator-result" className="bg-primary rounded-xl shadow-lg p-6 text-white scroll-mt-20">
               <div className="flex items-start justify-between">
                 <div>
                   {mode === 'cagr' && (() => {

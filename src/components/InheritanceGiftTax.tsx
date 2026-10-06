@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/inheritanceGiftTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   EOK, BRACKETS, RELATIONS, giftTax, giftDeductionLimit, marriageEligible, splitGift, viaParent,
   inheritanceTax, filingDeadline, type Relation, type SpouseMode, type GiftInput, type InheritInput,
@@ -208,6 +209,7 @@ export default function InheritanceGiftTax() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#inheritance-gift-tax-result" label={isGift ? t('u.result.giftLabel', { amount: eokMan(amount), relation: relLabel }) : t('u.result.inheritLabel', { amount: eokMan(estate) })} value={`${won(payable)}${t('u.won')}`} />
             <div className="grid grid-cols-2 gap-2" role="tablist" aria-label={t('u.tabsLabel')}>
               {(['gift', 'inheritance'] as const).map((k) => (
                 <button
@@ -288,7 +290,7 @@ export default function InheritanceGiftTax() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6" aria-live="polite">
+          <div id="inheritance-gift-tax-result" className="ui-card p-6 scroll-mt-20" aria-live="polite">
             <p className="text-sm text-muted">{isGift ? t('u.result.giftLabel', { amount: eokMan(amount), relation: relLabel }) : t('u.result.inheritLabel', { amount: eokMan(estate) })}</p>
             <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(payable)}{t('u.won')}</p>
             <p className="text-sm text-sub mt-2">

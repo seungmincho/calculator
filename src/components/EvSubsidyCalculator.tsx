@@ -8,6 +8,7 @@ import '@/lib/i18n/ns/evSubsidy'
 import { ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   DATA_DATE, GUIDE_YEAR, MODELS, REGIONS, SIDOS, CHARGE_RATES, INCENTIVE_MAX,
   regionByCd, localFor, estimateLocal, estimateNational, calcSubsidy, priceFactor, runningCost,
@@ -187,6 +188,7 @@ export default function EvSubsidyCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-5">
           <div className="ui-card p-6 space-y-4">
+            <MobileResultLink href="#ev-subsidy-result" label={t('ev.row.total')} value={headline} />
             <h2 className="text-base font-semibold text-fg">{t('ev.car.title')}</h2>
             <label className="block">
               <span className="block text-sm font-medium text-body mb-1.5">{t('ev.car.model')}</span>
@@ -319,7 +321,7 @@ export default function EvSubsidyCalculator() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-2 space-y-5">
-          <div className="ui-hero p-6">
+          <div id="ev-subsidy-result" className="ui-hero p-6 scroll-mt-20">
             <div className="text-sm text-white/70">{t('ev.hero.label', { car: carName, region: regionName })}</div>
             <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
             <div className="text-sm text-white/80 mt-2 tabular-nums">

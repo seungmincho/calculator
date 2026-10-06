@@ -39,7 +39,7 @@ async function scan(path) {
       const start = h1 ? y(h1) : 0
       const controls = [...main.querySelectorAll('input:not([type=hidden]), textarea, select, button')].filter(visible).filter(el => y(el) > start)
       const big = [...main.querySelectorAll('[aria-live], .ui-hero, .text-3xl, .text-4xl, .text-5xl, canvas')].filter(visible).filter(el => y(el) > start && (el.tagName === 'CANVAS' || el.textContent.trim()))
-      return { h1: h1?.textContent.trim().slice(0, 30) || '', firstControl: controls[0] ? y(controls[0]) : null, firstResult: big[0] ? y(big[0]) : null, resultText: big[0]?.textContent.trim().slice(0, 30) || big[0]?.tagName || '' }
+      return { wide: document.scrollingElement.scrollWidth, h1: h1?.textContent.trim().slice(0, 30) || '', firstControl: controls[0] ? y(controls[0]) : null, firstResult: big[0] ? y(big[0]) : null, resultText: big[0]?.textContent.trim().slice(0, 30) || big[0]?.tagName || '' }
     }, FOLD)
     out.push({ path, ...r })
   } catch (e) { out.push({ path, error: String(e).slice(0, 80) }) }
@@ -52,4 +52,8 @@ await browser.close(); server.close()
 const below = out.filter(r => !r.error && (r.firstResult == null || r.firstResult > FOLD)).sort((a, b) => (b.firstResult ?? 9999) - (a.firstResult ?? 9999))
 console.log(`scanned ${out.length}, errors ${out.filter(r => r.error).length}, result below fold or none: ${below.length}`)
 for (const r of below) console.log(`${String(r.firstResult ?? '-').padStart(5)}  ctl ${String(r.firstControl ?? '-').padStart(4)}  ${r.path}  ${r.h1} | ${r.resultText}`)
+const wide = out.filter(r => r.wide > 376)
+console.log(`
+horizontal overflow (scrollWidth > 375): ${wide.length}`)
+for (const r of wide) console.log(`${String(r.wide).padStart(5)}  ${r.path}  ${r.h1}`)
 for (const r of out.filter(r => r.error)) console.log('ERR', r.path, r.error)

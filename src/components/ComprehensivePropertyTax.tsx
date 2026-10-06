@@ -8,6 +8,7 @@ import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import '@/lib/i18n/ns/comprehensivePropertyTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import DatePicker from '@/components/ui/DatePicker'
 import {
   holdingTax, type HoldingInput, type Bill, JONGBU_GENERAL, JONGBU_HEAVY, TAX_YEAR, BILL_TOLERANCE,
@@ -179,6 +180,7 @@ export default function ComprehensivePropertyTax() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#comprehensive-property-tax-result" label={t('u.result.label')} value={`${won(r.total)}${t('units.won')}`} />
             <fieldset className="space-y-4">
               <legend className="text-lg font-semibold text-fg mb-1">{t('u.houses.title')}</legend>
               {houses.map((h, idx) => (
@@ -314,7 +316,7 @@ export default function ComprehensivePropertyTax() {
             </section>
           )}
 
-          <section className="ui-card p-6 space-y-5" aria-labelledby="cpt-result-title">
+          <section id="comprehensive-property-tax-result" className="ui-card p-6 space-y-5 scroll-mt-20" aria-labelledby="cpt-result-title">
             <div aria-live="polite">
               <h2 id="cpt-result-title" className="text-sm text-muted">{t('u.result.label')}</h2>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}{t('units.won')}</p>

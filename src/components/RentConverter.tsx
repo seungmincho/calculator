@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/rentConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { RotateCcw } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   BASE_RATE, legalCapRate, jeonseToWolse, wolseToJeonse, rentCreditRate,
@@ -126,6 +127,7 @@ export default function RentConverter() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#rent-converter-result" label={headLabel} value={invalid ? '—' : headline} />
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-fg">{t('settings')}</h2>
               <button onClick={() => setS({ ...DEFAULTS, mode: s.mode })} className="p-2 text-muted hover:text-body" title={t('reset')} aria-label={t('reset')}>
@@ -178,7 +180,7 @@ export default function RentConverter() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6">
+          <div id="rent-converter-result" className="ui-hero p-6 scroll-mt-20">
             <p className="text-sm text-white/70">{headLabel}</p>
             <p className="text-3xl font-bold tabular-nums mt-1">{invalid ? '—' : headline}</p>
             <p className="text-sm text-white/70 mt-2 tabular-nums">

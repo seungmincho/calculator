@@ -9,6 +9,7 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   trade, breakeven, targetSell, averagePrice, sharesToTarget, usTrade, sellTaxRate, US_DEDUCTION,
   MARKETS, type Market, type Lot,
@@ -256,6 +257,7 @@ export default function StockCalculator() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* 입력 */}
         <div className="lg:col-span-2 ui-card p-6 space-y-4">
+          {tab === 'trade' && valid && <MobileResultLink href="#stock-calculator-result" label={t('trade.hero')} value={pct(tr.returnPct)} />}
           {(tab === 'trade' || tab === 'target') && tradeInputs}
           {tab === 'target' && (
             <div>
@@ -322,7 +324,7 @@ export default function StockCalculator() {
         <div className="lg:col-span-3 space-y-4">
           {tab === 'trade' && (valid ? (
             <>
-              <div className={heroCls}>
+              <div id="stock-calculator-result" className={`${heroCls} scroll-mt-20`}>
                 <p className="text-sm text-white/70">{t('trade.hero')}</p>
                 <p className="text-4xl font-bold tabular-nums mt-1">{pct(tr.returnPct)}</p>
                 <p className="text-lg font-semibold tabular-nums mt-1">{t('trade.profit', { amount: signed(tr.profit) })}</p>

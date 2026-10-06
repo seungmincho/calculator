@@ -170,7 +170,7 @@ export default function GradientDescentVisualizer() {
   const [guideOpen, setGuideOpen] = useState(false)
   const animRef = useRef(0)
   const surfaceDarkRef = useRef(false)
-  const surfaceFnRef = useRef(0)
+  const surfaceFnRef = useRef(-1) // -1: 첫 렌더에 반드시 계산(0이면 라이트 모드 기본 함수에서 곡면이 안 그려졌음)
 
   const lossDef = LOSS_FUNCTIONS[lossFnIdx]
   const realLr = Math.pow(10, lr)
@@ -286,8 +286,6 @@ export default function GradientDescentVisualizer() {
     const cssSize = canvasSize
     canvas.width = cssSize * dpr
     canvas.height = cssSize * dpr
-    canvas.style.width = `${cssSize}px`
-    canvas.style.height = `${cssSize}px`
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
     // Surface
@@ -412,12 +410,13 @@ export default function GradientDescentVisualizer() {
   // Canvas click handler
   const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current!.getBoundingClientRect()
-    const px = e.clientX - rect.left
-    const py = e.clientY - rect.top
+    // 모바일에서 캔버스가 CSS로 줄어들므로 화면 좌표를 그리기 좌표(canvasSize)로 환산
+    const px = (e.clientX - rect.left) * canvasSize / rect.width
+    const py = (e.clientY - rect.top) * canvasSize / rect.height
     const [wx, wy] = fromCanvas(px, py)
     setStartPt([Math.round(wx * 100) / 100, Math.round(wy * 100) / 100])
     setRunning(false)
-  }, [fromCanvas])
+  }, [fromCanvas, canvasSize])
 
   // Primary optimizer state for stats
   const primaryKey = comparison ? OPTIMIZERS[0].key : OPTIMIZERS[optimizerIdx].key
@@ -470,7 +469,7 @@ export default function GradientDescentVisualizer() {
         </button>
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Controls */}
         <div className="lg:col-span-1 space-y-4">
           <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
@@ -588,7 +587,7 @@ export default function GradientDescentVisualizer() {
         </div>
 
         {/* Canvas */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 min-w-0">
           <div className={`${glassCard} ${glassInset} p-4`}>
             <canvas
               ref={canvasRef}

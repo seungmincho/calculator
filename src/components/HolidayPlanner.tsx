@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/holidayPlanner'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { plan as makePlan, toIcs, MAX_LEAVE, type Break, type Day, type Mode } from '@/utils/holidayPlanner'
 
 const MODES: Mode[] = ['total', 'long']
@@ -110,6 +111,7 @@ export default function HolidayPlanner() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            <MobileResultLink href="#holiday-planner-result" label={t('summary.label', { year, k: p.leaveUsed })} value={t('summary.headline', { n: p.totalDays })} />
             <div role="group" aria-labelledby="hp-year">
               <p id="hp-year" className="text-sm font-medium text-body mb-2">{t('u.year')}</p>
               <div className="grid grid-cols-2 gap-2">
@@ -164,7 +166,7 @@ export default function HolidayPlanner() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="holiday-planner-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('summary.label', { year, k: p.leaveUsed })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{t('summary.headline', { n: p.totalDays })}</p>

@@ -11,6 +11,7 @@ import {
   classify, classifyA1c, eAG, toMg, toMmol, fmt, validMg, MIN_MG, MAX_MG,
   sanitizeRecords, sortRecords, inPeriod, stats as calcStats, measuredAt, localDate, localTime, csvCell,
 } from '@/utils/bloodSugar'
+import MobileResultLink from '@/components/MobileResultLink'
 
 const STORAGE_KEY = 'bloodSugarRecords' // 형식 변경 없음 (value는 mg/dL)
 const CTX_KEY: Record<Ctx, string> = {
@@ -207,6 +208,7 @@ export default function BloodSugar() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {level && <MobileResultLink href="#blood-sugar-result" label={t('u.heroLabel', { ctx: ctxLabel(ctx) })} value={t(`u.lv.${level.key}`)} />}
             <div>
               <p className="block text-sm font-medium text-body mb-2">{t('timing')}</p>
               <div className="grid grid-cols-2 gap-2">
@@ -283,7 +285,7 @@ export default function BloodSugar() {
         {/* 판정 */}
         <div className="lg:col-span-2 space-y-4">
           {level ? (
-            <div className="ui-hero p-6 sm:p-8" aria-live="polite">
+            <div id="blood-sugar-result" className="ui-hero p-6 sm:p-8 scroll-mt-20" aria-live="polite">
               <p className="text-sm text-white/70">{t('u.heroLabel', { ctx: ctxLabel(ctx) })}</p>
               <p className="mt-1 flex flex-wrap items-baseline gap-x-3">
                 <span className="text-5xl font-bold tabular-nums">{d(mg)}</span>

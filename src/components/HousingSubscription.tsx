@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/housingSubscription'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { todayKST, addYears, isValidDate } from '@/utils/dday'
 import {
   homelessStart, scoreAt, nextHomelessUp, nextSubUp, householdMax, isNewlywed,
@@ -191,6 +192,7 @@ export default function HousingSubscription() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            {r && <MobileResultLink href="#housing-subscription-result" label={t('res.label', { date: dot(ref) })} value={`${r.now.total} ${t('outOf84')}`} />}
             <div className="grid grid-cols-2 gap-1 bg-soft rounded-xl p-1">
               <button type="button" className={seg(mode === 'date')} onClick={() => setMode('date')}>{t('mode.date')}</button>
               <button type="button" className={seg(mode === 'direct')} onClick={() => setMode('direct')}>{t('mode.direct')}</button>
@@ -314,7 +316,7 @@ export default function HousingSubscription() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-6">
+          <div id="housing-subscription-result" className="ui-card p-6 space-y-6 scroll-mt-20">
             {r ? (
               <>
                 <div>

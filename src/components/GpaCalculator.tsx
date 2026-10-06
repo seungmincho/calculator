@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gpaCalculator'
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   type Course, type Semester as BaseSemester, type GpaScale,
   GRADE_VALUES, computeStats, supersededIds, normalizeGrade, requiredAverage, minGradeFor, parseCourses,
@@ -238,6 +239,7 @@ export default function GpaCalculator() {
         <div className="lg:col-span-1 space-y-6">
           {/* Scale */}
           <div className="ui-card p-6">
+            <MobileResultLink href="#gpa-calculator-result" className="mb-4" label={t('result.cumulativeGpa')} value={`${fmt(cumulative.gpa)} / ${maxScale}`} />
             <h2 className="text-lg font-semibold text-fg mb-4">{t('scale')}</h2>
             <div className="flex gap-2">
               <button onClick={() => changeScale('4.5')} className={segBtn(scale === '4.5')}>{t('scale45')}</button>
@@ -342,7 +344,7 @@ export default function GpaCalculator() {
         {/* Right Panel */}
         <div className="lg:col-span-2 space-y-6">
           {/* Cumulative Results */}
-          <div className="ui-card p-6">
+          <div id="gpa-calculator-result" className="ui-card p-6 scroll-mt-20">
             <div className="flex items-baseline justify-between gap-3 mb-4">
               <h2 className="text-lg font-semibold text-fg">{t('result.cumulativeGpa')}</h2>
               {isSample && <span className="text-xs text-muted">{t('sampleNotice')}</span>}

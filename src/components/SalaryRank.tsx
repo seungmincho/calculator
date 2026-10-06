@@ -8,6 +8,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { Check, RotateCcw, BookOpen, ChevronDown, ChevronUp, Loader2, AlertCircle, ChevronRight } from 'lucide-react'
 import { AreaChart, Area, XAxis, ResponsiveContainer, ReferenceLine } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { submitSalarySurvey, getCommunityStats, getCommunityRank, type CommunityStats, type CommunityRank } from '@/utils/salarySurvey'
 import { percentileBelow, toTop, topPercent, nextMilestone, shareBetween, NTS_SOURCE_YEAR } from '@/utils/salaryInsights'
 import { calculateNetSalary } from '@/utils/netSalary'
@@ -217,6 +218,7 @@ export default function SalaryRank() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-4">
           <div className="ui-card p-6 space-y-5">
+            {result && <MobileResultLink href="#salary-rank-result" label={t('heroLabel', { salary: salaryText })} value={t('topValue', { top: result.top })} />}
             <div>
               <label htmlFor="salary-rank-input" className="block text-sm font-medium text-body mb-2">{t('annualSalary')}</label>
               <div className="relative">
@@ -297,7 +299,7 @@ export default function SalaryRank() {
             </div>
           ) : (
             <>
-              <div className="ui-hero p-6 sm:p-8">
+              <div id="salary-rank-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
                 <p className="text-sm opacity-90">{t('heroLabel', { salary: salaryText })}</p>
                 <p className="text-5xl sm:text-6xl font-bold my-2 tabular-nums">{t('topValue', { top: result.top })}</p>
                 {groupLines.length > 0 && <p className="text-base font-semibold">{groupLines.join(' · ')}</p>}

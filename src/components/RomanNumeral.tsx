@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/romanNumeral'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, X, ArrowLeftRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   toRoman, parseRoman, parseNumber, romanParts, unicodeRoman, dateToRoman, looksNumeric, overline,
   MAX_STD, type Reason, type DateOrder,
@@ -143,6 +144,7 @@ export default function RomanNumeral() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            {result.kind === 'ok' && <MobileResultLink href="#roman-numeral-result" label={result.numeric ? t('labelToRoman', { n: result.value.toLocaleString('en-US') }) : t('labelToArabic', { r: result.roman })} value={result.numeric ? result.roman : result.value.toLocaleString('en-US')} />}
             <div>
               <label htmlFor="roman-input" className="block text-sm font-medium text-body mb-2">{t('inputLabel')}</label>
               <div className="relative">
@@ -196,7 +198,7 @@ export default function RomanNumeral() {
 
         <div className="lg:col-span-2 space-y-4" aria-live="polite">
           {result.kind === 'ok' && (
-            <div className="ui-hero p-6">
+            <div id="roman-numeral-result" className="ui-hero p-6 scroll-mt-20">
               <div className="flex items-start justify-between gap-3">
                 <div className="text-sm text-white/70 break-all">
                   {result.numeric

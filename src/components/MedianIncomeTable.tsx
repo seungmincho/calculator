@@ -363,7 +363,10 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
             </div>
 
             <button
-              onClick={() => setShowResult(true)}
+              onClick={() => {
+                setShowResult(true)
+                requestAnimationFrame(() => { if (window.matchMedia('(max-width: 767px)').matches) document.getElementById('median-income-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) })
+              }}
               className="w-full py-3 bg-primary hover:bg-blue-700 text-white font-semibold rounded-lg transition-all"
             >
               수급자격 판정하기
@@ -371,7 +374,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           </div>
 
           {/* 결과 섹션 */}
-          <div className="space-y-4" aria-live="polite">
+          <div id="median-income-result" className="space-y-4 scroll-mt-20" aria-live="polite">
             {result ? (
               <>
                 <h3 className="font-semibold text-fg">판정 결과</h3>

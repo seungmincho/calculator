@@ -10,6 +10,7 @@ import {
 } from 'recharts'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'
+import MobileResultLink from '@/components/MobileResultLink'
 import { todayKST, isValidDate, weekday, addDays } from '@/utils/dday'
 import {
   CYCLES, CLASSIC, type CycleKey, type DayPoint, type Profile, band, rising, dayPoint, series, monthPoints,
@@ -212,6 +213,7 @@ export default function BiorhythmCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            {r && mode === 'single' && <MobileResultLink href="#biorhythm-result" label={heroLabel} value={t('share.headline', { v: signed(r.now.composite) })} />}
             <div className="flex gap-1 p-1 bg-soft rounded-2xl" role="tablist">
               <button role="tab" aria-selected={mode === 'single'} onClick={() => setMode('single')} className={segBtn(mode === 'single')}>{t('mode.single')}</button>
               <button role="tab" aria-selected={mode === 'compat'} onClick={() => setMode('compat')} className={segBtn(mode === 'compat')}>{t('mode.compat')}</button>
@@ -347,7 +349,7 @@ export default function BiorhythmCalculator() {
             )
           ) : (
             <>
-              <div className="ui-hero p-6 sm:p-8">
+              <div id="biorhythm-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
                 <p className="text-sm text-white/70">{heroLabel}</p>
                 <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{t('share.headline', { v: signed(r.now.composite) })}</p>
                 <p className="mt-2 text-white/90">{t(`band.composite.${band(r.now.composite / 100)}`)}</p>

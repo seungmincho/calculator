@@ -162,6 +162,7 @@ export default function GovernmentSubsidyCalculator() {
     }
     const r = calculatePrograms(input)
     setResults(r)
+    requestAnimationFrame(() => { if (window.matchMedia('(max-width: 1023px)').matches) document.getElementById('government-subsidy-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) })
     setInvalidSharedLink(false)
     updateURL({
       basis: input.incomeBasis,
@@ -584,7 +585,7 @@ export default function GovernmentSubsidyCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Summary Card */}
           {summary && (
-            <div className={`${glassCard} ${glassInset} p-6`}>
+            <div id="government-subsidy-result" className={`${glassCard} ${glassInset} p-6 scroll-mt-20`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-fg">
                   {t('result.summaryTitle')}

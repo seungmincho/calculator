@@ -792,7 +792,7 @@ export default function WebserverConfig() {
 
       {/* ═══ 분석 모드 ═══ */}
       {viewMode === 'analyze' && (
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* 입력 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-4`}>
             <div className="flex items-center justify-between">
@@ -921,7 +921,7 @@ export default function WebserverConfig() {
       )}
 
       {/* ═══ 생성 모드 ═══ */}
-      {viewMode === 'generate' && <div className="grid lg:grid-cols-5 gap-6">
+      {viewMode === 'generate' && <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* 왼쪽: 설정 패널 (2/5) */}
         <div className="lg:col-span-2 space-y-4">
           {/* 서버 타입 + 시나리오 */}

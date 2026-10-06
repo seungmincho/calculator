@@ -12,6 +12,7 @@ import {
   dayCount, milestones, sortSaved, monthGrid, type SavedDday, type Milestone,
 } from '@/utils/dday'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 
 type Mode = 'dday' | 'anniv' | 'diff' | 'add'
@@ -234,6 +235,7 @@ const DdayCalculator = () => {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 space-y-6">
             <div className="ui-card p-6 space-y-4">
+              {dday && <MobileResultLink href="#dday-calculator-result" label={displayTitle} value={dday.label} />}
               <div>
                 <label className={label} htmlFor="dday-title">{t('dday.eventName')}</label>
                 <input id="dday-title" type="text" value={title} maxLength={40} onChange={e => setTitle(e.target.value)}
@@ -297,7 +299,7 @@ const DdayCalculator = () => {
           </div>
 
           <div className="lg:col-span-2 space-y-6">
-            <div className="ui-hero p-6 sm:p-8">
+            <div id="dday-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
               <p className="text-white/80 text-sm font-medium truncate">{displayTitle}</p>
               <p className="text-6xl sm:text-7xl font-bold tabular-nums mt-2">{dday ? dday.label : 'D-'}</p>
               {isValidDate(target) && <p className="text-white/90 text-lg font-medium mt-3">{fmt(target)}</p>}

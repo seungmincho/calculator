@@ -748,7 +748,7 @@ export default function SnakeGame() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left panel: Settings / Score */}
         <div className="lg:col-span-1 space-y-4">
           {/* Score panel */}

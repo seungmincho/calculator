@@ -10,6 +10,7 @@ import '@/lib/i18n/ns/workHours'
 import CustomDatePicker from './CustomDatePicker'
 import CustomTimePicker from './CustomTimePicker'
 import ShareResult from './ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { INSURANCE } from '@/utils/insuranceRates'
 import { MIN_WAGE_2026, WEEKS_PER_MONTH, calcPay, legalMinBreak, toMin, weekOf, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM, type Shift } from '@/utils/workHours'
 import { todayKST } from '@/utils/dday'
@@ -355,7 +356,7 @@ export default function WorkHoursCalculator() {
     ]
     return (
       <>
-        <div className="ui-card p-6">
+        <div id="work-hours-calculator-result" className="ui-card p-6 scroll-mt-20">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base font-semibold text-fg">
               {inputMode === 'weekly' ? t('result.weeklyTitle') : t('result.title')}
@@ -493,6 +494,7 @@ export default function WorkHoursCalculator() {
       {activeTab === 'daily' && (
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="ui-card p-6 space-y-5">
+            {result && <MobileResultLink href="#work-hours-calculator-result" label={inputMode === 'weekly' ? t('result.weeklyTitle') : t('result.title')} value={`${fmt(result.totalPay)}${t('share.won')}`} />}
             {/* 시급 */}
             <div>
               <label htmlFor="wh-hourly-wage" className="block text-xs font-medium text-muted mb-1.5">{t('input.hourlyWage')}</label>

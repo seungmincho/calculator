@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/investmentCalculator'
 import { RotateCcw, ArrowRight } from 'lucide-react'
 import { ComposedChart, Area, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   futureValue, yearly, realValue, totalReturnPct, requiredMonthly, requiredRate, requiredMonths,
   fourPercentMonthly, payoutMonthly, compareAccounts, type Compounding, type AgeBand, type PlanInput,
@@ -167,10 +168,11 @@ export default function InvestmentCalculator() {
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
+            {calc && s.mode !== 'goal' && <MobileResultLink href="#investment-calculator-result" label={t('hero.after', { y: s.y })} value={short(calc.last.value)} />}
             {s.mode === 'goal' && field('goal', t('f.target'), { step: 1000, suffix: t('f.unitMan'), hint: short(s.goal * 1e4) })}
             {field('init', t('initialAmount'), { step: 100, suffix: t('f.unitMan'), hint: s.init ? short(s.init * 1e4) : undefined })}
             {s.mode !== 'lump' && field('mon', t('monthlyContribution'), { step: 10, suffix: t('f.unitMan'), hint: s.mon ? short(s.mon * 1e4) : undefined })}
@@ -232,7 +234,7 @@ export default function InvestmentCalculator() {
           {calc && <>
             {s.mode !== 'goal' && (
               <>
-                <div className="ui-hero p-6">
+                <div id="investment-calculator-result" className="ui-hero p-6 scroll-mt-20">
                   <p className="text-sm text-white/70">{heroLabel}</p>
                   <p className="text-sm text-white/90 mt-3">{t('hero.after', { y: s.y })}</p>
                   <p className="text-3xl font-bold tabular-nums">{short(calc.last.value)}</p>

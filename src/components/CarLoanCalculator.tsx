@@ -8,6 +8,7 @@ import '@/lib/i18n/ns/carLoan'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { carLoan, burden, burdenLevel, FUELS, TERMS, MAX_RATE, type Fuel, type CarLoanInput } from '@/utils/carLoan'
 
 const DOWN_PCTS = [0, 20, 30] as const
@@ -131,6 +132,7 @@ export default function CarLoanCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#car-loan-calculator-result" label={t('u.result.label', { price: kor(r.carPrice), months })} value={W(r.monthly)} />
             <h2 className="text-lg font-semibold text-fg">{t('u.car.title')}</h2>
             {money('cl-price', t('u.car.price'), price, setPrice)}
             <div className="grid grid-cols-2 gap-3">
@@ -210,7 +212,7 @@ export default function CarLoanCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <section className="ui-card p-6 space-y-5" aria-labelledby="cl-result-title">
+          <section id="car-loan-calculator-result" className="ui-card p-6 space-y-5 scroll-mt-20" aria-labelledby="cl-result-title">
             <div aria-live="polite">
               <h2 id="cl-result-title" className="text-sm text-muted">{t('u.result.label', { price: kor(r.carPrice), months })}</h2>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{W(r.monthly)}</p>

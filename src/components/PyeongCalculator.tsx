@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/pyeongCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RotateCcw, ArrowRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   M2_PER_PYEONG, FT2_PER_M2, toPyeong, toM2, parseNum, splitArea, popularSizes, perPyeong,
   perM2FromPerPyeong, perPyeongFromPerM2, roomSides, areaBreakdown,
@@ -216,6 +217,7 @@ export default function PyeongCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            {m2 > 0 && <MobileResultLink href="#pyeong-calculator-result" label={t('heroLabel', { type: t(areaType), m2: fmt(m2) || '0' })} value={`${num(pyeong)}${t('pyeong')}`} />}
             <div>
               <span id="pc-method-label" className="block text-sm font-medium text-body mb-2">{t('inputMethod')}</span>
               <div className="flex gap-2" role="group" aria-labelledby="pc-method-label">
@@ -325,7 +327,7 @@ export default function PyeongCalculator() {
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
           <div>
-            <div className="ui-hero p-6" aria-live="polite" aria-atomic="true">
+            <div id="pyeong-calculator-result" className="ui-hero p-6 scroll-mt-20" aria-live="polite" aria-atomic="true">
               <div className="text-sm text-white/70">{t('heroLabel', { type: t(areaType), m2: fmt(m2) || '0' })}</div>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-4xl font-bold tabular-nums">{num(pyeong)}</span>

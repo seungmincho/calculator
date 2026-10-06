@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import MobileResultLink from '@/components/MobileResultLink'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { runningTranslations } from '@/lib/i18n/runningPace'
 import { calculateRunning, formatClock, formatDistance, parseClock, parseDistance, parsePace, type RunningMode } from '@/utils/runningPace'
@@ -79,6 +80,7 @@ export default function RunningPaceCalculator() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] print:block">
         <section aria-labelledby="running-input-title" className="ui-card p-5 sm:p-6 space-y-5 print:hidden">
+          {result && <MobileResultLink href="#running-pace-result" label={t(mode === 'time' ? 'result.pace' : 'result.finish')} value={mode === 'time' ? `${formatClock(result.secondsPerKm)}/km` : formatClock(result.finishSeconds, true)} />}
           <h2 id="running-input-title" className="text-lg font-semibold text-fg">{t('input.title')}</h2>
           <div>
             <p className="mb-2 text-sm font-medium text-body">{t('input.distance')}</p>
@@ -151,7 +153,7 @@ export default function RunningPaceCalculator() {
           </div>
         </section>
 
-        <section aria-labelledby="running-result-title" className="ui-card p-5 sm:p-6 print:border-0 print:shadow-none print:p-0">
+        <section id="running-pace-result" aria-labelledby="running-result-title" className="ui-card p-5 sm:p-6 scroll-mt-20 print:border-0 print:shadow-none print:p-0">
           <div className="flex items-center justify-between gap-3">
             <h2 id="running-result-title" className="text-lg font-semibold text-fg">{t('result.title')}</h2>
             <div className="flex gap-2 print:hidden">

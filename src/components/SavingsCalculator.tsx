@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/savings'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   calc, schedule, requiredAmount, savingToDepositRate, depositToSavingRate,
@@ -125,6 +126,7 @@ export default function SavingsCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 입력 */}
         <div className="ui-card p-6 space-y-5">
+          <MobileResultLink href="#savings-calculator-result" label={t('c.res.maturity', { n: months })} value={`${won(r.maturity)}${t('c.won')}`} />
           <label className="block">
             <span className="block text-sm font-medium text-body mb-2">{t(isSaving ? 'c.in.monthly' : 'c.in.principal')}</span>
             <div className="relative">
@@ -178,7 +180,7 @@ export default function SavingsCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6">
+          <div id="savings-calculator-result" className="ui-card p-6 scroll-mt-20">
             <p className="text-sm text-sub">{t('c.res.maturity', { n: months })}</p>
             <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1">{won(r.maturity)}{t('c.won')}</p>
             <p className="text-sm text-muted mt-1">{t('c.res.gross', { a: won(r.maturityGross) })}</p>

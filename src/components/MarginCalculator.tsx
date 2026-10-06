@@ -86,6 +86,7 @@ import {
   ArrowRightLeft
 } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import MobileResultLink from '@/components/MobileResultLink'
 
 // ── 타입 정의 ──
 
@@ -408,6 +409,7 @@ export default function MarginCalculator() {
         <div className="lg:col-span-1 space-y-4">
           {/* 모드 토글 */}
           <div className={`${glassCard} ${glassInset} p-6 space-y-5`}>
+            {result && <MobileResultLink href="#margin-calculator-result" label={t('result.netProfit')} value={`${formatNumber(result.netProfit)}${t('input.unit')}`} />}
             <div className="flex rounded-lg overflow-hidden border border-line">
               <button
                 onClick={() => setMode('calculate')}
@@ -541,7 +543,7 @@ export default function MarginCalculator() {
           {result ? (
             <>
               {/* 핵심 지표 카드 4개 */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div id="margin-calculator-result" className="grid grid-cols-2 md:grid-cols-4 gap-4 scroll-mt-20">
                 {/* 순이익 */}
                 <MetricCard
                   icon={<DollarSign className="w-5 h-5" />}

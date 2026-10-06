@@ -7,6 +7,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Download, Printer, ChevronDown, ChevronRight, RotateCcw, ArrowRight } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import { schedule, yearly, payDate, type Method, type PrepayMode, type LoanInput, type LoanResult } from '@/utils/loanSchedule'
 
@@ -176,10 +177,11 @@ export default function LoanSchedule() {
         </a>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6 print:hidden">
           <div className="ui-card p-6 space-y-4">
+            {hero && <MobileResultLink href="#loan-schedule-result" label={hero.label} value={hero.value} />}
             {field('am', t('loanAmount'), { step: 1000, suffix: t('unitManwon'), hint: short(s.am * 1e4) })}
             {field('r', t('annualRate'), { step: 0.05, suffix: '%', max: 30 })}
             <div>
@@ -259,7 +261,7 @@ export default function LoanSchedule() {
           {!valid && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{s.gr >= months && months > 0 ? t('warn.graceTooLong') : t('warn.invalid')}</div>}
 
           {res && hero && <>
-            <div className="ui-hero p-6">
+            <div id="loan-schedule-result" className="ui-hero p-6 scroll-mt-20">
               <p className="text-sm text-white/70">{t('hero.label', { amount: short(s.am * 1e4), rate: s.r, term: termText(months), method: methodName(s.m) })}</p>
               <p className="text-sm text-white/90 mt-3">{hero.label}</p>
               <p className="text-3xl font-bold tabular-nums">{hero.value}</p>
@@ -504,7 +506,7 @@ export default function LoanSchedule() {
           <button type="button" onClick={() => set('cmp', s.cmp ? 0 : 1)} className={chip(!!s.cmp)} aria-pressed={!!s.cmp}>{t('cmp.toggle')}</button>
         </div>
         {!!s.cmp && (
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="space-y-4 bg-subtle rounded-2xl p-5">
               <p className="font-semibold text-fg">{t('loanB')}</p>
               {field('bam', t('loanAmount'), { step: 1000, suffix: t('unitManwon'), hint: short(s.bam * 1e4) })}

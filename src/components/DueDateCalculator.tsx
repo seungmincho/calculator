@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/dueDateCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { todayKST, isValidDate, addDays, daysBetween, weekday, ddayLabel } from '@/utils/dday'
 import {
   dueDate, gestAge, trimester, koreanMonth, progress, lmpOf, checkupDates, CHECKUPS,
@@ -126,6 +127,7 @@ export default function DueDateCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {r && <MobileResultLink href="#due-date-result" label={t('u.eddLabel')} value={fmt(r.edd)} />}
             <div>
               <p className="text-sm font-medium text-body mb-2">{t('calcMethod')}</p>
               <div className="grid grid-cols-2 gap-2" role="radiogroup">
@@ -218,7 +220,7 @@ export default function DueDateCalculator() {
             <div className="ui-card p-6 text-center text-muted">{t('u.enterDate')}</div>
           ) : (
             <>
-              <div className="ui-hero p-6 sm:p-8">
+              <div id="due-date-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
                 <p className="text-sm text-white/70">{t('u.eddLabel')}</p>
                 <p className="text-3xl sm:text-4xl font-bold mt-1 tabular-nums">{fmt(r.edd)}</p>
                 <p className="text-sm text-white/80 mt-1">

@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/ovulationCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import GuideSection from '@/components/GuideSection'
+import MobileResultLink from '@/components/MobileResultLink'
 import { Minus, Plus, X, Download } from 'lucide-react'
 import { todayKST, isValidDate, addDays, daysBetween, weekday, monthGrid, ddayLabel } from '@/utils/dday'
 import { dueDate } from '@/utils/dueDate'
@@ -197,6 +198,7 @@ export default function OvulationCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-4">
           <div className="ui-card p-6 space-y-5">
+            {r && <MobileResultLink href="#ovulation-calculator-result" label={t('nextPeriod')} value={fmtFull(r.cur.nextStart)} />}
             <div role="group" aria-labelledby="ov-last">
               <p id="ov-last" className="text-sm font-medium text-body mb-2">{t('lastPeriod')}</p>
               <DatePicker
@@ -270,7 +272,7 @@ export default function OvulationCalculator() {
             <div className="ui-card p-6 text-center text-muted">{t('enterDate')}</div>
           ) : (
             <>
-              <div className="ui-hero p-6 sm:p-8" aria-live="polite">
+              <div id="ovulation-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20" aria-live="polite">
                 <p className="text-sm text-white/70">{t('nextPeriod')}</p>
                 <p className="text-3xl sm:text-4xl font-bold mt-1 tabular-nums">{fmtFull(r.cur.nextStart)}</p>
                 <p className="text-sm text-white/80 mt-1 tabular-nums">{ddayLabel(daysBetween(today, r.cur.nextStart))}</p>

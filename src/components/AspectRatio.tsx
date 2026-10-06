@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/aspectRatio'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { ArrowLeftRight, Lock, Unlock, Copy, Check, Upload, Download, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { reduceRatio, nearestCommon, parseRatio, resolutionLadder, fitImage } from '@/utils/aspectRatio'
 
 /*
@@ -240,10 +241,11 @@ export default function AspectRatio() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            {valid && <MobileResultLink href="#aspect-ratio-result" label={t('hero.label', { w, h })} value={ratioStr} />}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="ar-w" className="block text-sm font-medium text-body mb-2">{t('width')}</label>
@@ -321,7 +323,7 @@ export default function AspectRatio() {
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
           {valid ? (
-            <div className="ui-hero p-6">
+            <div id="aspect-ratio-result" className="ui-hero p-6 scroll-mt-20">
               <div className="text-sm text-white/70 tabular-nums">{t('hero.label', { w, h })}</div>
               <div className="text-5xl font-bold tabular-nums mt-1">{ratioStr}</div>
               {near && !near.exact && (

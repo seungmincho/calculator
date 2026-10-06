@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/llmTokenCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Upload, Trash2, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   MODELS, VENDORS, VENDOR_IDS, FX_DEFAULT, textStats, estimateTokens, scenarioCost, contextFit, compareModels,
   fmtUSD, fmtKRW, fmtTokens, toMarkdown, type LlmModel, type VendorId, type Scenario, type Tokenizer,
@@ -146,6 +147,7 @@ export default function LlmTokenCalculator() {
         {/* 설정 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#llm-token-calculator-result" label={t('hero.label', { model: model.name })} value={krw(cost.monthly.total)} />
             <label className="block">
               <span className="block text-sm font-medium text-body mb-1">{t('selectedModel')}</span>
               <select value={s.m} onChange={(e) => set('m', e.target.value)} className="ui-field w-full px-4 py-3">
@@ -192,7 +194,7 @@ export default function LlmTokenCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6">
+          <div id="llm-token-calculator-result" className="ui-hero p-6 scroll-mt-20">
             <p className="text-sm text-white/70">{t('hero.label', { model: model.name })}</p>
             <p className="text-3xl font-bold tabular-nums mt-1">{krw(cost.monthly.total)}</p>
             <p className="text-sm text-white/70 mt-1 tabular-nums">

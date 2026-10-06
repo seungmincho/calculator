@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/hometownDonation'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import { TAX_YEAR } from '@/utils/yearEndTax'
 import { donate, breakEven, curve, compare, chartMax, CAP, PRESETS } from '@/utils/hometownDonation'
@@ -112,6 +113,7 @@ export default function HometownDonationCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#hometown-donation-result" label={t('result.label')} value={costText(r.cost)} />
             <div>
               <MoneyInput id="hd-amount" label={t('amount')} value={amount} onChange={setAmount} unit={W} max={CAP} hint={t('amountHint')} />
               <div className="flex flex-wrap gap-1.5 mt-2">
@@ -132,7 +134,7 @@ export default function HometownDonationCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="hometown-donation-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('result.label')}</p>
               <p className={`text-3xl font-bold tabular-nums mt-1 ${gain ? 'text-primary' : 'text-fg'}`}>{costText(r.cost)}</p>

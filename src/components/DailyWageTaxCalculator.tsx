@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/dailyWageTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calcDailyWageTax, compare33, socialEstimate, MAX_DAYS, MEAL_MONTHLY_CAP, type PayMode } from '@/utils/dailyWageTax'
 
 const MODES = ['day', 'week', 'month'] as const
@@ -121,6 +122,7 @@ export default function DailyWageTaxCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#daily-wage-tax-result" label={t('u.result.label', { days: r.days })} value={`${won(r.net)}${W}`} />
             <div>
               <label htmlFor="dw-wage" className="block text-sm font-medium text-body mb-2">{t('u.wage')}</label>
               <div className="relative">
@@ -199,7 +201,7 @@ export default function DailyWageTaxCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="daily-wage-tax-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('u.result.label', { days: r.days })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.net)}{W}</p>

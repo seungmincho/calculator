@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/healthCheckup'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { MEMBERS, CANCER_CYCLE, checkup, daysLeft, sameParity, type Sex, type Member, type Extra } from '@/utils/healthCheckup'
 
 const YEARS = [2026, 2027] as const
@@ -108,6 +109,7 @@ export default function HealthCheckup() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#health-checkup-result" label={t('res.label', { year, by: birthYear, age })} value={t(`res.${status}`, { year })} />
             <div>
               <label htmlFor="hc-birth" className="block text-sm font-medium text-body mb-2">{t('in.birth')}</label>
               <select id="hc-birth" value={birthYear} onChange={(e) => setBirthYear(Number(e.target.value))} aria-describedby="hc-birth-hint" className="ui-field w-full px-4 py-3">
@@ -139,7 +141,7 @@ export default function HealthCheckup() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div ref={resultRef} className="ui-card p-6 space-y-5 scroll-mt-24">
+          <div ref={resultRef} id="health-checkup-result" className="ui-card p-6 space-y-5 scroll-mt-24">
             <div aria-live="polite" aria-atomic="true">
               <p className="text-sm text-muted">{t('res.label', { year, by: birthYear, age })}</p>
               <p className="mt-1 flex items-center gap-2 text-2xl sm:text-3xl font-bold text-fg">

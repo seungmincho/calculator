@@ -7,6 +7,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pensionCalculator'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { INSURANCE, pct } from '@/utils/insuranceRates'
 import { A_VALUE, INCOME_CAP, INCOME_FLOOR, NEW_COEF, YEAR, ageInput, calcPension } from '@/utils/nationalPension'
 
@@ -73,6 +74,7 @@ export default function PensionCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {r?.eligible && <MobileResultLink href="#pension-calculator-result" label={t('resultTitle')} value={amount(r.basic)} />}
             <div>
               <label htmlFor="pc-age" className="block text-sm font-medium text-body mb-2">{t('currentAge')}</label>
               <div className="flex items-center gap-2">
@@ -113,7 +115,7 @@ export default function PensionCalculator() {
         {/* 결과 */}
         <div className="lg:col-span-2">
           {r ? (
-            <div className="ui-card p-6 space-y-5" aria-live="polite">
+            <div id="pension-calculator-result" className="ui-card p-6 space-y-5 scroll-mt-20" aria-live="polite">
               {r.eligible ? (
                 <div>
                   <p className="text-sm text-muted">{t('resultTitle')} · {t('startAgeNote', { age: r.startAge })}</p>

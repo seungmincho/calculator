@@ -5,6 +5,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/installmentCalc'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calcInstallment } from '@/utils/cardInstallment'
 
 type Plan = 'normal' | 'free' | 'partial'
@@ -81,10 +82,11 @@ export default function InstallmentCalc() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Settings */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            {result && last && <MobileResultLink href="#installment-calculator-result" label={t('result.firstPayment')} value={`${won(result.firstPayment)}${t('result.won')}`} />}
             <div>
               <label htmlFor="ic-amount" className="block text-sm font-medium text-body mb-2">{t('totalAmount')}</label>
               <input id="ic-amount" type="number" inputMode="numeric" min="0" value={totalAmount}
@@ -136,7 +138,7 @@ export default function InstallmentCalc() {
         {/* Results */}
         <div className="lg:col-span-2 space-y-6">
           {result && last && (
-            <div className="ui-card p-6">
+            <div id="installment-calculator-result" className="ui-card p-6 scroll-mt-20">
               <h2 className="font-semibold text-fg mb-4">{t('result.title')}</h2>
               <div className="text-sm text-muted">{t('result.firstPayment')}</div>
               <div className="text-3xl font-bold text-fg tabular-nums" aria-live="polite">{won(result.firstPayment)}{t('result.won')}</div>

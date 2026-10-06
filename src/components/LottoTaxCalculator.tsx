@@ -127,6 +127,11 @@ const COMPARISON_AMOUNTS = [
 
 const PIE_COLORS = ['#22c55e', '#ef4444']
 
+// 모바일(1열)에서는 결과 카드가 입력 아래라, 계산 버튼을 누르면 결과로 내린다
+const scrollToResult = () => requestAnimationFrame(() => {
+  if (window.matchMedia('(max-width: 1023px)').matches) document.getElementById('lotto-tax-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+})
+
 export default function LottoTaxCalculator() {
   const t = useTranslations('lottoTax')
   const router = useRouter()
@@ -166,6 +171,7 @@ export default function LottoTaxCalculator() {
     const res = calculateLottoTax(prize)
     setResult(res)
     updateURL(String(prize))
+    scrollToResult()
   }, [prizeInput, updateURL])
 
   const handleQuickAmount = useCallback((value: number) => {
@@ -173,6 +179,7 @@ export default function LottoTaxCalculator() {
     const res = calculateLottoTax(value)
     setResult(res)
     updateURL(String(value))
+    scrollToResult()
   }, [updateURL])
 
   const handleReset = useCallback(() => {
@@ -344,7 +351,7 @@ export default function LottoTaxCalculator() {
           ) : (
             <>
               {/* Main result card */}
-              <div className={`${glassCard} ${glassInset} overflow-hidden`} aria-live="polite">
+              <div id="lotto-tax-result" className={`${glassCard} ${glassInset} overflow-hidden scroll-mt-20`} aria-live="polite">
                 <div className="bg-primary px-6 py-3">
                   <h2 className="text-white font-semibold">{t('result')}</h2>
                 </div>

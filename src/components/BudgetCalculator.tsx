@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/budgetCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { ChevronLeft, ChevronRight, Download, Trash2, Undo2 } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calculateNetSalary } from '@/utils/netSalary'
 import {
   CATEGORY_IDS, DEFAULT_INCOME, DEFAULT_PLAN, RULES, analyze, fillByRule, monthStatus, emergencyGoal,
@@ -238,6 +239,7 @@ export default function BudgetCalculator() {
         {/* ── 왼쪽: 수입 · 비상금 · 저장 ── */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
+            <MobileResultLink href="#budget-calculator-result" label={t('hero.label', { income: fmt(income) })} value={t('hero.rate', { n: rate })} />
             <h2 className="text-lg font-semibold text-fg">{t('income.title')}</h2>
             <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('income.title')}>
               <button className={seg(plan.mode === 'net')} onClick={() => edit({ mode: 'net' })}>{t('income.modeNet')}</button>
@@ -341,7 +343,7 @@ export default function BudgetCalculator() {
 
         {/* ── 오른쪽: 판정 · 예산 짜기 ── */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6 sm:p-8">
+          <div id="budget-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
             <p className="text-sm text-white/70">{t('hero.label', { income: fmt(income) })}</p>
             <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{t('hero.rate', { n: rate })}</p>
             <p className="mt-2 text-white/90">{verdictText}</p>

@@ -7,6 +7,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Plus, Trash2, Link2, Search } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   ACTIVITIES, CATEGORIES, FOODS, STEP_PACES, FAT_KCAL_PER_KG,
   findActivity, findFood, kcal, netKcal, harrisBenedict, rmrMl, correctedMet, personalNetKcal,
@@ -231,6 +232,7 @@ export default function ExerciseCalorie() {
         <div className="grid lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2 space-y-4">
             <div className="ui-card p-6 space-y-5">
+              <MobileResultLink href="#exercise-calorie-result" label={heroLabel} value={t('hero.value', { kcal: n0(calc.gross) })} />
               {weightField}
               <div>
                 <label htmlFor="ec-min" className="block text-sm font-medium text-body mb-1.5">
@@ -304,7 +306,7 @@ export default function ExerciseCalorie() {
           </div>
 
           <div className="lg:col-span-3 space-y-4">
-            <div className="ui-hero p-6">
+            <div id="exercise-calorie-result" className="ui-hero p-6 scroll-mt-20">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-sm text-white/70">{heroLabel}</p>
                 <CopyBtn text={shareText} id="hero" />

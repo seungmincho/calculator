@@ -8,6 +8,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/compoundCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   simulate, simpleInterest, doublingYears, rule72, effectiveAnnual, annualizedReturn, realValue, realRate,
@@ -180,6 +181,7 @@ export default function CompoundCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 입력 */}
         <div className="ui-card p-6 space-y-5 self-start">
+          <MobileResultLink href="#compound-calculator-result" label={isGoal ? t(solve === 'monthly' ? 'c.res.goalMonthly' : 'c.res.goalRate', { n, g: won(goal) }) : t('c.res.value', { n })} value={isGoal ? goalHeadline : `${won(res.value)}${t('c.won')}`} />
           {isGoal && (
             <>
               {money('goal', goalText, setGoalText, t('c.in.goal'))}
@@ -253,7 +255,7 @@ export default function CompoundCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6">
+          <div id="compound-calculator-result" className="ui-card p-6 scroll-mt-20">
             {isGoal && (
               <div className="mb-5 pb-5 border-b border-line">
                 <p className="text-sm text-sub">{t(solve === 'monthly' ? 'c.res.goalMonthly' : 'c.res.goalRate', { n, g: won(goal) })}</p>

@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/unitConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, ArrowUpDown, Search, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   CATEGORIES, TRADITIONAL, convert, findUnit, formatNum, isLinear, parseInput, searchUnits, unitsOf,
@@ -215,6 +216,7 @@ export default function UnitConverter() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
+            {s.c !== 'traditional' && from && to && valid && Number.isFinite(result) && <MobileResultLink href="#unit-converter-result" label={`${fmt(value)} ${from.sym} =`} value={`${fmt(result)} ${to.sym}`} />}
             <div>
               <label htmlFor="uc-value" className="block text-sm font-medium text-body mb-2">{t('value')}</label>
               <input
@@ -274,7 +276,7 @@ export default function UnitConverter() {
 
           {/* 대표 결과 */}
           {s.c !== 'traditional' && from && to && (
-            <div className="ui-card p-6 space-y-3">
+            <div id="unit-converter-result" className="ui-card p-6 space-y-3 scroll-mt-20">
               <p className="text-sm text-muted">{fmt(value)} {from.sym} =</p>
               <div className="flex items-start justify-between gap-2">
                 <p className="text-3xl font-bold text-fg tabular-nums break-all">

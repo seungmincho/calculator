@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/freelancerTax'
 import { AlertCircle, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   BRACKETS, INDUSTRIES, industryOf, eligibleMethod, isDoubleEntry, calc, withholding33, grossFromNet,
   nextFiling, SIMPLE_PREV_LIMIT, type Method,
@@ -109,6 +110,7 @@ export default function FreelancerTax() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-4">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#freelancer-tax-result" label={t('ft.hero.label', { year: taxYear, rev: won(rev) })} value={headline} />
             <Money label={t('ft.in.revenue')} value={revenue} onChange={setRevenue} hint={t('ft.in.revenueHint')} unit={t('ft.won')} />
 
             <div>
@@ -174,7 +176,7 @@ export default function FreelancerTax() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6">
+          <div id="freelancer-tax-result" className="ui-hero p-6 scroll-mt-20">
             <div className="text-sm text-white/70">{t('ft.hero.label', { year: taxYear, rev: won(rev) })}</div>
             <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
             <div className="text-sm text-white/80 mt-2 tabular-nums">

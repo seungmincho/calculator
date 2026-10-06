@@ -32,6 +32,7 @@ import DatePicker from '@/components/ui/DatePicker'
 import GuideSection from '@/components/GuideSectionContent'
 import { fuelPriceFallback } from '@/utils/fuelPriceFallback'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 
 type FuelType = 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
 
@@ -793,6 +794,7 @@ const FuelCalculator = () => {
           <div className="lg:col-span-1 space-y-6">
             {/* 주행 정보 */}
             <div className={`ui-card p-6`}>
+              {calculation && <MobileResultLink href="#fuel-calculator-result" className="mb-4" label={roundTrip ? t('result.settlementRoundTrip') : t('result.settlement')} value={`${won(calculation.settlement)}${t('share.won')}`} />}
               <h2 className="text-xl font-semibold text-fg mb-4">
                 {t('input.tripInfo')}
               </h2>
@@ -1144,7 +1146,7 @@ const FuelCalculator = () => {
             {calculation ? (
               <>
                 {/* 정산 결과 */}
-                <div className="ui-card p-6">
+                <div id="fuel-calculator-result" className="ui-card p-6 scroll-mt-20">
                   <p className="text-sm font-medium text-muted">
                     {roundTrip ? t('result.settlementRoundTrip') : t('result.settlement')}
                   </p>

@@ -167,6 +167,7 @@ export default function YouthRentSubsidyCalculator() {
       return
     }
     setResult(evaluateYouth(form))
+    requestAnimationFrame(() => { if (window.matchMedia('(max-width: 1023px)').matches) document.getElementById('youth-rent-subsidy-result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) })
 
     updateURL({
       age,
@@ -684,7 +685,7 @@ export default function YouthRentSubsidyCalculator() {
           ) : (
             <>
               {/* Eligibility Badge */}
-              <div className={`rounded-xl shadow-lg p-6 ${result.eligible
+              <div id="youth-rent-subsidy-result" className={`scroll-mt-20 rounded-xl shadow-lg p-6 ${result.eligible
                 ? 'bg-subtle border-2 border-line'
                 : 'bg-subtle border-2 border-red-200 dark:border-red-800'
               }`}>

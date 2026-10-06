@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/rentalYield'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   calcRental, rentForTarget, priceForTarget, sensitivity, SENS_VACANCY,
   type RentalInput, type PropType, type Repay, type HouseCount,
@@ -223,6 +224,7 @@ export default function RentalYieldCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#rental-yield-result" label={t('result.label', { type: typeLabel })} value={pct(r.net)} />
             <div>
               <p className="text-sm font-medium text-body mb-2">{t('in.type')}</p>
               <Segmented label={t('in.type')} options={TYPES} value={inp.type} onChange={set('type')} render={(v) => t(`type.${v}`)} />
@@ -287,7 +289,7 @@ export default function RentalYieldCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="rental-yield-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('result.label', { type: typeLabel })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{pct(r.net)}</p>

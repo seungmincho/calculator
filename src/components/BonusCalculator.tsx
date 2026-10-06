@@ -8,6 +8,7 @@ import { RotateCcw } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calculateBonusTax, type BonusDeductions } from '@/utils/bonusTax'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
@@ -143,6 +144,7 @@ export default function BonusCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5 lg:sticky lg:top-24">
+            {r && <MobileResultLink href="#bonus-calculator-result" label={t('result.finalNet')} value={`${fmt(r.final.net)}${t('chart.won')}`} />}
             <div>
               <label className={label}>{t('annualSalary')}</label>
               <input type="text" inputMode="numeric" value={salary} onChange={e => setSalary(formatInput(e.target.value))}
@@ -231,7 +233,7 @@ export default function BonusCalculator() {
           ) : (
             <>
               {/* 핵심 결과: 이번 달 vs 최종 */}
-              <div className="ui-hero p-6">
+              <div id="bonus-calculator-result" className="ui-hero p-6 scroll-mt-20">
                 <p className="text-sm text-white/70">{t('result.bonusGross')} {fmt(r.bonus)}{t('chart.won')}</p>
                 <div className="grid sm:grid-cols-2 gap-6 mt-4">
                   <div>

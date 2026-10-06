@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/parkingFee'
 import { Plus, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   PRESETS, SEOUL_SOURCE, calcFee, nextIncrease, timeline, parseLocal, minutesBetween, clockAt, encodeRule, decodeRule,
   type FeeRule, type PresetKey,
@@ -143,6 +144,7 @@ export default function ParkingFee() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
+            {res && <MobileResultLink href="#parking-fee-result" label={heroLabel} value={`${won(res.fee)}${t('result.won')}`} />}
             <h2 className="text-lg font-semibold text-fg">{t('duration')}</h2>
             <div className="grid grid-cols-2 gap-2">
               <button className={seg(mode === 'dur')} onClick={() => setMode('dur')}>{t('mode.duration')}</button>
@@ -198,7 +200,7 @@ export default function ParkingFee() {
         <div className="lg:col-span-2 space-y-6">
           {res ? (
             <>
-              <div className="ui-hero p-6">
+              <div id="parking-fee-result" className="ui-hero p-6 scroll-mt-20">
                 <div className="text-sm text-white/70">{heroLabel}</div>
                 <div className="text-4xl font-bold mt-2 tabular-nums">{won(res.fee)}{t('result.won')}</div>
                 <div className="text-sm text-white/80 mt-2">

@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/vatCalculator'
 import { Copy, Check, Plus, Trash2, Link2 } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   fromSupply, fromTotal, fromVat, invoice, encodeLines, decodeLines, generalReturn, simpleReturn, nextDeadline,
@@ -197,6 +198,7 @@ export default function VatCalculator() {
       {tab === 'quick' && (
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#vat-calculator-result" label={heroLabel} value={`${won(heroValue)}${t('won')}`} />
             <div>
               <span className="block text-sm font-medium text-body mb-1.5">{t('calcMode')}</span>
               <div className="grid grid-cols-1 gap-1.5">
@@ -219,7 +221,7 @@ export default function VatCalculator() {
           </div>
 
           <div className="lg:col-span-2 space-y-4">
-            <div className="ui-hero p-6">
+            <div id="vat-calculator-result" className="ui-hero p-6 scroll-mt-20">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-sm text-white/70">{heroLabel}</p>
                 <CopyBtn text={String(heroValue)} id="hero" onHero />

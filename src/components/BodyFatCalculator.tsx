@@ -9,6 +9,7 @@ import '@/lib/i18n/ns/bodyFat'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   METHODS, ERR, ACE, CATEGORIES, ABDOMINAL, estimate, category, healthyRange, healthyStatus, composition, targetWeight,
   weeksToLose, abdominalObese, whtr, bmi, bmiClass, parseMethod, sanitizeLog, upsertLog, logDelta, LOG_KEY,
@@ -126,6 +127,7 @@ export default function BodyFatCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {bf != null && used && comp && cat && <MobileResultLink href="#body-fat-calculator-result" label={t('u.heroLabel', { method: t(`u.m.${used}.name`) })} value={`${f1(bf)}%`} />}
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('input.gender')}</label>
               <div className="grid grid-cols-2 gap-2">
@@ -174,7 +176,7 @@ export default function BodyFatCalculator() {
             </div>
           ) : (
             <>
-              <div className="ui-hero p-6 sm:p-8">
+              <div id="body-fat-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
                 <p className="text-sm text-white/70">{t('u.heroLabel', { method: t(`u.m.${used}.name`) })}</p>
                 <p className="text-5xl font-bold mt-1 tabular-nums">{f1(bf)}%</p>
                 <p className="text-sm text-white/80 mt-2">

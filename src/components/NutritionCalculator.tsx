@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/nutritionCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Search, Plus, Trash2, Copy, Check, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   FOODS, CATEGORIES, DV, AMDR, PORTIONS, MAX_AMOUNT, DEFAULT_MEAL,
   scale, per100, sum, macroRatio, ratioStatus, dvPct, encodeMeal, decodeMeal, norm,
@@ -136,6 +137,7 @@ export default function NutritionCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* ── 음식 고르기 ── */}
         <section className="lg:col-span-2 ui-card p-4 sm:p-5 space-y-4">
+          <MobileResultLink href="#nutrition-calculator-result" label={t('u.heroLabel')} value={`${fmt(total.cal)} kcal`} />
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />
             <input
@@ -206,7 +208,7 @@ export default function NutritionCalculator() {
 
         {/* ── 결과 + 내 식단 ── */}
         <div className="space-y-4">
-          <div className="ui-hero p-6">
+          <div id="nutrition-calculator-result" className="ui-hero p-6 scroll-mt-20">
             <p className="text-sm text-white/70">{t('u.heroLabel')}</p>
             <p className="text-4xl font-bold mt-1 tabular-nums">{fmt(total.cal)}<span className="text-xl font-semibold"> kcal</span></p>
             <p className="text-sm text-white/80 mt-1">{t('u.heroSub', { pct: Math.round(pct.cal), n: entries.length })}</p>

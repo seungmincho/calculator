@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/carMaintenance'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { CalendarPlus, Check, RotateCcw, Save, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import {
   FUELS, ITEMS, schedule, annualCost, autoTax, buildIcs, encodeCar, decodeCar,
@@ -441,6 +442,7 @@ export default function CarMaintenance() {
           {/* ── 유지비 입력 ── */}
           <div className="lg:col-span-1 space-y-6">
             <div className="ui-card p-6 space-y-4">
+              <MobileResultLink href="#car-maintenance-result" label={t('annualTotal')} value={won(annualTotal)} />
               <h2 className="text-lg font-semibold text-fg">{t('vehicleInfo')}</h2>
               <div>
                 <label htmlFor="cm-vt" className={label}>{t('vehicleType')}</label>
@@ -524,7 +526,7 @@ export default function CarMaintenance() {
 
           {/* ── 유지비 결과 ── */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="ui-hero p-6">
+            <div id="car-maintenance-result" className="ui-hero p-6 scroll-mt-20">
               <p className="text-sm text-white/70">{t('annualTotal')}</p>
               <p className="text-3xl font-bold mt-1 tabular-nums">{won(annualTotal)}</p>
               <div className="grid grid-cols-2 gap-3 mt-5 text-sm">

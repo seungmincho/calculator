@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/discountCalculator'
 import { Tag, Copy, Check, RotateCcw, Plus, Percent, X, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import MobileResultLink from '@/components/MobileResultLink'
 
 type CalculationMode = 'discountRate' | 'finalPrice' | 'discountAmount'
 
@@ -231,6 +232,7 @@ export default function DiscountCalculator() {
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+            {!invalidFinalPrice && <MobileResultLink href="#discount-calculator-result" label={t('finalPrice')} value={`₩${formatCurrency(result.final)}`} />}
             {/* Mode Tabs */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
@@ -481,7 +483,7 @@ export default function DiscountCalculator() {
 
         {/* Right Panel - Results */}
         <div className="lg:col-span-2">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
+          <div id="discount-calculator-result" className={`${glassCard} ${glassInset} p-6 space-y-6 scroll-mt-20`}>
             {invalidFinalPrice && <p id="discount-final-price-error" role="alert" className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">{t('finalPriceAboveOriginal')}</p>}
             {/* Result Cards Grid */}
             <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${invalidFinalPrice ? 'hidden' : ''}`}>
