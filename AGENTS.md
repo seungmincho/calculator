@@ -78,6 +78,8 @@ npm run wrangler:dev         # out/ 을 Cloudflare Pages 로컬로 띄운다
 - 강조: 선택된 탭·세그먼트·칩은 `bg-primary text-white`, 선택된 옵션 카드·항목은 `bg-primary-soft text-primary`
   (+`border-primary`). 선택 상태를 회색으로 두지 않는다. 첫 화면에 기본값으로 결과가 보이게 한다.
 - 그림자는 팝오버·모달에만. 팔레트: gray/slate = 토스 그레이, blue = #3182F6, indigo·violet·purple → blue. 폰트 Pretendard.
+- 모바일에서 입력 카드가 결과 카드 위에 쌓여 결과가 첫 화면 밖이면 입력 카드 맨 위에 `<MobileResultLink href="#<slug>-result" label value />`
+  (`src/components/MobileResultLink.tsx`), 결과 카드에 `id` + `scroll-mt-20`. 빌드 후 `node scripts/check-mobile-fold.mjs` 로 확인.
 - 결과가 있는 도구는 결과 카드 아래에 `<ShareResult card={{ tool, label, headline, sub?, rows? }} />`
   (`src/components/ShareResult.tsx`)를 붙이고, URL 파라미터로 결과가 재현되게 한다.
 - 금지: 장식용 이모지(제목·버튼·라벨 앞), 라벨·섹션 제목 앞 아이콘, 색 틴트 박스(`bg-green-50` 등 — 정보 박스는
