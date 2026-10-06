@@ -6,6 +6,7 @@ import { Save } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import CalculationHistory from './CalculationHistory'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/calorie'
@@ -192,6 +193,7 @@ export default function CalorieCalculator() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* ── 입력 ── */}
         <div className="lg:col-span-2 ui-card p-6 space-y-6">
+          <MobileResultLink href="#calorie-calculator-result" label={heroLabel} value={`${n0(res.kcal)} kcal`} />
           <div>
             <p className="text-sm font-medium text-body mb-1.5">{t('input.gender')}</p>
             <div className="flex gap-2">
@@ -284,7 +286,7 @@ export default function CalorieCalculator() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-3 space-y-4 min-w-0">
-          <div className="ui-hero p-6">
+          <div id="calorie-calculator-result" className="ui-hero p-6 scroll-mt-20">
             <p className="text-sm text-white/70">{heroLabel}</p>
             <p className="text-4xl font-bold tabular-nums mt-1">{n0(res.kcal)} kcal</p>
             <p className="text-sm text-white/70 mt-2">{heroSub}</p>

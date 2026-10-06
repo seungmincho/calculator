@@ -15,6 +15,7 @@ import '@/lib/i18n/ns/yearEndTaxCalc'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calculateNetSalary } from '@/utils/netSalary'
 import {
   calc, tips, autoInsurance, annualize, annualSpend, cardThresholdGap, q4Strategy, pensionTopUp, pensionRate,
@@ -214,6 +215,7 @@ export default function YearEndTaxCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-2 space-y-4">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#year-end-tax-result" label={t('yt.hero.label', { year: TAX_YEAR, salary: man(r.salary), salaryWon: won(r.salary) })} value={<span className="text-lg">{headline}</span>} />
             {pv && (
               <div>
                 <div className="text-sm font-medium text-body mb-1.5">{t('yt.pv.salaryBasis')}</div>
@@ -356,7 +358,7 @@ export default function YearEndTaxCalculator() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-3 space-y-6">
-          <div className="ui-hero p-6">
+          <div id="year-end-tax-result" className="ui-hero p-6 scroll-mt-20">
             <div className="text-sm text-white/70">{t('yt.hero.label', { year: TAX_YEAR, salary: man(r.salary), salaryWon: won(r.salary) })}</div>
             <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums" aria-live="polite">{headline}</div>
             <div className="text-sm text-white/80 mt-2 tabular-nums">

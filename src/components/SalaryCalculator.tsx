@@ -6,6 +6,7 @@ import { useSearchParams } from '@/hooks/useSearchParams';
 import Link from 'next/link';
 import { DollarSign, TrendingUp, Calculator, Table, Save, BarChart3, ChevronRight } from 'lucide-react';
 import ShareResult from '@/components/ShareResult';
+import MobileResultLink from '@/components/MobileResultLink';
 import { topPercent, simulateRaise, hourlyNet, MONTHLY_HOURS, NTS_SOURCE_YEAR } from '@/utils/salaryInsights';
 import { useTranslations } from '@/lib/i18n/salary';
 import { useCalculationHistory } from '@/hooks/useCalculationHistory';
@@ -297,7 +298,7 @@ const SalaryCalculatorContent = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-fg">{t('title')}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-fg break-keep">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">
             {t('description')}
           </p>
@@ -315,6 +316,7 @@ const SalaryCalculatorContent = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Input Section */}
         <div className={`ui-card p-8`}>
+          {result && <MobileResultLink href="#salary-calculator-result" className="mb-6" label={t('result.monthlyTakeHome')} value={`${formatNumber(result.netMonthly)}${t('input.currency')}`} />}
           <h2 className="text-2xl font-semibold mb-6 text-fg">{t('input.salaryType')}</h2>
           
           <div className="space-y-6">
@@ -543,7 +545,7 @@ const SalaryCalculatorContent = () => {
           {result ? (
             <div className="space-y-6">
               {/* Main Results */}
-              <div className="relative overflow-hidden ui-hero p-6 sm:p-8">
+              <div id="salary-calculator-result" className="relative overflow-hidden ui-hero p-6 sm:p-8 scroll-mt-20">
                 <div className="relative">
                   <div className="flex items-start justify-between gap-4 mb-1">
                     <p className="text-white/80 text-sm font-medium">{t('result.monthlyTakeHome')}</p>

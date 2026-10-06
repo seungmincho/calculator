@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gasBill'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   REGION_RATES, WHOLESALE_UNIT, MJ_PER_M3, calcBill, toMJ, estimateMJ, heatingMJ, hotWaterMJ, yearlyMJ, pctChange, savings,
   type RegionKey, type Insulation,
@@ -128,6 +129,7 @@ export default function GasBill() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#gas-bill-result" label={heroLabel} value={`${won(bill.total)}${t('result.won')}`} />
             <div className="grid grid-cols-2 gap-2">
               <button className={seg(mode === 'estimate')} onClick={() => switchMode('estimate')}>{t('mode.estimate')}</button>
               <button className={seg(mode === 'usage')} onClick={() => switchMode('usage')}>{t('mode.usage')}</button>
@@ -227,7 +229,7 @@ export default function GasBill() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6">
+          <div id="gas-bill-result" className="ui-hero p-6 scroll-mt-20">
             <div className="text-sm text-white/70">{heroLabel}</div>
             <div className="text-4xl font-bold mt-2 tabular-nums">{won(bill.total)}{t('result.won')}</div>
             <div className="text-sm text-white/70 mt-2">{t('hero.sub', { mj: won(mj) })}</div>

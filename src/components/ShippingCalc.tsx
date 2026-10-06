@@ -1,5 +1,6 @@
 'use client'
 
+import MobileResultLink from '@/components/MobileResultLink'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/shippingCalc'
@@ -153,15 +154,8 @@ export default function ShippingCalc() {
         {/* ── Input Panel ── */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            {/* 모바일: 결과가 입력 아래 한참 밑이라 첫 화면에 최저가를 보여 준다 */}
             {bestOverall && (
-              <a href="#shipping-result" className="lg:hidden flex items-center justify-between gap-3 bg-primary-soft rounded-2xl px-4 py-3">
-                <span className="min-w-0 text-sm text-primary truncate">{bestOverall.carrier.name}</span>
-                <span className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-fg tabular-nums">{won(bestOverall.price!)}</span>
-                  <span className="text-xs text-primary whitespace-nowrap">{t('jumpToResult')} ↓</span>
-                </span>
-              </a>
+              <MobileResultLink href="#shipping-result" label={bestOverall.carrier.name} value={won(bestOverall.price!)} more={t('jumpToResult')} />
             )}
 
             {/* Weight */}

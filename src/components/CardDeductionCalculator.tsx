@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/cardDeduction'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import {
   cardDeduction, cardTaxSaving, annualSpend, q4Strategy, CARD_KEYS, CARD_RATE, DEFAULT_INPUT, DEADLINE, PREVIEW_MONTHS, TAX_YEAR,
@@ -117,6 +118,7 @@ export default function CardDeductionCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#card-deduction-result" label={t(ytd ? 'result.labelYtd' : 'result.label')} value={`${won(r.total)}${W}`} />
             <div>
               <MoneyInput id="cd-salary" label={t('salary')} value={salary} onChange={setSalary} unit={W} hint={t('salaryHint')} />
               <div className="flex flex-wrap gap-1.5 mt-2">
@@ -166,7 +168,7 @@ export default function CardDeductionCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="card-deduction-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t(ytd ? 'result.labelYtd' : 'result.label')}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}{W}</p>

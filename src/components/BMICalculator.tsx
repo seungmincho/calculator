@@ -8,6 +8,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/bmi'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import { STORAGE_KEYS } from '@/utils/localStorage'
 import {
@@ -111,6 +112,7 @@ export default function BMICalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {r && <MobileResultLink href="#bmi-calculator-result" label={t('u.heroLabel', { std: t(`u.std.${std}`) })} value={f1(r.bmi)} />}
             <div>
               <p className="text-sm font-medium text-body mb-2">{t('input.gender')}</p>
               <div className="grid grid-cols-2 gap-2">
@@ -165,7 +167,7 @@ export default function BMICalculator() {
                 </div>
               )}
 
-              <div className="ui-hero p-6 sm:p-8">
+              <div id="bmi-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
                 <p className="text-sm text-white/70">{t('u.heroLabel', { std: t(`u.std.${std}`) })}</p>
                 <div className="flex items-baseline gap-3 mt-1 flex-wrap">
                   <p className="text-5xl font-bold tabular-nums">{f1(r.bmi)}</p>

@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/acquisitionTaxCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   calcTax, buyExtras, dueDate, latePenalty, RELIEF_LIMIT,
   type Mode, type Kind, type Owner, type Relief, type TaxInput,
@@ -134,6 +135,7 @@ export default function AcquisitionTaxCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#acquisition-tax-result" label={t('u.resultLabel', { price: eokMan(price) })} value={`${won(r.total)}${t('units.won')}`} />
             <div className="grid grid-cols-3 gap-2" role="tablist">
               {MODES.map((m) => (
                 <button key={m} role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={seg(mode === m)}>
@@ -248,7 +250,7 @@ export default function AcquisitionTaxCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="acquisition-tax-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div>
               <p className="text-sm text-muted">{t('u.resultLabel', { price: eokMan(price) })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}{t('units.won')}</p>

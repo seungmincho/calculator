@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/electricityCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Plus, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   calcBill, seasonOf, applianceKwh, boundaryTip, pctChange, TARIFF, LIMITS, SUPER_USER_KWH, CLIMATE, FUEL, FUND, RATE_DATE,
   type Voltage, type Welfare, type Season, type Bill,
@@ -154,6 +155,7 @@ export default function ElectricityCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            <MobileResultLink href="#electricity-calculator-result" label={heroLabel} value={`${won(bill.total)}${t('common.won')}`} />
             <div role="group" aria-label={t('input.modeLabel')} className="grid grid-cols-2 gap-2">
               <button type="button" aria-pressed={mode === 'kwh'} className={seg(mode === 'kwh')} onClick={() => switchMode('kwh')}>{t('input.modeKwh')}</button>
               <button type="button" aria-pressed={mode === 'appliance'} className={seg(mode === 'appliance')} onClick={() => switchMode('appliance')}>{t('input.modeAppliance')}</button>
@@ -283,7 +285,7 @@ export default function ElectricityCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6">
+          <div id="electricity-calculator-result" className="ui-hero p-6 scroll-mt-20">
             <div className="text-sm text-white/80">{heroLabel}</div>
             <div className="text-4xl font-bold mt-2 tabular-nums" aria-live="polite" aria-atomic="true">
               {won(bill.total)}{t('common.won')}

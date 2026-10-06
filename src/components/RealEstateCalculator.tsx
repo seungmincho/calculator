@@ -8,6 +8,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/realEstate'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { RELIEF_LIMIT, type Owner, type Relief } from '@/utils/acquisitionTax'
 import { totalCost, LEGAL_FEE, type CostInput, type RepayMethod } from '@/utils/realEstateCost'
 
@@ -146,6 +147,7 @@ export default function RealEstateCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#real-estate-calculator-result" label={t('u.result.label', { price: short(price) })} value={W(r.cash)} />
             <h2 className="text-lg font-semibold text-fg">{t('u.house.title')}</h2>
             <div>
               <MoneyInput id="re-price" label={t('u.house.price')} value={price} onChange={setPrice} unit={t('u.won')} hint={short(price)} />
@@ -256,7 +258,7 @@ export default function RealEstateCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="real-estate-calculator-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div>
               <p className="text-sm text-muted">{t('u.result.label', { price: short(price) })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{W(r.cash)}</p>

@@ -6,6 +6,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/healthInsurance'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import { INSURANCE, pct } from '@/utils/insuranceRates'
 import { HI, workplace, extraIncome, regional, dependent, afterRetirement, type Relation } from '@/utils/healthInsurance'
@@ -160,6 +161,7 @@ export default function HealthInsuranceCalculator() {
         <div className="ui-card p-6 space-y-4 h-fit">
           {tab === 'workplace' && (
             <>
+              <MobileResultLink href="#health-insurance-result" label={t('wp.headline')} value={won(myMonthly)} />
               <Segment
                 label={t('a11y.wageBasis')}
                 value={f.annual}
@@ -214,7 +216,7 @@ export default function HealthInsuranceCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {tab === 'workplace' && (
             <>
-              <div className="ui-card p-6">
+              <div id="health-insurance-result" className="ui-card p-6 scroll-mt-20">
                 <p className="text-sm text-muted">{t('wp.headline')}</p>
                 <p className="text-3xl sm:text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(myMonthly)}</p>
                 <p className="text-sm text-sub mt-1">{t('wp.headlineSub', { annual: won(myMonthly * 12) })}</p>

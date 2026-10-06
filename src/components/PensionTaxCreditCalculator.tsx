@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pensionTaxCredit'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import { DEADLINE, TAX_YEAR } from '@/utils/yearEndTax'
 import { topUp, exitTax, PS_CAP, TOTAL_CAP, ISA_CAP, ISA_RATE, type IsaTo } from '@/utils/pensionTaxCredit'
@@ -136,6 +137,7 @@ export default function PensionTaxCreditCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#pension-tax-credit-result" label={t('result.label')} value={`${won(cur.saving)}${W}`} />
             <div>
               <MoneyInput id="ptc-salary" label={t('salary')} value={salary} onChange={setSalary} unit={W} hint={t('salaryHint')} />
               <div className="flex flex-wrap gap-1.5 mt-2">
@@ -173,7 +175,7 @@ export default function PensionTaxCreditCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="pension-tax-credit-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('result.label')}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(cur.saving)}{W}</p>

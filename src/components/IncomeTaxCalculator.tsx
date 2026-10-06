@@ -11,6 +11,7 @@ import '@/lib/i18n/ns/freelancerTax'
 import '@/lib/i18n/ns/incomeTaxCalc'
 import { AlertCircle, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { INDUSTRIES, industryOf, isDoubleEntry, SIMPLE_PREV_LIMIT } from '@/utils/freelancerTax'
 import { calc, eligibleMethod, BRACKETS, OTHER_SEPARATE_LIMIT, type Input, type Method } from '@/utils/incomeTax'
 
@@ -150,6 +151,7 @@ export default function IncomeTaxCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-4 min-w-0">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#income-tax-result" label={t(res.refund >= 0 ? 'it.row.refund' : 'it.row.pay')} value={`${won(Math.abs(res.refund))}${W}`} />
             <div>
               <div className="block text-sm font-medium text-body mb-1.5">{t('it.in.types')}</div>
               <div className="grid grid-cols-2 gap-1.5">
@@ -267,7 +269,7 @@ export default function IncomeTaxCalculator() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-2 space-y-6 min-w-0">
-          <div className="ui-hero p-6">
+          <div id="income-tax-result" className="ui-hero p-6 scroll-mt-20">
             <div className="text-sm text-white/70">{t('it.hero.label', { types: typeNames })}</div>
             <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
             <div className="text-sm text-white/80 mt-2 tabular-nums">

@@ -10,6 +10,7 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calcRetirement, addMonths, isDate, isoOf, periodSegments, delaySimulation } from '@/utils/retirementPay'
 
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
@@ -142,6 +143,7 @@ export default function RetirementCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {r?.eligible && <MobileResultLink href="#retirement-calculator-result" label={t('rc.hero.label')} value={`${won(r.net)}${W}`} />}
             <div className="grid grid-cols-2 gap-2">
               <DateField id="rc-s" label={t('rc.in.start')} value={start} onChange={setStart} />
               <DateField id="rc-e" label={t('rc.in.end')} value={end} onChange={setEnd} />
@@ -190,7 +192,7 @@ export default function RetirementCalculator() {
           ) : (
             <>
               {r.eligible ? (
-                <div className="ui-hero p-6">
+                <div id="retirement-calculator-result" className="ui-hero p-6 scroll-mt-20">
                   <div className="text-sm text-white/70">{t('rc.hero.label')}</div>
                   <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{won(r.net)}{W}</div>
                   <div className="text-sm text-white/80 mt-2 tabular-nums">

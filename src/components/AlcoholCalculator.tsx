@@ -7,6 +7,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { Plus, Trash2, AlertTriangle } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   PRESETS, KINDS, R, BETA, LIMIT, somaek, bacAt, hoursUntil, peak, status, series, totalGrams, sojuBottles,
@@ -107,6 +108,7 @@ export default function AlcoholCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#alcohol-calculator-result" label={t('u.heroLabel', { time: fmtHM(nowMin) })} value={`${res.cur.toFixed(3)}%`} />
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('gender')}</label>
               <div className="grid grid-cols-2 gap-2">
@@ -211,7 +213,7 @@ export default function AlcoholCalculator() {
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-hero p-6 sm:p-8">
+          <div id="alcohol-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
             <p className="text-sm text-white/70">{t('u.heroLabel', { time: fmtHM(nowMin) })}</p>
             <p className="text-4xl font-bold mt-1 tabular-nums">{res.cur.toFixed(3)}%</p>
             <p className="text-sm text-white/80 mt-1 tabular-nums">

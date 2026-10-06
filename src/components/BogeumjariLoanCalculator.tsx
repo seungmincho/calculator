@@ -8,6 +8,7 @@ import { useCalculationHistory } from '@/hooks/useCalculationHistory';
 import CalculationHistory from '@/components/CalculationHistory';
 import GuideSection from '@/components/GuideSection';
 import ShareResult from '@/components/ShareResult';
+import MobileResultLink from '@/components/MobileResultLink';
 import ToolIcon from '@/components/ToolIcon';
 import {
   type LoanType, type Owned, type HouseKind, type Region, type Credit, type CheckStatus,
@@ -244,6 +245,7 @@ export default function BogeumjariLoanCalculator() {
         {/* 입력 폼 */}
         <div className="lg:col-span-2 space-y-6">
           <div className="ui-card p-6 space-y-6">
+            {result && <MobileResultLink href="#bogeumjari-loan-result" label={t('result.maxLoan')} value={fmtKRW(result.maxLoan)} />}
             <h2 className="text-lg font-semibold text-fg">{t('form.title')}</h2>
 
             <div>
@@ -422,7 +424,7 @@ export default function BogeumjariLoanCalculator() {
               {t('result.empty')}
             </div>
           ) : (
-            <div className="ui-card p-6 space-y-5">
+            <div id="bogeumjari-loan-result" className="ui-card p-6 space-y-5 scroll-mt-20">
               <div className="flex items-center gap-2">
                 <span className={`text-sm font-semibold ${STATUS_CLS[result.eligible ? 'pass' : 'fail']}`}>
                   {result.eligible

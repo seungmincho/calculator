@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/movingCost'
 import { RotateCcw, ChevronLeft, ChevronRight, CheckSquare, Square, AlertTriangle } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   estimate, monthDays, dayInfo, quoteStats, addDays, CHECKLIST_OFFSETS, MOVE_TYPES, ACCESS,
   type MoveType, type Access, type Piano, type Side, type DayInfo,
@@ -202,6 +203,7 @@ export default function MovingCost() {
         <div className="lg:col-span-2 space-y-6 min-w-0">
           {/* 집 크기 */}
           <div className="ui-card p-6 space-y-4">
+            {r && <MobileResultLink href="#moving-cost-result" label={t('hero.label', { size: sizeText, type: t(`movingTypes.${type}`) })} value={amt(r.total.typ)} />}
             <h2 className="text-lg font-semibold text-fg">{t('sizeLabel')}</h2>
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
               {SIZE_PRESETS.map(p => (
@@ -396,7 +398,7 @@ export default function MovingCost() {
           <div className="lg:sticky lg:top-24 space-y-4">
             {r ? (
               <>
-                <div className="ui-hero p-6">
+                <div id="moving-cost-result" className="ui-hero p-6 scroll-mt-20">
                   <p className="text-sm text-white/70">{t('hero.label', { size: sizeText, type: t(`movingTypes.${type}`) })}</p>
                   <p className="mt-1 text-4xl font-bold tabular-nums tracking-tight">{amt(r.total.typ)}</p>
                   <p className="mt-2 text-sm text-white/90">{t('hero.range', { range: range(r.total) })}</p>

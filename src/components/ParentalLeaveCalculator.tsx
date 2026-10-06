@@ -8,6 +8,7 @@ import '@/lib/i18n/ns/parentalLeave'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { addMonths, isValidDate, todayKST } from '@/utils/dday'
 import {
   FLOOR, RH, monthRule, plan, compareOrders, rows, reducedHours, maxReduceMonths,
@@ -153,6 +154,7 @@ export default function ParentalLeaveCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            <MobileResultLink href="#parental-leave-result" label={both ? t('p.res.totalBoth') : t('p.res.total')} value={won(p.total)} />
             <div>
               <span className={label}>{t('p.who.label')}</span>
               <div className="grid grid-cols-3 gap-2">
@@ -191,7 +193,7 @@ export default function ParentalLeaveCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6">
+          <div id="parental-leave-result" className="ui-card p-6 scroll-mt-20">
             <p className="text-sm text-sub">{both ? t('p.res.totalBoth') : t('p.res.total')}</p>
             <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(p.total)}</p>
             <p className="text-sm text-muted mt-1">{dot(start)} ~ {dot(p.end)} · {t('p.monthsOption', { n: months })}</p>

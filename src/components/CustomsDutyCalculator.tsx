@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/customsDuty'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { krwPer, parseCache, type RateCache } from '@/utils/exchangeRate'
 import {
   CURRENCIES, RATE_UNIT, FALLBACK_RATES, FALLBACK_DATE, ITEMS, ITEM_IDS, item, calc,
@@ -160,6 +161,7 @@ export default function CustomsDutyCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#customs-duty-result" label={t('u.res.label')} value={`${won(r.total)}${t('u.won')}`} />
             <Seg
               name="cd-origin" legend={t('u.origin.label')} value={origin} onChange={setOrigin} cols="grid-cols-2"
               options={(['us', 'other'] as const).map((v) => ({ value: v, label: t(`u.origin.${v}`) }))}
@@ -252,7 +254,7 @@ export default function CustomsDutyCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="customs-duty-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite" aria-atomic="true">
               <p className={`inline-block rounded-full px-3 py-1 text-sm font-semibold ${r.exempt ? 'bg-primary-soft text-primary' : 'bg-amber-50 text-amber-800'}`}>
                 {r.exempt ? t('u.res.exempt', { way }) : t('u.res.taxed', { way })}

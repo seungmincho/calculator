@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/rentTaxCredit'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { TAX_YEAR } from '@/utils/yearEndTax'
 import {
   CHECKS, RENT_RULES, RULE_YEARS, REF_DATE, eligibility, rentResult, cashReceiptMax, pastYears, ruleMax, tierOf, tierRate, kstToday,
@@ -134,6 +135,7 @@ export default function RentTaxCreditCalculator() {
         {/* 입력 + 자격 체크 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#rent-tax-credit-result" label={t('result.label', { year: TAX_YEAR })} value={`${won(saving)}${W}`} />
             <div>
               <MoneyInput id="rtc-salary" label={t('salary')} value={salary} onChange={setSalary} unit={W} hint={t('salaryHint')} />
               <div className="flex flex-wrap gap-1.5 mt-2">
@@ -198,7 +200,7 @@ export default function RentTaxCreditCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="rent-tax-credit-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('result.label', { year: TAX_YEAR })}</p>

@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/militaryDischarge'
 import { X, Plus } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { todayKST, addMonths, weekday, ddayLabel, isValidDate, daysBetween } from '@/utils/dday'
 import {
   BRANCHES, RANKS, PAY_2026, SAVINGS_MATCH_MAX, branchInfo, parseBranch, summarize, sanitizePeople,
@@ -152,6 +153,7 @@ export default function MilitaryDischarge() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {s && <MobileResultLink href="#military-discharge-result" label={heroLabel} value={s.status === 'serving' ? ddayText : headline} />}
             <div>
               <label htmlFor="md-name" className="block text-sm font-medium text-body mb-1.5">{t('name')}</label>
               <input id="md-name" value={name} maxLength={20} onChange={e => setName(e.target.value)}
@@ -185,7 +187,7 @@ export default function MilitaryDischarge() {
         <div className="lg:col-span-2 space-y-4">
           {s ? (
             <>
-              <div className="ui-hero p-6 sm:p-8">
+              <div id="military-discharge-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
                 <p className="text-sm text-white/70">{heroLabel}</p>
                 <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">
                   {s.status === 'serving' ? ddayText : headline}

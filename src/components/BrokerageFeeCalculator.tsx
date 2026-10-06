@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/brokerageFee'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calcFee, brackets, VAT_RATE, type Deal, type Prop, type VatType } from '@/utils/brokerageFee'
 
 const DEALS: Deal[] = ['sale', 'jeonse', 'monthly']
@@ -140,6 +141,7 @@ export default function BrokerageFeeCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#brokerage-fee-result" label={t('result.label', { deal: dealLabel, amount: eokMan(r.amount) })} value={`${won(r.total)}${t('units.won')}`} />
             <div className="grid grid-cols-3 gap-2" role="tablist">
               {DEALS.map((d) => (
                 <button key={d} role="tab" aria-selected={deal === d} onClick={() => changeDeal(d)} className={seg(deal === d)}>
@@ -201,7 +203,7 @@ export default function BrokerageFeeCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="brokerage-fee-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div>
               <p className="text-sm text-muted">{t('result.label', { deal: dealLabel, amount: eokMan(r.amount) })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}{t('units.won')}</p>

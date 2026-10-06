@@ -1,5 +1,6 @@
 'use client'
 
+import MobileResultLink from '@/components/MobileResultLink'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
@@ -215,14 +216,7 @@ export default function TaxiFare() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
-            {/* 모바일: 결과 카드가 입력 아래 1.5화면 밑이라 첫 화면에 요금을 보여 준다 */}
-            <a href="#taxi-result" className="lg:hidden flex items-center justify-between gap-3 bg-primary-soft rounded-2xl px-4 py-3">
-              <span className="text-sm text-primary">{t('result.total')}</span>
-              <span className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-fg tabular-nums">{fare.total.toLocaleString()}{won}</span>
-                <span className="text-xs text-primary whitespace-nowrap">{t('jumpToResult')} ↓</span>
-              </span>
-            </a>
+            <MobileResultLink href="#taxi-result" label={t('result.total')} value={`${fare.total.toLocaleString()}${won}`} more={t('jumpToResult')} />
             <div>
               <label htmlFor="taxi-region" className={labelCls}>{t('region')}</label>
               <select

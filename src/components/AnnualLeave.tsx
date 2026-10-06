@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/annualLeave'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { getKoreanHolidays } from '@/utils/koreanHolidays'
 import { todayKST, addMonths, addDays, ymd, isValidDate } from '@/utils/dday'
 import {
@@ -131,6 +132,7 @@ export default function AnnualLeave() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {today && calc && <MobileResultLink href="#annual-leave-result" label={retire ? t('hero.labelRetire') : t('hero.label')} value={`${fmtDays(calc.remaining)}${t('result.days')}`} />}
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('calculationBasis')}</label>
               <div className="grid grid-cols-2 gap-1 bg-soft rounded-xl p-1">
@@ -188,7 +190,7 @@ export default function AnnualLeave() {
             <div className="ui-card p-6 text-sm text-red-600">{t('invalidJoin')}</div>
           ) : (
             <>
-              <div className="ui-card p-6">
+              <div id="annual-leave-result" className="ui-card p-6 scroll-mt-20">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm text-sub">{retire ? t('hero.labelRetire') : t('hero.label')}</span>
                   <span className="text-xs bg-soft text-sub px-2 py-0.5 rounded-md">{basisLabel(basis)}</span>

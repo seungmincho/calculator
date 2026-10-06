@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/kimjangCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   ITEMS, ITEM_IDS, OPTIONAL_IDS, DEFAULT_ON, METHODS, TASTES, AT_TOTAL_2025, BOX_KG,
   calc, compareMethods, headsFromKg, kgFromHeads, recommendHeads,
@@ -160,6 +161,7 @@ export default function KimjangCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#kimjang-calculator-result" label={t('u.resultLabel', { what })} value={`${won(r.total)}${t('u.won')}`} />
             <div>
               <p className="block text-sm font-medium text-body mb-2">{t('u.basis.label')}</p>
               <div className="grid grid-cols-2 gap-2">
@@ -255,7 +257,7 @@ export default function KimjangCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="kimjang-calculator-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('u.resultLabel', { what })}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.total)}{t('u.won')}</p>

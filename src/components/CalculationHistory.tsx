@@ -41,7 +41,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-lg text-body transition-colors"
+        className="inline-flex shrink-0 whitespace-nowrap items-center space-x-2 bg-soft hover:bg-subtle px-4 py-2 rounded-lg text-body transition-colors"
       >
         <History className="w-4 h-4" />
         <span>계산 이력</span>

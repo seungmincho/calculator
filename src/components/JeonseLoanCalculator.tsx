@@ -12,6 +12,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/jeonseLoanCalc'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { BASE_RATE, legalCapRate, jeonseToWolse } from '@/utils/rentConvert'
 import {
   PRODUCTS, SOURCE_DATE, quote, bestProduct, payment, hugRate, hugFee, hugDiscount,
@@ -127,6 +128,7 @@ export default function JeonseLoanCalculator() {
         {/* ── 입력 ── */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
+            <MobileResultLink href="#jeonse-loan-result" label={t('hero.label', { product: pName(product) })} value={short(q.loan)} />
             <h2 className="text-lg font-semibold text-fg">{t('field.profileTitle')}</h2>
             {moneyField('dep', t('field.deposit'))}
             <div>
@@ -207,7 +209,7 @@ export default function JeonseLoanCalculator() {
             ))}
           </div>
 
-          <div className="ui-hero p-6">
+          <div id="jeonse-loan-result" className="ui-hero p-6 scroll-mt-20">
             <p className="text-sm text-white/70">{t('hero.label', { product: pName(product) })}</p>
             <p className="text-3xl font-bold tabular-nums mt-1">{short(q.loan)}</p>
             <p className="text-sm text-white/70 mt-2 tabular-nums">

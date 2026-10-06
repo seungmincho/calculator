@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/weeklyHolidayPay'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { calculateNetSalary } from '@/utils/netSalary'
 import { requiredBreak, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM } from '@/utils/workHours'
 import { todayKST } from '@/utils/dday'
@@ -109,6 +110,7 @@ export default function WeeklyHolidayPay() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#weekly-holiday-pay-result" label={t('u.weeklyHolidayPay')} value={`${won(r.holidayPay)}${t('u.won')}`} />
             <div>
               <label htmlFor="whp-wage" className="block text-sm font-medium text-body mb-2">{t('input.hourlyWage')}</label>
               <div className="relative">
@@ -224,7 +226,7 @@ export default function WeeklyHolidayPay() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="ui-card p-6 space-y-6">
+          <div id="weekly-holiday-pay-result" className="ui-card p-6 space-y-6 scroll-mt-20">
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-sub">{t('u.weeklyHolidayPay')}</span>

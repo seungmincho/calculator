@@ -8,6 +8,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Legend } from 'recharts'
 import { ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   YEAR, A_VALUE, INCOME_FLOOR, INCOME_CAP, MIN_MONTHS, CPI_2026, calcPension, shifted, cumulative, crossoverAge,
   paybackAge, workReduction, nominal, catchUpCost, replacementRate, childCreditMonths, premiumRate,
@@ -112,6 +113,7 @@ export default function NationalPensionCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-4">
           <div className="ui-card p-6 space-y-5">
+            {r.eligible && <MobileResultLink href="#national-pension-result" label={t('u.res.label', { age: r.startAge, year: r.pensionYear })} value={`${won(r.monthly)}${t('u.won')}`} />}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="np-birth" className="block text-sm font-medium text-body mb-2">{t('u.in.birth')}</label>
@@ -224,7 +226,7 @@ export default function NationalPensionCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="national-pension-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             {r.eligible ? (
               <>
                 <div>

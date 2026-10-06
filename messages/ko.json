@@ -1,5 +1,6 @@
 {
   "common": {
+    "seeResult": "결과 보기",
     "addToCalendar": "캘린더에 추가",
     "addToCalendarFor": "{title} 캘린더에 추가 (.ics)",
     "calculate": "계산",

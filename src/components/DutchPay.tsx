@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/dutchPay'
 import { Copy, Check, Plus, Minus, X, Save, ArrowRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import {
   settle, simpleSplit, encodeState, decodeState, UNITS, MAX_PEOPLE,
@@ -221,7 +222,7 @@ export default function DutchPay() {
   // ── 결과 패널 ──
   const results = (
     <div className="space-y-4">
-      <div className="ui-hero p-6">
+      <div id="dutch-pay-result" className="ui-hero p-6 scroll-mt-20">
         <p className="text-sm text-white/70">{heroLabel}</p>
         <p className="text-3xl sm:text-4xl font-bold tabular-nums mt-1">{heroValue}</p>
         <p className="text-sm text-white/70 mt-2">{t('hero.summary', { total: won(res.total), n })}</p>
@@ -383,6 +384,7 @@ export default function DutchPay() {
         <div className="lg:col-span-3 space-y-4">
           {/* 모임 + 참가자 */}
           <div className="ui-card p-6 space-y-4">
+            {mode === 's' && <MobileResultLink href="#dutch-pay-result" label={heroLabel} value={heroValue} />}
             <div>
               <label htmlFor="dp-title" className="block text-sm font-medium text-body mb-1.5">{t('eventTitle')}</label>
               <input id="dp-title" type="text" value={title} maxLength={30} onChange={(e) => setTitle(e.target.value)}

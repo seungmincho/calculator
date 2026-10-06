@@ -7,6 +7,7 @@ import { ExternalLink } from 'lucide-react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import DatePicker from '@/components/ui/DatePicker'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import { addDays, addMonths, isValidDate, todayKST } from '@/utils/dday'
 import { minWageOn } from '@/utils/minimumWage'
 import {
@@ -124,6 +125,7 @@ export default function UnemploymentBenefit() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
+            <MobileResultLink href="#unemployment-benefit-result" label={t('u.result.totalLabel', { days: r.days })} value={won(r.total)} />
             <div>
               <span className={label}>{t('u.wage.label')}</span>
               <div className="grid grid-cols-3 gap-2 mb-2">
@@ -220,7 +222,7 @@ export default function UnemploymentBenefit() {
           </div>
 
           {/* 핵심 결과 */}
-          <div className="ui-card p-6">
+          <div id="unemployment-benefit-result" className="ui-card p-6 scroll-mt-20">
             <p className="text-sm text-muted">{t('u.result.totalLabel', { days: r.days })}</p>
             <p className="text-3xl font-bold text-fg tabular-nums mt-1" aria-live="polite">{won(r.total)}</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">

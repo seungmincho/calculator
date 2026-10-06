@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n/loan'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSectionContent'
 import { schedule, type Method } from '@/utils/loanSchedule'
 import { maxPrincipal, annualRepay } from '@/utils/loanQuick'
@@ -169,6 +170,7 @@ export default function LoanCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
+            {res && hero && <MobileResultLink href="#loan-calculator-result" label={hero.title} value={hero.value} />}
             <div className="grid grid-cols-2 gap-1 bg-soft p-1 rounded-xl" role="tablist">
               {(['calc', 'rev'] as const).map((m) => (
                 <button key={m} type="button" role="tab" aria-selected={s.mode === m} onClick={() => set('mode', m)}
@@ -238,7 +240,7 @@ export default function LoanCalculator() {
           )}
 
           {res && hero && <>
-            <div className="ui-hero p-6">
+            <div id="loan-calculator-result" className="ui-hero p-6 scroll-mt-20">
               <p className="text-sm text-white/70">{hero.label}</p>
               <p className="text-sm text-white/90 mt-3">{hero.title}</p>
               <p className="text-3xl font-bold tabular-nums">{hero.value}</p>

@@ -12,6 +12,7 @@ import { wageTable, type WageType } from '@/utils/weeklyHolidayPay'
 import { calculateNetSalary } from '@/utils/netSalary'
 import { NTS_AVG_SALARY, NTS_SOURCE_YEAR } from '@/utils/salaryInsights'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 
 type InputType = WageType
 const TYPES: InputType[] = ['hourly', 'daily', 'weekly', 'monthly', 'yearly']
@@ -127,6 +128,7 @@ export default function HourlyWage() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {r && <MobileResultLink href="#hourly-wage-result" label={t('result.monthlyWage')} value={`${won(r.monthly)}${t('result.won')}`} />}
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('inputType')}</label>
               <div className="grid grid-cols-5 gap-1">
@@ -239,7 +241,7 @@ export default function HourlyWage() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="ui-card p-6 space-y-6">
+          <div id="hourly-wage-result" className="ui-card p-6 space-y-6 scroll-mt-20">
             {r ? (
               <>
                 <div>

@@ -6,6 +6,7 @@ import '@/lib/i18n/ns/capitalGainsTax'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Check, X, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import DatePicker from '@/components/ui/DatePicker'
 import { calcCgt, reportDue, simulate, isDate, fullMonths, ymd, BRACKETS, generalLthd, oneHouseLthd, type Kind, type CgtInput } from '@/utils/capitalGainsTax'
 import { calcTax } from '@/utils/acquisitionTax'
@@ -149,6 +150,7 @@ export default function CapitalGainsTax() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {r && <MobileResultLink href="#capital-gains-tax-result" label={t('result.totalLabel')} value={`${won(r.total)}${t('wonUnit')}`} />}
             <div>
               <p className="text-sm font-medium text-body mb-2">{t('propertyType')}</p>
               <div className="grid grid-cols-2 gap-1.5">
@@ -241,7 +243,7 @@ export default function CapitalGainsTax() {
             <div className="ui-card p-12 text-center text-muted">{t('emptyState')}</div>
           ) : (
             <>
-              <div className="ui-card p-6">
+              <div id="capital-gains-tax-result" className="ui-card p-6 scroll-mt-20">
                 <p className="text-sm text-muted">{t('result.totalLabel')}</p>
                 <p className="text-4xl font-bold text-fg tabular-nums mt-1">{won(r.total)}<span className="text-xl ml-1">{t('wonUnit')}</span></p>
                 <p className="text-sm font-medium text-primary mt-2">{verdict}</p>

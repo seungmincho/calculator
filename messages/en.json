@@ -1,5 +1,6 @@
 {
   "common": {
+    "seeResult": "See result",
     "addToCalendar": "Add to calendar",
     "addToCalendarFor": "Add {title} to calendar (.ics)",
     "calculate": "Calculate",

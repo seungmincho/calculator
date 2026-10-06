@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Save, Check } from 'lucide-react'
 import CalculationHistory from './CalculationHistory'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import { useSearchParams } from '@/hooks/useSearchParams'
@@ -159,6 +160,7 @@ export default function CarTaxCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            {f.carPrice > 0 && <MobileResultLink href="#car-tax-calculator-result" label={t('u.result.label')} value={`${won(total)}${t('u.won')}`} />}
             <div>
               <label htmlFor="ct-price" className="block text-sm font-medium text-body mb-2">{t('u.price')}</label>
               <div className="relative">
@@ -239,7 +241,7 @@ export default function CarTaxCalculator() {
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
           {f.carPrice > 0 ? (
-            <div className="ui-card p-6 space-y-5" aria-live="polite">
+            <div id="car-tax-calculator-result" className="ui-card p-6 space-y-5 scroll-mt-20" aria-live="polite">
               <div>
                 <p className="text-sm text-muted">{t('u.result.label')}</p>
                 <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(total)}{t('u.won')}</p>

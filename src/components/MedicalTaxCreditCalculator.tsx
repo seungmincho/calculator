@@ -6,6 +6,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/medicalTaxCredit'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import AddToCalendar, { useDeadlineEvent } from '@/components/AddToCalendar'
 import { DEADLINE, TAX_YEAR } from '@/utils/yearEndTax'
 import { analyze, couple, netOf, GROUPS, ZERO, EXTRA, EXAMPLES, type Expenses, type Group, type Who } from '@/utils/medicalTaxCredit'
@@ -144,6 +145,7 @@ export default function MedicalTaxCreditCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1">
           <div className="ui-card p-6 space-y-5">
+            <MobileResultLink href="#medical-tax-credit-result" label={t('result.label')} value={`${won(r.saving)}${W}`} />
             <div>
               <MoneyInput id="mt-salary" label={t('salary')} value={salary} onChange={setSalary} unit={W} hint={t('salaryHint')} />
               <div className="flex flex-wrap gap-1.5 mt-2">
@@ -195,7 +197,7 @@ export default function MedicalTaxCreditCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="medical-tax-credit-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('result.label')}</p>
               <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(r.saving)}{W}</p>

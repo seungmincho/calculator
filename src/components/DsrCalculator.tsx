@@ -9,6 +9,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/dsrCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   DSR_CAP, DSR_APPLY_OVER, CAPITAL_MAX_TERM, annualRepay, existingAnnual, newLoanAnnual, maxNewLoan, stressAdd, regulatoryCap, dsr,
   type Loan, type LoanKind, type Method, type RateType, type Region, type Sector, type NewLoanSpec,
@@ -185,6 +186,7 @@ export default function DsrCalculator() {
         {/* 입력 */}
         <div className="lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-5">
+            {limit > 0 && <MobileResultLink href="#dsr-calculator-result" label={t('res.limitLabel', { sector: sectorLabel, kind: kindLabel })} value={`${eokMan(limit)}${won}`} />}
             <div>
               {money('dsr-inc', t('form.income'), income, setIncome, [], t('form.incomeHint'))}
               <input
@@ -316,7 +318,7 @@ export default function DsrCalculator() {
 
         {/* 결과 */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div id="dsr-calculator-result" className="ui-card p-6 space-y-5 scroll-mt-20">
             <div aria-live="polite">
               <p className="text-sm text-muted">{t('res.limitLabel', { sector: sectorLabel, kind: kindLabel })}</p>
               {limit > 0 ? (
