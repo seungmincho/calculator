@@ -94,7 +94,7 @@ const normDate = (s?: string) => {
 }
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 // 공유 링크 판별용 계산 파라미터 — 하나라도 있으면 링크 값을 내 차량 설정(localStorage)보다 우선
-const SHARE_KEYS = ['distance', 'rt', 'vehicleType', 'fuelType', 'eff', 'dm']
+const SHARE_KEYS = ['distance', 'rt', 'vehicleType', 'fuelType', 'eff', 'dm', 'date', 'sido', 'price']
 
 async function copyText(text: string) {
   if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text)
@@ -192,6 +192,7 @@ const FuelCalculator = () => {
   const [selectedSido, setSelectedSido] = useState<string>('')
   const [selectedDate, setSelectedDate] = useState<string>('') // YYYY-MM-DD, 빈 값이면 실시간
   const [depreciationMultiplier, setDepreciationMultiplier] = useState<number>(1.0) // 감가비 계수 (유류비에 곱함)
+  const [shareUrl, setShareUrl] = useState<string>() // 공유 링크 = 현재 주소 + 유가 기준일(실시간이면 그날 날짜로 고정)
 
   // Vehicle settings state
   const [hasVehicleSettings, setHasVehicleSettings] = useState(false)
@@ -338,10 +339,21 @@ const FuelCalculator = () => {
   useEffect(() => {
     const savedMultiplier = safeStorage.getItem('fuel_depreciation_multiplier')
     if (savedMultiplier) setDepreciationMultiplier(Number(savedMultiplier) || 1.0)
-    const savedSido = safeStorage.getItem('fuel_selected_sido')
-    if (savedSido) setSelectedSido(savedSido)
-    fetchOpinetPrices(savedSido || undefined)
-  }, [fetchOpinetPrices])
+    // 공유 링크의 지역·기준일·직접 입력 유가가 내 저장 지역·실시간 유가보다 우선
+    const qSido = searchParams.get('sido')
+    const sido = qSido !== null && SIDO_OPTIONS.some(o => o.code === qSido) ? qSido : safeStorage.getItem('fuel_selected_sido') || ''
+    const qDate = normDate(searchParams.get('date') ?? '')
+    const date = qDate && qDate < localDate() ? qDate : '' // 오늘 이후면 실시간
+    const qPrice = Number(searchParams.get('price'))
+    setSelectedSido(sido)
+    setSelectedDate(date)
+    if (qPrice > 0 && qPrice < 10000) {
+      setFuelPrices(prev => ({ ...prev, [fuelType]: qPrice }))
+      setPriceSource('manual')
+      return
+    }
+    fetchOpinetPrices(sido || undefined, date || undefined)
+  }, [fetchOpinetPrices]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // 공유 링크의 직접 입력 연비·감가비 계수 복원 (위 localStorage 값보다 우선, 첫 렌더 시점 쿼리 기준)
   useEffect(() => {
@@ -365,7 +377,16 @@ const FuelCalculator = () => {
     setOrDelete('eff', String(customEfficiency), !(useCustomEfficiency && customEfficiency > 0))
     setOrDelete('dm', String(depreciationMultiplier), depreciationMultiplier === 1)
     window.history.replaceState({}, '', url)
-  }, [distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, depreciationMultiplier])
+    // 공유 링크에만 유가 기준을 박는다(주소창은 그대로 — 내 지역은 localStorage, 새로고침은 최신 유가).
+    // 실시간 유가는 다음 날 바뀌므로 적용된 유가의 기준일과 지역(전국 포함), 직접 입력이면 그 단가.
+    if (priceSource === 'opinet') {
+      url.searchParams.set('date', selectedDate || priceDate)
+      url.searchParams.set('sido', selectedSido)
+    } else if (priceSource === 'manual') {
+      url.searchParams.set('price', String(fuelPrices[fuelType]))
+    }
+    setShareUrl(url.toString())
+  }, [distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, depreciationMultiplier, selectedDate, selectedSido, priceSource, priceDate, fuelPrices])
 
   const efficiency = useCustomEfficiency && customEfficiency > 0
     ? customEfficiency
@@ -1250,6 +1271,7 @@ const FuelCalculator = () => {
                 </div>
 
                 <ShareResult
+                  url={shareUrl}
                   fileName="fuel-cost"
                   card={{
                     tool: t('title'),
@@ -1264,7 +1286,7 @@ const FuelCalculator = () => {
                       ...(depreciationMultiplier !== 1 ? [{ label: t('depreciation.title'), value: `×${depreciationMultiplier.toFixed(2)}` }] : []),
                     ],
                   }}
-                  text={t('share.text', { km: tripKm.toLocaleString('ko-KR'), amount: won(calculation.settlement), fuel: t(`fuelTypes.${fuelType}`), price: won(fuelPrices[fuelType]) })}
+                  text={t('share.text', { km: tripKm.toLocaleString('ko-KR'), amount: won(calculation.settlement), fuel: t(`fuelTypes.${fuelType}`), price: won(fuelPrices[fuelType]), basis: priceSourceLabel })}
                 />
 
                 {/* 비용 구성 파이차트 + 연료별 비교 */}

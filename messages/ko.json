@@ -6748,7 +6748,7 @@
       "won": "원",
       "perLiter": "원/L",
       "priceBasis": "유가 기준",
-      "text": "{km}km 유류비 {amount}원 ({fuel} {price}원/L 기준)"
+      "text": "{km}km 유류비 {amount}원 ({fuel} {price}원/L · {basis})"
     },
     "trip": {
       "mode": "편도/왕복",

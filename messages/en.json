@@ -6749,7 +6749,7 @@
       "won": " KRW",
       "perLiter": " KRW/L",
       "priceBasis": "Price basis",
-      "text": "Fuel cost for {km} km: {amount} KRW ({fuel} at {price} KRW/L)"
+      "text": "Fuel cost for {km} km: {amount} KRW ({fuel} at {price} KRW/L · {basis})"
     },
     "trip": {
       "mode": "One-way/Round trip",
