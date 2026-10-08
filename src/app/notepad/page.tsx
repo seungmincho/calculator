@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import Notepad from '@/components/Notepad'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import notepadMessages from '../../../messages/generated/ko/ns/notepad.json'
 
 export const metadata: Metadata = {
   title: '온라인 메모장 - 자동 저장, 메모 관리 | 툴허브',
@@ -29,24 +31,10 @@ export default function NotepadPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['로그인 없는 자동 저장 메모장', '여러 메모·검색·고정', '찾기·바꾸기', '전체 백업·복원(JSON)', '.txt 저장·불러오기', '글자수·원고지 매수·바이트', '집중 모드', '다른 탭 자동 반영'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '브라우저 메모장의 장점은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '① 설치 불필요: 브라우저만 있으면 어디서든 사용 가능 ② 자동 저장: localStorage에 자동 저장되어 실수로 탭을 닫아도 내용 보존 ③ 개인정보 보호: 서버에 전송하지 않고 브라우저에만 저장 ④ 빠른 접근: 북마크에 추가하면 원클릭 접속 ⑤ 크로스 플랫폼: PC, 모바일 모두 사용 가능. 다만 브라우저 데이터를 삭제하면 내용이 사라지므로 중요한 내용은 별도 백업이 필요합니다.',
-        },
-      },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={notepadMessages.notepad.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><Notepad />  <div className="mt-8">

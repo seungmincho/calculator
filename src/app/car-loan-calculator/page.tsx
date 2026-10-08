@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import CarLoanCalculator from '@/components/CarLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '자동차 할부 계산기 - 월 납입금 계산 | 툴허브',
@@ -67,36 +68,11 @@ export default function CarLoanCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '자동차 할부 이자율은 보통 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '자동차 할부 금리는 신용도·차종·신차/중고차·제조사 프로모션에 따라 차이가 크고, 법정 최고금리는 연 20%입니다. 받은 견적서의 금리를 넣어 기간·선수금별 총 이자를 비교해 보세요. 제조사 금융 프로모션 시 무이자 할부도 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '자동차 할부와 리스의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '할부는 분할 결제 후 차량 소유권이 본인에게 이전되고, 리스는 임대 형태로 사용 후 반납하거나 잔존가치를 지불하고 인수합니다. 할부는 취득세를 본인이 납부하고, 리스는 리스사가 납부합니다. 사업자는 운용리스가 비용 처리에 유리할 수 있으니 세무사와 확인하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '자동차 할부 조기상환 시 수수료가 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '중도상환 수수료 요율은 계약서에 정해진 대로 적용되며, 금융소비자보호법에 따라 계약일로부터 3년이 지나면 부과할 수 없습니다. 수수료가 없는 상품도 있으니 계약 전에 확인하세요.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '자동차 할부 이자율은 보통 얼마인가요?', a: '자동차 할부 금리는 신용도·차종·신차/중고차·제조사 프로모션에 따라 차이가 크고, 법정 최고금리는 연 20%입니다. 받은 견적서의 금리를 넣어 기간·선수금별 총 이자를 비교해 보세요. 제조사 금융 프로모션 시 무이자 할부도 있습니다.' },
+    { q: '자동차 할부와 리스의 차이는 무엇인가요?', a: '할부는 분할 결제 후 차량 소유권이 본인에게 이전되고, 리스는 임대 형태로 사용 후 반납하거나 잔존가치를 지불하고 인수합니다. 할부는 취득세를 본인이 납부하고, 리스는 리스사가 납부합니다. 사업자는 운용리스가 비용 처리에 유리할 수 있으니 세무사와 확인하세요.' },
+    { q: '자동차 할부 조기상환 시 수수료가 있나요?', a: '중도상환 수수료 요율은 계약서에 정해진 대로 적용되며, 금융소비자보호법에 따라 계약일로부터 3년이 지나면 부과할 수 없습니다. 수수료가 없는 상품도 있으니 계약 전에 확인하세요.' },
+  ]
 
   return (
     <>
@@ -106,16 +82,13 @@ export default function CarLoanCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <div className="container mx-auto px-4 py-8">
           <CarLoanCalculator />
         </div>
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import LoanSchedule from '@/components/LoanSchedule'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '대출 상환 스케줄러 - 원리금균등/원금균등 상환 계획표 | 툴허브',
@@ -52,24 +53,20 @@ export default function LoanSchedulePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '원리금균등상환과 원금균등상환의 차이는?', acceptedAnswer: { '@type': 'Answer', text: '원리금균등상환은 매월 동일한 금액(원금+이자)을 납부하여 계획적 상환이 가능합니다. 원금균등상환은 원금을 균등하게 나누고 잔액에 이자를 더해 초기 부담이 크지만 총 이자가 적습니다. 예를 들어 1억 원을 연 4%, 30년 상환 시 원리금균등은 총 이자 약 7,187만 원, 원금균등은 약 6,017만 원으로 약 1,170만 원 차이가 납니다.' } },
-      { '@type': 'Question', name: '거치기간이란 무엇인가요?', acceptedAnswer: { '@type': 'Answer', text: '거치기간은 원금 상환 없이 이자만 납부하는 기간입니다. 예를 들어 \"거치 1년, 상환 29년\"이면 처음 1년은 이자만 내고 이후 29년간 원금+이자를 상환합니다. 초기 부담이 줄지만 총 이자가 증가합니다. 1억 원, 연 4%, 30년(원리금균등) 기준 거치 1년을 두면 총 이자가 약 7,187만 원에서 약 7,312만 원으로 약 125만 원 늘어납니다.' } },
-      { '@type': 'Question', name: '중도상환수수료는 어떻게 계산하나요?', acceptedAnswer: { '@type': 'Answer', text: '일반적으로 중도상환수수료 = 중도상환금액 × 수수료율 × (잔존기간 ÷ 3년)이며, 대출 후 3년이 지나면 부과되지 않습니다. 금융위원회 개편으로 2025년 1월 13일 이후 신규 계약부터는 자금운용 손실·행정비용 등 실비용 내에서만 부과되어, 은행 주택담보대출 평균 수수료율이 약 1.4%에서 0.6%대로 낮아졌습니다. 정확한 요율은 대출 약정서를 확인하세요.' } },
-    ],
-  }
+  const faq = [
+    { q: '원리금균등상환과 원금균등상환의 차이는?', a: '원리금균등상환은 매월 동일한 금액(원금+이자)을 납부하여 계획적 상환이 가능합니다. 원금균등상환은 원금을 균등하게 나누고 잔액에 이자를 더해 초기 부담이 크지만 총 이자가 적습니다. 예를 들어 1억 원을 연 4%, 30년 상환 시 원리금균등은 총 이자 약 7,187만 원, 원금균등은 약 6,017만 원으로 약 1,170만 원 차이가 납니다.' },
+    { q: '거치기간이란 무엇인가요?', a: '거치기간은 원금 상환 없이 이자만 납부하는 기간입니다. 예를 들어 \"거치 1년, 상환 29년\"이면 처음 1년은 이자만 내고 이후 29년간 원금+이자를 상환합니다. 초기 부담이 줄지만 총 이자가 증가합니다. 1억 원, 연 4%, 30년(원리금균등) 기준 거치 1년을 두면 총 이자가 약 7,187만 원에서 약 7,312만 원으로 약 125만 원 늘어납니다.' },
+    { q: '중도상환수수료는 어떻게 계산하나요?', a: '일반적으로 중도상환수수료 = 중도상환금액 × 수수료율 × (잔존기간 ÷ 3년)이며, 대출 후 3년이 지나면 부과되지 않습니다. 금융위원회 개편으로 2025년 1월 13일 이후 신규 계약부터는 자금운용 손실·행정비용 등 실비용 내에서만 부과되어, 은행 주택담보대출 평균 수수료율이 약 1.4%에서 0.6%대로 낮아졌습니다. 정확한 요율은 대출 약정서를 확인하세요.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <LoanSchedule />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

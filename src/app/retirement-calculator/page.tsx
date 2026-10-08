@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import RetirementCalculator from '@/components/RetirementCalculator'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import retirementMessages from '../../../messages/generated/ko/ns/retirement.json'
 
 export const metadata: Metadata = {
   title: '퇴직금 계산기 - 세후 수령액 | 툴허브',
@@ -49,69 +51,6 @@ export default function RetirementCalculatorPage() {
     featureList: ['법정 퇴직금 계산', '평균임금 계산(3개월 상세·상여금·연차수당 3/12)', '통상임금 비교 적용', '퇴직소득세·지방소득세 계산(2023년~ 공제)', '세후 실수령 퇴직금', 'IRP 과세이연·연금수령 감면 비교', '퇴사일 연기 시뮬레이션', '1년 미만 남은 일수 표시']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '퇴직금은 언제부터 받을 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '근로자퇴직급여 보장법 제4조에 따라 1년 이상 계속 근무하고 4주 평균 주 15시간 이상 일한 근로자는 퇴직금을 받을 수 있습니다. 근속 1년에 30일분의 평균임금을 받으며, 1년에서 하루라도 부족하면 법정 퇴직금이 없습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '퇴직소득세는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '퇴직소득세는 퇴직금에서 근속연수공제를 빼고 12배·근속연수로 나눠 환산급여를 구한 뒤, 환산급여공제를 빼고 기본세율을 적용해 다시 근속연수/12를 곱해 계산합니다(소득세법 제48조·제55조). 근속연수공제는 2023년 이후 5년 이하 100만원×근속연수, 10년 이하 500만원+200만원×(근속연수-5), 20년 이하 1,500만원+250만원×(근속연수-10), 20년 초과 4,000만원+300만원×(근속연수-20)입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'DC형과 DB형 퇴직연금의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'DB형(확정급여형)은 퇴직 시 평균임금×근속연수로 퇴직금이 확정됩니다. DC형(확정기여형)은 회사가 매년 연간 임금총액의 1/12 이상을 납입하고(제20조), 운용 수익에 따라 수령액이 달라집니다. 임금 인상이 큰 경우 DB형이, 투자 수익이 높으면 DC형이 유리합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '퇴직금 중간정산은 가능한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2012년 이후 퇴직금 중간정산은 원칙적으로 금지되었지만, 무주택자 주택 구입·전세금, 6개월 이상 요양, 5년 내 파산·개인회생, 임금피크제, 근로시간 단축, 재난 등 법정 사유(근로자퇴직급여 보장법 시행령 제3조)에 해당하면 중간정산이 가능합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '퇴직금(평균임금)은 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '퇴직금 = 1일 평균임금 × 30일 × 재직일수 ÷ 365(근로자퇴직급여 보장법 제8조). 1일 평균임금은 퇴직 전 3개월 임금총액에 직전 1년 상여금·연차수당의 3/12을 더해 그 3개월 달력 일수(89~92일)로 나눕니다. 통상임금보다 적으면 통상임금을 씁니다(근로기준법 제2조 ②).',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '5인 미만 사업장도 퇴직금을 받나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네. 근로자를 1명 이상 사용하는 모든 사업장에 적용되며(근로자퇴직급여 보장법 제3조), 5인 미만 사업장도 2013년부터 100% 지급 대상입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '퇴직금 지급 기한은 언제인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '퇴직 후 14일 이내에 지급해야 하며(근로자퇴직급여 보장법 제9조), 늦어지면 연 20%의 지연이자가 붙습니다(근로기준법 제37조). 미지급 시 5년 이하 징역 또는 5천만원 이하 벌금 대상입니다(근로자퇴직급여 보장법 제43조, 2026.9.18 시행).',
-        },
-      },
-    ],
-  }
-
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -130,10 +69,7 @@ export default function RetirementCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={retirementMessages.retirement.guide.faq.items} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}

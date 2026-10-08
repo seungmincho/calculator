@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import CharacterCounter from '@/components/CharacterCounter'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '글자수 세기 - 글자수, 단어수, 문장수 카운터 | 툴허브',
@@ -41,43 +42,18 @@ export default function CharacterCounterPage() {
     featureList: ['공백 포함/제외 글자수', '잡코리아·사람인 방식 바이트(한글 2byte)', 'UTF-8 바이트', '목표 글자수 진행률', '자소서 문항 5개 자동 저장', '원고지 매수', 'X(트위터) 가중 글자수', '자주 쓴 단어 분석', '공백·줄바꿈 정리']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '글자수 세기에서 공백 포함/제외 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '공백 포함 글자수는 띄어쓰기와 줄바꿈까지 모두 센 수이고, 공백 제외 글자수는 띄어쓰기·탭·줄바꿈을 뺀 수입니다. 자기소개서는 기업마다 기준이 다르므로 지원서 안내 문구를 확인하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '자소서 바이트(byte)는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '잡코리아·사람인 글자수 세기는 한글 등 비영문 글자를 2byte, 영문·숫자·공백·줄바꿈을 1byte로 셉니다. 예를 들어 1,000byte 제한이면 한글만 쓸 때 약 500자입니다. UTF-8로 저장하는 시스템에서는 한글이 3byte라 결과가 다를 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'X(트위터)에서 한글은 몇 자까지 쓸 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'X는 280 가중치 한도를 쓰며 영문·숫자는 1, 한글·한자·일본어와 이모지는 2로 셉니다. 한글만 쓰면 140자, 링크는 길이와 상관없이 23으로 계산됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '글자수 세기에서 공백 포함/제외 차이는?', a: '공백 포함 글자수는 띄어쓰기와 줄바꿈까지 모두 센 수이고, 공백 제외 글자수는 띄어쓰기·탭·줄바꿈을 뺀 수입니다. 자기소개서는 기업마다 기준이 다르므로 지원서 안내 문구를 확인하세요.' },
+    { q: '자소서 바이트(byte)는 어떻게 계산하나요?', a: '잡코리아·사람인 글자수 세기는 한글 등 비영문 글자를 2byte, 영문·숫자·공백·줄바꿈을 1byte로 셉니다. 예를 들어 1,000byte 제한이면 한글만 쓸 때 약 500자입니다. UTF-8로 저장하는 시스템에서는 한글이 3byte라 결과가 다를 수 있습니다.' },
+    { q: 'X(트위터)에서 한글은 몇 자까지 쓸 수 있나요?', a: 'X는 280 가중치 한도를 쓰며 영문·숫자는 1, 한글·한자·일본어와 이모지는 2로 셉니다. 한글만 쓰면 140자, 링크는 길이와 상관없이 23으로 계산됩니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <CharacterCounter />
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { Home, Star, Clock, Search, X } from 'lucide-react'
 import ToolIcon from './ToolIcon'
 import { useTranslations } from '@/lib/i18n/navigation'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { getFavorites } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
@@ -21,7 +22,6 @@ type PanelType = 'favorites' | 'recent' | null
 export default function MobileBottomNav() {
   const t = useTranslations()
   const pathname = usePathname()
-  const router = useRouter()
   const [activePanel, setActivePanel] = useState<PanelType>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLElement>(null)
@@ -100,12 +100,10 @@ export default function MobileBottomNav() {
     return () => cancelAnimationFrame(frame)
   }, [pathname])
 
+  // 홈은 아래에서 <Link> 로 그린다 (크롤 가능한 링크)
   const handleNavClick = useCallback(
-    (type: 'home' | 'favorites' | 'recent' | 'search') => {
-      if (type === 'home') {
-        setActivePanel(null)
-        router.push('/')
-      } else if (type === 'search') {
+    (type: 'favorites' | 'recent' | 'search') => {
+      if (type === 'search') {
         setActivePanel(null)
         // Trigger the global Ctrl+K search dialog
         document.dispatchEvent(
@@ -119,15 +117,7 @@ export default function MobileBottomNav() {
         setActivePanel((prev) => (prev === type ? null : type))
       }
     },
-    [router]
-  )
-
-  const handleToolClick = useCallback(
-    (href: string) => {
-      setActivePanel(null)
-      router.push(href)
-    },
-    [router]
+    []
   )
 
   const isHome = pathname === '/' || pathname === ''
@@ -204,16 +194,17 @@ export default function MobileBottomNav() {
               ) : (
                 <div className="py-2">
                   {items.map((item) => (
-                    <button
+                    <Link prefetch={false}
                       key={item.href}
-                      onClick={() => handleToolClick(item.href)}
+                      href={item.href}
+                      onClick={() => setActivePanel(null)}
                       className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-colors text-left"
                     >
                       <ToolIcon href={item.href} size="sm" />
                       <span className="text-sm text-fg truncate">
                         {item.label}
                       </span>
-                    </button>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -233,24 +224,41 @@ export default function MobileBottomNav() {
         aria-label={t('mobileNav.label')}
       >
         <div className="flex items-stretch h-16">
-          {navItems.map(({ key, icon: Icon, labelKey, isActive }) => (
-            <button
-              key={key}
-              onClick={() => handleNavClick(key)}
-              className={`flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[44px] min-w-[44px] transition-colors ${
-                isActive
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-muted active:text-gray-700 dark:active:text-gray-300'
-              }`}
-              aria-label={t(labelKey)}
-              aria-current={key === 'home' && isHome ? 'page' : undefined}
-            >
-              <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-[10px] leading-tight font-medium">
-                {t(labelKey)}
-              </span>
-            </button>
-          ))}
+          {navItems.map(({ key, icon: Icon, labelKey, isActive }) => {
+            const className = `flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[44px] min-w-[44px] transition-colors ${
+              isActive
+                ? 'text-blue-600 dark:text-blue-400'
+                : 'text-muted active:text-gray-700 dark:active:text-gray-300'
+            }`
+            const body = (
+              <>
+                <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                <span className="text-[10px] leading-tight font-medium">
+                  {t(labelKey)}
+                </span>
+              </>
+            )
+            return key === 'home' ? (
+              <Link prefetch={false}
+                key={key}
+                href="/"
+                onClick={() => setActivePanel(null)}
+                className={className}
+                aria-current={isHome ? 'page' : undefined}
+              >
+                {body}
+              </Link>
+            ) : (
+              <button
+                key={key}
+                onClick={() => handleNavClick(key)}
+                className={className}
+                aria-label={t(labelKey)}
+              >
+                {body}
+              </button>
+            )
+          })}
         </div>
       </nav>
 

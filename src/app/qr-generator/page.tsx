@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import QrGenerator from '@/components/QrGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'QR 코드 생성기 - 무료 QR 제작 | 툴허브',
@@ -54,36 +55,11 @@ export default function QrGeneratorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'QR코드에 담을 수 있는 최대 데이터량은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'QR코드는 오류 정정 레벨에 따라 최대(L 레벨 기준) 숫자 7,089자, 영문 대문자·숫자 4,296자, 일반 텍스트 2,953바이트까지 담을 수 있습니다. 한글은 글자당 3바이트라 약 980자입니다. 오류 정정 레벨은 L(7%), M(15%), Q(25%), H(30%) 4단계이며, 레벨이 높을수록 손상에 강하지만 데이터 용량은 줄어듭니다. 실용적으로는 URL, 연락처, Wi-Fi 정보 등에 주로 사용됩니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'QR코드와 바코드의 차이점은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '바코드는 1차원으로 수평 방향의 선으로만 정보를 저장하며 보통 수십 자 이내의 짧은 값을 담습니다. QR코드는 2차원으로 가로·세로 모두 정보를 저장하여 수천 자까지 가능합니다. QR코드는 오류 정정 기능이 있어 일부 손상되어도 읽을 수 있고, 360도 어느 방향에서든 스캔이 가능합니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'QR코드에 로고를 넣어도 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, QR코드의 오류 정정 기능 덕분에 중앙에 로고를 넣어도 스캔이 가능합니다. 단, 로고는 QR코드 폭의 30% 이하로 넣고 오류 정정 레벨을 H로 설정한 뒤, 휴대폰으로 스캔 테스트를 해 보세요. 로고가 너무 크거나 QR코드 모서리의 위치 검출 패턴을 가리면 인식이 안 될 수 있습니다.'
-        }
-      },
-    ],
-  }
+  const faq = [
+    { q: 'QR코드에 담을 수 있는 최대 데이터량은?', a: 'QR코드는 오류 정정 레벨에 따라 최대(L 레벨 기준) 숫자 7,089자, 영문 대문자·숫자 4,296자, 일반 텍스트 2,953바이트까지 담을 수 있습니다. 한글은 글자당 3바이트라 약 980자입니다. 오류 정정 레벨은 L(7%), M(15%), Q(25%), H(30%) 4단계이며, 레벨이 높을수록 손상에 강하지만 데이터 용량은 줄어듭니다. 실용적으로는 URL, 연락처, Wi-Fi 정보 등에 주로 사용됩니다.' },
+    { q: 'QR코드와 바코드의 차이점은?', a: '바코드는 1차원으로 수평 방향의 선으로만 정보를 저장하며 보통 수십 자 이내의 짧은 값을 담습니다. QR코드는 2차원으로 가로·세로 모두 정보를 저장하여 수천 자까지 가능합니다. QR코드는 오류 정정 기능이 있어 일부 손상되어도 읽을 수 있고, 360도 어느 방향에서든 스캔이 가능합니다.' },
+    { q: 'QR코드에 로고를 넣어도 되나요?', a: '네, QR코드의 오류 정정 기능 덕분에 중앙에 로고를 넣어도 스캔이 가능합니다. 단, 로고는 QR코드 폭의 30% 이하로 넣고 오류 정정 레벨을 H로 설정한 뒤, 휴대폰으로 스캔 테스트를 해 보세요. 로고가 너무 크거나 QR코드 모서리의 위치 검출 패턴을 가리면 인식이 안 될 수 있습니다.' },
+  ]
 
   return (
     <>
@@ -91,14 +67,11 @@ export default function QrGeneratorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <QrGenerator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

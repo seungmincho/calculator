@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import BoardGamePage from '@/components/BoardGamePage'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '만칼라 - AI·온라인 대전 | 툴허브',
@@ -52,30 +53,15 @@ export default function MancalaPage() {
     }
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '만칼라 게임 규칙은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '만칼라는 세계에서 가장 오래된 보드게임 중 하나로, 아프리카에서 기원했습니다. 6개의 구멍(pit)과 1개의 저장소(store)가 각 플레이어에게 있습니다. 자기 쪽 구멍 하나를 선택해 돌을 집어 반시계 방향으로 하나씩 놓습니다. 마지막 돌이 자기 저장소에 들어가면 한 번 더 플레이합니다. 마지막 돌이 자기 쪽 빈 구멍에 들어가면 그 맞은편 상대 구멍의 돌까지 가져옵니다. 한쪽의 구멍이 모두 비면 게임이 끝나고 돌이 많은 쪽이 승리합니다.'
-        }
-      }
-    ]
-  }
+  const faq = [
+    { q: '만칼라 게임 규칙은?', a: '만칼라는 세계에서 가장 오래된 보드게임 중 하나로, 아프리카에서 기원했습니다. 6개의 구멍(pit)과 1개의 저장소(store)가 각 플레이어에게 있습니다. 자기 쪽 구멍 하나를 선택해 돌을 집어 반시계 방향으로 하나씩 놓습니다. 마지막 돌이 자기 저장소에 들어가면 한 번 더 플레이합니다. 마지막 돌이 자기 쪽 빈 구멍에 들어가면 그 맞은편 상대 구멍의 돌까지 가져옵니다. 한쪽의 구멍이 모두 비면 게임이 끝나고 돌이 많은 쪽이 승리합니다.' },
+  ]
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <div className="min-h-screen py-8 px-4">
         <BoardGamePage
@@ -108,6 +94,7 @@ export default function MancalaPage() {
               <li><strong>상대 구멍 비우기:</strong> 게임 종료 시 자기 쪽 구멍의 돌은 자신이 모두 가져가므로, 상대 구멍을 미리 비우면 유리합니다.</li>
             </ul>
           </div>
+          <ToolFaq items={faq} />
         </section>
     </>
   )

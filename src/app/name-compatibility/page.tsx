@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import NameCompatibility from '@/components/NameCompatibility'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '이름 궁합 테스트 - ㅇㅎ 획수 궁합 | 툴허브',
@@ -47,37 +48,19 @@ export default function NameCompatibilityPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '이름 궁합 테스트는 어떻게 계산되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '두 이름의 글자를 번갈아 배치한 후, 각 글자의 자음/모음을 ㅇ과 ㅎ로 변환하고 획수(ㅇ=1, ㅎ=3)를 계산합니다. 인접한 숫자를 더해가며 최종 궁합 점수를 구합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '이름 궁합 결과를 공유할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 결과 카드를 이미지(PNG)로 저장하거나, URL 링크를 복사해서 카카오톡 등으로 공유할 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '이름 궁합 테스트는 어떻게 계산되나요?', a: '두 이름의 글자를 번갈아 배치한 후, 각 글자의 자음/모음을 ㅇ과 ㅎ로 변환하고 획수(ㅇ=1, ㅎ=3)를 계산합니다. 인접한 숫자를 더해가며 최종 궁합 점수를 구합니다.' },
+    { q: '이름 궁합 결과를 공유할 수 있나요?', a: '네, 결과 카드를 이미지(PNG)로 저장하거나, URL 링크를 복사해서 카카오톡 등으로 공유할 수 있습니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <NameCompatibility />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

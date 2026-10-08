@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import CarMaintenance from '@/components/CarMaintenance'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '자동차 유지비 계산기 - 연간 차량 유지 비용 | 툴허브',
@@ -53,20 +54,9 @@ export default function CarMaintenancePage() {
       'km당 비용 분석',
     ],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '자동차 정기 점검 주기는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '현대자동차그룹 안내 기준 엔진오일·필터는 15,000km 또는 12개월(가혹조건 7,500km 또는 6개월), 냉각수는 최초 20만km 또는 10년 이후 4만km 또는 2년, 브레이크액은 5만km, 점화플러그는 16만km입니다. 에어필터·타이어·배터리·와이퍼 등은 일반적 기준이며 차종마다 다르므로 차량 취급설명서의 점검 주기표를 따르는 것이 가장 정확합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '자동차 정기 점검 주기는?', a: '현대자동차그룹 안내 기준 엔진오일·필터는 15,000km 또는 12개월(가혹조건 7,500km 또는 6개월), 냉각수는 최초 20만km 또는 10년 이후 4만km 또는 2년, 브레이크액은 5만km, 점화플러그는 16만km입니다. 에어필터·타이어·배터리·와이퍼 등은 일반적 기준이며 차종마다 다르므로 차량 취급설명서의 점검 주기표를 따르는 것이 가장 정확합니다.' },
+  ]
 
   return (
     <>
@@ -74,14 +64,11 @@ export default function CarMaintenancePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CarMaintenance />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

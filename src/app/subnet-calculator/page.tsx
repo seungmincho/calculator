@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import SubnetCalculator from '@/components/SubnetCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import subnetCalculatorMessages from '../../../messages/generated/ko/ns/subnetCalculator.json'
 
 export const metadata: Metadata = {
   title: 'IP 서브넷 계산기 - CIDR·VLSM·IPv6 | 툴허브',
@@ -27,29 +29,6 @@ export const metadata: Metadata = {
   },
 }
 
-const faqData = [
-  {
-    question: 'CIDR 표기법이란 무엇인가요?',
-    answer: 'CIDR(Classless Inter-Domain Routing)은 IP 주소 뒤에 슬래시(/)와 프리픽스 길이를 붙여 네트워크 범위를 표현하는 방법입니다. 예를 들어 192.168.1.0/24는 앞 24비트가 네트워크 부분임을 의미하며, 이는 서브넷마스크 255.255.255.0과 같습니다.',
-  },
-  {
-    question: '서브넷마스크와 와일드카드 마스크의 차이점은?',
-    answer: '서브넷마스크는 네트워크 부분을 1로, 호스트 부분을 0으로 표시합니다(예: 255.255.255.0). 와일드카드 마스크는 반대로 호스트 부분을 1로 표시합니다(예: 0.0.0.255). 와일드카드 마스크는 주로 ACL(접근 제어 목록)이나 라우팅 프로토콜에서 사용됩니다.',
-  },
-  {
-    question: 'VLSM 서브넷 분할은 어떻게 하나요?',
-    answer: '서브넷 분할 탭에서 VLSM을 선택하고 부서별 필요한 호스트 수를 한 줄에 하나씩 입력하면, 큰 요구부터 가장 작은 블록을 순서대로 배치해 네트워크·사용 범위·브로드캐스트·마스크 표를 만들어 줍니다. 결과는 CSV로 내려받거나 마크다운 표로 복사할 수 있습니다.',
-  },
-  {
-    question: '/31 서브넷은 호스트가 몇 개인가요?',
-    answer: 'RFC 3021에 따라 /31은 라우터 간 point-to-point 링크용으로 브로드캐스트 주소 없이 주소 2개를 모두 사용합니다. /32는 단일 호스트를 뜻합니다.',
-  },
-  {
-    question: '사설 IP 주소 대역은 어떻게 되나요?',
-    answer: 'RFC 1918에서 정의된 사설 IP 대역은 세 가지입니다: 10.0.0.0/8 (클래스 A), 172.16.0.0/12 (클래스 B), 192.168.0.0/16 (클래스 C). 이 주소들은 인터넷에서 라우팅되지 않으며, 내부 네트워크에서 자유롭게 사용할 수 있습니다.',
-  },
-]
-
 export default function SubnetCalculatorPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -73,20 +52,10 @@ export default function SubnetCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={subnetCalculatorMessages.subnetCalculator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

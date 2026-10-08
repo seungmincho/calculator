@@ -3,6 +3,7 @@ import DevRoadmap from '@/components/DevRoadmap'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '개발자 로드맵 - 프론트엔드·백엔드·풀스택·DevOps | 툴허브',
@@ -40,24 +41,20 @@ export default function DevRoadmapPage() {
     featureList: ['4가지 개발 트랙', '120+ 기술 스택', '단계별 학습 경로', '진행률 추적', '필수/선택 기술 구분']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '어떤 트랙을 선택해야 하나요?', acceptedAnswer: { '@type': 'Answer', text: 'UI/UX에 관심이 있다면 프론트엔드, 서버/데이터에 관심이 있다면 백엔드, 둘 다 하고 싶다면 풀스택, 인프라/자동화에 관심이 있다면 DevOps를 선택하세요.' } },
-      { '@type': 'Question', name: '모든 기술을 다 배워야 하나요?', acceptedAnswer: { '@type': 'Answer', text: '아닙니다. ★ 필수 기술을 먼저 익히고, 나머지는 필요에 따라 선택적으로 학습하세요. 필수 기술만으로도 충분히 취업할 수 있습니다.' } }
-    ]
-  }
+  const faq = [
+    { q: '어떤 트랙을 선택해야 하나요?', a: 'UI/UX에 관심이 있다면 프론트엔드, 서버/데이터에 관심이 있다면 백엔드, 둘 다 하고 싶다면 풀스택, 인프라/자동화에 관심이 있다면 DevOps를 선택하세요.' },
+    { q: '모든 기술을 다 배워야 하나요?', a: '아닙니다. ★ 필수 기술을 먼저 익히고, 나머지는 필요에 따라 선택적으로 학습하세요.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <DevRoadmap />
               <div className="mt-8"><GuideSection namespace="devRoadmap" /></div>
+              <ToolFaq items={faq} />
               <div className="mt-8"><RelatedTools /></div>
             </I18nWrapper>
         </div>

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import ElectricityCalculator from '@/components/ElectricityCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import electricityCalculatorMessages from '../../../messages/generated/ko/ns/electricityCalculator.json'
 
 export const metadata: Metadata = {
   title: '전기요금 계산기 - 한국 주택용 누진제 전기세 계산 | 툴허브',
@@ -14,36 +16,6 @@ export const metadata: Metadata = {
 
 export default function ElectricityCalculatorPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '전기요금 계산기', description: '한국 주택용 전기요금 누진제 기준 계산기', url: 'https://toolhub.ai.kr/electricity-calculator/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['누진제 전기요금 계산', '계절별 요금 차이', '부가세/기금 포함', '가전별 사용량 계산', '에어컨 추가 사용 요금', '지난달 비교', '복지할인', '주택용 고압', '슈퍼유저 요금', '절약 팁'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '주택용 전기요금 누진제 구간은 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '주택용 전기요금은 사용량에 따라 3단계 누진제가 적용됩니다. 1구간(200kWh 이하)은 kWh당 120.0원, 2구간(201~400kWh)은 214.6원, 3구간(400kWh 초과)은 307.3원입니다(기타 계절 기준, 하계 7~8월은 구간이 300/450kWh로 넓어짐). 여기에 기본요금, 부가가치세(10%), 전력산업기반기금(2.7%)이 추가됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '여름·겨울 전기요금이 더 비싼 이유는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '겨울(12~2월)에는 누진 구간이 기타 계절과 같은데 전기난방기기 사용으로 사용량이 늘어 높은 구간에 들어가기 쉽기 때문입니다. 여름(7~8월)은 구간이 300/450kWh로 넓어지고, 여름·겨울에 1,000kWh를 넘기면 초과분에 슈퍼유저 요금이 붙습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '전기요금을 절약하는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '전기요금 절약 팁: ① 에어컨 적정 온도 26도 유지 ② 대기전력 차단(멀티탭 스위치 끄기) ③ LED 조명 교체 ④ 에너지효율 1등급 가전 사용 ⑤ 고효율 냉장고 적정 용량 선택. 또한 에너지캐시백 제도를 활용하면 전년 대비 절감한 전기요금의 일부를 포인트로 돌려받을 수 있습니다.',
-        },
-      },
-    ],
-  }
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -59,7 +31,7 @@ export default function ElectricityCalculatorPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={electricityCalculatorMessages.electricityCalculator.guide.faq.items} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

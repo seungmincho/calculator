@@ -3,6 +3,7 @@ import CodingPatterns from '@/components/CodingPatterns'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '코딩 테스트 패턴 - 15개 핵심 알고리즘 패턴 | 툴허브',
@@ -40,24 +41,20 @@ export default function CodingPatternsPage() {
     featureList: ['15개 핵심 패턴', '접근법 단계별 설명', '시간/공간 복잡도', '의사코드', '대표 문제', '학습 진행률 추적']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '코딩 테스트에서 가장 자주 나오는 패턴은?', acceptedAnswer: { '@type': 'Answer', text: '투포인터, 슬라이딩 윈도우, BFS/DFS, 이진 탐색, 동적 프로그래밍이 가장 빈출 패턴입니다. 이 5개를 먼저 익히면 대부분의 문제에 접근할 수 있습니다.' } },
-      { '@type': 'Question', name: '패턴을 어떤 순서로 공부해야 하나요?', acceptedAnswer: { '@type': 'Answer', text: '쉬운 패턴(투포인터, 해시맵)부터 시작해 중급(BFS/DFS, 이진 탐색, 슬라이딩 윈도우)을 거쳐 고급(DP, 위상 정렬)으로 진행하세요.' } }
-    ]
-  }
+  const faq = [
+    { q: '코딩 테스트에서 가장 자주 나오는 패턴은?', a: '투포인터, 슬라이딩 윈도우, BFS/DFS, 이진 탐색, 동적 프로그래밍이 가장 빈출 패턴입니다. 이 5개를 먼저 익히면 대부분의 문제에 접근할 수 있습니다.' },
+    { q: '패턴을 어떤 순서로 공부해야 하나요?', a: '쉬운 패턴(투포인터, 해시맵)부터 시작해 중급(BFS/DFS, 이진 탐색, 슬라이딩 윈도우)을 거쳐 고급(DP, 위상 정렬)으로 진행하세요.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CodingPatterns />
               <div className="mt-8"><GuideSection namespace="codingPatterns" /></div>
+              <ToolFaq items={faq} />
               <div className="mt-8"><RelatedTools /></div>
             </I18nWrapper>
         </div>

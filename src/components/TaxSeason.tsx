@@ -23,7 +23,6 @@ import {
   PiggyBank,
   BarChart3,
 } from 'lucide-react'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset } from '@/lib/glass'
@@ -119,8 +118,6 @@ export default function TaxSeason() {
 
   return (
     <div className="space-y-10">
-      <Breadcrumb />
-
       {/* ── Section 1: Hero ── */}
       <section className="text-center space-y-6">
         <div className="inline-flex items-center gap-2 bg-soft text-sub px-4 py-1.5 rounded-full text-sm font-medium">

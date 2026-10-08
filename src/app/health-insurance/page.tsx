@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import HealthInsuranceCalculator from '@/components/HealthInsuranceCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import healthInsuranceMessages from '../../../messages/generated/ko/ns/healthInsurance.json'
 
 export const metadata: Metadata = {
   title: '건강보험료 계산기 2026 - 직장/지역가입자 보험료 계산 | 툴허브',
@@ -52,37 +54,6 @@ export default function HealthInsurancePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '2026년 건강보험료율은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 건강보험료율은 7.19%(2025년 7.09%에서 0.1%p 인상)입니다. 직장가입자는 근로자와 사업주가 각각 3.595%씩 부담하며, 지역가입자는 전액 본인이 부담합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '피부양자 자격 조건은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '피부양자는 연소득 2,000만원 이하이고 사업소득이 없어야 합니다(사업자등록이 없으면 연 500만원 이하까지 인정). 재산세 과세표준 합계 5.4억원 이하여야 하며, 5.4억~9억원이면 연소득 1,000만원 이하여야 합니다. 형제자매는 과세표준 1.8억원 이하에 연령(30세 미만·65세 이상)·장애 요건을 갖춰야 합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '지역가입자 건강보험료는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '지역가입자 건강보험료는 소득보험료와 재산보험료를 합산합니다. 소득보험료는 소득월액(근로·연금소득은 50%만 반영, 이자·배당 합계 1,000만원 이하는 제외)에 7.19%를 곱하고, 재산보험료는 재산 과세표준(전월세 포함)에서 기본공제 1억원을 뺀 후 60등급 점수에 점수당 211.5원을 곱합니다. 자동차 보험료는 2024년 2월 폐지됐습니다.',
-        },
-      },
-    ],
-  }
-
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -98,7 +69,7 @@ export default function HealthInsurancePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={healthInsuranceMessages.healthInsurance.guide.faq.items} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import InvestmentCalculator from '@/components/InvestmentCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import investmentCalculatorMessages from '../../../messages/generated/ko/ns/investmentCalculator.json'
 
 export const metadata: Metadata = {
   title: '투자 수익률 계산기 - CAGR, 적립식·거치식 비교 | 툴허브',
@@ -48,47 +50,13 @@ export default function InvestmentCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '월 50만원씩 20년 투자하면 얼마가 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '연 7% 수익률이 매년 유지된다고 가정하면 원금 1.2억원이 약 2.6억원이 됩니다. 수익률 4%면 약 1.8억원, 10%면 약 3.6억원입니다. 실제 수익률은 변동하며 원금 손실이 날 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'ISA와 연금저축은 세금이 얼마나 다른가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '일반 계좌는 이자·배당에 15.4%가 붙습니다. ISA는 3년 이상 유지하면 순이익 200만원(서민형 400만원)까지 비과세, 초과분은 9.9% 분리과세입니다. 연금저축·IRP는 연 900만원까지 13.2~16.5% 세액공제를 받고 55세 이후 연금으로 받을 때 3.3~5.5% 연금소득세를 냅니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '인플레이션 보정 실질 수익률은 왜 중요한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '명목 수익률이 높아도 물가가 오르면 실제 구매력은 덜 늘어납니다. 연 7% 수익에 물가 2%면 실질 수익률은 약 4.9%이고, 20년 뒤 2.6억원은 현재 돈 가치로 약 1.7억원입니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={investmentCalculatorMessages.investmentCalculator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

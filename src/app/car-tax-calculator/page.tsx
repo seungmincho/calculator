@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import CarTaxCalculator from '@/components/CarTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '자동차 취등록세 계산기 - 취득세 | 툴허브',
@@ -66,36 +67,11 @@ export default function CarTaxCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '자동차 취득세율은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '승용차 취득세율은 차량 가격의 7%입니다. 경차(1,000cc 미만)는 4%, 화물차·승합차는 5%가 적용됩니다. 영업용 차량은 4%이며, 전기차는 2026년 12월 31일까지 최대 140만원 감면되며, 하이브리드 감면은 2024년 말 종료됐습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '공채매입 비용이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '자동차 등록 시 지역개발공채 또는 도시철도채권을 의무 매입해야 합니다. 공채 매입률은 지역과 차량 종류에 따라 차량가의 4~12%이며, 즉시 할인 매도하면 공채 금액의 3~5%를 부담하게 됩니다. 비영업용 승용차 1,600cc 미만은 2023년 3월부터 매입이 면제됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '중고차 취득세는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '중고차 취득세는 실제 거래가격을 기준으로 하되, 신고가액이 행정안전부 시가표준액보다 낮으면 시가표준액으로 계산합니다(지방세법 제10조의5).',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '자동차 취득세율은 얼마인가요?', a: '승용차 취득세율은 차량 가격의 7%입니다. 경차(1,000cc 미만)는 4%, 화물차·승합차는 5%가 적용됩니다. 영업용 차량은 4%이며, 전기차는 2026년 12월 31일까지 최대 140만원 감면되며, 하이브리드 감면은 2024년 말 종료됐습니다.' },
+    { q: '공채매입 비용이란 무엇인가요?', a: '자동차 등록 시 지역개발공채 또는 도시철도채권을 의무 매입해야 합니다. 공채 매입률은 지역과 차량 종류에 따라 차량가의 4~12%이며, 즉시 할인 매도하면 공채 금액의 3~5%를 부담하게 됩니다. 비영업용 승용차 1,600cc 미만은 2023년 3월부터 매입이 면제됩니다.' },
+    { q: '중고차 취득세는 어떻게 계산하나요?', a: '중고차 취득세는 실제 거래가격을 기준으로 하되, 신고가액이 행정안전부 시가표준액보다 낮으면 시가표준액으로 계산합니다(지방세법 제10조의5).' },
+  ]
 
   return (
     <>
@@ -105,16 +81,13 @@ export default function CarTaxCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <div className="container mx-auto px-4 py-8">
           <CarTaxCalculator />
         </div>
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

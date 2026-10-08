@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import PacMan from '@/components/PacMan'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '팩맨 - 클래식 아케이드 미로 게임 | 툴허브',
@@ -49,28 +50,10 @@ export default function PacManPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '팩맨 조작법은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '키보드 방향키(↑↓←→)로 팩맨을 조작합니다. 모바일에서는 게임 화면 아래의 가상 D패드 버튼을 터치하세요. 모든 점(·)을 먹으면 레벨이 클리어됩니다. 큰 점(파워 펠릿)을 먹으면 잠시 동안 유령을 먹을 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '팩맨에서 유령을 어떻게 피하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '각 유령은 고유한 AI를 가지고 있습니다. 빨간 유령(Blinky)은 직접 추격, 분홍 유령(Pinky)은 팩맨 앞을 노립니다. 파워 펠릿(큰 점)을 먹으면 유령이 파란색으로 변하며 약 7초간 취약 상태가 됩니다. 이때 유령을 먹으면 보너스 점수를 얻습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '팩맨 조작법은 무엇인가요?', a: '키보드 방향키(↑↓←→)로 팩맨을 조작합니다. 모바일에서는 게임 화면 아래의 가상 D패드 버튼을 터치하세요. 모든 점(·)을 먹으면 레벨이 클리어됩니다. 큰 점(파워 펠릿)을 먹으면 잠시 동안 유령을 먹을 수 있습니다.' },
+    { q: '팩맨에서 유령을 어떻게 피하나요?', a: '각 유령은 고유한 AI를 가지고 있습니다. 빨간 유령(Blinky)은 직접 추격, 분홍 유령(Pinky)은 팩맨 앞을 노립니다. 파워 펠릿(큰 점)을 먹으면 유령이 파란색으로 변하며 약 7초간 취약 상태가 됩니다. 이때 유령을 먹으면 보너스 점수를 얻습니다.' },
+  ]
 
   return (
     <>
@@ -78,14 +61,11 @@ export default function PacManPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PacMan />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

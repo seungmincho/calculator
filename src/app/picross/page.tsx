@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Picross from '@/components/Picross'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '네모로직 - 논리 퍼즐 게임 | 툴허브',
@@ -57,24 +58,14 @@ export default function PicrossPage() {
     featureList: ['3단계 난이도 (5x5, 10x10, 15x15)', '오늘의 퍼즐', '타이머', '통계 기록', '결과 공유'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Picross />
+              <ToolFaq items={faqData.map((f) => ({ q: f.question, a: f.answer }))} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

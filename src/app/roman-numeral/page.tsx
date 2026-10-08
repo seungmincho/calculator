@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import RomanNumeral from '@/components/RomanNumeral'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import romanNumeralMessages from '../../../messages/generated/ko/ns/romanNumeral.json'
 
 export const metadata: Metadata = {
   title: '로마 숫자 변환기 - 아라비아↔로마 숫자 변환 | 툴허브',
@@ -14,24 +16,10 @@ export const metadata: Metadata = {
 
 export default function RomanNumeralPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '로마 숫자 변환기', description: '아라비아↔로마 숫자 변환', url: 'https://toolhub.ai.kr/roman-numeral/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['아라비아↔로마 숫자 자동 양방향 변환', '잘못된 표기 검사와 표준형 안내', '자리별 분해 설명', '날짜를 로마 숫자로 변환', '유니코드 Ⅰ~Ⅻ 문자 복사', '4,000 이상 확장 표기(윗줄)', '1~100·연도 로마 숫자 표'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '로마 숫자 읽는 법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '기본 기호: I(1), V(5), X(10), L(50), C(100), D(500), M(1000). 규칙: ① 왼쪽에서 오른쪽으로 더함 (VI=6, XII=12) ② 작은 수가 큰 수 앞에 오면 뺌 (IV=4, IX=9, XL=40, XC=90, CD=400, CM=900). 예: MMXXVI = 2000+20+6 = 2026. 시계, 영화 시리즈(Rocky III), 슈퍼볼(Super Bowl LVIII), 왕의 이름(Elizabeth II) 등에 사용됩니다.',
-        },
-      },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={romanNumeralMessages.romanNumeral.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><RomanNumeral />  <div className="mt-8">

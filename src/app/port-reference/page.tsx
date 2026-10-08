@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import PortReference from '@/components/PortReference'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '포트 번호 레퍼런스 - TCP/UDP 검색 | 툴허브',
@@ -48,36 +49,11 @@ export default function PortReferencePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '잘 알려진 포트(Well-Known Port)란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '잘 알려진 포트는 0~1023 범위의 포트 번호로, IANA(인터넷 할당 번호 기관)에서 표준 서비스에 할당한 포트입니다. HTTP(80), HTTPS(443), SSH(22), FTP(21), SMTP(25) 등이 이에 해당합니다. 서버에서 이 포트를 열려면 일반적으로 관리자(root) 권한이 필요합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'TCP와 UDP의 차이점은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'TCP(Transmission Control Protocol)는 연결 지향 프로토콜로 데이터의 신뢰성 있는 전송을 보장합니다. 패킷 손실 시 재전송하며 순서를 보장합니다. HTTP, HTTPS, SSH, FTP 등에서 사용됩니다. UDP(User Datagram Protocol)는 비연결 프로토콜로 빠르지만 신뢰성을 보장하지 않습니다. DNS, DHCP, 스트리밍, 게임 등 속도가 중요한 서비스에 사용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '방화벽에서 포트를 열 때 주의할 점은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '방화벽 포트를 열 때는 최소 권한 원칙을 따르세요. 필요한 포트만 열고, 특정 IP 대역으로 접근을 제한하세요. Telnet(23), FTP(21)처럼 암호화되지 않은 프로토콜은 SSH, SFTP로 대체하는 것이 좋습니다. 데이터베이스 포트(3306, 5432 등)는 외부에 직접 노출하지 말고 VPN이나 SSH 터널을 사용하세요. 정기적으로 열린 포트를 감사하고 불필요한 포트는 닫으세요.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '잘 알려진 포트(Well-Known Port)란 무엇인가요?', a: '잘 알려진 포트는 0~1023 범위의 포트 번호로, IANA(인터넷 할당 번호 기관)에서 표준 서비스에 할당한 포트입니다. HTTP(80), HTTPS(443), SSH(22), FTP(21), SMTP(25) 등이 이에 해당합니다. 서버에서 이 포트를 열려면 일반적으로 관리자(root) 권한이 필요합니다.' },
+    { q: 'TCP와 UDP의 차이점은 무엇인가요?', a: 'TCP(Transmission Control Protocol)는 연결 지향 프로토콜로 데이터의 신뢰성 있는 전송을 보장합니다. 패킷 손실 시 재전송하며 순서를 보장합니다. HTTP, HTTPS, SSH, FTP 등에서 사용됩니다. UDP(User Datagram Protocol)는 비연결 프로토콜로 빠르지만 신뢰성을 보장하지 않습니다. DNS, DHCP, 스트리밍, 게임 등 속도가 중요한 서비스에 사용됩니다.' },
+    { q: '방화벽에서 포트를 열 때 주의할 점은 무엇인가요?', a: '방화벽 포트를 열 때는 최소 권한 원칙을 따르세요. 필요한 포트만 열고, 특정 IP 대역으로 접근을 제한하세요. Telnet(23), FTP(21)처럼 암호화되지 않은 프로토콜은 SSH, SFTP로 대체하는 것이 좋습니다. 데이터베이스 포트(3306, 5432 등)는 외부에 직접 노출하지 말고 VPN이나 SSH 터널을 사용하세요. 정기적으로 열린 포트를 감사하고 불필요한 포트는 닫으세요.' },
+  ]
 
   return (
     <>
@@ -85,14 +61,11 @@ export default function PortReferencePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PortReference />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import ImageMosaic from '@/components/ImageMosaic'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import imageMosaicMessages from '../../../messages/generated/ko/ns/imageMosaic.json'
 
 export const metadata: Metadata = {
   title: '얼굴 블러 처리 · 사진 모자이크 - 무료 온라인 | 툴허브',
@@ -27,19 +29,10 @@ export default function ImageMosaicPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['Ctrl+V 스크린샷 붙여넣기', '사각형·원형·브러시 영역', '모자이크·블러·검정/흰색 박스', '영역 이동·크기 조절·삭제', '되돌리기/다시 실행', '확대/축소', 'EXIF(GPS) 제거 PNG/JPG 저장', '클립보드 복사'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '이미지 모자이크란 무엇인가요?', acceptedAnswer: { '@type': 'Answer', text: '이미지 모자이크(픽셀화)는 특정 영역을 큰 블록으로 바꿔 알아볼 수 없게 만드는 기법입니다. 얼굴, 번호판, 주소 등을 가릴 때 쓰며, 이 도구는 브라우저에서 처리하므로 이미지가 서버로 전송되지 않습니다.' } },
-      { '@type': 'Question', name: '모자이크한 글자를 복원할 수 있나요?', acceptedAnswer: { '@type': 'Answer', text: '블록이 작은 모자이크나 약한 블러는 글자 형태가 남아 추정될 수 있습니다. 이름·전화번호·주소·번호판 같은 텍스트는 검정 또는 흰색 박스로 가리는 것이 가장 안전합니다.' } },
-      { '@type': 'Question', name: '저장하면 사진의 GPS 위치 정보도 지워지나요?', acceptedAnswer: { '@type': 'Answer', text: '네. 저장·복사 시 픽셀만 새로 인코딩하므로 원본의 EXIF(GPS 위치, 촬영 기기, 날짜) 정보는 결과 파일에 포함되지 않습니다.' } },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={imageMosaicMessages.imageMosaic.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

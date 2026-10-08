@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import PersonalColor from '@/components/PersonalColor'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '퍼스널컬러 자가진단 - 봄웜/여름쿨/가을웜/겨울쿨 | 툴허브',
@@ -48,37 +49,19 @@ export default function PersonalColorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '퍼스널컬러 자가진단은 정확한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '셀프 테스트는 대략적인 유형 파악에 도움이 됩니다. 정확한 진단을 위해서는 전문 컨설턴트의 드레이핑 진단을 받는 것이 좋습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '퍼스널컬러는 몇 가지 유형이 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '크게 봄 웜톤, 여름 쿨톤, 가을 웜톤, 겨울 쿨톤의 4가지 유형으로 나뉩니다. 웜톤은 노란 기가 도는 따뜻한 톤, 쿨톤은 핑크/블루 기가 도는 차가운 톤입니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '퍼스널컬러 자가진단은 정확한가요?', a: '셀프 테스트는 대략적인 유형 파악에 도움이 됩니다. 정확한 진단을 위해서는 전문 컨설턴트의 드레이핑 진단을 받는 것이 좋습니다.' },
+    { q: '퍼스널컬러는 몇 가지 유형이 있나요?', a: '크게 봄 웜톤, 여름 쿨톤, 가을 웜톤, 겨울 쿨톤의 4가지 유형으로 나뉩니다. 웜톤은 노란 기가 도는 따뜻한 톤, 쿨톤은 핑크/블루 기가 도는 차가운 톤입니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PersonalColor />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

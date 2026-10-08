@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import NumberBaseball from '@/components/NumberBaseball'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import numberBaseballMessages from '../../../messages/generated/ko/ns/numberBaseball.json'
 
 export const metadata: Metadata = {
   title: '숫자야구 게임 - 숫자 맞추기 두뇌 게임 | 툴허브',
@@ -42,39 +44,13 @@ export default function NumberBaseballPage() {
     featureList: ['오늘의 숫자야구 (매일 같은 문제)', '3~5자리·0 포함·시도 제한 연습 모드', '숫자 메모장', '남은 후보 수 힌트', '연속 기록·시도 분포 통계', '스포일러 없는 결과 공유'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '숫자야구 게임 규칙은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '숫자야구는 상대가 정한 3~5자리 숫자를 맞추는 추론 게임입니다. 각 자리 숫자가 겹치지 않습니다. 추측 후 힌트: 숫자와 위치가 모두 맞으면 \'스트라이크\', 숫자는 맞지만 위치가 다르면 \'볼\'. 예를 들어 정답이 123이고 132를 추측하면 1S 2B(1은 스트라이크, 3과 2는 볼)입니다. 논리적 추론으로 가능한 숫자를 좁혀가며, 보통 7번 이내에 맞출 수 있습니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '오늘의 숫자야구는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '매일 자정(한국 시간)에 바뀌는 문제로, 모든 사람에게 같은 4자리 숫자(1~9, 중복 없음)가 나옵니다. 하루 한 번 10번 안에 맞히는 도전이며, 결과는 숫자 없이 🟩(스트라이크) 🟨(볼) ⬜(아웃) 그리드로 공유할 수 있어 스포일러가 없습니다.'
-        }
-      }
-    ]
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={numberBaseballMessages.numberBaseball.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

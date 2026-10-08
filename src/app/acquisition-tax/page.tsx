@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import AcquisitionTaxCalculator from '@/components/AcquisitionTaxCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import acquisitionTaxCalcMessages from '../../../messages/generated/ko/ns/acquisitionTaxCalc.json'
 
 export const metadata: Metadata = {
   title: '취득세 계산기 2026 - 부동산 취득세·농특세·지방교육세 | 툴허브',
@@ -28,14 +30,6 @@ export default function AcquisitionTaxPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['주택·토지·상가 취득세', '다주택 중과세율', '6억~9억 선형 보간', '농어촌특별세·지방교육세', '실효세율 표시', '상속·증여 취득세', '생애최초·출산 감면', '조정대상지역 자동 판단', '집 살 때 총비용(중개보수·채권)', '신고기한·가산세', '주택 수별 비교'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org', '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '주택 취득세율은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '1주택 기준 취득가 6억원 이하 1%, 6~9억원 1~3%(선형 보간), 9억원 초과 3%입니다. 조정대상지역 2주택 8%, 3주택 이상 12%, 법인 12%가 적용됩니다.' } },
-      { '@type': 'Question', name: '취득세 외에 추가 세금이 있나요?', acceptedAnswer: { '@type': 'Answer', text: '취득세 외에 농어촌특별세(전용 85㎡ 초과 시 취득가의 0.2%, 중과 시 0.6~1.0%)와 지방교육세(1~3% 주택은 취득세의 10%, 중과 시 0.4%)가 별도로 부과됩니다.' } },
-      { '@type': 'Question', name: '다주택 중과세율은 얼마인가요?', acceptedAnswer: { '@type': 'Answer', text: '조정대상지역 2주택 8%, 3주택 이상 12%입니다. 비조정지역은 2주택 1~3%, 3주택 8%, 4주택 이상 12%입니다. 법인은 지역 무관 12%입니다.' } },
-    ],
-  }
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -51,7 +45,7 @@ export default function AcquisitionTaxPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={acquisitionTaxCalcMessages.acquisitionTaxCalc.u.faq.items} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import CapitalGainsTax from '@/components/CapitalGainsTax'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import capitalGainsTaxMessages from '../../../messages/generated/ko/ns/capitalGainsTax.json'
 
 export const metadata: Metadata = {
   title: '양도소득세 계산기 - 부동산 양도세 자동 계산 | 툴허브',
@@ -53,45 +55,6 @@ export default function CapitalGainsTaxPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '양도소득세란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '양도소득세는 부동산, 주식 등 자산을 팔아 발생한 양도차익(시세차익)에 부과되는 세금입니다. 양도가액에서 취득가액과 필요경비를 빼고, 장기보유특별공제와 기본공제 250만원을 공제한 과세표준에 누진세율을 적용합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '1세대1주택 비과세 조건은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '1세대1주택 비과세는 ① 2년 이상 보유, ② 취득 당시 조정대상지역(2017.8.3 이후 취득)이면 2년 이상 거주, ③ 양도가액 12억 이하 시 전액 비과세입니다. 12억 초과 시 초과분에 해당하는 비율만 과세됩니다. 이사로 인한 일시적 2주택은 신규 취득 후 3년(두 집 모두 조정지역이고 2026.8.4 이후 취득 시 2년, 단 2026.8.3까지 매매계약·계약금 지급분은 3년) 내 종전 주택을 팔면 비과세됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '장기보유특별공제란?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '장기보유특별공제는 3년 이상 보유한 부동산의 양도차익에서 일정 비율을 공제하는 제도입니다. 일반 부동산은 3년~15년 이상 보유 시 6%~30% 공제되며, 1세대1주택은 보유기간 최대 40% + 거주기간 최대 40%로 최대 80%까지 공제됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '다주택자 중과세율은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '조정대상지역 2주택 +20%p, 3주택 이상 +30%p이며 장기보유특별공제가 배제됩니다. 한시 유예는 2026년 5월 9일 종료되어 5월 10일 양도분부터 다시 적용됩니다(5.9까지 계약 또는 토지거래허가 신청 후 4~6개월 내 양도는 예외).',
-        },
-      },
-    ],
-  }
-
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -108,7 +71,7 @@ export default function CapitalGainsTaxPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={capitalGainsTaxMessages.capitalGainsTax.faq.items} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

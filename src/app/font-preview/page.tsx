@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import FontPreview from '@/components/FontPreview'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import fontPreviewMessages from '../../../messages/generated/ko/ns/fontPreview.json'
 
 export const metadata: Metadata = {
   title: '글꼴 미리보기 - 폰트 테스트, 웹폰트 비교 | 툴허브',
@@ -14,40 +16,10 @@ export const metadata: Metadata = {
 
 export default function FontPreviewPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '글꼴 미리보기', description: '다양한 웹폰트로 텍스트 미리보기 및 비교', url: 'https://toolhub.ai.kr/font-preview/', applicationCategory: 'DesignApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['상업용 무료 한글 폰트 38종 (SIL OFL)', '분류·검색·즐겨찾기', '최대 4개 나란히 비교', '크기·굵기·행간·자간·다크 배경', 'CSS 스니펫 복사', '내 폰트 파일(ttf/otf/woff2) 로컬 미리보기', '공유 링크'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '웹 폰트와 시스템 폰트의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '시스템 폰트: 사용자 기기에 설치된 폰트로 추가 다운로드가 필요 없어 빠르지만, OS/기기마다 사용 가능한 폰트가 다릅니다. 웹 폰트: Google Fonts 등에서 다운로드하는 폰트로, 모든 사용자에게 동일한 디자인을 보여줄 수 있지만 로딩 시간이 추가됩니다. font-display: swap을 사용하면 웹 폰트 로딩 중 시스템 폰트를 먼저 보여줘 FOUT(Flash of Unstyled Text)를 최소화합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '여기 있는 한글 폰트는 상업적으로 써도 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '목록의 폰트는 모두 SIL 오픈 폰트 라이선스(OFL 1.1)로, 웹사이트·광고·인쇄물·영상 등 상업적 용도에 무료로 쓸 수 있고 웹폰트로 임베딩할 수 있습니다. 다만 폰트 파일 자체를 단독으로 판매하거나, 수정본을 원래 폰트 이름(예약 글꼴 이름)으로 배포하는 것은 금지됩니다. 사용 전 각 카드의 공식 페이지에서 최신 라이선스를 확인하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '한국어 웹 폰트 추천은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '본고딕(Noto Sans KR): 구글 무료 폰트, 가장 널리 사용, 9가지 굵기. 프리텐다드(Pretendard): Inter와 본고딕을 바탕으로 만든 시스템 글꼴 대체용 한국어 폰트, 깔끔한 디자인. 나눔고딕/나눔스퀘어: 네이버 무료 폰트, 가독성 우수. IBM Plex Sans KR: 코딩/기술 문서에 적합. 최적화 팁: ① subset으로 필요한 글자만 로드 ② woff2 형식 사용(크기 30% 감소) ③ font-display: swap 적용 ④ preload로 빠른 로딩.',
-        },
-      },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={fontPreviewMessages.fontPreview.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><FontPreview />  <div className="mt-8">

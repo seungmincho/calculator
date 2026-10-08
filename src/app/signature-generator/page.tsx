@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import SignatureGenerator from '@/components/SignatureGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '서명 생성기 - 전자 서명 만들기, 이미지 다운로드 | 툴허브',
@@ -14,36 +15,18 @@ export const metadata: Metadata = {
 
 export default function SignatureGeneratorPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '서명 생성기', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부드러운 필압 느낌 서명 그리기', '이름 입력 손글씨 폰트 서명', '여백 자동 자르기 투명 PNG(2x/3x)', 'SVG 벡터·흰 배경 JPG', '클립보드 복사', '서명 5개 로컬 저장'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '전자서명의 법적 효력은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2020년 12월 개정 전자서명법 시행으로 공인인증서 제도가 폐지되어, 공동인증서(구 공인인증서)와 카카오·PASS·네이버 등 민간 인증서가 같은 지위에서 쓰입니다. 전자서명은 전자적 형태라는 이유만으로 효력이 부인되지 않으며, 법령이나 당사자 간 약정에 따라 서명·기명날인의 효력을 가집니다(전자서명법 제3조). 이 도구로 생성하는 서명 이미지는 간편한 문서 서명용이며, 공식 전자서명(공동인증서, 전자계약 플랫폼)과는 다릅니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '서명 이미지를 문서에 삽입하는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '① PDF: Adobe Acrobat에서 \'서명 추가\' → 이미지 삽입. 무료 대안으로 Smallpdf, iLovePDF 사용 ② Word/한글: 삽입 → 그림으로 서명 이미지 추가, 텍스트 줄 바꿈을 \'앞으로\'로 설정 ③ 이메일: 서명 설정에서 HTML 이미지로 삽입 ④ 구글 문서: 삽입 → 이미지 → 서명 파일 업로드. PNG 투명 배경 형식이 가장 활용도가 높습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '전자서명의 법적 효력은?', a: '2020년 12월 개정 전자서명법 시행으로 공인인증서 제도가 폐지되어, 공동인증서(구 공인인증서)와 카카오·PASS·네이버 등 민간 인증서가 같은 지위에서 쓰입니다. 전자서명은 전자적 형태라는 이유만으로 효력이 부인되지 않으며, 법령이나 당사자 간 약정에 따라 서명·기명날인의 효력을 가집니다(전자서명법 제3조). 이 도구로 생성하는 서명 이미지는 간편한 문서 서명용이며, 공식 전자서명(공동인증서, 전자계약 플랫폼)과는 다릅니다.' },
+    { q: '서명 이미지를 문서에 삽입하는 방법은?', a: '① PDF: Adobe Acrobat에서 \'서명 추가\' → 이미지 삽입. 무료 대안으로 Smallpdf, iLovePDF 사용 ② Word/한글: 삽입 → 그림으로 서명 이미지 추가, 텍스트 줄 바꿈을 \'앞으로\'로 설정 ③ 이메일: 서명 설정에서 HTML 이미지로 삽입 ④ 구글 문서: 삽입 → 이미지 → 서명 파일 업로드. PNG 투명 배경 형식이 가장 활용도가 높습니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <SignatureGenerator />
+            <ToolFaq items={faq} />
             <div className="mt-8">
               <RelatedTools />
             </div>

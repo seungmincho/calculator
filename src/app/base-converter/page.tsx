@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import BaseConverter from '@/components/BaseConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import baseConverterMessages from '../../../messages/generated/ko/ns/baseConverter.json'
 
 export const metadata: Metadata = {
   title: '진법 변환기 - 2진수, 8진수, 10진수, 16진수 변환 | 툴허브',
@@ -29,21 +31,11 @@ export default function BaseConverterPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['2·8·10·16진수 및 2~36진법 동시 변환', '임의 크기 정수(BigInt)·소수·순환소수', '2의 보수·1의 보수·부호-크기 (8~64비트)', '클릭으로 비트 토글', 'IEEE 754 float32/float64 분해', '나눗셈·자리값·묶음법 풀이 과정', '텍스트 ↔ UTF-8 바이트'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      ['2진수, 8진수, 16진수란?', '진법은 숫자를 표현하는 체계입니다. 2진수는 0과 1만 쓰는 컴퓨터 내부 표현, 8진수는 0-7로 Unix 파일 권한(chmod 755)에, 16진수는 0-9와 A-F로 메모리 주소·색상 코드(#FF5733)에 쓰입니다. 프로그래밍에서는 0b(2진), 0o(8진), 0x(16진) 접두사로 구분합니다.'],
-      ['10진수를 2진수로 바꾸는 방법은?', '정수부는 2로 계속 나눠 나머지를 아래에서 위로 읽고, 소수부는 2를 계속 곱해 정수부를 위에서 아래로 읽습니다. 예: 13.625 = 1101.101(2). 0.1처럼 끝나지 않는 소수는 0.0(0011)처럼 순환합니다.'],
-      ['2의 보수는 어떻게 구하나요?', '양수의 2진수를 모든 비트 반전(1의 보수)한 뒤 1을 더합니다. 8비트에서 -5는 11111011이며, 8비트 범위는 -128~127입니다.'],
-      ['0.1 + 0.2가 0.3이 아닌 이유는?', '0.1은 2진수로 무한히 반복되는 소수라 IEEE 754 float64에 저장될 때 0.1000000000000000055…로 반올림되기 때문입니다.'],
-    ].map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })),
-  }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={baseConverterMessages.baseConverter.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

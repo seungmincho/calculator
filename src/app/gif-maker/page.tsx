@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import GifMaker from '@/components/GifMaker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'GIF 메이커 - 이미지로 애니메이션 GIF 만들기 | 툴허브',
@@ -48,28 +49,11 @@ export default function GifMakerPage() {
         'GIF 파일 다운로드',
       ],
     },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'GIF 메이커로 어떤 이미지를 사용할 수 있나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'JPG, PNG, WebP, GIF 등 브라우저에서 지원하는 모든 이미지 형식을 사용할 수 있습니다. 여러 이미지를 한 번에 업로드하거나 드래그 앤 드롭으로 추가할 수 있습니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'GIF 파일 크기는 어떻게 줄일 수 있나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '출력 너비를 줄이거나 프레임 수를 줄이면 GIF 파일 크기를 줄일 수 있습니다. 작은 크기(예: 300~500px)와 적은 프레임(3~10장)으로 시작하는 것을 권장합니다.',
-          },
-        },
-      ],
-    },
+  ]
+
+  const faq = [
+    { q: 'GIF 메이커로 어떤 이미지를 사용할 수 있나요?', a: 'JPG, PNG, WebP, GIF 등 브라우저에서 지원하는 모든 이미지 형식을 사용할 수 있습니다. 여러 이미지를 한 번에 업로드하거나 드래그 앤 드롭으로 추가할 수 있습니다.' },
+    { q: 'GIF 파일 크기는 어떻게 줄일 수 있나요?', a: '출력 너비를 줄이거나 프레임 수를 줄이면 GIF 파일 크기를 줄일 수 있습니다. 작은 크기(예: 300~500px)와 적은 프레임(3~10장)으로 시작하는 것을 권장합니다.' },
   ]
 
   return (
@@ -85,6 +69,7 @@ export default function GifMakerPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <GifMaker />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

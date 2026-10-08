@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import Minesweeper from '@/components/Minesweeper'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import minesweeperMessages from '../../../messages/generated/ko/ns/minesweeper.json'
 
 export const metadata: Metadata = {
   title: '지뢰찾기 - 마인스위퍼 게임 | 툴허브',
@@ -39,33 +41,10 @@ export default function MinesweeperPage() {
     featureList: ['초급·중급·고급·사용자 지정', '첫 클릭 3×3 안전(영역 열림)', '추측 없는 판(No-guess)', '오늘의 지뢰찾기 #N (모두 같은 판)', '숫자 클릭·양쪽 클릭 chord', '길게 눌러 깃발·깃발 모드', '0.01초 타이머·난이도별 최고 기록', '3BV·효율 통계', '키보드 조작'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '지뢰찾기 기본 규칙은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '지뢰찾기는 격자에서 지뢰가 없는 칸을 모두 열면 승리하는 퍼즐 게임입니다. 숫자가 적힌 칸은 주변 8칸에 있는 지뢰의 개수를 나타냅니다. 왼쪽 클릭으로 칸을 열고, 오른쪽 클릭으로 깃발을 꽂아 지뢰 위치를 표시합니다. 첫 클릭은 항상 안전하며, 0인 칸을 열면 주변의 안전한 칸이 자동으로 열립니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '지뢰찾기 풀이 전략은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '① 1-1 패턴: 나란한 1이 있으면 옆 칸은 안전 ② 1-2 패턴: 2 옆의 아직 안 연 칸이 지뢰 ③ 코너 분석: 모서리나 가장자리는 인접 칸이 적어 추론이 쉬움 ④ 깃발 활용: 확실한 지뢰에 깃발을 꽂으면 주변 숫자 해석이 쉬워짐 ⑤ 남은 지뢰 수 확인: 전체 지뢰 수에서 깃발 수를 빼서 추정. 확률적 추측이 필요한 상황도 있습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={minesweeperMessages.minesweeper.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><Minesweeper />  <div className="mt-8">

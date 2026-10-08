@@ -3,6 +3,7 @@ import Link from 'next/link'
 import ColorBlindTest from '@/components/ColorBlindTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '색약 테스트 - 적색약·녹색약 자가 검사 | 툴허브',
@@ -15,44 +16,19 @@ export const metadata: Metadata = {
 
 export default function ColorBlindTestPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '색약 테스트', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test/', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['이시하라식 가성동색표 14판', '적색약·녹색약 유형 분류', '청황색약 검사판', '색약자 시야로 검사판 보기', '결과 이미지 공유'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '색맹과 색약의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '색맹(Color Blindness)은 특정 색상을 전혀 구분하지 못하는 상태이고, 색약(Color Weakness)은 구분은 되지만 정상보다 약하게 인식하는 상태입니다. 가장 흔한 유형: 적록 색약(국내 남성 약 5.9%, 여성 약 0.4%가 선천성 색각 이상) - 빨강과 초록 구분 어려움. 청황 색약 - 파랑과 노랑 구분 어려움. 전색맹 - 모든 색을 회색으로 인식(매우 드묾). X염색체 연관 유전이므로 남성에게 훨씬 많습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '온라인 색약 테스트 결과를 믿어도 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '참고용 선별 검사입니다. 모니터마다 색 재현과 밝기가 달라 결과가 달라질 수 있고, 야간 모드·블루라이트 필터를 켜면 정상인도 틀릴 수 있습니다. 의료 진단이 아니므로 색각 이상이 의심되면 안과에서 이시하라 검사표나 아노말로스코프 검사를 받으세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '적색약과 녹색약은 어떻게 구분하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '적색약(제1색각 이상)은 L 원추세포, 녹색약(제2색각 이상)은 M 원추세포 기능이 약합니다. 이 테스트의 분류판은 두 숫자 중 하나는 적색약에게, 다른 하나는 녹색약에게 사라지도록 색을 골라, 어느 숫자를 읽었는지로 유형을 추정합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '색맹과 색약의 차이는?', a: '색맹(Color Blindness)은 특정 색상을 전혀 구분하지 못하는 상태이고, 색약(Color Weakness)은 구분은 되지만 정상보다 약하게 인식하는 상태입니다. 가장 흔한 유형: 적록 색약(국내 남성 약 5.9%, 여성 약 0.4%가 선천성 색각 이상) - 빨강과 초록 구분 어려움. 청황 색약 - 파랑과 노랑 구분 어려움. 전색맹 - 모든 색을 회색으로 인식(매우 드묾). X염색체 연관 유전이므로 남성에게 훨씬 많습니다.' },
+    { q: '온라인 색약 테스트 결과를 믿어도 되나요?', a: '참고용 선별 검사입니다. 모니터마다 색 재현과 밝기가 달라 결과가 달라질 수 있고, 야간 모드·블루라이트 필터를 켜면 정상인도 틀릴 수 있습니다. 의료 진단이 아니므로 색각 이상이 의심되면 안과에서 이시하라 검사표나 아노말로스코프 검사를 받으세요.' },
+    { q: '적색약과 녹색약은 어떻게 구분하나요?', a: '적색약(제1색각 이상)은 L 원추세포, 녹색약(제2색각 이상)은 M 원추세포 기능이 약합니다. 이 테스트의 분류판은 두 숫자 중 하나는 적색약에게, 다른 하나는 녹색약에게 사라지도록 색을 골라, 어느 숫자를 읽었는지로 유형을 추정합니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <ColorBlindTest />
+            <ToolFaq items={faq} />
             <div className="mt-8">
               <RelatedTools />
             </div>

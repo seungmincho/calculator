@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import UuidGenerator from '@/components/UuidGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'UUID 생성기 - 고유 식별자 생성 | 툴허브',
@@ -53,28 +54,10 @@ export default function UuidGeneratorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'UUID란 무엇이고 어디에 사용되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'UUID(Universally Unique Identifier)는 128비트 길이의 고유 식별자로, 중앙 서버 없이도 충돌 가능성이 극히 낮은 고유 ID를 생성합니다. 형식: 550e8400-e29b-41d4-a716-446655440000 (32개 16진수를 하이픈으로 구분). 데이터베이스 기본키, API 요청 추적, 세션 ID, 파일명 생성 등에 사용됩니다. 전 세계에서 동시에 생성해도 충돌 확률은 사실상 0입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'UUID v1, v4, v7의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'UUID v1: MAC 주소 + 타임스탬프 기반. 시간 순서가 있어 정렬 가능하지만 MAC 주소가 노출됩니다. UUID v4: 완전 랜덤. 가장 널리 사용되며 예측 불가능하지만 정렬이 안 됩니다. UUID v7: 타임스탬프 + 랜덤. 2022년 새 표준으로, v4의 보안성과 v1의 정렬성을 모두 갖추어 데이터베이스 인덱스 성능이 우수합니다. 새 프로젝트에는 v7을 권장합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'UUID란 무엇이고 어디에 사용되나요?', a: 'UUID(Universally Unique Identifier)는 128비트 길이의 고유 식별자로, 중앙 서버 없이도 충돌 가능성이 극히 낮은 고유 ID를 생성합니다. 형식: 550e8400-e29b-41d4-a716-446655440000 (32개 16진수를 하이픈으로 구분). 데이터베이스 기본키, API 요청 추적, 세션 ID, 파일명 생성 등에 사용됩니다. 전 세계에서 동시에 생성해도 충돌 확률은 사실상 0입니다.' },
+    { q: 'UUID v1, v4, v7의 차이는?', a: 'UUID v1: MAC 주소 + 타임스탬프 기반. 시간 순서가 있어 정렬 가능하지만 MAC 주소가 노출됩니다. UUID v4: 완전 랜덤. 가장 널리 사용되며 예측 불가능하지만 정렬이 안 됩니다. UUID v7: 타임스탬프 + 랜덤. 2024년 RFC 9562로 표준화된 형식으로, v4의 보안성과 v1의 정렬성을 모두 갖추어 데이터베이스 인덱스 성능이 우수합니다. 새 프로젝트에는 v7을 권장합니다.' },
+  ]
 
   return (
     <>
@@ -82,14 +65,11 @@ export default function UuidGeneratorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <UuidGenerator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import MahjongSolitaire from '@/components/MahjongSolitaire'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '마작 솔리테어 - 타일 매칭 퍼즐 | 툴허브',
@@ -57,24 +58,14 @@ export default function MahjongSolitairePage() {
     featureList: ['클래식 거북이 레이아웃', '144 타일', '힌트 기능', '셔플', '되돌리기', '타이머', '터치 지원'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <MahjongSolitaire />
+              <ToolFaq items={faqData.map((f) => ({ q: f.question, a: f.answer }))} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

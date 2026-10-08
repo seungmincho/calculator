@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import ParentalLeaveCalculator from '@/components/ParentalLeaveCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import parentalLeaveMessages from '../../../messages/generated/ko/ns/parentalLeave.json'
 
 export const metadata: Metadata = {
   title: '육아휴직급여 계산기 2026 - 6+6 부모육아휴직제 반영 | 툴허브',
@@ -52,45 +54,6 @@ export default function ParentalLeavePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '2026년 육아휴직급여는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 기준 육아휴직급여는 1~3개월 통상임금 100%(상한 250만원), 4~6개월 100%(상한 200만원), 7개월 이후 80%(상한 160만원)입니다. 하한액은 월 70만원입니다. 2025년 개편 기준이 2026년에도 유지됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '6+6 부모육아휴직제란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '자녀 생후 18개월 안에 부모가 모두 육아휴직을 쓰면, 두 사람이 공통으로 쓴 개월수(최대 6개월)만큼 각자 통상임금 100%를 받고 상한이 250·250·300·350·400·450만원으로 오릅니다. 휴직 기간이 겹치지 않아도 됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '육아휴직 사후지급금이 폐지되었나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 2025년부터 사후지급금(25%) 제도가 폐지되어 육아휴직 기간 중 급여 전액을 수령할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '육아기 근로시간 단축 급여는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 1월부터 매주 첫 10시간 단축분은 통상임금 100%(기준 상한 월 250만원)×10÷단축 전 근로시간, 나머지는 통상임금 80%(기준 상한 160만원)×나머지 시간÷단축 전 근로시간입니다. 주 40→30시간이면 최대 월 62만5천원에 회사 임금이 더해집니다.',
-        },
-      },
-    ],
-  }
-
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -106,7 +69,7 @@ export default function ParentalLeavePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={parentalLeaveMessages.parentalLeave.p.faq.items} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

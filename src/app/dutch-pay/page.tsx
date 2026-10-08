@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import DutchPay from '@/components/DutchPay'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '더치페이 계산기 - N/1 정산, 회식비 나누기 | 툴허브',
@@ -27,22 +28,18 @@ export default function DutchPayPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['N빵 균등 분배', '100원·1,000원 단위 올림/내림', '항목별 참가자 제외', '부담 비율(가중치)', '여러 명 결제 최소 송금 정산', '단톡방 공지 복사', '읽기 전용 정산 링크 공유'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '더치페이 정산을 가장 효율적으로 하는 방법은?', acceptedAnswer: { '@type': 'Answer', text: '최소 이체 횟수로 정산하려면 각자 부담액과 실제 지불액의 차이를 계산한 후, 적게 낸 사람이 많이 낸 사람에게 차액을 보내면 됩니다. 예를 들어 A가 10만 원, B가 0원 내고 총 10만 원을 둘이 나누면, B가 A에게 5만 원만 보내면 됩니다. 3인 이상은 알고리즘을 활용해 이체 횟수를 최소화할 수 있습니다.' } },
-      { '@type': 'Question', name: '더치페이 시 단위 절사는 어떻게 하나요?', acceptedAnswer: { '@type': 'Answer', text: '총 금액을 인원수로 나누면 소수점이 발생할 수 있습니다. 보통 100원 또는 1,000원 단위로 올림·내림하고, 차액은 결제한 총무가 부담합니다. 예를 들어 100,000원을 3명이 나누면 1인당 33,333.3원인데, 100원 단위 올림 시 두 명이 33,400원씩 보내고 총무는 33,200원을 부담해 합계가 정확히 100,000원이 됩니다.' } },
-      { '@type': 'Question', name: '한국에서 더치페이가 일반적인가요?', acceptedAnswer: { '@type': 'Answer', text: '한국에서는 전통적으로 선배/상급자가 계산하는 문화였으나, 최근 2030세대를 중심으로 더치페이(N빵)가 보편화되고 있습니다. 카카오페이 송금, 토스 정산하기 등 간편 정산 서비스가 활성화되면서 더 편리해졌습니다. 소개팅이나 첫 만남에서는 더치페이에 대한 의견이 나뉘므로 상황에 맞게 결정하세요.' } },
-    ],
-  }
+  const faq = [
+    { q: '더치페이 정산을 가장 효율적으로 하는 방법은?', a: '최소 이체 횟수로 정산하려면 각자 부담액과 실제 지불액의 차이를 계산한 후, 적게 낸 사람이 많이 낸 사람에게 차액을 보내면 됩니다. 예를 들어 A가 10만 원, B가 0원 내고 총 10만 원을 둘이 나누면, B가 A에게 5만 원만 보내면 됩니다. 3인 이상은 알고리즘을 활용해 이체 횟수를 최소화할 수 있습니다.' },
+    { q: '더치페이 시 단위 절사는 어떻게 하나요?', a: '총 금액을 인원수로 나누면 소수점이 발생할 수 있습니다. 보통 100원 또는 1,000원 단위로 올림·내림하고, 차액은 결제한 총무가 부담합니다. 예를 들어 100,000원을 3명이 나누면 1인당 33,333.3원인데, 100원 단위 올림 시 두 명이 33,400원씩 보내고 총무는 33,200원을 부담해 합계가 정확히 100,000원이 됩니다.' },
+    { q: '한국에서 더치페이가 일반적인가요?', a: '한국에서는 전통적으로 선배/상급자가 계산하는 문화였으나, 최근 2030세대를 중심으로 더치페이(N빵)가 보편화되고 있습니다. 카카오페이 송금, 토스 정산하기 등 간편 정산 서비스가 활성화되면서 더 편리해졌습니다. 소개팅이나 첫 만남에서는 더치페이에 대한 의견이 나뉘므로 상황에 맞게 결정하세요.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><DutchPay />  <div className="mt-8">
+    <ToolFaq items={faq} />
     <RelatedTools />
   </div>
 </I18nWrapper>

@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { LayoutGrid, List } from 'lucide-react'
 import { algorithms, categoryColors, categoryLabels, difficultyLabels, type AlgorithmCategory } from '@/config/algorithmConfig'
 import AlgorithmCard from './AlgorithmCard'
-import Breadcrumb from '@/components/Breadcrumb'
 import RelatedTools from '@/components/RelatedTools'
 
 type ViewMode = 'list' | 'card'
@@ -78,8 +77,6 @@ export default function AlgorithmHub() {
 
   return (
     <div className="space-y-8">
-      <Breadcrumb />
-
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-fg">

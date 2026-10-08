@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import VoiceMemo from '@/components/VoiceMemo'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '음성 메모 - 무료 온라인 음성 녹음기 | 툴허브',
@@ -53,36 +54,11 @@ export default function VoiceMemoPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '온라인 음성 녹음기는 어떤 브라우저에서 사용 가능한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Chrome, Edge, Firefox, Safari 등 최신 브라우저에서 사용 가능합니다. MediaRecorder API와 getUserMedia를 지원하는 브라우저가 필요합니다. HTTPS 환경에서만 마이크 접근이 허용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '녹음 파일은 어디에 저장되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '녹음 파일은 서버에 업로드되지 않으며, 브라우저 메모리에 임시 저장됩니다. 페이지를 닫으면 녹음이 삭제되므로 필요한 파일은 반드시 다운로드 버튼으로 저장하세요. 모든 처리는 사용자의 기기에서만 이루어집니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '녹음 파일 형식은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '대부분의 브라우저에서 WebM(Opus 코덱) 형식으로 녹음됩니다. Firefox에서는 OGG 형식이 사용될 수 있습니다. WebM 파일은 대부분의 미디어 플레이어와 편집 도구에서 재생 가능합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '온라인 음성 녹음기는 어떤 브라우저에서 사용 가능한가요?', a: 'Chrome, Edge, Firefox, Safari 등 최신 브라우저에서 사용 가능합니다. MediaRecorder API와 getUserMedia를 지원하는 브라우저가 필요합니다. HTTPS 환경에서만 마이크 접근이 허용됩니다.' },
+    { q: '녹음 파일은 어디에 저장되나요?', a: '녹음 파일은 서버에 업로드되지 않으며, 브라우저 메모리에 임시 저장됩니다. 페이지를 닫으면 녹음이 삭제되므로 필요한 파일은 반드시 다운로드 버튼으로 저장하세요. 모든 처리는 사용자의 기기에서만 이루어집니다.' },
+    { q: '녹음 파일 형식은 무엇인가요?', a: '대부분의 브라우저에서 WebM(Opus 코덱) 형식으로 녹음됩니다. Firefox에서는 OGG 형식이 사용될 수 있습니다. WebM 파일은 대부분의 미디어 플레이어와 편집 도구에서 재생 가능합니다.' },
+  ]
 
   return (
     <>
@@ -90,14 +66,11 @@ export default function VoiceMemoPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <VoiceMemo />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

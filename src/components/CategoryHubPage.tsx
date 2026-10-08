@@ -20,7 +20,7 @@ const COPY: Record<HubKey, {
   calculators: {
     h1: '금융·생활 계산기 모음',
     title: '금융·생활 계산기 모음 - 연봉·대출·세금·부동산 | 툴허브',
-    description: '연봉 실수령액, 퇴직금, 대출 이자, 양도세·취득세, 전월세 전환까지 2026년 기준 무료 계산기 75종. 회원가입 없이 바로 계산하고 링크로 공유하세요.',
+    description: '연봉 실수령액, 퇴직금, 대출 이자, 양도세·취득세, 전월세 전환까지 2026년 기준 무료 계산기 {n}종. 회원가입 없이 바로 계산하고 링크로 공유하세요.',
     keywords: '연봉계산기, 실수령액 계산기, 퇴직금 계산기, 대출 계산기, 세금 계산기, 부동산 계산기, 연차 계산기, 실업급여 계산기, 무료 계산기 모음',
     intro: [
       '월급명세서부터 내 집 마련까지, 돈 계산이 필요한 순간에 쓰는 계산기를 한곳에 모았습니다. 4대보험 요율·소득세율·취득세율 등은 2026년 개정 기준을 반영하며, 요율이 바뀌면 관련 계산기가 한 번에 갱신됩니다.',
@@ -36,7 +36,7 @@ const COPY: Record<HubKey, {
   tools: {
     h1: '개발자 도구·텍스트 유틸리티',
     title: '개발자 도구 모음 - JSON 포맷터·정규식·변환기·생성기 | 툴허브',
-    description: 'JSON 포맷터, 정규식 추출기, JWT 디코더, Base64·URL 인코더, Cron 생성기, 글자수 세기 등 설치 없이 브라우저에서 쓰는 무료 개발·텍스트 도구 97종.',
+    description: 'JSON 포맷터, 정규식 추출기, JWT 디코더, Base64·URL 인코더, Cron 생성기, 글자수 세기 등 설치 없이 브라우저에서 쓰는 무료 개발·텍스트 도구 {n}종.',
     keywords: 'JSON 포맷터, 정규식 테스터, JWT 디코더, Base64 변환, URL 인코딩, Cron 생성기, 글자수 세기, UUID 생성, 해시 생성기, 개발자 도구 모음',
     intro: [
       '터미널을 열지 않아도 되는 일상 개발 작업 — JSON 정리, 정규식 확인, 토큰 디코딩, 인코딩 변환 — 을 브라우저에서 바로 처리합니다. 입력 데이터는 서버로 보내지 않고 로컬에서만 처리되어 사내 데이터를 붙여넣어도 안전합니다.',
@@ -52,7 +52,7 @@ const COPY: Record<HubKey, {
   media: {
     h1: '이미지·미디어 도구',
     title: '이미지 도구 모음 - 리사이즈·압축·워터마크·OCR·GIF | 툴허브',
-    description: '이미지 리사이즈·압축·변환, 모자이크, 워터마크, 배경 제거, OCR 텍스트 추출, GIF 만들기, PDF 도구까지 업로드 없이 브라우저에서 처리하는 무료 미디어 도구 20종.',
+    description: '이미지 리사이즈·압축·변환, 모자이크, 워터마크, 배경 제거, OCR 텍스트 추출, GIF 만들기, PDF 도구까지 업로드 없이 브라우저에서 처리하는 무료 미디어 도구 {n}종.',
     keywords: '이미지 리사이즈, 이미지 압축, 사진 모자이크, 이미지 워터마크, 배경 제거, OCR, GIF 만들기, 이미지 변환, PDF 도구, 화면 녹화',
     intro: [
       '사진 편집 앱을 설치하지 않아도 되는 가벼운 작업 — 크기 조절, 용량 줄이기, 얼굴 모자이크, 워터마크, 포맷 변환 — 을 브라우저에서 끝냅니다. 파일은 서버에 업로드되지 않고 기기 안에서만 처리됩니다.',
@@ -68,7 +68,7 @@ const COPY: Record<HubKey, {
   health: {
     h1: '건강·심리 도구',
     title: '건강 계산기·심리 테스트 모음 - BMI·칼로리·MBTI·배란일 | 툴허브',
-    description: 'BMI·체지방률·기초대사량·칼로리 계산기, 배란일·출산예정일, 수면 계산기, MBTI·에니어그램·퍼스널컬러 테스트까지 무료 건강·심리 도구 21종.',
+    description: 'BMI·체지방률·기초대사량·칼로리 계산기, 배란일·출산예정일, 수면 계산기, MBTI·에니어그램·퍼스널컬러 테스트까지 무료 건강·심리 도구 {n}종.',
     keywords: 'BMI 계산기, 칼로리 계산기, 체지방률 계산기, 배란일 계산기, 출산예정일 계산기, 수면 계산기, MBTI 검사, 에니어그램 테스트, 퍼스널컬러 진단',
     intro: [
       '몸 상태를 숫자로 확인하는 계산기(BMI, 체지방률, 기초대사량, 혈중알코올)와 기록 도구(혈압·혈당·식단 일지), 그리고 가볍게 즐기는 심리·성향 테스트를 모았습니다.',
@@ -83,8 +83,11 @@ const COPY: Record<HubKey, {
   },
 }
 
+/** description 의 {n} 을 menuConfig 도구 수로 — 도구를 더해도 숫자가 낡지 않게 */
+const describe = (category: HubKey) => COPY[category].description.replace('{n}', String(menuConfig[category].items.length))
+
 export function hubMetadata(category: HubKey): Metadata {
-  const c = COPY[category]
+  const c = { ...COPY[category], description: describe(category) }
   const url = `${SITE}${categoryHubs[category]}/`
   return {
     title: c.title,
@@ -97,7 +100,7 @@ export function hubMetadata(category: HubKey): Metadata {
 }
 
 export default function CategoryHubPage({ category }: { category: HubKey }) {
-  const c = COPY[category]
+  const c = { ...COPY[category], description: describe(category) }
   const items = menuConfig[category].items
   const url = `${SITE}${categoryHubs[category]}/`
   const byHref = new Map(items.map(i => [i.href, i]))
@@ -113,7 +116,7 @@ export default function CategoryHubPage({ category }: { category: HubKey }) {
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: '홈', item: SITE },
+          { '@type': 'ListItem', position: 1, name: '홈', item: `${SITE}/` },
           { '@type': 'ListItem', position: 2, name: c.h1, item: url },
         ],
       },

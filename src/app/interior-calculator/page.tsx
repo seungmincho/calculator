@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import InteriorCalc from '@/components/InteriorCalc'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '인테리어 면적 계산기 - 페인트, 벽지, 타일 면적 | 툴허브',
@@ -51,36 +52,12 @@ export default function InteriorCalculatorPage() {
         '구매 목록 복사·결과 공유',
       ],
     },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '인테리어 면적 계산기에서 벽 면적은 어떻게 계산되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '벽 면적은 2 × (가로 + 세로) × 천장 높이로 계산하고, 입력한 문·창문 개수와 크기(기본 문 0.9×2.1m, 창 1.5×1.2m)만큼 공제해 실제 도배·도장 면적을 구합니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '페인트 소요량은 어떻게 계산하나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '페인트 필요량은 면적 × 도장 횟수 ÷ 도포율(㎡/L, 1회)에 여유분을 더해 계산합니다. 실내 수성 페인트는 1L로 1회 약 8~12㎡를 칠하며 보통 2회 도장합니다. 계산기는 18L·4L·1L 통 가격을 모두 입력하면 비용이 가장 적게 드는 조합을, 비워 두면 큰 통이 L당 싸다는 가정으로 남는 양이 적은 조합을 골라 줍니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '벽지 롤 수는 어떻게 계산되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '국내 일반 규격은 실크 벽지 1.06m × 15.6m, 광폭합지 0.93m × 17.75m로 1롤이 벽 약 5평 분량이고, 소폭합지는 0.53m × 12.5m입니다. 계산기는 층고+재단 여유(무늬 반복이 있으면 반복 단위로 올림)로 한 폭 길이를 정하고, 롤 하나에서 나오는 폭 수로 필요 롤 수를 구합니다.',
-          },
-        },
-      ],
-    },
+  ]
+
+  const faq = [
+    { q: '인테리어 면적 계산기에서 벽 면적은 어떻게 계산되나요?', a: '벽 면적은 2 × (가로 + 세로) × 천장 높이로 계산하고, 입력한 문·창문 개수와 크기(기본 문 0.9×2.1m, 창 1.5×1.2m)만큼 공제해 실제 도배·도장 면적을 구합니다.' },
+    { q: '페인트 소요량은 어떻게 계산하나요?', a: '페인트 필요량은 면적 × 도장 횟수 ÷ 도포율(㎡/L, 1회)에 여유분을 더해 계산합니다. 실내 수성 페인트는 1L로 1회 약 8~12㎡를 칠하며 보통 2회 도장합니다. 계산기는 18L·4L·1L 통 가격을 모두 입력하면 비용이 가장 적게 드는 조합을, 비워 두면 큰 통이 L당 싸다는 가정으로 남는 양이 적은 조합을 골라 줍니다.' },
+    { q: '벽지 롤 수는 어떻게 계산되나요?', a: '국내 일반 규격은 실크 벽지 1.06m × 15.6m, 광폭합지 0.93m × 17.75m로 1롤이 벽 약 5평 분량이고, 소폭합지는 0.53m × 12.5m입니다. 계산기는 층고+재단 여유(무늬 반복이 있으면 반복 단위로 올림)로 한 폭 길이를 정하고, 롤 하나에서 나오는 폭 수로 필요 롤 수를 구합니다.' },
   ]
 
   return (
@@ -93,6 +70,7 @@ export default function InteriorCalculatorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <InteriorCalc />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

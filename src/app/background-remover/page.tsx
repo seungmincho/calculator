@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import BackgroundRemover from '@/components/BackgroundRemover'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import backgroundRemoverMessages from '../../../messages/generated/ko/ns/backgroundRemover.json'
 
 export const metadata: Metadata = {
   title: '이미지 배경 제거 - 색상 기반 크로마키 배경 투명화 | 툴허브',
@@ -41,39 +43,13 @@ export default function BackgroundRemoverPage() {
     featureList: ['배경색 자동 감지', '가장자리 연결 영역만 제거(피사체 속 같은 색 보존)', '스포이트로 여러 배경색 지정', '경계 부드럽게·색 번짐 제거', '지우기·되살리기 브러시, 실행 취소', '증명사진 배경색 교체(흰색·하늘색·파랑)', '투명 PNG·JPG 저장', '클립보드 붙여넣기'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '색상 기반 배경 제거란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '색상 기반 배경 제거(크로마키)는 특정 색상과 유사한 픽셀을 투명하게 만드는 방법입니다. 사용자가 배경 영역을 클릭하면 해당 픽셀의 색상이 선택되고, 허용 오차 범위 내의 유사한 색상을 가진 모든 픽셀이 투명 처리됩니다. 단색 배경(흰 배경, 녹색 스튜디오 등)이 있는 이미지에 가장 효과적입니다. AI 기반 방식과 달리 계산이 단순해 브라우저에서 빠르게 처리할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '배경 제거 결과가 만족스럽지 않을 때 어떻게 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '결과가 만족스럽지 않을 경우 다음을 시도해보세요. ① 허용 오차를 높이면 더 많은 배경이 제거되고 낮추면 더 정밀하게 제거됩니다. ② 경계 부드럽게 값을 높이면 경계선이 부드러워집니다. ③ 배경의 여러 부분을 클릭해 다른 색조를 각각 제거해보세요. ④ 복잡한 배경(그라데이션, 패턴)이나 피사체와 배경색이 비슷한 이미지는 색상 기반 방식의 한계가 있을 수 있습니다. 이 경우 Adobe Photoshop이나 AI 기반 remove.bg 같은 전문 도구를 사용하는 것이 좋습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={backgroundRemoverMessages.backgroundRemover.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

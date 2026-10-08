@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import TcpHandshakeVisualizer from '@/components/TcpHandshakeVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'TCP 핸드셰이크 시각화 - 3-way Handshake 과정 학습 | 툴허브',
@@ -48,45 +49,20 @@ export default function TcpHandshakePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'TCP 3-way Handshake란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'TCP 3-way Handshake는 클라이언트와 서버 간에 신뢰할 수 있는 TCP 연결을 수립하기 위한 3단계 과정입니다. 클라이언트가 SYN 패킷을 보내고, 서버가 SYN-ACK으로 응답하며, 클라이언트가 ACK를 보내면 연결이 설정됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'TCP 연결 종료는 왜 4-way인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'TCP 연결 종료가 4단계인 이유는 양방향 연결을 각각 독립적으로 종료해야 하기 때문입니다. 한쪽이 FIN을 보내 자신의 송신을 종료하더라도 상대방은 아직 보낼 데이터가 있을 수 있어, 각 방향의 종료에 FIN+ACK 쌍이 필요합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'SYN과 ACK 번호는 어떻게 작동하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '시퀀스(SEQ) 번호는 송신 데이터의 바이트 위치를 나타내고, 확인응답(ACK) 번호는 수신 측이 다음에 기대하는 바이트 번호입니다. 3-way Handshake에서 각 측은 랜덤 초기 시퀀스 번호(ISN)를 선택하고, SYN/FIN 플래그는 시퀀스 번호를 1 증가시킵니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'TCP 3-way Handshake란 무엇인가요?', a: 'TCP 3-way Handshake는 클라이언트와 서버 간에 신뢰할 수 있는 TCP 연결을 수립하기 위한 3단계 과정입니다. 클라이언트가 SYN 패킷을 보내고, 서버가 SYN-ACK으로 응답하며, 클라이언트가 ACK를 보내면 연결이 설정됩니다.' },
+    { q: 'TCP 연결 종료는 왜 4-way인가요?', a: 'TCP 연결 종료가 4단계인 이유는 양방향 연결을 각각 독립적으로 종료해야 하기 때문입니다. 한쪽이 FIN을 보내 자신의 송신을 종료하더라도 상대방은 아직 보낼 데이터가 있을 수 있어, 각 방향의 종료에 FIN+ACK 쌍이 필요합니다.' },
+    { q: 'SYN과 ACK 번호는 어떻게 작동하나요?', a: '시퀀스(SEQ) 번호는 송신 데이터의 바이트 위치를 나타내고, 확인응답(ACK) 번호는 수신 측이 다음에 기대하는 바이트 번호입니다. 3-way Handshake에서 각 측은 랜덤 초기 시퀀스 번호(ISN)를 선택하고, SYN/FIN 플래그는 시퀀스 번호를 1 증가시킵니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <TcpHandshakeVisualizer />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

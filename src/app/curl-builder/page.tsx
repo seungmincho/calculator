@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import CurlBuilder from '@/components/CurlBuilder'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'cURL Command Builder - cURL 명령어 생성 & 코드 변환 | 툴허브',
@@ -52,45 +53,20 @@ export default function CurlBuilderPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'cURL 명령어를 어떻게 다른 언어 코드로 변환하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '파싱 모드에서 cURL 명령어를 붙여넣고 파싱 버튼을 클릭하면, 자동으로 fetch, axios, Python requests, Go net/http, PHP curl 등 6가지 형식으로 변환할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '브라우저에서 cURL 명령어를 어떻게 복사하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Chrome DevTools의 Network 탭(F12)을 열고, 원하는 요청을 우클릭한 뒤 Copy > Copy as cURL을 선택하면 cURL 명령어를 복사할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'cURL 빌더에서 어떤 인증 방식을 지원하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Bearer Token, Basic Auth (사용자명/비밀번호), API Key 3가지 인증 방식을 지원합니다. 인증 섹션에서 선택하면 자동으로 적절한 헤더가 추가됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'cURL 명령어를 어떻게 다른 언어 코드로 변환하나요?', a: '파싱 모드에서 cURL 명령어를 붙여넣고 파싱 버튼을 클릭하면, 자동으로 fetch, axios, Python requests, Go net/http, PHP curl 등 6가지 형식으로 변환할 수 있습니다.' },
+    { q: '브라우저에서 cURL 명령어를 어떻게 복사하나요?', a: 'Chrome DevTools의 Network 탭(F12)을 열고, 원하는 요청을 우클릭한 뒤 Copy > Copy as cURL을 선택하면 cURL 명령어를 복사할 수 있습니다.' },
+    { q: 'cURL 빌더에서 어떤 인증 방식을 지원하나요?', a: 'Bearer Token, Basic Auth (사용자명/비밀번호), API Key 3가지 인증 방식을 지원합니다. 인증 섹션에서 선택하면 자동으로 적절한 헤더가 추가됩니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CurlBuilder />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

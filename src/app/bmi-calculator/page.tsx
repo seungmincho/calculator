@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import BMICalculator from '@/components/BMICalculator'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import bmiMessages from '../../../messages/generated/ko/ns/bmi.json'
 
 export const metadata: Metadata = {
   title: 'BMI 계산기 - 체질량지수 | 툴허브',
@@ -49,45 +51,6 @@ export default function BMICalculatorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'BMI 정상 범위는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'WHO 기준 BMI 18.5~24.9가 정상 범위입니다. 한국(대한비만학회) 기준으로는 BMI 18.5~22.9가 정상, 23~24.9가 비만 전단계, 25 이상이 비만(25~29.9 1단계, 30~34.9 2단계, 35 이상 3단계)으로 분류됩니다. 아시아인은 같은 BMI에서도 체지방률이 높아 더 엄격한 기준을 적용합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'BMI 계산 공식은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'BMI = 체중(kg) ÷ 키(m)²입니다. 예를 들어 키 170cm, 체중 70kg이면 BMI = 70 ÷ (1.7)² = 24.2입니다. 근육량이 많은 사람은 BMI가 높게 나올 수 있어 체지방률도 함께 확인하는 것이 좋습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '표준 체중은 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '한국에서 주로 사용하는 브로카 변법: 표준 체중 = (키 - 100) × 0.9입니다. BMI 기준으로는 키(m)² × 22가 표준 체중입니다. 예를 들어 키 170cm이면 표준 체중은 약 63.0kg(브로카 변법) 또는 63.6kg(BMI 22)입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '어린이 BMI는 어떻게 판정하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '어린이와 청소년은 성인과 달리 같은 나이·성별 집단에서의 백분위수로 판정합니다. 85~94 백분위가 과체중, 95 백분위 이상이 비만입니다. 성장기에는 체중보다 성장 패턴과 체성분을 함께 고려해야 합니다.',
-        },
-      },
-    ],
-  }
-
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -106,10 +69,7 @@ export default function BMICalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={bmiMessages.bmi.guide.faq.items} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}

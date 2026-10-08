@@ -423,9 +423,9 @@ export default function CsDictionary() {
       <div className="bg-surface rounded-xl shadow-lg p-6">
         <h2 className="text-lg font-semibold text-fg mb-4">{t('relatedTools.title')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <RelatedToolLink href="/cs-quiz" icon="📝" label={t('relatedTools.quiz')} />
-          <RelatedToolLink href="/cs-visualizer" icon="🔬" label={t('relatedTools.visualizer')} />
-          <RelatedToolLink href="/algorithm" icon="📊" label={t('relatedTools.algorithm')} />
+          <RelatedToolLink href="/cs-quiz/" icon="📝" label={t('relatedTools.quiz')} />
+          <RelatedToolLink href="/cs-visualizer/" icon="🔬" label={t('relatedTools.visualizer')} />
+          <RelatedToolLink href="/algorithm/" icon="📊" label={t('relatedTools.algorithm')} />
         </div>
       </div>
 

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import ScreenCompare from '@/components/ScreenCompare'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import screenCompareMessages from '../../../messages/generated/ko/ns/screenCompare.json'
 
 export const metadata: Metadata = {
   title: '화면 크기 비교 - 디바이스 비교 | 툴허브',
@@ -41,57 +43,10 @@ export default function ScreenComparePage() {
     featureList: ['모니터·TV·노트북·폰 크기 비교(최대 4개)', '같은 비율로 겹쳐 그리기', '실제 가로·세로 cm와 면적 차이 %', 'PPI·도트 피치 비교', 'Windows 배율 적용 작업 공간 비교', '권장 시청거리(SMPTE·THX·레티나)', '링크·이미지로 비교 결과 공유'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'PPI란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'PPI(Pixels Per Inch)는 1인치당 픽셀 수를 의미합니다. PPI가 높을수록 화면이 더 선명하게 보입니다. 계산식은 √(가로픽셀² + 세로픽셀²) ÷ 화면크기(인치)입니다. 스마트폰은 보통 300~500 PPI, 일반 모니터는 70~150 PPI입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '화면 인치는 어떻게 측정하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '화면 인치는 화면의 대각선 길이를 인치 단위로 측정한 값입니다. 예를 들어 6.1인치 스마트폰은 화면 모서리에서 반대편 모서리까지의 대각선 거리가 약 15.5cm입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '같은 인치수인데 해상도가 다른 이유는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '같은 물리적 크기라도 제조사마다 다른 패널 기술을 사용하기 때문입니다. 고해상도 디스플레이는 같은 면적에 더 많은 픽셀을 집어넣어 PPI가 높아집니다. 예를 들어 27인치 모니터도 FHD(1920×1080)와 4K(3840×2160)는 PPI가 2배 차이납니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '화면 비율(Aspect Ratio)이란?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '화면 비율은 가로 픽셀 수와 세로 픽셀 수의 비율입니다. 16:9는 가장 일반적인 와이드스크린 비율이며, 19.5:9나 20:9는 최신 스마트폰의 긴 화면 비율입니다. 4:3은 구형 태블릿이나 iPad에서 주로 사용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '화면 크기 비교 도구를 어떻게 활용하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '스마트폰 구매 시 여러 모델의 실제 크기를 비교하거나, 노트북·모니터 구매 시 작업 공간과 맞는 크기를 고르는 데 활용할 수 있습니다. 최대 4개 디바이스를 동시에 비교하고, 커스텀 크기 입력으로 직접 치수를 넣어 비교할 수도 있습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={screenCompareMessages.screenCompare.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

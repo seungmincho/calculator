@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import TimeConverter from '@/components/TimeConverter';
+import { FaqJsonLd } from '@/components/ToolFaq'
+import timeConverterMessages from '../../../messages/generated/ko/ns/timeConverter.json'
 
 export const metadata: Metadata = {
   title: '시간 변환기 - 타임존·Unix 변환 | 툴허브',
@@ -45,41 +47,10 @@ export default function TimeConverterPage() {
     featureList: ['타임존 변환(IANA·서머타임 자동)', 'Unix 타임스탬프 초·ms·µs·ns 자동 인식', 'ISO 8601·RFC 2822·SQL 형식 출력', '날짜 붙여넣기 자동 해석(한국어·영어)', '날짜 더하기·빼기, 두 시각 차이', '영업일 계산(한국 공휴일 반영)', '여러 도시 시간 비교']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'Unix 타임스탬프란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Unix 타임스탬프(Epoch Time)는 1970년 1월 1일 00:00:00 UTC부터 경과한 초 수입니다. 예를 들어 1700000000은 UTC 기준 2023년 11월 14일 22:13:20(한국 시간 11월 15일 오전 7시 13분 20초)입니다. 프로그래밍에서 시간대에 독립적인 시간 표현에 사용되며, 밀리초 단위(13자리)도 흔히 사용됩니다. 2038년 문제는 부호 있는 32비트 정수로 저장한 타임스탬프가 2038년 1월 19일 03:14:07 UTC를 넘으면 오버플로되는 현상으로, 64비트 time_t를 쓰면 해결되지만 32비트로 저장하는 일부 DB 칼럼·파일 형식은 여전히 주의가 필요합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '한국 시간(KST)과 UTC의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'KST(Korea Standard Time)는 UTC+9로, UTC보다 9시간 앞섭니다. 예를 들어 UTC 기준 오전 3시이면 한국은 오후 12시입니다. 한국은 서머타임을 사용하지 않으므로 연중 UTC+9로 고정됩니다. 주요 시간대 비교: 뉴욕(EST) UTC-5, 런던(GMT) UTC+0, 도쿄(JST) UTC+9, 시드니(AEST) UTC+10입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'ISO 8601 날짜 형식이란?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: "ISO 8601은 국제 표준 날짜/시간 표기법으로, 'YYYY-MM-DDTHH:mm:ss.sssZ' 형식을 사용합니다. 예: '2026-02-22T15:30:00+09:00'. T는 날짜와 시간의 구분자, Z는 UTC를 의미하며, +09:00 같은 오프셋으로 시간대를 표시합니다. API, 데이터베이스, 로그 파일에서 표준 형식으로 널리 사용됩니다.",
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={timeConverterMessages.timeConverter.guide.faq.items} />
       <TimeConverter />
 
       {/* SEO 콘텐츠 */}

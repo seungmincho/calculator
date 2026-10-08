@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import ScreenRecorder from '@/components/ScreenRecorder'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '화면 녹화기 - 무료 온라인 스크린 레코더 | 툴허브',
@@ -41,36 +42,11 @@ export default function ScreenRecorderPage() {
     featureList: ['화면 녹화', '창 녹화', '탭 녹화', '오디오 녹음', '일시정지/재개'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '온라인 화면 녹화기의 녹화 파일은 어디에 저장되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '녹화된 파일은 서버에 업로드되지 않으며, 브라우저 내에서만 처리됩니다. 다운로드 버튼을 클릭하면 WebM 형식으로 로컬 컴퓨터에 저장됩니다. 개인정보 보호에 안전합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '시스템 오디오와 마이크를 동시에 녹음할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 오디오 설정에서 "둘 다"를 선택하면 시스템 소리와 마이크 입력을 동시에 녹음할 수 있습니다. 단, 시스템 오디오 녹음은 브라우저 탭 공유 시에만 지원되며, 전체 화면이나 창 공유 시에는 브라우저에 따라 제한될 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '녹화 파일을 MP4로 변환할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '현재 브라우저 MediaRecorder API는 WebM 형식으로 녹화합니다. MP4로 변환하려면 녹화 후 별도의 동영상 변환 도구를 사용하시거나, VLC 미디어 플레이어의 변환 기능을 활용하세요. 대부분의 동영상 편집 프로그램에서 WebM 파일을 직접 가져올 수도 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '온라인 화면 녹화기의 녹화 파일은 어디에 저장되나요?', a: '녹화된 파일은 서버에 업로드되지 않으며, 브라우저 내에서만 처리됩니다. 다운로드 버튼을 클릭하면 WebM 형식으로 로컬 컴퓨터에 저장됩니다. 개인정보 보호에 안전합니다.' },
+    { q: '시스템 오디오와 마이크를 동시에 녹음할 수 있나요?', a: '네, 오디오 설정에서 "둘 다"를 선택하면 시스템 소리와 마이크 입력을 동시에 녹음할 수 있습니다. 단, 시스템 오디오 녹음은 브라우저 탭 공유 시에만 지원되며, 전체 화면이나 창 공유 시에는 브라우저에 따라 제한될 수 있습니다.' },
+    { q: '녹화 파일을 MP4로 변환할 수 있나요?', a: '현재 브라우저 MediaRecorder API는 WebM 형식으로 녹화합니다. MP4로 변환하려면 녹화 후 별도의 동영상 변환 도구를 사용하시거나, VLC 미디어 플레이어의 변환 기능을 활용하세요. 대부분의 동영상 편집 프로그램에서 WebM 파일을 직접 가져올 수도 있습니다.' },
+  ]
 
   return (
     <>
@@ -78,14 +54,11 @@ export default function ScreenRecorderPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ScreenRecorder />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

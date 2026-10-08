@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import KoreanSyllable from '@/components/KoreanSyllable'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import koreanSyllableMessages from '../../../messages/generated/ko/ns/koreanSyllable.json'
 
 export const metadata: Metadata = {
   title: '한글 초성 추출기 - 자음/모음 분리, 초성 검색 | 툴허브',
@@ -14,40 +16,10 @@ export const metadata: Metadata = {
 
 export default function KoreanSyllablePage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '한글 초성 추출기', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['초성 추출', '자모 분리(겹받침·겹모음)', '자모 합치기·두벌식 키 변환', '로마자 표기(국어의 로마자 표기법)', '조사 자동 선택(을/를·이/가·으로/로)', '유니코드 코드포인트·NFD 변환'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '한글 자모 조합 원리는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '한글은 초성(19개: ㄱㄲㄴㄷ...), 중성(21개: ㅏㅐㅑ...), 종성(27개+없음: ㄱㄲㄳ...)의 조합으로 구성됩니다. 유니코드에서 한글 글자 코드 = 0xAC00 + (초성 인덱스 × 21 × 28) + (중성 인덱스 × 28) + 종성 인덱스. 총 11,172개(19×21×28)의 완성형 한글이 가능합니다. 세종대왕이 창제한 훈민정음은 기본 자음은 발음 기관의 모양을, 기본 모음은 하늘(·)·땅(ㅡ)·사람(ㅣ)을 본뜬 과학적 문자 체계입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '맥에서 받은 파일명의 한글이 ㅎㅏㄴㄱㅡㄹ처럼 풀려 보이는 이유는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'macOS는 파일명을 NFD(자모를 따로 저장하는 조합형)로 저장해 윈도우 등에서 자모가 분리되어 보입니다. 이 도구에 붙여넣으면 NFD를 감지하고 NFC(완성형)로 바꿔 복사할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '받침에 따라 을/를, 이/가를 고르는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '마지막 글자의 유니코드 값에서 0xAC00을 뺀 값을 28로 나눈 나머지가 0이면 받침이 없습니다. 받침이 있으면 을·이·은·과·으로, 없으면 를·가·는·와·로를 씁니다. 단, ㄹ받침 뒤에는 으로가 아니라 로를 씁니다(서울로).',
-        },
-      },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={koreanSyllableMessages.koreanSyllable.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import SleepCalculator from '@/components/SleepCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '수면 계산기 - 최적 취침·기상 시간 계산 | 툴허브',
@@ -54,52 +55,14 @@ export default function SleepCalculatorPage() {
         '7일 수면 부채 기록, 결과 이미지·링크 공유',
       ],
     },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '수면 주기란 무엇인가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '수면 주기는 약 90분 단위로 반복되는 수면의 단계입니다. 각 주기는 가벼운 수면(NREM 1-2단계), 깊은 수면(NREM 3단계), 렘수면(REM)으로 구성됩니다. 하룻밤에 보통 4~6회 반복되며, 수면 주기의 끝에서 기상하면 더 개운하게 일어날 수 있습니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '왜 90분 단위로 수면을 계산하나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '수면 주기 한 바퀴가 평균 약 90분(사람·주기마다 약 70~120분)이기 때문입니다. 주기 도중, 특히 깊은 수면 단계에서 깨면 수면 관성(sleep inertia)으로 인해 피로감과 몽롱함이 심해집니다. 주기가 완료되는 시점에 맞춰 기상하면 보다 상쾌하게 깨어날 수 있습니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '90분 주기에 맞추면 누구나 개운하게 일어나나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '아닙니다. 90분은 평균치이고 실제 주기는 약 70~120분으로 사람마다, 같은 밤에도 주기마다 다릅니다. 계산 결과는 참고값이며, 알람 전에 자주 깨거나 늦게 깬다면 주기 길이와 잠드는 시간을 조정해 보세요. 총 수면 시간과 일정한 기상 시각이 더 중요합니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '커피는 몇 시까지 마셔도 되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '일반적으로 취침 6시간 전까지를 권합니다. 취침 6시간 전에 마신 카페인 400mg도 총수면을 1시간 넘게 줄였다는 연구(Drake 외, 2013)가 있습니다. 카페인 대사 속도는 개인차가 커서 민감하다면 더 일찍 끊는 것이 좋습니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '성인의 적정 수면 시간은 얼마인가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '미국 수면 재단(National Sleep Foundation) 기준으로 성인(18~64세)의 적정 수면 시간은 7~9시간입니다. 이는 수면 주기 5~6회(7.5~9시간)에 해당합니다. 65세 이상은 7~8시간이 권장되며, 미국수면의학회(AASM)도 성인에게 하루 7시간 이상을 권장합니다.',
-          },
-        },
-      ],
-    },
+  ]
+
+  const faq = [
+    { q: '수면 주기란 무엇인가요?', a: '수면 주기는 약 90분 단위로 반복되는 수면의 단계입니다. 각 주기는 가벼운 수면(NREM 1-2단계), 깊은 수면(NREM 3단계), 렘수면(REM)으로 구성됩니다. 하룻밤에 보통 4~6회 반복되며, 수면 주기의 끝에서 기상하면 더 개운하게 일어날 수 있습니다.' },
+    { q: '왜 90분 단위로 수면을 계산하나요?', a: '수면 주기 한 바퀴가 평균 약 90분(사람·주기마다 약 70~120분)이기 때문입니다. 주기 도중, 특히 깊은 수면 단계에서 깨면 수면 관성(sleep inertia)으로 인해 피로감과 몽롱함이 심해집니다. 주기가 완료되는 시점에 맞춰 기상하면 보다 상쾌하게 깨어날 수 있습니다.' },
+    { q: '90분 주기에 맞추면 누구나 개운하게 일어나나요?', a: '아닙니다. 90분은 평균치이고 실제 주기는 약 70~120분으로 사람마다, 같은 밤에도 주기마다 다릅니다. 계산 결과는 참고값이며, 알람 전에 자주 깨거나 늦게 깬다면 주기 길이와 잠드는 시간을 조정해 보세요. 총 수면 시간과 일정한 기상 시각이 더 중요합니다.' },
+    { q: '커피는 몇 시까지 마셔도 되나요?', a: '일반적으로 취침 6시간 전까지를 권합니다. 취침 6시간 전에 마신 카페인 400mg도 총수면을 1시간 넘게 줄였다는 연구(Drake 외, 2013)가 있습니다. 카페인 대사 속도는 개인차가 커서 민감하다면 더 일찍 끊는 것이 좋습니다.' },
+    { q: '성인의 적정 수면 시간은 얼마인가요?', a: '미국 수면 재단(National Sleep Foundation) 기준으로 성인(18~64세)의 적정 수면 시간은 7~9시간입니다. 이는 수면 주기 5~6회(7.5~9시간)에 해당합니다. 65세 이상은 7~8시간이 권장되며, 미국수면의학회(AASM)도 성인에게 하루 7시간 이상을 권장합니다.' },
   ]
 
   return (
@@ -112,6 +75,7 @@ export default function SleepCalculatorPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SleepCalculator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

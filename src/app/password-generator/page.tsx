@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import PasswordGenerator from '@/components/PasswordGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import passwordGeneratorMessages from '../../../messages/generated/ko/ns/passwordGenerator.json'
 
 export const metadata: Metadata = {
   title: '비밀번호 생성기 - 안전한 패스워드 | 툴허브',
@@ -54,47 +56,13 @@ export default function PasswordGeneratorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '안전한 비밀번호 길이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '현재 권장되는 안전한 비밀번호 길이는 최소 12자 이상이며, 16자 이상을 권장합니다. 초당 100억 번 대입하는 오프라인 공격을 가정하면, 대소문자·숫자·특수문자(94자)를 무작위로 쓴 8자리는 평균 약 2.6일, 12자리는 약 70만 년, 16자리는 10억 년 이상 걸립니다. 문자 종류보다 길이가 더 중요하며, NIST(미국 국립표준기술연구소) 개정 지침은 비밀번호만으로 로그인하는 경우 최소 15자를 권장합니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '패스프레이즈란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '패스프레이즈(Passphrase)는 여러 개의 무작위 단어를 조합한 비밀번호입니다. 예: \'correct-horse-battery-staple\'. 일반 비밀번호보다 기억하기 쉬우면서도 엔트로피(무작위성)가 높아 보안성이 우수합니다. 이 도구의 단어 목록(819개)은 단어당 약 9.7비트이므로 6단어 이상을 권장합니다. 많은 보안 전문가들이 복잡한 비밀번호보다 긴 패스프레이즈를 권장합니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '비밀번호 강도는 어떻게 측정하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '비밀번호 강도는 엔트로피(비트)로 측정합니다. 엔트로피 = log2(가능한 문자 수) × 길이. 예를 들어 소문자+숫자(36개) 8자리는 약 41비트, 대소문자+숫자+특수문자(94개) 16자리는 약 105비트입니다. 이 도구는 40비트 미만 매우 약함, 56비트 미만 약함, 72비트 미만 보통, 96비트 미만 강함, 96비트 이상 매우 강함으로 분류합니다.'
-        }
-      },
-    ],
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={passwordGeneratorMessages.passwordGenerator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

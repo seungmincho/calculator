@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import TypingTest from '@/components/TypingTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import typingTestMessages from '../../../messages/generated/ko/ns/typingTest.json'
 
 export const metadata: Metadata = {
   title: '타자 연습 - 한글 타수·영문 WPM 측정, 오늘의 문장 | 툴허브',
@@ -12,24 +14,12 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://toolhub.ai.kr/typing-test/' },
 }
 
-const FAQ = [
-  ['한글 타수는 어떻게 계산하나요?', '자판을 누른 횟수(자모 수)를 1분 기준으로 환산합니다. 닭은 ㄷ·ㅏ·ㄹ·ㄱ 4타, 과는 ㄱ·ㅗ·ㅏ 3타이며, 쌍자음(ㄲ·ㄸ·ㅃ·ㅆ·ㅉ)과 ㅒ·ㅖ는 Shift를 세지 않고 1타로 셉니다. 한컴타자연습과 같은 방식입니다.'],
-  ['평균 타자 속도는?', '일반 성인 평균은 분당 200~300타(한글)이며 사무직은 300~400타 이상이면 빠른 편입니다. 영문은 평균 40WPM, 빠른 타자는 80WPM 이상입니다.'],
-  ['오늘의 문장은 무엇인가요?', '한국 시간 자정마다 바뀌는 문장으로, 모든 사람이 같은 문장에 도전합니다. 하루 동안 여러 번 도전할 수 있고 가장 좋은 기록이 오늘의 최고 기록으로 남습니다.'],
-  ['정확도는 어떻게 계산되나요?', '입력한 글자 중 한 번이라도 틀린 글자의 비율을 뺀 값입니다. 틀린 뒤 지우고 고쳐도 오타로 기록되어, 실제 실력에 가까운 정확도를 보여 줍니다.'],
-]
-
 export default function TypingTestPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '타자 연습', description: '한글 타수(타/분)·영문 WPM 측정, 오늘의 문장, 시간제 연습', url: 'https://toolhub.ai.kr/typing-test/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 자모 타수 측정', '오늘의 문장', '30초/60초 시간제', '영문 WPM', '자주 틀린 자모 분석', '기록 그래프', '결과 공유'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={typingTestMessages.typingTest.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

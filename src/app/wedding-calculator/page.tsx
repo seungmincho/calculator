@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import WeddingCalculator from '@/components/WeddingCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import weddingCalculatorMessages from '../../../messages/generated/ko/ns/weddingCalculator.json'
 
 export const metadata: Metadata = {
   title: '결혼비용 계산기 2026 - 예식비용, 축의금, 양가분담 계산 | 툴허브',
@@ -52,41 +54,10 @@ export default function WeddingCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '결혼 비용은 평균 얼마나 드나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '한국소비자원 참가격 조사(2025년 8월)에 따르면 예식장과 스드메 등 결혼서비스 비용은 평균 약 2,160만원(수도권 2,665만원, 비수도권 1,511만원)이었습니다. 예물·예단·신혼여행·혼수와 신혼집은 별도이며, 신혼집 비용이 전체에서 가장 큰 비중을 차지합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '축의금으로 결혼 비용을 얼마나 충당할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '축의금으로 얼마나 충당되는지는 하객 수와 관계별 축의금, 식대에 따라 크게 달라집니다. 2025년 조사 기준 식대 중간값이 1인 6만원 수준이라, 식사하는 하객 1명당 축의금이 식대보다 적으면 오히려 부담이 늘 수 있습니다. 계산기의 "축의금 vs 식대"에서 본전 축의금을 확인하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '양가 분담은 보통 어떻게 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '전통적으로 예식장·신혼집은 신랑측, 스드메는 신부측이 부담했으나, 최근에는 공동 분담이 증가하고 있습니다. 양가 합의에 따라 항목별, 비율별, 금액별로 자유롭게 결정할 수 있습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={weddingCalculatorMessages.weddingCalculator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

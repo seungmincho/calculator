@@ -5,6 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { INSURANCE, pct } from '@/utils/insuranceRates'
 import { A_VALUE } from '@/utils/nationalPension'
+import ToolFaq from '@/components/ToolFaq'
 
 // 간편 계산(나이·월 소득 → 예상 연금 + 월 보험료). 조기·연기·크레딧 상세는 /national-pension
 const DESC = `나이와 월 소득만 넣으면 국민연금 예상 수령액과 매달 내는 보험료(본인 ${pct(INSURANCE.pensionRate)}·회사 ${pct(INSURANCE.pensionRate)}), 소득대체율을 바로 계산합니다. ${INSURANCE.year}년 연금개혁(보험료율 ${pct(INSURANCE.pensionRateTotal)})·A값 ${A_VALUE.toLocaleString('ko-KR')}원 반영.`
@@ -55,36 +56,11 @@ export default function PensionCalculatorPage() {
     inLanguage: 'ko',
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '국민연금 수령액은 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '기본연금액은 계수 × (A값 + B값) × (1 + 20년 초과 1년마다 5%)로 계산합니다. 계수는 가입연도별로 다르며 2026년 이후 가입기간은 1.29(40년 가입 시 소득대체율 43%)입니다. A값은 수급 전 3년간 전체 가입자 평균소득월액(2025.12~2026.11 적용 3,193,511원), B값은 본인 가입기간 평균 기준소득월액입니다. 가입기간 10~20년이면 기본연금액의 50%에 10년 초과 1년마다 5%를 더합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '국민연금 보험료는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 보험료율은 소득의 9.5%로 2033년 13%까지 매년 0.5%p 오릅니다. 직장가입자는 근로자·회사가 4.75%씩, 지역가입자는 9.5% 전액을 냅니다. 기준소득월액 상한은 659만원(2026년 7월~2027년 6월)으로 이를 넘는 소득에는 보험료가 부과되지 않습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '국민연금 수령 나이는 언제인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '출생연도에 따라 국민연금 수령 개시 연령이 다릅니다. 1969년 이후 출생자는 65세부터 노령연금을 수령할 수 있습니다. 최소 가입 기간은 10년(120개월)이며, 가입 기간이 길수록 수령액이 증가합니다. 조기노령연금 신청 시 60세부터 수령 가능하나 수령액이 감액됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '국민연금 수령액은 어떻게 계산하나요?', a: '기본연금액은 계수 × (A값 + B값) × (1 + 20년 초과 1년마다 5%)로 계산합니다. 계수는 가입연도별로 다르며 2026년 이후 가입기간은 1.29(40년 가입 시 소득대체율 43%)입니다. A값은 수급 전 3년간 전체 가입자 평균소득월액(2025.12~2026.11 적용 3,193,511원), B값은 본인 가입기간 평균 기준소득월액입니다. 가입기간 10~20년이면 기본연금액의 50%에 10년 초과 1년마다 5%를 더합니다.' },
+    { q: '국민연금 보험료는 얼마인가요?', a: '2026년 보험료율은 소득의 9.5%로 2033년 13%까지 매년 0.5%p 오릅니다. 직장가입자는 근로자·회사가 4.75%씩, 지역가입자는 9.5% 전액을 냅니다. 기준소득월액 상한은 659만원(2026년 7월~2027년 6월)으로 이를 넘는 소득에는 보험료가 부과되지 않습니다.' },
+    { q: '국민연금 수령 나이는 언제인가요?', a: '출생연도에 따라 국민연금 수령 개시 연령이 다릅니다. 1969년 이후 출생자는 65세부터 노령연금을 수령할 수 있습니다. 최소 가입 기간은 10년(120개월)이며, 가입 기간이 길수록 수령액이 증가합니다. 조기노령연금 신청 시 60세부터 수령 가능하나 수령액이 감액됩니다.' },
+  ]
 
   return (
     <>
@@ -92,14 +68,11 @@ export default function PensionCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PensionCalculator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

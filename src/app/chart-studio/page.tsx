@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import ChartStudio from '@/components/ChartStudio'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '차트 스튜디오 - 데이터 시각화 & 차트 코드 생성기 | 툴허브',
@@ -28,28 +29,10 @@ export const metadata: Metadata = {
 }
 
 export default function ChartStudioPage() {
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '어떤 차트를 만들 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '막대 차트, 꺾은선 차트, 파이 차트, 도넛 차트, 영역 차트 등 다양한 유형을 지원합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '만든 차트를 다운로드할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, PNG 이미지로 다운로드하거나 데이터를 CSV로 내보낼 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '어떤 차트를 만들 수 있나요?', a: '막대, 라인, 영역, 파이, 산점도, 레이더 6종 차트를 지원합니다.' },
+    { q: '만든 차트를 다운로드할 수 있나요?', a: '네, PNG 이미지로 다운로드할 수 있고, ECharts 옵션·React 코드를 복사해 프로젝트에 바로 쓸 수 있습니다.' },
+  ]
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -67,11 +50,11 @@ export default function ChartStudioPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ChartStudio />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

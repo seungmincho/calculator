@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import ReactionTest from '@/components/ReactionTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import reactionTestMessages from '../../../messages/generated/ko/ns/reactionTest.json'
 
 export const metadata: Metadata = {
   title: '반응속도 테스트 - 반응 시간 측정 | 툴허브',
@@ -14,24 +16,10 @@ export const metadata: Metadata = {
 
 export default function ReactionTestPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '반응속도 테스트', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test/', applicationCategory: 'GameApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['시각 반응속도 5회 측정', '평균·중앙값·최고 기록', '상위 % 참고 비교', '기록 추이 그래프', '결과 카드 공유·친구 도전 링크', '부정 출발 감지'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '평균 반응 속도는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '시각 자극에 대한 인간의 평균 반응 속도는 약 200-250ms(밀리초)입니다. 게이머는 대체로 더 빠르며, 웹 테스트에서는 기기·화면 지연이 더해져 측정값이 실제보다 수십 ms 느리게 나올 수 있습니다. 청각 자극은 시각보다 약 20-50ms 빠릅니다. 반응 속도에 영향을 주는 요인: ① 나이 (20대가 가장 빠름) ② 피로도와 수면 ③ 카페인 (소량은 향상) ④ 주의 집중도 ⑤ 연습. 운전, e스포츠, 스포츠 등에서 중요한 능력이며 훈련으로 개선할 수 있습니다.',
-        },
-      },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={reactionTestMessages.reactionTest.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><ReactionTest />  <div className="mt-8">

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import RegexEngineVisualizer from '@/components/RegexEngineVisualizer'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '정규표현식 엔진 시각화 - regex 매칭 과정 학습 | 툴허브',
@@ -48,36 +49,11 @@ export default function RegexEnginePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '정규표현식이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '정규표현식(Regular Expression, regex)은 문자열에서 특정 패턴을 찾거나 치환하기 위한 형식 언어입니다. 예를 들어 \\d+는 하나 이상의 숫자를, [a-z]+는 하나 이상의 소문자를 의미합니다. 프로그래밍, 텍스트 편집기, 데이터 처리 등에서 널리 사용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '탐욕적 매칭과 게으른 매칭의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '탐욕적(greedy) 매칭은 가능한 한 많은 문자를 매칭합니다(기본값). 예: .*은 줄 전체를 매칭합니다. 게으른(lazy) 매칭은 ?를 붙여 가능한 한 적은 문자만 매칭합니다. 예: .*?는 최소한의 문자만 매칭합니다. HTML 태그 추출 시 <.*>는 탐욕적으로 첫 <부터 마지막 >까지 매칭하지만, <.*?>는 개별 태그만 매칭합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '캡처 그룹은 어떻게 사용하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '캡처 그룹은 소괄호 ()로 감싼 부분입니다. 매칭된 텍스트의 특정 부분을 추출할 때 사용합니다. 예: (\\d{3})-(\\d{4})에서 010-1234를 매칭하면 그룹1은 010, 그룹2는 1234입니다. 역참조(\\1, \\2)로 앞서 매칭된 그룹을 다시 참조할 수도 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '정규표현식이란 무엇인가요?', a: '정규표현식(Regular Expression, regex)은 문자열에서 특정 패턴을 찾거나 치환하기 위한 형식 언어입니다. 예를 들어 \\d+는 하나 이상의 숫자를, [a-z]+는 하나 이상의 소문자를 의미합니다. 프로그래밍, 텍스트 편집기, 데이터 처리 등에서 널리 사용됩니다.' },
+    { q: '탐욕적 매칭과 게으른 매칭의 차이는?', a: '탐욕적(greedy) 매칭은 가능한 한 많은 문자를 매칭합니다(기본값). 예: .*은 줄 전체를 매칭합니다. 게으른(lazy) 매칭은 ?를 붙여 가능한 한 적은 문자만 매칭합니다. 예: .*?는 최소한의 문자만 매칭합니다. HTML 태그 추출 시 <.*>는 탐욕적으로 첫 <부터 마지막 >까지 매칭하지만, <.*?>는 개별 태그만 매칭합니다.' },
+    { q: '캡처 그룹은 어떻게 사용하나요?', a: '캡처 그룹은 소괄호 ()로 감싼 부분입니다. 매칭된 텍스트의 특정 부분을 추출할 때 사용합니다. 예: (\\d{3})-(\\d{4})에서 010-1234를 매칭하면 그룹1은 010, 그룹2는 1234입니다. 역참조(\\1, \\2)로 앞서 매칭된 그룹을 다시 참조할 수도 있습니다.' },
+  ]
 
   return (
     <>
@@ -85,14 +61,11 @@ export default function RegexEnginePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <RegexEngineVisualizer />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

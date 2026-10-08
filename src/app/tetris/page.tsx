@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import TetrisPageClient from '@/components/TetrisPageClient'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '테트리스 - 클래식 블록 퍼즐 & 2인 대전 게임 | 툴허브',
@@ -43,28 +44,10 @@ export default function TetrisPage() {
     featureList: ['7-bag 랜덤', '홀드', '넥스트 미리보기', '고스트 피스', '레벨 시스템', '2인 실시간 대전', '공격 라인 시스템', '콤보'],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '테트리스 기본 조작법과 규칙은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '테트리스는 위에서 떨어지는 7종류의 블록(테트로미노: I, O, T, S, Z, J, L)을 회전·이동시켜 가로줄을 완성하면 줄이 사라지는 퍼즐 게임입니다. 방향키로 좌우 이동, 위 방향키로 회전, 아래로 빠른 낙하합니다. 동시에 여러 줄을 완성하면 더 높은 점수를 얻으며, 4줄 동시 클리어를 \'테트리스\'라고 합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '테트리스 2인 대전 모드는 어떻게 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '멀티플레이 탭을 선택한 후 방을 만들거나 다른 플레이어의 방에 입장하면 실시간 1:1 대전이 시작됩니다. 줄을 클리어하면 상대에게 공격 라인(쓰레기 줄)을 보내며, 4줄 동시 클리어(테트리스)는 4줄을 보냅니다. 연속 콤보로 추가 보너스를 받을 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '테트리스 기본 조작법과 규칙은?', a: '테트리스는 위에서 떨어지는 7종류의 블록(테트로미노: I, O, T, S, Z, J, L)을 회전·이동시켜 가로줄을 완성하면 줄이 사라지는 퍼즐 게임입니다. 방향키로 좌우 이동, 위 방향키로 회전, 아래로 빠른 낙하합니다. 동시에 여러 줄을 완성하면 더 높은 점수를 얻으며, 4줄 동시 클리어를 \'테트리스\'라고 합니다.' },
+    { q: '테트리스 2인 대전 모드는 어떻게 하나요?', a: '멀티플레이 탭을 선택한 후 방을 만들거나 다른 플레이어의 방에 입장하면 실시간 1:1 대전이 시작됩니다. 줄을 클리어하면 상대에게 공격 라인(쓰레기 줄)을 보내며, 4줄 동시 클리어(테트리스)는 4줄을 보냅니다. 연속 콤보로 추가 보너스를 받을 수 있습니다.' },
+  ]
 
   return (
     <>
@@ -72,14 +55,11 @@ export default function TetrisPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <TetrisPageClient />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

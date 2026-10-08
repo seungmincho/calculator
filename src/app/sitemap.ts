@@ -90,7 +90,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const href = categoryHubs[key]
     if (seen.has(href)) continue
     seen.add(href)
-    entries.push({ url: `https://toolhub.ai.kr${href}/`, lastModified: '2026-09-17', changeFrequency: 'weekly', priority: 0.9 })
+    // 허브는 도구가 추가·개선될 때 바뀌므로 소속 도구 중 가장 최근 날짜를 쓴다
+    const latest = menuConfig[key].items.reduce((max, i) => {
+      const d = i.updatedDate || i.addedDate || ''
+      return d > max ? d : max
+    }, '2026-09-17')
+    entries.push({ url: `https://toolhub.ai.kr${href}/`, lastModified: latest, changeFrequency: 'weekly', priority: 0.9 })
   }
 
   // 연봉 실수령액 구간별 페이지
@@ -142,27 +147,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   }
 
-  // 특수 페이지 (menuConfig 외)
-  entries.push(
-    {
-      url: 'https://toolhub.ai.kr/tips/',
-      lastModified: today,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: 'https://toolhub.ai.kr/privacy/',
-      lastModified: '2026-02-21',
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: 'https://toolhub.ai.kr/inquiry/',
-      lastModified: today,
-      changeFrequency: 'monthly',
-      priority: 0.4,
-    },
-  )
+  // 특수 페이지 (menuConfig 외). /privacy·/inquiry·/offline·/admin·/tips/[id] 는 noindex 라 넣지 않는다
+  // (sitemap 에 noindex URL 이 있으면 GSC 가 "제출된 URL에 noindex" 오류로 잡는다)
+  entries.push({
+    url: 'https://toolhub.ai.kr/tips/',
+    lastModified: today,
+    changeFrequency: 'weekly',
+    priority: 0.9,
+  })
 
   return entries
 }

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import BloodSugar from '@/components/BloodSugar'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '혈당 기록 - 혈당 추적, 당뇨 관리 | 툴허브',
@@ -55,36 +56,12 @@ export default function BloodSugarPage() {
         '브라우저 로컬 저장',
       ],
     },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '정상 공복 혈당 수치는 얼마인가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '대한당뇨병학회·미국당뇨병협회(ADA) 기준으로 공복 혈당 100 mg/dL 미만이 정상, 100~125 mg/dL는 공복혈당장애(당뇨병 전단계), 126 mg/dL 이상은 당뇨병 진단 기준에 해당합니다. 진단은 다른 날 재검 등 의료진 확인이 필요합니다. 70 mg/dL 미만은 저혈당으로 즉각적인 조치가 필요합니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '식후 혈당은 언제 측정하나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '식후 혈당은 보통 식사 시작 2시간 뒤에 잽니다. 진단 기준은 75g 경구당부하검사(OGTT) 2시간 혈당으로, 140 mg/dL 미만 정상, 140~199 mg/dL 내당능장애, 200 mg/dL 이상 당뇨병 기준입니다. 일상 식사 후 측정값은 참고용이며 한 번의 수치로 진단하지 않습니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '혈당 기록 데이터는 어디에 저장되나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '모든 혈당 기록은 사용자의 브라우저 로컬 스토리지에만 저장됩니다. 서버로 전송되거나 외부에 공유되지 않으며, 같은 기기와 브라우저에서만 확인할 수 있습니다.',
-          },
-        },
-      ],
-    },
+  ]
+
+  const faq = [
+    { q: '정상 공복 혈당 수치는 얼마인가요?', a: '대한당뇨병학회·미국당뇨병협회(ADA) 기준으로 공복 혈당 100 mg/dL 미만이 정상, 100~125 mg/dL는 공복혈당장애(당뇨병 전단계), 126 mg/dL 이상은 당뇨병 진단 기준에 해당합니다. 진단은 다른 날 재검 등 의료진 확인이 필요합니다. 70 mg/dL 미만은 저혈당으로 즉각적인 조치가 필요합니다.' },
+    { q: '식후 혈당은 언제 측정하나요?', a: '식후 혈당은 보통 식사 시작 2시간 뒤에 잽니다. 진단 기준은 75g 경구당부하검사(OGTT) 2시간 혈당으로, 140 mg/dL 미만 정상, 140~199 mg/dL 내당능장애, 200 mg/dL 이상 당뇨병 기준입니다. 일상 식사 후 측정값은 참고용이며 한 번의 수치로 진단하지 않습니다.' },
+    { q: '혈당 기록 데이터는 어디에 저장되나요?', a: '모든 혈당 기록은 사용자의 브라우저 로컬 스토리지에만 저장됩니다. 서버로 전송되거나 외부에 공유되지 않으며, 같은 기기와 브라우저에서만 확인할 수 있습니다.' },
   ]
 
   return (
@@ -97,6 +74,7 @@ export default function BloodSugarPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <BloodSugar />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

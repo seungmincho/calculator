@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import StockCalculator from '@/components/StockCalculator'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '주식 수익률 계산기 | 툴허브 - 매수가 대비 수익률 및 손익 계산',
@@ -52,54 +53,18 @@ export default function StockCalculatorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '주식 수익률은 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '단순 수익률은 (매도가 - 매수가) ÷ 매수가 × 100입니다. 실제 순수익률은 매도 금액에서 매수·매도 수수료와 증권거래세를 뺀 순손익을 (매수 금액 + 매수 수수료)로 나눠 계산하므로 단순 수익률보다 약간 낮습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '주식 거래 수수료는 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '온라인 거래 수수료는 증권사·이벤트에 따라 다르며 국내 주식은 대체로 0.01~0.015% 안팎입니다. 매도 시에는 2026년 1월 1일 양도분부터 증권거래세가 코스피 0.20%(거래세 0.05% + 농어촌특별세 0.15%), 코스닥 0.20%, 코넥스 0.10% 부과되고 국내 ETF는 면제입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '주식 양도소득세는 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '국내 상장주식은 대주주에게만 양도소득세가 부과됩니다. 해외 주식은 1년간 손익을 합산해 기본공제 250만원을 뺀 금액에 22%(양도소득세 20% + 지방소득세 2%)가 부과되며, 다음 해 5월에 직접 신고·납부합니다. 원화 환산 시 환차익도 과세 대상에 포함됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '물타기로 평단을 낮추려면 몇 주를 더 사야 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '추가 수량 = 보유 수량 × (현재 평단 - 목표 평단) ÷ (목표 평단 - 현재가)입니다. 예를 들어 평단 80,000원에 100주, 현재가 60,000원에서 평단을 70,000원으로 만들려면 100주를 더 사야 합니다. 현재가가 목표 평단보다 낮을 때만 가능합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '주식 수익률은 어떻게 계산하나요?', a: '단순 수익률은 (매도가 - 매수가) ÷ 매수가 × 100입니다. 실제 순수익률은 매도 금액에서 매수·매도 수수료와 증권거래세를 뺀 순손익을 (매수 금액 + 매수 수수료)로 나눠 계산하므로 단순 수익률보다 약간 낮습니다.' },
+    { q: '주식 거래 수수료는 얼마인가요?', a: '온라인 거래 수수료는 증권사·이벤트에 따라 다르며 국내 주식은 대체로 0.01~0.015% 안팎입니다. 매도 시에는 2026년 1월 1일 양도분부터 증권거래세가 코스피 0.20%(거래세 0.05% + 농어촌특별세 0.15%), 코스닥 0.20%, 코넥스 0.10% 부과되고 국내 ETF는 면제입니다.' },
+    { q: '주식 양도소득세는 어떻게 되나요?', a: '국내 상장주식은 대주주에게만 양도소득세가 부과됩니다. 해외 주식은 1년간 손익을 합산해 기본공제 250만원을 뺀 금액에 22%(양도소득세 20% + 지방소득세 2%)가 부과되며, 다음 해 5월에 직접 신고·납부합니다. 원화 환산 시 환차익도 과세 대상에 포함됩니다.' },
+    { q: '물타기로 평단을 낮추려면 몇 주를 더 사야 하나요?', a: '추가 수량 = 보유 수량 × (현재 평단 - 목표 평단) ÷ (목표 평단 - 현재가)입니다. 예를 들어 평단 80,000원에 100주, 현재가 60,000원에서 평단을 70,000원으로 만들려면 100주를 더 사야 합니다. 현재가가 목표 평단보다 낮을 때만 가능합니다.' },
+  ]
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <StockCalculator />
       {/* SEO 콘텐츠 */}
@@ -121,6 +86,7 @@ export default function StockCalculatorPage() {
             <li><strong>해외 주식 세금:</strong> 해외 주식은 연간 250만원 초과 수익에 대해 양도소득세 22%(지방세 포함)가 부과되므로 세후 수익률도 함께 확인하세요.</li>
           </ul>
         </div>
+        <ToolFaq items={faq} />
       </section>
     </>
   )

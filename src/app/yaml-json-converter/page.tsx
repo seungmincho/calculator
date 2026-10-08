@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import YamlJsonConverter from '@/components/YamlJsonConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'YAML ↔ JSON 변환기 - YAML to JSON, JSON to YAML 온라인 변환 | 툴허브',
@@ -64,27 +65,14 @@ export default function YamlJsonConverterPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer,
-      },
-    })),
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <YamlJsonConverter />
+              <ToolFaq items={faqData.map((f) => ({ q: f.question, a: f.answer }))} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

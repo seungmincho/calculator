@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import UnitConverter from '@/components/UnitConverter'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '단위 변환기 - 길이, 무게, 온도, CSS 단위 변환 | 툴허브',
@@ -41,43 +42,18 @@ export default function UnitConverterPage() {
     featureList: ['14개 분야 단위 동시 환산', '평·근·돈·자 전통 단위', 'KB/KiB 구분', '연비 km/L·L/100km·mpg', '한국/미국 계량컵', '단위 검색', '유효숫자 조절·지수 표기', '링크 공유']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '한국에서 사용하는 평(坪)은 몇 제곱미터인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '1평은 약 3.3058㎡(정확히 400/121㎡)입니다. 한국 부동산에서는 아직 평 단위가 관행적으로 사용되지만, 2007년부터 법적으로는 ㎡를 사용해야 합니다. 환산 공식: 평 → ㎡ = 평 × 3.3058, ㎡ → 평 = ㎡ × 0.3025. 예를 들어 25평 아파트는 약 82.6㎡, 33평은 약 109.1㎡입니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '화씨(°F)와 섭씨(°C) 변환 공식은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '섭씨를 화씨로: °F = (°C × 9/5) + 32. 화씨를 섭씨로: °C = (°F - 32) × 5/9. 주요 기준점: 물의 어는점 0°C = 32°F, 물의 끓는점 100°C = 212°F, 체온 36.5°C = 97.7°F. 화씨는 미국과 팔라우·마셜 제도·케이맨 제도·라이베리아 등 일부 지역에서만 공식적으로 쓰이고, 대부분의 국가는 섭씨를 사용합니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '1마일은 몇 킬로미터인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '1마일(mile)은 정확히 1.609344km입니다. 반대로 1km는 약 0.6214마일입니다. 미국, 영국, 미얀마 등 일부 국가에서 마일을 사용합니다. 관련 단위: 1해리(nautical mile) = 1.852km, 1피트(foot) = 0.3048m, 1인치(inch) = 2.54cm, 1야드(yard) = 0.9144m입니다.'
-        }
-      },
-    ],
-  }
+  const faq = [
+    { q: '한국에서 사용하는 평(坪)은 몇 제곱미터인가요?', a: '1평은 약 3.3058㎡(정확히 400/121㎡)입니다. 한국 부동산에서는 아직 평 단위가 관행적으로 사용되지만, 2007년부터 법적으로는 ㎡를 사용해야 합니다. 환산 공식: 평 → ㎡ = 평 × 3.3058, ㎡ → 평 = ㎡ × 0.3025. 예를 들어 25평 아파트는 약 82.6㎡, 33평은 약 109.1㎡입니다.' },
+    { q: '화씨(°F)와 섭씨(°C) 변환 공식은?', a: '섭씨를 화씨로: °F = (°C × 9/5) + 32. 화씨를 섭씨로: °C = (°F - 32) × 5/9. 주요 기준점: 물의 어는점 0°C = 32°F, 물의 끓는점 100°C = 212°F, 체온 36.5°C = 97.7°F. 화씨는 미국과 팔라우·마셜 제도·케이맨 제도·라이베리아 등 일부 지역에서만 공식적으로 쓰이고, 대부분의 국가는 섭씨를 사용합니다.' },
+    { q: '1마일은 몇 킬로미터인가요?', a: '1마일(mile)은 정확히 1.609344km입니다. 반대로 1km는 약 0.6214마일입니다. 미국, 영국, 미얀마 등 일부 국가에서 마일을 사용합니다. 관련 단위: 1해리(nautical mile) = 1.852km, 1피트(foot) = 0.3048m, 1인치(inch) = 2.54cm, 1야드(yard) = 0.9144m입니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <I18nWrapper>
         <UnitConverter />
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

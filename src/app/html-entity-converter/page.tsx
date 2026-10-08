@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import HtmlEntityConverter from '@/components/HtmlEntityConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'HTML 엔티티 변환기 - 인코딩/디코딩, 특수문자 참조표 | 툴허브',
@@ -62,24 +63,14 @@ export default function HtmlEntityConverterPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <HtmlEntityConverter />
+              <ToolFaq items={faqData.map((f) => ({ q: f.question, a: f.answer }))} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

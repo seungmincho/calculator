@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import DnsLookupVisualizer from '@/components/DnsLookupVisualizer'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'DNS 조회 과정 시각화 - 도메인 → IP 변환 과정 학습 | 툴허브',
@@ -48,45 +49,20 @@ export default function DnsLookupPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'DNS 조회란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'DNS 조회는 사람이 읽을 수 있는 도메인 이름(예: www.example.com)을 컴퓨터가 이해하는 IP 주소(예: 93.184.216.34)로 변환하는 과정입니다. 브라우저가 웹사이트에 접속할 때 가장 먼저 수행되는 네트워크 작업입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'DNS 재귀 조회와 반복 조회의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '재귀 조회는 클라이언트가 DNS 리졸버에게 최종 답을 요청하면, 리졸버가 다른 서버들을 대신 조회하여 완전한 답을 돌려주는 방식입니다. 반복 조회는 리졸버가 각 네임서버에게 다음 단계의 서버 주소만 받아 직접 순차적으로 조회하는 방식입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'DNS 캐시는 왜 필요한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'DNS 캐시는 이전에 조회한 DNS 결과를 임시 저장하여 같은 도메인을 다시 조회할 때 전체 DNS 조회 과정을 생략합니다. 이를 통해 응답 시간을 수 밀리초로 단축하고, DNS 서버 부하를 줄이며, 네트워크 트래픽을 절약합니다. TTL(Time To Live) 값에 따라 캐시 유지 시간이 결정됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'DNS 조회란 무엇인가요?', a: 'DNS 조회는 사람이 읽을 수 있는 도메인 이름(예: www.example.com)을 컴퓨터가 이해하는 IP 주소(예: 93.184.216.34)로 변환하는 과정입니다. 브라우저가 웹사이트에 접속할 때 가장 먼저 수행되는 네트워크 작업입니다.' },
+    { q: 'DNS 재귀 조회와 반복 조회의 차이는?', a: '재귀 조회는 클라이언트가 DNS 리졸버에게 최종 답을 요청하면, 리졸버가 다른 서버들을 대신 조회하여 완전한 답을 돌려주는 방식입니다. 반복 조회는 리졸버가 각 네임서버에게 다음 단계의 서버 주소만 받아 직접 순차적으로 조회하는 방식입니다.' },
+    { q: 'DNS 캐시는 왜 필요한가요?', a: 'DNS 캐시는 이전에 조회한 DNS 결과를 임시 저장하여 같은 도메인을 다시 조회할 때 전체 DNS 조회 과정을 생략합니다. 이를 통해 응답 시간을 수 밀리초로 단축하고, DNS 서버 부하를 줄이며, 네트워크 트래픽을 절약합니다. TTL(Time To Live) 값에 따라 캐시 유지 시간이 결정됩니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <DnsLookupVisualizer />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import CpuSchedulingVisualizer from '@/components/CpuSchedulingVisualizer'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'CPU 스케줄링 시각화 - FCFS, SJF, Round Robin 비교 | 툴허브',
@@ -47,45 +48,20 @@ export default function CpuSchedulingPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'CPU 스케줄링이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'CPU 스케줄링은 운영체제가 여러 프로세스 중 어떤 프로세스에 CPU를 할당할지 결정하는 방법입니다. FCFS, SJF, Round Robin 등 다양한 알고리즘이 있으며, 각각 대기 시간, 반환 시간, 응답 시간 등의 성능 지표가 다릅니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Round Robin의 시간 할당량(Time Quantum)은 어떻게 설정하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '시간 할당량이 너무 크면 FCFS와 비슷해지고, 너무 작으면 문맥 교환 오버헤드가 증가합니다. 일반적으로 프로세스의 평균 CPU 버스트 시간의 80% 정도가 적절하며, 실무에서는 10~100ms를 사용합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '선점형과 비선점형 스케줄링의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '비선점형(Non-preemptive)은 프로세스가 CPU를 자발적으로 반납할 때까지 기다리는 방식이고, 선점형(Preemptive)은 우선순위가 높은 프로세스가 도착하면 현재 실행 중인 프로세스를 중단시킬 수 있는 방식입니다. SRTF와 선점형 Priority가 선점형의 대표적 예입니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'CPU 스케줄링이란 무엇인가요?', a: 'CPU 스케줄링은 운영체제가 여러 프로세스 중 어떤 프로세스에 CPU를 할당할지 결정하는 방법입니다. FCFS, SJF, Round Robin 등 다양한 알고리즘이 있으며, 각각 대기 시간, 반환 시간, 응답 시간 등의 성능 지표가 다릅니다.' },
+    { q: 'Round Robin의 시간 할당량(Time Quantum)은 어떻게 설정하나요?', a: '시간 할당량이 너무 크면 FCFS와 비슷해지고, 너무 작으면 문맥 교환 오버헤드가 증가합니다. 일반적으로 프로세스의 평균 CPU 버스트 시간의 80% 정도가 적절하며, 실무에서는 10~100ms를 사용합니다.' },
+    { q: '선점형과 비선점형 스케줄링의 차이는?', a: '비선점형(Non-preemptive)은 프로세스가 CPU를 자발적으로 반납할 때까지 기다리는 방식이고, 선점형(Preemptive)은 우선순위가 높은 프로세스가 도착하면 현재 실행 중인 프로세스를 중단시킬 수 있는 방식입니다. SRTF와 선점형 Priority가 선점형의 대표적 예입니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CpuSchedulingVisualizer />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

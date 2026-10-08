@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import SpeedTest from '@/components/SpeedTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '인터넷 속도 측정 - 다운로드 속도, 핑 테스트 | 툴허브',
@@ -48,36 +49,12 @@ export default function SpeedTestPage() {
         '측정 기록 그래프 및 결과 이미지 공유',
       ],
     },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: '인터넷 속도 측정 결과가 정확한가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Cloudflare 공개 속도 측정 서버(speed.cloudflare.com)와 실제로 데이터를 주고받아 측정하며, 크기를 늘려가며 여러 번 전송한 뒤 90퍼센타일을 결과로 씁니다. 다만 Wi‑Fi 상태, 기기 성능, 다른 탭·기기의 사용량, 브라우저 한계 때문에 요금제 속도보다 낮게 나올 수 있으니 유선으로 여러 번 측정해 비교하세요.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Mbps와 MB/s는 어떻게 다른가요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Mbps(Megabits per second)는 초당 메가비트로 인터넷 속도 단위이며, MB/s(Megabytes per second)는 초당 메가바이트로 파일 전송 속도 단위입니다. 1 MB/s = 8 Mbps 입니다. 100 Mbps 인터넷은 약 12.5 MB/s의 파일 다운로드 속도를 냅니다.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '핑(Ping)이 높으면 어떤 문제가 있나요?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '핑은 서버까지 데이터가 왕복하는 시간(ms)입니다. 핑이 높으면 온라인 게임에서 반응이 느리거나 화상통화 품질이 저하될 수 있습니다. 일반적으로 20ms 이하면 매우 좋고, 100ms 이상이면 게이밍에 불리합니다.',
-          },
-        },
-      ],
-    },
+  ]
+
+  const faq = [
+    { q: '인터넷 속도 측정 결과가 정확한가요?', a: 'Cloudflare 공개 속도 측정 서버(speed.cloudflare.com)와 실제로 데이터를 주고받아 측정하며, 크기를 늘려가며 여러 번 전송한 뒤 90퍼센타일을 결과로 씁니다. 다만 Wi‑Fi 상태, 기기 성능, 다른 탭·기기의 사용량, 브라우저 한계 때문에 요금제 속도보다 낮게 나올 수 있으니 유선으로 여러 번 측정해 비교하세요.' },
+    { q: 'Mbps와 MB/s는 어떻게 다른가요?', a: 'Mbps(Megabits per second)는 초당 메가비트로 인터넷 속도 단위이며, MB/s(Megabytes per second)는 초당 메가바이트로 파일 전송 속도 단위입니다. 1 MB/s = 8 Mbps 입니다. 100 Mbps 인터넷은 약 12.5 MB/s의 파일 다운로드 속도를 냅니다.' },
+    { q: '핑(Ping)이 높으면 어떤 문제가 있나요?', a: '핑은 서버까지 데이터가 왕복하는 시간(ms)입니다. 핑이 높으면 온라인 게임에서 반응이 느리거나 화상통화 품질이 저하될 수 있습니다. 일반적으로 20ms 이하면 매우 좋고, 100ms 이상이면 게이밍에 불리합니다.' },
   ]
 
   return (
@@ -90,6 +67,7 @@ export default function SpeedTestPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SpeedTest />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

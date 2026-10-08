@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import FlappyBird from '@/components/FlappyBird'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '플래피버드 - 파이프 사이를 날아가는 캐주얼 게임 | 툴허브',
@@ -47,28 +48,10 @@ export default function FlappyBirdPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '플래피버드 조작법은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '화면을 클릭하거나 탭하면 새가 위로 올라갑니다. 스페이스바를 눌러도 됩니다. 손을 떼면 중력에 의해 새가 아래로 내려갑니다. 파이프 사이의 틈을 통과하면 1점을 획득합니다. 파이프나 바닥/천장에 닿으면 게임이 종료됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '플래피버드 최고 점수는 저장되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 최고 점수는 브라우저의 로컬 스토리지에 자동으로 저장됩니다. 같은 브라우저를 사용하는 한 기록이 유지됩니다. 브라우저 데이터를 삭제하면 기록도 초기화됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '플래피버드 조작법은 무엇인가요?', a: '화면을 클릭하거나 탭하면 새가 위로 올라갑니다. 스페이스바를 눌러도 됩니다. 손을 떼면 중력에 의해 새가 아래로 내려갑니다. 파이프 사이의 틈을 통과하면 1점을 획득합니다. 파이프나 바닥/천장에 닿으면 게임이 종료됩니다.' },
+    { q: '플래피버드 최고 점수는 저장되나요?', a: '네, 최고 점수는 브라우저의 로컬 스토리지에 자동으로 저장됩니다. 같은 브라우저를 사용하는 한 기록이 유지됩니다. 브라우저 데이터를 삭제하면 기록도 초기화됩니다.' },
+  ]
 
   return (
     <>
@@ -76,14 +59,11 @@ export default function FlappyBirdPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <FlappyBird />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

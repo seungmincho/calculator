@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import ApiTester from '@/components/ApiTester'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'API 테스터 - REST API 클라이언트 | 툴허브',
@@ -54,20 +55,9 @@ export default function ApiTesterPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'API 테스터란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'API 테스터는 REST API 엔드포인트에 HTTP 요청(GET, POST, PUT, DELETE 등)을 보내고 응답을 확인하는 도구입니다. Postman, Insomnia 같은 데스크톱 앱의 웹 버전으로, 별도 설치 없이 브라우저에서 바로 사용할 수 있습니다. 헤더 설정, 요청 본문(JSON, Form Data), 인증(Bearer Token, Basic Auth) 등을 지원합니다. 개발 중 API 동작 확인, 디버깅, 문서화에 필수적인 도구입니다.'
-        }
-      }
-    ]
-  }
+  const faq = [
+    { q: 'API 테스터란 무엇인가요?', a: 'API 테스터는 REST API 엔드포인트에 HTTP 요청(GET, POST, PUT, DELETE 등)을 보내고 응답을 확인하는 도구입니다. Postman, Insomnia 같은 데스크톱 앱의 웹 버전으로, 별도 설치 없이 브라우저에서 바로 사용할 수 있습니다. 헤더 설정, 요청 본문(JSON, Form Data), 인증(Bearer Token, Basic Auth) 등을 지원합니다. 개발 중 API 동작 확인, 디버깅, 문서화에 필수적인 도구입니다.' },
+  ]
 
   return (
     <>
@@ -75,14 +65,11 @@ export default function ApiTesterPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <ApiTester />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

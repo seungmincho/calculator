@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import LoanCalculator from '@/components/LoanCalculator'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import loanMessages from '../../../messages/generated/ko/ns/loan.json'
 
 export const metadata: Metadata = {
   title: '대출 계산기 | 툴허브 - 원리금균등상환, 원금균등상환 비교',
@@ -56,45 +58,6 @@ export default function LoanCalculatorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '원리금균등상환과 원금균등상환의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '원리금균등상환은 매달 같은 금액(원금+이자)을 갚는 방식이고, 원금균등상환은 매달 같은 원금에 남은 잔액 이자를 더해 갚는 방식입니다. 원금균등상환이 총 이자가 적지만 초기 상환 부담이 큽니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '주택담보대출 이자율은 보통 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 기준 주택담보대출 금리는 은행별로 다르지만, 일반적으로 연 3.5%~5.5% 수준입니다. 고정금리와 변동금리, 대출 기간, LTV 비율에 따라 달라집니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '대출 중도상환 수수료는 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '중도상환 수수료는 보통 대출 후 3년 이내에 갚을 때 부과되며, 일반적으로 상환금액 × 수수료율 × (남은 기간 ÷ 3년)으로 계산합니다. 2025년 1월부터 금융사가 실제 드는 비용만 반영하도록 개편돼 요율이 대체로 낮아졌고, 상품·금융사마다 다르므로 대출 약정서에서 확인하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '거치기간이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '거치기간은 원금 상환 없이 이자만 납부하는 기간입니다. 거치기간이 끝나면 원금과 이자를 함께 상환합니다. 초기 부담은 줄지만 총 이자 부담은 늘어납니다.',
-        },
-      },
-    ],
-  }
-
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -113,10 +76,7 @@ export default function LoanCalculatorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={loanMessages.loan.guide.faq.items} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}

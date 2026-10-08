@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import SavingsCalculator from '@/components/SavingsCalculator'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '적금 계산기 - 적금·복리 비교 | 툴허브',
@@ -81,52 +82,13 @@ export default function SavingsCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '단리와 복리의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '단리는 원금에만 이자가 붙는 방식이고, 복리는 원금+이자에 다시 이자가 붙는 방식입니다. 같은 금리라면 복리가 더 많은 이자를 받을 수 있으며, 기간이 길수록 차이가 커집니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '적금 이자에 세금이 얼마나 붙나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '적금 이자소득에는 15.4%의 이자소득세(소득세 14% + 지방소득세 1.4%)가 원천징수됩니다. 비과세 적금이나 세금우대 적금(9.5%)을 활용하면 세금을 줄일 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '적금 중도해지 시 이자는 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '중도해지 시 약정금리가 아닌 은행이 정한 중도해지 이율(경과 기간별로 기본금리의 일부, 초기엔 0.1% 수준)이 적용됩니다. 가입기간이 짧을수록 해지 금리가 낮아지므로 만기까지 유지하는 것이 유리합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '월 50만원 적금 1년이면 얼마를 받나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '연 3.5% 단리 기준 세전 이자 113,750원, 이자소득세 15.4%(17,517원)를 떼면 세후 이자 96,233원으로 만기 수령액은 6,096,233원입니다. 적금 이자는 원금 600만원 × 3.5%가 아니라 매달 넣은 돈마다 이자 기간이 달라 약 절반 수준입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '적금 연 5%는 예금으로 치면 몇 %인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '12개월 적금 연 5%는 같은 원금을 처음부터 예금에 넣은 것과 비교하면 약 연 2.71%입니다(연이율 × (개월수+1) ÷ (2 × 개월수)). 매달 넣은 돈은 남은 기간만큼만 이자가 붙기 때문입니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '단리와 복리의 차이는 무엇인가요?', a: '단리는 원금에만 이자가 붙는 방식이고, 복리는 원금+이자에 다시 이자가 붙는 방식입니다. 같은 금리라면 복리가 더 많은 이자를 받을 수 있으며, 기간이 길수록 차이가 커집니다.' },
+    { q: '적금 이자에 세금이 얼마나 붙나요?', a: '적금 이자소득에는 15.4%의 이자소득세(소득세 14% + 지방소득세 1.4%)가 원천징수됩니다. 비과세 적금이나 세금우대 적금(9.5%)을 활용하면 세금을 줄일 수 있습니다.' },
+    { q: '적금 중도해지 시 이자는 어떻게 되나요?', a: '중도해지 시 약정금리가 아닌 은행이 정한 중도해지 이율(경과 기간별로 기본금리의 일부, 초기엔 0.1% 수준)이 적용됩니다. 가입기간이 짧을수록 해지 금리가 낮아지므로 만기까지 유지하는 것이 유리합니다.' },
+    { q: '월 50만원 적금 1년이면 얼마를 받나요?', a: '연 3.5% 단리 기준 세전 이자 113,750원, 이자소득세 15.4%(17,517원)를 떼면 세후 이자 96,233원으로 만기 수령액은 6,096,233원입니다. 적금 이자는 원금 600만원 × 3.5%가 아니라 매달 넣은 돈마다 이자 기간이 달라 약 절반 수준입니다.' },
+    { q: '적금 연 5%는 예금으로 치면 몇 %인가요?', a: '12개월 적금 연 5%는 같은 원금을 처음부터 예금에 넣은 것과 비교하면 약 연 2.71%입니다(연이율 × (개월수+1) ÷ (2 × 개월수)). 매달 넣은 돈은 남은 기간만큼만 이자가 붙기 때문입니다.' },
+  ]
 
   return (
     <>
@@ -136,14 +98,11 @@ export default function SavingsCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <SavingsCalculator />
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

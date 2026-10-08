@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import IpChecker from '@/components/IpChecker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '내 IP 주소 확인 - 공인 IP, 위치, ISP 정보 조회 | 툴허브',
@@ -14,27 +15,16 @@ export const metadata: Metadata = {
 
 export default function IpCheckerPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '내 IP 주소 확인', description: '공인 IP 주소, 위치, ISP, 네트워크 정보 확인', url: 'https://toolhub.ai.kr/ip-checker/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['공인 IPv4/IPv6 확인', '위치·시간대 정보', 'ISP·ASN 정보', 'HTTP/TLS 프로토콜 확인', '브라우저·기기 정보', 'WebRTC IP 유출 검사', 'VPN 의심 시간대 비교', 'IP 주소 형식·사설/공인 판별'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'IP 주소란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'IP 주소는 인터넷에 연결된 기기의 고유 식별 번호입니다. IPv4: 0-255 범위의 4개 숫자로 구성(192.168.1.1), 약 43억 개 주소 가능. IPv6: 128비트 16진수 8그룹(2001:0db8:85a3::8a2e:0370:7334), 사실상 무한한 주소. 공인 IP는 인터넷에서 유일하며, 사설 IP(192.168.x.x, 10.x.x.x)는 내부 네트워크에서만 사용됩니다. VPN을 사용하면 공인 IP가 변경됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'IP 주소란 무엇인가요?', a: 'IP 주소는 인터넷에 연결된 기기의 고유 식별 번호입니다. IPv4: 0-255 범위의 4개 숫자로 구성(192.168.1.1), 약 43억 개 주소 가능. IPv6: 128비트 16진수 8그룹(2001:0db8:85a3::8a2e:0370:7334), 사실상 무한한 주소. 공인 IP는 인터넷에서 유일하며, 사설 IP(192.168.x.x, 10.x.x.x)는 내부 네트워크에서만 사용됩니다. VPN을 사용하면 공인 IP가 변경됩니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><IpChecker />  <div className="mt-8">
+    <ToolFaq items={faq} />
     <RelatedTools />
   </div>
 </I18nWrapper>

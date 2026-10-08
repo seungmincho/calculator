@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import TaxCalculator from '@/components/TaxCalculator'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '세금 계산기 - 소득세·부가세·양도세 | 툴허브',
@@ -53,36 +54,11 @@ export default function TaxCalculatorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '종합소득세 세율은 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 기준 종합소득세 세율은 과세표준에 따라 6%~45%까지 8단계 누진세율이 적용됩니다. 1,400만원 이하 6%, 5,000만원 이하 15%, 8,800만원 이하 24%, 1.5억 이하 35%, 3억 이하 38%, 5억 이하 40%, 10억 이하 42%, 10억 초과 45%입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '부가가치세 신고 기간은 언제인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '부가가치세는 1기(1~6월)는 7월 25일까지, 2기(7~12월)는 다음해 1월 25일까지 신고·납부합니다. 개인 일반과세자는 4월·10월에 예정신고 대신 세무서가 고지한 금액(직전 기 납부세액의 절반)을 내고, 간이과세자는 1년치를 다음해 1월 25일까지 한 번에 신고합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '양도소득세는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '양도소득세는 양도가액에서 취득가액과 필요경비를 차감한 양도차익에서 장기보유특별공제와 기본공제(250만원)를 뺀 과세표준에 세율을 적용합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '종합소득세 세율은 어떻게 되나요?', a: '2026년 기준 종합소득세 세율은 과세표준에 따라 6%~45%까지 8단계 누진세율이 적용됩니다. 1,400만원 이하 6%, 5,000만원 이하 15%, 8,800만원 이하 24%, 1.5억 이하 35%, 3억 이하 38%, 5억 이하 40%, 10억 이하 42%, 10억 초과 45%입니다.' },
+    { q: '부가가치세 신고 기간은 언제인가요?', a: '부가가치세는 1기(1~6월)는 7월 25일까지, 2기(7~12월)는 다음해 1월 25일까지 신고·납부합니다. 개인 일반과세자는 4월·10월에 예정신고 대신 세무서가 고지한 금액(직전 기 납부세액의 절반)을 내고, 간이과세자는 1년치를 다음해 1월 25일까지 한 번에 신고합니다.' },
+    { q: '양도소득세는 어떻게 계산하나요?', a: '양도소득세는 양도가액에서 취득가액과 필요경비를 차감한 양도차익에서 장기보유특별공제와 기본공제(250만원)를 뺀 과세표준에 세율을 적용합니다.' },
+  ]
 
   const howToJsonLd = {
     '@context': 'https://schema.org',
@@ -104,14 +80,11 @@ export default function TaxCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <TaxCalculator />
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

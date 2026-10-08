@@ -133,7 +133,7 @@ export default function ToolsShowcase() {
           {categoryKeys.map((categoryKey) => (
             <ul key={categoryKey}>
               {menuConfig[categoryKey].items.map((item) => (
-                <li key={item.href}><a href={item.href}>{t(item.labelKey)}</a></li>
+                <li key={item.href}><a href={`${item.href}/`}>{t(item.labelKey)}</a></li>
               ))}
             </ul>
           ))}

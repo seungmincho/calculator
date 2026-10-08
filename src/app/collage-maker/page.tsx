@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import CollageMaker from '@/components/CollageMaker'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import collageMakerMessages from '../../../messages/generated/ko/ns/collageMaker.json'
 
 export const metadata: Metadata = {
   title: '사진 콜라주 메이커 - 여러 사진 합치기 도구 | 툴허브',
@@ -51,39 +53,13 @@ export default function CollageMakerPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '사진 콜라주 메이커에서 몇 장의 사진을 사용할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '1장부터 9장까지 한 콜라주에 넣을 수 있고, 사진을 올리면 장수에 맞는 레이아웃이 자동으로 선택됩니다. 칸이 남으면 빈 칸을 눌러 사진을 추가하면 되고, 칸보다 사진이 많으면 앞쪽 사진부터 들어갑니다. 모든 처리는 브라우저에서 이루어지며 서버에 업로드되지 않습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '콜라주 비율과 저장 해상도는 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '캔버스 비율을 1:1(정사각), 4:5(인스타 세로), 9:16(스토리), 16:9(가로), 1:3(네컷 스트립) 중에서 고르거나 직접 입력할 수 있습니다. 긴 변 2160px 고화질로 저장되며(정사각 2160×2160) JPG 또는 PNG를 선택할 수 있습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <FaqJsonLd items={collageMakerMessages.collageMaker.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

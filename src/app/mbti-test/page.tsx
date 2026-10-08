@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import MbtiTest from '@/components/MbtiTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import mbtiTestMessages from '../../../messages/generated/ko/ns/mbtiTest.json'
 
 export const metadata: Metadata = {
   title: 'MBTI 성격유형 검사 - 48문항 상세 테스트 | 툴허브',
@@ -53,41 +55,10 @@ export default function MbtiTestPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'MBTI 검사는 몇 문항인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '공식 MBTI®(Form M)는 93문항이며 자격을 갖춘 전문가를 통해 받습니다. 툴허브의 비공식 16유형 테스트는 총 48문항으로, E/I, S/N, T/F, J/P 각 축별로 12문항씩 배정됩니다. 검사 시간은 약 5~10분 소요됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'MBTI 결과는 어떻게 공유하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '검사 결과 페이지에서 공유하기(모바일 공유 시트), 결과 이미지 저장, 링크 복사 기능을 이용하실 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'MBTI 궁합도 볼 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 검사 결과 페이지에서 "궁합 보러가기" 버튼을 클릭하면 MBTI 궁합 분석 페이지로 이동해 상세 궁합을 확인하실 수 있습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={mbtiTestMessages.mbtiTest.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

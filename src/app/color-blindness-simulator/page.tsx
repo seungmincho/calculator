@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import ColorBlindnessSimulator from '@/components/ColorBlindnessSimulator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import colorBlindnessSimulatorMessages from '../../../messages/generated/ko/ns/colorBlindnessSimulator.json'
 
 export const metadata: Metadata = {
   title: '색맹 시뮬레이터 - 색각이상 체험 | 툴허브',
@@ -50,49 +52,10 @@ export default function ColorBlindnessSimulatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '색맹과 색약의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '색맹(Dichromacy)은 특정 원뿔세포가 완전히 없어 해당 색을 전혀 구분하지 못하는 상태이고, 색약(Anomalous Trichromacy)은 원뿔세포가 있지만 기능이 저하되어 색 구분이 어려운 상태입니다. 색약이 색맹보다 훨씬 흔하며, 서양 남성의 약 8%, 한국 남성의 약 6%가 어떤 형태든 색각이상을 가지고 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '이 시뮬레이터는 어떻게 색각이상을 재현하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Machado 외(2009)의 생리학 기반 색각이상 변환 행렬을 선형 RGB 공간에서 픽셀 단위로 적용합니다. 정도(심한 정도) 0~100%에 맞는 행렬을 써서 색약부터 색맹까지 근사적으로 재현합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '업로드한 이미지는 서버에 저장되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '아니요. 모든 이미지 처리는 브라우저 내 Canvas API로 이루어지며, 서버로 전송되지 않습니다. 개인 정보 걱정 없이 사용하세요.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '색맹 시뮬레이터를 디자인에 어떻게 활용하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'UI 스크린샷이나 인포그래픽 이미지를 업로드하고 적색맹·녹색약 등의 필터를 적용해 보세요. 색각이상자가 해당 디자인을 어떻게 보는지 확인하고, 색상만으로 정보를 구분하는 요소가 있다면 아이콘이나 패턴을 추가하는 등 접근성을 개선할 수 있습니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={colorBlindnessSimulatorMessages.colorBlindnessSimulator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

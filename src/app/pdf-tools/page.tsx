@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import PdfTools from '@/components/PdfTools'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'PDF 도구 - PDF 합치기, 분할, 회전 | 툴허브',
@@ -39,28 +40,10 @@ export default function PdfToolsPage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['PDF 합치기', 'PDF 분할', 'PDF 페이지 회전', '이미지→PDF 변환', 'PDF 페이지 삭제·순서 변경', '페이지 범위 분할(1-3,5,8-)', 'N쪽마다 분할(ZIP)', 'JPG·PNG→PDF(A4 맞춤·여백)', '서버 업로드 없음'],
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'PDF 파일이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'PDF(Portable Document Format)는 Adobe가 1993년 개발한 전자 문서 형식입니다. 어떤 기기나 OS에서 열어도 레이아웃, 폰트, 이미지가 동일하게 보이는 것이 최대 장점입니다. 텍스트, 이미지, 벡터 그래픽, 양식, 하이퍼링크, 디지털 서명을 포함할 수 있습니다. 2008년 ISO 32000으로 국제 표준이 되었으며, 계약서, 보고서, 이력서 등 공식 문서에 널리 사용됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '암호가 걸린 PDF도 합치거나 나눌 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '열기 암호가 걸린 PDF는 처리할 수 없습니다. PDF 뷰어에서 암호를 입력해 연 뒤 "PDF로 인쇄"로 암호 없는 사본을 만들어 올려 주세요. 모든 처리는 브라우저 안에서 이루어지며 파일이 서버로 전송되지 않습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'PDF 파일이란 무엇인가요?', a: 'PDF(Portable Document Format)는 Adobe가 1993년 개발한 전자 문서 형식입니다. 어떤 기기나 OS에서 열어도 레이아웃, 폰트, 이미지가 동일하게 보이는 것이 최대 장점입니다. 텍스트, 이미지, 벡터 그래픽, 양식, 하이퍼링크, 디지털 서명을 포함할 수 있습니다. 2008년 ISO 32000으로 국제 표준이 되었으며, 계약서, 보고서, 이력서 등 공식 문서에 널리 사용됩니다.' },
+    { q: '암호가 걸린 PDF도 합치거나 나눌 수 있나요?', a: '열기 암호가 걸린 PDF는 처리할 수 없습니다. PDF 뷰어에서 암호를 입력해 연 뒤 "PDF로 인쇄"로 암호 없는 사본을 만들어 올려 주세요. 모든 처리는 브라우저 안에서 이루어지며 파일이 서버로 전송되지 않습니다.' },
+  ]
 
   return (
     <>
@@ -68,14 +51,11 @@ export default function PdfToolsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PdfTools />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

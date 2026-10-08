@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Enneagram from '@/components/Enneagram'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '에니어그램 테스트 - 9가지 성격 유형 분석 | 툴허브',
@@ -28,28 +29,10 @@ export const metadata: Metadata = {
 }
 
 export default function EnneagramPage() {
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '에니어그램 테스트는 몇 문항인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '총 36문항(유형별 4문항)으로 구성되며, 5점 척도로 답변합니다. 검사 시간은 약 5~10분입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '에니어그램과 MBTI는 어떤 관계인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '에니어그램은 핵심 동기와 두려움을 기반으로 9가지 유형을 분석하고, MBTI는 인지 기능을 기반으로 16가지 유형을 분석합니다. 서로 보완적인 성격 분석 도구입니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '에니어그램 테스트는 몇 문항인가요?', a: '총 36문항(유형별 4문항)으로 구성되며, 5점 척도로 답변합니다. 검사 시간은 약 5~10분입니다.' },
+    { q: '에니어그램과 MBTI는 어떤 관계인가요?', a: '에니어그램은 핵심 동기와 두려움을 기반으로 9가지 유형을 분석하고, MBTI는 인지 기능을 기반으로 16가지 유형을 분석합니다. 서로 보완적인 성격 분석 도구입니다.' },
+  ]
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -74,11 +57,11 @@ export default function EnneagramPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Enneagram />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

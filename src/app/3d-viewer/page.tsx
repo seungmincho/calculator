@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Viewer3D from '@/components/Viewer3D'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '3D 뷰어 - 파일 변환·최적화 | 툴허브',
@@ -51,20 +52,9 @@ export default function Viewer3DPage() {
       '스크린샷 저장'
     ]
   }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '지원하는 3D 파일 형식은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '이 뷰어는 GLB, GLTF, OBJ, STL 형식을 지원합니다. GLB/GLTF: Khronos 표준 형식으로 웹 3D에서 가장 널리 사용됩니다. 텍스처, 애니메이션, 머티리얼을 포함할 수 있습니다. OBJ: 가장 오래된 범용 3D 형식으로 대부분의 3D 소프트웨어가 지원합니다. STL: 3D 프린팅에 주로 사용되는 형식으로 메쉬(표면) 정보만 포함합니다. Babylon.js 엔진으로 브라우저에서 실시간 렌더링합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '지원하는 3D 파일 형식은?', a: '이 뷰어는 GLB, GLTF, OBJ, STL 형식을 지원합니다. GLB/GLTF: Khronos 표준 형식으로 웹 3D에서 가장 널리 사용됩니다. 텍스처, 애니메이션, 머티리얼을 포함할 수 있습니다. OBJ: 가장 오래된 범용 3D 형식으로 대부분의 3D 소프트웨어가 지원합니다. STL: 3D 프린팅에 주로 사용되는 형식으로 메쉬(표면) 정보만 포함합니다. Babylon.js 엔진으로 브라우저에서 실시간 렌더링합니다.' },
+  ]
 
   return (
     <>
@@ -72,14 +62,11 @@ export default function Viewer3DPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <Viewer3D />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

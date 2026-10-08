@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import AverageCalculator from '@/components/AverageCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '가중평균 계산기 - 산술·기하·조화 평균 | 툴허브',
@@ -14,19 +15,19 @@ export const metadata: Metadata = {
 
 export default function AverageCalculatorPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '가중평균 계산기', description: '가중평균과 산술·기하·조화 평균, 기초 통계를 계산하는 도구.', url: 'https://toolhub.ai.kr/average-calculator/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['가중평균(값×가중치)', '산술평균', '기하평균', '조화평균', '분산·표준편차', '중앙값'] }
-  const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-    { '@type': 'Question', name: '가중평균은 어떻게 계산하나요?', acceptedAnswer: { '@type': 'Answer', text: '가중평균 = (각 값 × 가중치)의 합 ÷ 가중치의 합 입니다. 예를 들어 점수 90(가중치 3), 80(가중치 1)이면 (90×3 + 80×1) ÷ (3+1) = 350÷4 = 87.5가 됩니다. 이 계산기에 값과 가중치를 입력하면 자동으로 구해집니다.' } },
-    { '@type': 'Question', name: '산술평균과 가중평균의 차이는?', acceptedAnswer: { '@type': 'Answer', text: '산술평균은 모든 값을 동일하게 더해 개수로 나눕니다. 가중평균은 각 값에 가중치를 곱한 합을 가중치 합으로 나눠, 학점(과목별 이수학점)이나 투자 비중처럼 중요도가 다른 데이터에 적합합니다.' } },
-    { '@type': 'Question', name: '기하평균은 언제 사용하나요?', acceptedAnswer: { '@type': 'Answer', text: '기하평균은 성장률, 수익률 등 비율 데이터의 평균을 구할 때 사용합니다. 예를 들어 3년간 수익률이 10%, 20%, -5%라면 1.10, 1.20, 0.95처럼 \'1+수익률\' 배수로 입력해 기하평균(약 1.0784)을 구하고, 1을 빼면 연평균 수익률 약 7.84%가 됩니다.' } },
-  ]}
+  const faq = [
+    { q: '가중평균은 어떻게 계산하나요?', a: '가중평균 = (각 값 × 가중치)의 합 ÷ 가중치의 합 입니다. 예를 들어 점수 90(가중치 3), 80(가중치 1)이면 (90×3 + 80×1) ÷ (3+1) = 350÷4 = 87.5가 됩니다. 이 계산기에 값과 가중치를 입력하면 자동으로 구해집니다.' },
+    { q: '산술평균과 가중평균의 차이는?', a: '산술평균은 모든 값을 동일하게 더해 개수로 나눕니다. 가중평균은 각 값에 가중치를 곱한 합을 가중치 합으로 나눠, 학점(과목별 이수학점)이나 투자 비중처럼 중요도가 다른 데이터에 적합합니다.' },
+    { q: '기하평균은 언제 사용하나요?', a: '기하평균은 성장률, 수익률 등 비율 데이터의 평균을 구할 때 사용합니다. 예를 들어 3년간 수익률이 10%, 20%, -5%라면 1.10, 1.20, 0.95처럼 \'1+수익률\' 배수로 입력해 기하평균(약 1.0784)을 구하고, 1을 빼면 연평균 수익률 약 7.84%가 됩니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><AverageCalculator />  <div className="mt-8">
+    <ToolFaq items={faq} />
     <RelatedTools />
   </div>
 </I18nWrapper>

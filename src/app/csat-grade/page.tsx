@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import CsatGrade from '@/components/CsatGrade'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import csatGradeMessages from '../../../messages/generated/ko/ns/csatGrade.json'
 
 export const metadata: Metadata = {
   title: '수능 등급컷 계산기 - 과목별 등급 판정 | 툴허브',
@@ -46,33 +48,10 @@ export default function CsatGradePage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '수능 영어 등급컷은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '수능 영어는 절대평가로 1등급 90점 이상, 2등급 80점 이상, 3등급 70점 이상, 4등급 60점 이상입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '수능 등급은 어떻게 산출되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '상대평가 과목(국어, 수학, 탐구)은 표준점수 기준 상위 누적 비율로 등급을 산출합니다. 1등급 상위 4%, 2등급 상위 11%, 3등급 상위 23% 등입니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={csatGradeMessages.csatGrade.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

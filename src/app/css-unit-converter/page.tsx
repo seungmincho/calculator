@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import CssUnitConverter from '@/components/CssUnitConverter'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환 | 툴허브',
@@ -50,45 +51,20 @@ export default function CssUnitConverterPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'px를 rem으로 변환하는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'rem은 루트(<html>) 요소의 폰트 크기를 기준으로 합니다. 기본 루트 폰트 크기는 보통 16px입니다. 변환 공식: rem = px ÷ 루트 폰트 크기. 예를 들어 24px ÷ 16 = 1.5rem입니다. 반대로 rem → px는 rem × 루트 폰트 크기 = px입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'vw와 vh 단위는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'vw(viewport width)는 뷰포트 너비의 1%를 의미합니다. 100vw = 전체 화면 너비. vh(viewport height)는 뷰포트 높이의 1%입니다. 100vh = 전체 화면 높이. 반응형 웹 디자인에서 화면 크기에 비례하는 레이아웃을 만들 때 유용합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'rem과 em의 차이는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'rem은 루트(<html>) 요소의 폰트 크기를 기준으로 하여 항상 일정한 기준점을 가집니다. em은 현재 요소 또는 부모 요소의 폰트 크기를 기준으로 합니다. 요소가 중첩될수록 em 값이 누적되어 복잡해질 수 있습니다. 일반적으로 전역 스타일에는 rem, 컴포넌트 내부에는 em을 권장합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'px를 rem으로 변환하는 방법은?', a: 'rem은 루트(<html>) 요소의 폰트 크기를 기준으로 합니다. 기본 루트 폰트 크기는 보통 16px입니다. 변환 공식: rem = px ÷ 루트 폰트 크기. 예를 들어 24px ÷ 16 = 1.5rem입니다. 반대로 rem → px는 rem × 루트 폰트 크기 = px입니다.' },
+    { q: 'vw와 vh 단위는 무엇인가요?', a: 'vw(viewport width)는 뷰포트 너비의 1%를 의미합니다. 100vw = 전체 화면 너비. vh(viewport height)는 뷰포트 높이의 1%입니다. 100vh = 전체 화면 높이. 반응형 웹 디자인에서 화면 크기에 비례하는 레이아웃을 만들 때 유용합니다.' },
+    { q: 'rem과 em의 차이는?', a: 'rem은 루트(<html>) 요소의 폰트 크기를 기준으로 하여 항상 일정한 기준점을 가집니다. em은 현재 요소 또는 부모 요소의 폰트 크기를 기준으로 합니다. 요소가 중첩될수록 em 값이 누적되어 복잡해질 수 있습니다. 일반적으로 전역 스타일에는 rem, 컴포넌트 내부에는 em을 권장합니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <CssUnitConverter />
+            <ToolFaq items={faq} />
             <div className="mt-8">
 
               <RelatedTools />

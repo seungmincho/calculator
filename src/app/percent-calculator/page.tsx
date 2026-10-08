@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import PercentCalculator from '@/components/PercentCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '퍼센트 계산기 - 비율, 증감률, 할인율 계산 | 툴허브',
@@ -52,36 +53,11 @@ export default function PercentCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '퍼센트(%)는 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '기본 퍼센트 계산은 "A의 B% = A × B ÷ 100"입니다. 예를 들어 200의 15%는 200 × 15 ÷ 100 = 30입니다. "A는 B의 몇 %?"는 (A ÷ B) × 100으로 계산합니다. 50은 200의 25%입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '증감률은 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '증감률 = (변화 후 값 - 변화 전 값) ÷ 변화 전 값 × 100(%)입니다. 양수면 증가율, 음수면 감소율입니다. 예를 들어 100에서 130으로 변했다면 증가율은 (130-100)÷100×100 = 30%이고, 100에서 80으로 변했다면 감소율은 -20%입니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '할인을 중복 적용하면 어떻게 계산하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '할인을 중복 적용할 때는 단순히 할인율을 더하지 않고 순차적으로 곱합니다. 예를 들어 30% 할인 후 추가 20% 할인이면, 원가 × 0.7 × 0.8 = 원가 × 0.56이므로 실제 할인율은 44%입니다. 30% + 20% = 50%가 아님에 주의하세요.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '퍼센트(%)는 어떻게 계산하나요?', a: '기본 퍼센트 계산은 "A의 B% = A × B ÷ 100"입니다. 예를 들어 200의 15%는 200 × 15 ÷ 100 = 30입니다. "A는 B의 몇 %?"는 (A ÷ B) × 100으로 계산합니다. 50은 200의 25%입니다.' },
+    { q: '증감률은 어떻게 계산하나요?', a: '증감률 = (변화 후 값 - 변화 전 값) ÷ 변화 전 값 × 100(%)입니다. 양수면 증가율, 음수면 감소율입니다. 예를 들어 100에서 130으로 변했다면 증가율은 (130-100)÷100×100 = 30%이고, 100에서 80으로 변했다면 감소율은 -20%입니다.' },
+    { q: '할인을 중복 적용하면 어떻게 계산하나요?', a: '할인을 중복 적용할 때는 단순히 할인율을 더하지 않고 순차적으로 곱합니다. 예를 들어 30% 할인 후 추가 20% 할인이면, 원가 × 0.7 × 0.8 = 원가 × 0.56이므로 실제 할인율은 44%입니다. 30% + 20% = 50%가 아님에 주의하세요.' },
+  ]
 
   const howToJsonLd = {
     '@context': 'https://schema.org',
@@ -103,16 +79,13 @@ export default function PercentCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PercentCalculator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import CsDictionary from '@/components/CsDictionary'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'CS 용어 사전 - 200+ 컴퓨터 과학 핵심 용어 | 툴허브',
@@ -49,45 +50,20 @@ export default function CsDictionaryPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'CS 용어 사전에는 어떤 분야가 포함되어 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '자료구조, 알고리즘, 네트워크, 운영체제, 데이터베이스, 소프트웨어 아키텍처, 소프트웨어 공학, 보안, 리눅스, 웹 개발 총 10개 분야의 200+ 핵심 용어가 수록되어 있습니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'CS 용어를 효과적으로 학습하는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '난이도별 필터를 활용해 초급부터 시작하고, 학습 체크 기능으로 진행률을 추적하세요. 관련 용어를 따라가며 연결 학습하고, CS 퀴즈로 이해도를 테스트하면 효과적입니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '비전공자도 이해할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 모든 용어에 쉬운 비유와 실생활 예시를 포함하고 있어 비전공자도 쉽게 이해할 수 있습니다. 초급 난이도부터 차근차근 학습하세요.'
-        }
-      }
-    ]
-  }
+  const faq = [
+    { q: 'CS 용어 사전에는 어떤 분야가 포함되어 있나요?', a: '자료구조, 알고리즘, 네트워크, 운영체제, 데이터베이스, 소프트웨어 아키텍처, 소프트웨어 공학, 보안, 리눅스, 웹 개발 총 10개 분야의 200+ 핵심 용어가 수록되어 있습니다.' },
+    { q: 'CS 용어를 효과적으로 학습하는 방법은?', a: '난이도별 필터를 활용해 초급부터 시작하고, 학습 체크 기능으로 진행률을 추적하세요. 관련 용어를 따라가며 연결 학습하고, CS 퀴즈로 이해도를 테스트하면 효과적입니다.' },
+    { q: '비전공자도 이해할 수 있나요?', a: '네, 모든 용어에 쉬운 비유와 실생활 예시를 포함하고 있어 비전공자도 쉽게 이해할 수 있습니다. 초급 난이도부터 차근차근 학습하세요.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CsDictionary />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

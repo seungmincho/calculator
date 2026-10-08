@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import FaviconGenerator from '@/components/FaviconGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '파비콘 생성기 - 모든 사이즈 자동 생성 | 툴허브',
@@ -51,29 +52,18 @@ export default function FaviconGeneratorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '파비콘이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: "파비콘(favicon)은 웹사이트 브라우저 탭, 북마크, 검색 결과에 표시되는 작은 아이콘입니다. 'favorites icon'의 줄임말입니다. 필요한 크기: 16×16(브라우저 탭), 32×32(북마크), 180×180(Apple Touch Icon), 192×192/512×512(PWA). ICO 형식이 전통적이지만, 최신 브라우저는 PNG, SVG도 지원합니다. 브랜드 인지도와 사용자 경험에 중요한 요소입니다.",
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '파비콘이란 무엇인가요?', a: "파비콘(favicon)은 웹사이트 브라우저 탭, 북마크, 검색 결과에 표시되는 작은 아이콘입니다. 'favorites icon'의 줄임말입니다. 필요한 크기: 16×16(브라우저 탭), 32×32(북마크), 180×180(Apple Touch Icon), 192×192/512×512(PWA). ICO 형식이 전통적이지만, 최신 브라우저는 PNG, SVG도 지원합니다. 브랜드 인지도와 사용자 경험에 중요한 요소입니다." },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <FaviconGenerator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

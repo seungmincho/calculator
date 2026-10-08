@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import CrontabGenerator from '@/components/CrontabGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'Crontab 생성기 - 비주얼 크론 표현식 빌더 | 툴허브',
@@ -52,28 +53,10 @@ export default function CrontabGeneratorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'Crontab 표현식은 어떻게 만드나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Crontab 표현식은 5개 필드(분 시 일 월 요일)로 구성됩니다. 이 생성기에서는 각 필드를 비주얼 UI로 설정하면 표현식이 자동 생성됩니다. 매분(*), 특정 값(예: 30), 범위(예: 1-5), 인터벌(예: */10)을 지원합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Crontab에서 요일은 어떻게 지정하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Crontab 요일 필드는 0(일요일)부터 6(토요일)까지 숫자로 지정합니다. 7도 일요일로 인식됩니다. 예: 1=월요일, 5=금요일, 1-5=평일(월~금). 이 생성기에서는 버튼 클릭으로 요일을 선택할 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'Crontab 표현식은 어떻게 만드나요?', a: 'Crontab 표현식은 5개 필드(분 시 일 월 요일)로 구성됩니다. 이 생성기에서는 각 필드를 비주얼 UI로 설정하면 표현식이 자동 생성됩니다. 매분(*), 특정 값(예: 30), 범위(예: 1-5), 인터벌(예: */10)을 지원합니다.' },
+    { q: 'Crontab에서 요일은 어떻게 지정하나요?', a: 'Crontab 요일 필드는 0(일요일)부터 6(토요일)까지 숫자로 지정합니다. 7도 일요일로 인식됩니다. 예: 1=월요일, 5=금요일, 1-5=평일(월~금). 이 생성기에서는 버튼 클릭으로 요일을 선택할 수 있습니다.' },
+  ]
 
   return (
     <>
@@ -81,14 +64,11 @@ export default function CrontabGeneratorPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CrontabGenerator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

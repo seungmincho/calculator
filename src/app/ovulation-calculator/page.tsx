@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import OvulationCalculator from '@/components/OvulationCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '배란일 계산기 - 생리주기 가임기 예측 | 툴허브',
@@ -50,45 +51,20 @@ export default function OvulationCalculatorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '배란일은 언제인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '배란일은 일반적으로 다음 생리 시작일로부터 14일 전입니다. 생리주기가 28일인 경우 생리 시작일로부터 약 14일 후, 35일 주기라면 약 21일째에 배란이 일어납니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '가임기는 얼마나 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '가임기는 배란일 전 5일부터 배란일 후 1일까지 약 7일간이며, 임신 가능성이 가장 높은 날은 배란 2일 전~배란일입니다. 정자는 체내에서 최대 5일, 난자는 배란 후 12~24시간 생존합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '배란일 계산기로 피임할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '아니요. 달력으로 계산한 배란일은 추정치이고 실제 배란일은 주기마다 달라집니다. 주기 기반 방법은 일반적인 사용 시 연간 실패율이 최대 23%에 이르므로 피임 목적으로 쓰면 안 됩니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '배란일은 언제인가요?', a: '배란일은 일반적으로 다음 생리 시작일로부터 14일 전입니다. 생리주기가 28일인 경우 생리 시작일로부터 약 14일 후, 35일 주기라면 약 21일째에 배란이 일어납니다.' },
+    { q: '가임기는 얼마나 되나요?', a: '가임기는 배란일 전 5일부터 배란일 후 1일까지 약 7일간이며, 임신 가능성이 가장 높은 날은 배란 2일 전~배란일입니다. 정자는 체내에서 최대 5일, 난자는 배란 후 12~24시간 생존합니다.' },
+    { q: '배란일 계산기로 피임할 수 있나요?', a: '아니요. 달력으로 계산한 배란일은 추정치이고 실제 배란일은 주기마다 달라집니다. 주기 기반 방법은 일반적인 사용 시 연간 실패율이 최대 23%에 이르므로 피임 목적으로 쓰면 안 됩니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <OvulationCalculator />
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

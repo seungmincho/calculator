@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import ChessPageContent from '@/components/ChessPageContent'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '체스 (Chess) | AI 대전 | 툴허브',
@@ -55,28 +56,10 @@ export default function ChessPage() {
     },
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '체스의 기본 규칙은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '체스는 8x8 보드에서 16개씩의 말(킹, 퀸, 룩 2개, 비숍 2개, 나이트 2개, 폰 8개)로 플레이합니다. 백이 먼저 시작하며, 각 말은 고유한 이동 방식을 가집니다. 상대방의 킹을 체크메이트(피할 수 없는 공격)하면 승리합니다. 캐슬링, 앙파상, 폰 프로모션 등의 특수 규칙이 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '체스에서 캐슬링이란?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '캐슬링은 킹과 룩을 동시에 이동하는 특수 규칙입니다. 킹사이드 캐슬링(O-O)은 킹이 2칸 오른쪽으로, 룩이 킹 왼쪽으로 이동합니다. 퀸사이드 캐슬링(O-O-O)은 킹이 2칸 왼쪽으로, 룩이 킹 오른쪽으로 이동합니다. 킹과 룩 사이에 말이 없고, 둘 다 이동한 적이 없으며, 킹이 체크 상태가 아니고 이동 경로에 공격받는 칸이 없어야 합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '체스의 기본 규칙은?', a: '체스는 8x8 보드에서 16개씩의 말(킹, 퀸, 룩 2개, 비숍 2개, 나이트 2개, 폰 8개)로 플레이합니다. 백이 먼저 시작하며, 각 말은 고유한 이동 방식을 가집니다. 상대방의 킹을 체크메이트(피할 수 없는 공격)하면 승리합니다. 캐슬링, 앙파상, 폰 프로모션 등의 특수 규칙이 있습니다.' },
+    { q: '체스에서 캐슬링이란?', a: '캐슬링은 킹과 룩을 동시에 이동하는 특수 규칙입니다. 킹사이드 캐슬링(O-O)은 킹이 2칸 오른쪽으로, 룩이 킹 왼쪽으로 이동합니다. 퀸사이드 캐슬링(O-O-O)은 킹이 2칸 왼쪽으로, 룩이 킹 오른쪽으로 이동합니다. 킹과 룩 사이에 말이 없고, 둘 다 이동한 적이 없으며, 킹이 체크 상태가 아니고 이동 경로에 공격받는 칸이 없어야 합니다.' },
+  ]
 
   return (
     <>
@@ -84,13 +67,10 @@ export default function ChessPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
       <div className="min-h-screen py-8 px-4">
         <I18nWrapper>
           <ChessPageContent />
+          <ToolFaq items={faq} />
           <div className="mt-8">
 
             <RelatedTools />

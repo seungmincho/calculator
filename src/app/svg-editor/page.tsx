@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import SvgEditor from './SvgEditorClient'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'SVG 편집기 & 최적화 - SVG 코드 편집, 변환 | 툴허브',
@@ -49,29 +50,18 @@ export default function SvgEditorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'SVG란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'SVG(Scalable Vector Graphics)는 XML 기반의 2D 벡터 그래픽 형식입니다. 래스터 이미지(JPEG, PNG)와 달리 수학적 좌표로 도형을 정의하므로 확대해도 깨지지 않습니다. 주요 장점: ① 무한 확대 가능 (로고, 아이콘에 최적) ② CSS/JavaScript로 스타일링 및 애니메이션 가능 ③ 텍스트로 검색/접근성 우수 ④ 파일 크기가 작음 (특히 단순 도형). 단점: 사진 같은 복잡한 이미지에는 부적합합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'SVG란 무엇인가요?', a: 'SVG(Scalable Vector Graphics)는 XML 기반의 2D 벡터 그래픽 형식입니다. 래스터 이미지(JPEG, PNG)와 달리 수학적 좌표로 도형을 정의하므로 확대해도 깨지지 않습니다. 주요 장점: ① 무한 확대 가능 (로고, 아이콘에 최적) ② CSS/JavaScript로 스타일링 및 애니메이션 가능 ③ 텍스트로 검색/접근성 우수 ④ 파일 크기가 작음 (특히 단순 도형). 단점: 사진 같은 복잡한 이미지에는 부적합합니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <SvgEditor />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

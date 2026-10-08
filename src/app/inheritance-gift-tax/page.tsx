@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import InheritanceGiftTax from '@/components/InheritanceGiftTax'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import inheritanceGiftTaxMessages from '../../../messages/generated/ko/ns/inheritanceGiftTax.json'
 
 export const metadata: Metadata = {
   title: '상속세 증여세 계산기 - 2026년 세율, 공제한도, 간편 계산 | 툴허브',
@@ -26,21 +28,6 @@ export const metadata: Metadata = {
     canonical: 'https://toolhub.ai.kr/inheritance-gift-tax/',
   },
 }
-
-const faqData = [
-  {
-    question: '상속세 면제한도는 얼마인가요?',
-    answer: '배우자가 있는 경우 일괄공제 5억원 + 배우자 상속공제 최소 5억원 = 최소 10억원까지 상속세가 면제됩니다. 배우자가 없는 경우 일괄공제 5억원이 적용됩니다. 추가로 금융재산 공제(최대 2억), 장례비 공제(증빙 없어도 500만원, 최대 1,000만원 + 봉안시설 500만원) 등이 있습니다. 단, 배우자가 혼자 상속받으면 일괄공제를 받을 수 없고 기초공제 2억원과 인적공제만 적용됩니다.',
-  },
-  {
-    question: '부모님이 자녀에게 증여할 때 공제한도는?',
-    answer: '성인 자녀에게는 10년간 5천만원까지 증여세가 면제됩니다. 미성년 자녀는 2천만원까지입니다. 2024년부터 혼인·출산 시 추가로 1억원 공제가 가능합니다(직계존속 증여에 한함).',
-  },
-  {
-    question: '상속세와 증여세 세율은 같은가요?',
-    answer: '네, 동일한 5단계 누진세율이 적용됩니다. 1억 이하 10%, 1~5억 20%, 5~10억 30%, 10~30억 40%, 30억 초과 50%입니다. 차이점은 공제 항목과 한도가 다릅니다.',
-  },
-]
 
 export default function InheritanceGiftTaxPage() {
   const jsonLd = {
@@ -67,20 +54,10 @@ export default function InheritanceGiftTaxPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(faq => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-    })),
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={inheritanceGiftTaxMessages.inheritanceGiftTax.u.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import MorseCode from '@/components/MorseCode'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import morseCodeMessages from '../../../messages/generated/ko/ns/morseCode.json'
 
 export const metadata: Metadata = {
   title: '모스부호 변환기 - 텍스트↔모스부호 변환 | 툴허브',
@@ -14,32 +16,10 @@ export const metadata: Metadata = {
 
 export default function MorseCodePage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '모스부호 변환기', description: '텍스트↔모스부호 변환', url: 'https://toolhub.ai.kr/morse-code/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['영문·한글(SKATS) 모스부호 변환', '소리 재생·WPM·Farnsworth 속도 조절', 'WAV 다운로드', '탭 키 입력', '코흐 방식 듣기 연습', '모스부호 표', 'SOS'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '모스 부호란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '모스 부호는 1830년대 후반 새뮤얼 모스와 앨프리드 베일이 전신용으로 만든 부호에서 출발한 통신 부호로, 짧은 신호(·, dit)와 긴 신호(-, dah)의 조합으로 문자를 표현합니다. 지금 쓰는 국제 모스 부호는 1865년 국제전신회의에서 표준으로 정해졌습니다. 예: A는 ·-, B는 -···, SOS는 ···---···. 원래 전신 통신용이었고, 현재는 아마추어 무선, 항공 무선표지의 식별 부호, 긴급 신호 등에 쓰입니다. 선박 조난 통신은 1999년 GMDSS 전환 이후 위성·디지털 방식으로 바뀌었습니다. 국제 모스 부호는 알파벳, 숫자, 일부 구두점을 포함하며, 한글 모스 부호도 별도로 존재합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'SOS 신호의 유래는?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'SOS(···---···)는 1906년 국제 무선 전신 협약에서 채택된 국제 조난 신호입니다. \'Save Our Souls\'의 약자라고 알려져 있지만 실제로는 약자가 아니며, 모스 부호로 가장 쉽게 송수신할 수 있는 패턴이라 선택되었습니다. 타이타닉호 침몰(1912) 때 사용되어 유명해졌으며, 현재도 산악, 해상 조난 시 손전등이나 소리로 SOS 패턴을 보낼 수 있습니다.',
-        },
-      },
-    ],
-  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={morseCodeMessages.morseCode.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><MorseCode />  <div className="mt-8">

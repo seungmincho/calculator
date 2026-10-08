@@ -3,6 +3,7 @@ import DevCheatsheet from '@/components/DevCheatsheet'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '개발자 치트시트 - Git·Linux·Docker·SQL 명령어 모음 | 툴허브',
@@ -42,33 +43,14 @@ export default function DevCheatsheetPage() {
     featureList: ['Git 명령어 35개', 'Linux 명령어 40개', 'Docker 명령어 25개', 'SQL 쿼리 30개', 'Vim 단축키 25개', 'HTTP 상태코드', 'CSS Flexbox/Grid', '정규표현식 패턴']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '어떤 명령어가 포함되어 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Git, Linux, Docker, SQL, Vim, HTTP 상태코드, CSS Flexbox/Grid, 정규표현식 총 8개 분야의 220개 명령어가 수록되어 있습니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '명령어를 바로 복사할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 각 명령어 옆의 복사 버튼을 클릭하면 클립보드에 바로 복사됩니다. 자주 쓰는 명령어는 북마크하여 빠르게 찾을 수 있습니다.'
-        }
-      }
-    ]
-  }
+  const faq = [
+    { q: '어떤 명령어가 포함되어 있나요?', a: 'Git, Linux, Docker, SQL, Vim, HTTP 상태코드, CSS Flexbox/Grid, 정규표현식 총 8개 분야의 220개 명령어가 수록되어 있습니다.' },
+    { q: '명령어를 바로 복사할 수 있나요?', a: '네, 각 명령어 옆의 복사 버튼을 클릭하면 클립보드에 바로 복사됩니다. 자주 쓰는 명령어는 북마크하여 빠르게 찾을 수 있습니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
@@ -76,6 +58,7 @@ export default function DevCheatsheetPage() {
               <div className="mt-8">
                 <GuideSection namespace="devCheatsheet" />
               </div>
+              <ToolFaq items={faq} />
               <div className="mt-8">
                 <RelatedTools />
               </div>

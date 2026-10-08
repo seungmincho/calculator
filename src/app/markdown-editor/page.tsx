@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import markdownEditorMessages from '../../../messages/generated/ko/ns/markdownEditor.json'
 
 export const metadata: Metadata = {
   title: '마크다운 에디터 - 실시간 미리보기 마크다운 편집기 | 툴허브',
@@ -53,33 +55,10 @@ export default function MarkdownEditorPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '마크다운 에디터로 작성한 내용을 어떻게 저장하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '하단의 "MD 다운로드" 버튼을 클릭하면 작성한 마크다운을 .md 파일로 저장할 수 있습니다. 또한 "MD 복사" 버튼으로 클립보드에 마크다운 원문을 복사하거나, "HTML 복사" 버튼으로 변환된 HTML을 복사할 수 있습니다. GitHub README, 블로그, 노션 등 다양한 플랫폼에 바로 붙여넣기 가능합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '마크다운 에디터에서 표(Table)는 어떻게 작성하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '툴바의 "표" 버튼을 클릭하면 3x3 표 템플릿이 자동으로 삽입됩니다. 직접 작성할 때는 | 헤더1 | 헤더2 | 형식으로 헤더 행을 쓰고, 다음 줄에 |---|---| 형식의 구분선을 추가한 뒤 데이터 행을 작성합니다. 콜론(:)으로 정렬을 지정할 수 있습니다: |:---|:---:|----|는 각각 왼쪽, 가운데, 오른쪽 정렬입니다.',
-        },
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={markdownEditorMessages.markdownEditor.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>

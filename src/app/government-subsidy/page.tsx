@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import GovernmentSubsidyCalculator from '@/components/GovernmentSubsidyCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '정부지원금 계산기 - 2026년 12개 사업 간이 확인 | 툴허브',
@@ -75,46 +76,21 @@ export default function GovernmentSubsidyPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '2026년 중위소득은 얼마인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 기준 중위소득은 월 1인 2,564,238원, 2인 4,199,292원, 3인 5,359,036원, 4인 6,494,738원, 5인 7,556,719원, 6인 8,555,952원입니다. 생계·의료·주거·교육급여는 각각 소득인정액 중위소득 32%·40%·48%·50%와 추가 자격 요건을 확인합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '근로장려금(EITC) 자격 요건은 어떻게 되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '2026년 정기신청은 2025년 총소득이 단독가구 2,200만원, 홑벌이 3,200만원, 맞벌이 4,400만원 미만이고 기준일 재산이 2.4억원 미만인 경우 등 요건을 확인합니다. 연 최대 단독 165만원·홑벌이 285만원·맞벌이 330만원이며 재산 1.7억원 이상은 산정액의 50%만 지급합니다. 가구 유형·근로소득·총급여액·기준일 등을 별도로 확인해야 합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '여러 정부지원금을 동시에 받을 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '사업마다 중복 지원·소득 반영·차감 규칙이 다릅니다. 현금, 장려금, 교육 바우처, 의료지원, 저축 적립금을 단순 합산하면 실제 수령액으로 오해할 수 있어 이 도구는 총 지원금을 표시하지 않습니다. 각 사업의 공식 안내에서 개별 확인해야 합니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '2026년 중위소득은 얼마인가요?', a: '2026년 기준 중위소득은 월 1인 2,564,238원, 2인 4,199,292원, 3인 5,359,036원, 4인 6,494,738원, 5인 7,556,719원, 6인 8,555,952원입니다. 생계·의료·주거·교육급여는 각각 소득인정액 중위소득 32%·40%·48%·50%와 추가 자격 요건을 확인합니다.' },
+    { q: '근로장려금(EITC) 자격 요건은 어떻게 되나요?', a: '2026년 정기신청은 2025년 총소득이 단독가구 2,200만원, 홑벌이 3,200만원, 맞벌이 4,400만원 미만이고 기준일 재산이 2.4억원 미만인 경우 등 요건을 확인합니다. 연 최대 단독 165만원·홑벌이 285만원·맞벌이 330만원이며 재산 1.7억원 이상은 산정액의 50%만 지급합니다. 가구 유형·근로소득·총급여액·기준일 등을 별도로 확인해야 합니다.' },
+    { q: '여러 정부지원금을 동시에 받을 수 있나요?', a: '사업마다 중복 지원·소득 반영·차감 규칙이 다릅니다. 현금, 장려금, 교육 바우처, 의료지원, 저축 적립금을 단순 합산하면 실제 수령액으로 오해할 수 있어 이 도구는 총 지원금을 표시하지 않습니다. 각 사업의 공식 안내에서 개별 확인해야 합니다.' },
+  ]
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <GovernmentSubsidyCalculator />
+              <ToolFaq items={faq} />
             </I18nWrapper>
         </div>
       </div>

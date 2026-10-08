@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import GitVisualizer from '@/components/GitVisualizer'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'Git 시각화 - branch, merge, rebase 인터랙티브 학습 | 툴허브',
@@ -53,46 +54,17 @@ export default function GitVisualizerPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'git merge와 git rebase의 차이점은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'merge는 두 브랜치의 변경사항을 합치면서 새로운 병합 커밋을 생성합니다. 히스토리가 그대로 보존됩니다. rebase는 현재 브랜치의 커밋들을 대상 브랜치 끝으로 옮겨 히스토리를 깔끔한 직선으로 만듭니다. 협업 시 이미 공유된 커밋에는 rebase를 사용하면 안 됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'git cherry-pick은 언제 사용하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'cherry-pick은 다른 브랜치의 특정 커밋 하나만 현재 브랜치에 복사하고 싶을 때 사용합니다. 예를 들어 feature 브랜치의 버그 수정 커밋을 main에 먼저 적용하고 싶을 때 유용합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'git reset은 위험한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'git reset은 브랜치 포인터를 이전 커밋으로 되돌립니다. 로컬에서는 안전하지만, 이미 push한 커밋을 reset하면 협업에 문제가 생길 수 있습니다. 이 시각화 도구에서 안전하게 연습해보세요.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: 'git merge와 git rebase의 차이점은 무엇인가요?', a: 'merge는 두 브랜치의 변경사항을 합치면서 새로운 병합 커밋을 생성합니다. 히스토리가 그대로 보존됩니다. rebase는 현재 브랜치의 커밋들을 대상 브랜치 끝으로 옮겨 히스토리를 깔끔한 직선으로 만듭니다. 협업 시 이미 공유된 커밋에는 rebase를 사용하면 안 됩니다.' },
+    { q: 'git cherry-pick은 언제 사용하나요?', a: 'cherry-pick은 다른 브랜치의 특정 커밋 하나만 현재 브랜치에 복사하고 싶을 때 사용합니다. 예를 들어 feature 브랜치의 버그 수정 커밋을 main에 먼저 적용하고 싶을 때 유용합니다.' },
+    { q: 'git reset은 위험한가요?', a: 'git reset은 브랜치 포인터를 이전 커밋으로 되돌립니다. 로컬에서는 안전하지만, 이미 push한 커밋을 reset하면 협업에 문제가 생길 수 있습니다. 이 시각화 도구에서 안전하게 연습해보세요.' },
+  ]
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <div className="min-h-screen py-8">
@@ -102,6 +74,7 @@ export default function GitVisualizerPage() {
             <GitVisualizer />
           </I18nWrapper>
 
+          <ToolFaq items={faq} />
           <div className="mt-8">
             <RelatedTools />
           </div>

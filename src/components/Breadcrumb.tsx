@@ -38,29 +38,17 @@ export default function Breadcrumb() {
   // Don't render on home page or if tool not found
   if (!currentTool || !categoryKey || pathname === '/') return null
 
+  // /games 처럼 도구 자체가 카테고리 허브면 가운데 단계를 빼서 같은 URL 이 두 번 나오지 않게 한다
+  const hubHref = categoryHubs[categoryKey] === currentTool.href ? null : categoryHubs[categoryKey]
+  const crumbs = [
+    { name: t('header.title'), url: 'https://toolhub.ai.kr/' },
+    ...(hubHref ? [{ name: categoryLabel, url: `https://toolhub.ai.kr${hubHref}/` }] : []),
+    { name: currentTool.label, url: `https://toolhub.ai.kr${currentTool.href}/` },
+  ]
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: t('header.title'),
-        item: 'https://toolhub.ai.kr',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: categoryLabel,
-        item: `https://toolhub.ai.kr${categoryHubs[categoryKey]}/`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: currentTool.label,
-        item: `https://toolhub.ai.kr${currentTool.href}`,
-      },
-    ],
+    itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })),
   }
 
   return (
@@ -83,17 +71,21 @@ export default function Breadcrumb() {
               <span className="hidden sm:inline">{t('header.title')}</span>
             </Link>
           </li>
-          <li aria-hidden="true">
-            <ChevronRight className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" />
-          </li>
-          <li>
-            <Link prefetch={false}
-              href={categoryHubs[categoryKey]}
-              className="text-faint hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            >
-              {categoryLabel}
-            </Link>
-          </li>
+          {hubHref && (
+            <>
+              <li aria-hidden="true">
+                <ChevronRight className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" />
+              </li>
+              <li>
+                <Link prefetch={false}
+                  href={hubHref}
+                  className="text-faint hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  {categoryLabel}
+                </Link>
+              </li>
+            </>
+          )}
           <li aria-hidden="true">
             <ChevronRight className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" />
           </li>

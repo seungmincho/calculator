@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import ExchangeRateCalculator from '@/components/ExchangeRateCalculator'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
@@ -58,36 +59,11 @@ export default function ExchangeCalculatorPage() {
     ]
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '환전할 때 매매기준율과 현찰매도율의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '매매기준율은 은행 간 거래 기준 환율이고, 현찰매도율은 고객에게 외화를 팔 때 적용하는 환율입니다. 현찰매도율에는 환전 수수료(스프레드)가 포함되어(주요 통화 기준 대략 1.75~2%, 통화별로 다름) 있어 매매기준율보다 높습니다. 송금 시에는 전신환매도율이 적용되어 수수료가 더 낮습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '환전 수수료를 줄이는 방법이 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '은행 앱·인터넷뱅킹 환전 신청, 환율 우대쿠폰, 거래실적 우대 등으로 스프레드의 일부(많게는 90% 이상)를 깎을 수 있습니다. 우대율은 은행·통화·시기마다 다르니 이 계산기의 우대율을 바꿔 가며 절약액을 비교해 보세요. 공항에서 급하게 환전하면 우대를 받기 어려운 경우가 많아 미리 신청해 두는 편이 유리합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '환율이 높으면 해외여행이 불리한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 원화 약세(환율 상승)일 때는 같은 달러를 사려면 더 많은 원화가 필요하므로 해외여행 비용이 증가합니다. 반대로 수출 기업이나 해외에서 돈을 버는 경우에는 유리합니다. 환율 변동이 크면 분할 환전으로 위험을 줄일 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '환전할 때 매매기준율과 현찰매도율의 차이는 무엇인가요?', a: '매매기준율은 은행 간 거래 기준 환율이고, 현찰매도율은 고객에게 외화를 팔 때 적용하는 환율입니다. 현찰매도율에는 환전 수수료(스프레드)가 포함되어(주요 통화 기준 대략 1.75~2%, 통화별로 다름) 있어 매매기준율보다 높습니다. 송금 시에는 전신환매도율이 적용되어 수수료가 더 낮습니다.' },
+    { q: '환전 수수료를 줄이는 방법이 있나요?', a: '은행 앱·인터넷뱅킹 환전 신청, 환율 우대쿠폰, 거래실적 우대 등으로 스프레드의 일부(많게는 90% 이상)를 깎을 수 있습니다. 우대율은 은행·통화·시기마다 다르니 이 계산기의 우대율을 바꿔 가며 절약액을 비교해 보세요. 공항에서 급하게 환전하면 우대를 받기 어려운 경우가 많아 미리 신청해 두는 편이 유리합니다.' },
+    { q: '환율이 높으면 해외여행이 불리한가요?', a: '네, 원화 약세(환율 상승)일 때는 같은 달러를 사려면 더 많은 원화가 필요하므로 해외여행 비용이 증가합니다. 반대로 수출 기업이나 해외에서 돈을 버는 경우에는 유리합니다. 환율 변동이 크면 분할 환전으로 위험을 줄일 수 있습니다.' },
+  ]
 
   const howToJsonLd = {
     '@context': 'https://schema.org',
@@ -109,14 +85,11 @@ export default function ExchangeCalculatorPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <I18nWrapper>
         <ExchangeRateCalculator />
+        <ToolFaq items={faq} />
         <div className="mt-8">
 
           <RelatedTools />

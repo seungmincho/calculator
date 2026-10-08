@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import ImageResizerComponent from '@/components/ImageResizer';
 import RelatedTools from '@/components/RelatedTools'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import imageResizerMessages from '../../../messages/generated/ko/ns/imageResizer.json'
 
 export const metadata: Metadata = {
   title: '이미지 리사이저 - 크기 조정 | 툴허브',
@@ -41,49 +43,10 @@ export default function ImageResizerPage() {
     featureList: ['여러 장 한꺼번에', '픽셀·퍼센트·긴 변 기준', '목표 용량(KB 이하) 맞추기', '증명사진·여권·SNS 프리셋', '늘이기·맞춤·채우기', 'JPG·PNG·WebP', 'EXIF 회전 반영·메타데이터 제거', 'ZIP 다운로드', '서버 업로드 없음']
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '이미지 리사이즈 시 화질 손실을 최소화하는 방법은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '① 원본보다 크게 확대하지 않기 (업스케일링은 항상 화질 저하) ② 비율을 유지한 채 축소하기 ③ JPEG의 경우 품질 85% 이상 유지 ④ PNG는 무손실이므로 투명 배경이나 텍스트가 있는 이미지에 적합 ⑤ WebP는 같은 화질에서 보통 JPEG보다 파일이 작습니다. 큰 이미지를 작게 축소하는 것은 화질 손실이 거의 없습니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '사진을 500KB 이하로 줄이려면?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '최대 용량 칸에 500을 입력하고 JPG로 저장하세요. 크기를 자유롭게 정한 경우 화질과 크기를 함께 낮춰 맞추고, 증명사진처럼 크기가 정해진 경우 화질만 낮춰 맞춥니다.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: '증명사진은 몇 픽셀로 만들어야 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '300dpi 기준으로 3×4cm 증명사진은 354×472px, 3.5×4.5cm 여권 사진은 413×531px입니다. 프리셋을 고르면 가운데를 기준으로 비율에 맞게 잘라 줍니다. 제출처마다 요구 규격이 다를 수 있으니 공고를 확인하세요.'
-        }
-      },
-      {
-        '@type': 'Question',
-        name: 'JPEG, PNG, WebP 포맷의 차이점은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'JPEG: 손실 압축, 사진에 최적, 투명 배경 불가, 파일 크기 작음. PNG: 무손실 압축, 투명 배경 지원, 텍스트/로고에 적합, 파일 크기 큼. WebP: 구글이 개발, 손실/무손실 모두 지원, 투명 배경 가능, 같은 화질이면 보통 JPEG보다 작습니다.'
-        }
-      },
-    ],
-  }
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <FaqJsonLd items={imageResizerMessages.imageResizer.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>

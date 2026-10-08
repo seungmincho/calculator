@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import MonitorTest from '@/components/MonitorTest'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '모니터 테스트 - 불량화소, 명암비, 색상, 감마, 번인 검사 | 툴허브',
@@ -65,36 +66,11 @@ export default function MonitorTestPage() {
     ],
   }
 
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '모니터 테스트로 확인할 수 있는 것은?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '① 데드픽셀: 검정/흰색/빨강/초록/파랑 등 전체 화면으로 불량 픽셀 확인 ② 밴딩: 색상 그라디언트에서 계단 같은 줄무늬 확인 ③ 명암비(Contrast): 검정과 흰색 경계에서 디테일 확인 ④ 백라이트 균일성: 전체 회색 화면에서 밝기 불균일 확인 ⑤ 응답 속도: 움직이는 물체로 잔상 확인 ⑥ 시야각: 다른 각도에서 색상 변화 확인. 새 모니터 구매 후 불량 교환 기간 내 테스트를 권장합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '중고 모니터·폰을 살 때 무엇을 확인해야 하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '빠른 점검을 실행해 데드픽셀·빛샘·균일도·밴딩·선명도·잔상·번인·시야각을 차례로 확인하세요. OLED 기기는 번인, LCD 모니터는 빛샘과 균일도를 특히 꼼꼼히 보고, 주사율이 광고 사양만큼 나오는지도 확인하세요. 결과는 이미지나 링크로 저장해 둘 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '주사율(Hz) 측정은 정확한가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '브라우저의 화면 갱신 간격(requestAnimationFrame)을 측정해 60·120·144·165Hz 등 흔한 값으로 맞춥니다. 대부분 정확하지만 절전 모드, 배터리 모드, 다른 모니터로 창 이동, 가변 주사율(VRR) 설정에 따라 낮게 나올 수 있습니다.',
-        },
-      },
-    ],
-  }
+  const faq = [
+    { q: '모니터 테스트로 확인할 수 있는 것은?', a: '① 데드픽셀: 검정/흰색/빨강/초록/파랑 등 전체 화면으로 불량 픽셀 확인 ② 밴딩: 색상 그라디언트에서 계단 같은 줄무늬 확인 ③ 명암비(Contrast): 검정과 흰색 경계에서 디테일 확인 ④ 백라이트 균일성: 전체 회색 화면에서 밝기 불균일 확인 ⑤ 응답 속도: 움직이는 물체로 잔상 확인 ⑥ 시야각: 다른 각도에서 색상 변화 확인. 새 모니터 구매 후 불량 교환 기간 내 테스트를 권장합니다.' },
+    { q: '중고 모니터·폰을 살 때 무엇을 확인해야 하나요?', a: '빠른 점검을 실행해 데드픽셀·빛샘·균일도·밴딩·선명도·잔상·번인·시야각을 차례로 확인하세요. OLED 기기는 번인, LCD 모니터는 빛샘과 균일도를 특히 꼼꼼히 보고, 주사율이 광고 사양만큼 나오는지도 확인하세요. 결과는 이미지나 링크로 저장해 둘 수 있습니다.' },
+    { q: '주사율(Hz) 측정은 정확한가요?', a: '브라우저의 화면 갱신 간격(requestAnimationFrame)을 측정해 60·120·144·165Hz 등 흔한 값으로 맞춥니다. 대부분 정확하지만 절전 모드, 배터리 모드, 다른 모니터로 창 이동, 가변 주사율(VRR) 설정에 따라 낮게 나올 수 있습니다.' },
+  ]
 
   return (
     <>
@@ -102,11 +78,11 @@ export default function MonitorTestPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <MonitorTest />
+              <ToolFaq items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />

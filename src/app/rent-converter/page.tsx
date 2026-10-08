@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import RentConverter from '@/components/RentConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
+import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '전세 월세 전환 계산기 - 전월세 전환율 계산 | 툴허브',
@@ -14,22 +15,18 @@ export const metadata: Metadata = {
 
 export default function RentConverterPage() {
   const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '전세 월세 전환 계산기', description: '전세↔월세 전환율 기준 변환', url: 'https://toolhub.ai.kr/rent-converter/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['전세→월세 변환', '월세→전세 변환', '법정 전환율 상한 계산', '보증금 조정', '전세·반전세·월세 총비용 비교', '갱신 5% 상한 계산'] }
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      { '@type': 'Question', name: '전월세 전환율이란 무엇인가요?', acceptedAnswer: { '@type': 'Answer', text: '전월세 전환율은 전세 보증금을 월세로, 또는 월세를 전세금으로 환산할 때 적용하는 비율입니다. 법정 상한은 연 10%와 \"한국은행 기준금리 + 2%p\" 중 낮은 비율입니다(주택임대차보호법 시행령 제9조). 2026년 8월 27일 기준금리 3.00% 기준 상한은 5.0%이며, 전세 1억 원을 월세로 바꾸면 월 약 41.7만 원(1억 × 5% ÷ 12)입니다.' } },
-      { '@type': 'Question', name: '전세와 월세 중 어떤 것이 유리한가요?', acceptedAnswer: { '@type': 'Answer', text: '전세는 보증금 전액을 맡기므로 월 주거비가 없고 퇴거 시 돌려받지만, 전세 사기 위험과 기회비용이 있습니다. 월세는 매월 고정 비용이 발생하지만 목돈 부담이 적습니다. 보증금으로 묶일 돈의 운용 수익률(또는 전세대출 금리)이 전환율보다 높으면 월세가, 낮으면 전세가 유리할 수 있습니다. 총급여 8,000만 원 이하 무주택 세대주는 월세의 15~17%(연 1,000만 원 한도)를 세액공제 받을 수 있어, 전세대출 금리가 높을수록 월세가 유리해집니다.' } },
-      { '@type': 'Question', name: '적정 전월세 전환율은 어떻게 확인하나요?', acceptedAnswer: { '@type': 'Answer', text: '지역·주택 유형별 시장 전환율은 한국부동산원 부동산통계정보시스템(R-ONE)에서 매월 공개합니다. 법정 상한(연 10%와 기준금리 + 2%p 중 낮은 비율)을 넘는 전환은 계약 기간 중·갱신 시 허용되지 않으며, 초과 지급한 월세는 반환을 청구할 수 있습니다.' } },
-    ],
-  }
+  const faq = [
+    { q: '전월세 전환율이란 무엇인가요?', a: '전월세 전환율은 전세 보증금을 월세로, 또는 월세를 전세금으로 환산할 때 적용하는 비율입니다. 법정 상한은 연 10%와 \"한국은행 기준금리 + 2%p\" 중 낮은 비율입니다(주택임대차보호법 시행령 제9조). 2026년 8월 27일 기준금리 3.00% 기준 상한은 5.0%이며, 전세 1억 원을 월세로 바꾸면 월 약 41.7만 원(1억 × 5% ÷ 12)입니다.' },
+    { q: '전세와 월세 중 어떤 것이 유리한가요?', a: '전세는 보증금 전액을 맡기므로 월 주거비가 없고 퇴거 시 돌려받지만, 전세 사기 위험과 기회비용이 있습니다. 월세는 매월 고정 비용이 발생하지만 목돈 부담이 적습니다. 보증금으로 묶일 돈의 운용 수익률(또는 전세대출 금리)이 전환율보다 높으면 월세가, 낮으면 전세가 유리할 수 있습니다. 총급여 8,000만 원 이하 무주택 세대주는 월세의 15~17%(연 1,000만 원 한도)를 세액공제 받을 수 있어, 전세대출 금리가 높을수록 월세가 유리해집니다.' },
+    { q: '적정 전월세 전환율은 어떻게 확인하나요?', a: '지역·주택 유형별 시장 전환율은 한국부동산원 부동산통계정보시스템(R-ONE)에서 매월 공개합니다. 법정 상한(연 10%와 기준금리 + 2%p 중 낮은 비율)을 넘는 전환은 계약 기간 중·갱신 시 허용되지 않으며, 초과 지급한 월세는 반환을 청구할 수 있습니다.' },
+  ]
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper><RentConverter />  <div className="mt-8">
+    <ToolFaq items={faq} />
     <RelatedTools />
   </div>
 </I18nWrapper>
