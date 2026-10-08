@@ -97,7 +97,8 @@ export default function CardDeductionCalculator() {
 
   const card = {
     tool: t('title'),
-    label: t('share.label', { salary: man(salary), salaryM: mil(salary) }),
+    // 1~9월 입력(기본)은 연간 추정 — 화면 라벨처럼 밝힘
+    label: t(ytd ? 'share.labelYtd' : 'share.label', { salary: man(salary), salaryM: mil(salary) }),
     headline: t('share.headline', { amount: won(r.total) }),
     sub: saving > 0 ? t('share.sub', { saving: won(saving) }) : t('share.subZero'),
     rows: [

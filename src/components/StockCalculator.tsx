@@ -445,7 +445,7 @@ export default function StockCalculator() {
               <input type="checkbox" checked={hideAmt} onChange={e => setHideAmt(e.target.checked)} className="accent-[var(--primary)] w-4 h-4" />
               {t('share.hide')}
             </label>
-            <ShareResult card={card} text={`${card.label} ${card.headline}`} fileName="toolhub-stock" />
+            {(valid || tab === 'avg' || tab === 'us') && <ShareResult card={card} text={`${card.label} ${card.headline}`} fileName="toolhub-stock" />}
           </div>
         </div>
       </div>

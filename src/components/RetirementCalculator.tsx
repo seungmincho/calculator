@@ -245,7 +245,8 @@ export default function RetirementCalculator() {
                     rows: [
                       { label: t('rc.row.pay'), value: `${won(r.pay)}${W}` },
                       { label: t('rc.row.totalTax'), value: `${won(r.totalTax)}${W}` },
-                      { label: t('rc.row.daily'), value: `${won(Math.floor(r.dailyWage))}${W}` },
+                      // 화면처럼: 통상임금을 썼으면 그 라벨, 소수 둘째 자리까지
+                      { label: r.usedOrdinary ? t('rc.pay.ordinaryDaily') : t('rc.row.daily'), value: `${r.dailyWage.toLocaleString('ko-KR', { maximumFractionDigits: 2 })}${W}` },
                       { label: t('rc.row.irp'), value: `${won(r.irp70)}${W}` },
                     ],
                   }}

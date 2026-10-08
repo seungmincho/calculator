@@ -247,7 +247,7 @@ export default function AnnualCarTax() {
                 rows: [
                   { label: t('u.h1'), value: `${won(r.h1.total)}${t('u.won')}` },
                   { label: t('u.h2'), value: `${won(r.h2.total)}${t('u.won')}` },
-                  { label: t('u.row.edu'), value: `${won(r.edu)}${t('u.won')}` },
+                  { label: t('u.row.edu'), value: r.hasEdu ? `${won(r.edu)}${t('u.won')}` : t('u.row.noEdu') },
                   { label: t('u.share.lump'), value: `${won(jan.total)}${t('u.won')} (${minus(jan.saved)})` },
                 ],
               }}

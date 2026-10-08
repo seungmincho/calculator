@@ -133,7 +133,7 @@ export default function LunarConverter() {
     : ''
 
   const tableText = anniversaries
-    ? anniversaries.rows.map(r => `${lunarLabel({ year: r.lunarYear, month: pair!.lunar.month, day: pair!.lunar.day, isLeap: pair!.lunar.isLeap && !r.leapFallback })} → ${fmt(r.solar)} (${wd(r.solar)})`).join('\n')
+    ? anniversaries.rows.map(r => `${lunarLabel({ year: r.lunarYear, month: pair!.lunar.month, day: pair!.lunar.day, isLeap: pair!.lunar.isLeap && !r.leapFallback })} → ${fmt(r.solar)} (${wd(r.solar)})${r.dayFallback ? ` · ${t('yearly.dayFallback')}` : ''}`).join('\n')
     : ''
 
   const selectCls = 'ui-field px-3 py-2 w-full'

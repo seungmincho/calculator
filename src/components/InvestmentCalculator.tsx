@@ -71,8 +71,6 @@ export default function InvestmentCalculator() {
     if (man) return `${sign}${man.toLocaleString('ko-KR')}${t('man')}${t('won')}`
     return `${sign}${won(a)}`
   }
-  // 공유 문구용 대략값: 2.55억 → "2.6억"
-  const approx = (v: number) => v >= 1e8 ? `${(v / 1e8).toFixed(1).replace(/\.0$/, '')}${t('eok')}` : short(v)
   const pct = (v: number) => `${v.toFixed(1)}%`
 
   const plan: PlanInput = {
@@ -250,14 +248,14 @@ export default function InvestmentCalculator() {
                   card={{
                     tool: t('title'),
                     label: heroLabel,
-                    headline: t('share.headline', { v: approx(calc.last.value) }),
+                    headline: t('share.headline', { v: short(calc.last.value) }),
                     sub: t('hero.after', { y: s.y }),
                     rows: [
                       { label: t('totalInvested'), value: short(calc.last.principal) },
                       { label: t('profit'), value: short(calc.last.profit) },
                     ],
                   }}
-                  text={`${planText} → ${t('share.headline', { v: approx(calc.last.value) })} (${t('hero.rate', { r: s.r })})`}
+                  text={`${planText} → ${t('share.headline', { v: short(calc.last.value) })} (${t('hero.rate', { r: s.r })})`}
                   fileName="toolhub-investment"
                 />
               </>

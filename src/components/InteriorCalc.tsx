@@ -208,16 +208,17 @@ export default function InteriorCalc() {
         </dl>
       </div>
 
-      <ShareResult
+      {res.lines.length > 0 && <ShareResult
         card={{
           tool: t('title'),
           label: t('share.label', { n: rooms.length, py: floorPy }),
           headline: heroValue,
+          sub: res.cost > 0 ? (res.partial ? t('hero.partial') : t('hero.total')) : undefined,
           rows: res.lines.slice(0, 5).map((l) => ({ label: itemName(l), value: qtyText(l) })),
         }}
         text={shoppingList}
         fileName="interior-materials"
-      />
+      />}
     </div>
   )
 

@@ -158,9 +158,11 @@ export default function InheritanceGiftTax() {
     sub: t('u.share.sub'),
     rows: isGift
       ? [
-          { label: t('u.steps.giftDeduction'), value: `${won(g.deduction)}${t('u.won')}` },
+          { label: t('u.steps.giftDeduction'), value: `${won(g.baseDeduction)}${t('u.won')}` },
+          ...(g.marriageDeduction > 0 ? [{ label: t('u.steps.marriageDeduction'), value: `${won(g.marriageDeduction)}${t('u.won')}` }] : []),
           { label: t('u.steps.base'), value: `${won(g.base)}${t('u.won')}` },
-          { label: t('u.steps.computed'), value: `${won(g.computed + g.surcharge)}${t('u.won')}` },
+          { label: t('u.steps.computed'), value: `${won(g.computed)}${t('u.won')}` },
+          ...(g.surcharge > 0 ? [{ label: t('u.steps.surcharge'), value: `+${won(g.surcharge)}${t('u.won')}` }] : []),
         ]
       : [
           { label: t('u.steps.taxableValue'), value: `${won(h.taxableValue)}${t('u.won')}` },

@@ -273,7 +273,7 @@ export default function UnemploymentBenefit() {
                   { label: t('u.result.daily'), value: won(r.daily) },
                   { label: t('u.result.days'), value: t('u.daysN', { n: r.days }) },
                   { label: t('u.result.per4w'), value: won(r.per4w) },
-                  { label: t('u.early.bonus'), value: won(earlyBonus(r.daily, r.days, 0).bonus) },
+                  { label: t('u.early.bonus'), value: won(early.bonus) },
                 ],
               }}
               text={t('u.share.text', { days: r.days, total: won(r.total) })}

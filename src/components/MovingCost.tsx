@@ -457,8 +457,8 @@ export default function MovingCost() {
                       { label: t('share.vehicle'), value: r.ton },
                       { label: t('distanceLabel'), value: `${kmNum}km` },
                       ...(r.day ? [{ label: t('dateLabel'), value: `${fmtDate(r.day.date)}${pct(r.day) > 0 ? ` (+${pct(r.day)}%)` : ''}` }] : []),
-                      { label: t('hero.mover'), value: range(r.mover) },
-                      { label: t('hero.extra'), value: range(r.extra) },
+                      { label: t('hero.mover'), value: amt(r.mover.typ) },
+                      { label: t('hero.extra'), value: amt(r.extra.typ) },
                     ],
                   }}
                   text={t('share.text', { size: sizeText, type: t(`movingTypes.${type}`), amount: amt(r.total.typ) })}

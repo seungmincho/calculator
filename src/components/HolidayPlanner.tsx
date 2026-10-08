@@ -200,7 +200,7 @@ export default function HolidayPlanner() {
                 <CalendarPlus className="w-4 h-4" aria-hidden="true" /> {t('ics.button')}
               </button>
             </div>
-            <ShareResult
+            {p.breaks.length > 0 && <ShareResult
               card={{
                 tool: t('title'),
                 label: t('share.label', { year, k: p.leaveUsed }),
@@ -209,7 +209,7 @@ export default function HolidayPlanner() {
                 rows: p.breaks.slice(0, 5).map((b) => ({ label: `${label(b)} ${short(b.start)}~${short(b.end)}`, value: t('share.row', { days: b.days, leave: b.leave.length }) })),
               }}
               text={t('share.text', { year, k: p.leaveUsed, n: p.totalDays })}
-            />
+            />}
           </div>
 
           {/* 추천 */}

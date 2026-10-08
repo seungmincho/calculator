@@ -198,7 +198,7 @@ export default function FreelancerTax() {
               tool: t('title'),
               label: t('ft.share.label', { rev: won(approxMan(rev)), revWon: won(rev) }),
               headline,
-              sub: `${indName} · ${methodName(active)}`,
+              sub: `${t('ft.share.year', { year: taxYear })} · ${indName} · ${methodName(active)}`,
               rows: [
                 { label: t('ft.row.withheld'), value: `${won(res.withheld.total)}${t('ft.won')}` },
                 { label: t('ft.row.totalTax'), value: `${won(res.totalTax)}${t('ft.won')}` },

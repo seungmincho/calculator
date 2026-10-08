@@ -375,7 +375,7 @@ export default function BiorhythmCalculator() {
 
               {shareCard && (
                 <div className="space-y-2">
-                  <ShareResult card={shareCard} url={shareUrl} text={t('share.text', { v: signed(r.now.composite) })} fileName="biorhythm" />
+                  <ShareResult card={shareCard} url={shareUrl} text={`${heroLabel} · ${t('share.headline', { v: signed(r.now.composite) })}`} fileName="biorhythm" />
                   <label className="flex items-center gap-2 text-sm text-sub">
                     <input type="checkbox" checked={hideBirth} onChange={e => setHideBirth(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
                     {t('share.hideBirth')}

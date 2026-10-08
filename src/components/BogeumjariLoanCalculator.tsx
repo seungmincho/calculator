@@ -567,7 +567,11 @@ export default function BogeumjariLoanCalculator() {
                     { label: t('share.eligibility'), value: t(result.eligible ? 'share.eligible' : 'share.notEligible') },
                   ],
                 }}
-                text={t('share.text', { type: typeLabel, limit: fmtKRW(result.maxLoan), rate: result.rate.toFixed(2), monthly: won(result.methods[method].first) })}
+                // 월 상환액은 희망 대출금 기준이고 원금균등이면 첫 달 — 화면 라벨과 같게
+                text={t('share.text', {
+                  type: typeLabel, limit: fmtKRW(result.maxLoan), rate: result.rate.toFixed(2),
+                  monthly: `${won(result.methods[method].first)}${method === 'principal' ? t('result.firstMonth') : ''}${result.loan !== result.maxLoan ? ` (${t('result.wantBasis', { amount: fmtKRW(result.loan) })})` : ''}`,
+                })}
               />
               {showSaveButton && (
                 <button type="button" onClick={handleSave} className="ui-btn-soft w-full py-2.5 text-sm">

@@ -258,7 +258,7 @@ export default function VatCalculator() {
             <ShareResult
               card={{
                 tool: t('title'), label: t('share.label', { mode: t(`mode.${mode}`), amount: won(amount) }), headline: `${won(heroValue)}${t('won')}`,
-                rows: [{ label: t('short.supply'), value: won(quick.supply) }, { label: t('short.vat'), value: won(quick.vat) }, { label: t('short.total'), value: won(quick.total) }],
+                rows: [{ label: t('short.supply'), value: `${won(quick.supply)}${t('won')}` }, { label: t('short.vat'), value: `${won(quick.vat)}${t('won')}` }, { label: t('short.total'), value: `${won(quick.total)}${t('won')}` }],
               }}
               text={invoiceLine(quick)}
               fileName="vat"
@@ -453,9 +453,10 @@ export default function VatCalculator() {
                 tool: t('title'), label: t(refund ? 'report.refundLabel' : 'report.payableLabel'), headline: `${won(Math.abs(ret.payable))}${t('won')}`,
                 sub: t(`report.${payer}`),
                 rows: [
-                  { label: t(`report.outputTax.${payer}`), value: won(ret.outputTax) },
-                  { label: t(`report.inputTax.${payer}`), value: won(ret.inputTax) },
-                  { label: t('report.cardCredit'), value: won(ret.cardCredit) },
+                  { label: t(`report.outputTax.${payer}`), value: `${won(ret.outputTax)}${t('won')}` },
+                  { label: t(`report.inputTax.${payer}`), value: `${ret.inputTax > 0 ? '−' : ''}${won(ret.inputTax)}${t('won')}` },
+                  { label: t('report.cardCredit'), value: `${ret.cardCredit > 0 ? '−' : ''}${won(ret.cardCredit)}${t('won')}` },
+                  ...(ret.eFilingCredit > 0 ? [{ label: t('report.eFilingCredit'), value: `−${won(ret.eFilingCredit)}${t('won')}` }] : []),
                 ],
               }}
               fileName="vat-return"

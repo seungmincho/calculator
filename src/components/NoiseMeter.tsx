@@ -289,7 +289,7 @@ export default function NoiseMeter() {
     rows.push([], [t('log.csvNote', { offset: offset.toFixed(1) })])
     const a = document.createElement('a')
     a.href = URL.createObjectURL(new Blob(['﻿' + toCsv(rows)], { type: 'text/csv;charset=utf-8' }))
-    a.download = `noise-log-${new Date().toISOString().slice(0, 10)}.csv`
+    a.download = `noise-log-${new Date().toLocaleDateString('sv-SE')}.csv` // 로컬 날짜 (화면 시각과 같은 기준)
     a.click()
     setTimeout(() => URL.revokeObjectURL(a.href), 1000)
   }
@@ -452,7 +452,7 @@ export default function NoiseMeter() {
                             <td className="py-2 pr-3 text-right tabular-nums">{e.durMs != null ? `${(e.durMs / 1000).toFixed(1)}s` : e.type === 'leq' ? '60s' : '…'}</td>
                             <td className="py-2 whitespace-nowrap">
                               {e.clipUrl ? (
-                                <a href={e.clipUrl} download={`noise-${new Date(e.t).toISOString().replace(/[:.]/g, '-')}.${e.clipExt}`} className="text-primary font-medium">{t('log.download')}</a>
+                                <a href={e.clipUrl} download={`noise-${new Date(e.t).toLocaleString('sv-SE').replace(/[: ]/g, '-')}.${e.clipExt}`} className="text-primary font-medium">{t('log.download')}</a>
                               ) : e.recording ? <span className="text-muted">{t('log.recording')}</span> : null}
                             </td>
                           </tr>

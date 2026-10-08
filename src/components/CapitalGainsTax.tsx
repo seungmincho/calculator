@@ -279,7 +279,7 @@ export default function CapitalGainsTax() {
                 card={{
                   tool: t('title'), label: t('result.totalLabel'), headline: `${won(r.total)}${t('wonUnit')}`, sub: verdict,
                   rows: [
-                    { label: t('transferProfitLabel'), value: `${eok(r.profit)}${t('wonUnit')}` },
+                    { label: t('transferProfitLabel'), value: `${won(r.profit)}${t('wonUnit')}` },
                     { label: t('holdingPeriod'), value: holdLabel },
                     { label: t('taxRateLabel'), value: rateText },
                   ],

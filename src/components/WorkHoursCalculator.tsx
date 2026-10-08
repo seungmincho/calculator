@@ -811,8 +811,10 @@ export default function WorkHoursCalculator() {
                   headline: `${fmt(convResult.monthlyWithHoliday)}${t('share.won')}`,
                   sub: t('share.convSub', { net: fmt(convResult.netMonthly) }),
                   rows: [
-                    { label: `${t('conversion.weekly')} ${t('conversion.withHoliday')}`, value: `${fmt(convResult.weeklyWithHoliday)}${t('share.won')}` },
-                    { label: t('result.weeklyHolidayPay'), value: `${fmt(convResult.weeklyHolidayPay)}${t('share.won')}` },
+                    ...(convResult.isEligibleWeeklyHoliday ? [
+                      { label: `${t('conversion.weekly')} ${t('conversion.withHoliday')}`, value: `${fmt(convResult.weeklyWithHoliday)}${t('share.won')}` },
+                      { label: t('result.weeklyHolidayPay'), value: `${fmt(convResult.weeklyHolidayPay)}${t('share.won')}` },
+                    ] : []),
                     { label: `${t('conversion.yearly')} ${t('conversion.withHoliday')}`, value: `${fmt(convResult.yearlyWithHoliday)}${t('share.won')}` },
                     { label: t('conversion.netMonthly'), value: `${fmt(convResult.netMonthly)}${t('share.won')}` },
                   ],

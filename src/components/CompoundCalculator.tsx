@@ -292,7 +292,8 @@ export default function CompoundCalculator() {
                 </div>
               ))}
             </dl>
-            <ShareResult className="mt-5" fileName="compound"
+            {/* 목표 수익률을 못 구하면(화면 '—') 공유할 결과가 없음 */}
+            {!(isGoal && solve === 'rate' && solvedRate === null) && <ShareResult className="mt-5" fileName="compound"
               card={{
                 tool: t('title'),
                 label: shareLabel,
@@ -301,10 +302,10 @@ export default function CompoundCalculator() {
                 rows: [
                   { label: t('c.res.principal'), value: `${won(res.principal)}${t('c.won')}` },
                   { label: t('c.res.net'), value: `${won(res.net)}${t('c.won')}` },
-                  { label: t('c.simple.diff'), value: `${won(res.gross - simple)}${t('c.won')}` },
+                  { label: t('c.simple.diff'), value: `+${won(res.gross - simple)}${t('c.won')}` },
                   ...(dbl === null ? [] : [{ label: t('c.double.short'), value: t('c.yearsDec', { y: yrs(dbl) }) }]),
                 ],
-              }} />
+              }} />}
           </div>
 
           {/* 72의 법칙 */}

@@ -116,13 +116,13 @@ export default function PensionTaxCreditCalculator() {
   const card = {
     tool: t('title'),
     label: t('share.label', { salary: man(salary), salaryM: mil(salary) }),
-    headline: t('share.headline', { saving: won(next.saving) }),
+    headline: t('share.headline', { saving: won(cur.saving) }),
     sub: r.gain > 0 ? t('share.sub', { amt: won(r.amt), gain: won(r.gain) }) : t('share.subNone'),
     rows: [
-      { label: t('rows.base'), value: `${won(next.base)}${W}` },
+      { label: t('rows.base'), value: `${won(cur.base)}${W}` },
       { label: t('rows.rate'), value: `${rate}%` },
-      { label: t('rows.saving'), value: `${won(next.saving)}${W}` },
-      { label: t('rows.room'), value: `${won(next.room)}${W}` },
+      { label: t('rows.saving'), value: `${won(cur.saving)}${W}` },
+      { label: t('rows.room'), value: `${won(cur.room)}${W}` },
     ],
   }
 
@@ -272,7 +272,7 @@ export default function PensionTaxCreditCalculator() {
 
             <ShareResult
               card={card} fileName="pension-tax-credit"
-              text={t('share.text', { salary: man(salary), salaryM: mil(salary), base: won(next.base), saving: won(next.saving) })}
+              text={t('share.text', { salary: man(salary), salaryM: mil(salary), base: won(cur.base), saving: won(cur.saving) })}
             />
           </div>
 

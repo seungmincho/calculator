@@ -518,7 +518,7 @@ export default function Crossword() {
                 sub: hintText,
                 rows: [
                   { label: t('share.words'), value: t('share.wordsValue', { count: puzzle.words.length }) },
-                  ...(isDaily && stats.streak ? [{ label: t('stats.streak'), value: t('stats.days', { count: stats.streak }) }] : []),
+                  ...(isDaily && mode.n === today && stats.streak ? [{ label: t('stats.streak'), value: t('stats.days', { count: stats.streak }) }] : []),
                 ],
               }}
               text={shareText}

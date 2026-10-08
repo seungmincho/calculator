@@ -212,13 +212,13 @@ export default function HealthCheckup() {
               card={{
                 tool: t('title'),
                 label: t('share.label', { by: birthYear, year }),
-                headline: t(`share.headline.${status}`),
+                headline: t(`res.${status}`, { year }),
                 sub: t('share.sub', { c: r.cancers.length, e: r.extras.length }),
                 rows: [
                   { label: t('share.general'), value: r.general ? t('share.generalYes') : t('share.generalNext', { next: r.next }) },
                   { label: t('share.cancer'), value: cancerNames.length ? cancerNames.join('·') : t('share.none') },
                   ...(r.extras.length ? [{ label: t('share.extra'), value: r.extras.slice(0, 3).map((e) => t(`ex.${e.id}.short`)).join('·') }] : []),
-                  { label: t('share.deadline'), value: t('dl.date', { year }) },
+                  ...(status !== 'no' ? [{ label: t('share.deadline'), value: t('dl.date', { year }) }] : []),
                 ],
               }}
               text={t(`share.text.${status}`, { by: birthYear, year, c: r.cancers.length, next: r.next })}

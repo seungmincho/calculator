@@ -288,7 +288,7 @@ export default function NationalPensionCalculator() {
                   tool: t('title'),
                   label: t('u.share.label', { birth, years: y, income: big(income) }),
                   headline: `${won(r.monthly)}${t('u.won')}`,
-                  sub: t('u.res.label', { age: r.startAge, year: r.pensionYear }),
+                  sub: `${t('u.res.label', { age: r.startAge, year: r.pensionYear })} · ${t('u.res.pv')}`,
                   rows: [
                     { label: t('u.res.paid'), value: `${big(r.paidSelf)}${t('u.won')}` },
                     { label: t('u.res.received', { age: life }), value: `${big(received)}${t('u.won')}` },
@@ -296,7 +296,7 @@ export default function NationalPensionCalculator() {
                     { label: t('u.cmp.defer5'), value: `${won(options[6].m)}${t('u.won')}` },
                   ],
                 }}
-                text={t('u.share.text', { v: won(r.monthly), age: r.startAge })}
+                text={`${t('u.share.text', { v: won(r.monthly), age: r.startAge })} (${t('u.res.pv')})`}
               />
             )}
           </div>

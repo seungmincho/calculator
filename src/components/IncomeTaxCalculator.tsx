@@ -315,7 +315,7 @@ export default function IncomeTaxCalculator() {
                 { label: t('it.row.prepaid'), value: `${won(res.prepaid.total)}${W}` },
               ],
             }}
-            text={t('it.share.text', { types: typeNames, result: headline })}
+            text={`${t('it.share.label', { types: typeNames, year })}: ${headline}`}
           />
 
           {/* 세율 구간 */}

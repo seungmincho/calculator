@@ -134,6 +134,7 @@ export default function BaseConverter() {
   const decoded = parsedBytes ? bytesToText(parsedBytes) : null
 
   const binStr = value ? show(value, 2, { group: 4, maxFrac: MAX_FRAC }) : ''
+  const cut = (s: string, n: number) => (s.length > n ? s.slice(0, n) + '…' : s)
   const decStr = value ? show(value, 10, { maxFrac: MAX_FRAC }) : ''
 
   return (
@@ -221,11 +222,12 @@ export default function BaseConverter() {
           <ShareResult
             card={{
               tool: t('title'),
-              label: t('share.label', { v: decStr.length > 24 ? decStr.slice(0, 24) + '…' : decStr }),
-              headline: binStr.length > 24 ? show(value, 16, { prefix: true, maxFrac: 8 }) : binStr,
-              rows: [8, 16, custom].filter((b, i, a) => a.indexOf(b) === i).map((b) => ({ label: baseName(b), value: show(value, b, { maxFrac: 12 }).slice(0, 28) })),
+              // 2진수가 길면 16진수로 보여 주므로 라벨도 16진수로
+              label: t(binStr.length > 24 ? 'share.labelHex' : 'share.label', { v: cut(decStr, 24) }),
+              headline: binStr.length > 24 ? cut(show(value, 16, { prefix: true, maxFrac: 8 }), 28) : binStr,
+              rows: [8, 16, custom].filter((b, i, a) => a.indexOf(b) === i).map((b) => ({ label: baseName(b), value: cut(show(value, b, { maxFrac: 12 }), 28) })),
             }}
-            text={t('share.text', { v: decStr.slice(0, 40), b: binStr.slice(0, 60) })}
+            text={t('share.text', { v: cut(decStr, 40), b: cut(binStr, 60) })}
             fileName="base-converter"
           />
         )}

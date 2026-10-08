@@ -681,7 +681,7 @@ const FuelCalculator = () => {
       return [log.date, log.distance, log.roundTrip ? 'Y' : '', logKm(log), log.tollFee, log.parkingFee, fuelCost, log.tollFee + log.parkingFee + fuelCost, q(log.memo)].join(',')
     })
     rows.push([t('drivingLog.summary.title'), '', '', logSummary.totalDistance, logSummary.totalTollFee, logSummary.totalParkingFee, logSummary.totalFuelCost, logSummary.grandTotal, q(conditionLine)].join(','))
-    downloadFile('﻿' + [headers.map(q).join(','), ...rows].join('\n'), `주행일지_${localDate()}.csv`, 'text/csv;charset=utf-8')
+    downloadFile('﻿' + [headers.map(q).join(','), ...rows].join('\n'), `${t('share.logFile')}_${localDate()}.csv`, 'text/csv;charset=utf-8')
   }, [filteredLogs, logSummary, calculateLogFuelCost, conditionLine, t])
 
   // 주행일지 정산서 텍스트 (결재·메신저 붙여넣기용)
@@ -771,7 +771,7 @@ const FuelCalculator = () => {
         perKm: won(calculation.costPerKm)
       })
     ].join('\n')
-    downloadFile(content, `유류비정산_${localDate()}.txt`, 'text/plain;charset=utf-8')
+    downloadFile(content, `${t('share.settlementFile')}_${localDate()}.txt`, 'text/plain;charset=utf-8')
   }, [calculation, settlementText, t])
 
   return (
@@ -1318,7 +1318,7 @@ const FuelCalculator = () => {
                       ...(depreciationMultiplier !== 1 ? [{ label: t('depreciation.title'), value: `×${depreciationMultiplier.toFixed(2)}` }] : []),
                     ],
                   }}
-                  text={t('share.text', { km: tripKm.toLocaleString('ko-KR'), amount: won(calculation.settlement), fuel: t(`fuelTypes.${fuelType}`), price: won(fuelPrices[fuelType]), basis: priceSourceLabel })}
+                  text={t(depreciationMultiplier !== 1 ? 'share.textMultiplier' : 'share.text', { km: tripKm.toLocaleString('ko-KR'), amount: won(calculation.settlement), fuel: t(`fuelTypes.${fuelType}`), price: won(fuelPrices[fuelType]), multiplier: depreciationMultiplier.toFixed(2), basis: priceSourceLabel })}
                 />
 
                 {/* 비용 구성 파이차트 + 연료별 비교 */}

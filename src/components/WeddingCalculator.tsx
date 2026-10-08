@@ -164,7 +164,7 @@ export default function WeddingCalculator() {
     const lines = [`=== ${t('title')} ===`, `${t('region.label')}: ${t(`region.${region}`)}`, '']
     for (const c of CATEGORY_IDS) lines.push(`${t(`categories.${c}`)}: ${money(totals.categories[c].effective)}`)
     lines.push('', `${t('stats.prepCost')}: ${money(totals.exHousing)}`, `${t('stats.housing')}: ${money(totals.housing)}`,
-      `${t('stats.gifts')}: ${money(gifts)}`, `${t('hero.label')}: ${money(netEx)}`,
+      `${t('stats.gifts')}: ${money(gifts)}`, `${netEx < 0 ? t('hero.labelSurplus') : t('hero.label')}: ${money(Math.abs(netEx))}`,
       `${t('split.groomSide')} ${money(split.groom)} / ${t('split.brideSide')} ${money(split.bride)}`)
     return lines.join('\n')
   }
@@ -234,7 +234,7 @@ export default function WeddingCalculator() {
                 { label: `${t('split.groomSide')} / ${t('split.brideSide')}`, value: `${money(split.groom)} / ${money(split.bride)}` },
               ],
             }}
-            text={t('share.text', { cost: money(totals.exHousing), net: money(netEx) })}
+            text={t(surplus ? 'share.textSurplus' : 'share.text', { cost: money(totals.exHousing), net: money(Math.abs(netEx)) })}
           />
         </div>
         <div className="ui-card p-5 space-y-3 text-sm">

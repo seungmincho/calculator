@@ -295,7 +295,7 @@ export default function LoanSchedule() {
                     { label: t('totalPayment'), value: short(res.totalPayment) },
                   ],
                 }}
-                text={`${t('title')} · ${hero.label} ${hero.value} · ${t('totalInterest')} ${short(res.totalInterest)}`}
+                text={`${t('hero.label', { amount: short(s.am * 1e4), rate: s.r, term: termText(months), method: methodName(s.m) })} · ${hero.label} ${hero.value} · ${t('totalInterest')} ${short(res.totalInterest)}`}
                 fileName="toolhub-loan-schedule"
               />
             </div>

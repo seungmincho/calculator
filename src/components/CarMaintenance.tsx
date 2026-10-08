@@ -178,6 +178,7 @@ export default function CarMaintenance() {
   const intervalText = (d: Due) =>
     [d.intervalKm != null && `${fmt(d.intervalKm)}km`, d.intervalMonths != null && t('m.months', { n: d.intervalMonths })].filter(Boolean).join(t('m.or')) || t('m.noInterval')
 
+  const heroLabel = next?.overdue ? t('m.heroOverdueLabel') : t('m.heroLabel')
   const heroHeadline = next ? `${itemName(next.id)} ${dday(next)}` : t('m.noneDue')
   const heroSub = next
     ? [next.overdue ? t('m.overdue') : next.kmLeft != null && t('m.kmLeft', { km: fmt(Math.max(0, next.kmLeft)) }), next.dueDate].filter(Boolean).join(' · ')
@@ -344,7 +345,7 @@ export default function CarMaintenance() {
           {/* ── 결과 ── */}
           <div className="lg:col-span-2 space-y-6">
             <div className="ui-hero p-6">
-              <p className="text-sm text-white/70">{next?.overdue ? t('m.heroOverdueLabel') : t('m.heroLabel')}</p>
+              <p className="text-sm text-white/70">{heroLabel}</p>
               <p className="text-3xl font-bold mt-1 tabular-nums" aria-live="polite">{heroHeadline}</p>
               {heroSub && <p className="text-sm text-white/80 mt-1 tabular-nums">{heroSub}</p>}
               <div className="grid grid-cols-2 gap-3 mt-5 text-sm">
@@ -363,12 +364,12 @@ export default function CarMaintenance() {
               <ShareResult
                 card={{
                   tool: t('m.shareTool'),
-                  label: t('m.heroLabel'),
+                  label: heroLabel,
                   headline: heroHeadline,
                   sub: heroSub,
                   rows: items.slice(0, 5).map((d) => ({ label: itemName(d.id), value: `${dday(d)} · ${d.dueDate ?? '-'}` })),
                 }}
-                text={`${t('m.heroLabel')}: ${heroHeadline}`}
+                text={`${heroLabel}: ${heroHeadline}`}
                 fileName="car-maintenance"
               />
               <button onClick={exportIcs} className="ui-btn-soft px-4 py-2 text-sm"><CalendarPlus className="w-4 h-4" />{t('m.exportIcs')}</button>

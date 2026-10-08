@@ -252,14 +252,14 @@ export default function BrokerageFeeCalculator() {
                 tool: t('title'),
                 label: t('share.label', { deal: dealLabel, amount: eokMan(r.amount) }),
                 headline: `${won(r.total)}${t('units.won')}`,
-                sub: `${t('result.maxRate')} ${pct(r.rate)} · ${t('result.vatIncl', { rate: vatPct })}`,
+                sub: `${t(nego === null ? 'result.maxRate' : 'result.negoRate')} ${pct(r.rate)}${capHit ? ` · ${t('result.capApplied', { cap: won(r.cap!) })}` : ''} · ${t('result.vatIncl', { rate: vatPct })}`,
                 rows: [
                   { label: t('result.fee'), value: `${won(r.fee)}${t('units.won')}` },
                   { label: t('result.vat', { rate: vatPct }), value: `${won(r.vat)}${t('units.won')}` },
                   { label: t('result.both'), value: `${won(r.total * 2)}${t('units.won')}` },
                 ],
               }}
-              text={t('share.text', { deal: dealLabel, amount: eokMan(r.amount), fee: won(r.total) })}
+              text={t(vat === 'none' ? 'share.textNoVat' : 'share.text', { deal: dealLabel, amount: eokMan(r.amount), fee: won(r.total) })}
             />
           </div>
 

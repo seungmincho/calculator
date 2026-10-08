@@ -202,7 +202,7 @@ export default function BMICalculator() {
                     ...(wc ? [{ label: t('u.waistResult'), value: `${waist}cm · ${t(wc.abdominal ? 'u.abdYes' : 'u.abdNo')}` }] : []),
                   ],
                 }}
-                text={t('u.share.text', { bmi: f1(r.bmi), cls: cls(r.cls) })}
+                text={t('u.share.textStd', { bmi: f1(r.bmi), cls: cls(r.cls), std: t(`u.std.${std}`) })}
                 fileName="bmi"
               />
 

@@ -275,7 +275,7 @@ export default function DueDateCalculator() {
                   headline: fmt(r.edd),
                   sub: r.notYet ? undefined : t('u.share.sub', { ga: gaText, month: r.month }),
                   rows: [
-                    { label: t('u.daysLeft'), value: ddayLabel(r.left) },
+                    { label: r.left >= 0 ? t('u.daysLeft') : t('u.daysOver'), value: ddayLabel(r.left) },
                     { label: t('u.triLabel'), value: r.notYet ? '-' : t(`u.tri${r.tri}`) },
                     { label: t('u.fullTermFrom'), value: fmt(r.fullTerm) },
                   ],

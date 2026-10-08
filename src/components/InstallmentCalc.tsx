@@ -180,6 +180,8 @@ export default function InstallmentCalc() {
                 headline: `${won(result.firstPayment)}${t('result.won')}`,
                 sub: result.totalFee > 0 ? t('share.sub', { fee: won(result.totalFee) }) : t('result.lumpSumSame'),
                 rows: [
+                  // 화면처럼 회차마다 금액이 다르면 마지막 회차도 함께
+                  ...(last && result.firstPayment !== last.payment ? [{ label: t('result.lastPayment'), value: `${won(last.payment)}${t('result.won')}` }] : []),
                   ...(plan !== 'free' ? [{ label: t('share.rate'), value: `${rate}%` }] : []),
                   { label: t('result.totalInterest'), value: `${won(result.totalFee)}${t('result.won')}` },
                   { label: t('result.totalPayment'), value: `${won(result.totalPayment)}${t('result.won')}` },

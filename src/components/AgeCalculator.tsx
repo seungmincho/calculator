@@ -131,10 +131,11 @@ export default function AgeCalculator() {
     headline: t('hero.age', { n: r.man }),
     sub: hideBirth ? undefined : fmtBirth(birth),
     rows: [
+      ...(today && base !== today ? [{ label: t('baseDate'), value: fmt(base) }] : []),
       { label: t('types.yeon'), value: t('ageN', { n: r.yeon }) },
       { label: t('types.counting'), value: t('ageN', { n: r.counting }) },
       ...(hideBirth ? [] : [
-        ...(r.next ? [{ label: t('next.title'), value: `${ddayLabel(r.next.days)} · ${fmt(r.next.date)}` }] : []),
+        ...(r.next ? [{ label: t('next.title'), value: `${r.next.isToday ? t('next.today') : ddayLabel(r.next.days)} · ${fmt(r.next.date)}` }] : []),
         { label: t('lived.title'), value: t('lived.nth', { n: (r.lived + 1).toLocaleString('ko-KR') }) },
         { label: t('info.zodiac'), value: t(`zodiacAnimals.${r.zodiac.key}`) },
       ]),

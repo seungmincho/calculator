@@ -280,7 +280,7 @@ export default function LoanCalculator() {
                     { label: t('result.totalPayment'), value: short(res.totalPayment) },
                   ],
                 }}
-                text={`${t('title')} · ${hero.title} ${hero.value} · ${t('result.totalInterest')} ${short(res.totalInterest)}`}
+                text={`${hero.label} · ${hero.title} ${hero.value} · ${t('result.totalInterest')} ${short(res.totalInterest)}`}
                 fileName="toolhub-loan"
               />
               <button type="button" onClick={handleSave} className="ui-btn-soft px-3 py-2 text-sm inline-flex items-center gap-1.5">

@@ -1693,6 +1693,7 @@
         "reliefPriceBlocked": "Homes over ₩1.2B are not eligible for first-time or childbirth relief."
       },
       "share": {
+        "loanFirst": "Loan {loan} · ₩{monthly} first month",
         "label": "Cash needed for a {price} home",
         "loan": "Loan {loan} · ₩{monthly}/mo",
         "text": "Buying a {price} home takes {cash} in cash (extra costs {fees})"
@@ -4438,6 +4439,7 @@
       "lose": "Lose {kg}kg",
       "gain": "Gain {kg}kg",
       "share": {
+        "textStd": "My BMI is {bmi} ({cls} by {std} criteria)",
         "label": "BMI at {h}cm · {w}kg",
         "text": "My BMI is {bmi} ({cls})"
       },
@@ -6984,6 +6986,9 @@
       "period": "Period"
     },
     "share": {
+      "textMultiplier": "Fuel reimbursement for {km} km: {amount} KRW ({fuel} at {price} KRW/L × {multiplier} · {basis})",
+      "logFile": "driving-log",
+      "settlementFile": "fuel-reimbursement",
       "label": "{vehicle} · {fuel} · {km} km fuel reimbursement",
       "won": " KRW",
       "perLiter": " KRW/L",
@@ -11696,6 +11701,7 @@
       "truncated": "… means digits after {n} fractional places were omitted (the repeating part is longer than {n} digits or it does not terminate)."
     },
     "share": {
+      "labelHex": "Decimal {v} in hexadecimal",
       "label": "Decimal {v} in binary",
       "text": "{v} = {b}₂ — see the step-by-step conversion"
     },
@@ -25043,6 +25049,7 @@
         "ddayToday": "Filing deadline is today"
       },
       "share": {
+        "year": "Tax year {year}",
         "label": "{revWon} KRW with 3.3% withheld — what comes back in May",
         "text": "{revWon} KRW with 3.3% withheld → {result}. Check your own refund"
       },
@@ -35971,6 +35978,7 @@
       "notApplied": "If existing plus new loans total KRW 100M or less, the borrower-level DSR rule does not apply (lenders still run their own checks)."
     },
     "share": {
+      "textSector": "With {income} KRW income, up to {amount} KRW {kind} ({sector}, stress DSR applied)",
       "label": "Income {income} KRW · {sector} {kind} limit",
       "text": "With {income} KRW income, up to {amount} KRW {kind} (stress DSR applied)"
     },
@@ -37964,6 +37972,7 @@
       "gifts": "Expected gift money"
     },
     "share": {
+      "textSurplus": "Wedding costs {cost}, gift money exceeds them by {net}",
       "text": "Wedding costs {cost}, net burden after gift money {net}"
     },
     "costs": {
@@ -53453,6 +53462,7 @@
       "tenant": "Tenant"
     },
     "share": {
+      "textNoVat": "Brokerage fee for {deal} {amount} KRW: {fee} KRW per party (excl. VAT)",
       "label": "{deal} {amount} KRW brokerage fee",
       "text": "Brokerage fee for {deal} {amount} KRW: {fee} KRW per party (incl. VAT)"
     },
@@ -56928,6 +56938,7 @@
       "saving": "Tax saved"
     },
     "share": {
+      "labelYtd": "Card deduction on a {salaryM}M KRW salary (annualized)",
       "label": "Card deduction on a {salaryM}M KRW salary",
       "headline": "Deduction {amount} KRW",
       "sub": "About {saving} KRW less tax",

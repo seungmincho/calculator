@@ -223,7 +223,7 @@ export default function HometownDonationCalculator() {
               <Link href={fullLink} prefetch={false} className="ui-btn inline-flex items-center min-h-11 px-4 py-3 text-sm">{t('yearEnd')}</Link>
               <AddToCalendar file={`hometown-donation-${TAX_YEAR}.ics`} events={[deadlineEvent('hometown', `${TAX_YEAR}-12-31`, '/hometown-donation', 7)]} />
             </div>
-            <ShareResult card={card} text={shareText} fileName="hometown-donation" />
+            {r.amount > 0 && <ShareResult card={card} text={shareText} fileName="hometown-donation" />}
           </div>
 
           {/* 시뮬레이션 */}

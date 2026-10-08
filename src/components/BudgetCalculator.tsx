@@ -181,7 +181,7 @@ export default function BudgetCalculator() {
           { label: t('hero.saving'), value: won(a.saving) },
           { label: t('hero.year1'), value: won(a.year1) },
         ]
-      : a.buckets.map((b) => ({ label: t(`bucket.${b.id}`), value: `${Math.round(b.actualPct)}%` })),
+      : a.buckets.map((b) => ({ label: t(`bucket.${b.id}`), value: `${b.actualPct.toFixed(1)}%` })),
   }
 
   // ── 핸들러 ──
@@ -366,7 +366,7 @@ export default function BudgetCalculator() {
             <p className="mt-3 text-xs text-white/70">{t('hero.yearNote', { y3: fmt(a.year3) })}</p>
           </div>
 
-          <div className="space-y-2">
+          {income > 0 && <div className="space-y-2">
             <ShareResult
               card={shareCard}
               url={showAmounts ? undefined : `${typeof window !== 'undefined' ? window.location.origin : ''}/budget-calculator/?rule=${plan.rule}`}
@@ -377,7 +377,7 @@ export default function BudgetCalculator() {
               <input type="checkbox" checked={showAmounts} onChange={(e) => setShowAmounts(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
               {t('share.showAmounts')}
             </label>
-          </div>
+          </div>}
 
           {/* 예산 짜기 */}
           <div className="ui-card p-6 space-y-5">

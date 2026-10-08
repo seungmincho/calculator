@@ -345,7 +345,7 @@ export default function HourlyWage() {
                     sub: t('u.share.sub', { pct: minPct, year: mw.year }),
                     rows: [
                       { label: t('result.dailyWage'), value: `${won(r.daily)}${t('result.won')}` },
-                      { label: t('u.weeklyShort'), value: `${won(r.weekly)}${t('result.won')}` },
+                      { label: holiday ? t('weekly') : t('u.weeklyShort'), value: `${won(r.weekly)}${t('result.won')}` },
                       { label: t('result.monthlyWage'), value: `${won(r.monthly)}${t('result.won')}` },
                       { label: t('result.yearlyWage'), value: `${won(r.yearly)}${t('result.won')}` },
                     ],

@@ -271,7 +271,7 @@ export default function ExchangeRateCalculator() {
                 <ShareResult className="mt-5" fileName="exchange-rate"
                   card={{
                     tool: t('title'),
-                    label: inputLabel,
+                    label: t('res.label', { input: inputLabel }),
                     headline,
                     sub: t('share.sub', { time: updatedAt }),
                     rows: [

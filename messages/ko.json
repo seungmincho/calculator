@@ -1693,6 +1693,7 @@
         "reliefPriceBlocked": "12억원 초과 주택은 생애최초·출산 감면을 받을 수 없습니다."
       },
       "share": {
+        "loanFirst": "대출 {loan} · 첫 달 {monthly}원",
         "label": "{price} 집 살 때 필요한 현금",
         "loan": "대출 {loan} · 월 {monthly}원",
         "text": "{price} 집을 사려면 현금 {cash}이 필요해요 (집값 외 부대비용 {fees})"
@@ -4437,6 +4438,7 @@
       "lose": "{kg}kg 감량",
       "gain": "{kg}kg 증량",
       "share": {
+        "textStd": "내 BMI는 {bmi}, {std} 기준 {cls}이에요",
         "label": "키 {h}cm · 몸무게 {w}kg의 BMI",
         "text": "내 BMI는 {bmi}, {cls}이에요"
       },
@@ -6983,6 +6985,9 @@
       "period": "조회 기간"
     },
     "share": {
+      "textMultiplier": "{km}km 정산 유류비 {amount}원 ({fuel} {price}원/L × 계수 {multiplier} · {basis})",
+      "logFile": "주행일지",
+      "settlementFile": "유류비정산",
       "label": "{vehicle} · {fuel} · {km}km 정산 유류비",
       "won": "원",
       "perLiter": "원/L",
@@ -11695,6 +11700,7 @@
       "truncated": "…는 소수점 아래 {n}자리 이후를 생략했다는 뜻입니다 (순환마디가 {n}자리보다 길거나 끝나지 않음)."
     },
     "share": {
+      "labelHex": "10진수 {v}의 16진수",
       "label": "10진수 {v}의 2진수",
       "text": "{v} = {b}₂ — 진법 변환 풀이 보기"
     },
@@ -25044,6 +25050,7 @@
         "ddayToday": "오늘 신고 마감"
       },
       "share": {
+        "year": "{year}년 귀속",
         "label": "3.3% 떼인 {rev}만원, 5월에 돌려받을 돈",
         "text": "3.3% 떼인 {rev}만원 → {result}. 내 환급액도 계산해보기"
       },
@@ -36115,6 +36122,7 @@
       "notApplied": "보유 대출과 새 대출을 합쳐 1억원 이하면 차주단위 DSR 규제는 적용되지 않습니다(금융회사 자체 심사는 별도)."
     },
     "share": {
+      "textSector": "연소득 {income}원이면 {kind} 최대 {amount}원까지 ({sector}, 스트레스 DSR 적용)",
       "label": "연소득 {income}원 · {sector} {kind} 한도",
       "text": "연소득 {income}원이면 {kind} 최대 {amount}원까지 (스트레스 DSR 적용)"
     },
@@ -37565,8 +37573,8 @@
         "standard": "표준세액공제 적용"
       },
       "share": {
-        "refund": "13월의 월급 예상 +{amount}원",
-        "pay": "추가 납부 예상 {amount}원",
+        "refund": "13월의 월급 예상 +{amountWon}원",
+        "pay": "추가 납부 예상 {amountWon}원",
         "subPreview": "{year}년 귀속 연말정산 미리보기 (1~9월 실적 기준)",
         "label": "총급여 {salary}만원의 13월의 월급",
         "sub": "{year}년 귀속 연말정산 예상",
@@ -38108,6 +38116,7 @@
       "gifts": "예상 축의금"
     },
     "share": {
+      "textSurplus": "결혼 준비 비용 {cost}, 축의금이 {net} 더 많아요",
       "text": "결혼 준비 비용 {cost}, 축의금 빼면 실질 부담 {net}"
     },
     "costs": {
@@ -53597,6 +53606,7 @@
       "tenant": "임차인"
     },
     "share": {
+      "textNoVat": "{deal} {amount}원 복비는 한쪽당 {fee}원 (부가세 별도)",
       "label": "{deal} {amount}원 중개수수료",
       "text": "{deal} {amount}원 복비는 한쪽당 {fee}원 (부가세 포함)"
     },
@@ -57072,6 +57082,7 @@
       "saving": "줄어드는 세금"
     },
     "share": {
+      "labelYtd": "연봉 {salary}만원 카드 소득공제 (연간 추정)",
       "label": "연봉 {salary}만원 카드 소득공제",
       "headline": "소득공제 {amount}원",
       "sub": "세금 약 {saving}원 절약",
@@ -57596,7 +57607,7 @@
     },
     "share": {
       "label": "총급여 {salary}만 원 · 월세 {rent}만 원",
-      "headline": "{amount}만 원 돌려받기",
+      "headline": "{amountFull}원 돌려받기",
       "sub": "{year}년 월세 세액공제 (지방소득세 포함)",
       "subNot": "공제 요건을 다시 확인해 보세요",
       "text": "총급여 {salary}만 원에 월세 {rent}만 원이면 월세 세액공제로 {amount}원 돌려받아요.",

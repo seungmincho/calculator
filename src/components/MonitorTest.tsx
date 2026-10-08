@@ -927,7 +927,7 @@ export default function MonitorTest() {
                 sub: summaryLine,
                 rows: infoRows.slice(0, 4),
               }}
-              text={`${t('summary.label')}: ${summaryLine}`}
+              text={`${t('summary.label')}: ${gradeText} · ${summaryLine}`}
               fileName="monitor-test"
             />
           )}

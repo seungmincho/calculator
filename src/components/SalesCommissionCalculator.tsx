@@ -389,7 +389,7 @@ export default function SalesCommissionCalculator() {
                     { label: t('sc.table.annual'), value: `${won(headlineValue * 12)}${t('input.unit')}` },
                   ],
               }}
-              text={t('sc.share', { sales: won(sales), amount: won(headlineValue) })}
+              text={`${heroLabel} · ${heroTitle} ${won(headlineValue)}${t('input.unit')}`}
               fileName="sales-commission"
             />
 

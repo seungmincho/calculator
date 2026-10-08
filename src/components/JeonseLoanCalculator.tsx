@@ -246,6 +246,8 @@ export default function JeonseLoanCalculator() {
               headline: short(q.loan),
               sub: t('share.sub', { rate: q.rate.toFixed(2), date: SOURCE_DATE }),
               rows: [
+                // 화면의 '자격 안 됨' 경고를 공유 카드에도
+                ...(q.eligible ? [] : [{ label: t('check.title', { product: pName(product) }), value: t('check.fail') }]),
                 { label: s.rp === 'bullet' ? t('hero.interest') : t('hero.payment'), value: won(pay.monthly) },
                 { label: t('hero.own'), value: short(q.own) },
                 { label: t('hero.interest2y'), value: short(pay2y.totalInterest) },

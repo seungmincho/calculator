@@ -295,15 +295,15 @@ export default function AcquisitionTaxCalculator() {
             <ShareResult
               card={{
                 tool: t('title'),
-                label: t('u.share.label', { price: eokMan(price) }),
+                label: mode === 'buy' && house ? t('u.share.label', { price: eokMan(price) }) : t('u.resultLabel', { price: eokMan(price) }),
                 headline: `${won(r.total)}${t('units.won')}`,
                 sub: `${rateLabel} · ${t('result.effectiveRate')} ${r.effRate.toFixed(2)}%`,
                 rows: [
                   ...rows.map((row) => ({ label: row.label, value: `${won(row.v)}${t('units.won')}` })),
-                  ...(extras ? [{ label: t('u.cost.grand'), value: `${eokMan(price + r.total + extras.total)}${t('units.won')}` }] : []),
+                  ...(extras ? [{ label: t('u.cost.grand'), value: `${won(price + r.total + extras.total)}${t('units.won')}` }] : []),
                 ],
               }}
-              text={t('u.share.text', { price: eokMan(price), tax: won(r.total), rate: r.effRate.toFixed(2) })}
+              text={mode === 'buy' && house ? t('u.share.text', { price: eokMan(price), tax: won(r.total), rate: r.effRate.toFixed(2) }) : undefined}
             />
           </div>
 

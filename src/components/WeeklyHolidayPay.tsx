@@ -324,7 +324,7 @@ export default function WeeklyHolidayPay() {
                 tool: t('title'),
                 label: t('u.share.label', { wage: won(wage), hours: hrs(r.workedHours) }),
                 headline: `${won(r.holidayPay)}${t('u.won')}`,
-                sub: t('u.share.sub'),
+                sub: `${t('u.share.sub')} · ${r.eligible ? t('eligible') : t('notEligible')}`,
                 rows: [
                   { label: t('result.weeklyTotal'), value: `${won(r.weeklyTotal)}${t('u.won')}` },
                   { label: t('u.monthlyTotal'), value: `${won(r.monthlyTotal)}${t('u.won')}` },

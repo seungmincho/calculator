@@ -328,7 +328,7 @@ export default function RealEstateCalculator() {
                 tool: t('title'),
                 label: t('u.share.label', { price: short(price) }),
                 headline: W(r.cash),
-                sub: `${ownerLabel} · ${t('u.share.loan', { loan: short(r.loan), monthly: won(r.monthly) })}`,
+                sub: `${ownerLabel}${r.loan > 0 ? ` · ${t(method === 'equalPrincipal' ? 'u.share.loanFirst' : 'u.share.loan', { loan: short(r.loan), monthly: won(r.monthly) })}` : ''}`,
                 rows: [
                   { label: t('u.result.equity'), value: W(r.equity) },
                   { label: t('u.result.tax'), value: W(r.tax.total) },

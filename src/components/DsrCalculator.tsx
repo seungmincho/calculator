@@ -371,14 +371,14 @@ export default function DsrCalculator() {
                 tool: t('title'),
                 label: t('share.label', { income: eokMan(income), sector: sectorLabel, kind: kindLabel }),
                 headline: `${eokMan(limit)}${won}`,
-                sub: t('res.stressSub', { add: rateStr(addAtLimit), rate: rateStr(rate + addAtLimit) }),
+                sub: limit > 0 ? t('res.stressSub', { add: rateStr(addAtLimit), rate: rateStr(rate + addAtLimit) }) : t('res.noRoom', { cap }),
                 rows: [
                   { label: t('res.dsrNow'), value: pct(dsrNow) },
                   { label: t('cmp.plain'), value: `${eokMan(limitPlain)}${won}` },
                   { label: t('bd.existing'), value: `${eokMan(exAnnual)}${won}` },
                 ],
               }}
-              text={t('share.text', { income: eokMan(income), kind: kindLabel, amount: eokMan(limit) })}
+              text={limit > 0 ? t('share.textSector', { income: eokMan(income), sector: sectorLabel, kind: kindLabel, amount: eokMan(limit) }) : t('res.noRoom', { cap })}
             />
           </div>
 

@@ -359,6 +359,7 @@ export default function HousingSubscription() {
                     headline: t('share.headline', { score: r.now.total }),
                     sub: t('res.nextYear', { score: r.next, diff: r.next - r.now.total }),
                     rows: [
+                      { label: t('inp.ref'), value: dot(ref) },
                       { label: t('sectionA'), value: `${r.now.a} / 32` },
                       { label: t('sectionB'), value: `${r.now.b} / 35` },
                       { label: t('sectionC'), value: `${r.now.c} / 17` },

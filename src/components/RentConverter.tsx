@@ -193,11 +193,11 @@ export default function RentConverter() {
           {invalid && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('warn.depositTooHigh')}</div>}
           {rate > cap && <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm">{t('warn.overCap', { rate, cap })}</div>}
 
-          <ShareResult
+          {!invalid && <ShareResult
             card={{
               tool: t('title'),
               label: headLabel,
-              headline: invalid ? '—' : headline,
+              headline,
               sub: t('share.sub', { rate, cap }),
               rows: [
                 { label: t('scenario.best'), value: t(`scenario.${best.key}`) },
@@ -205,7 +205,7 @@ export default function RentConverter() {
               ],
             }}
             fileName="rent-converter"
-          />
+          />}
 
           {/* 보증금 조정 */}
           <div className="ui-card p-6 space-y-4">

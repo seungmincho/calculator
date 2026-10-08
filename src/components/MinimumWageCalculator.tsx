@@ -115,7 +115,6 @@ export default function MinimumWageCalculator() {
         rows: [
           { label: t('u.share.myHourly'), value: `${won(c.myHourly)}${W}` },
           { label: t('u.share.minHourly'), value: `${won(minHourly)}${W}` },
-          { label: t('u.rows.monthly'), value: `${won(r.monthly)}${W}` },
         ],
       }
     : {
