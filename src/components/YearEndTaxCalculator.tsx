@@ -245,7 +245,7 @@ export default function YearEndTaxCalculator() {
               </div>
               {opt.prepaid ? (
                 <div className="mt-2">
-                  <Money label="" value={Number(opt.prepaid)} onChange={(v) => setOpt((p) => ({ ...p, prepaid: String(Math.max(1, v)) }))} unit={W} />
+                  <Money label="" ariaLabel={t('yt.in.prepaid')} value={Number(opt.prepaid)} onChange={(v) => setOpt((p) => ({ ...p, prepaid: String(Math.max(1, v)) }))} unit={W} />
                 </div>
               ) : null}
               <p className="text-xs text-muted mt-1.5">
@@ -563,18 +563,18 @@ function Todo({ title, desc, gain, dday }: { title: string; desc: string; gain: 
   )
 }
 
-function Money({ label, value, onChange, hint, unit, placeholder }: {
-  label: string; value: number | null; onChange: (v: number) => void; hint?: string; unit: string; placeholder?: string
+function Money({ label, value, onChange, hint, unit, placeholder, ariaLabel }: {
+  label: string; value: number | null; onChange: (v: number) => void; hint?: string; unit: string; placeholder?: string; ariaLabel?: string
 }) {
   const shown = value ? value.toLocaleString('ko-KR') : ''
   return (
     <label className="block">
       {label && <span className="block text-sm font-medium text-body mb-1.5">{label}</span>}
       <span className="relative block">
-        <input type="text" inputMode="numeric" value={shown} placeholder={placeholder ?? '0'}
+        <input type="text" inputMode="numeric" value={shown} placeholder={placeholder ?? '0'} aria-label={ariaLabel}
           onChange={(e) => onChange(Number(digits(e.target.value)) || 0)}
           className="ui-field w-full px-4 py-3 pr-9 text-sm tabular-nums" />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-faint">{unit}</span>
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-faint" aria-hidden="true">{unit}</span>
       </span>
       {hint && <span className="block text-xs text-muted mt-1.5">{hint}</span>}
     </label>

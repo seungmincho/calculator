@@ -128,9 +128,9 @@ export default function UnemploymentBenefit() {
             <MobileResultLink href="#unemployment-benefit-result" label={t('u.result.totalLabel', { days: r.days })} value={won(r.total)} />
             <div>
               <span className={label}>{t('u.wage.label')}</span>
-              <div className="grid grid-cols-3 gap-2 mb-2">
+              <div className="grid grid-cols-3 gap-2 mb-2" role="group" aria-label={t('u.wage.label')}>
                 {MODES.map((m) => (
-                  <button key={m} type="button" className={seg(mode === m)}
+                  <button key={m} type="button" className={seg(mode === m)} aria-pressed={mode === m}
                     onClick={() => { setMode(m); setAmount(DEFAULT_AMOUNT[m]) }}>
                     {t(`u.wage.mode.${m}`)}
                   </button>
@@ -155,9 +155,9 @@ export default function UnemploymentBenefit() {
 
             <div>
               <span className={label}>{t('u.age.label')}</span>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('u.age.label')}>
                 {AGES.map((a) => (
-                  <button key={a} type="button" className={seg(age === a)} onClick={() => setAge(a)}>{t(`u.age.${a}`)}</button>
+                  <button key={a} type="button" className={seg(age === a)} aria-pressed={age === a} onClick={() => setAge(a)}>{t(`u.age.${a}`)}</button>
                 ))}
               </div>
             </div>
@@ -186,17 +186,17 @@ export default function UnemploymentBenefit() {
             <h2 className="text-lg font-semibold text-fg">{t('u.elig.title')}</h2>
             <div>
               <p className="text-sm text-body mb-2">{t('u.elig.insured')}</p>
-              <div className="grid grid-cols-2 gap-2 max-w-xs">
-                <button type="button" className={seg(insured)} onClick={() => setInsured(true)}>{t('u.yes')}</button>
-                <button type="button" className={seg(!insured)} onClick={() => setInsured(false)}>{t('u.no')}</button>
+              <div className="grid grid-cols-2 gap-2 max-w-xs" role="group" aria-label={t('u.elig.insured')}>
+                <button type="button" className={seg(insured)} aria-pressed={insured} onClick={() => setInsured(true)}>{t('u.yes')}</button>
+                <button type="button" className={seg(!insured)} aria-pressed={!insured} onClick={() => setInsured(false)}>{t('u.no')}</button>
               </div>
               <p className="text-xs text-muted mt-1.5">{t('u.elig.insuredHint')}</p>
             </div>
             <div>
               <p className="text-sm text-body mb-2">{t('u.elig.reason')}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2" role="group" aria-label={t('u.elig.reason')}>
                 {REASONS.map((x) => (
-                  <button key={x} type="button" className={seg(reason === x)} onClick={() => setReason(x)}>{t(`u.reason.${x}`)}</button>
+                  <button key={x} type="button" className={seg(reason === x)} aria-pressed={reason === x} onClick={() => setReason(x)}>{t(`u.reason.${x}`)}</button>
                 ))}
               </div>
               <p className="text-xs text-muted mt-1.5">{t(`u.reasonHint.${reason}`)}</p>

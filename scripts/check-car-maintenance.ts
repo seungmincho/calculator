@@ -16,6 +16,13 @@ assert.deepEqual(intervalFor(spec('engineOil'), 'gasoline', false), { km: 15000,
 assert.deepEqual(intervalFor(spec('engineOil'), 'gasoline', true), { km: 7500, months: 6 })
 assert.deepEqual(intervalFor(spec('coolant'), 'gasoline', true), { km: 40000, months: 24 }) // 배수 1
 assert.equal(intervalFor(spec('sparkPlugs'), 'lpg', false).km, 40000) // 연료별 예외
+// 자동변속기 오일: 일반 조건 무교체(현대차 취급설명서), 가혹조건 10만km
+assert.deepEqual(intervalFor(spec('transmissionFluid'), 'gasoline', false), { km: null, months: null })
+assert.deepEqual(intervalFor(spec('transmissionFluid'), 'gasoline', true), { km: 100000, months: null })
+const tfNormal = computeDue(spec('transmissionFluid'), { ...base, km: 250000, records: { transmissionFluid: { km: 0 } } }, today)
+assert.equal(tfNormal.daysLeft, null); assert.equal(tfNormal.dueDate, null); assert.equal(tfNormal.overdue, false)
+const tfSevere = computeDue(spec('transmissionFluid'), { ...base, severe: true, km: 250000, records: { transmissionFluid: { km: 120000 } } }, today)
+assert.equal(tfSevere.dueKm, 220000); assert.equal(tfSevere.overdue, true)
 
 // km가 먼저: 월 3,000km → 1.5만km는 5개월에 도달, 12개월보다 빠름
 const kmFirst = computeDue(spec('engineOil'), { ...base, monthlyKm: 3000, records: { engineOil: { km: 30000, date: '2026-09-01' } } }, today)
@@ -73,6 +80,11 @@ assert.ok(sv.lo > n.lo && n.hi > n.lo)
 assert.equal(n.items.find((i) => i.id === 'engineOil')!.perYear, 1)
 assert.equal(annualCost('gasoline', false, 500).items.find((i) => i.id === 'engineOil')!.perYear, 1) // 시간 기준
 assert.ok(annualCost('electric', false, 1250).mid < n.mid)
+// 미션오일: 일반 조건은 연간 비용에서 제외, 가혹조건은 연 1.5만km ÷ 10만km
+assert.ok(!n.items.some((i) => i.id === 'transmissionFluid'))
+assert.equal(sv.items.find((i) => i.id === 'transmissionFluid')!.perYear, 0.15)
+// 일반 조건 일정: 미션오일은 맨 뒤(정기 교체 없음)
+assert.equal(schedule(base, today).at(-1)!.id, 'transmissionFluid')
 
 // 자동차세: 2,000cc 신차 = 2000×200×1.3 = 520,000 / 3년차 5% / 12년차 이상 50%
 assert.equal(autoTax(1998, 2026, 2026), Math.round(1998 * 200 * 1.3))

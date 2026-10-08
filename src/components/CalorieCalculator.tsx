@@ -175,10 +175,11 @@ export default function CalorieCalculator() {
             setWeight(Number(i.weight) || DEF.w)
             setAge(Number(i.age) || DEF.age)
             setSex(i.gender === 'female' ? 'female' : 'male')
-            const a = ACTIVITIES.find((x) => x === i.activityLevel); if (a) setActivity(a)
-            const f = FORMULAS.find((x) => x === i.bmrFormula); if (f) setFormula(f)
+            // 없는 값은 지금 화면 값이 아니라 기본값으로 (섞인 상태로 다른 결과가 나오지 않게)
+            setActivity(ACTIVITIES.find((x) => x === i.activityLevel) ?? 'light')
+            setFormula(FORMULAS.find((x) => x === i.bmrFormula) ?? 'mifflin')
             applyGoal(typeof i.goalV2 === 'string' ? i.goalV2 : String(i.goal ?? ''), i.pace)
-            if (Number(i.targetWeight) >= 25) setTarget(Number(i.targetWeight))
+            setTarget(Number(i.targetWeight) >= 25 ? Number(i.targetWeight) : DEF.tw)
             setBodyFat(Number(i.bodyFat) || 0)
           }}
           onRemoveHistory={removeHistory}

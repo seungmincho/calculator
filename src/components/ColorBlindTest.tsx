@@ -263,7 +263,7 @@ export default function ColorBlindTest() {
           <h2 className="text-xl font-semibold text-fg">{t('result.breakdown')}</h2>
           <div className="flex flex-wrap gap-2" role="group" aria-label={t('result.viewAs')}>
             {(['normal', 'protan', 'deutan', 'tritan'] as const).map((o) => (
-              <button key={o} className={seg(view === o)} onClick={() => setView(o)}>{t(`view.${o}`)}</button>
+              <button key={o} className={seg(view === o)} onClick={() => setView(o)} aria-pressed={view === o}>{t(`view.${o}`)}</button>
             ))}
           </div>
         </div>
@@ -276,8 +276,8 @@ export default function ColorBlindTest() {
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-fg">{t('result.plateN', { n: o.plate.id })}</span>
                   {o.correct
-                    ? <Check className="w-4 h-4 text-primary" aria-label={t('result.correct')} />
-                    : <X className="w-4 h-4 text-red-500" aria-label={t('result.wrong')} />}
+                    ? <Check className="w-4 h-4 text-primary" role="img" aria-label={t('result.correct')} />
+                    : <X className="w-4 h-4 text-red-500" role="img" aria-label={t('result.wrong')} />}
                 </div>
                 <div className="text-muted">{kindLabel(o.plate)}</div>
                 <div className="text-body">{t('result.yourAnswer')}: <b className="tabular-nums">{ans(o.answer)}</b></div>

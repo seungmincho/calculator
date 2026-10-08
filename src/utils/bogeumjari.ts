@@ -123,11 +123,19 @@ export const annuity = (loan: number, annualRate: number, months: number) => {
   return r === 0 ? loan / months : (loan * r) / (1 - Math.pow(1 + r, -months))
 }
 
-export const fmtKRW = (n: number) => {
+/**
+ * "3억 6,000만원" 표기. tr(번역 함수)을 넘기면 bogeumjariLoan.fmt.{eokMan|eok|man|won} 템플릿으로
+ * 만든다 — vars: eok, man(콤마), won(만 단위 반올림한 원 금액, 콤마). ko 템플릿은 아래 한국어와 같은 결과.
+ */
+export const fmtKRW = (n: number, tr?: (key: string, vars: Record<string, unknown>) => string) => {
   const v = Math.round(n)
   let eok = Math.floor(v / 100_000_000)
   let man = Math.round((v % 100_000_000) / 10_000)
   if (man === 10_000) { eok += 1; man = 0 }
+  if (tr) {
+    const key = eok > 0 ? (man > 0 ? 'eokMan' : 'eok') : man > 0 ? 'man' : 'won'
+    return tr(`fmt.${key}`, { eok, man: man.toLocaleString(), won: (key === 'won' ? v : eok * 100_000_000 + man * 10_000).toLocaleString() })
+  }
   if (eok > 0) return man > 0 ? `${eok}억 ${man.toLocaleString()}만원` : `${eok}억원`
   if (man > 0) return `${man.toLocaleString()}만원`
   return `${v.toLocaleString()}원`
@@ -205,13 +213,14 @@ export function calcBogeumjari(i: BogeumjariInput) {
 
   // ── 자격 체크리스트 ──
   const checks: CheckItem[] = []
-  const incomeVars = { income: fmtKRW(i.income), limit: fmtKRW(incomeLimit) }
+  // 금액 vars는 원 단위 숫자 — 화면에서 fmtKRW(n, t)로 언어에 맞게 표기
+  const incomeVars = { income: i.income, limit: incomeLimit }
   checks.push(fraud
     ? { id: 'income', label: '소득', status: 'pass', msg: 'fraud' }
     : i.income <= incomeLimit
       ? { id: 'income', label: '소득', status: 'pass', msg: 'pass', vars: incomeVars }
       : { id: 'income', label: '소득', status: 'fail', msg: 'fail', vars: incomeVars })
-  const priceVars = { price: fmtKRW(i.price), limit: fmtKRW(priceLimit) }
+  const priceVars = { price: i.price, limit: priceLimit }
   checks.push(i.price <= priceLimit
     ? { id: 'price', label: '주택가격', status: 'pass', msg: 'pass', vars: priceVars }
     : { id: 'price', label: '주택가격', status: 'fail', msg: 'fail', vars: priceVars })

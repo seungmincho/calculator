@@ -832,7 +832,7 @@ export default function LadderGame() {
   const handleSave = () => {
     if (Object.keys(results).length === 0) return
     saveCalculation(
-      { participants, outcomes, ladderComplexity, ladderLinesCount: ladderLines.length, playedAt: new Date().toISOString() },
+      { participants, outcomes, ladderComplexity, ladderLinesCount: ladderLines.length, seed: currentSeed, colAssignments, playedAt: new Date().toISOString() },
       { results: { ...results }, participantCount: participants.length }
     )
     setShowSaveButton(false)
@@ -887,14 +887,28 @@ export default function LadderGame() {
               setParticipants(ps)
               setOutcomes(inputs.outcomes || ['결과1', '결과2', '결과3'])
               setLadderComplexity(cx)
-              generateLadder(undefined, ps.length, cx)
+              // 같은 사다리(seed)·위치·결과까지 복원. seed가 없는 예전 이력은 새 사다리로 다시 시작
+              const seed = Number(inputs.seed)
+              const saved = histories.find(h => h.id === historyId)?.result?.results
+              if (seed > 0 && saved && typeof saved === 'object' && !Array.isArray(saved)) {
+                generateLadder(seed, ps.length, cx)
+                const ca = inputs.colAssignments
+                setColAssignments(Array.isArray(ca) && ca.length === ps.length ? ca : ps.map((_: unknown, i: number) => i))
+                setIsSelectionPhase(false)
+                setResults(saved)
+                setShowResults(true)
+                setRevealedResults(new Set(Object.keys(saved)))
+              } else {
+                generateLadder(undefined, ps.length, cx)
+              }
             }
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
-          formatResult={(history: { inputs?: { participants?: unknown[] }; result?: { participantCount?: number; results?: Record<string, unknown> } }) => {
-            if (!history.inputs || !history.result) return '빈 기록'
-            return `참가자 ${history.result.participantCount ?? 0}명, 결과 ${Object.keys(history.result.results ?? {}).length}개`
+          formatResult={(result: { participantCount?: number; results?: Record<string, unknown> }) => {
+            // CalculationHistory는 이력의 result만 넘김
+            if (!result.results) return '빈 기록'
+            return `참가자 ${result.participantCount ?? 0}명, 결과 ${Object.keys(result.results).length}개`
           }}
         />
         </div>

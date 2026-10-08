@@ -460,17 +460,19 @@ export default function LottoGenerator() {
 
   const handleSaveCalculation = () => {
     if (generatedSets.length === 0) return
+    // 생성 뒤에 바꾼 설정이 아니라 이 번호를 만든 설정·게임 수로 저장
+    const used = generatedSets[0]
     
     saveCalculation(
       {
-        generateMethod,
-        excludedNumbers: [...excludedNumbers],
-        numberOfSets,
+        generateMethod: used.generateMethod || generateMethod,
+        excludedNumbers: [...(used.excludedNumbers || [])],
+        numberOfSets: generatedSets.length,
         generatedAt: new Date().toISOString()
       },
       {
         sets: generatedSets,
-        totalSets: numberOfSets
+        totalSets: generatedSets.length
       }
     )
     
@@ -706,6 +708,14 @@ export default function LottoGenerator() {
               setGenerateMethod(inputs.generateMethod || 'random')
               setExcludedNumbers(inputs.excludedNumbers || [])
               setNumberOfSets(inputs.numberOfSets || 1)
+              // 저장한 번호도 그대로 다시 보여 줌
+              const sets = histories.find(h => h.id === historyId)?.result?.sets
+              if (Array.isArray(sets) && sets.length > 0 && Array.isArray(sets[0]?.numbers)) {
+                setGeneratedSets(sets)
+                setGeneratedNumbers(sets[0].numbers)
+                setBonusNumber(sets[0].bonusNumber || null)
+                setShowSaveButton(false)
+              }
             }
           }}
           onRemoveHistory={removeHistory}

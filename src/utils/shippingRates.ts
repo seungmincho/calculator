@@ -11,6 +11,7 @@ export interface PriceTier {
   islandPrice?: number
 }
 
+// name·serviceLabel·deliveryDays·note는 한국어 원본. 화면 문구는 shippingCalc.carrierData.<id>.{name,service,days,note}
 export interface CarrierData {
   id: string
   name: string
@@ -28,16 +29,17 @@ export interface CarrierData {
 
 // 요금 기준일 · 출처 (개인 발송 기준, 2026-09-30 확인 · 2026-10-04 우체국 요금표·롯데·로젠·CJ 규격 단계 재확인)
 export const RATE_BASIS = '2026.09'
-export const RATE_SOURCES: { label: string; url: string }[] = [
-  { label: '우정사업본부 소포요금', url: 'https://koreapost.go.kr/kpost/subIndex/201.do' },
-  { label: '우체국 방문접수 요금', url: 'https://parcel.epost.go.kr/parcel/use_guide/charge_1.jsp' },
-  { label: '롯데택배 요금안내', url: 'https://www.lotteglogis.com/mobile/reservation/feeinfo/write' },
-  { label: '로젠택배 요금안내', url: 'https://www.ilogen.com/web/personal/chargeInfo' },
-  { label: 'CJ대한통운 배송운임', url: 'https://www.cjlogistics.com/ko/utility/parcel-price' },
-  { label: 'GS25 중량별 운임', url: 'https://www.cvsnet.co.kr/service/national-delivery/use/contentsid/205/index.do' },
-  { label: 'GS25 반값택배', url: 'https://www.cvsnet.co.kr/service/slow-delivery/use/contentsid/274/index.do' },
-  { label: 'CU 반값택배 (ZDNet 2026.02)', url: 'https://zdnet.co.kr/view/?no=20260209092755' },
-  { label: '세븐일레븐 착한택배 (헤럴드경제 2026.04)', url: 'https://www.heraldk.com/article/2026040717030145483' },
+// 화면 문구는 shippingCalc.rateSources.<id> (label은 한국어 원본)
+export const RATE_SOURCES: { id: string; label: string; url: string }[] = [
+  { id: 'kpost', label: '우정사업본부 소포요금', url: 'https://koreapost.go.kr/kpost/subIndex/201.do' },
+  { id: 'epostVisit', label: '우체국 방문접수 요금', url: 'https://parcel.epost.go.kr/parcel/use_guide/charge_1.jsp' },
+  { id: 'lotte', label: '롯데택배 요금안내', url: 'https://www.lotteglogis.com/mobile/reservation/feeinfo/write' },
+  { id: 'logen', label: '로젠택배 요금안내', url: 'https://www.ilogen.com/web/personal/chargeInfo' },
+  { id: 'cj', label: 'CJ대한통운 배송운임', url: 'https://www.cjlogistics.com/ko/utility/parcel-price' },
+  { id: 'gsWeight', label: 'GS25 중량별 운임', url: 'https://www.cvsnet.co.kr/service/national-delivery/use/contentsid/205/index.do' },
+  { id: 'gsHalf', label: 'GS25 반값택배', url: 'https://www.cvsnet.co.kr/service/slow-delivery/use/contentsid/274/index.do' },
+  { id: 'cuHalf', label: 'CU 반값택배 (ZDNet 2026.02)', url: 'https://zdnet.co.kr/view/?no=20260209092755' },
+  { id: 'seven', label: '세븐일레븐 착한택배 (헤럴드경제 2026.04)', url: 'https://www.heraldk.com/article/2026040717030145483' },
 ]
 
 export const CARRIER_DATA: CarrierData[] = [
@@ -297,19 +299,22 @@ export function sizeCutSaving(
   return null
 }
 
+/** 배송 불가 사유 코드 — 화면 문구는 shippingCalc.unavailableReason.<코드> ({kg}·{cm} = 업체 한도) */
+export type UnavailableReason = 'maxWeight' | 'maxGirth' | 'noJeju' | 'noIsland' | 'overWeight' | 'noJejuRate' | 'noIslandRate' | 'unavailable'
+
 export function getUnavailableReason(
   carrier: CarrierData,
   weight: number,
   girth: number,
   dest: DestinationType,
-): string {
-  if (weight > carrier.maxWeight) return `최대 ${carrier.maxWeight}kg 초과`
-  if (girth > carrier.maxGirth) return `세변합 ${carrier.maxGirth}cm 초과`
-  if (dest === 'jeju' && !carrier.jejuAvailable) return '제주 배송불가'
-  if (dest === 'island' && !carrier.islandAvailable) return '도서산간 배송불가'
+): UnavailableReason {
+  if (weight > carrier.maxWeight) return 'maxWeight'
+  if (girth > carrier.maxGirth) return 'maxGirth'
+  if (dest === 'jeju' && !carrier.jejuAvailable) return 'noJeju'
+  if (dest === 'island' && !carrier.islandAvailable) return 'noIsland'
   const tier = findTier(carrier, weight, girth)
-  if (!tier) return '중량 초과'
-  if (dest === 'jeju' && !tier.jejuPrice) return '제주 요금 미제공'
-  if (dest === 'island' && !tier.islandPrice) return '도서산간 요금 미제공'
-  return '배송 불가'
+  if (!tier) return 'overWeight'
+  if (dest === 'jeju' && !tier.jejuPrice) return 'noJejuRate'
+  if (dest === 'island' && !tier.islandPrice) return 'noIslandRate'
+  return 'unavailable'
 }

@@ -3817,6 +3817,12 @@
     }
   },
   "bogeumjariLoan": {
+    "fmt": {
+      "eokMan": "₩{won}",
+      "eok": "₩{won}",
+      "man": "₩{won}",
+      "won": "₩{won}"
+    },
     "loanType": {
       "first": {
         "label": "First-time buyer",
@@ -10332,6 +10338,7 @@
       "swap": "Swap Dates"
     },
     "add": {
+      "directionLabel": "Direction",
       "businessShort": "business days",
       "toDday": "Open as D-Day",
       "baseDate": "Base Date",
@@ -18304,6 +18311,98 @@
     }
   },
   "shippingCalc": {
+    "carrierData": {
+      "cj": {
+        "name": "CJ Logistics",
+        "service": "Home pickup",
+        "days": "Next day"
+      },
+      "hanjin": {
+        "name": "Hanjin",
+        "service": "Home pickup",
+        "days": "Next day"
+      },
+      "lotte": {
+        "name": "Lotte",
+        "service": "Home pickup",
+        "days": "Next day"
+      },
+      "logen": {
+        "name": "Logen",
+        "service": "Home pickup",
+        "days": "1–2 days",
+        "note": "Jeju over 5kg and remote islands: ask separately"
+      },
+      "post_visit": {
+        "name": "Korea Post",
+        "service": "Home pickup",
+        "days": "Next day",
+        "note": "Jeju D+2 · island delivery times vary"
+      },
+      "post_registered": {
+        "name": "Korea Post registered parcel",
+        "service": "At the counter",
+        "days": "Next day",
+        "note": "Tracking and compensation · Jeju D+2"
+      },
+      "post_regular": {
+        "name": "Korea Post regular parcel",
+        "service": "At the counter",
+        "days": "D+3",
+        "note": "Lowest price, no tracking or compensation"
+      },
+      "cu_standard": {
+        "name": "CU",
+        "service": "CU POST (standard)",
+        "days": "Next day",
+        "note": "Lotte Global Logistics or Korea Post · home delivery"
+      },
+      "cu_economy": {
+        "name": "CU",
+        "service": "Half-price (store→store)",
+        "days": "Next day",
+        "note": "Store pickup only"
+      },
+      "gs_standard": {
+        "name": "GS25",
+        "service": "Standard",
+        "days": "Next day",
+        "note": "Home delivery · same region from 500 KRW cheaper"
+      },
+      "gs_halfprice": {
+        "name": "GS25",
+        "service": "Half-price (store→store)",
+        "days": "Within 4 days",
+        "note": "Store pickup only · Jeju 5–7 days"
+      },
+      "seven": {
+        "name": "7-Eleven",
+        "service": "Budget parcel (store→store)",
+        "days": "2–3 days",
+        "note": "Flat nationwide rate · store pickup only"
+      }
+    },
+    "unavailableReason": {
+      "maxWeight": "Over {kg}kg limit",
+      "maxGirth": "Over {cm}cm (sum of sides)",
+      "noJeju": "No Jeju delivery",
+      "noIsland": "No remote-island delivery",
+      "overWeight": "Over weight limit",
+      "noJejuRate": "No Jeju rate",
+      "noIslandRate": "No remote-island rate",
+      "unavailable": "Not available"
+    },
+    "rateSources": {
+      "kpost": "Korea Post parcel rates",
+      "epostVisit": "Korea Post home-pickup rates",
+      "lotte": "Lotte rates",
+      "logen": "Logen rates",
+      "cj": "CJ Logistics rates",
+      "gsWeight": "GS25 rates by weight",
+      "gsHalf": "GS25 half-price parcel",
+      "cuHalf": "CU half-price parcel (ZDNet 2026.02)",
+      "seven": "7-Eleven budget parcel (Herald Economy 2026.04)"
+    },
     "weightSummary": "Weight & size",
     "ratesTitle": {
       "standard": "Rates by courier",
@@ -18397,7 +18496,7 @@
       "baseCost": "Base Cost",
       "surcharge": "Surcharge (Jeju/Islands)",
       "total": "Estimated Cost",
-      "won": "KRW",
+      "won": " KRW",
       "kg": "kg",
       "note": "Actual rates may vary by carrier policy",
       "unavailable": "Not available",
@@ -23079,6 +23178,7 @@
       "schedule": "Maintenance schedule"
     },
     "m": {
+      "noInterval": "No scheduled change under normal use (inspect per manual)",
       "unnamedCar": "My car {n}",
       "months": "{n} mo",
       "or": " or ",
@@ -23096,7 +23196,7 @@
       "condition": "Driving conditions",
       "normal": "Normal",
       "severe": "Severe",
-      "severeHelp": "Severe: repeated short trips, frequent traffic jams/idling, unpaved or dusty roads, frequent hills, towing or roof cargo, taxi/commercial use. Oil and filter intervals drop to about half.",
+      "severeHelp": "Severe: repeated short trips, frequent traffic jams/idling, unpaved or dusty roads, frequent hills, towing or roof cargo, taxi/commercial use. Oil and filter intervals drop to about half, and automatic transmission fluid (no scheduled change under normal use) is replaced every 100,000 km.",
       "currentKm": "Current odometer",
       "monthlyKm": "Average km per month",
       "reg": "First registration (year-month)",
@@ -23151,7 +23251,7 @@
           "title": "Basis for intervals",
           "items": [
             "Hyundai Motor Group consumables guide: engine oil & filter 15,000 km/12 mo (severe 7,500 km/6 mo), coolant first at 200,000 km/10 yr then 40,000 km/2 yr, brake fluid 50,000 km, spark plugs 160,000 km",
-            "Hyundai owner's manual severe schedule: automatic transmission fluid 100,000 km (many models need none under normal use)",
+            "Hyundai owner's manual (2025 Tucson): automatic transmission fluid needs no inspection or change under normal use and is replaced every 100,000 km under severe use. DCT and other transmissions differ by model, so check your own manual",
             "Air filter, cabin filter, tires, battery, wipers and brake pads use general industry guidelines - large variation by model",
             "LPG spark plugs use a shorter general guideline of about 40,000 km",
             "EVs have no engine oil, spark plugs, air cleaner or transmission oil; follow the maker's guide for reducer oil"
@@ -28875,6 +28975,7 @@
     }
   },
   "presentationTimer": {
+    "progressLabel": "Progress",
     "nMin": "{n} min",
     "durMS": "{m}m {s}s",
     "durS": "{s}s",

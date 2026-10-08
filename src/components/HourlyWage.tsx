@@ -130,8 +130,8 @@ export default function HourlyWage() {
           <div className="ui-card p-6 space-y-5">
             {r && <MobileResultLink href="#hourly-wage-result" label={t('result.monthlyWage')} value={`${won(r.monthly)}${t('result.won')}`} />}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">{t('inputType')}</label>
-              <div className="grid grid-cols-5 gap-1">
+              <label id="hw-type-label" className="block text-sm font-medium text-body mb-2">{t('inputType')}</label>
+              <div className="grid grid-cols-5 gap-1" role="group" aria-labelledby="hw-type-label">
                 {TYPES.map((type) => (
                   <button
                     key={type}
@@ -171,7 +171,7 @@ export default function HourlyWage() {
               <label htmlFor="hw-weekly" className="block text-sm font-medium text-body mb-2">
                 {t('weeklyHours')}
               </label>
-              <div className="grid grid-cols-4 gap-1.5 mb-2">
+              <div className="grid grid-cols-4 gap-1.5 mb-2" role="group" aria-label={t('weeklyHours')}>
                 {PRESETS.map((h) => (
                   <button
                     key={h}

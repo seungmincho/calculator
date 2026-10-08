@@ -497,13 +497,16 @@ export default function RegexExtractor() {
               setPattern(inputs.pattern || '')
               setFlags(inputs.flags || 'g')
               setReplacement(inputs.replacement || '')
-              setInputText(inputs.inputText || '')
+              // 입력 텍스트는 이력의 result 쪽에 저장됨
+              const saved = histories.find(h => h.id === historyId)?.result
+              setInputText(String(inputs.inputText ?? saved?.inputText ?? ''))
             }
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
           formatResult={(result: Record<string, unknown>) => {
-            const matchCount = Number(result.matchCount) || 0
+            // 매치 수는 inputs.matchCount에 저장되고 result에는 matches 배열이 있음
+            const matchCount = Array.isArray(result.matches) ? result.matches.length : Number(result.matchCount) || 0
             return `${matchCount}개 매치`
           }}
         />

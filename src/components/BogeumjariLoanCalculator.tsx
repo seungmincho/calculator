@@ -13,7 +13,7 @@ import ToolIcon from '@/components/ToolIcon';
 import {
   type LoanType, type Owned, type HouseKind, type Region, type Credit, type CheckStatus, type CheckItem,
   REGIONS, CREDITS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPES, DIDIMDOL, FRAUD, HOUSE_PRICE_LIMIT,
-  getIncomeLimit, calcBogeumjari, didimdolHint, annuity, fmtKRW, rateFor,
+  getIncomeLimit, calcBogeumjari, didimdolHint, annuity, fmtKRW as fmtKRWBase, rateFor,
 } from '@/utils/bogeumjari';
 import { useTranslations } from '@/lib/i18n';
 import '@/lib/i18n/ns/bogeumjariLoan';
@@ -58,6 +58,8 @@ const SITES = [
 export default function BogeumjariLoanCalculator() {
   const t = useTranslations('bogeumjariLoan');
   const tf = useTranslations('footer');
+  // 억·만원 표기도 번역 템플릿(fmt.*)으로 — ko 는 "3억 6,000만원" 그대로
+  const fmtKRW = (n: number) => fmtKRWBase(n, t);
   const [income, setIncome] = useState(DEFAULTS.income);
   const [children, setChildren] = useState(DEFAULTS.children);
   const [price, setPrice] = useState(DEFAULTS.price);
@@ -131,8 +133,11 @@ export default function BogeumjariLoanCalculator() {
   const yearsLabel = (n: string | number) => t('years', { n });
   const fraud = perks.includes('fraud');
   const typeLabel = t(`loanType.${loanType}.label`);
-  const checkLabel = (c: CheckItem) => t(`checks.${c.id}.label`, c.vars);
-  const checkDetail = (c: CheckItem) => t(`checks.${c.id}.${c.msg}`, c.vars);
+  // 체크 vars 의 금액(income·price·limit)은 원 단위 숫자로 오므로 여기서 표기
+  const checkVars = (c: CheckItem) => c.vars && Object.fromEntries(Object.entries(c.vars).map(([k, v]) =>
+    [k, k === 'income' || k === 'price' || k === 'limit' ? fmtKRW(Number(v)) : v]));
+  const checkLabel = (c: CheckItem) => t(`checks.${c.id}.label`, checkVars(c));
+  const checkDetail = (c: CheckItem) => t(`checks.${c.id}.${c.msg}`, checkVars(c));
   const limitLabel = (key: 'ltv' | 'cap' | 'dti') => !result ? ''
     : key === 'ltv' ? t('limits.ltv', { pct: Math.round(result.ltv * 100), note: t(`limits.ltvNote.${result.ltvNote}`) })
     : key === 'cap' ? t('limits.cap', { type: fraud ? t('perks.fraud') : typeLabel })
@@ -185,6 +190,10 @@ export default function BogeumjariLoanCalculator() {
     if (!inputs) return;
     // 구버전 이력 키(householdIncome/childCount/housePrice/loanPeriod) 호환
     const alias: Record<string, string> = { income: 'householdIncome', children: 'childCount', price: 'housePrice', type: 'loanType', period: 'loanPeriod' };
+    // applyInputs는 있는 값만 바꿈 → 빈 칸(debt·want)·구버전에 없는 값은 지금 화면 값이 아니라 기본값으로
+    setIncome(DEFAULTS.income); setPrice(DEFAULTS.price); setLoanType(DEFAULTS.type); setChildren(DEFAULTS.children); setPeriod(DEFAULTS.period);
+    setAge(DEFAULTS.age); setOwned(DEFAULTS.owned); setKind(DEFAULTS.kind); setRegion(DEFAULTS.region); setCredit(DEFAULTS.credit);
+    setDebt(DEFAULTS.debt); setWant(DEFAULTS.want); setMethod(DEFAULTS.method); setPerks([]);
     applyInputs((k) => {
       const v = inputs[k] ?? inputs[alias[k]] ?? (k === 'type' ? inputs.loanType : undefined);
       if (v === undefined || v === null) return null;

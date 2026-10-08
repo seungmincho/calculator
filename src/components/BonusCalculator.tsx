@@ -146,24 +146,24 @@ export default function BonusCalculator() {
           <div className="ui-card p-6 space-y-5 lg:sticky lg:top-24">
             {r && <MobileResultLink href="#bonus-calculator-result" label={t('result.finalNet')} value={`${fmt(r.final.net)}${t('chart.won')}`} />}
             <div>
-              <label className={label}>{t('annualSalary')}</label>
-              <input type="text" inputMode="numeric" value={salary} onChange={e => setSalary(formatInput(e.target.value))}
+              <label htmlFor="bonus-salary" className={label}>{t('annualSalary')}</label>
+              <input id="bonus-salary" type="text" inputMode="numeric" value={salary} onChange={e => setSalary(formatInput(e.target.value))}
                 placeholder={t('annualSalaryPlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
               {monthlySalary > 0 && <p className="text-xs text-muted mt-1">{t('monthlySalaryHint', { amount: fmt(monthlySalary) })}</p>}
             </div>
 
             <div>
-              <label className={label}>{t('bonusType')}</label>
-              <select value={bonusType} onChange={e => setBonusType(e.target.value)} className="ui-field w-full px-4 py-3">
+              <label htmlFor="bonus-type" className={label}>{t('bonusType')}</label>
+              <select id="bonus-type" value={bonusType} onChange={e => setBonusType(e.target.value)} className="ui-field w-full px-4 py-3">
                 {['ps', 'pi', 'management', 'individual', 'custom'].map(k => <option key={k} value={k}>{t(`bonusTypes.${k}`)}</option>)}
               </select>
             </div>
 
             <div>
-              <label className={label}>{t('bonusInput')}</label>
-              <div className="flex gap-1 p-1 bg-soft rounded-xl">
+              <label id="bonus-method-label" className={label}>{t('bonusInput')}</label>
+              <div className="flex gap-1 p-1 bg-soft rounded-xl" role="group" aria-labelledby="bonus-method-label">
                 {METHODS.map(m => (
-                  <button key={m} type="button" onClick={() => { setMethod(m); if (m !== 'amount') setPercent(m === 'monthly' ? 100 : 10) }} className={seg(method === m)}>
+                  <button key={m} type="button" onClick={() => { setMethod(m); if (m !== 'amount') setPercent(m === 'monthly' ? 100 : 10) }} aria-pressed={method === m} className={seg(method === m)}>
                     {t(m === 'monthly' ? 'byMonthlyPercent' : m === 'percent' ? 'byPercent' : 'byAmount')}
                   </button>
                 ))}
@@ -172,28 +172,28 @@ export default function BonusCalculator() {
 
             {method === 'amount' ? (
               <div>
-                <label className={label}>{t('bonusAmount')}</label>
-                <input type="text" inputMode="numeric" value={bonusAmount} onChange={e => setBonusAmount(formatInput(e.target.value))}
+                <label htmlFor="bonus-amount" className={label}>{t('bonusAmount')}</label>
+                <input id="bonus-amount" type="text" inputMode="numeric" value={bonusAmount} onChange={e => setBonusAmount(formatInput(e.target.value))}
                   placeholder={t('bonusAmountPlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
               </div>
             ) : (
               <div>
-                <label className={label}>{t(method === 'monthly' ? 'bonusMonthlyPercent' : 'bonusPercent')}</label>
+                <label id="bonus-percent-label" htmlFor="bonus-percent" className={label}>{t(method === 'monthly' ? 'bonusMonthlyPercent' : 'bonusPercent')}</label>
                 <div className="relative">
-                  <input type="number" inputMode="decimal" min={0} value={percent} onChange={e => setPercent(Math.max(0, parseFloat(e.target.value) || 0))}
+                  <input id="bonus-percent" type="number" inputMode="decimal" min={0} value={percent} onChange={e => setPercent(Math.max(0, parseFloat(e.target.value) || 0))}
                     className="ui-field w-full px-4 py-3 pr-10 text-right tabular-nums" />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">%</span>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {PRESETS[method].map(p => <button key={p} type="button" onClick={() => setPercent(p)} className={chip(percent === p)}>{p}%</button>)}
+                <div className="flex flex-wrap gap-2 mt-2" role="group" aria-labelledby="bonus-percent-label">
+                  {PRESETS[method].map(p => <button key={p} type="button" onClick={() => setPercent(p)} aria-pressed={percent === p} className={chip(percent === p)}>{p}%</button>)}
                 </div>
                 {bonusGross > 0 && <p className="text-xs text-muted mt-2 tabular-nums">= {fmt(bonusGross)}{t('chart.won')}</p>}
               </div>
             )}
 
             <div>
-              <label className={label}>{t('period')}</label>
-              <select value={period} onChange={e => setPeriod(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
+              <label htmlFor="bonus-period" className={label}>{t('period')}</label>
+              <select id="bonus-period" value={period} onChange={e => setPeriod(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
                 {Array.from({ length: 12 }, (_, i) => i + 1).map(n => <option key={n} value={n}>{t(n === 1 ? 'periodOne' : 'periodN', { n })}</option>)}
               </select>
               <p className="text-xs text-muted mt-1">{t('periodHint')}</p>
@@ -201,22 +201,22 @@ export default function BonusCalculator() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={label}>{t('dependents')}</label>
-                <select value={dependents} onChange={e => setDependents(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
+                <label htmlFor="bonus-dependents" className={label}>{t('dependents')}</label>
+                <select id="bonus-dependents" value={dependents} onChange={e => setDependents(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
                   {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
               <div>
-                <label className={label}>{t('childrenUnder20')}</label>
-                <select value={safeChildren} onChange={e => setChildren(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
+                <label htmlFor="bonus-children" className={label}>{t('childrenUnder20')}</label>
+                <select id="bonus-children" value={safeChildren} onChange={e => setChildren(parseInt(e.target.value))} className="ui-field w-full px-4 py-3">
                   {Array.from({ length: dependents }, (_, i) => i).map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
             </div>
 
             <div>
-              <label className={label}>{t('nonTaxable')}</label>
-              <input type="text" inputMode="numeric" value={nonTaxable} onChange={e => setNonTaxable(formatInput(e.target.value))}
+              <label htmlFor="bonus-nontaxable" className={label}>{t('nonTaxable')}</label>
+              <input id="bonus-nontaxable" type="text" inputMode="numeric" value={nonTaxable} onChange={e => setNonTaxable(formatInput(e.target.value))}
                 placeholder={t('nonTaxablePlaceholder')} className="ui-field w-full px-4 py-3 text-right tabular-nums" />
             </div>
 
@@ -278,7 +278,7 @@ export default function BonusCalculator() {
 
               <div className="flex gap-1 p-1 bg-soft rounded-xl">
                 {['result', 'simulation', 'taxAnalysis'].map((tab, i) => (
-                  <button key={tab} type="button" onClick={() => setActiveTab(i)} className={seg(activeTab === i)}>
+                  <button key={tab} type="button" onClick={() => setActiveTab(i)} aria-pressed={activeTab === i} className={seg(activeTab === i)}>
                     {t(tab === 'result' ? 'result.breakdownTitle' : `${tab}.title`)}
                   </button>
                 ))}

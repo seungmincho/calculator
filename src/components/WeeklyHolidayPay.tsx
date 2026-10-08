@@ -141,7 +141,7 @@ export default function WeeklyHolidayPay() {
 
             <div>
               <span className="block text-sm font-medium text-body mb-2">{t('u.inputMode')}</span>
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 gap-1.5" role="group" aria-label={t('u.inputMode')}>
                 <button onClick={() => switchMode('even')} aria-pressed={mode === 'even'} className={seg(mode === 'even')}>{t('u.modeEven')}</button>
                 <button onClick={() => switchMode('days')} aria-pressed={mode === 'days'} className={seg(mode === 'days')}>{t('u.modeDays')}</button>
               </div>
@@ -151,7 +151,7 @@ export default function WeeklyHolidayPay() {
               <>
                 <div>
                   <span className="block text-sm font-medium text-body mb-2">{t('input.workDays')}</span>
-                  <div className="grid grid-cols-7 gap-1">
+                  <div className="grid grid-cols-7 gap-1" role="group" aria-label={t('input.workDays')}>
                     {[1, 2, 3, 4, 5, 6, 7].map((d) => (
                       <button key={d} onClick={() => setDays(d)} aria-pressed={days === d} className={seg(days === d)}>{d}</button>
                     ))}
@@ -193,7 +193,7 @@ export default function WeeklyHolidayPay() {
 
             <div>
               <label htmlFor="whp-break" className="block text-sm font-medium text-body mb-2">{t('u.breakLabel')}</label>
-              <div className="grid grid-cols-4 gap-1.5">
+              <div className="grid grid-cols-4 gap-1.5" role="group" aria-label={t('u.breakLabel')}>
                 {[0, 30, 60].map((b) => (
                   <button key={b} onClick={() => setBrk(b)} aria-pressed={brk === b} className={seg(brk === b)}>
                     {t('u.minutes', { n: b })}
@@ -213,7 +213,7 @@ export default function WeeklyHolidayPay() {
 
             <div>
               <span className="block text-sm font-medium text-body mb-2">{t('u.deductLabel')}</span>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-3 gap-1.5" role="group" aria-label={t('u.deductLabel')}>
                 {DEDUCTS.map((d) => (
                   <button key={d} onClick={() => setDeduct(d)} aria-pressed={deduct === d} className={seg(deduct === d)}>
                     {t(`u.deduct.${d}`)}
@@ -234,7 +234,7 @@ export default function WeeklyHolidayPay() {
                   {r.eligible ? t('eligible') : t('notEligible')}
                 </span>
               </div>
-              <div className="text-3xl font-bold text-fg tabular-nums mt-1">
+              <div className="text-3xl font-bold text-fg tabular-nums mt-1" aria-live="polite">
                 {won(r.holidayPay)}<span className="text-lg font-semibold ml-1">{t('u.won')}</span>
               </div>
               <p className="text-xs text-muted mt-1">

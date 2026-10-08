@@ -79,6 +79,8 @@ export default function ShippingCalc() {
 
   // 공유 카드: 전체 최저가 + 다른 업체 3곳 (업체명 기준 최저가)
   const won = (n: number) => n.toLocaleString() + t('result.won')
+  // 택배사 표시 문구는 id로 번역 (utils 데이터의 한국어 원본은 비교·검증용)
+  const cd = (id: string, k: 'name' | 'service' | 'days' | 'note') => t(`carrierData.${id}.${k}`)
   const otherCarriers = allResults
     .filter(r => r.price !== null && r !== bestOverall)
     .filter((r, i, arr) => r.carrier.name !== bestOverall?.carrier.name && arr.findIndex(x => x.carrier.name === r.carrier.name) === i)
@@ -155,7 +157,7 @@ export default function ShippingCalc() {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             {bestOverall && (
-              <MobileResultLink href="#shipping-result" label={bestOverall.carrier.name} value={won(bestOverall.price!)} more={t('jumpToResult')} />
+              <MobileResultLink href="#shipping-result" label={cd(bestOverall.carrier.id, 'name')} value={won(bestOverall.price!)} more={t('jumpToResult')} />
             )}
 
             {/* Weight */}
@@ -295,7 +297,7 @@ export default function ShippingCalc() {
               <div className="mt-1 flex items-end justify-between gap-3 flex-wrap">
                 <div className="min-w-0">
                   <div className="text-base font-semibold text-fg">
-                    {bestOverall.carrier.name} <span className="text-sm font-normal text-muted">{bestOverall.carrier.serviceLabel}</span>
+                    {cd(bestOverall.carrier.id, 'name')} <span className="text-sm font-normal text-muted">{cd(bestOverall.carrier.id, 'service')}</span>
                   </div>
                   <div className="mt-1.5 flex flex-wrap gap-1.5 text-xs">
                     <span className="px-2 py-0.5 rounded-full bg-soft text-body">
@@ -304,7 +306,7 @@ export default function ShippingCalc() {
                     {bestOverall.carrier.cvsPickupOnly && (
                       <span className="px-2 py-0.5 rounded-full bg-soft text-body">{t('bestOverall.cvsPickup')}</span>
                     )}
-                    <span className="px-2 py-0.5 rounded-full bg-soft text-body">{bestOverall.carrier.deliveryDays}</span>
+                    <span className="px-2 py-0.5 rounded-full bg-soft text-body">{cd(bestOverall.carrier.id, 'days')}</span>
                   </div>
                 </div>
                 <div className="text-3xl font-bold text-fg tabular-nums" aria-live="polite" aria-atomic="true">
@@ -316,14 +318,14 @@ export default function ShippingCalc() {
                 card={{
                   tool: t('title'),
                   label: t('share.label', { kg: actualWeight, cm: girth.toFixed(0), dest: t(`destinations.${destination}`) }),
-                  headline: `${bestOverall.carrier.name} ${won(bestOverall.price!)}`,
-                  sub: `${bestOverall.carrier.serviceLabel} · ${bestOverall.carrier.deliveryDays}`,
+                  headline: `${cd(bestOverall.carrier.id, 'name')} ${won(bestOverall.price!)}`,
+                  sub: `${cd(bestOverall.carrier.id, 'service')} · ${cd(bestOverall.carrier.id, 'days')}`,
                   rows: [
                     { label: t('share.size'), value: `${actualWeight}kg · ${girth.toFixed(0)}cm` },
-                    ...otherCarriers.map(r => ({ label: r.carrier.name, value: won(r.price!) })),
+                    ...otherCarriers.map(r => ({ label: cd(r.carrier.id, 'name'), value: won(r.price!) })),
                   ],
                 }}
-                text={t('share.text', { kg: actualWeight, cm: girth.toFixed(0), carrier: bestOverall.carrier.name, price: won(bestOverall.price!) })}
+                text={t('share.text', { kg: actualWeight, cm: girth.toFixed(0), carrier: cd(bestOverall.carrier.id, 'name'), price: won(bestOverall.price!) })}
                 fileName="shipping-cost"
               />
             </div>
@@ -379,9 +381,9 @@ export default function ShippingCalc() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center flex-wrap gap-1.5">
                           <span className={`font-semibold text-sm ${isUnavailable ? 'text-faint' : 'text-fg'}`}>
-                            {carrier.name}
+                            {cd(carrier.id, 'name')}
                           </span>
-                          <span className="text-xs text-muted">{carrier.serviceLabel}</span>
+                          <span className="text-xs text-muted">{cd(carrier.id, 'service')}</span>
                           {isCheapest && (
                             <span className="px-1.5 py-0.5 text-xs bg-primary text-white rounded-full font-medium">{t('result.cheapest')}</span>
                           )}
@@ -390,15 +392,15 @@ export default function ShippingCalc() {
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-faint">{t('result.delivery', { days: carrier.deliveryDays })}</span>
+                          <span className="text-xs text-faint">{t('result.delivery', { days: cd(carrier.id, 'days') })}</span>
                           {carrier.note && (
-                            <span className="text-xs text-faint">· {carrier.note}</span>
+                            <span className="text-xs text-faint">· {cd(carrier.id, 'note')}</span>
                           )}
                         </div>
                       </div>
                       <div className="flex-shrink-0 flex items-center gap-1.5">
                         {isUnavailable ? (
-                          <span className="text-xs text-red-500 dark:text-red-400 font-medium">{unavailableReason}</span>
+                          <span className="text-xs text-red-500 dark:text-red-400 font-medium">{t(`unavailableReason.${unavailableReason}`, { kg: carrier.maxWeight, cm: carrier.maxGirth })}</span>
                         ) : (
                           <>
                             <span className={`text-lg font-bold ${isCheapest ? 'text-sub' : 'text-fg'}`}>
@@ -426,7 +428,7 @@ export default function ShippingCalc() {
               <p className="mt-4 bg-subtle rounded-2xl p-4 text-sm text-sub" aria-live="polite">
                 {t('sizeHint', {
                   cut: sizeHint.cut,
-                  carrier: `${availableResults[0].carrier.name} ${availableResults[0].carrier.serviceLabel}`,
+                  carrier: `${cd(availableResults[0].carrier.id, 'name')} ${cd(availableResults[0].carrier.id, 'service')}`,
                   saving: sizeHint.saving.toLocaleString(),
                   from: availableResults[0].price!.toLocaleString(),
                   to: sizeHint.price.toLocaleString(),
@@ -533,15 +535,15 @@ export default function ShippingCalc() {
             <tbody className="divide-y divide-line">
               {CARRIER_DATA.map(c => (
                 <tr key={c.id} className="hover:bg-subtle">
-                  <td className="px-3 py-2 font-medium text-body whitespace-nowrap">{c.name}</td>
-                  <td className="px-3 py-2 text-muted whitespace-nowrap">{c.serviceLabel}</td>
+                  <td className="px-3 py-2 font-medium text-body whitespace-nowrap">{cd(c.id, 'name')}</td>
+                  <td className="px-3 py-2 text-muted whitespace-nowrap">{cd(c.id, 'service')}</td>
                   {TABLE_WEIGHTS.map(w => (
                     <td key={w} className="px-3 py-2 text-right text-body tabular-nums">
                       {fmtPrice(getCarrierPrice(c, w, 0, 'mainland'), t('result.won'))}
                     </td>
                   ))}
                   <td className="px-3 py-2 text-right text-faint whitespace-nowrap">{c.maxWeight}kg/{c.maxGirth}cm</td>
-                  <td className="px-3 py-2 text-center text-faint whitespace-nowrap">{c.deliveryDays}</td>
+                  <td className="px-3 py-2 text-center text-faint whitespace-nowrap">{cd(c.id, 'days')}</td>
                 </tr>
               ))}
             </tbody>
@@ -555,7 +557,7 @@ export default function ShippingCalc() {
           {RATE_SOURCES.map((src, i) => (
             <span key={src.url}>
               {i > 0 && ' · '}
-              <a href={src.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-fg">{src.label}</a>
+              <a href={src.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-fg">{t(`rateSources.${src.id}`)}</a>
             </span>
           ))}
         </div>
@@ -573,19 +575,14 @@ export default function ShippingCalc() {
         onLoadHistory={(id) => {
           const inputs = loadFromHistory(id)
           if (inputs) {
-            if (inputs.weight !== undefined) setWeight(String(inputs.weight))
-            if (inputs.width  !== undefined) setWidth(String(inputs.width))
-            if (inputs.height !== undefined) setHeight(String(inputs.height))
-            if (inputs.depth  !== undefined) setDepth(String(inputs.depth))
-            if (inputs.destination !== undefined) {
-              const dest = inputs.destination as string
-              if (dest === 'domestic' || dest === 'mainland') setDestination('mainland')
-              else if (dest === 'jeju')   setDestination('jeju')
-              else if (dest === 'island') setDestination('island')
-            }
-            if (inputs.carrierCategory !== undefined) {
-              setCarrierCategory(inputs.carrierCategory as CarrierCategoryType)
-            }
+            // 빠진 값·모르는 값(구버전 domestic·international 등)은 지금 화면 값이 아니라 기본값으로
+            setWeight(inputs.weight != null ? String(inputs.weight) : '2')
+            setWidth(inputs.width != null ? String(inputs.width) : '30')
+            setHeight(inputs.height != null ? String(inputs.height) : '20')
+            setDepth(inputs.depth != null ? String(inputs.depth) : '15')
+            const dest = inputs.destination as string
+            setDestination(dest === 'jeju' || dest === 'island' ? dest : 'mainland')
+            setCarrierCategory(inputs.carrierCategory === 'cvs' ? 'cvs' : 'standard')
           }
           setShowSaveButton(false)
         }}

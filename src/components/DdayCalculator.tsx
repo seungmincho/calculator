@@ -251,12 +251,12 @@ const DdayCalculator = () => {
               </button>
               <div>
                 <p className="text-sm font-medium text-body mb-2">{t('presets.title')}</p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2" role="group" aria-label={t('presets.title')}>
                   {presetList.map(p => {
                     const name = t(`presets.${p.key}`)
                     const active = target === p.date && title === name
                     return (
-                      <button key={p.key} onClick={() => load({ title: name, date: p.date })} className={segBtn(active)}
+                      <button key={p.key} onClick={() => load({ title: name, date: p.date })} className={segBtn(active)} aria-pressed={active}
                         title={p.estimated ? t('presets.estimated') : undefined}>
                         {name} <span className={active ? 'text-white/80' : 'text-muted'}>{ddayLabel(daysBetween(today!, p.date))}</span>
                       </button>
@@ -277,7 +277,7 @@ const DdayCalculator = () => {
                     const active = s.date === target && s.title === displayTitle
                     return (
                       <li key={s.id} className="flex items-center gap-2 py-2">
-                        <button onClick={() => load(s)} className={`flex-1 min-w-0 text-left rounded-xl px-3 py-2 ${active ? 'bg-primary-soft' : 'hover:bg-subtle'}`}>
+                        <button onClick={() => load(s)} aria-current={active || undefined} className={`flex-1 min-w-0 text-left rounded-xl px-3 py-2 ${active ? 'bg-primary-soft' : 'hover:bg-subtle'}`}>
                           <span className={`block text-sm font-medium truncate ${active ? 'text-primary' : 'text-fg'}`}>{s.title}</span>
                           <span className="block text-xs text-muted">{fmt(s.date)}</span>
                         </button>
@@ -301,7 +301,7 @@ const DdayCalculator = () => {
           <div className="lg:col-span-2 space-y-6">
             <div id="dday-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
               <p className="text-white/80 text-sm font-medium truncate">{displayTitle}</p>
-              <p className="text-6xl sm:text-7xl font-bold tabular-nums mt-2">{dday ? dday.label : 'D-'}</p>
+              <p className="text-6xl sm:text-7xl font-bold tabular-nums mt-2" aria-live="polite">{dday ? dday.label : 'D-'}</p>
               {isValidDate(target) && <p className="text-white/90 text-lg font-medium mt-3">{fmt(target)}</p>}
               {dday && (
                 <p className="text-white/70 text-sm mt-2">
@@ -338,10 +338,10 @@ const DdayCalculator = () => {
           <div className="lg:col-span-1">
             <div className="ui-card p-6 space-y-4">
               <div>
-                <p className={label}>{t('anniv.typeLabel')}</p>
-                <div className="grid grid-cols-3 gap-2">
+                <p id="anniv-type-label" className={label}>{t('anniv.typeLabel')}</p>
+                <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="anniv-type-label">
                   {ANNIV_TYPES.map(k => (
-                    <button key={k} onClick={() => setAnnivType(k)} className={segBtn(annivType === k)}>{t(`anniv.types.${k}.short`)}</button>
+                    <button key={k} onClick={() => setAnnivType(k)} aria-pressed={annivType === k} className={segBtn(annivType === k)}>{t(`anniv.types.${k}.short`)}</button>
                   ))}
                 </div>
               </div>
@@ -362,7 +362,7 @@ const DdayCalculator = () => {
           <div className="lg:col-span-2 space-y-6">
             {anniv && (
               <>
-                <div className="ui-hero p-6 sm:p-8">
+                <div className="ui-hero p-6 sm:p-8" aria-live="polite">
                   <p className="text-white/80 text-sm font-medium">{annivTitle}</p>
                   <p className="text-5xl sm:text-6xl font-bold tabular-nums mt-2">{annivHeadline}</p>
                   <p className="text-white/90 text-lg font-medium mt-3">{fmt(annivStart)}</p>
@@ -428,7 +428,7 @@ const DdayCalculator = () => {
           <div className="lg:col-span-2 space-y-6">
             {diffResult && (
               <>
-                <div className="ui-hero p-6 sm:p-8">
+                <div className="ui-hero p-6 sm:p-8" aria-live="polite">
                   <p className="text-white/80 text-sm font-medium">{fmt(start)} → {fmt(end)}</p>
                   <p className="text-5xl font-bold tabular-nums mt-2">{t('diff.totalDays', { n: diffResult.total.toLocaleString() })}</p>
                   <p className="text-white/70 text-sm mt-3">{statLine(diffResult)}</p>
@@ -456,9 +456,9 @@ const DdayCalculator = () => {
                 <label className={label} htmlFor="add-base">{t('add.baseDate')}</label>
                 <input id="add-base" type="date" value={base} onChange={e => setBase(e.target.value)} className="ui-field w-full px-4 py-3" />
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button onClick={() => setSubtract(false)} className={segBtn(!subtract)}>{t('add.direction.add')}</button>
-                <button onClick={() => setSubtract(true)} className={segBtn(subtract)}>{t('add.direction.subtract')}</button>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-label={t('add.directionLabel')}>
+                <button onClick={() => setSubtract(false)} aria-pressed={!subtract} className={segBtn(!subtract)}>{t('add.direction.add')}</button>
+                <button onClick={() => setSubtract(true)} aria-pressed={subtract} className={segBtn(subtract)}>{t('add.direction.subtract')}</button>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
@@ -484,7 +484,7 @@ const DdayCalculator = () => {
           <div className="lg:col-span-2 space-y-6">
             {addResult && addStats && (
               <>
-                <div className="ui-hero p-6 sm:p-8">
+                <div className="ui-hero p-6 sm:p-8" aria-live="polite">
                   <p className="text-white/80 text-sm font-medium">
                     {fmt(base)} {subtract ? '−' : '+'} {addValue.toLocaleString()}{t(`add.units.${addUnit}`)}{businessOnly && addUnit === 'days' ? ` (${t('add.businessShort')})` : ''}
                   </p>

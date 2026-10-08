@@ -183,8 +183,9 @@ export default function StockCalculator() {
     if (!i) return
     const c = (v: unknown) => String(v ?? '').replace(/,/g, '')
     setTab('trade'); setBuy(c(i.purchasePrice)); setSell(c(i.currentPrice)); setQty(c(i.shares) || '1')
-    if (i.fee !== undefined) setFee(c(i.fee))
-    if (MARKETS.includes(i.market as Market)) setMarket(i.market as Market)
+    // 수수료·시장이 없는 예전 이력은 지금 화면 값이 아니라 기본값으로
+    setFee(i.fee !== undefined ? c(i.fee) : '0.015')
+    setMarket(MARKETS.includes(i.market as Market) ? i.market as Market : 'kospi')
   }
   const formatHistory = (r: Record<string, unknown>) => `${pct(Number(r.returnPercentage) || 0)} (${signed(Number(r.totalProfit) || 0)}${W})`
 

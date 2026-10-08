@@ -161,8 +161,9 @@ export const generateHistoryTitle = {
   },
 
   tax: (inputs: Record<string, unknown>): string => {
-    const type = str(inputs.taxType, 'income');
-    const typeNames = { income: '소득세', vat: '부가세', capital: '양도소득세' };
+    // TaxCalculator는 탭을 activeTab('income' | 'vat' | 'capital-gains')으로 저장
+    const type = str(inputs.taxType ?? inputs.activeTab, 'income');
+    const typeNames = { income: '소득세', vat: '부가세', capital: '양도소득세', 'capital-gains': '양도소득세' };
     return `${typeNames[type as keyof typeof typeNames] || '세금'} 계산`;
   },
 
@@ -241,6 +242,7 @@ export const generateHistoryTitle = {
 
     const fuelLabels = {
       gasoline: '휘발유',
+      premium_gasoline: '고급휘발유',
       diesel: '경유',
       lpg: 'LPG'
     };
@@ -256,7 +258,7 @@ export const generateHistoryTitle = {
     const pattern = str(inputs.pattern, '');
     const operation = str(inputs.operation, 'match');
     const matchCount = Number(inputs.matchCount) || 0;
-    const opLabel = operation === 'replace' ? '치환' : operation === 'split' ? '분할' : '매칭';
+    const opLabel = operation === 'replace' ? '치환' : operation === 'split' ? '분할' : operation === 'extract' ? '추출' : '매칭';
     const patternShort = pattern.length > 20 ? pattern.slice(0, 20) + '…' : pattern;
     return `${opLabel} /${patternShort}/ ${matchCount}건`;
   },
@@ -348,7 +350,10 @@ export const generateHistoryTitle = {
   },
 
   ladder: (inputs: Record<string, unknown>): string => {
-    const participants = Array.isArray(inputs.participants) ? inputs.participants as string[] : [];
+    // LadderGame은 참가자를 { name, animal } 객체로 저장
+    const participants = Array.isArray(inputs.participants)
+      ? (inputs.participants as unknown[]).map(p => typeof p === 'string' ? p : str((p as { name?: unknown } | null)?.name))
+      : [];
     const participantCount = participants.length;
 
     const participantNames = participants.slice(0, 3).join(', ');
@@ -383,10 +388,14 @@ export const generateHistoryTitle = {
     const depth = str(inputs.depth, '0');
     const destination = str(inputs.destination, 'domestic');
 
+    // 지금 ShippingCalc는 mainland·jeju·island로 저장 (domestic·international·sameDay는 구버전)
     const destLabels: Record<string, string> = {
       domestic: '국내',
       international: '국제',
-      sameDay: '당일'
+      sameDay: '당일',
+      mainland: '내륙',
+      jeju: '제주도',
+      island: '도서산간'
     };
 
     const destLabel = destLabels[destination] || '국내';
@@ -394,13 +403,16 @@ export const generateHistoryTitle = {
   },
 
   bogeumjariLoan: (inputs: Record<string, unknown>): string => {
-    const income = parseNumericInput(inputs.householdIncome);
-    const members = str(inputs.householdMembers, '4');
-    const housePrice = parseNumericInput(inputs.housePrice);
+    // 지금 BogeumjariLoanCalculator는 income·price 키로 저장 (householdIncome·housePrice·householdMembers는 구버전)
+    const income = parseNumericInput(inputs.householdIncome ?? inputs.income);
+    const members = str(inputs.householdMembers, '');
+    const housePrice = parseNumericInput(inputs.housePrice ?? inputs.price);
     const loanType = str(inputs.loanType, 'first');
 
     const typeLabels = {
       first: '생애최초',
+      newlywed: '신혼부부',
+      multichild: '다자녀',
       general: '일반'
     };
 
@@ -408,6 +420,6 @@ export const generateHistoryTitle = {
     const incomeAmount = Math.floor(income / 10000000);
     const priceAmount = Math.floor(housePrice / 100000000);
 
-    return `${typeLabel} ${members}인 연소득${incomeAmount}천만원 ${priceAmount}억원`;
+    return `${typeLabel} ${members ? `${members}인 ` : ''}연소득${incomeAmount}천만원 ${priceAmount}억원`;
   }
 };

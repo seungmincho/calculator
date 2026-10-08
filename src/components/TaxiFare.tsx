@@ -251,9 +251,9 @@ export default function TaxiFare() {
                 />
                 <span className="text-sm text-muted whitespace-nowrap">km</span>
               </div>
-              <div className="grid grid-cols-5 gap-1.5">
+              <div className="grid grid-cols-5 gap-1.5" role="group" aria-label={t('distance')}>
                 {DISTANCE_PRESETS.map((km) => (
-                  <button key={km} type="button" onClick={() => setDistance(String(km))} className={`${seg(distanceNum === km)} py-2`}>
+                  <button key={km} type="button" onClick={() => setDistance(String(km))} aria-pressed={distanceNum === km} className={`${seg(distanceNum === km)} py-2`}>
                     {km}km
                   </button>
                 ))}
@@ -262,12 +262,13 @@ export default function TaxiFare() {
 
             <div>
               <span className={labelCls}>{t('traffic.label')}</span>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-3 gap-1.5" role="group" aria-label={t('traffic.label')}>
                 {TRAFFICS.map((tr) => (
                   <button
                     key={tr}
                     type="button"
                     onClick={() => { setTraffic(tr); setTimeAuto(true) }}
+                    aria-pressed={timeAuto && traffic === tr}
                     className={`${seg(timeAuto && traffic === tr)} py-2`}
                   >
                     {t(`traffic.${tr}`)}
@@ -330,9 +331,9 @@ export default function TaxiFare() {
 
             <div>
               <span className={labelCls}>{t('taxiType')}</span>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-3 gap-1.5" role="group" aria-label={t('taxiType')}>
                 {TAXI_TYPES.map((type) => (
-                  <button key={type} type="button" onClick={() => setTaxiType(type)} className={`${seg(taxiType === type)} py-2.5 px-1`}>
+                  <button key={type} type="button" onClick={() => setTaxiType(type)} aria-pressed={taxiType === type} className={`${seg(taxiType === type)} py-2.5 px-1`}>
                     {t(`typesShort.${type}`)}
                   </button>
                 ))}
@@ -409,9 +410,9 @@ export default function TaxiFare() {
           {/* 더치페이 */}
           <div className="ui-card p-6">
             <h2 className="text-lg font-semibold text-fg mb-3">{t('split.title')}</h2>
-            <div className="grid grid-cols-4 gap-1.5 mb-4">
+            <div className="grid grid-cols-4 gap-1.5 mb-4" role="group" aria-label={t('split.title')}>
               {PEOPLE.map((n) => (
-                <button key={n} type="button" onClick={() => setPeople(n)} className={`${seg(people === n)} py-2`}>
+                <button key={n} type="button" onClick={() => setPeople(n)} aria-pressed={people === n} className={`${seg(people === n)} py-2`}>
                   {n}{t('split.personUnit')}
                 </button>
               ))}
@@ -438,7 +439,7 @@ export default function TaxiFare() {
                 const pct = maxFare > 0 ? Math.round((f / maxFare) * 100) : 0
                 const on = taxiType === type
                 return (
-                  <button key={type} type="button" onClick={() => setTaxiType(type)} className="block w-full text-left">
+                  <button key={type} type="button" onClick={() => setTaxiType(type)} aria-pressed={on} className="block w-full text-left">
                     <div className="flex justify-between items-center mb-1">
                       <span className={`text-sm font-medium ${on ? 'text-primary' : 'text-body'}`}>{t(`types.${type}`)}</span>
                       <span className={`text-sm font-bold tabular-nums ${on ? 'text-primary' : 'text-fg'}`}>{f.toLocaleString()}{won}</span>
@@ -477,7 +478,7 @@ export default function TaxiFare() {
                       className={`cursor-pointer border-t border-line tabular-nums ${on ? 'bg-primary-soft text-primary font-semibold' : 'text-body hover:bg-subtle'}`}
                     >
                       <td className="py-2 pl-3">
-                        <button type="button" onClick={() => setRegion(rk)} className="text-left">{t(`regions.${rk}`)}</button>
+                        <button type="button" onClick={() => setRegion(rk)} aria-pressed={on} className="text-left">{t(`regions.${rk}`)}</button>
                       </td>
                       <td className="py-2 text-right">{REGION_RATES[rk].base.toLocaleString()}</td>
                       <td className={`py-2 text-right ${on ? '' : 'text-fg font-medium'}`}>{total.toLocaleString()}{won}</td>

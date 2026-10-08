@@ -325,8 +325,14 @@ export default function WorkHoursCalculator() {
 
   const handleSave = () => {
     if (!result) return
+    // 결과가 그대로 재현되게 근무 일정(입력 방식별 URL 형식)까지 저장. workDays는 이력 제목용
     saveCalculation(
-      { hourlyWage: wageNum, totalHours: result.totalHours },
+      {
+        hourlyWage: wageNum, totalHours: result.totalHours, workDays: result.workDayCount,
+        inputMode, autoBreak, smallBiz, ws: encodeWeek(schedule), dw: encodeDays(dailyWork),
+        start: periodStart, end: periodEnd, days: selectedWeekdays.map(b => b ? '1' : '0').join(''),
+        st: periodStartTime, et: periodEndTime, break: periodBreakTime,
+      },
       { basicPay: result.basicPay, overtimePay: result.overtimePay, nightPay: result.nightPay, holidayPay: result.holidayPay + result.holidayOverPay, weeklyHolidayPay: result.weeklyHolidayPay, totalPay: result.totalPay }
     )
     setShowSaveButton(false)
@@ -468,7 +474,23 @@ export default function WorkHoursCalculator() {
           histories={histories} isLoading={false}
           onLoadHistory={(id) => {
             const inp = loadFromHistory(id)
-            if (inp) setHourlyWage(inp.hourlyWage?.toString() || String(MIN_WAGE_2026))
+            if (!inp) return
+            // 예전 이력은 시급만 있음 → 나머지는 지금 화면 값이 아니라 기본값으로
+            const str = (v: unknown, d: string) => typeof v === 'string' && v ? v : d
+            const brk = Number(inp.break)
+            setActiveTab('daily')
+            setInputMode(inp.inputMode === 'individual' || inp.inputMode === 'period' ? inp.inputMode : 'weekly')
+            setHourlyWage(inp.hourlyWage?.toString() || String(MIN_WAGE_2026))
+            setAutoBreak(inp.autoBreak === true)
+            setSmallBiz(inp.smallBiz === true)
+            setSchedule(decodeWeek(str(inp.ws, '')) || WEEK_PRESETS[0].week())
+            setDailyWork(decodeDays(str(inp.dw, '')) || [{ date: '', startTime: '09:00', endTime: '18:00', breakTime: 60, isHoliday: false }])
+            setPeriodStart(str(inp.start, ''))
+            setPeriodEnd(str(inp.end, ''))
+            setSelectedWeekdays(str(inp.days, '').length === 7 ? str(inp.days, '').split('').map(c => c === '1') : [true, true, true, true, true, false, false])
+            setPeriodStartTime(str(inp.st, '09:00'))
+            setPeriodEndTime(str(inp.et, '18:00'))
+            setPeriodBreakTime(inp.break != null && Number.isFinite(brk) && brk >= 0 && brk <= 1440 ? brk : 60)
           }}
           onRemoveHistory={removeHistory} onClearHistories={clearHistories}
           formatResult={(result: Record<string, unknown>) => {

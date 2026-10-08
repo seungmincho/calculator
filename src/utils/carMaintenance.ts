@@ -18,6 +18,8 @@ export interface ItemSpec {
   kmByFuel?: Partial<Record<Fuel, number>>
   /** 최초 교체 주기 (냉각수처럼 첫 교체만 긴 항목) */
   first?: { km: number; months: number }
+  /** 일반 조건은 정기 교체 없음 — 가혹조건에서만 km·months 주기 적용 (자동변속기 오일) */
+  severeOnly?: boolean
   /** 1회 비용 예시 범위(원) — 공임 포함 대략치, 차종·정비소별 편차 큼 */
   cost: [number, number]
   /** hmg = 현대차그룹 공식 안내 참고, general = 업계 일반적 기준 */
@@ -27,7 +29,8 @@ export interface ItemSpec {
 const ICE: Fuel[] = ['gasoline', 'diesel', 'lpg', 'hybrid']
 
 // 출처: 현대자동차그룹 "자동차 소모품 교체 주기" 안내(엔진오일 1.5만km/12개월·가혹 7,500km/6개월,
-// 냉각수 최초 20만km/10년 이후 4만km/2년, 브레이크액 5만km, 점화플러그 16만km, 가혹조건 미션오일 10만km).
+// 냉각수 최초 20만km/10년 이후 4만km/2년, 브레이크액 5만km, 점화플러그 16만km).
+// 자동변속기 오일: 현대차 취급설명서(2025 투싼 NX4) 통상 조건 "무점검, 무교체" / 가혹 조건 "매 100,000km" 교체.
 // 나머지(src: general)는 업계 일반적 권장치 — 반드시 차량 취급설명서 우선.
 export const ITEMS: ItemSpec[] = [
   { id: 'engineOil', km: 15000, months: 12, severe: 0.5, fuels: ICE, cost: [60000, 120000], src: 'hmg' },
@@ -39,7 +42,7 @@ export const ITEMS: ItemSpec[] = [
   { id: 'tires', km: 50000, months: 60, severe: 1, cost: [400000, 1000000], src: 'general' },
   { id: 'battery', km: null, months: 48, severe: 1, cost: [120000, 250000], src: 'general' },
   { id: 'coolant', km: 40000, months: 24, severe: 1, first: { km: 200000, months: 120 }, cost: [50000, 100000], src: 'hmg' },
-  { id: 'transmissionFluid', km: 100000, months: null, severe: 1, fuels: ICE, cost: [150000, 300000], src: 'general' },
+  { id: 'transmissionFluid', km: 100000, months: null, severe: 1, severeOnly: true, fuels: ICE, cost: [150000, 300000], src: 'hmg' },
   { id: 'sparkPlugs', km: 160000, months: null, severe: 1, fuels: ['gasoline', 'lpg', 'hybrid'], kmByFuel: { lpg: 40000 }, cost: [60000, 150000], src: 'hmg' },
   { id: 'wiperBlades', km: null, months: 12, severe: 1, cost: [20000, 40000], src: 'general' },
 ]
@@ -74,8 +77,9 @@ const DAYS_PER_MONTH = 365 / 12
 
 export function appliesTo(spec: ItemSpec, fuel: Fuel) { return !spec.fuels || spec.fuels.includes(fuel) }
 
-/** 연료·가혹조건을 반영한 주기 */
+/** 연료·가혹조건을 반영한 주기. 둘 다 null = 정기 교체 없음(일정·비용에서 빠짐) */
 export function intervalFor(spec: ItemSpec, fuel: Fuel, severe: boolean) {
+  if (spec.severeOnly && !severe) return { km: null, months: null }
   const f = severe ? spec.severe : 1
   const baseKm = spec.kmByFuel?.[fuel] ?? spec.km
   return {
@@ -158,15 +162,16 @@ export function schedule(car: Car, today: string): Due[] {
     .sort((a, b) => (a.daysLeft ?? 1e9) - (b.daysLeft ?? 1e9))
 }
 
-/** 연간 소모품 비용 예시: 항목별 연 교체 횟수(km·개월 중 잦은 쪽) × 1회 비용 */
+/** 연간 소모품 비용 예시: 항목별 연 교체 횟수(km·개월 중 잦은 쪽) × 1회 비용. 정기 교체 없는 항목은 제외 */
 export function annualCost(fuel: Fuel, severe: boolean, monthlyKm: number) {
   let lo = 0, hi = 0
-  const items = ITEMS.filter((s) => appliesTo(s, fuel)).map((s) => {
+  const items = ITEMS.filter((s) => appliesTo(s, fuel)).flatMap((s) => {
     const { km, months } = intervalFor(s, fuel, severe)
+    if (km == null && months == null) return []
     const perYear = Math.max(km ? (monthlyKm * 12) / km : 0, months ? 12 / months : 0)
     const c = { id: s.id, perYear, lo: Math.round(s.cost[0] * perYear), hi: Math.round(s.cost[1] * perYear) }
     lo += c.lo; hi += c.hi
-    return c
+    return [c]
   })
   return { lo, hi, mid: Math.round((lo + hi) / 2), items }
 }

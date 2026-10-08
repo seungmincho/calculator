@@ -176,7 +176,7 @@ export default function CarMaintenance() {
   const itemName = (id: string) => t(`maintenanceItems.${id}`)
   const dday = (d: Due) => (d.daysLeft == null ? '-' : d.daysLeft === 0 ? 'D-Day' : d.daysLeft > 0 ? `D-${d.daysLeft}` : `D+${-d.daysLeft}`)
   const intervalText = (d: Due) =>
-    [d.intervalKm != null && `${fmt(d.intervalKm)}km`, d.intervalMonths != null && t('m.months', { n: d.intervalMonths })].filter(Boolean).join(t('m.or'))
+    [d.intervalKm != null && `${fmt(d.intervalKm)}km`, d.intervalMonths != null && t('m.months', { n: d.intervalMonths })].filter(Boolean).join(t('m.or')) || t('m.noInterval')
 
   const heroHeadline = next ? `${itemName(next.id)} ${dday(next)}` : t('m.noneDue')
   const heroSub = next
@@ -382,6 +382,8 @@ export default function CarMaintenance() {
                   const spec = ITEMS.find((s) => s.id === d.id)!
                   const rec = car.records[d.id]
                   const open = editing === d.id
+                  // 정기 교체 없음(일반 조건 미션오일): 다음 일정·추정 마지막 교체는 숨긴다
+                  const none = d.intervalKm == null && d.intervalMonths == null
                   return (
                     <li key={d.id} className="py-4">
                       <div className="flex items-start justify-between gap-3">
@@ -389,19 +391,19 @@ export default function CarMaintenance() {
                           <p className="font-semibold text-fg flex flex-wrap items-center gap-1.5">
                             {itemName(d.id)}
                             {d.overdue && <span className="text-xs font-semibold rounded-full border border-red-500 text-red-500 px-2 py-0.5">{t('m.warning')}</span>}
-                            {d.estimated && <span className="text-xs rounded-full bg-soft text-sub px-2 py-0.5">{t('m.estimated')}</span>}
+                            {d.estimated && !none && <span className="text-xs rounded-full bg-soft text-sub px-2 py-0.5">{t('m.estimated')}</span>}
                           </p>
-                          <p className="text-sm text-sub mt-0.5 tabular-nums">
+                          {!none && <p className="text-sm text-sub mt-0.5 tabular-nums">
                             {t('m.nextDue')} {d.dueDate ?? '-'}{d.dueKm != null && ` · ${fmt(d.dueKm)}km`}
                             {d.kmLeft != null && !d.overdue && ` · ${t('m.kmLeft', { km: fmt(d.kmLeft) })}`}
                             {d.overdue && d.kmLeft != null && d.kmLeft < 0 && ` · ${t('m.kmOver', { km: fmt(-d.kmLeft) })}`}
-                          </p>
+                          </p>}
                           <p className="text-xs text-muted mt-0.5">
                             {t('m.interval')} {intervalText(d)} · {t(`m.src.${spec.src}`)} · {t('m.costEach')} {won(spec.cost[0])}~{won(spec.cost[1])}
                           </p>
-                          <p className="text-xs text-faint mt-0.5 tabular-nums">
+                          {!(none && d.estimated) && <p className="text-xs text-faint mt-0.5 tabular-nums">
                             {t('m.last')} {fmt(d.lastKm)}km · {d.lastDate}
-                          </p>
+                          </p>}
                         </div>
                         <p className={`text-xl font-bold tabular-nums shrink-0 ${d.overdue ? 'text-red-500' : 'text-fg'}`}>{dday(d)}</p>
                       </div>

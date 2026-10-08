@@ -251,7 +251,7 @@ export default function PresentationTimer() {
   const progressBar = (track: string, fill: string) => {
     let start = 0
     return (
-      <div className="flex gap-1 h-2 w-full" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(st.progress * 100)}>
+      <div className="flex gap-1 h-2 w-full" role="progressbar" aria-label={t('progressLabel')} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(st.progress * 100)}>
         {segs.map((s, i) => {
           const f = Math.min(1, Math.max(0, (elapsed - start) / (s.sec * 1000)))
           start += s.sec * 1000
@@ -282,7 +282,7 @@ export default function PresentationTimer() {
     return (
       <div className={`fixed inset-0 z-[100] flex flex-col p-4 sm:p-8 select-none transition-colors duration-500 ${bg}`}>
         <div className="flex items-start justify-between gap-4 text-lg sm:text-2xl font-semibold">
-          <div>{status}</div>
+          <div aria-live="polite">{status}</div>
           <button onClick={exitSpeaker} className={`p-3 rounded-full ${btn}`} aria-label={t('exitSpeaker')} title={t('exitSpeaker')}>
             <X size={22} />
           </button>
@@ -324,7 +324,7 @@ export default function PresentationTimer() {
       {/* 타이머 */}
       <div className="ui-card p-6 sm:p-8 flex flex-col items-center gap-5">
         <div className="flex items-center gap-2 text-sm">
-          <span className={`font-semibold ${st.phase === 'normal' ? 'text-sub' : clockColor}`}>{status}</span>
+          <span className={`font-semibold ${st.phase === 'normal' ? 'text-sub' : clockColor}`} aria-live="polite">{status}</span>
           {wakeOn && <span className="text-faint">· {t('wakeLockOn')}</span>}
         </div>
         <button onClick={toggle} className={`text-7xl sm:text-8xl font-bold tabular-nums leading-none tracking-tight ${clockColor}`} aria-label={running ? t('pause') : t('start')}>
@@ -368,9 +368,9 @@ export default function PresentationTimer() {
       {/* 빠른 설정 */}
       <div className="ui-card p-6 space-y-3">
         <h2 className="text-sm font-semibold text-body">{t('presets')}</h2>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" role="group" aria-label={t('presets')}>
           {[...plainPresets, ...splitPresets, agendaPreset].map((p) => (
-            <button key={p.key} onClick={() => applyPreset(p.segs)} className={chip(serializeSegments(p.segs) === serialized)}>
+            <button key={p.key} onClick={() => applyPreset(p.segs)} aria-pressed={serializeSegments(p.segs) === serialized} className={chip(serializeSegments(p.segs) === serialized)}>
               {p.label}
             </button>
           ))}

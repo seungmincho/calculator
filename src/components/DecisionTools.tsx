@@ -493,6 +493,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
+              aria-pressed={activeTab === tab}
               className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab
                   ? 'bg-primary text-white shadow-sm'
@@ -526,7 +527,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                       onClick={() => applyPreset(key)}
                       className="px-3 py-1 text-xs bg-subtle text-sub rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
                     >
-                      {PRESET_EMOJI[key] ?? '📋'} {key}
+                      <span aria-hidden="true">{PRESET_EMOJI[key] ?? '📋'}</span> {key}
                     </button>
                   ))}
                 </div>
@@ -546,6 +547,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     <button
                       onClick={() => removeRouletteItem(i)}
                       disabled={rouletteItems.length <= 2}
+                      aria-label={`${item} 삭제`}
                       className="text-gray-400 hover:text-red-500 disabled:opacity-30 transition-colors"
                     >
                       <Trash2 size={14} />
@@ -562,6 +564,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                   onChange={e => setNewRouletteItem(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addRouletteItem()}
                   placeholder="항목 추가..."
+                  aria-label="추가할 항목"
                   maxLength={20}
                   disabled={rouletteItems.length >= 12}
                   className={`${glassInput} flex-1 px-3 py-2 text-sm disabled:opacity-50`}
@@ -569,6 +572,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={addRouletteItem}
                   disabled={rouletteItems.length >= 12 || !newRouletteItem.trim()}
+                  aria-label="항목 추가"
                   className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
                 >
                   <Plus size={16} />
@@ -581,6 +585,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               <div className={`${glassCard} ${glassInset} p-5`}>
                 <button
                   onClick={() => setShowHistory(v => !v)}
+                  aria-expanded={showHistory}
                   className="flex items-center justify-between w-full text-sm font-medium text-body"
                 >
                   <span>뽑기 기록 ({spinHistory.length})</span>
@@ -605,6 +610,8 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
             <div className={`${glassCard} ${glassInset} p-5`}>
               {/* Wheel container */}
               <div ref={wheelContainerRef} className="relative flex flex-col items-center gap-4">
+                {/* 스크린리더용 결과 알림 (결과 카드는 조건부 렌더라 live region 을 따로 둔다) */}
+                <p className="sr-only" aria-live="polite">{spinResult ? `결과: ${spinResult}` : ''}</p>
                 {/* Pointer arrow */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center">
                   <div
@@ -625,11 +632,14 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     width={canvasSize}
                     height={canvasSize}
                     className="rounded-full shadow-xl"
+                    role="img"
+                    aria-label={`돌림판: ${rouletteItems.join(', ')}`}
                   />
                   <canvas
                     ref={confettiCanvasRef}
                     width={canvasSize}
                     height={canvasSize}
+                    aria-hidden="true"
                     className="absolute inset-0 pointer-events-none"
                   />
                 </div>
@@ -694,6 +704,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     <button
                       onClick={() => removeOrderItem(i)}
                       disabled={orderItems.length <= 2}
+                      aria-label={`${item} 삭제`}
                       className="text-gray-400 hover:text-red-500 disabled:opacity-30 transition-colors"
                     >
                       <Trash2 size={14} />
@@ -710,12 +721,14 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                   onChange={e => setNewOrderItem(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addOrderItem()}
                   placeholder="참가자 추가..."
+                  aria-label="추가할 참가자"
                   maxLength={20}
                   className={`${glassInput} flex-1 px-3 py-2 text-sm`}
                 />
                 <button
                   onClick={addOrderItem}
                   disabled={!newOrderItem.trim()}
+                  aria-label="참가자 추가"
                   className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
                 >
                   <Plus size={16} />
@@ -737,6 +750,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     onClick={resetOrder}
                     className="px-3 py-2 bg-soft text-sub rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     title="초기화"
+                    aria-label="초기화"
                   >
                     <RotateCcw size={18} />
                   </button>
@@ -788,13 +802,13 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
               {isShuffling && (
                 <div className="flex flex-col items-center justify-center py-16">
-                  <div className="text-4xl animate-bounce mb-3">🎴</div>
+                  <div className="text-4xl animate-bounce mb-3" aria-hidden="true">🎴</div>
                   <p className="text-sm text-muted">섞는 중...</p>
                 </div>
               )}
 
               {!isShuffling && orderResult.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3" aria-live="polite">
                   {orderResult.map((name, i) => {
                     const revealed = i < revealedCount
                     return (

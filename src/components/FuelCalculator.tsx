@@ -519,8 +519,17 @@ const FuelCalculator = () => {
       setFuelType(isFuelType(inputs.fuelType) ? inputs.fuelType : 'gasoline')
       setCustomEfficiency(inputs.customEfficiency || 0)
       setUseCustomEfficiency(inputs.useCustomEfficiency || false)
-      if (inputs.fuelPrices) {
-        setFuelPrices(inputs.fuelPrices)
+      // 감가비 계수가 없는 예전 이력은 1 (정산 유류비 = 유류비 × 계수)
+      const dm = Number(inputs.depreciationMultiplier)
+      setDepreciationMultiplier(dm >= 1 && dm <= 1.5 ? dm : 1)
+      if (inputs.fuelPrices && typeof inputs.fuelPrices === 'object') {
+        // 고급휘발유 단가가 없던 예전 이력도 있음 → 저장된 연료 단가만 덮어씀
+        const saved = inputs.fuelPrices as Partial<Record<FuelType, number>>
+        setFuelPrices(prev => {
+          const next = { ...prev }
+          for (const f of FUEL_TYPES) if (Number(saved[f]) > 0) next[f] = Number(saved[f])
+          return next
+        })
         setPriceSource('manual')
       }
     }
@@ -544,6 +553,7 @@ const FuelCalculator = () => {
       customEfficiency: useCustomEfficiency ? customEfficiency : 0,
       useCustomEfficiency,
       fuelPrices,
+      depreciationMultiplier,
       totalCost: calculation.totalCost
     }
 
@@ -561,7 +571,7 @@ const FuelCalculator = () => {
       setIsSaved(true)
       setTimeout(() => setIsSaved(false), 2000)
     }
-  }, [calculation, distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, saveCalculation])
+  }, [calculation, distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, depreciationMultiplier, saveCalculation])
 
   const persistLogs = useCallback((logs: DrivingLogEntry[]) => {
     setDrivingLogs(logs)

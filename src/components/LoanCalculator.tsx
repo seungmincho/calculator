@@ -131,7 +131,8 @@ export default function LoanCalculator() {
   const handleLoad = (id: string) => {
     const inp = loadFromHistory(id) as Record<string, unknown> | null
     if (!inp) return
-    setS((p) => restoreLoanHistory(inp, p))
+    // 빠진 값(예전 이력)은 지금 화면 값이 아니라 기본값으로 — 섞인 상태로 다른 결과가 나오지 않게
+    setS(restoreLoanHistory(inp, DEFAULTS))
   }
   const formatHistory = (result: Record<string, unknown>) => {
     const r = (Array.isArray(result.results) ? result.results[0] : null) as Record<string, unknown> | null

@@ -322,14 +322,15 @@ const SalaryCalculatorContent = () => {
           <div className="space-y-6">
             {/* 급여 유형 선택 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-3">
+              <label id="salary-type-label" className="block text-sm font-medium text-body mb-3">
                 {t('input.salaryType')}
               </label>
-              <div className="flex p-1 rounded-2xl bg-soft">
+              <div className="flex p-1 rounded-2xl bg-soft" role="group" aria-labelledby="salary-type-label">
                 {(['annual', 'monthly'] as const).map((type) => (
                   <button
                     key={type}
                     onClick={() => { setSalaryType(type); updateURL({ type }); }}
+                    aria-pressed={salaryType === type}
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                       salaryType === type
                         ? 'bg-primary text-white shadow-sm'
@@ -344,11 +345,12 @@ const SalaryCalculatorContent = () => {
 
             {/* 급여 입력 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label htmlFor="salary-amount" className="block text-sm font-medium text-body mb-2">
                 {salaryType === 'annual' ? `${t('input.annual')} (세전)` : `${t('input.monthly')} (세전)`}
               </label>
               <div className="relative">
                 <input
+                  id="salary-amount"
                   type="text"
                   value={salary}
                   onChange={handleSalaryInputChange}
@@ -361,11 +363,12 @@ const SalaryCalculatorContent = () => {
 
             {/* 비과세액 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label htmlFor="salary-nontaxable" className="block text-sm font-medium text-body mb-2">
                 {t('input.nonTaxable')}
               </label>
               <div className="relative">
                 <input
+                  id="salary-nontaxable"
                   type="text"
                   value={nonTaxableAmount}
                   onChange={handleNonTaxableChange}
@@ -382,10 +385,11 @@ const SalaryCalculatorContent = () => {
             {/* 부양가족 정보 */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-body mb-2">
+                <label htmlFor="salary-dependents" className="block text-sm font-medium text-body mb-2">
                   {t('input.dependents')}
                 </label>
                 <select
+                  id="salary-dependents"
                   value={dependents}
                   onChange={(e) => {
                     const maxChildren = String(Math.min(parseInt(childrenUnder20) || 0, parseInt(e.target.value) - 1));
@@ -402,10 +406,11 @@ const SalaryCalculatorContent = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-body mb-2">
+                <label htmlFor="salary-children" className="block text-sm font-medium text-body mb-2">
                   {t('input.children')}
                 </label>
                 <select
+                  id="salary-children"
                   value={childrenUnder20}
                   onChange={(e) => {
                     setChildrenUnder20(e.target.value);
@@ -424,7 +429,7 @@ const SalaryCalculatorContent = () => {
             <details className="group rounded-2xl border border-line bg-surface overflow-hidden">
               <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-body select-none list-none">
                 <span>고급 설정 <span className="font-normal text-faint">(상여금 · 성과급 · 경력)</span></span>
-                <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none">+</span>
+                <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none" aria-hidden="true">+</span>
               </summary>
               <div className="border-t border-line px-5 py-5 space-y-5">
                 {/* 상여금 설정 */}
@@ -438,8 +443,9 @@ const SalaryCalculatorContent = () => {
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs text-sub mb-1.5">상여금 비율</label>
+                      <label htmlFor="salary-bonus-pct" className="block text-xs text-sub mb-1.5">상여금 비율</label>
                       <select
+                        id="salary-bonus-pct"
                         value={bonusPercentage}
                         onChange={(e) => setBonusPercentage(e.target.value)}
                         className={`ui-field px-3 py-2`}
@@ -456,8 +462,8 @@ const SalaryCalculatorContent = () => {
                     </div>
                     {bonusPercentage !== '0' && (
                       <div>
-                        <label className="block text-xs text-sub mb-1.5">상여금 지급 월</label>
-                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                        <label id="salary-bonus-months-label" className="block text-xs text-sub mb-1.5">상여금 지급 월</label>
+                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2" role="group" aria-labelledby="salary-bonus-months-label">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
                             <button
                               key={month}
@@ -468,6 +474,7 @@ const SalaryCalculatorContent = () => {
                                   setBonusMonths([...bonusMonths, month]);
                                 }
                               }}
+                              aria-pressed={bonusMonths.includes(month)}
                               className={`py-1.5 px-2 text-xs rounded-xl transition-all font-medium ${
                                 bonusMonths.includes(month)
                                   ? 'bg-primary text-white'
@@ -492,8 +499,9 @@ const SalaryCalculatorContent = () => {
                       예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
                     </p>
                   </div>
-                  <label className="block text-xs text-sub mb-1.5">성과급 비율</label>
+                  <label htmlFor="salary-performance" className="block text-xs text-sub mb-1.5">성과급 비율</label>
                   <select
+                    id="salary-performance"
                     value={performanceBonus}
                     onChange={(e) => setPerformanceBonus(e.target.value)}
                     className={`ui-field px-3 py-2`}
@@ -510,8 +518,9 @@ const SalaryCalculatorContent = () => {
 
                 {/* 경력 정보 */}
                 <div className="border-t border-line pt-5">
-                  <label className="block text-sm font-medium text-body mb-2">경력 (연차)</label>
+                  <label htmlFor="salary-experience" className="block text-sm font-medium text-body mb-2">경력 (연차)</label>
                   <select
+                    id="salary-experience"
                     value={experienceYears}
                     onChange={(e) => setExperienceYears(e.target.value)}
                     className={`ui-field px-3 py-3`}
@@ -551,7 +560,7 @@ const SalaryCalculatorContent = () => {
                     <p className="text-white/80 text-sm font-medium">{t('result.monthlyTakeHome')}</p>
                     <TrendingUp className="w-5 h-5 shrink-0 text-white/80" />
                   </div>
-                  <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-2 tabular-nums">
+                  <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-2 tabular-nums" aria-live="polite">
                     {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-white/70">원</span>
                   </div>
                   <p className="text-sm font-semibold text-white mb-5">
@@ -785,6 +794,7 @@ const SalaryCalculatorContent = () => {
           </div>
           <button
             onClick={() => setShowTable(!showTable)}
+            aria-expanded={showTable}
             className="inline-flex items-center gap-2 bg-surface hover:bg-soft border border-line px-4 py-2 rounded-xl text-body text-sm font-medium transition-colors"
           >
             <Table className="w-4 h-4" />
@@ -850,6 +860,7 @@ const SalaryCalculatorContent = () => {
             <h2 className="text-2xl font-semibold text-fg">상세 분석 차트</h2>
             <button
               onClick={() => setShowCharts(!showCharts)}
+              aria-expanded={showCharts}
               className="inline-flex items-center gap-2 bg-surface hover:bg-soft border border-line px-4 py-2 rounded-xl text-body text-sm font-medium transition-colors"
             >
               <BarChart3 className="w-4 h-4" />

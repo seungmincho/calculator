@@ -98,7 +98,7 @@ export default function NumberToKorean() {
       onClick={() => value && copyToClipboard(value, id)}
       disabled={!value}
       className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium bg-soft hover:bg-subtle text-body rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-      aria-label={`${label ?? ''} ${t('copy')}`.trim()}
+      aria-label={`${label ?? ''} ${copiedId === id ? t('copied') : t('copy')}`.trim()}
     >
       {copiedId === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
       {copiedId === id ? t('copied') : t('copy')}
@@ -142,7 +142,7 @@ export default function NumberToKorean() {
 
             <div>
               <div className="block text-sm font-medium text-body mb-2">{t('quickAmounts')}</div>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-2" role="group" aria-label={t('quickAmounts')}>
                 {QUICK_ADD.map((q) => (
                   <button key={q.value} onClick={() => handleAdd(q.value)} className="px-2 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-xl transition-colors tabular-nums">
                     {q.label}
@@ -153,7 +153,7 @@ export default function NumberToKorean() {
 
             <div>
               <div className="block text-sm font-medium text-body mb-2">{t('prefixLabel')}</div>
-              <div className="grid grid-cols-3 gap-2" role="radiogroup">
+              <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label={t('prefixLabel')}>
                 {PREFIXES.map((p) => (
                   <button
                     key={p.id}
@@ -188,7 +188,7 @@ export default function NumberToKorean() {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <div className="text-sm font-medium text-muted mb-1">{t('koreanFormal')}</div>
-                <div className="text-2xl sm:text-3xl font-bold text-fg break-all">
+                <div className="text-2xl sm:text-3xl font-bold text-fg break-all" aria-live="polite">
                   {formal || <span className="text-faint font-medium text-xl">{notAmount ? t('integerOnly') : t('inputPrompt')}</span>}
                 </div>
                 <div className="text-sm text-muted mt-2 tabular-nums break-all">{numberDisplay && `${numberDisplay}${t('wonUnit')}`}</div>
