@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/leaderboard'
 import { Trophy, X } from 'lucide-react'
 import { glassInput } from '@/lib/glass'
+import { useDialog } from '@/hooks/useDialog'
 
 interface NameInputModalProps {
   isOpen: boolean
@@ -20,26 +21,19 @@ export default function NameInputModal({
   isOpen, onSubmit, onClose, score, formatScore, rank, defaultName
 }: NameInputModalProps) {
   const t = useTranslations('leaderboard')
+  const tc = useTranslations('common')
   const [name, setName] = useState(defaultName ?? '')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  // 포커스 이동(이름 입력란)·Tab 순환·ESC·닫힌 뒤 포커스 복귀
+  useDialog(isOpen, onClose, dialogRef)
 
   useEffect(() => {
     if (isOpen) {
       setName(defaultName ?? '')
       setIsSubmitting(false)
-      setTimeout(() => inputRef.current?.focus(), 150)
     }
   }, [isOpen, defaultName])
-
-  useEffect(() => {
-    if (!isOpen) return
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
-  }, [isOpen, onClose])
 
   const handleSubmit = useCallback(async () => {
     const trimmed = name.trim()
@@ -56,9 +50,16 @@ export default function NameInputModal({
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative max-w-sm w-full p-6 bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="name-input-modal-title"
+        className="relative max-w-sm w-full p-6 bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+      >
         <button
           onClick={onClose}
+          aria-label={tc('close')}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
         >
           <X className="w-5 h-5" />
@@ -68,7 +69,7 @@ export default function NameInputModal({
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 dark:bg-yellow-900/50 mb-3">
             <Trophy className="w-8 h-8 text-yellow-500" />
           </div>
-          <h3 className="text-xl font-bold text-fg">
+          <h3 id="name-input-modal-title" className="text-xl font-bold text-fg">
             {t('qualifiedTitle')}
           </h3>
           <p className="text-sm text-muted mt-1">
@@ -93,7 +94,7 @@ export default function NameInputModal({
             {t('enterName')}
           </label>
           <input
-            ref={inputRef}
+            data-autofocus
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}

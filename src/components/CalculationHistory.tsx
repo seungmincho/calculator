@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { History, Trash2, Download, Clock, X } from 'lucide-react';
+import { useDialog } from '@/hooks/useDialog';
 import { CalculationHistory as HistoryType } from '@/utils/localStorage';
 import { useTranslations } from '@/lib/i18n/shared'
 import { glassCard, glassInset, glassInput } from '@/lib/glass';
@@ -26,6 +27,10 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const tCommon = useTranslations('common');
   const [showConfirmClear, setShowConfirmClear] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const confirmRef = useRef<HTMLDivElement>(null);
+  useDialog(isOpen, () => setIsOpen(false), dialogRef);
+  useDialog(showConfirmClear, () => setShowConfirmClear(false), confirmRef);
 
   const formatDate = (timestamp: number) => {
     return new Date(timestamp).toLocaleString('ko-KR', {
@@ -37,10 +42,12 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
     });
   };
 
-  if (!isOpen) {
-    return (
+  // 여는 버튼은 열려 있어도 남겨 둔다 → 닫으면 useDialog 가 이 버튼으로 포커스를 돌려준다
+  return (
+    <>
       <button
         onClick={() => setIsOpen(true)}
+        aria-haspopup="dialog"
         className="inline-flex shrink-0 whitespace-nowrap items-center space-x-2 bg-soft hover:bg-subtle px-4 py-2 rounded-lg text-body transition-colors"
       >
         <History className="w-4 h-4" />
@@ -51,17 +58,20 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
           </span>
         )}
       </button>
-    );
-  }
-
-  return (
+      {isOpen && (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className={`${glassCard} ${glassInset} max-w-2xl w-full max-h-[80vh] overflow-hidden`}>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="calc-history-title"
+        className={`${glassCard} ${glassInset} max-w-2xl w-full max-h-[80vh] overflow-hidden`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-line">
           <div className="flex items-center space-x-2">
             <History className="w-5 h-5 text-blue-600" />
-            <h2 className="text-xl font-semibold text-fg">계산 이력</h2>
+            <h2 id="calc-history-title" className="text-xl font-semibold text-fg">계산 이력</h2>
             {histories.length > 0 && (
               <span className="bg-soft text-sub text-sm px-2 py-1 rounded-full">
                 {histories.length}개
@@ -81,6 +91,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
             )}
             <button
               onClick={() => setIsOpen(false)}
+              aria-label={tCommon('close')}
               className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
               <X className="w-4 h-4" />
@@ -158,11 +169,18 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
         {/* Clear All Confirmation */}
         {showConfirmClear && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
-            <div className="bg-surface rounded-lg p-6 max-w-sm w-full">
-              <h3 className="text-lg font-semibold text-fg mb-2">
+            <div
+              ref={confirmRef}
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="calc-history-clear-title"
+              aria-describedby="calc-history-clear-desc"
+              className="bg-surface rounded-lg p-6 max-w-sm w-full"
+            >
+              <h3 id="calc-history-clear-title" className="text-lg font-semibold text-fg mb-2">
                 모든 이력 삭제
               </h3>
-              <p className="text-sub mb-4">
+              <p id="calc-history-clear-desc" className="text-sub mb-4">
                 저장된 모든 계산 이력을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
               </p>
               <div className="flex space-x-3">
@@ -187,6 +205,8 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
         )}
       </div>
     </div>
+      )}
+    </>
   );
 };
 

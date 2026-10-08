@@ -101,12 +101,11 @@ export default function CoinFlip() {
       {/* Coin + Flip Button */}
       <div className={`${glassCard} ${glassInset} p-6 flex flex-col items-center gap-6`}>
         <div style={{ perspective: 1000 }}>
+          {/* 동전 클릭은 마우스 지름길, 키보드·스크린리더는 아래 던지기 버튼 */}
           <div
             key={flipKey}
             style={coinStyle}
             onClick={flip}
-            role="button"
-            aria-label={t('flipButton')}
           >
             {result === 'tails' ? t('tailsSymbol') : t('headsSymbol')}
           </div>

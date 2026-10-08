@@ -649,6 +649,9 @@ const ImageEditor = () => {
                       : 'border-line-strong hover:border-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                   onClick={() => fileInputRef.current?.click()}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click() } }}
                 >
                   <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <p className="text-sub mb-2">

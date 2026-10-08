@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef, type ReactNode } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/monitorTest'
+import { useDialog } from '@/hooks/useDialog'
 import {
   Monitor, Eye, Contrast, Type, Palette, Zap, Activity, Sun, Flame, RotateCcw, Square, CircleDot,
   Image as ImageIcon, Move, Maximize, ChevronLeft, ChevronRight, Upload, Grid3x3, Layers, Rainbow,
@@ -509,6 +510,8 @@ export default function MonitorTest() {
   const pointerStart = useRef<{ x: number; y: number } | null>(null)
   const summaryRef = useRef<HTMLDivElement>(null)
   const loaded = useRef(false)
+  const warningRef = useRef<HTMLDivElement>(null)
+  useDialog(fixWarning, () => setFixWarning(false), warningRef)
 
   const extra = image ? { imageQuality: 1 } : {}
   const testName = (id: TestId) => t(`tests.${id}.name`)
@@ -733,13 +736,13 @@ export default function MonitorTest() {
 
       {/* 광과민성 경고 */}
       {fixWarning && (
-        <div className="fixed inset-0 z-[100000] bg-black/60 flex items-center justify-center p-4" role="alertdialog" aria-modal="true">
+        <div ref={warningRef} className="fixed inset-0 z-[100000] bg-black/60 flex items-center justify-center p-4" role="alertdialog" aria-modal="true" aria-labelledby="pixel-fix-warning-title" aria-describedby="pixel-fix-warning-body">
           <div className="ui-card p-6 max-w-md w-full space-y-4 shadow-xl">
             <div className="flex items-center gap-2 text-red-600">
               <TriangleAlert size={20} />
-              <h2 className="text-lg font-bold">{t('tests.pixelFix.warningTitle')}</h2>
+              <h2 id="pixel-fix-warning-title" className="text-lg font-bold">{t('tests.pixelFix.warningTitle')}</h2>
             </div>
-            <p className="text-sm text-body leading-relaxed">{t('tests.pixelFix.warningBody')}</p>
+            <p id="pixel-fix-warning-body" className="text-sm text-body leading-relaxed">{t('tests.pixelFix.warningBody')}</p>
             <div className="flex gap-2 justify-end">
               <button onClick={() => setFixWarning(false)} className="ui-btn-soft px-4 py-2">{t('tests.pixelFix.cancel')}</button>
               <button onClick={() => { setFixWarning(false); openSeq(['pixelFix']) }} className="ui-btn px-4 py-2">{t('tests.pixelFix.confirm')}</button>

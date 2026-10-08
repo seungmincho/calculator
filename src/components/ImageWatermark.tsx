@@ -312,6 +312,9 @@ export default function ImageWatermark() {
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onClick={() => fileInputRef.current?.click()}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click() } }}
               >
                 <Upload className="w-10 h-10 mx-auto text-gray-400 mb-2" />
                 <p className="text-sm text-sub">{t('uploadDragDrop')}</p>
@@ -456,6 +459,9 @@ export default function ImageWatermark() {
                       <div
                         className="border-2 border-dashed border-line-strong rounded-lg p-4 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
                         onClick={() => watermarkInputRef.current?.click()}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); watermarkInputRef.current?.click() } }}
                       >
                         {watermarkImage ? (
                           <div className="flex items-center justify-center gap-2">

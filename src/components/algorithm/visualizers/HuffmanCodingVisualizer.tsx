@@ -312,15 +312,15 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const isCur = idx === currentIndex
         const isAct = idx <= currentIndex
         return (
-          <div key={idx} data-active={isCur ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
+          <button type="button" key={idx} data-active={isCur ? 'true' : undefined} aria-current={isCur ? 'step' : undefined} onClick={() => onStepClick(idx)}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${isCur ? (actionStyle[step.action] || '') : isAct ? 'border-line bg-subtle' : 'border-line opacity-40'}`}>
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap ${actionBadge[step.action] || ''}`}>
                 {step.action}
               </span>
               <span className="text-sub truncate">{step.description}</span>
             </div>
-          </div>
+          </button>
         )
       })}
       {we < steps.length - 1 && <div className="text-xs text-gray-400 text-center py-1">... {steps.length - 1 - we} ...</div>}

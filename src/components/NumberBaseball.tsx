@@ -484,12 +484,13 @@ export default function NumberBaseball() {
       {/* 통계 모달 (오늘의 숫자야구) */}
       <dialog
         ref={statsRef}
+        aria-labelledby="baseball-stats-title"
         onClick={e => { if (e.target === e.currentTarget) e.currentTarget.close() }}
         className="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl bg-surface text-fg p-0 shadow-xl backdrop:bg-black/40"
       >
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-fg">{t('stats.title')}</h2>
+            <h2 id="baseball-stats-title" className="text-lg font-semibold text-fg">{t('stats.title')}</h2>
             <button onClick={() => statsRef.current?.close()} aria-label={t('close')} className="p-1.5 rounded-lg text-muted hover:bg-soft">
               <X className="w-5 h-5" />
             </button>

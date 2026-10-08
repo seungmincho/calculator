@@ -280,6 +280,9 @@ const TreeNode = React.memo<TreeNodeProps>(function TreeNode({
       >
         {isExpandable ? (
           <button
+            type="button"
+            aria-expanded={isExpanded}
+            aria-label={nodeKey}
             className="w-4 h-4 flex items-center justify-center mr-1 text-faint hover:text-sub flex-shrink-0"
             onClick={(e) => {
               e.stopPropagation()

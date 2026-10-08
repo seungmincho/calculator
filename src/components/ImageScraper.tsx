@@ -612,13 +612,19 @@ export default function ImageScraper() {
       }`}
       onClick={e => toggleSelect(img.src, displayIdx, e.shiftKey)}
     >
-      <div className={`absolute top-2 left-2 z-10 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+      {/* 카드 클릭은 마우스용, 키보드는 이 선택 버튼 */}
+      <button
+        type="button"
+        onClick={e => { e.stopPropagation(); toggleSelect(img.src, displayIdx, e.shiftKey) }}
+        aria-pressed={img.selected}
+        aria-label={img.alt || `Image ${displayIdx + 1}`}
+        className={`absolute top-2 left-2 z-10 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors cursor-pointer ${
         img.selected
           ? 'bg-blue-500 border-blue-500 text-white'
           : 'bg-white/80 dark:bg-gray-800/80 border-gray-300 dark:border-gray-500'
       }`}>
         {img.selected && <Check className="w-4 h-4" />}
-      </div>
+      </button>
 
       {img.loaded && img.width > 0 && (
         <div className={`absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded text-xs font-medium ${
@@ -668,7 +674,7 @@ export default function ImageScraper() {
           )}
         </div>
 
-        <div className="flex gap-1 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex gap-1 mt-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
           <button
             onClick={e => { e.stopPropagation(); copyToClipboard(img.src, img.src) }}
             className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-muted"

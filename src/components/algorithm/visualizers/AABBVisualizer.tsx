@@ -298,8 +298,8 @@ export default function AABBVisualizer() {
                     <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
 
                     {/* Step 1: X axis */}
-                    <div
-                      className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
+                    <button type="button" aria-current={currentStep === 0 ? 'step' : undefined}
+                      className={`block w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer ${
                         currentStep === 0
                           ? 'border-blue-500/50 bg-subtle'
                           : currentStep > 0
@@ -331,11 +331,11 @@ export default function AABBVisualizer() {
                           </span>
                         )}
                       </div>
-                    </div>
+                    </button>
 
                     {/* Step 2: Y axis */}
-                    <div
-                      className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
+                    <button type="button" aria-current={currentStep === 1 ? 'step' : undefined}
+                      className={`block w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer ${
                         currentStep === 1
                           ? 'border-blue-500/50 bg-subtle'
                           : currentStep > 1
@@ -367,7 +367,7 @@ export default function AABBVisualizer() {
                           </span>
                         )}
                       </div>
-                    </div>
+                    </button>
 
                     {/* Final result */}
                     {currentStep >= 1 && (

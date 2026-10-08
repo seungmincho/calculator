@@ -308,10 +308,10 @@ function KruskalStepsList({ steps, currentIndex, onStepClick, t }: {
         const icon = step.action === 'sort' ? '📋' : step.action === 'add' ? '✅' : step.action === 'skip' ? '❌' : step.action === 'done' ? '🏁' : '🔍'
 
         return (
-          <div
+          <button type="button"
             key={i}
-            data-active={isCurrent ? 'true' : undefined}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-blue-500/50 bg-subtle'
                 : isActive ? 'border-line bg-subtle'
                 : 'border-line opacity-40'
@@ -319,7 +319,7 @@ function KruskalStepsList({ steps, currentIndex, onStepClick, t }: {
             onClick={() => onStepClick(i)}
           >
             <span className="text-body">{icon} {label}</span>
-          </div>
+          </button>
         )
       })}
     </div>

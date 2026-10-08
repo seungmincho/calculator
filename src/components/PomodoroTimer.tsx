@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pomodoroTimer'
+import { useDialog } from '@/hooks/useDialog'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
   Play, Pause, RotateCcw, Settings, Volume2, VolumeX, Bell, BellOff,
@@ -165,6 +166,9 @@ export default function PomodoroTimer() {
   const [settings, setSettings] = useState<TimerSettings>(DEFAULT_SETTINGS)
   const [showSettings, setShowSettings] = useState(false)
   const [tempSettings, setTempSettings] = useState<TimerSettings>(DEFAULT_SETTINGS)
+  const tc = useTranslations('common')
+  const settingsRef = useRef<HTMLDivElement>(null)
+  useDialog(showSettings, () => setShowSettings(false), settingsRef)
 
   // Timer
   const [phase, setPhase] = useState<Phase>('work')
@@ -799,9 +803,15 @@ export default function PomodoroTimer() {
                     >
                       {task.completed && <Check size={12} />}
                     </button>
-                    <span className={`flex-1 text-sm text-body ${task.completed ? 'line-through' : ''}`}>
+                    {/* 행 클릭은 마우스용, 키보드는 이 버튼으로 현재 작업을 고른다 */}
+                    <button
+                      type="button"
+                      onClick={e => { e.stopPropagation(); if (!task.completed) setActiveTaskId(task.id === activeTaskId ? null : task.id) }}
+                      aria-pressed={task.id === activeTaskId}
+                      className={`flex-1 text-left cursor-pointer text-sm text-body ${task.completed ? 'line-through' : ''}`}
+                    >
                       {task.text}
-                    </span>
+                    </button>
                     {/* Est pomodoros */}
                     <div className="flex items-center gap-1" onClick={e => e.stopPropagation()}>
                       <span className="text-xs text-gray-400">{task.completedPomodoros}/</span>
@@ -889,12 +899,16 @@ export default function PomodoroTimer() {
       {showSettings && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowSettings(false)}>
           <div
+            ref={settingsRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pomodoro-settings-title"
             className={`${glassCard} ${glassInset} w-full max-w-md p-6 space-y-5 max-h-[90vh] overflow-y-auto`}
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-fg">{t('settingsTitle')}</h2>
-              <button onClick={() => setShowSettings(false)} className="p-1 text-gray-400 hover:text-gray-600">
+              <h2 id="pomodoro-settings-title" className="text-xl font-semibold text-fg">{t('settingsTitle')}</h2>
+              <button onClick={() => setShowSettings(false)} aria-label={tc('close')} className="p-1 text-gray-400 hover:text-gray-600">
                 <X size={20} />
               </button>
             </div>

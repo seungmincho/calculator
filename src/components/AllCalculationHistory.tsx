@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { useDialog } from '@/hooks/useDialog'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/calculationHistory'
 import {
@@ -130,6 +131,8 @@ export default function AllCalculationHistory() {
   const [sort, setSort] = useState<SortKey>('date-desc')
   const [confirmClearAll, setConfirmClearAll] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const confirmRef = useRef<HTMLDivElement>(null)
+  useDialog(confirmClearAll, () => setConfirmClearAll(false), confirmRef)
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -391,16 +394,23 @@ export default function AllCalculationHistory() {
       {/* Clear all confirmation modal */}
       {confirmClearAll && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className={`${glassCard} ${glassInset} max-w-sm w-full p-6`}>
+          <div
+            ref={confirmRef}
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="clear-all-title"
+            aria-describedby="clear-all-desc"
+            className={`${glassCard} ${glassInset} max-w-sm w-full p-6`}
+          >
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/30">
                 <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
               </div>
-              <h3 className="text-lg font-semibold text-fg">
+              <h3 id="clear-all-title" className="text-lg font-semibold text-fg">
                 {t('clearAllTitle')}
               </h3>
             </div>
-            <p className="text-sm text-sub mb-5">
+            <p id="clear-all-desc" className="text-sm text-sub mb-5">
               {t('clearAllDescription', { count: histories.length })}
             </p>
             <div className="flex gap-3">

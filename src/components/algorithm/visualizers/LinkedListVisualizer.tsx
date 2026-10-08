@@ -376,12 +376,12 @@ export default function LinkedListVisualizer() {
                         {opResult.steps.map((step, i) => {
                           const isCurrent = i === currentStepIndex
                           return (
-                            <div key={i} data-active={isCurrent ? 'true' : undefined} onClick={() => setCurrentStepIndex(i)}
-                              className={`p-2 rounded-lg border text-xs cursor-pointer transition-all ${
+                            <button type="button" key={i} data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined} onClick={() => setCurrentStepIndex(i)}
+                              className={`block w-full text-left p-2 rounded-lg border text-xs cursor-pointer transition-all ${
                                 isCurrent ? 'bg-subtle border-blue-300/50' : i <= currentStepIndex ? 'border-line' : 'opacity-40 border-gray-200/30'
                               }`}>
                               <span className="text-sub">{step.description}</span>
-                            </div>
+                            </button>
                           )
                         })}
                       </div>

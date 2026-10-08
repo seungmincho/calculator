@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { useDialog } from '@/hooks/useDialog'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gameHub'
 import { useRouter } from 'next/navigation'
@@ -257,6 +258,8 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
     setJoinError(null)
     setIsJoining(false)
   }
+  const joinModalRef = useRef<HTMLDivElement>(null)
+  useDialog(!!joiningRoom, handleCloseJoinModal, joinModalRef)
 
   const winRate = myTotalGames > 0 ? Math.round((myTotalWins / myTotalGames) * 100) : 0
 
@@ -802,11 +805,11 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 방 입장 모달 */}
       {joiningRoom && (
         <div
+          ref={joinModalRef}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
           role="dialog"
           aria-modal="true"
           aria-labelledby="join-modal-title"
-          onKeyDown={(e) => e.key === 'Escape' && handleCloseJoinModal()}
         >
           <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
             <div className="bg-primary p-5 text-white flex items-center gap-4">

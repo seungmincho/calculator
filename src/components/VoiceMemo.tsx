@@ -356,12 +356,11 @@ export default function VoiceMemo() {
     updateProgress()
   }, [playingId])
 
-  const seekPlayback = useCallback((rec: Recording, e: React.MouseEvent<HTMLDivElement>) => {
+  /** ratio: 0~1. 마우스 클릭 위치 또는 키보드 화살표(±5%) */
+  const seekPlayback = useCallback((rec: Recording, ratio: number) => {
     const audio = audioElementsRef.current[rec.id]
     if (!audio || !audio.duration) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const percent = x / rect.width
+    const percent = Math.min(1, Math.max(0, ratio))
     audio.currentTime = percent * audio.duration
     setPlaybackProgress(prev => ({ ...prev, [rec.id]: percent * 100 }))
   }, [])
@@ -630,8 +629,17 @@ export default function VoiceMemo() {
                   {/* Progress bar */}
                   <div
                     className="h-1.5 bg-soft rounded-full mb-3 cursor-pointer"
-                    onClick={e => seekPlayback(rec, e)}
-                    role="progressbar"
+                    onClick={e => {
+                      const r = e.currentTarget.getBoundingClientRect()
+                      seekPlayback(rec, (e.clientX - r.left) / r.width)
+                    }}
+                    onKeyDown={e => {
+                      const step = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 0.05 : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -0.05 : 0
+                      if (step) { e.preventDefault(); seekPlayback(rec, progress / 100 + step) }
+                    }}
+                    role="slider"
+                    tabIndex={0}
+                    aria-label={rec.name}
                     aria-valuenow={Math.round(progress)}
                     aria-valuemin={0}
                     aria-valuemax={100}

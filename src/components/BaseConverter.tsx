@@ -574,7 +574,10 @@ export default function BaseConverter() {
               {COMMON.map((n) => (
                 <tr key={n} onClick={() => setValue(String(n))} className="border-b border-line hover:bg-subtle cursor-pointer">
                   {[10, 2, 8, 16].map((b) => (
-                    <td key={b} className={`py-2 px-3 font-mono ${b === 10 ? 'text-fg' : 'text-body'}`}>{n.toString(b).toUpperCase()}</td>
+                    <td key={b} className={`py-2 px-3 font-mono ${b === 10 ? 'text-fg' : 'text-body'}`}>
+                      {/* 행 클릭은 마우스용, 키보드는 첫 칸 버튼 */}
+                      {b === 10 ? <button type="button" onClick={(e) => { e.stopPropagation(); setValue(String(n)) }} className="cursor-pointer">{n}</button> : n.toString(b).toUpperCase()}
+                    </td>
                   ))}
                 </tr>
               ))}

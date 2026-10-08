@@ -242,7 +242,7 @@ export default function FloydWarshallVisualizer() {
                           const isKRow = i === currentStep.k || j === currentStep.k
 
                           return (
-                            <td
+                            <td role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.click() } }}
                               key={nj.id}
                               onClick={() => { setSelectedI(i); setSelectedJ(j) }}
                               className={`px-2 py-1 text-center font-mono cursor-pointer transition-colors ${
@@ -409,10 +409,10 @@ function FWStepsList({ steps, currentIndex, onStepClick, t, nodes }: {
         else if (step.action === 'done') { label = t('stepsGuide.done'); icon = '🏁' }
 
         return (
-          <div
+          <button type="button"
             key={idx}
-            data-active={isCurrent ? 'true' : undefined}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-blue-500/50 bg-subtle'
                 : isActive ? 'border-line bg-subtle'
                 : 'border-line opacity-40'
@@ -420,7 +420,7 @@ function FWStepsList({ steps, currentIndex, onStepClick, t, nodes }: {
             onClick={() => onStepClick(step.originalIndex)}
           >
             <span className="text-body">{icon} {label}</span>
-          </div>
+          </button>
         )
       })}
     </div>

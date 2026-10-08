@@ -1542,15 +1542,17 @@ export default function LadderGame() {
                   const revealed = revealedResults.has(name)
                   const isManualRevealed = manualRevealed.has(name)
                   const shouldHide = revealOneByOne && !isManualRevealed
+                  const reveal = () => {
+                    if (shouldHide) setManualRevealed(prev => new Set([...prev, name]))
+                  }
 
                   return (
                     <div
                       key={name}
-                      onClick={() => {
-                        if (revealOneByOne && !isManualRevealed) {
-                          setManualRevealed(prev => new Set([...prev, name]))
-                        }
-                      }}
+                      onClick={reveal}
+                      role={shouldHide ? 'button' : undefined}
+                      tabIndex={shouldHide ? 0 : undefined}
+                      onKeyDown={shouldHide ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal() } } : undefined}
                       className={`flex items-center justify-between p-3 bg-surface rounded-xl border border-line shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-500 ${
                         shouldHide ? 'cursor-pointer hover:shadow-md' : ''
                       }`}

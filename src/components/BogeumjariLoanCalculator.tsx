@@ -668,7 +668,12 @@ export default function BogeumjariLoanCalculator() {
                 <tbody>
                   {(['annuity', 'principal'] as Method[]).map((m) => (
                     <tr key={m} onClick={() => setMethod(m)} className={`border-b border-line cursor-pointer ${method === m ? 'bg-subtle font-semibold' : 'hover:bg-subtle'}`}>
-                      <td className="py-2.5 px-2 text-fg">{t(`method.${m}`)}{method === m && <span className="text-xs text-primary ml-1">{t('selected')}</span>}</td>
+                      <td className="py-2.5 px-2 text-fg">
+                        {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                        <button type="button" onClick={(e) => { e.stopPropagation(); setMethod(m) }} aria-pressed={method === m} className="text-left cursor-pointer">
+                          {t(`method.${m}`)}{method === m && <span className="text-xs text-primary ml-1">{t('selected')}</span>}
+                        </button>
+                      </td>
                       <td className="py-2.5 px-2 text-right tabular-nums text-fg">{won(result.methods[m].first)}</td>
                       <td className="py-2.5 px-2 text-right tabular-nums text-body">{won(result.methods[m].last)}</td>
                       <td className="py-2.5 px-2 text-right tabular-nums text-body">{fmtKRW(result.methods[m].interest)}</td>
@@ -758,7 +763,11 @@ export default function BogeumjariLoanCalculator() {
                 <tbody>
                   {periodComparison.map((row) => (
                     <tr key={row.period} onClick={() => setPeriod(row.period)} className={`border-b border-line cursor-pointer ${row.period === period ? 'bg-subtle font-semibold' : 'hover:bg-subtle'}`}>
-                      <td className="py-2.5 px-2 text-fg">{yearsLabel(row.period)}{row.period === period && <span className="text-xs text-primary ml-1">{t('selected')}</span>}</td>
+                      <td className="py-2.5 px-2 text-fg">
+                        <button type="button" onClick={(e) => { e.stopPropagation(); setPeriod(row.period) }} aria-pressed={row.period === period} className="text-left cursor-pointer">
+                          {yearsLabel(row.period)}{row.period === period && <span className="text-xs text-primary ml-1">{t('selected')}</span>}
+                        </button>
+                      </td>
                       <td className="py-2.5 px-2 text-right tabular-nums text-body">{row.rate.toFixed(2)}%</td>
                       <td className="py-2.5 px-2 text-right tabular-nums text-fg">{won(row.monthly)}</td>
                       <td className="py-2.5 px-2 text-right tabular-nums text-body">{fmtKRW(row.interest)}</td>

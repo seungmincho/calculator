@@ -250,7 +250,17 @@ export default function CodingPatterns() {
                     {isExpanded ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-fg">{pattern.name}</h3>
+                <h3 className="text-lg font-semibold text-fg">
+                  {/* 카드 헤더 클릭은 마우스용, 키보드는 이 버튼 */}
+                  <button
+                    type="button"
+                    onClick={e => { e.stopPropagation(); setExpandedId(isExpanded ? null : pattern.id) }}
+                    aria-expanded={isExpanded}
+                    className="text-left cursor-pointer"
+                  >
+                    {pattern.name}
+                  </button>
+                </h3>
                 <p className="text-xs text-faint mb-2">{pattern.nameEn}</p>
                 {!isExpanded && (
                   <p className="text-sm text-sub line-clamp-2">{pattern.description}</p>

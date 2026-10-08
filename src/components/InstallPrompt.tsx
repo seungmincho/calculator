@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Download, X, Smartphone } from 'lucide-react'
+import { useDialog } from '@/hooks/useDialog'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pwa'
 
@@ -90,6 +91,9 @@ export default function InstallPrompt() {
     }
   }
 
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialog(!isInstalled && showInstallPrompt, handleDismiss, dialogRef)
+
   // Don't show if already installed or dismissed
   if (isInstalled || !showInstallPrompt) {
     return null
@@ -111,14 +115,20 @@ export default function InstallPrompt() {
 
       {/* Install Prompt Modal */}
       <div className="fixed inset-0 bg-black/50 z-40 flex items-end sm:items-center justify-center p-4">
-        <div className="bg-surface rounded-t-2xl sm:rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="install-prompt-title"
+          className="bg-surface rounded-t-2xl sm:rounded-2xl p-6 w-full max-w-md shadow-2xl"
+        >
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center">
               <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full mr-3">
                 <Smartphone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-fg">
+                <h3 id="install-prompt-title" className="text-lg font-semibold text-fg">
                   {t('pwa.install.title') || '앱으로 설치하기'}
                 </h3>
                 <p className="text-sm text-sub">
@@ -128,6 +138,7 @@ export default function InstallPrompt() {
             </div>
             <button
               onClick={handleDismiss}
+              aria-label={t('common.close')}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
             >
               <X className="w-5 h-5" />

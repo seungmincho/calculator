@@ -511,8 +511,8 @@ function AVLStepsList({ steps, currentIndex, onStepClick }: {
         if (step.action === 'rotate' && step.rotation) label = `${step.rotation} Rotate`
 
         return (
-          <div key={step.originalIndex} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(step.originalIndex)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+          <button type="button" key={step.originalIndex} data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined} onClick={() => onStepClick(step.originalIndex)}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? (ACTION_STYLE[step.action] || '') : isActive ? 'border-line bg-subtle' : 'border-line opacity-40'
             }`}>
             <div className="flex items-center gap-2">
@@ -526,7 +526,7 @@ function AVLStepsList({ steps, currentIndex, onStepClick }: {
                 </span>
               )}
             </div>
-          </div>
+          </button>
         )
       })}
       {windowEnd < displaySteps.length - 1 && <div className="text-xs text-faint text-center py-1">... {displaySteps.length - 1 - windowEnd} steps below ...</div>}

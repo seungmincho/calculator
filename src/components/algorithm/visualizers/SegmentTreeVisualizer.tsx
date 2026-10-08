@@ -491,8 +491,8 @@ function SegTreeStepsList({ steps, currentIndex, onStepClick }: {
         const i = windowStart + idx
         const isCurrent = i === currentIndex
         return (
-          <div key={i} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(i)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+          <button type="button" key={i} data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined} onClick={() => onStepClick(i)}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'bg-primary-soft text-primary border-primary'
                 : i <= currentIndex ? 'border-line bg-subtle' : 'border-line opacity-40'
             }`}>
@@ -500,7 +500,7 @@ function SegTreeStepsList({ steps, currentIndex, onStepClick }: {
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${ACTION_BADGE[step.action] || ''}`}>{step.action}</span>
               <span className="text-sub truncate">{step.description}</span>
             </div>
-          </div>
+          </button>
         )
       })}
       {windowEnd < steps.length - 1 && <div className="text-xs text-gray-400 text-center py-1">... {steps.length - 1 - windowEnd} steps below ...</div>}

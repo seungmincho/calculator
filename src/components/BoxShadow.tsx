@@ -657,10 +657,15 @@ export default function BoxShadow() {
                         className="w-8 h-8 rounded-md border border-line-strong flex-shrink-0"
                         style={{ backgroundColor: hexToRgba(layer.color, layer.opacity) }}
                       />
-                      {/* Layer label */}
-                      <span className="text-sm font-medium text-fg flex-shrink-0">
+                      {/* Layer label — 헤더 클릭은 마우스용, 키보드는 이 버튼 */}
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); toggleLayerExpand(layer.id) }}
+                        aria-expanded={isExpanded}
+                        className="text-sm font-medium text-fg flex-shrink-0 cursor-pointer"
+                      >
                         {t('layerLabel', { n: index + 1 })}
-                      </span>
+                      </button>
                       {/* Layer summary */}
                       <span className="text-xs text-muted truncate flex-1 font-mono">
                         {layer.inset ? 'inset ' : ''}{layer.x}px {layer.y}px {layer.blur}px {layer.spread}px

@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { useDialog } from '@/hooks/useDialog'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/adminFeedback'
 import { Lock, Eye, EyeOff, Trash2, Filter, ChevronDown, ChevronUp, Inbox, Clock, LogOut } from 'lucide-react'
@@ -88,6 +89,8 @@ export default function AdminFeedback() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
   const [storedPassword, setStoredPassword] = useState('')
+  const confirmRef = useRef<HTMLDivElement>(null)
+  useDialog(!!confirmDeleteId, () => setConfirmDeleteId(null), confirmRef)
 
   const LIMIT = 20
 
@@ -394,9 +397,15 @@ export default function AdminFeedback() {
                         {!inquiry.is_read && (
                           <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
                         )}
-                        <span className={`text-sm ${!inquiry.is_read ? 'font-semibold text-fg' : 'text-sub'}`}>
+                        {/* 행 클릭은 마우스용, 키보드는 이 버튼으로 펼친다 */}
+                        <button
+                          type="button"
+                          onClick={e => { e.stopPropagation(); setExpandedId(expandedId === inquiry.id ? null : inquiry.id) }}
+                          aria-expanded={expandedId === inquiry.id}
+                          className={`text-left cursor-pointer text-sm ${!inquiry.is_read ? 'font-semibold text-fg' : 'text-sub'}`}
+                        >
                           {inquiry.title}
-                        </span>
+                        </button>
                       </div>
                     </td>
                     <td className="px-4 py-3 text-sm text-muted">
@@ -536,9 +545,16 @@ export default function AdminFeedback() {
       {/* Delete confirmation modal */}
       {confirmDeleteId && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className={`${glassCard} ${glassInset} p-6 w-full max-w-sm`}>
-            <h3 className="text-lg font-semibold text-fg mb-2">{t('delete')}</h3>
-            <p className="text-sm text-muted mb-6">{t('deleteConfirm')}</p>
+          <div
+            ref={confirmRef}
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="admin-delete-title"
+            aria-describedby="admin-delete-desc"
+            className={`${glassCard} ${glassInset} p-6 w-full max-w-sm`}
+          >
+            <h3 id="admin-delete-title" className="text-lg font-semibold text-fg mb-2">{t('delete')}</h3>
+            <p id="admin-delete-desc" className="text-sm text-muted mb-6">{t('deleteConfirm')}</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmDeleteId(null)}

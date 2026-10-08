@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n/shared'
+import { useDialog } from '@/hooks/useDialog'
 import Link from 'next/link'
 import { X, BarChart3 } from 'lucide-react'
 import ToolIcon from './ToolIcon'
@@ -40,25 +41,11 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
   const [allTools, setAllTools] = useState<EnrichedTool[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState<CategoryKey | 'all'>('all')
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
   const lastFetchRef = useRef<number>(0)
 
-  // Escape key handler
-  useEffect(() => {
-    if (!isOpen) return
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, onClose])
-
-  // Auto-focus close button on open
-  useEffect(() => {
-    if (isOpen) {
-      closeButtonRef.current?.focus()
-    }
-  }, [isOpen])
+  // 열리면 닫기 버튼(첫 포커스 요소)으로, Tab 순환·ESC·닫힌 뒤 포커스 복귀
+  useDialog(isOpen, onClose, dialogRef)
 
   useEffect(() => {
     if (!isOpen) return
@@ -161,6 +148,7 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
 
       {/* Modal */}
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="analytics-title"
@@ -180,7 +168,6 @@ export default function ToolAnalyticsDashboard({ isOpen, onClose }: ToolAnalytic
             </div>
           </div>
           <button
-            ref={closeButtonRef}
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-soft transition-colors"
             aria-label={t('analyticsDashboard.close')}

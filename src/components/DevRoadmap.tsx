@@ -396,13 +396,19 @@ export default function DevRoadmap() {
                             {/* Skill name */}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <span className={`font-medium text-sm ${
-                                  isStudied
-                                    ? 'text-faint line-through'
-                                    : 'text-fg'
-                                }`}>
+                                {/* 행 클릭은 마우스용, 키보드는 이 버튼으로 상세를 연다 */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => { e.stopPropagation(); setExpandedSkill(isDetailOpen ? null : skill.id) }}
+                                  aria-expanded={isDetailOpen}
+                                  className={`text-left cursor-pointer font-medium text-sm ${
+                                    isStudied
+                                      ? 'text-faint line-through'
+                                      : 'text-fg'
+                                  }`}
+                                >
                                   {skill.name}
-                                </span>
+                                </button>
                                 {skill.isEssential && (
                                   <Star className="w-3 h-3 text-primary flex-shrink-0" />
                                 )}

@@ -539,7 +539,10 @@ export default function LottoTaxCalculator() {
                           onClick={() => handleQuickAmount(row.amount)}
                           className="border-b border-line hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer transition-colors"
                         >
-                          <td className="py-2 px-2 font-medium text-fg">{row.label}{t('won')}</td>
+                          <td className="py-2 px-2 font-medium text-fg">
+                            {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                            <button type="button" onClick={(e) => { e.stopPropagation(); handleQuickAmount(row.amount) }} className="text-left cursor-pointer">{row.label}{t('won')}</button>
+                          </td>
                           <td className="py-2 px-2 text-right text-red-600 dark:text-red-400">{formatKRW(row.tax)}</td>
                           <td className="py-2 px-2 text-right text-green-600 dark:text-green-400 font-bold">{formatKRW(row.net)}</td>
                           <td className="py-2 px-2 text-right text-sub">{row.rate.toFixed(1)}%</td>

@@ -312,8 +312,11 @@ export default function JeonseLoanCalculator() {
                     <tr key={x.product} onClick={() => set('prod', x.product)}
                       className={`border-b border-line last:border-0 cursor-pointer ${x.product === product ? 'bg-primary-soft' : 'hover:bg-subtle'}`}>
                       <td className={`py-2 pr-3 ${x.product === product ? 'text-primary font-semibold' : 'text-fg'}`}>
-                        {pName(x.product)}
-                        <span className="block text-xs text-muted font-normal">{t(`product.${x.product}.sub`)}</span>
+                        {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                        <button type="button" onClick={(e) => { e.stopPropagation(); set('prod', x.product) }} aria-pressed={x.product === product} className="text-left cursor-pointer">
+                          {pName(x.product)}
+                          <span className="block text-xs text-muted font-normal">{t(`product.${x.product}.sub`)}</span>
+                        </button>
                       </td>
                       <td className={`py-2 pr-3 ${x.eligible ? 'text-primary' : 'text-red-600 dark:text-red-400'}`}>{x.eligible ? t('check.pass') : t('check.fail')}</td>
                       <td className="py-2 pr-3 text-right tabular-nums text-body">{short(x.loan)}</td>

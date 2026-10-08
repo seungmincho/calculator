@@ -750,11 +750,11 @@ function MinimaxStepsList({
         const isMaximizing = (node?.depth ?? 0) % 2 === 0
 
         return (
-          <div
+          <button type="button"
             key={step.originalIndex}
-            data-active={isCurrent ? 'true' : undefined}
+            data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
             onClick={() => onStepClick(step.originalIndex)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent
                 ? ACTION_STYLES[step.action]
                 : isActive
@@ -784,7 +784,7 @@ function MinimaxStepsList({
                 </span>
               )}
             </div>
-          </div>
+          </button>
         )
       })}
       {windowEnd < displaySteps.length - 1 && (

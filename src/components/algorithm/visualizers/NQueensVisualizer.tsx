@@ -301,8 +301,8 @@ function NQueensStepsList({ steps, currentIndex, onStepClick, t }: {
           (step.originalIndex < currentIndex && (displaySteps[i + 1]?.originalIndex ?? Infinity) > currentIndex)
 
         return (
-          <div key={i} data-active={isCurrent ? 'true' : undefined}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+          <button type="button" key={i} data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-rose-500/50 bg-subtle'
               : isActive ? 'border-line bg-subtle'
               : 'border-line opacity-40'
@@ -313,7 +313,7 @@ function NQueensStepsList({ steps, currentIndex, onStepClick, t }: {
               </span>
               <span className="text-body flex-1 min-w-0 truncate">{step.description}</span>
             </div>
-          </div>
+          </button>
         )
       })}
     </div>

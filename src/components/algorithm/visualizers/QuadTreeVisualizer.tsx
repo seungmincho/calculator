@@ -715,10 +715,10 @@ function QuadTreeStepsList({
           step.action === 'search-skip' ? '✕' : '·'
 
         return (
-          <div
+          <button type="button"
             key={i}
-            data-active={isCurrent ? 'true' : undefined}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent
                 ? `${colors.border} bg-white/60 dark:bg-gray-800/60 ring-1 ring-inset ring-emerald-400/30`
                 : isActive
@@ -738,7 +738,7 @@ function QuadTreeStepsList({
                 d{step.depth}
               </span>
             </div>
-          </div>
+          </button>
         )
       })}
     </div>

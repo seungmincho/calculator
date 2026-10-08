@@ -470,6 +470,9 @@ export default function SvgEditor() {
               : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
           }`}
           onClick={() => fileInputRef.current?.click()}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click() } }}
         >
           <Upload className="w-12 h-12 mx-auto mb-4 text-faint" />
           <p className="text-lg font-medium text-body">{t('dropzone.title')}</p>

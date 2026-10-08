@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/kanbanBoard'
+import { useDialog } from '@/hooks/useDialog'
 import {
   Plus,
   Trash2,
@@ -192,6 +193,9 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
   const [priority, setPriority] = useState<Priority>(initial?.priority ?? 'medium')
   const [color, setColor] = useState<ColorLabel>(initial?.color ?? 'blue')
   const [dueDate, setDueDate] = useState(initial?.dueDate ?? '')
+  const tc = useTranslations('common')
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialog(true, onClose, dialogRef)
 
   const inputCls = `${glassInput} px-3 py-2 text-sm`
 
@@ -204,14 +208,18 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="kanban-card-modal-title"
         className={`${glassCard} ${glassInset} w-full max-w-md`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-5 border-b border-line">
-          <h3 className="text-lg font-semibold text-fg">
+          <h3 id="kanban-card-modal-title" className="text-lg font-semibold text-fg">
             {initial?.title ? t('editCard') : t('addCard')}
           </h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+          <button onClick={onClose} aria-label={tc('close')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
             <X size={20} />
           </button>
         </div>
@@ -225,7 +233,7 @@ function CardModal({ t, initial, onSave, onClose }: CardModalProps) {
               onChange={(e) => setTitle(e.target.value)}
               placeholder={t('cardTitlePlaceholder')}
               required
-              autoFocus
+              data-autofocus
             />
           </div>
           <div>
@@ -315,6 +323,9 @@ interface ColModalProps {
 
 function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
   const [title, setTitle] = useState(initial ?? '')
+  const tc = useTranslations('common')
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialog(true, onClose, dialogRef)
   const inputCls = `${glassInput} px-3 py-2 text-sm`
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -326,14 +337,18 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="kanban-col-modal-title"
         className={`${glassCard} ${glassInset} w-full max-w-sm`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-5 border-b border-line">
-          <h3 className="text-lg font-semibold text-fg">
+          <h3 id="kanban-col-modal-title" className="text-lg font-semibold text-fg">
             {initial ? t('renameColumn') : t('addColumn')}
           </h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+          <button onClick={onClose} aria-label={tc('close')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
             <X size={20} />
           </button>
         </div>
@@ -345,7 +360,8 @@ function ColModal({ t, initial, onSave, onClose }: ColModalProps) {
             onChange={(e) => setTitle(e.target.value)}
             placeholder={t('columnTitlePlaceholder')}
             required
-            autoFocus
+            data-autofocus
+            aria-labelledby="kanban-col-modal-title"
           />
           <div className="flex gap-3">
             <button

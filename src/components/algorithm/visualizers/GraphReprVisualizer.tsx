@@ -257,7 +257,7 @@ export default function GraphReprVisualizer() {
                               <tr key={ri}>
                                 <td className="p-1 text-blue-600 dark:text-blue-400 font-bold">{graphState.nodes[ri]?.label}</td>
                                 {row.map((cell, ci) => (
-                                  <td key={ci}
+                                  <td role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.click() } }} key={ci}
                                     onClick={() => {
                                       if (cell !== null) handleRemoveEdge(graphState.nodes[ri].id, graphState.nodes[ci].id)
                                       else if (ri !== ci) setGraphState(prev => addEdge(prev, graphState.nodes[ri].id, graphState.nodes[ci].id, parseInt(edgeWeightInput) || 1))
@@ -295,11 +295,11 @@ export default function GraphReprVisualizer() {
                               {entry.neighbors.length === 0 ? (
                                 <span className="text-xs text-gray-400 italic">empty</span>
                               ) : entry.neighbors.map((nb, i) => (
-                                <span key={i}
+                                <button type="button" key={i}
                                   onClick={() => handleRemoveEdge(entry.nodeId, nb.nodeId)}
                                   className="px-1.5 py-0.5 rounded text-xs bg-soft text-body cursor-pointer hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors">
                                   {nb.label}{graphState.weighted ? `(${nb.weight})` : ''}
-                                </span>
+                                </button>
                               ))}
                             </div>
                           </div>

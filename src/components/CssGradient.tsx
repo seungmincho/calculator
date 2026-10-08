@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/cssGradient'
+import { useDialog } from '@/hooks/useDialog'
 import {
   Copy,
   Check,
@@ -144,6 +145,8 @@ export default function CssGradient() {
   const [showTailwind, setShowTailwind] = useState(false)
 
   const previewRef = useRef<HTMLDivElement>(null)
+  const fullscreenRef = useRef<HTMLDivElement>(null)
+  useDialog(isFullscreen, () => setIsFullscreen(false), fullscreenRef)
 
   // ── Gradient CSS generation ──
 
@@ -345,7 +348,13 @@ export default function CssGradient() {
     <>
       {/* Fullscreen overlay */}
       {isFullscreen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div
+          ref={fullscreenRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('fullscreen')}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+        >
           <div
             className="absolute inset-0"
             style={{ background: gradientCss }}

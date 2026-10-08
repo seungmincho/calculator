@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/koreanWordle'
+import { useDialog } from '@/hooks/useDialog'
 import { BarChart3, HelpCircle, Copy, Check, X, Delete, RotateCcw } from 'lucide-react'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import LeaderboardPanel from '@/components/LeaderboardPanel'
@@ -77,6 +78,10 @@ export default function KoreanWordle() {
 
   const [showHelp, setShowHelp] = useState(false)
   const [showStats, setShowStats] = useState(false)
+  const helpRef = useRef<HTMLDivElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+  useDialog(showHelp, () => setShowHelp(false), helpRef)
+  useDialog(showStats, () => setShowStats(false), statsRef)
   const [toast, setToast] = useState<string | null>(null)
   const [shake, setShake] = useState(false)
   const [revealRow, setRevealRow] = useState(-1)
@@ -480,7 +485,7 @@ export default function KoreanWordle() {
       {/* 게임 방법 */}
       {showHelp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowHelp(false)}>
-          <div role="dialog" aria-modal="true" aria-label={t('helpTitle')} className="bg-surface rounded-2xl shadow-xl max-w-md w-full max-h-[85vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
+          <div ref={helpRef} role="dialog" aria-modal="true" aria-label={t('helpTitle')} className="bg-surface rounded-2xl shadow-xl max-w-md w-full max-h-[85vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-fg">{t('helpTitle')}</h2>
               <button onClick={() => setShowHelp(false)} aria-label={t('close')} className="p-1 rounded-lg hover:bg-soft">
@@ -515,7 +520,7 @@ export default function KoreanWordle() {
       {/* 통계 */}
       {showStats && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowStats(false)}>
-          <div role="dialog" aria-modal="true" aria-label={t('statistics')} className="bg-surface rounded-2xl shadow-xl max-w-sm w-full max-h-[85vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
+          <div ref={statsRef} role="dialog" aria-modal="true" aria-label={t('statistics')} className="bg-surface rounded-2xl shadow-xl max-w-sm w-full max-h-[85vh] overflow-y-auto p-6" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-fg">{t('statistics')}</h2>
               <button onClick={() => setShowStats(false)} aria-label={t('close')} className="p-1 rounded-lg hover:bg-soft">

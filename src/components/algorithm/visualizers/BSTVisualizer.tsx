@@ -690,11 +690,11 @@ function BSTStepsList({
         const isActive = step.originalIndex <= currentIndex
 
         return (
-          <div
+          <button type="button"
             key={step.originalIndex}
-            data-active={isCurrent ? 'true' : undefined}
+            data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
             onClick={() => onStepClick(step.originalIndex)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent
                 ? ACTION_STYLE[step.action]
                 : isActive
@@ -718,7 +718,7 @@ function BSTStepsList({
                 비교 횟수: <strong className="text-amber-600 dark:text-amber-400">{step.comparisons}</strong>
               </div>
             )}
-          </div>
+          </button>
         )
       })}
       {windowEnd < displaySteps.length - 1 && (

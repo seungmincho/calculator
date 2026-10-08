@@ -428,10 +428,10 @@ function EDStepsList({ steps, currentIndex, onStepClick, t }: {
         else if (step.action === 'done') { label = t('stepDone', { dist: String(step.value) }); icon = '🏁' }
 
         return (
-          <div
+          <button type="button"
             key={i}
-            data-active={isCurrent ? 'true' : undefined}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-blue-500/50 bg-subtle'
                 : isActive ? 'border-line bg-subtle'
                 : 'border-line opacity-40'
@@ -439,7 +439,7 @@ function EDStepsList({ steps, currentIndex, onStepClick, t }: {
             onClick={() => onStepClick(step.originalIndex)}
           >
             <span className="text-body">{icon} {label}</span>
-          </div>
+          </button>
         )
       })}
     </div>

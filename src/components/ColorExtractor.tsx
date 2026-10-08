@@ -512,7 +512,8 @@ export default function ColorExtractor() {
                     {/* Color bar */}
                     <div className="flex rounded-xl overflow-hidden h-12 mb-4 shadow-inner">
                       {palette.map((color, index) => (
-                        <div
+                        <button
+                          type="button"
                           key={index}
                           className="cursor-pointer hover:opacity-80 transition-opacity relative group"
                           style={{
@@ -521,13 +522,14 @@ export default function ColorExtractor() {
                           }}
                           onClick={() => copyToClipboard(color.hex, `bar-${index}`)}
                           title={`${color.hex} (${color.percent}%)`}
+                          aria-label={`${color.hex} (${color.percent}%)`}
                         >
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
                             <span className="text-xs font-bold bg-white/80 dark:bg-black/60 text-fg px-1 rounded">
                               {color.percent}%
                             </span>
-                          </div>
-                        </div>
+                          </span>
+                        </button>
                       ))}
                     </div>
 
@@ -535,14 +537,16 @@ export default function ColorExtractor() {
                     <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
                       {palette.map((color, index) => (
                         <div key={index} className="space-y-1.5">
-                          <div
-                            className="w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-line"
+                          <button
+                            type="button"
+                            className="block w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-line"
                             style={{ backgroundColor: color.hex }}
                             onClick={() => {
                               copyToClipboard(color.hex, `palette-${index}`)
                               setPickedColor(color)
                             }}
                             title={`${color.hex} (${color.percent}%)`}
+                            aria-label={`${color.hex} (${color.percent}%)`}
                           />
                           <div className="text-center">
                             <code className="text-[10px] font-mono text-sub block">{color.hex}</code>
@@ -570,14 +574,16 @@ export default function ColorExtractor() {
           <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
             {history.map((swatch) => (
               <div key={swatch.id} className="space-y-1">
-                <div
-                  className="w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-line"
+                <button
+                  type="button"
+                  className="block w-full aspect-square rounded-lg shadow-md cursor-pointer hover:scale-110 transition-transform border border-line"
                   style={{ backgroundColor: swatch.color.hex }}
                   onClick={() => {
                     copyToClipboard(swatch.color.hex, swatch.id)
                     setPickedColor(swatch.color)
                   }}
                   title={swatch.color.hex}
+                  aria-label={swatch.color.hex}
                 />
                 <code className="text-[10px] font-mono text-sub block text-center truncate">
                   {swatch.color.hex}

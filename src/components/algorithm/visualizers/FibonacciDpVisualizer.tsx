@@ -324,8 +324,8 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
         const isCurrent = idx === currentIndex
         const isActive = idx <= currentIndex
         return (
-          <div key={idx} data-active={isCurrent ? 'true' : undefined} onClick={() => onStepClick(idx)}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+          <button type="button" key={idx} data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined} onClick={() => onStepClick(idx)}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? (actionStyle[step.action] || '') : isActive
                 ? 'border-line bg-subtle' : 'border-line opacity-40'
             }`}>
@@ -333,7 +333,7 @@ function StepsList({ steps, currentIndex, onStepClick, actionStyle, actionBadge 
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${actionBadge[step.action] || ''}`}>{step.action}</span>
               <span className="text-sub truncate">{step.description}</span>
             </div>
-          </div>
+          </button>
         )
       })}
       {windowEnd < steps.length - 1 && <div className="text-xs text-faint text-center py-1">... {steps.length - 1 - windowEnd} ...</div>}

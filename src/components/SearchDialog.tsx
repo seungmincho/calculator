@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { menuConfig, categoryKeys } from '@/config/menuConfig'
 import { recordToolUsage } from '@/utils/recentTools'
 import { lockPageScroll } from '@/utils/scrollLock'
+import { useDialog } from '@/hooks/useDialog'
 
 interface SearchItem {
   href: string
@@ -30,6 +31,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   const [query, setQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const unlockRef = useRef<(() => void) | null>(null)
 
@@ -126,28 +128,8 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     }
   }, [isOpen])
 
-  // Focus input when dialog opens
-  useEffect(() => {
-    if (isOpen) {
-      const frame = requestAnimationFrame(() => {
-        inputRef.current?.focus()
-      })
-      return () => cancelAnimationFrame(frame)
-    }
-  }, [isOpen])
-
-  // Global ESC handler — works even when focus is outside input
-  useEffect(() => {
-    if (!isOpen) return
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        closeDialog()
-      }
-    }
-    document.addEventListener('keydown', handleGlobalKeyDown)
-    return () => document.removeEventListener('keydown', handleGlobalKeyDown)
-  }, [isOpen, closeDialog])
+  // 열리면 입력란(data-autofocus)으로, ESC 는 포커스 위치와 무관하게 닫기, 닫힌 뒤 여는 버튼으로 포커스 복귀
+  useDialog(isOpen, closeDialog, dialogRef)
 
   // Scroll selected item into view
   useEffect(() => {
@@ -206,6 +188,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
 
   return (
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-[200] flex items-start justify-center pt-[15vh]"
       onClick={closeDialog}
       role="dialog"
@@ -225,6 +208,7 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
           <input
             ref={inputRef}
+            data-autofocus
             type="text"
             role="combobox"
             value={query}

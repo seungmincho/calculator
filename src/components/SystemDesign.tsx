@@ -251,7 +251,10 @@ export default function SystemDesign() {
               </div>
 
               {/* Title */}
-              <h3 className="text-lg font-bold text-fg mb-1 pr-12">{q.title}</h3>
+              <h3 className="text-lg font-bold text-fg mb-1 pr-12">
+                {/* 카드 클릭은 마우스용, 키보드는 이 버튼 */}
+                <button type="button" onClick={e => { e.stopPropagation(); openDetail(q.id) }} className="text-left cursor-pointer">{q.title}</button>
+              </h3>
               <p className="text-xs text-faint mb-2">{q.titleEn}</p>
 
               {/* Description */}

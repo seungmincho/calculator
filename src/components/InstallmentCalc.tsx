@@ -211,7 +211,10 @@ export default function InstallmentCalc() {
                     {comparison.map((c) => (
                       <tr key={c.months} onClick={() => setMonths(c.months)}
                         className={`border-b border-line cursor-pointer hover:bg-subtle ${c.months === months ? 'bg-soft font-semibold' : ''}`}>
-                        <td className="py-2 px-2 text-fg">{c.months}{t('months')}</td>
+                        <td className="py-2 px-2 text-fg">
+                          {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                          <button type="button" onClick={(e) => { e.stopPropagation(); setMonths(c.months) }} aria-pressed={c.months === months} className="text-left cursor-pointer">{c.months}{t('months')}</button>
+                        </td>
                         <td className="py-2 px-2 text-right text-fg">{won(c.firstPayment)}</td>
                         <td className="py-2 px-2 text-right text-fg">{won(c.totalFee)}</td>
                         <td className="py-2 px-2 text-right text-sub">{won(c.totalPayment)}</td>

@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/randomPicker'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useDialog } from '@/hooks/useDialog'
 import { Copy, Check, Maximize2, X, Trash2, SkipForward, RotateCcw } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'
@@ -198,15 +199,17 @@ export default function RandomPicker() {
     if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {})
   }, [])
 
+  // 발표 모드: ESC·포커스 가두기는 useDialog, Space·Enter = 추첨
+  const presentRef = useRef<HTMLDivElement>(null)
+  useDialog(presenting, closePresent, presentRef)
   useEffect(() => {
     if (!presenting) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closePresent()
-      else if ((e.key === ' ' || e.key === 'Enter') && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); draw() }
+      if ((e.key === ' ' || e.key === 'Enter') && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); draw() }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [presenting, draw, closePresent])
+  }, [presenting, draw])
 
   const clearHistory = () => { setHistory([]); saveHistory([]) }
 
@@ -419,7 +422,7 @@ export default function RandomPicker() {
 
       {/* 발표 모드: 라이브 추첨·빔프로젝터용 */}
       {presenting && (
-        <div className="fixed inset-0 z-[100] bg-canvas flex flex-col" role="dialog" aria-modal="true" aria-label={t('present')}>
+        <div ref={presentRef} className="fixed inset-0 z-[100] bg-canvas flex flex-col" role="dialog" aria-modal="true" aria-label={t('present')}>
           <div className="flex items-center justify-between px-6 py-4">
             <div className="text-lg font-semibold text-fg truncate">{title.trim() || current?.title || t('defaultTitle')}</div>
             <button onClick={closePresent} className="p-2 rounded-xl bg-soft text-body hover:bg-subtle" aria-label={t('presentClose')}>
@@ -449,7 +452,7 @@ export default function RandomPicker() {
                 <SkipForward className="w-5 h-5" /> {t('skip')}
               </button>
             ) : (
-              <button onClick={draw} disabled={!!countError} className="ui-btn px-10 py-4 text-xl">
+              <button onClick={draw} disabled={!!countError} data-autofocus className="ui-btn px-10 py-4 text-xl">
                 {current ? <><RotateCcw className="w-5 h-5" /> {t('nextRound')}</> : t('draw')}
               </button>
             )}

@@ -199,12 +199,15 @@ export default function RandomNumberPicker() {
           {/* No duplicates + sort */}
           <div className="flex flex-wrap items-center gap-4 mt-4">
             <label className="flex items-center gap-2 cursor-pointer select-none">
-              <div
+              <button
+                type="button"
+                role="switch"
+                aria-checked={noDuplicates}
                 onClick={() => setNoDuplicates(v => !v)}
-                className={`w-11 h-6 rounded-full transition-colors duration-200 flex items-center px-1 ${noDuplicates ? 'bg-cyan-500' : 'bg-gray-300 dark:bg-gray-600'}`}
+                className={`w-11 h-6 rounded-full transition-colors duration-200 flex items-center px-1 cursor-pointer ${noDuplicates ? 'bg-cyan-500' : 'bg-gray-300 dark:bg-gray-600'}`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${noDuplicates ? 'translate-x-5' : 'translate-x-0'}`} />
-              </div>
+                <span className={`w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${noDuplicates ? 'translate-x-5' : 'translate-x-0'}`} />
+              </button>
               <span className="text-sm text-body">{t('noDuplicates')}</span>
             </label>
 

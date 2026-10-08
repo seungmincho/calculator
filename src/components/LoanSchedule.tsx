@@ -321,7 +321,10 @@ export default function LoanSchedule() {
                       return (
                         <tr key={m} onClick={() => set('m', m)}
                           className={`border-b border-line last:border-0 cursor-pointer ${m === s.m ? 'bg-primary-soft text-primary' : 'text-body hover:bg-subtle'}`}>
-                          <td className={`${td} font-medium`}>{methodName(m)}</td>
+                          <td className={`${td} font-medium`}>
+                            {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                            <button type="button" onClick={(e) => { e.stopPropagation(); set('m', m) }} aria-pressed={m === s.m} className="text-left cursor-pointer">{methodName(m)}</button>
+                          </td>
                           <td className={`${td} text-right`}>{won(r.firstPayment)}</td>
                           <td className={`${td} text-right`}>{won(r.maxPayment)}</td>
                           <td className={`${td} text-right`}>{short(r.totalInterest)}</td>
@@ -363,7 +366,11 @@ export default function LoanSchedule() {
                         return (
                           <tr key={k} onClick={k === 'none' ? undefined : () => set('pmode', k)}
                             className={`border-b border-line last:border-0 ${k === 'none' ? 'text-sub' : 'cursor-pointer'} ${sel ? 'bg-primary-soft text-primary' : k === 'none' ? '' : 'text-body hover:bg-subtle'}`}>
-                            <td className={`${td} font-medium`}>{t(`prepay.${k}`)}</td>
+                            <td className={`${td} font-medium`}>
+                              {k === 'none' ? t(`prepay.${k}`) : (
+                                <button type="button" onClick={(e) => { e.stopPropagation(); set('pmode', k) }} aria-pressed={sel} className="text-left cursor-pointer">{t(`prepay.${k}`)}</button>
+                              )}
+                            </td>
                             <td className={`${td} text-right`}>{termText(r.months)}</td>
                             <td className={`${td} text-right`}>{won(after)}</td>
                             <td className={`${td} text-right`}>{short(r.totalInterest)}</td>
@@ -448,12 +455,13 @@ export default function LoanSchedule() {
                       const isOpen = open.has(y.year)
                       return (
                         <Fragment key={y.year}>
-                          <tr onClick={() => toggleYear(y.year)} className="border-b border-line cursor-pointer bg-surface hover:bg-subtle font-medium text-fg" aria-expanded={isOpen}>
+                          <tr onClick={() => toggleYear(y.year)} className="border-b border-line cursor-pointer bg-surface hover:bg-subtle font-medium text-fg">
                             <td className={td} colSpan={2}>
-                              <span className="inline-flex items-center gap-1">
+                              {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                              <button type="button" onClick={(e) => { e.stopPropagation(); toggleYear(y.year) }} aria-expanded={isOpen} className="inline-flex items-center gap-1 cursor-pointer">
                                 {isOpen ? <ChevronDown className="w-4 h-4 print:hidden" /> : <ChevronRight className="w-4 h-4 print:hidden" />}
                                 {t('table.year', { n: y.year })} <span className="text-xs text-muted font-normal">{t('table.range', { from: y.from, to: y.to })}</span>
-                              </span>
+                              </button>
                             </td>
                             {showRate && <td className={td}></td>}
                             <td className={`${td} text-right`}>{won(y.principal + y.interest)}</td>

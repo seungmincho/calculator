@@ -490,9 +490,9 @@ function QuickSortStepsList({
               </div>
             )}
 
-            <div
-              data-active={isCurrent ? 'true' : undefined}
-              className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+            <button type="button"
+              data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+              className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
                 isCurrent
                   ? 'border-purple-500/50 bg-subtle'
                   : isActive
@@ -514,7 +514,7 @@ function QuickSortStepsList({
                   </span>
                 )}
               </div>
-            </div>
+            </button>
           </div>
         )
       })}

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/presentationTimer'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useDialog } from '@/hooks/useDialog'
 import ShareResult from '@/components/ShareResult'
 import {
   type Segment, type Alert, MAX_SEGMENTS, MAX_TOTAL_SEC, MIN_SEG_SEC,
@@ -180,6 +181,8 @@ export default function PresentationTimer() {
     setSpeaker(false)
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {})
   }, [])
+  const speakerRef = useRef<HTMLDivElement>(null)
+  useDialog(speaker, exitSpeaker, speakerRef)
 
   useEffect(() => {
     const onFs = () => { if (!document.fullscreenElement) setSpeaker(false) }
@@ -280,7 +283,7 @@ export default function PresentationTimer() {
     const bg = st.phase === 'overtime' ? 'bg-red-600 text-white' : st.phase === 'warning' ? 'bg-amber-400 text-gray-950' : 'bg-canvas text-fg'
     const btn = st.phase === 'overtime' ? 'bg-white/20 hover:bg-white/30' : st.phase === 'warning' ? 'bg-black/10 hover:bg-black/20' : 'bg-soft hover:bg-subtle'
     return (
-      <div className={`fixed inset-0 z-[100] flex flex-col p-4 sm:p-8 select-none transition-colors duration-500 ${bg}`}>
+      <div ref={speakerRef} role="dialog" aria-modal="true" aria-label={t('speakerMode')} className={`fixed inset-0 z-[100] flex flex-col p-4 sm:p-8 select-none transition-colors duration-500 ${bg}`}>
         <div className="flex items-start justify-between gap-4 text-lg sm:text-2xl font-semibold">
           <div aria-live="polite">{status}</div>
           <button onClick={exitSpeaker} className={`p-3 rounded-full ${btn}`} aria-label={t('exitSpeaker')} title={t('exitSpeaker')}>
@@ -289,6 +292,7 @@ export default function PresentationTimer() {
         </div>
         <button
           onClick={toggle}
+          data-autofocus
           className="flex-1 flex flex-col items-center justify-center min-h-0 focus-visible:outline-none"
           aria-label={running ? t('pause') : t('start')}
         >

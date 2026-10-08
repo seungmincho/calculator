@@ -322,9 +322,9 @@ export default function SATVisualizer() {
                   <div className="space-y-2">
                     <p className="text-sm text-sub mb-3">{t('stepsGuide.description')}</p>
                     {fullResult.axes.map((axis, i) => (
-                      <div
+                      <button type="button" aria-current={i === currentStep ? 'step' : undefined}
                         key={i}
-                        className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
+                        className={`block w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer ${
                           i === currentStep
                             ? 'border-blue-500/50 bg-subtle'
                             : i <= currentStep
@@ -356,7 +356,7 @@ export default function SATVisualizer() {
                             </span>
                           )}
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 )}

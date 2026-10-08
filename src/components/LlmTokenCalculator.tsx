@@ -397,8 +397,11 @@ export default function LlmTokenCalculator() {
                     className={`border-b border-line cursor-pointer transition-colors ${on ? 'bg-primary-soft' : 'hover:bg-subtle'}`}
                   >
                     <td className={`py-2 pr-2 font-medium whitespace-nowrap ${on ? 'text-primary' : 'text-fg'}`}>
-                      {r.model.name}
-                      <span className="block text-xs font-normal text-muted">{VENDORS[r.model.vendor].name}{s.b && r.model.batch == null ? ` · ${t('prices.noBatch')}` : ''}</span>
+                      {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                      <button type="button" onClick={(e) => { e.stopPropagation(); set('m', r.model.id) }} aria-pressed={on} className="text-left cursor-pointer">
+                        {r.model.name}
+                        <span className="block text-xs font-normal text-muted">{VENDORS[r.model.vendor].name}{s.b && r.model.batch == null ? ` · ${t('prices.noBatch')}` : ''}</span>
+                      </button>
                     </td>
                     <td className="py-2 pr-2 text-right tabular-nums text-sub">{nf(r.inTok)}</td>
                     <td className="py-2 pr-2 text-right tabular-nums text-sub">{fmtUSD(r.cost.perReq.total)}</td>

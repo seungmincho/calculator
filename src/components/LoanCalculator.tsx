@@ -307,8 +307,11 @@ export default function LoanCalculator() {
                       <tr key={m} onClick={() => set('m', m)}
                         className={`border-b border-line last:border-0 cursor-pointer ${m === s.m ? 'bg-primary-soft text-primary' : 'text-body hover:bg-subtle'}`}>
                         <td className={`${td} font-medium`}>
-                          {methodName(m)}
-                          {m === cheapest && <span className="ml-2 text-xs font-semibold text-primary">{t('cmp.cheapest')}</span>}
+                          {/* 행 클릭은 마우스용, 키보드는 이 버튼 */}
+                          <button type="button" onClick={(e) => { e.stopPropagation(); set('m', m) }} aria-pressed={m === s.m} className="text-left cursor-pointer">
+                            {methodName(m)}
+                            {m === cheapest && <span className="ml-2 text-xs font-semibold text-primary">{t('cmp.cheapest')}</span>}
+                          </button>
                         </td>
                         <td className={`${td} text-right`}>{won(r.firstPayment)}</td>
                         <td className={`${td} text-right`}>{won(r.lastPayment)}</td>

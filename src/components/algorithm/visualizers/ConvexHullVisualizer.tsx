@@ -333,8 +333,8 @@ function StepsList({ steps, currentIndex, onStepClick, t }: {
         const isActive = i <= currentIndex
         const isCurrent = i === currentIndex
         return (
-          <div key={i} data-active={isCurrent ? 'true' : undefined}
-            className={`p-2 rounded-lg border text-xs transition-all cursor-pointer ${
+          <button type="button" key={i} data-active={isCurrent ? 'true' : undefined} aria-current={isCurrent ? 'step' : undefined}
+            className={`block w-full text-left p-2 rounded-lg border text-xs transition-all cursor-pointer ${
               isCurrent ? 'border-indigo-500/50 bg-subtle'
               : isActive ? 'border-line bg-subtle'
               : 'border-line opacity-40'
@@ -345,7 +345,7 @@ function StepsList({ steps, currentIndex, onStepClick, t }: {
               </span>
               <span className="text-body flex-1 min-w-0 truncate">{step.description}</span>
             </div>
-          </div>
+          </button>
         )
       })}
     </div>
