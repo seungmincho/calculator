@@ -282,14 +282,16 @@ const FuelCalculator = () => {
 
       // Supabase 과거 데이터 응답
       if (data.source === 'supabase' && Array.isArray(data.data)) {
-        const rows = data.data as Array<{ gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_nm?: string }>
+        const rows = data.data as Array<{ gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_cd?: string }>
         let gasoline = 0, premiumGasoline = 0, diesel = 0, lpg = 0
+        // 전국은 OPINET 전국 평균 행('00')이 있으면 그대로 — 시도 단순 평균은 주유소 수 가중이 없어 실시간 전국가와 다르다
+        const one = sido ? rows[0] : rows.find(r => r.sido_cd === '00')
         if (rows.length > 0) {
-          if (sido) {
-            gasoline = Math.round(Number(rows[0].gasoline ?? 0))
-            premiumGasoline = Math.round(Number(rows[0].premium_gasoline ?? 0))
-            diesel = Math.round(Number(rows[0].diesel ?? 0))
-            lpg = Math.round(Number(rows[0].lpg ?? 0))
+          if (one) {
+            gasoline = Math.round(Number(one.gasoline ?? 0))
+            premiumGasoline = Math.round(Number(one.premium_gasoline ?? 0))
+            diesel = Math.round(Number(one.diesel ?? 0))
+            lpg = Math.round(Number(one.lpg ?? 0))
           } else {
             let gCount = 0, pgCount = 0, dCount = 0, lCount = 0
             for (const r of rows) {
@@ -339,17 +341,27 @@ const FuelCalculator = () => {
   useEffect(() => {
     const savedMultiplier = safeStorage.getItem('fuel_depreciation_multiplier')
     if (savedMultiplier) setDepreciationMultiplier(Number(savedMultiplier) || 1.0)
-    // 공유 링크의 지역·기준일·직접 입력 유가가 내 저장 지역·실시간 유가보다 우선
+    // 공유 링크의 지역·기준일·유가가 내 저장 지역·실시간 유가보다 우선
     const qSido = searchParams.get('sido')
     const sido = qSido !== null && SIDO_OPTIONS.some(o => o.code === qSido) ? qSido : safeStorage.getItem('fuel_selected_sido') || ''
     const qDate = normDate(searchParams.get('date') ?? '')
     const date = qDate && qDate < localDate() ? qDate : '' // 오늘 이후면 실시간
-    const qPrice = Number(searchParams.get('price'))
     setSelectedSido(sido)
     setSelectedDate(date)
-    if (qPrice > 0 && qPrice < 10000) {
-      setFuelPrices(prev => ({ ...prev, [fuelType]: qPrice }))
-      setPriceSource('manual')
+    // price = 네 연료 단가 스냅샷(휘발유-고급-경유-LPG) 또는 선택 연료 단가 하나(이전 형식) — 조회하지 않고 그대로 쓴다
+    const parts = (searchParams.get('price') ?? '').split('-').map(Number)
+    const shared: Partial<Record<FuelType, number>> = parts.length === 1
+      ? { [fuelType]: parts[0] }
+      : Object.fromEntries(FUEL_TYPES.map((f, i) => [f, parts[i]]))
+    const ok = (n = 0) => n > 0 && n < 10000
+    if (ok(shared[fuelType])) {
+      setFuelPrices(prev => {
+        const next = { ...prev }
+        for (const f of FUEL_TYPES) if (ok(shared[f])) next[f] = shared[f]!
+        return next
+      })
+      setPriceSource(qDate ? 'opinet' : 'manual')
+      setPriceDate(qDate)
       return
     }
     fetchOpinetPrices(sido || undefined, date || undefined)
@@ -376,17 +388,20 @@ const FuelCalculator = () => {
     setOrDelete('fuelType', fuelType, fuelType === 'gasoline')
     setOrDelete('eff', String(customEfficiency), !(useCustomEfficiency && customEfficiency > 0))
     setOrDelete('dm', String(depreciationMultiplier), depreciationMultiplier === 1)
+    // 유가 기준은 주소창에 남기지 않는다(북마크·새로고침은 최신 유가). 받은 링크의 옛 기준도 여기서 지운다.
+    for (const k of ['date', 'sido', 'price']) url.searchParams.delete(k)
     window.history.replaceState({}, '', url)
-    // 공유 링크에만 유가 기준을 박는다(주소창은 그대로 — 내 지역은 localStorage, 새로고침은 최신 유가).
-    // 실시간 유가는 다음 날 바뀌므로 적용된 유가의 기준일과 지역(전국 포함), 직접 입력이면 그 단가.
-    if (priceSource === 'opinet') {
-      url.searchParams.set('date', selectedDate || priceDate)
-      url.searchParams.set('sido', selectedSido)
-    } else if (priceSource === 'manual') {
-      url.searchParams.set('price', String(fuelPrices[fuelType]))
+    // 공유 링크에는 적용된 단가 자체를 박는다 — 과거 유가 DB 공백·전국 평균 산식 차이와 무관하게 받는 사람도 같은 금액.
+    // OPINET이면 표시용 기준일(실제 적용된 날짜)과 지역(전국 = 빈 값)도 함께.
+    if (priceSource !== 'default') {
+      url.searchParams.set('price', FUEL_TYPES.map(f => fuelPrices[f]).join('-'))
+      if (priceSource === 'opinet') {
+        url.searchParams.set('date', priceDate)
+        url.searchParams.set('sido', selectedSido)
+      }
     }
     setShareUrl(url.toString())
-  }, [distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, depreciationMultiplier, selectedDate, selectedSido, priceSource, priceDate, fuelPrices])
+  }, [distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, depreciationMultiplier, selectedSido, priceSource, priceDate, fuelPrices])
 
   const efficiency = useCustomEfficiency && customEfficiency > 0
     ? customEfficiency

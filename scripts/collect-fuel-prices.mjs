@@ -39,8 +39,7 @@ async function main() {
   const today = new Date().toISOString().slice(0, 10)
   const priceMap = {}
   for (const oil of oils) {
-    const sido = String(oil.SIDOCD)
-    if (sido === '00') continue
+    const sido = String(oil.SIDOCD) // '00' = 전국 평균(주유소 수 가중) — 과거 날짜 전국 조회가 이 행을 쓴다
     if (!priceMap[sido]) priceMap[sido] = { sido_nm: oil.SIDONM }
     const col = PRODUCT_MAP[oil.PRODCD]
     if (col) priceMap[sido][col] = Math.round(Number(oil.PRICE) * 100) / 100
