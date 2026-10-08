@@ -61,7 +61,13 @@ export default function Metronome() {
     if (!ready || !query || appliedQuery.current === query) return
     appliedQuery.current = query
     const q = new URLSearchParams(query)
-    setS((p) => decodeSettings((k) => q.get(k), p))
+    if (!q.has('bpm') && !q.has('ts')) return
+    // 링크에 없는 키 = 보낸 사람의 기본값 → 내 저장값이 아니라 DEFAULTS 위에 적용 (볼륨·화면 깜빡임·진동·자동 정지는 내 설정 유지)
+    setS((p) => decodeSettings((k) => q.get(k), { ...DEFAULTS, volume: p.volume, flash: p.flash, vibrate: p.vibrate, stopMin: p.stopMin }))
+    // 적용한 값은 저장소로 넘어가므로 주소창에서 지움 → 설정을 바꾼 뒤 새로고침해도 옛 링크로 되돌아가지 않음
+    for (const k of ['bpm', 'ts', 'acc', 'sub', 'snd', 'vol', 'ci', 'tr', 'gap']) q.delete(k)
+    const rest = q.toString()
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${rest ? `?${rest}` : ''}${window.location.hash}`)
   }, [ready, query])
   useEffect(() => {
     if (!ready) return

@@ -39,7 +39,8 @@ export default function SleepCalculator() {
   })
   const [age, setAge] = useState<AgeKey>(() => (AGE_SELECT.includes(sp.get('age') as AgeKey) ? (sp.get('age') as AgeKey) : 'adult'))
   const [h12, setH12] = useState(() => sp.get('h12') === '1')
-  const [pick, setPick] = useState<number | null>(null) // 선택한 옵션 key (주기 수 / 낮잠 분)
+  const [pick, setPick] = useState<number | null>(() => { const p = parseInt(sp.get('p') ?? '', 10); return Number.isFinite(p) ? p : null }) // 선택한 옵션 key (주기 수 / 낮잠 분)
+  const [shareUrl, setShareUrl] = useState<string>()
   const [copied, setCopied] = useState(false)
 
   // 현재 시각은 마운트 후에만(SSR/하이드레이션 일치). 그전엔 '지금' = 23:00 가정.
@@ -79,9 +80,14 @@ export default function SleepCalculator() {
     q.set('lat', String(latency))
     q.set('age', age)
     if (h12) q.set('h12', '1'); else q.delete('h12')
+    if (pick != null) q.set('p', String(pick)); else q.delete('p')
     q.delete('fallAsleep')
     window.history.replaceState({}, '', url)
-  }, [mode, wake, bed, napAt, cycle, latency, age, h12])
+    // 공유 링크에는 '지금'을 그 시각으로 박는다 — 받는 사람의 지금으로 바뀌지 않게
+    if (now != null && mode === 'bed' && bed == null) q.set('bed', fmtHM(now))
+    if (now != null && mode === 'nap' && napAt == null) q.set('nap', fmtHM(now))
+    setShareUrl(url.toString())
+  }, [mode, wake, bed, napAt, cycle, latency, age, h12, pick, now])
 
   const clock = useCallback((min: number) => {
     if (!h12) return fmtHM(min)
@@ -259,6 +265,7 @@ export default function SleepCalculator() {
           </div>
 
           <ShareResult
+            url={shareUrl}
             card={{
               tool: t('title'),
               label: heroLabel,

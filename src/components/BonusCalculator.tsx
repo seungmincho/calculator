@@ -62,7 +62,7 @@ export default function BonusCalculator() {
     if (g('period')) setPeriod(Math.min(12, Math.max(1, parseInt(g('period')!) || 1)))
     if (g('dependents')) setDependents(parseInt(g('dependents')!) || 1)
     if (g('children')) setChildren(parseInt(g('children')!) || 0)
-    if (g('nonTaxable')) setNonTaxable(formatInput(g('nonTaxable')!))
+    if (g('nonTaxable') !== null) setNonTaxable(formatInput(g('nonTaxable')!)) // 빈 값 = 비과세 0원
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // state → URL

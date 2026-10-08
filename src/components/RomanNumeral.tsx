@@ -45,6 +45,7 @@ export default function RomanNumeral() {
   const [sepId, setSepId] = useState(() => SEPS.find((s) => s.id === sp.get('s'))?.id ?? 'dot')
   const [table, setTable] = useState<'n' | 'y'>('n')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [shareUrl, setShareUrl] = useState<string>()
   const today = useRef('')
 
   // 날짜 기본값 = 오늘 (서버 렌더와 달라지지 않게 마운트 후)
@@ -63,6 +64,9 @@ export default function RomanNumeral() {
       if (sepId !== 'dot') p.set('s', sepId)
       const qs = p.toString()
       window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+      // 공유 링크에는 오늘 날짜도 박는다 — 받는 사람의 '오늘'로 바뀌지 않게
+      if (date) p.set('d', date)
+      setShareUrl(`${window.location.origin}${window.location.pathname}?${p}`)
     }, 300)
     return () => clearTimeout(id)
   }, [input, date, order, sepId])
@@ -351,6 +355,7 @@ export default function RomanNumeral() {
                 ))}
               </div>
               <ShareResult
+                url={shareUrl}
                 fileName="roman-date"
                 card={{
                   tool: t('title'),

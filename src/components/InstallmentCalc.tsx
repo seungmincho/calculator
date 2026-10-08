@@ -33,7 +33,7 @@ export default function InstallmentCalc() {
     const fm = Number(searchParams.get('fee'))
     if (amount) setTotalAmount(amount)
     if (m > 0) setMonths(Math.floor(m))
-    if (rate && Number(rate) >= 0) setInterestRate(rate)
+    if (rate !== null && Number(rate) >= 0) setInterestRate(rate) // 빈 값 = 0%
     if (p === 'free' || p === 'partial' || p === 'normal') setPlan(p)
     else if (searchParams.get('free') === 'true') setPlan('free')
     if (fm > 0) setFeeMonths(Math.floor(fm))

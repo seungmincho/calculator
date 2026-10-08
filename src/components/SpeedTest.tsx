@@ -282,6 +282,7 @@ export default function SpeedTest() {
       url.searchParams.set('p', fmtMs(ping))
       url.searchParams.set('j', fmtMs(jit))
       if (res.colo) url.searchParams.set('c', res.colo)
+      else url.searchParams.delete('c') // 받은 링크의 서버 값이 남지 않게
       window.history.replaceState({}, '', url)
     } catch {
       setPhase(signal.aborted ? 'idle' : 'error')

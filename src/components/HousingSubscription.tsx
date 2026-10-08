@@ -56,7 +56,7 @@ export default function HousingSubscription() {
   const [marriage, setMarriage] = useState(() => (sp.get('mar') === '' ? '' : date(sp.get('mar'), D.marriage)))
   const [neverOwned, setNeverOwned] = useState(() => sp.get('own') !== '1')
   const [disposal, setDisposal] = useState(() => date(sp.get('dis'), ''))
-  const [subStart, setSubStart] = useState(() => date(sp.get('s'), D.sub))
+  const [subStart, setSubStart] = useState(() => (sp.get('s') === '' ? '' : date(sp.get('s'), D.sub)))
   const [spouseSub, setSpouseSub] = useState(() => date(sp.get('ss'), ''))
   // 직접 선택 모드
   const [ha, setHa] = useState(() => int(sp.get('ha'), 6, -1, 15))

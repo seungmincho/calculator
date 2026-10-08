@@ -98,7 +98,8 @@ export default function ExerciseCalorie() {
     if (tab !== 'calc') p.set('tab', tab)
     p.set('w', String(weight))
     if (tab === 'calc') { p.set('a', actId); p.set('m', String(minutes)) }
-    if (tab === 'food') { p.set('food', foodId); if (foodId === 'custom') p.set('fk', String(customKcal)) }
+    // 음식 역산 목록에 선택한 운동(actId)이 들어가므로 a도 남김
+    if (tab === 'food') { p.set('food', foodId); if (foodId === 'custom') p.set('fk', String(customKcal)); p.set('a', actId) }
     if (tab === 'steps') { p.set('steps', String(steps)); p.set('pace', pace); p.set('h', String(height)) }
     if (tab === 'week') p.set('p', encodePlan(plan))
     if (adv || tab === 'steps') { if (sex === 'f') p.set('sex', 'f') }

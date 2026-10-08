@@ -100,6 +100,22 @@ export default function CarMaintenance() {
     if (fromUrl) { setCar({ ...DEFAULT_CAR, ...fromUrl, id: Date.now().toString(36) }); setTab('schedule') }
     else if (list[0]) setCar(list[0])
     if (searchParams.get('tab') === 'schedule') setTab('schedule')
+    // 유지비 탭 공유 링크 (없는 값은 기본값)
+    const n = (k: string, d: number, max: number) => { const v = searchParams.get(k); return v && Number.isFinite(+v) ? clampNum(v, max) : d }
+    const vt = searchParams.get('vt') as VehicleType, cf = searchParams.get('cf') as Fuel
+    const type = VEHICLE_TYPES.includes(vt) ? vt : 'medium', fuel = FUELS.includes(cf) ? cf : 'gasoline'
+    const ef = parseFloat(searchParams.get('ef') ?? ''), my = n('my', 2022, 2100)
+    setVehicleType(type); setFuelType(fuel)
+    setDisplacement(n('cc', 1998, 8000))
+    setModelYear(my >= 1980 ? my : 2022)
+    setUseCustomEfficiency(ef >= 0)
+    setEfficiency(ef >= 0 ? Math.min(ef, 100) : DEFAULT_EFFICIENCY[fuel][type])
+    setAnnualKm(n('ak', 15000, 200000))
+    setFuelPrice(n('fp', DEFAULT_FUEL_PRICES[fuel], 10000))
+    setMonthlyParking(n('pk', 100000, 1e9))
+    setCarWashFrequency(n('wf', 2, 30))
+    setCarWashCost(n('wc', 10000, 1e9))
+    setMonthlyToll(n('tl', 30000, 1e9))
     ready.current = true
     setLoaded(true)
   }, [searchParams])
@@ -114,12 +130,21 @@ export default function CarMaintenance() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)) } catch { /* 저장 불가: 무시 */ }
   }, [saved, loaded])
 
-  // 상태 → URL (정비 탭만, 차 이름·교체 날짜 제외)
+  // 상태 → URL (정비 탭: 차 이름·교체 날짜 제외 / 유지비 탭: 기본값과 다른 입력만)
   useEffect(() => {
     if (!loaded) return
-    const q = tab === 'schedule' ? `?tab=schedule&${encodeCar(car)}` : ''
+    let q = tab === 'schedule' ? `?tab=schedule&${encodeCar(car)}` : ''
+    if (tab === 'cost') {
+      const p = new URLSearchParams()
+      const put = (k: string, v: number | string, d: number | string) => { if (v !== d) p.set(k, String(v)) }
+      put('vt', vehicleType, 'medium'); put('cf', fuelType, 'gasoline'); put('cc', displacement, 1998); put('my', modelYear, 2022)
+      if (useCustomEfficiency) p.set('ef', String(efficiency))
+      put('ak', annualKm, 15000); put('fp', fuelPrice, DEFAULT_FUEL_PRICES[fuelType]); put('pk', monthlyParking, 100000)
+      put('wf', carWashFrequency, 2); put('wc', carWashCost, 10000); put('tl', monthlyToll, 30000)
+      if (p.toString()) q = `?${p}`
+    }
     window.history.replaceState(null, '', `${window.location.pathname}${q}`)
-  }, [tab, car, loaded])
+  }, [tab, car, loaded, vehicleType, fuelType, displacement, modelYear, useCustomEfficiency, efficiency, annualKm, fuelPrice, monthlyParking, carWashFrequency, carWashCost, monthlyToll])
 
   const patch = (p: Partial<Car>) => setCar((c) => ({ ...c, ...p }))
   const setRecord = (id: string, r: { km?: number; date?: string } | null) =>

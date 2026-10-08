@@ -134,7 +134,7 @@ export default function ColorBlindnessSimulator() {
   })
   const [palette, setPalette] = useState<string[]>(() => {
     const p = parseHexList(sp.get('pal') ?? '')
-    return p.length >= 2 ? p : PALETTE_RISKY
+    return p.length ? p : PALETTE_RISKY // 붙여넣기는 1색도 허용 → 링크도 그대로
   })
   const [palText, setPalText] = useState('')
   const [img, setImg] = useState<ImageData | null>(null)

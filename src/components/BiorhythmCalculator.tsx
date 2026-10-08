@@ -129,6 +129,8 @@ export default function BiorhythmCalculator() {
   const heroLabel = nameA.trim() ? t('hero.labelNamed', { name: nameA.trim(), date: tDate }) : t('hero.label', { date: tDate })
   const pair = { a: nameA.trim() || t('compat.me'), b: nameB.trim() || t('compat.partner') }
   const rootUrl = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : undefined
+  // 공유 링크엔 기준일을 박음(주소창은 오늘 기준 유지) → 다른 날 열어도 카드와 같은 날짜·수치
+  const shareUrl = hideBirth ? rootUrl : rootUrl && `${rootUrl}?${new URLSearchParams({ ...Object.fromEntries(searchParams), targetDate: target })}`
 
   const shareCard = mode === 'compat'
     ? c && {
@@ -309,7 +311,7 @@ export default function BiorhythmCalculator() {
 
                 {shareCard && (
                   <div className="space-y-2">
-                    <ShareResult card={shareCard} url={hideBirth ? rootUrl : undefined} text={t('share.textCompat', { v: c.overall })} fileName="biorhythm-match" />
+                    <ShareResult card={shareCard} url={shareUrl} text={t('share.textCompat', { v: c.overall })} fileName="biorhythm-match" />
                     <label className="flex items-center gap-2 text-sm text-sub">
                       <input type="checkbox" checked={hideBirth} onChange={e => setHideBirth(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
                       {t('share.hideBirth')}
@@ -373,7 +375,7 @@ export default function BiorhythmCalculator() {
 
               {shareCard && (
                 <div className="space-y-2">
-                  <ShareResult card={shareCard} url={hideBirth ? rootUrl : undefined} text={t('share.text', { v: signed(r.now.composite) })} fileName="biorhythm" />
+                  <ShareResult card={shareCard} url={shareUrl} text={t('share.text', { v: signed(r.now.composite) })} fileName="biorhythm" />
                   <label className="flex items-center gap-2 text-sm text-sub">
                     <input type="checkbox" checked={hideBirth} onChange={e => setHideBirth(e.target.checked)} className="w-4 h-4 accent-[var(--primary)]" />
                     {t('share.hideBirth')}

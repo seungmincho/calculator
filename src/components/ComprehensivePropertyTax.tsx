@@ -49,7 +49,7 @@ export default function ComprehensivePropertyTax() {
   const [joint, setJoint] = useState(() => sp.get('j') === '1')
   const [share, setShare] = useState(() => clamp(parseNum(sp.get('sh') ?? '') || 50, 1, 99))
   const [age, setAge] = useState(() => clamp(parseNum(sp.get('age') ?? '') || 55, 0, 120))
-  const [years, setYears] = useState(() => clamp(parseNum(sp.get('yrs') ?? '') || 7, 0, 80))
+  const [years, setYears] = useState(() => { const y = sp.get('yrs'); return y !== null ? clamp(parseNum(y), 0, 80) : 7 }) // 링크의 0년도 그대로
   const [urban, setUrban] = useState(() => sp.get('urb') !== '0')
   const [prev, setPrev] = useState(() => Math.min(parseNum(sp.get('prev') ?? ''), MAX_PRICE))
   const [delta, setDelta] = useState(10)

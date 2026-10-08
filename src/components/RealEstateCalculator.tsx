@@ -59,7 +59,7 @@ export default function RealEstateCalculator() {
   const [relief, setRelief] = useState<Relief>(() => pick(sp.get('rl'), RELIEFS, 'none'))
   const [byLtv, setByLtv] = useState(() => sp.get('lm') !== 'amt')
   const [ltv, setLtv] = useState(() => Math.min(100, Math.max(0, numOr(sp.get('ltv'), 40))))
-  const [loanAmt, setLoanAmt] = useState(() => parseNum(sp.get('loan')) || 3 * EOK)
+  const [loanAmt, setLoanAmt] = useState(() => (sp.has('loan') ? parseNum(sp.get('loan')) : 3 * EOK)) // loan=0(대출 없음)도 그대로
   const [rate, setRate] = useState(() => sp.get('r') ?? '4.0')
   const [years, setYears] = useState(() => numOr(sp.get('y'), 30))
   const [method, setMethod] = useState<RepayMethod>(() => (sp.get('m') === 'ep' ? 'equalPrincipal' : 'equalPayment'))

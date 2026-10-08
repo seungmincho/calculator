@@ -119,13 +119,14 @@ export default function ExchangeRateCalculator() {
     const p = new URLSearchParams()
     p.set('c', code); p.set('a', String(amount))
     if (side === 'k') p.set('s', 'k')
-    if (num(cashText) !== cur.cash) p.set('cs', cashText)
-    if (num(wireText) !== cur.wire) p.set('ws', wireText)
-    if (pref !== 90) p.set('p', prefText)
+    // 입력 글자 대신 계산에 쓴 값 — 빈칸(0)을 그대로 쓰면 받는 쪽에서 기본값이 된다
+    if (num(cashText) !== cur.cash) p.set('cs', String(cash))
+    if (num(wireText) !== cur.wire) p.set('ws', String(wire))
+    if (pref !== 90) p.set('p', String(pref))
     if (budget !== 1_000_000) p.set('b', String(budget))
     const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
     return () => clearTimeout(id)
-  }, [code, amount, side, cashText, wireText, prefText, pref, budget, cur.cash, cur.wire])
+  }, [code, amount, side, cashText, wireText, cash, wire, pref, budget, cur.cash, cur.wire])
 
   const pick = (c: string) => {
     if (c === code) return

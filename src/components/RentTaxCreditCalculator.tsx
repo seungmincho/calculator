@@ -81,6 +81,17 @@ export default function RentTaxCreditCalculator() {
       setMonths(monthsParam(sp.get('m')) ?? DEF.months)
     }
     setNo(new Set((sp.get('no') ?? '').split(',').filter(isCheck)))
+    // 지난 연도 수정값: py=연도_개월_구간.연도_개월_구간 (빈 칸 = 자동)
+    const pe: Record<number, { months?: number; tier?: Tier }> = {}
+    for (const part of (sp.get('py') ?? '').split('.')) {
+      const [y, m, tier] = part.split('_')
+      if (!/^\d{4}$/.test(y)) continue
+      pe[+y] = {
+        ...(/^\d{1,2}$/.test(m) && +m <= 12 ? { months: +m } : {}),
+        ...(TIERS.includes(tier as Tier) ? { tier: tier as Tier } : {}),
+      }
+    }
+    setPastEdit(pe)
   }, [sp])
 
   useEffect(() => {
@@ -88,8 +99,10 @@ export default function RentTaxCreditCalculator() {
     const q = new URLSearchParams({ s: String(salary), r: String(rent) })
     if (months !== 12) q.set('m', String(months))
     if (no.size) q.set('no', CHECKS.filter((c) => no.has(c)).join(','))
+    const py = Object.entries(pastEdit).map(([y, e]) => `${y}_${e.months ?? ''}_${e.tier ?? ''}`).join('.')
+    if (py) q.set('py', py)
     window.history.replaceState(window.history.state, '', `?${q}`)
-  }, [salary, rent, months, no])
+  }, [salary, rent, months, no, pastEdit])
 
   const annual = rent * months
   const elig = eligibility(salary, no)

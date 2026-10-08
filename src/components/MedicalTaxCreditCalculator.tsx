@@ -79,7 +79,7 @@ export default function MedicalTaxCreditCalculator() {
     if (!loaded.current) return
     const q = new URLSearchParams({ s: String(salary) })
     const set = (k: string, v: number) => { if (v) q.set(k, String(v)) }
-    set('ms', paid.self + paid.family)
+    q.set('ms', String(paid.self + paid.family)) // 0이어도 넣음 — 의료비 키가 하나도 없으면 받는 쪽이 예시 의료비로 계산
     set('mf', paid.family)
     set('mg', paid.general)
     set('mp', paid.premature)

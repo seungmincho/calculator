@@ -134,6 +134,14 @@ export default function WorldClock() {
     if (selMs != null) u.searchParams.set('at', String(Math.floor(selMs / 1000)))
     return u.toString()
   }
+  // 주소창의 at 도 지금 선택과 맞춘다 — 받은 링크의 옛 시각이 새로고침·북마크에 남지 않게
+  useEffect(() => {
+    if (!ready) return
+    const url = new URL(window.location.href)
+    if (sel != null && selMs != null) url.searchParams.set('at', String(Math.floor(selMs / 1000)))
+    else url.searchParams.delete('at')
+    window.history.replaceState(window.history.state, '', url)
+  }, [ready, sel, selMs])
 
   useEffect(() => {
     const up = () => { dragging.current = false }

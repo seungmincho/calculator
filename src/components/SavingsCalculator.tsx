@@ -52,7 +52,7 @@ export default function SavingsCalculator() {
 
   const [kind, setKind] = useState<Kind>(() => (sp.get('k') === 'd' ? 'deposit' : 'saving'))
   const [amountText, setAmountText] = useState(() => commas(sp.get('a') || (sp.get('k') === 'd' ? '10000000' : '500000')))
-  const [rateText, setRateText] = useState(() => sp.get('r') || '3.5')
+  const [rateText, setRateText] = useState(() => sp.get('r') ?? '3.5') // 링크의 빈 금리(0%)도 그대로
   const [monthsText, setMonthsText] = useState(() => sp.get('n') || '12')
   const [compound, setCompound] = useState(() => sp.get('c') === '1')
   const [tax, setTax] = useState<TaxKey>(() => { const x = sp.get('tax'); return isTax(x) ? x : 'normal' })

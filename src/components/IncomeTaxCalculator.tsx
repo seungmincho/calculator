@@ -74,7 +74,8 @@ export default function IncomeTaxCalculator() {
     if (Object.keys(c).length) setCounts((s) => ({ ...s, ...c, persons: Math.max(1, c.persons ?? s.persons) }))
     const occ = g('occ')
     if (occ && (occ === 'custom' || INDUSTRIES.some((x) => x.code === occ))) setCode(occ)
-    const rate = (k: string, set: (v: string) => void) => { const v = g(k); if (v && /^\d{1,3}(\.\d)?$/.test(v)) set(v) }
+    // Rate 입력이 만드는 형식 그대로(숫자·점 5자, 빈 값 포함) — 아니면 보낸 사람과 다른 비율이 된다
+    const rate = (k: string, set: (v: string) => void) => { const v = g(k); if (v != null && /^[\d.]{0,5}$/.test(v)) set(v) }
     rate('cs', setCSimple); rate('cd', setCStandard); rate('or', setORate)
     const mt = g('method')
     if (mt === 'simple' || mt === 'standard' || mt === 'book') setMethod(mt)

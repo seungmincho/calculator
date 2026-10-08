@@ -63,7 +63,8 @@ export default function CardDeductionCalculator() {
     setSalary(amount(sp.get('s')) ?? DEF.salary)
     setPeriod(sp.get('p') === 'y' ? 'year' : 'ytd')
     setChildren(Math.min(2, amount(sp.get('ch')) ?? DEF.children))
-    if (CARD_KEYS.some((k) => sp.has(CODE[k]))) setSpend(Object.fromEntries(CARD_KEYS.map((k) => [k, amount(sp.get(CODE[k])) ?? 0])) as unknown as CardSpend)
+    // s 는 항상 쓰므로 공유 링크 판별에 포함 — 사용액이 모두 0이면 카드 키가 빠진다
+    if (sp.has('s') || CARD_KEYS.some((k) => sp.has(CODE[k]))) setSpend(Object.fromEntries(CARD_KEYS.map((k) => [k, amount(sp.get(CODE[k])) ?? 0])) as unknown as CardSpend)
   }, [sp])
 
   const query = (extra: Record<string, string> = {}) => {

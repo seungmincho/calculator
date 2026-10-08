@@ -123,17 +123,20 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   }, [])
 
   // ─── URL sync ─────────────────────────────────────────────────────────────
-  useEffect(() => {
+  // 기본 항목 그대로면 URL에서 뺀다 — 첫 방문 주소가 깨끗하게(서버 HTML과 같은 상태)
+  const syncParam = (key: string, items: string[], defaults: string[]) => {
     const url = new URL(window.location.href)
-    url.searchParams.set('roulette', rouletteItems.join(','))
+    if (items.join(',') === defaults.join(',')) url.searchParams.delete(key)
+    else url.searchParams.set(key, items.join(','))
     window.history.replaceState({}, '', url)
-  }, [rouletteItems])
+  }
+  useEffect(() => {
+    syncParam('roulette', rouletteItems, defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS)
+  }, [rouletteItems]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('order', orderItems.join(','))
-    window.history.replaceState({}, '', url)
-  }, [orderItems])
+    syncParam('order', orderItems, DEFAULT_PARTICIPANTS)
+  }, [orderItems]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Draw roulette wheel ─────────────────────────────────────────────────
   const drawWheel = useCallback((angle: number, items: string[]) => {

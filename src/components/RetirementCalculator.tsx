@@ -76,7 +76,7 @@ export default function RetirementCalculator() {
     const url = new URL(window.location.href)
     for (const k of ['salary', 'years', 'months', 'start', 'end']) url.searchParams.delete(k)
     const detail = mode === 'detail'
-    const q = { s: start, e: end, mode: detail ? 'detail' : '', pay, m1: detail ? m1 : '', m2: detail ? m2 : '', m3: detail ? m3 : '', ord: detail ? ord : '', bonus, leave }
+    const q = { s: start, e: end, mode: detail ? 'detail' : '', pay, m1: detail ? m1 : '', m2: detail ? m2 : '', m3: detail ? m3 : '', ord: detail ? ord : '', bonus: bonus || '0', leave: leave || '0' } // 빈칸(=0)을 빼면 받는 쪽이 기본값(400만·50만)으로 계산
     for (const [k, v] of Object.entries(q)) { if (v) url.searchParams.set(k, v); else url.searchParams.delete(k) }
     window.history.replaceState(window.history.state, '', url)
     setSaved(false)

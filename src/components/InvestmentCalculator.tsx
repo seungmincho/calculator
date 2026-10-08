@@ -51,8 +51,8 @@ export default function InvestmentCalculator() {
   const searchParams = useSearchParams()
   const [s, setS] = useState<State>(() => decode(searchParams))
   const set = <K extends keyof State>(k: K, v: State[K]) => setS((p) => ({ ...p, [k]: v }))
-  const setNum = (k: keyof State, min = 0) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const n = Number(e.target.value); setS((p) => ({ ...p, [k]: Number.isFinite(n) ? Math.max(min, n) : 0 }))
+  const setNum = (k: keyof State, min = 0, max = Infinity) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const n = Number(e.target.value); setS((p) => ({ ...p, [k]: Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : 0 }))
   }
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function InvestmentCalculator() {
       <label htmlFor={`iv-${k}`} className="block text-sm font-medium text-body mb-2">{label}</label>
       <div className="relative">
         <input id={`iv-${k}`} type="number" inputMode="decimal" min={opts.min ?? 0} max={opts.max} step={opts.step ?? 1} value={s[k] as number}
-          onChange={setNum(k, opts.min ?? 0)} className={`ui-field px-4 py-3 tabular-nums ${opts.suffix ? 'pr-14' : ''}`} />
+          onChange={setNum(k, opts.min ?? 0, opts.max)} className={`ui-field px-4 py-3 tabular-nums ${opts.suffix ? 'pr-14' : ''}`} />
         {opts.suffix && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{opts.suffix}</span>}
       </div>
       {opts.hint && <p className="text-xs text-muted mt-1">{opts.hint}</p>}

@@ -66,8 +66,9 @@ export default function ElectricityCalculator() {
     setKwh(clamp(num(g('k'), 350), 0, 5000))
     setBaseKwh(clamp(num(g('b'), 250), 0, 5000))
     const ap = g('ap')
-    if (ap) {
-      const list = ap.split('_').map((s) => s.split('.')).filter(([id]) => id in PRESETS)
+    if (ap != null) { // 'ap=' = 가전을 모두 뺀 상태
+      // 필드 구분 '-' (예전 링크는 '.' — 1.5시간 같은 소수와 겹침)
+      const list = ap.split('_').map((s) => s.split(s.includes('-') ? '-' : '.')).filter(([id]) => id in PRESETS)
         .map(([id, w, h, d]) => makeAppliance(id as ApplianceId, { watt: clamp(num(w, 0), 0, 10000), hours: clamp(num(h, 0), 0, 24), days: clamp(num(d, 30), 0, 31) }))
       setAppliances(list.slice(0, 20))
     }
@@ -88,7 +89,7 @@ export default function ElectricityCalculator() {
     const p = new URLSearchParams({ mo: String(month) })
     if (mode === 'appliance') {
       p.set('m', 'a'); p.set('b', String(baseKwh))
-      p.set('ap', appliances.map((a) => [a.id, a.watt, a.hours, a.days].join('.')).join('_'))
+      p.set('ap', appliances.map((a) => [a.id, a.watt, a.hours, a.days].join('-')).join('_'))
     } else p.set('k', String(kwh))
     if (voltage === 'high') p.set('v', 'h')
     if (welfare !== 'none') p.set('w', welfare)

@@ -29,7 +29,7 @@ export default function AlcoholCalculator() {
   const [gender, setGender] = useState<Gender>(() => (sp.get('gender') === 'female' ? 'female' : 'male'))
   const [weight, setWeight] = useState<number>(() => {
     const w = parseFloat(sp.get('weight') ?? '')
-    return w >= 30 && w <= 250 ? w : 70
+    return w > 0 && w <= 250 ? w : 70 // 입력칸이 0~250을 받으므로 같은 범위
   })
   const [start, setStart] = useState<number>(() => parseHM(sp.get('start')) ?? 20 * 60)
   const [nowMin, setNowMin] = useState<number>(() => (parseHM(sp.get('start')) ?? 20 * 60) + 120)

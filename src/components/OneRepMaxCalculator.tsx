@@ -22,6 +22,8 @@ const UNIT_KEY = 'toolhub-1rm-unit'
 const MAX_W = 2000
 const DEF = { ex: 'bench' as Exercise, w: '80', r: 5 }
 const LIFT_DEF = [{ w: '100', r: 5 }, { w: '80', r: 5 }, { w: '120', r: 5 }]
+// 공유 링크 판별용 — 하나라도 있으면 저장된 단위(localStorage)보다 링크 우선
+const SHARE_KEYS = ['m', 'e', 'w', 'r', 'pt', 'inc', 'bar', 'bw', 'u', ...LIFTS.map(([k]) => k)]
 
 const fmt = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
 const fmt1 = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 1 })
@@ -139,7 +141,9 @@ export default function OneRepMaxCalculator() {
     const b = Number(sp.get('bar'))
     return (GEAR[initUnit].bars as readonly number[]).includes(b) ? b : GEAR[initUnit].bars[0]
   })
-  const [lifts, setLifts] = useState(() => LIFTS.map(([k], i) => liftParam(sp.get(k), LIFT_DEF[i])))
+  // 3대 링크는 빈 종목을 쓰지 않음 → 빠진 종목은 기본값이 아니라 빈칸
+  const [lifts, setLifts] = useState(() => LIFTS.map(([k], i) =>
+    sp.get('m') === 'total' && !sp.get(k) ? { w: '', r: LIFT_DEF[i].r } : liftParam(sp.get(k), LIFT_DEF[i])))
 
   /** 단위를 바꾸면 입력한 무게도 함께 환산 (소수 첫째 자리) */
   const switchUnit = (to: Unit) => {
@@ -154,10 +158,10 @@ export default function OneRepMaxCalculator() {
     setUnit(to)
   }
 
-  // 마지막으로 쓴 단위 복원 — 첫 렌더는 항상 kg(정적 HTML과 같게), 공유 링크에 단위가 있으면 그걸 따름
+  // 마지막으로 쓴 단위 복원 — 첫 렌더는 항상 kg(정적 HTML과 같게), 공유 링크면 링크 단위(없으면 kg)를 따름
   const restored = useRef(false)
   useEffect(() => {
-    if (restored.current || sp.get('u')) return
+    if (restored.current || SHARE_KEYS.some((k) => sp.has(k))) return
     restored.current = true
     let saved: string | null = null
     try { saved = localStorage.getItem(UNIT_KEY) } catch { /* 무시 */ }

@@ -97,6 +97,7 @@ export default function SalesCommissionCalculator() {
     const tx = TAXES.find((k) => TAX_CODE[k] === g('tx')); if (tx) setTax(tx)
     const a = decodePlan(g('a')), b = decodePlan(g('b'))
     if (a || b) setPlans([a ?? PLAN_A, ...(b ? [b] : [])])
+    if (b && g('pl') === '1') setActive(1) // 보낸 사람이 보던 안(결과 카드 기준)
     setPrice(num(g('p'), 30_000)); setShipping(num(g('sh'), 3_000))
     const c = CATEGORY_KEYS.find((k) => k === g('c')); if (c) setCategory(c)
     const nt = NAVER_TIERS.find((k) => k === g('nt')); if (nt) setNaverTier(nt)
@@ -115,10 +116,10 @@ export default function SalesCommissionCalculator() {
       if (elevenstRate !== ELEVENST_DEFAULT) p.set('er', String(elevenstRate))
     } else {
       p.set('mode', 'commission'); p.set('s', String(sales)); if (vatIncl) p.set('v', '1'); p.set('tx', TAX_CODE[tax])
-      p.set('a', encodePlan(plans[0])); if (plans[1]) p.set('b', encodePlan(plans[1]))
+      p.set('a', encodePlan(plans[0])); if (plans[1]) { p.set('b', encodePlan(plans[1])); if (active) p.set('pl', '1') }
     }
     window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
-  }, [mode, sales, vatIncl, tax, plans, price, shipping, category, naverTier, inflow, elevenstRate])
+  }, [mode, sales, vatIncl, tax, plans, active, price, shipping, category, naverTier, inflow, elevenstRate])
 
   const idx = Math.min(active, plans.length - 1)
   const plan = plans[idx]

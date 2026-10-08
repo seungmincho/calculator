@@ -63,6 +63,7 @@ export default function CustomsDutyCalculator() {
   const [rateText, setRateText] = useState<string | null>(() => (isNum(sp.get('r')) ? fmtIn(sp.get('r')!) : null))
   const [usdText, setUsdText] = useState<string | null>(() => (isNum(sp.get('ur')) ? fmtIn(sp.get('ur')!) : null))
   const [auto, setAuto] = useState<Auto>({ rates: FALLBACK_RATES, src: 'fallback', updated: 0 })
+  const [shareUrl, setShareUrl] = useState<string>()
 
   useEffect(() => {
     const applyFx = (c: RateCache, src: 'cache' | 'live') => {
@@ -119,9 +120,16 @@ export default function CustomsDutyCalculator() {
     if (fta) q.set('fta', '1')
     if (rateText != null && cur !== 'KRW') q.set('r', String(num(rateText)))
     if (usdText != null && cur !== 'USD') q.set('ur', String(num(usdText)))
-    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${q}`), 300)
+    const id = setTimeout(() => {
+      window.history.replaceState(null, '', `${window.location.pathname}?${q}`)
+      // 공유 링크에는 적용된 자동 환율도 박는다 — 받는 사람의 그날 환율과 무관하게 같은 금액
+      const s = new URLSearchParams(q)
+      if (cur !== 'KRW' && !num(rateText)) s.set('r', String(auto.rates[cur]))
+      if (cur !== 'USD' && !num(usdText)) s.set('ur', String(auto.rates.USD))
+      setShareUrl(`${window.location.origin}${window.location.pathname}?${s}`)
+    }, 300)
     return () => clearTimeout(id)
-  }, [origin, itemId, clearance, cur, price, local, ship, other, customRate, fta, rateText, usdText])
+  }, [origin, itemId, clearance, cur, price, local, ship, other, customRate, fta, rateText, usdText, auto])
 
   const way = t(`u.clearance.${clearance}`)
   const fxSuffix = cur === 'KRW' ? t('u.won') : cur
@@ -307,6 +315,7 @@ export default function CustomsDutyCalculator() {
             {luxury && <Note>{t('u.warn.luxury')}</Note>}
 
             <ShareResult
+              url={shareUrl}
               card={{
                 tool: t('title'),
                 label: r.exempt ? t('u.share.labelExempt') : t('u.share.labelTaxed'),

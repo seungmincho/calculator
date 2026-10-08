@@ -53,7 +53,7 @@ export default function FreelancerTax() {
     n('rev', setRevenue); n('prev', setPrev); n('mj', setMajor); n('bk', setBook); n('np', setPension); n('yu', setYellow)
     const ind = g('ind')
     if (ind && (ind === 'custom' || INDUSTRIES.some((x) => x.code === ind))) setCode(ind)
-    const r = (k: string, set: (v: string) => void) => { const v = g(k); if (v && /^\d{1,2}(\.\d)?$/.test(v)) set(v) }
+    const r = (k: string, set: (v: string) => void) => { const v = g(k); if (v && /^[\d.]{1,4}$/.test(v)) set(v) } // 입력칸과 같은 형식(숫자·점 4자)
     r('cs', setCSimple); r('cd', setCStandard)
     const m = METHODS.find((x) => M_CODE[x] === g('m')); if (m) setMethod(m)
     const p = Number(g('p')); if (Number.isInteger(p) && p >= 1 && p <= 10) setPersons(p)

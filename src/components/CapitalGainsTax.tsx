@@ -32,7 +32,7 @@ export default function CapitalGainsTax() {
     return KINDS.includes(k) ? k : sp.get('pt') === 'general' ? 'land' : 'house'
   })
   const [sale, setSale] = useState(() => num(sp.get('sp')) || 15e8)
-  const [acq, setAcq] = useState(() => num(sp.get('ap')) || 8e8)
+  const [acq, setAcq] = useState(() => (sp.get('ap') !== null ? num(sp.get('ap')) : 8e8)) // 링크의 0원도 그대로
   const [expense, setExpense] = useState(() => (sp.get('ex') !== null ? num(sp.get('ex')) : legacy ? 0 : 30_000_000))
   const [acqDate, setAcqDate] = useState(() => sp.get('ad') ?? '2018-06-01')
   const [saleDate, setSaleDate] = useState(() => sp.get('sd') ?? '')
