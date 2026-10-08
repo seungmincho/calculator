@@ -272,7 +272,7 @@ ${data.notes}
 function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
   return (
     <div className="flex items-center gap-2 mb-4">
-      <span className="text-blue-600 dark:text-blue-400">{icon}</span>
+      <span className="text-primary">{icon}</span>
       <h2 className="text-lg font-semibold text-body">{title}</h2>
     </div>
   )
@@ -423,7 +423,7 @@ export default function MeetingMinutes() {
   const smallInputClass = 'px-2 py-1.5 border border-line-strong rounded-md bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
 
   const statusColors: Record<ActionStatus, string> = {
-    pending: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+    pending: 'bg-soft text-body',
     'in-progress': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
     done: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
   }
@@ -437,7 +437,7 @@ export default function MeetingMinutes() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-              <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <FileText className="w-6 h-6 text-primary" />
               {t('title')}
             </h1>
             <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -446,13 +446,13 @@ export default function MeetingMinutes() {
           <div className="flex gap-2 print:hidden">
             <button
               onClick={() => setActiveTab('edit')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'edit' ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'edit' ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
             >
               {t('editTab')}
             </button>
             <button
               onClick={() => setActiveTab('preview')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'preview' ? 'bg-blue-600 text-white' : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'preview' ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
             >
               {t('previewTab')}
             </button>
@@ -469,7 +469,7 @@ export default function MeetingMinutes() {
             <button
               key={id}
               onClick={() => applyTemplate(id)}
-              className="px-3 py-1.5 text-xs bg-subtle text-sub rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors border border-line"
+              className="px-3 py-1.5 text-xs bg-subtle text-sub rounded-md hover:bg-primary-soft transition-colors border border-line"
             >
               {t(`templates.${id}`)}
             </button>
@@ -478,22 +478,22 @@ export default function MeetingMinutes() {
           <div className="flex-1" />
 
           {/* Export */}
-          <button onClick={() => copyToClipboard(formatForExport(data, 'text'), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={() => copyToClipboard(formatForExport(data, 'text'), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             {copiedId === 'copy-text' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {t('copyText')}
           </button>
-          <button onClick={() => exportFile('markdown')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={() => exportFile('markdown')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             <Download className="w-4 h-4" /> MD
           </button>
-          <button onClick={() => exportFile('html')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={() => exportFile('html')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             <Download className="w-4 h-4" /> HTML
           </button>
-          <button onClick={handlePrint} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+          <button onClick={handlePrint} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             <Printer className="w-4 h-4" /> {t('print')}
           </button>
 
           {/* Save slots */}
-          <button onClick={() => setShowSaveSlots(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-sub rounded-md hover:bg-indigo-200 dark:hover:bg-indigo-900 transition-colors">
+          <button onClick={() => setShowSaveSlots(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-sub rounded-md hover:bg-primary-soft transition-colors">
             <Save className="w-4 h-4" />
             {t('saveSlots')}
             {showSaveSlots ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -521,7 +521,7 @@ export default function MeetingMinutes() {
                   <div key={slot.name} className="flex items-center justify-between bg-surface rounded-md px-3 py-2">
                     <span className="text-sm text-body">{slot.name}</span>
                     <div className="flex gap-2">
-                      <button onClick={() => loadSlot(slot)} className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                      <button onClick={() => loadSlot(slot)} className="text-xs text-primary hover:underline flex items-center gap-1">
                         <FolderOpen className="w-3 h-3" /> {t('load')}
                       </button>
                       <button onClick={() => deleteSlot(slot.name)} className="text-xs text-red-500 hover:underline flex items-center gap-1">
@@ -590,7 +590,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addAttendee')}
             </button>
           </div>
@@ -602,7 +602,7 @@ export default function MeetingMinutes() {
               {data.agenda.map((a, idx) => (
                 <div key={a.id} className="border border-line rounded-lg p-3 space-y-2">
                   <div className="flex gap-2 items-start">
-                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 mt-2 w-5 shrink-0">{idx + 1}.</span>
+                    <span className="text-sm font-semibold text-primary mt-2 w-5 shrink-0">{idx + 1}.</span>
                     <input className={`${smallInputClass} flex-1`} placeholder={t('agendaTitle')} value={a.title} onChange={e => updateAgenda(a.id, 'title', e.target.value)} />
                     <input className={`${smallInputClass} w-16`} placeholder={t('minutes')} type="number" min="0" value={a.duration} onChange={e => updateAgenda(a.id, 'duration', e.target.value)} />
                     <button onClick={() => removeAgenda(a.id)} className="text-red-400 hover:text-red-600 p-1 mt-0.5"><Trash2 className="w-4 h-4" /></button>
@@ -611,7 +611,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addAgenda')}
             </button>
           </div>
@@ -629,7 +629,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addDiscussion')}
             </button>
           </div>
@@ -659,7 +659,7 @@ export default function MeetingMinutes() {
                 </div>
               ))}
             </div>
-            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addAction')}
             </button>
           </div>
@@ -722,7 +722,7 @@ export default function MeetingMinutes() {
                 <ol className="space-y-1.5 list-decimal list-inside">
                   {data.discussions.map(d => (
                     <li key={d.id} className="text-sm text-body">
-                      {d.speaker && <span className="font-semibold text-blue-700 dark:text-blue-400">[{d.speaker}]</span>} {d.content}
+                      {d.speaker && <span className="font-semibold text-primary">[{d.speaker}]</span>} {d.content}
                     </li>
                   ))}
                 </ol>
@@ -752,7 +752,7 @@ export default function MeetingMinutes() {
                     </thead>
                     <tbody>
                       {data.actions.map((a, i) => (
-                        <tr key={a.id} className="even:bg-gray-50 dark:even:bg-gray-750">
+                        <tr key={a.id} className="even:bg-subtle">
                           <td className="border border-line px-3 py-2 text-sub">{i + 1}</td>
                           <td className="border border-line px-3 py-2 text-body">{a.task}</td>
                           <td className="border border-line px-3 py-2 text-body">{a.assignee}</td>

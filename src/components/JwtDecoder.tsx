@@ -239,12 +239,12 @@ const JwtDecoder = () => {
       </div>
 
       {/* Security Notice */}
-      <div className="mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+      <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg">
         <div className="flex items-start space-x-3">
-          <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
           <div className="text-left">
-            <h3 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-1">{t('security.title')}</h3>
-            <p className="text-sm text-yellow-700 dark:text-yellow-300">{t('security.description')}</p>
+            <h3 className="font-semibold text-amber-800 dark:text-amber-200 mb-1">{t('security.title')}</h3>
+            <p className="text-sm text-amber-700 dark:text-amber-300">{t('security.description')}</p>
           </div>
         </div>
       </div>
@@ -266,7 +266,7 @@ const JwtDecoder = () => {
                 <button
                   key={index}
                   onClick={() => handleTokenChange(sample.token)}
-                  className="px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-md transition-colors"
+                  className="px-3 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-md transition-colors"
                 >
                   {sample.name}
                 </button>
@@ -283,7 +283,7 @@ const JwtDecoder = () => {
               value={jwtToken}
               onChange={(e) => handleTokenChange(e.target.value)}
               placeholder={t('input.tokenPlaceholder')}
-              className="w-full h-32 px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-fg dark:bg-gray-700 font-mono text-sm"
+              className="ui-field w-full h-32 px-4 py-3 rounded-lg font-mono text-sm"
             />
           </div>
 
@@ -309,7 +309,7 @@ const JwtDecoder = () => {
               {validation.warnings.length > 0 && (
                 <div className="space-y-1">
                   {validation.warnings.map((warning, index) => (
-                    <div key={index} className="flex items-center text-yellow-600 dark:text-yellow-400">
+                    <div key={index} className="flex items-center text-amber-600 dark:text-amber-400">
                       <AlertTriangle className="w-4 h-4 mr-2" />
                       <span className="text-sm">{warning}</span>
                     </div>
@@ -331,7 +331,7 @@ const JwtDecoder = () => {
                 </h3>
                 <button
                   onClick={() => handleCopy(JSON.stringify(decodedParts.header, null, 2), 'header')}
-                  className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs"
+                  className="ui-btn flex items-center gap-1 px-3 py-1 rounded text-xs"
                 >
                   {isCopied.header ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                   <span>{isCopied.header ? tc('copied') : t('result.copy')}</span>
@@ -360,7 +360,7 @@ const JwtDecoder = () => {
                 </h3>
                 <button
                   onClick={() => handleCopy(JSON.stringify(decodedParts.payload, null, 2), 'payload')}
-                  className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs"
+                  className="ui-btn flex items-center gap-1 px-3 py-1 rounded text-xs"
                 >
                   {isCopied.payload ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                   <span>{isCopied.payload ? tc('copied') : t('result.copy')}</span>
@@ -411,7 +411,7 @@ const JwtDecoder = () => {
                 </h3>
                 <button
                   onClick={() => handleCopy(decodedParts.signature, 'signature')}
-                  className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs"
+                  className="ui-btn flex items-center gap-1 px-3 py-1 rounded text-xs"
                 >
                   {isCopied.signature ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                   <span>{isCopied.signature ? tc('copied') : t('result.copy')}</span>
@@ -422,7 +422,7 @@ const JwtDecoder = () => {
               </div>
               <div className="mt-4 p-3 bg-subtle rounded-lg">
                 <div className="flex items-start space-x-2">
-                  <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+                  <Info className="w-4 h-4 text-primary mt-0.5" />
                   <p className="text-sm text-fg">{t('result.signatureNote')}</p>
                 </div>
               </div>
@@ -436,8 +436,8 @@ const JwtDecoder = () => {
           
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              <div className="bg-primary-soft p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.about.title')}</h3>
               <p className="text-sub mb-3">{t('guide.about.description')}</p>
@@ -449,8 +449,8 @@ const JwtDecoder = () => {
             </div>
             
             <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
+              <div className="bg-primary-soft p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <FileText className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.structure.title')}</h3>
               <p className="text-sub mb-3">{t('guide.structure.description')}</p>
@@ -462,8 +462,8 @@ const JwtDecoder = () => {
             </div>
             
             <div className="text-center">
-              <div className="bg-red-100 dark:bg-red-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
+              <div className="bg-primary-soft p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <AlertTriangle className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.security.title')}</h3>
               <p className="text-sub mb-3">{t('guide.security.description')}</p>

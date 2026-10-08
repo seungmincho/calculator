@@ -464,13 +464,13 @@ const JsonCsvConverter = () => {
 
       {/* Tab Navigation */}
       <div className="flex mb-6">
-        <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+        <div className="inline-flex bg-soft rounded-lg p-1">
           <button
             onClick={() => setActiveTab('jsonToCsv')}
             className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'jsonToCsv'
-                ? 'bg-field text-purple-600 dark:text-purple-400 shadow-sm'
-                : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-sub hover:text-fg'
             }`}
           >
             {t('tabs.jsonToCsv')}
@@ -479,8 +479,8 @@ const JsonCsvConverter = () => {
             onClick={() => setActiveTab('csvToJson')}
             className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'csvToJson'
-                ? 'bg-field text-purple-600 dark:text-purple-400 shadow-sm'
-                : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-sub hover:text-fg'
             }`}
           >
             {t('tabs.csvToJson')}
@@ -510,9 +510,9 @@ const JsonCsvConverter = () => {
                 />
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full border-2 border-dashed border-line-strong rounded-lg p-6 text-center hover:border-purple-400 dark:hover:border-purple-500 transition-colors"
+                  className="w-full border-2 border-dashed border-line-strong rounded-lg p-6 text-center hover:border-primary transition-colors"
                 >
-                  <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <Upload className="w-8 h-8 text-faint mx-auto mb-2" />
                   <p className="text-sub">{t('input.dragDrop')}</p>
                 </button>
               </div>
@@ -529,7 +529,7 @@ const JsonCsvConverter = () => {
                     }
                   }}
                   placeholder={activeTab === 'jsonToCsv' ? t('input.pasteJson') : t('input.pasteCsv')}
-                  className="w-full h-64 px-4 py-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-fg dark:bg-gray-700 font-mono text-sm"
+                  className="ui-field w-full h-64 px-4 py-3 rounded-lg font-mono text-sm"
                 />
               </div>
 
@@ -537,7 +537,7 @@ const JsonCsvConverter = () => {
               <button
                 onClick={processConversion}
                 disabled={isProcessing || (!jsonInput.trim() && !csvInput.trim())}
-                className="w-full mt-4 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                className="ui-btn w-full mt-4 font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center"
               >
                 {isProcessing ? (
                   <>
@@ -569,7 +569,7 @@ const JsonCsvConverter = () => {
                     <button
                       key={preset}
                       onClick={() => applyPreset(preset as keyof typeof presets)}
-                      className="px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-md transition-colors"
+                      className="px-3 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-md transition-colors"
                     >
                       {t(`presets.${preset}`)}
                     </button>
@@ -586,7 +586,7 @@ const JsonCsvConverter = () => {
                   <select
                     value={options.delimiter}
                     onChange={(e) => setOptions(prev => ({ ...prev, delimiter: e.target.value }))}
-                    className="w-full px-3 py-2 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 text-fg"
+                    className="ui-field w-full px-3 py-2 rounded-lg"
                   >
                     <option value=",">Comma (,)</option>
                     <option value="\t">Tab (\t)</option>
@@ -602,7 +602,7 @@ const JsonCsvConverter = () => {
                   <select
                     value={options.encoding}
                     onChange={(e) => setOptions(prev => ({ ...prev, encoding: e.target.value }))}
-                    className="w-full px-3 py-2 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 text-fg"
+                    className="ui-field w-full px-3 py-2 rounded-lg"
                   >
                     <option value="utf-8">UTF-8</option>
                     <option value="euc-kr">EUC-KR</option>
@@ -617,7 +617,7 @@ const JsonCsvConverter = () => {
                     type="checkbox"
                     checked={options.header}
                     onChange={(e) => setOptions(prev => ({ ...prev, header: e.target.checked }))}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                    className="w-4 h-4 text-primary bg-soft border-line-strong rounded focus:ring-primary"
                   />
                   <span className="ml-2 text-sm text-body">{t('options.header')}</span>
                 </label>
@@ -629,7 +629,7 @@ const JsonCsvConverter = () => {
                   <select
                     value={options.nested}
                     onChange={(e) => setOptions(prev => ({ ...prev, nested: e.target.value as 'flatten' | 'preserve' }))}
-                    className="w-full px-3 py-2 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 text-fg"
+                    className="ui-field w-full px-3 py-2 rounded-lg"
                   >
                     <option value="flatten">{t('options.flatten')}</option>
                     <option value="preserve">{t('options.preserve')}</option>
@@ -643,7 +643,7 @@ const JsonCsvConverter = () => {
                   <select
                     value={options.arrayHandling}
                     onChange={(e) => setOptions(prev => ({ ...prev, arrayHandling: e.target.value as 'join' | 'separate' }))}
-                    className="w-full px-3 py-2 bg-subtle border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 text-fg"
+                    className="ui-field w-full px-3 py-2 rounded-lg"
                   >
                     <option value="join">{t('options.join')}</option>
                     <option value="separate">{t('options.separate')}</option>
@@ -669,7 +669,7 @@ const JsonCsvConverter = () => {
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
                       viewMode === 'text'
                         ? 'bg-primary text-white shadow-sm'
-                        : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
+                        : 'text-sub hover:text-fg'
                     }`}
                   >
                     <Type className="w-3 h-3" />
@@ -680,7 +680,7 @@ const JsonCsvConverter = () => {
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
                       viewMode === 'table'
                         ? 'bg-primary text-white shadow-sm'
-                        : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
+                        : 'text-sub hover:text-fg'
                     }`}
                   >
                     <Grid3X3 className="w-3 h-3" />
@@ -703,7 +703,7 @@ const JsonCsvConverter = () => {
           {stats && (
             <div className="mb-6 p-4 bg-subtle border border-line rounded-lg">
               <div className="flex items-center mb-2">
-                <Info className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" />
+                <Info className="w-5 h-5 text-primary mr-2" />
                 <span className="text-fg font-medium">{t('result.stats')}</span>
               </div>
               <div className="grid grid-cols-4 gap-4 text-sm text-sub">
@@ -800,11 +800,11 @@ const JsonCsvConverter = () => {
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                        <tbody className="divide-y divide-line">
                           {pagedTableData.map((row, rowIndex) => (
                             <tr
                               key={`row-${(currentPage - 1) * rowsPerPage + rowIndex}`}
-                              className={`${rowIndex % 2 === 0 ? 'bg-surface' : 'bg-gray-50 dark:bg-gray-750'} hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors`}
+                              className={`${rowIndex % 2 === 0 ? 'bg-surface' : 'bg-subtle'} hover:bg-primary-soft transition-colors`}
                             >
                               {tableHeaders.map((header, colIndex) => {
                                 const cellValue = row[header] !== undefined && row[header] !== null ? String(row[header]) : '';
@@ -840,14 +840,14 @@ const JsonCsvConverter = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={handleCopy}
-                          className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs"
+                          className="ui-btn flex items-center gap-1 px-3 py-1 rounded text-xs"
                         >
                           {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                           <span>{isCopied ? tc('copied') : t('result.copy')}</span>
                         </button>
                         <button
                           onClick={handleDownload}
-                          className="flex items-center space-x-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs"
+                          className="ui-btn-soft flex items-center gap-1 px-3 py-1 rounded text-xs"
                         >
                           <Download className="w-3 h-3" />
                           <span>{t('result.download')}</span>
@@ -859,10 +859,10 @@ const JsonCsvConverter = () => {
                   <div className="relative">
                     {/* 대용량 데이터 경고 */}
                     {result.length > 100000 && (
-                      <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+                      <div className="mb-4 p-3 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg">
                         <div className="flex items-center">
-                          <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mr-2" />
-                          <span className="text-yellow-800 dark:text-yellow-200 text-sm">
+                          <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mr-2" />
+                          <span className="text-amber-800 dark:text-amber-200 text-sm">
                             {t('validation.largeFile', { size: Math.round(result.length / 1024) })} - 테이블 보기를 권장합니다
                           </span>
                         </div>
@@ -895,7 +895,7 @@ const JsonCsvConverter = () => {
                 <div className="flex space-x-3">
                   <button
                     onClick={handleCopy}
-                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    className="ui-btn flex items-center px-4 py-2 rounded-lg transition-colors"
                   >
                     {isCopied ? (
                       <>
@@ -912,7 +912,7 @@ const JsonCsvConverter = () => {
                   
                   <button
                     onClick={handleDownload}
-                    className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    className="ui-btn-soft flex items-center px-4 py-2 rounded-lg transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     <span>{t('result.download')}</span>
@@ -935,8 +935,8 @@ const JsonCsvConverter = () => {
         
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center">
-            <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            <div className="bg-primary-soft p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <Zap className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-fg mb-2">{t('features.performance.title')}</h3>
             <p className="text-sub mb-3">{t('features.performance.description')}</p>
@@ -948,8 +948,8 @@ const JsonCsvConverter = () => {
           </div>
           
           <div className="text-center">
-            <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <Settings className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <div className="bg-primary-soft p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <Settings className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-fg mb-2">{t('features.developer.title')}</h3>
             <p className="text-sub mb-3">{t('features.developer.description')}</p>
@@ -961,8 +961,8 @@ const JsonCsvConverter = () => {
           </div>
           
           <div className="text-center">
-            <div className="bg-green-100 dark:bg-green-900 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-              <FileText className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="bg-primary-soft p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <FileText className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-fg mb-2">{t('features.utility.title')}</h3>
             <p className="text-sub mb-3">{t('features.utility.description')}</p>
@@ -1009,9 +1009,9 @@ const JsonCsvConverter = () => {
           </div>
         </div>
         
-        <div className="mt-8 p-4 bg-amber-50 dark:bg-amber-900/30 rounded-lg">
-          <h4 className="font-semibold text-amber-900 dark:text-amber-200 mb-3">{t('guide.tipsTitle')}</h4>
-          <ul className="space-y-1 text-sm text-amber-800 dark:text-amber-300">
+        <div className="mt-8 p-4 bg-subtle rounded-lg">
+          <h4 className="font-semibold text-fg mb-3">{t('guide.tipsTitle')}</h4>
+          <ul className="space-y-1 text-sm text-sub">
             {[0, 1, 2, 3].map((index) => (
               <li key={index}>• {t(`guide.tips.${index}`)}</li>
             ))}

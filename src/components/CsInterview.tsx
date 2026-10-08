@@ -26,23 +26,10 @@ const ALL_CATEGORIES: (InterviewCategory | 'all')[] = [
 
 const DIFFICULTIES: InterviewDifficulty[] = ['beginner', 'intermediate', 'advanced']
 
-const DIFF_COLORS: Record<InterviewDifficulty, { bg: string; text: string; dot: string }> = {
-  beginner: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', dot: 'bg-green-500' },
-  intermediate: { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300', dot: 'bg-yellow-500' },
-  advanced: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', dot: 'bg-red-500' },
-}
-
-const CATEGORY_COLORS: Record<InterviewCategory, { bg: string; text: string; border: string }> = {
-  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-sub', border: 'border-line' },
-  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
-  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-sub', border: 'border-line' },
-  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub', border: 'border-line' },
-  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', border: 'border-line' },
-  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
-  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-sub', border: 'border-line' },
-  security: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
-  linux: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-sub', border: 'border-line' },
+const DIFF_COLORS: Record<InterviewDifficulty, { dot: string }> = {
+  beginner: { dot: 'bg-green-500' },
+  intermediate: { dot: 'bg-amber-500' },
+  advanced: { dot: 'bg-red-500' },
 }
 
 // ── localStorage helpers ──
@@ -308,7 +295,7 @@ export default function CsInterview() {
         <ul className="space-y-1.5">
           {q.keyPoints.map((kp: string, i: number) => (
             <li key={i} className="flex items-start gap-2 text-sm text-sub">
-              <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+              <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
               <span>{kp}</span>
             </li>
           ))}
@@ -322,18 +309,18 @@ export default function CsInterview() {
             <MessageCircle className="w-4 h-4" />
             {t('question.followUp')}
           </h4>
-          <p className="text-sm text-indigo-600 dark:text-indigo-400">{q.followUp}</p>
+          <p className="text-sm text-primary">{q.followUp}</p>
         </div>
       )}
 
       {/* Tip */}
       {q.tip && (
-        <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-          <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-300 mb-1 flex items-center gap-1.5">
+        <div className="bg-subtle border border-line rounded-lg p-4">
+          <h4 className="text-sm font-semibold text-body mb-1 flex items-center gap-1.5">
             <Lightbulb className="w-4 h-4" />
             {t('question.tip')}
           </h4>
-          <p className="text-sm text-amber-600 dark:text-amber-400">{q.tip}</p>
+          <p className="text-sm text-sub">{q.tip}</p>
         </div>
       )}
 
@@ -348,7 +335,7 @@ export default function CsInterview() {
               <a
                 key={termId}
                 href={`/cs-dictionary?q=${encodeURIComponent(termId)}`}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900/40 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-soft text-body hover:bg-primary-soft hover:text-primary transition-colors"
               >
                 <BookMarked className="w-3 h-3" />
                 {termId}
@@ -362,15 +349,14 @@ export default function CsInterview() {
 
   // ── Badges ──
   const renderBadges = (q: InterviewQuestion): React.ReactNode => {
-    const catColor = CATEGORY_COLORS[q.category]
     const diffColor = DIFF_COLORS[q.difficulty]
     const catInfo = INTERVIEW_CATEGORY_INFO[q.category]
     return (
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full ${catColor.bg} ${catColor.text}`}>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-soft text-body`}>
           {catInfo?.icon} {catInfo?.nameKo}
         </span>
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full ${diffColor.bg} ${diffColor.text}`}>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-soft text-body`}>
           <span className={`w-1.5 h-1.5 rounded-full ${diffColor.dot}`} />
           {t(`difficulty.${q.difficulty}`)}
         </span>
@@ -398,14 +384,14 @@ export default function CsInterview() {
       </div>
 
       {/* Stats Dashboard */}
-      <div className="bg-surface rounded-xl shadow-lg p-5">
+      <div className="ui-card rounded-xl p-5">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-fg">{stats.total}</div>
             <div className="text-xs text-muted">{t('stats.total')}</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.mastered}</div>
+            <div className="text-2xl font-bold text-primary">{stats.mastered}</div>
             <div className="text-xs text-muted">{t('stats.mastered')}</div>
           </div>
           <div className="text-center">
@@ -420,7 +406,7 @@ export default function CsInterview() {
         {/* Progress bar */}
         <div className="relative h-3 bg-track rounded-full overflow-hidden">
           <div
-            className="absolute left-0 top-0 h-full bg-green-500 transition-all duration-300"
+            className="absolute left-0 top-0 h-full bg-primary transition-all duration-300"
             style={{ width: stats.total ? `${(stats.mastered / stats.total) * 100}%` : '0%' }}
           />
           <div
@@ -438,13 +424,13 @@ export default function CsInterview() {
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+      <div className="flex gap-1 bg-soft rounded-lg p-1">
         <button
           onClick={() => handleModeChange('practice')}
           className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
             mode === 'practice'
-              ? 'bg-field text-fg shadow-sm'
-              : 'text-sub hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-primary text-white'
+              : 'text-sub hover:text-fg'
           }`}
         >
           <Play className="w-4 h-4" />
@@ -454,8 +440,8 @@ export default function CsInterview() {
           onClick={() => handleModeChange('browse')}
           className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
             mode === 'browse'
-              ? 'bg-field text-fg shadow-sm'
-              : 'text-sub hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-primary text-white'
+              : 'text-sub hover:text-fg'
           }`}
         >
           <List className="w-4 h-4" />
@@ -464,7 +450,7 @@ export default function CsInterview() {
       </div>
 
       {/* Filters */}
-      <div className="bg-surface rounded-xl shadow-lg p-5 space-y-4">
+      <div className="ui-card rounded-xl p-5 space-y-4">
         {/* Category filter */}
         <div>
           <div className="text-xs font-medium text-muted mb-2">{t('filter.category')}</div>
@@ -472,17 +458,14 @@ export default function CsInterview() {
             {ALL_CATEGORIES.map(cat => {
               const isActive = category === cat
               const info = cat === 'all' ? null : INTERVIEW_CATEGORY_INFO[cat]
-              const colors = cat === 'all' ? null : CATEGORY_COLORS[cat]
               return (
                 <button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
                   className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
                     isActive
-                      ? cat === 'all'
-                        ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
-                        : `${colors!.bg} ${colors!.text} ${colors!.border}`
-                      : 'bg-field text-sub border-line hover:border-gray-400 dark:hover:border-gray-500'
+                      ? 'bg-primary text-white border-transparent'
+                      : 'bg-field text-sub border-line hover:border-line-strong'
                   }`}
                 >
                   {cat === 'all' ? t('filter.all') : <>{info?.icon} {info?.nameKo}</>}
@@ -500,8 +483,8 @@ export default function CsInterview() {
               onClick={() => handleDifficultyChange(null)}
               className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
                 difficulty === null
-                  ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-transparent'
-                  : 'bg-field text-sub border-line hover:border-gray-400'
+                  ? 'bg-primary text-white border-transparent'
+                  : 'bg-field text-sub border-line hover:border-line-strong'
               }`}
             >
               {t('filter.all')}
@@ -514,8 +497,8 @@ export default function CsInterview() {
                   onClick={() => handleDifficultyChange(difficulty === d ? null : d)}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
                     difficulty === d
-                      ? `${colors.bg} ${colors.text} border-transparent`
-                      : 'bg-field text-sub border-line hover:border-gray-400'
+                      ? 'bg-primary text-white border-transparent'
+                      : 'bg-field text-sub border-line hover:border-line-strong'
                   }`}
                 >
                   <span className={`w-2 h-2 rounded-full ${colors.dot}`} />
@@ -550,7 +533,7 @@ export default function CsInterview() {
                   onClick={() => { setPracticeFilter(f); setPracticeIndex(0); setAnswerRevealed(false) }}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                     practiceFilter === f
-                      ? 'bg-primary text-white shadow-sm'
+                      ? 'bg-primary text-white'
                       : 'text-muted'
                   }`}
                 >
@@ -560,7 +543,7 @@ export default function CsInterview() {
             </div>
             <button
               onClick={handleShuffle}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-sub hover:text-blue-600 dark:hover:text-blue-400 bg-soft rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-sub hover:text-primary bg-soft rounded-lg transition-colors"
             >
               <Shuffle className="w-3.5 h-3.5" />
               {t('practice.shuffle')}
@@ -574,19 +557,19 @@ export default function CsInterview() {
 
           {/* Question Card */}
           {currentQuestion ? (
-            <div className="bg-surface rounded-xl shadow-lg p-6 sm:p-8">
+            <div className="ui-card rounded-xl p-6 sm:p-8">
               {/* Top: badges + bookmark */}
               <div className="flex items-start justify-between gap-2 mb-4">
                 {renderBadges(currentQuestion)}
                 <button
                   onClick={() => handleBookmark(currentQuestion.id)}
-                  className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="p-1.5 rounded-lg hover:bg-soft transition-colors"
                   title={bookmarkIds.has(currentQuestion.id) ? t('bookmark.remove') : t('bookmark.add')}
                 >
                   <Star
                     className={`w-5 h-5 ${
                       bookmarkIds.has(currentQuestion.id)
-                        ? 'text-yellow-500 fill-yellow-500'
+                        ? 'text-primary fill-primary'
                         : 'text-faint'
                     }`}
                   />
@@ -602,7 +585,7 @@ export default function CsInterview() {
               {!answerRevealed ? (
                 <button
                   onClick={() => setAnswerRevealed(true)}
-                  className="w-full bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
+                  className="w-full ui-btn rounded-lg px-4 py-3 font-medium transition-all flex items-center justify-center gap-2"
                 >
                   <Eye className="w-5 h-5" />
                   {t('practice.showAnswer')}
@@ -611,7 +594,7 @@ export default function CsInterview() {
                 <>
                   <button
                     onClick={() => setAnswerRevealed(false)}
-                    className="text-xs text-muted flex items-center gap-1 mb-3 hover:text-gray-700 dark:hover:text-gray-300"
+                    className="text-xs text-muted flex items-center gap-1 mb-3 hover:text-body"
                   >
                     <EyeOff className="w-3.5 h-3.5" />
                     {t('practice.hideAnswer')}
@@ -625,7 +608,7 @@ export default function CsInterview() {
                   <div className="flex gap-3 mt-6 pt-4 border-t border-line">
                     <button
                       onClick={() => handleMastered(currentQuestion.id)}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-subtle text-sub border border-line rounded-lg font-medium hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-subtle text-sub border border-line rounded-lg font-medium hover:bg-soft transition-colors"
                     >
                       <Check className="w-5 h-5" />
                       {t('practice.mastered')}
@@ -646,7 +629,7 @@ export default function CsInterview() {
                 <button
                   onClick={() => { setPracticeIndex(i => Math.max(0, i - 1)); setAnswerRevealed(false) }}
                   disabled={practiceIndex === 0}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sub hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sub hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   {t('practice.prev')}
@@ -657,7 +640,7 @@ export default function CsInterview() {
                 <button
                   onClick={() => { setPracticeIndex(i => Math.min(practiceQuestions.length - 1, i + 1)); setAnswerRevealed(false) }}
                   disabled={practiceIndex >= practiceQuestions.length - 1}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sub hover:text-gray-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sub hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   {t('practice.next')}
                   <ChevronRight className="w-4 h-4" />
@@ -665,8 +648,8 @@ export default function CsInterview() {
               </div>
             </div>
           ) : (
-            <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
-              <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+            <div className="ui-card rounded-xl p-12 text-center">
+              <Search className="w-12 h-12 text-faint mx-auto mb-3" />
               <p className="text-muted">{t('search.noResults')}</p>
             </div>
           )}
@@ -679,18 +662,18 @@ export default function CsInterview() {
           {/* Search + controls */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t('search.placeholder')}
-                className="w-full pl-9 pr-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm"
+                className="w-full ui-field pl-9 pr-3 py-2 rounded-lg text-sm"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-sub"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -699,13 +682,13 @@ export default function CsInterview() {
             <div className="flex gap-2">
               <button
                 onClick={expandAll}
-                className="px-3 py-2 text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+                className="px-3 py-2 text-xs font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
               >
                 {t('browse.expandAll')}
               </button>
               <button
                 onClick={collapseAll}
-                className="px-3 py-2 text-xs font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+                className="px-3 py-2 text-xs font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
               >
                 {t('browse.collapseAll')}
               </button>
@@ -714,23 +697,22 @@ export default function CsInterview() {
 
           {/* Grouped questions */}
           {filteredQuestions.length === 0 ? (
-            <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
-              <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+            <div className="ui-card rounded-xl p-12 text-center">
+              <Search className="w-12 h-12 text-faint mx-auto mb-3" />
               <p className="text-muted">{t('search.noResults')}</p>
             </div>
           ) : (
             Array.from(groupedQuestions.entries()).map(([cat, questions]) => {
-              const catColor = CATEGORY_COLORS[cat]
               const catInfo = INTERVIEW_CATEGORY_INFO[cat]
               return (
                 <div key={cat} className="space-y-2">
                   {/* Category header */}
-                  <div className={`flex items-center gap-2 px-4 py-2.5 rounded-lg ${catColor.bg}`}>
+                  <div className={`flex items-center gap-2 px-4 py-2.5 rounded-lg bg-soft`}>
                     <span className="text-lg">{catInfo?.icon}</span>
-                    <h3 className={`text-sm font-semibold ${catColor.text}`}>
+                    <h3 className={`text-sm font-semibold text-body`}>
                       {catInfo?.nameKo}
                     </h3>
-                    <span className={`text-xs ${catColor.text} opacity-70`}>
+                    <span className={`text-xs text-body opacity-70`}>
                       ({questions.length})
                     </span>
                   </div>
@@ -742,12 +724,12 @@ export default function CsInterview() {
                       return (
                         <div
                           key={q.id}
-                          className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden"
+                          className="ui-card rounded-xl overflow-hidden"
                         >
                           {/* Accordion header */}
                           <button
                             onClick={() => toggleExpanded(q.id)}
-                            className="w-full flex items-start gap-3 p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
+                            className="w-full flex items-start gap-3 p-4 text-left hover:bg-subtle transition-colors"
                           >
                             <div className="flex-1 min-w-0">
                               <div className="flex flex-wrap items-center gap-2 mb-1.5">
@@ -760,21 +742,21 @@ export default function CsInterview() {
                             <div className="flex items-center gap-2 shrink-0 mt-1">
                               <button
                                 onClick={e => { e.stopPropagation(); handleBookmark(q.id) }}
-                                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                                className="p-1 rounded hover:bg-soft transition-colors"
                                 title={bookmarkIds.has(q.id) ? t('bookmark.remove') : t('bookmark.add')}
                               >
                                 <Star
                                   className={`w-4 h-4 ${
                                     bookmarkIds.has(q.id)
-                                      ? 'text-yellow-500 fill-yellow-500'
+                                      ? 'text-primary fill-primary'
                                       : 'text-faint'
                                   }`}
                                 />
                               </button>
                               {isExpanded ? (
-                                <ChevronUp className="w-4 h-4 text-gray-400" />
+                                <ChevronUp className="w-4 h-4 text-faint" />
                               ) : (
-                                <ChevronDown className="w-4 h-4 text-gray-400" />
+                                <ChevronDown className="w-4 h-4 text-faint" />
                               )}
                             </div>
                           </button>
@@ -790,7 +772,7 @@ export default function CsInterview() {
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                                     masteredIds.has(q.id)
                                       ? 'bg-primary-soft text-primary border-primary'
-                                      : 'bg-field text-sub border-line hover:border-green-300 hover:text-green-600'
+                                      : 'bg-field text-sub border-line hover:border-primary hover:text-primary'
                                   }`}
                                 >
                                   <Check className="w-3.5 h-3.5" />

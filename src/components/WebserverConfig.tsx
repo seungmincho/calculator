@@ -758,20 +758,20 @@ export default function WebserverConfig() {
       {/* 헤더 */}
       <div>
         <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Server className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <Server className="w-6 h-6 text-primary" />
           {t('title')}
         </h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* 모드 토글: 생성 / 분석 */}
-      <div className="flex bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-1">
+      <div className="flex bg-soft rounded-xl p-1 gap-1">
         <button
           onClick={() => setViewMode('generate')}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
             viewMode === 'generate'
-              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'bg-primary text-white shadow-sm'
+              : 'text-muted hover:text-body'
           }`}
         >
           <Server className="w-4 h-4" />
@@ -781,8 +781,8 @@ export default function WebserverConfig() {
           onClick={() => setViewMode('analyze')}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
             viewMode === 'analyze'
-              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'bg-primary text-white shadow-sm'
+              : 'text-muted hover:text-body'
           }`}
         >
           <FileSearch className="w-4 h-4" />
@@ -804,7 +804,7 @@ export default function WebserverConfig() {
                     setOptions(merged)
                     setViewMode('generate')
                   }}
-                  className="flex items-center gap-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-1.5 transition-colors"
+                  className="flex items-center gap-1 text-xs ui-btn rounded-lg px-3 py-1.5 transition-colors"
                 >
                   <ArrowRight className="w-3 h-3" />
                   {t('applyToGenerator')}
@@ -824,7 +824,7 @@ export default function WebserverConfig() {
               }}
               placeholder={t('analyzePlaceholder')}
               rows={20}
-              className={`w-full px-4 py-3 ${glassInput} focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-y`}
+              className={`w-full px-4 py-3 ${glassInput} font-mono text-sm resize-y`}
             />
           </div>
 
@@ -872,13 +872,13 @@ export default function WebserverConfig() {
                         item.status === 'good'
                           ? 'bg-primary-soft text-primary'
                           : item.status === 'warn'
-                            ? 'bg-yellow-50 dark:bg-yellow-950/20'
+                            ? 'bg-amber-50 dark:bg-amber-950/20'
                             : 'bg-subtle'
                       }`}
                     >
                       <span className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full shrink-0 ${
-                          item.status === 'good' ? 'bg-green-500' : item.status === 'warn' ? 'bg-yellow-500' : 'bg-blue-400'
+                          item.status === 'good' ? 'bg-green-500' : item.status === 'warn' ? 'bg-amber-500' : 'bg-primary'
                         }`} />
                         <span className="text-body">{t(`analysis.${item.label}`)}</span>
                       </span>
@@ -886,7 +886,7 @@ export default function WebserverConfig() {
                         item.status === 'good'
                           ? 'text-green-700 dark:text-green-400'
                           : item.status === 'warn'
-                            ? 'text-yellow-700 dark:text-yellow-400'
+                            ? 'text-amber-700 dark:text-amber-400'
                             : 'text-sub'
                       }`}>
                         {item.value}
@@ -897,11 +897,11 @@ export default function WebserverConfig() {
 
                 {/* 경고 요약 */}
                 {analysisResult.analysis.filter(a => a.status === 'warn').length > 0 && (
-                  <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-                    <p className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-1">{t('analyzeWarnings')}</p>
+                  <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                    <p className="text-sm font-medium text-amber-800 dark:text-amber-300 mb-1">{t('analyzeWarnings')}</p>
                     <ul className="space-y-1">
                       {analysisResult.analysis.filter(a => a.status === 'warn').map((item, i) => (
-                        <li key={i} className="text-xs text-yellow-700 dark:text-yellow-400 flex items-start gap-1">
+                        <li key={i} className="text-xs text-amber-700 dark:text-amber-400 flex items-start gap-1">
                           
                           {t(`analysisAdvice.${item.label}`)}
                         </li>
@@ -932,7 +932,7 @@ export default function WebserverConfig() {
               <div className="flex bg-soft rounded-lg p-0.5">
                 <button
                   onClick={() => updateOption('serverType', 'nginx')}
-                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'nginx' ? 'bg-surface text-green-600 dark:text-green-400 shadow' : 'text-sub'}`}
+                  className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${options.serverType === 'nginx' ? 'bg-primary text-white shadow-sm' : 'text-sub'}`}
                 >
                   Nginx
                 </button>
@@ -955,8 +955,8 @@ export default function WebserverConfig() {
                     onClick={() => updateOption('scenario', s.id)}
                     className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                       options.scenario === s.id
-                        ? 'border-blue-500 bg-subtle text-sub'
-                        : 'border-line hover:bg-gray-50 dark:hover:bg-gray-700 text-body'
+                        ? 'border-primary bg-primary-soft text-primary'
+                        : 'border-line hover:bg-subtle text-body'
                     }`}
                   >
                     <div className="font-medium">{t(s.labelKey)}</div>
@@ -974,7 +974,7 @@ export default function WebserverConfig() {
                 value={options.domain}
                 onChange={e => updateOption('domain', e.target.value)}
                 placeholder={t('domainPlaceholder')}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm font-mono`}
+                className={`w-full px-3 py-2 ${glassInput} text-sm font-mono`}
               />
             </div>
 
@@ -987,7 +987,7 @@ export default function WebserverConfig() {
                   value={options.backendHost}
                   onChange={e => updateOption('backendHost', e.target.value)}
                   placeholder={t('backendHostPlaceholder')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm font-mono`}
+                  className={`w-full px-3 py-2 ${glassInput} text-sm font-mono`}
                 />
               </div>
             )}
@@ -1001,7 +1001,7 @@ export default function WebserverConfig() {
                   value={options.staticRoot}
                   onChange={e => updateOption('staticRoot', e.target.value)}
                   placeholder={t('staticRootPlaceholder')}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-sm font-mono`}
+                  className={`w-full px-3 py-2 ${glassInput} text-sm font-mono`}
                 />
               </div>
             )}
@@ -1032,7 +1032,7 @@ export default function WebserverConfig() {
                 ))}
                 <button
                   onClick={() => updateOption('upstreamServers', [...options.upstreamServers, '127.0.0.1:300' + (options.upstreamServers.length + 1)])}
-                  className="text-xs text-blue-500 hover:text-blue-700 mt-1"
+                  className="text-xs text-primary hover:opacity-80 mt-1"
                 >+ Add server</button>
               </div>
             )}
@@ -1106,7 +1106,7 @@ export default function WebserverConfig() {
                 <button
                   key={p.id}
                   onClick={() => applyPreset(p.id)}
-                  className="text-left px-3 py-2 rounded-lg border border-line hover:border-yellow-400 dark:hover:border-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-950/20 transition-colors"
+                  className="text-left px-3 py-2 rounded-lg border border-line hover:border-line-strong hover:bg-subtle transition-colors"
                 >
                   <div className="text-xs font-medium text-fg">{t(p.labelKey)}</div>
                   <div className="text-xs text-muted mt-0.5">{t(p.descKey)}</div>
@@ -1126,21 +1126,21 @@ export default function WebserverConfig() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setOptions({ ...DEFAULT_OPTIONS })}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-soft hover:bg-subtle text-sub rounded-lg transition-colors"
                 >
                   <RotateCcw className="w-3 h-3" />
                   {t('reset')}
                 </button>
                 <button
                   onClick={downloadConfig}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-soft hover:bg-subtle text-sub rounded-lg transition-colors"
                 >
                   <Download className="w-3 h-3" />
                   {t('download')}
                 </button>
                 <button
                   onClick={() => copyToClipboard(generatedConfig, 'config')}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs ui-btn rounded-lg transition-colors"
                 >
                   {copiedId === 'config' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                   {copiedId === 'config' ? t('copied') : t('copy')}
@@ -1164,7 +1164,7 @@ export default function WebserverConfig() {
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             {t('guide.title')}
           </h2>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
+          {showGuide ? <ChevronUp className="w-5 h-5 text-muted" /> : <ChevronDown className="w-5 h-5 text-muted" />}
         </button>
 
         {showGuide && (
@@ -1177,7 +1177,7 @@ export default function WebserverConfig() {
                 <ul className="space-y-2">
                   {(t.raw(`guide.${section}.items`) as string[]).map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                      <span className="text-blue-500 mt-0.5 shrink-0">•</span>
+                      <span className="text-primary mt-0.5 shrink-0">•</span>
                       {item}
                     </li>
                   ))}
@@ -1196,7 +1196,7 @@ export default function WebserverConfig() {
 function ToggleRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="flex items-center justify-between cursor-pointer group">
-      <span className="text-sm text-body group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{label}</span>
+      <span className="text-sm text-body group-hover:text-fg transition-colors">{label}</span>
       <div className="relative">
         <input
           type="checkbox"
@@ -1204,7 +1204,7 @@ function ToggleRow({ label, checked, onChange }: { label: string; checked: boole
           onChange={e => onChange(e.target.checked)}
           className="sr-only peer"
         />
-        <div className="w-9 h-5 bg-gray-300 dark:bg-gray-600 rounded-full peer-checked:bg-blue-600 transition-colors" />
+        <div className="w-9 h-5 bg-line-strong rounded-full peer-checked:bg-primary transition-colors" />
         <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm peer-checked:translate-x-4 transition-transform" />
       </div>
     </label>

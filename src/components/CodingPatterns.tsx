@@ -13,18 +13,9 @@ import {
 } from '@/data/codingPatternsData'
 
 
-const CATEGORY_COLORS: Record<PatternCategory, { bg: string; text: string; border: string }> = {
-  array:  { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
-  string: { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
-  tree:   { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
-  graph:  { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
-  dp:     { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
-  design: { bg: 'bg-subtle', text: 'text-sub', border: 'border-line' },
-}
-
 const DIFF_COLORS: Record<PatternDifficulty, string> = {
-  easy: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
-  medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300',
+  easy: 'bg-soft text-body',
+  medium: 'bg-soft text-body',
   hard: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
 }
 
@@ -120,14 +111,14 @@ export default function CodingPatterns() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Code className="w-7 h-7 text-blue-600" />
+          <Code className="w-7 h-7 text-primary" />
           {t('title')}
         </h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Progress Bar + Stats */}
-      <div className="bg-surface rounded-xl shadow-lg p-5 space-y-4">
+      <div className="ui-card rounded-xl p-5 space-y-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-body">
             {t('stats.progress')}
@@ -148,12 +139,12 @@ export default function CodingPatterns() {
             const s = categoryStats[cat]
             const pct = s.total > 0 ? Math.round((s.studied / s.total) * 100) : 0
             return (
-              <div key={cat} className={`rounded-lg p-2 text-center ${CATEGORY_COLORS[cat].bg}`}>
+              <div key={cat} className={`rounded-lg p-2 text-center bg-subtle`}>
                 <span className="text-lg">{PATTERN_CATEGORIES[cat].icon}</span>
-                <p className={`text-xs font-medium ${CATEGORY_COLORS[cat].text}`}>{cat}</p>
+                <p className={`text-xs font-medium text-sub`}>{cat}</p>
                 <p className="text-xs text-muted">{s.studied}/{s.total}</p>
-                <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1 mt-1">
-                  <div className="bg-green-500 h-1 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                <div className="w-full bg-track rounded-full h-1 mt-1">
+                  <div className="bg-primary h-1 rounded-full transition-all" style={{ width: `${pct}%` }} />
                 </div>
               </div>
             )
@@ -162,16 +153,16 @@ export default function CodingPatterns() {
       </div>
 
       {/* Search + Category Filter */}
-      <div className="bg-surface rounded-xl shadow-lg p-5 space-y-4">
+      <div className="ui-card rounded-xl p-5 space-y-4">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-faint" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder={t('filter.category')}
-            className="w-full pl-10 pr-3 py-2 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 text-sm"
+            className="w-full ui-field pl-10 pr-3 py-2 rounded-lg text-sm"
           />
         </div>
         {/* Category Tabs + Bookmark Toggle */}
@@ -180,20 +171,20 @@ export default function CodingPatterns() {
             onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
               showBookmarksOnly
-                ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 ring-1 ring-yellow-400'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-body hover:bg-subtle'
             }`}
           >
-            <Star className={`w-3.5 h-3.5 ${showBookmarksOnly ? 'fill-yellow-400 text-yellow-400' : ''}`} />
+            <Star className={`w-3.5 h-3.5 ${showBookmarksOnly ? 'fill-current' : ''}`} />
             {bookmarks.size}
           </button>
-          <span className="w-px bg-gray-300 dark:bg-gray-600 mx-1" />
+          <span className="w-px bg-line-strong mx-1" />
           <button
             onClick={() => setSelectedCategory('all')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               selectedCategory === 'all'
-                ? 'bg-primary hover:bg-blue-700 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-body hover:bg-subtle'
             }`}
           >
             {t('filter.all')}
@@ -204,8 +195,8 @@ export default function CodingPatterns() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
                 selectedCategory === cat
-                  ? 'bg-primary hover:bg-blue-700 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-white'
+                  : 'bg-soft text-body hover:bg-subtle'
               }`}
             >
               <span>{PATTERN_CATEGORIES[cat].icon}</span>
@@ -219,13 +210,12 @@ export default function CodingPatterns() {
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
         {filtered.map(pattern => {
           const isExpanded = expandedId === pattern.id
-          const catColor = CATEGORY_COLORS[pattern.category]
           return (
             <div
               key={pattern.id}
               id={`pattern-${pattern.id}`}
-              className={`bg-surface rounded-xl shadow-lg overflow-hidden border transition-all ${
-                isExpanded ? 'lg:col-span-3 md:col-span-2 col-span-1 border-line' : 'border-transparent hover:shadow-xl'
+              className={`ui-card rounded-xl overflow-hidden transition-all ${
+                isExpanded ? 'lg:col-span-3 md:col-span-2 col-span-1' : 'hover:border-line-strong'
               }`}
             >
               {/* Card Header */}
@@ -235,7 +225,7 @@ export default function CodingPatterns() {
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${catColor.bg} ${catColor.text}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-soft text-body`}>
                       {PATTERN_CATEGORIES[pattern.category].icon} {pattern.category}
                     </span>
                     <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${DIFF_COLORS[pattern.difficulty]}`}>
@@ -245,19 +235,19 @@ export default function CodingPatterns() {
                   <div className="flex items-center gap-1">
                     <button
                       onClick={e => { e.stopPropagation(); toggleBookmark(pattern.id) }}
-                      className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="p-1 rounded hover:bg-soft"
                       title="Bookmark"
                     >
-                      <Star className={`w-4 h-4 ${bookmarks.has(pattern.id) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
+                      <Star className={`w-4 h-4 ${bookmarks.has(pattern.id) ? 'fill-primary text-primary' : 'text-faint'}`} />
                     </button>
                     <button
                       onClick={e => { e.stopPropagation(); toggleStudied(pattern.id) }}
-                      className={`p-1 rounded ${studied.has(pattern.id) ? 'bg-green-100 dark:bg-green-900/40' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                      className={`p-1 rounded ${studied.has(pattern.id) ? 'bg-primary-soft' : 'hover:bg-soft'}`}
                       title={studied.has(pattern.id) ? t('learning.markNotStudied') : t('learning.markStudied')}
                     >
-                      <Check className={`w-4 h-4 ${studied.has(pattern.id) ? 'text-green-600 dark:text-green-400' : 'text-gray-400'}`} />
+                      <Check className={`w-4 h-4 ${studied.has(pattern.id) ? 'text-primary' : 'text-faint'}`} />
                     </button>
-                    {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                    {isExpanded ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold text-fg">{pattern.name}</h3>
@@ -281,29 +271,29 @@ export default function CodingPatterns() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-16 bg-surface rounded-xl shadow-lg">
+        <div className="text-center py-16 ui-card rounded-xl">
           {showBookmarksOnly ? (
             <>
-              <Star className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
+              <Star className="w-12 h-12 mx-auto mb-3 text-faint" />
               <p className="text-muted text-sm">
                 {t('filter.all')}
               </p>
               <button
                 onClick={() => setShowBookmarksOnly(false)}
-                className="mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                className="mt-3 text-sm text-primary hover:underline"
               >
                 {t('filter.all')}
               </button>
             </>
           ) : (
             <>
-              <Search className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
+              <Search className="w-12 h-12 mx-auto mb-3 text-faint" />
               <p className="text-muted text-sm">
                 {t('filter.all')}
               </p>
               <button
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all') }}
-                className="mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                className="mt-3 text-sm text-primary hover:underline"
               >
                 {t('filter.all')}
               </button>
@@ -324,8 +314,6 @@ interface PatternDetailProps {
 }
 
 function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
-  const catColor = CATEGORY_COLORS[pattern.category]
-
   return (
     <div className="px-5 pb-6 space-y-5 border-t border-line">
       {/* Description */}
@@ -338,7 +326,7 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
         <ul className="space-y-1.5">
           {pattern.whenToUse.map((item, i) => (
             <li key={i} className="flex items-start gap-2 text-sm text-body">
-              <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+              <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
               <span>{item}</span>
             </li>
           ))}
@@ -358,12 +346,12 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
       <Section icon={<Clock className="w-4 h-4" />} title={t('section.complexity')}>
         <div className="flex flex-wrap gap-3">
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-subtle text-sm font-mono">
-            <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <Clock className="w-3.5 h-3.5 text-primary" />
             <span className="text-muted text-xs">{t('time')}:</span>
             <span className="font-semibold text-sub">{pattern.timeComplexity}</span>
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-subtle text-sm font-mono">
-            <Database className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+            <Database className="w-3.5 h-3.5 text-primary" />
             <span className="text-muted text-xs">{t('space')}:</span>
             <span className="font-semibold text-sub">{pattern.spaceComplexity}</span>
           </span>
@@ -372,7 +360,7 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
 
       {/* Pseudocode */}
       <Section icon={<Code className="w-4 h-4" />} title={t('section.pseudocode')}>
-        <pre className="font-mono bg-gray-900 dark:bg-gray-950 text-green-400 p-4 rounded-lg text-sm overflow-x-auto whitespace-pre">
+        <pre className="font-mono bg-subtle text-body p-4 rounded-lg text-sm overflow-x-auto whitespace-pre">
           {pattern.pseudocode}
         </pre>
       </Section>
@@ -381,7 +369,7 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
       <Section icon={<Database className="w-4 h-4" />} title={t('section.examples')}>
         <div className="grid sm:grid-cols-2 gap-3">
           {pattern.examples.map((ex, i) => (
-            <div key={i} className={`rounded-lg border p-3 ${catColor.border} ${catColor.bg}`}>
+            <div key={i} className={`rounded-lg border p-3 border-line bg-subtle`}>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm font-medium text-fg">{ex.name}</span>
                 <span className={`text-xs px-1.5 py-0.5 rounded ${DIFF_COLORS[ex.difficulty]}`}>
@@ -417,7 +405,7 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
                 <button
                   key={rpId}
                   onClick={() => onRelatedClick(rpId)}
-                  className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-soft text-body hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+                  className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-soft text-body hover:bg-primary-soft hover:text-primary transition-colors"
                 >
                   {PATTERN_CATEGORIES[rp.category].icon} {rp.name}
                 </button>
@@ -428,11 +416,11 @@ function PatternDetail({ pattern, t, onRelatedClick }: PatternDetailProps) {
       )}
 
       {/* Tip */}
-      <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
-        <Lightbulb className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+      <div className="flex items-start gap-3 p-4 rounded-lg bg-subtle border border-line">
+        <Lightbulb className="w-5 h-5 text-muted mt-0.5 shrink-0" />
         <div>
-          <p className="text-sm font-medium text-amber-800 dark:text-amber-300 mb-0.5">{t('section.tip')}</p>
-          <p className="text-sm text-amber-700 dark:text-amber-400">{pattern.tip}</p>
+          <p className="text-sm font-medium text-body mb-0.5">{t('section.tip')}</p>
+          <p className="text-sm text-sub">{pattern.tip}</p>
         </div>
       </div>
     </div>

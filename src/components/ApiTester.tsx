@@ -82,12 +82,12 @@ const HTTP_METHODS: HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HE
 
 const METHOD_COLORS: Record<HttpMethod, string> = {
   GET: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  POST: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  POST: 'bg-primary-soft text-primary',
   PUT: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
   PATCH: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
   DELETE: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-  HEAD: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
-  OPTIONS: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+  HEAD: 'bg-soft text-sub',
+  OPTIONS: 'bg-soft text-sub',
 }
 
 const MAX_HISTORY = 20
@@ -114,10 +114,10 @@ function formatBytes(bytes: number): string {
 
 function getStatusColor(status: number): string {
   if (status >= 200 && status < 300) return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-  if (status >= 300 && status < 400) return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-  if (status >= 400 && status < 500) return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
+  if (status >= 300 && status < 400) return 'bg-primary-soft text-primary'
+  if (status >= 400 && status < 500) return 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'
   if (status >= 500) return 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-  return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+  return 'bg-soft text-sub'
 }
 
 function tryPrettyJson(text: string): string {
@@ -559,25 +559,25 @@ export default function ApiTester() {
             type="checkbox"
             checked={pair.enabled}
             onChange={(e) => updatePair(setter, pair.id, 'enabled', e.target.checked)}
-            className="accent-blue-600 shrink-0"
+            className="accent-primary shrink-0"
           />
           <input
             type="text"
             value={pair.key}
             onChange={(e) => updatePair(setter, pair.id, 'key', e.target.value)}
             placeholder={keyPlaceholder}
-            className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+            className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput}`}
           />
           <input
             type="text"
             value={pair.value}
             onChange={(e) => updatePair(setter, pair.id, 'value', e.target.value)}
             placeholder={valuePlaceholder}
-            className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+            className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput}`}
           />
           <button
             onClick={() => removePair(setter, pair.id)}
-            className="p-1.5 text-gray-400 hover:text-red-500 dark:hover:text-red-400 shrink-0"
+            className="p-1.5 text-faint hover:text-red-500 dark:hover:text-red-400 shrink-0"
             title={t('remove')}
           >
             <Trash2 size={14} />
@@ -586,7 +586,7 @@ export default function ApiTester() {
       ))}
       <button
         onClick={() => addPair(setter)}
-        className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+        className="flex items-center gap-1 text-sm text-primary hover:opacity-80"
       >
         <Plus size={14} />
         {t('addRow')}
@@ -619,7 +619,7 @@ export default function ApiTester() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowEnv(!showEnv)}
-            className="flex items-center gap-1 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg"
+            className="flex items-center gap-1 px-3 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-lg"
             title={t('envVars')}
           >
             <Settings size={14} />
@@ -627,7 +627,7 @@ export default function ApiTester() {
           </button>
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className="flex items-center gap-1 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg"
+            className="flex items-center gap-1 px-3 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-lg"
             title={t('history')}
           >
             <History size={14} />
@@ -640,7 +640,7 @@ export default function ApiTester() {
           </button>
           <button
             onClick={resetAll}
-            className="flex items-center gap-1 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg"
+            className="flex items-center gap-1 px-3 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-lg"
             title={t('reset')}
           >
             <RotateCcw size={14} />
@@ -656,7 +656,7 @@ export default function ApiTester() {
               <Settings size={16} />
               {t('envVars')}
             </h3>
-            <button onClick={() => setShowEnv(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            <button onClick={() => setShowEnv(false)} className="text-faint hover:text-sub">
               <X size={16} />
             </button>
           </div>
@@ -669,18 +669,18 @@ export default function ApiTester() {
                   value={v.key}
                   onChange={(e) => updateEnvVar(v.id, 'key', e.target.value)}
                   placeholder={t('envKeyPlaceholder')}
-                  className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
+                  className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} font-mono`}
                 />
                 <input
                   type="text"
                   value={v.value}
                   onChange={(e) => updateEnvVar(v.id, 'value', e.target.value)}
                   placeholder={t('envValuePlaceholder')}
-                  className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
+                  className={`flex-1 min-w-0 px-3 py-1.5 text-sm ${glassInput} font-mono`}
                 />
                 <button
                   onClick={() => removeEnvVar(v.id)}
-                  className="p-1.5 text-gray-400 hover:text-red-500 dark:hover:text-red-400 shrink-0"
+                  className="p-1.5 text-faint hover:text-red-500 dark:hover:text-red-400 shrink-0"
                 >
                   <Trash2 size={14} />
                 </button>
@@ -688,7 +688,7 @@ export default function ApiTester() {
             ))}
             <button
               onClick={addEnvVar}
-              className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              className="flex items-center gap-1 text-sm text-primary hover:opacity-80"
             >
               <Plus size={14} />
               {t('addEnvVar')}
@@ -714,7 +714,7 @@ export default function ApiTester() {
                   {t('clearHistory')}
                 </button>
               )}
-              <button onClick={() => setShowHistory(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+              <button onClick={() => setShowHistory(false)} className="text-faint hover:text-sub">
                 <X size={16} />
               </button>
             </div>
@@ -727,7 +727,7 @@ export default function ApiTester() {
                 <button
                   key={entry.id}
                   onClick={() => loadHistoryEntry(entry)}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-left rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="w-full flex items-center gap-2 px-3 py-2 text-left rounded-lg hover:bg-subtle transition-colors"
                 >
                   <span className={`px-2 py-0.5 text-xs font-bold rounded ${METHOD_COLORS[entry.method]}`}>
                     {entry.method}
@@ -738,7 +738,7 @@ export default function ApiTester() {
                   <span className={`px-2 py-0.5 text-xs rounded ${entry.status > 0 ? getStatusColor(entry.status) : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'}`}>
                     {entry.status > 0 ? entry.status : 'ERR'}
                   </span>
-                  <span className="text-xs text-gray-400 whitespace-nowrap">
+                  <span className="text-xs text-faint whitespace-nowrap">
                     {entry.time}ms
                   </span>
                 </button>
@@ -766,7 +766,7 @@ export default function ApiTester() {
                   <button
                     key={m}
                     onClick={() => { setMethod(m); setShowMethodDropdown(false) }}
-                    className={`w-full px-3 py-2 text-sm font-bold text-left hover:bg-gray-50 dark:hover:bg-gray-700 ${method === m ? 'bg-subtle' : ''} ${METHOD_COLORS[m]} first:rounded-t-lg last:rounded-b-lg`}
+                    className={`w-full px-3 py-2 text-sm font-bold text-left hover:bg-subtle ${method === m ? 'bg-subtle' : ''} ${METHOD_COLORS[m]} first:rounded-t-lg last:rounded-b-lg`}
                   >
                     {m}
                   </button>
@@ -782,7 +782,7 @@ export default function ApiTester() {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !loading) sendRequest() }}
             placeholder={t('urlPlaceholder')}
-            className={`flex-1 min-w-0 px-4 py-2.5 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
+            className={`flex-1 min-w-0 px-4 py-2.5 text-sm ${glassInput} font-mono`}
           />
 
           {/* Send / Cancel button */}
@@ -798,7 +798,7 @@ export default function ApiTester() {
             <button
               onClick={sendRequest}
               disabled={!url.trim()}
-              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm whitespace-nowrap"
+              className="flex items-center gap-2 px-6 py-2.5 ui-btn rounded-lg disabled:cursor-not-allowed font-medium text-sm whitespace-nowrap"
             >
               <Send size={16} />
               {t('send')}
@@ -824,8 +824,8 @@ export default function ApiTester() {
                 onClick={() => setRequestTab(tab.key)}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                   requestTab === tab.key
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted hover:text-body'
                 }`}
               >
                 {tab.label}
@@ -867,7 +867,7 @@ export default function ApiTester() {
                   onChange={(e) => validateBody(e.target.value)}
                   placeholder={t('bodyPlaceholder')}
                   rows={8}
-                  className={`w-full px-4 py-3 text-sm font-mono border rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y ${
+                  className={`w-full px-4 py-3 text-sm font-mono ui-field rounded-lg resize-y ${
                     bodyError
                       ? 'border-red-400 dark:border-red-500'
                       : 'border-line-strong'
@@ -884,7 +884,7 @@ export default function ApiTester() {
                   <select
                     value={auth.type}
                     onChange={(e) => setAuth(prev => ({ ...prev, type: e.target.value as AuthType }))}
-                    className={`px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                    className={`px-3 py-2 text-sm ${glassInput}`}
                   >
                     <option value="none">{t('authNone')}</option>
                     <option value="basic">{t('authBasic')}</option>
@@ -901,7 +901,7 @@ export default function ApiTester() {
                         value={auth.basicUsername}
                         onChange={(e) => setAuth(prev => ({ ...prev, basicUsername: e.target.value }))}
                         placeholder={t('usernamePlaceholder')}
-                        className={`w-full max-w-sm px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                        className={`w-full max-w-sm px-3 py-2 text-sm ${glassInput}`}
                       />
                     </div>
                     <div>
@@ -911,7 +911,7 @@ export default function ApiTester() {
                         value={auth.basicPassword}
                         onChange={(e) => setAuth(prev => ({ ...prev, basicPassword: e.target.value }))}
                         placeholder={t('passwordPlaceholder')}
-                        className={`w-full max-w-sm px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                        className={`w-full max-w-sm px-3 py-2 text-sm ${glassInput}`}
                       />
                     </div>
                   </div>
@@ -925,7 +925,7 @@ export default function ApiTester() {
                       value={auth.bearerToken}
                       onChange={(e) => setAuth(prev => ({ ...prev, bearerToken: e.target.value }))}
                       placeholder={t('bearerTokenPlaceholder')}
-                      className={`w-full px-3 py-2 text-sm ${glassInput} focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono`}
+                      className={`w-full px-3 py-2 text-sm ${glassInput} font-mono`}
                     />
                   </div>
                 )}
@@ -940,7 +940,7 @@ export default function ApiTester() {
             {/* Status bar */}
             {loading && (
               <div className="flex items-center gap-3 px-4 py-3 border-b border-line bg-subtle">
-                <Loader2 size={16} className="animate-spin text-blue-600 dark:text-blue-400" />
+                <Loader2 size={16} className="animate-spin text-primary" />
                 <span className="text-sm text-sub">{t('sending')}</span>
               </div>
             )}
@@ -989,8 +989,8 @@ export default function ApiTester() {
                       onClick={() => setResponseTab(tab.key)}
                       className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                         responseTab === tab.key
-                          ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                          : 'border-transparent text-muted hover:text-gray-700 dark:hover:text-gray-300'
+                          ? 'border-primary text-primary'
+                          : 'border-transparent text-muted hover:text-body'
                       }`}
                     >
                       {tab.label}
@@ -1006,14 +1006,14 @@ export default function ApiTester() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => setResponseViewMode('pretty')}
-                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'pretty' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'pretty' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-soft'}`}
                           >
                             <Eye size={12} className="inline mr-1" />
                             {t('prettyView')}
                           </button>
                           <button
                             onClick={() => setResponseViewMode('raw')}
-                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'raw' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'raw' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-soft'}`}
                           >
                             <Code size={12} className="inline mr-1" />
                             {t('rawView')}
@@ -1021,7 +1021,7 @@ export default function ApiTester() {
                           {isHtmlResponse(response.headers) && (
                             <button
                               onClick={() => setResponseViewMode('preview')}
-                              className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'preview' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                              className={`px-3 py-1 text-xs rounded-lg ${responseViewMode === 'preview' ? 'bg-primary-soft text-primary' : 'text-muted hover:bg-soft'}`}
                             >
                               <Globe size={12} className="inline mr-1" />
                               {t('previewView')}
@@ -1030,7 +1030,7 @@ export default function ApiTester() {
                         </div>
                         <button
                           onClick={() => copyToClipboard(response.body, 'response-body')}
-                          className="flex items-center gap-1 px-3 py-1 text-xs text-sub hover:text-gray-800 dark:hover:text-gray-200 bg-soft rounded-lg"
+                          className="flex items-center gap-1 px-3 py-1 text-xs text-sub hover:text-body bg-soft rounded-lg"
                         >
                           {copiedId === 'response-body' ? <Check size={12} /> : <Copy size={12} />}
                           {copiedId === 'response-body' ? t('copied') : t('copy')}
@@ -1064,7 +1064,7 @@ export default function ApiTester() {
                         <tbody>
                           {Object.entries(response.headers).map(([k, v]) => (
                             <tr key={k} className="border-b border-line">
-                              <td className="py-2 px-3 font-mono text-blue-600 dark:text-blue-400">{k}</td>
+                              <td className="py-2 px-3 font-mono text-primary">{k}</td>
                               <td className="py-2 px-3 font-mono text-body break-all">{v}</td>
                             </tr>
                           ))}
@@ -1085,7 +1085,7 @@ export default function ApiTester() {
                               className={`px-3 py-1.5 text-xs rounded-lg font-medium ${
                                 codeGenLang === lang
                                   ? 'bg-primary-soft text-primary'
-                                  : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
+                                  : 'text-muted hover:bg-soft'
                               }`}
                             >
                               {lang}
@@ -1094,7 +1094,7 @@ export default function ApiTester() {
                         </div>
                         <button
                           onClick={() => copyToClipboard(generateCode(), 'code-gen')}
-                          className="flex items-center gap-1 px-3 py-1 text-xs text-sub hover:text-gray-800 dark:hover:text-gray-200 bg-soft rounded-lg"
+                          className="flex items-center gap-1 px-3 py-1 text-xs text-sub hover:text-body bg-soft rounded-lg"
                         >
                           {copiedId === 'code-gen' ? <Check size={12} /> : <Copy size={12} />}
                           {copiedId === 'code-gen' ? t('copied') : t('copy')}
@@ -1130,7 +1130,7 @@ export default function ApiTester() {
                       className={`px-3 py-1.5 text-xs rounded-lg font-medium ${
                         codeGenLang === lang
                           ? 'bg-primary-soft text-primary'
-                          : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
+                          : 'text-muted hover:bg-soft'
                       }`}
                     >
                       {lang}
@@ -1139,7 +1139,7 @@ export default function ApiTester() {
                 </div>
                 <button
                   onClick={() => copyToClipboard(generateCode(), 'code-gen-pre')}
-                  className="flex items-center gap-1 px-3 py-1 text-xs text-sub hover:text-gray-800 dark:hover:text-gray-200 bg-soft rounded-lg"
+                  className="flex items-center gap-1 px-3 py-1 text-xs text-sub hover:text-body bg-soft rounded-lg"
                 >
                   {copiedId === 'code-gen-pre' ? <Check size={12} /> : <Copy size={12} />}
                   {copiedId === 'code-gen-pre' ? t('copied') : t('copy')}
@@ -1165,7 +1165,7 @@ export default function ApiTester() {
             <ul className="space-y-2">
               {(t.raw('guide.features.items') as string[]).map((item, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-blue-500 mt-0.5 shrink-0">*</span>
+                  <span className="text-primary mt-0.5 shrink-0">*</span>
                   {item}
                 </li>
               ))}
@@ -1176,7 +1176,7 @@ export default function ApiTester() {
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                  <span className="text-green-500 mt-0.5 shrink-0">*</span>
+                  <span className="text-primary mt-0.5 shrink-0">*</span>
                   {item}
                 </li>
               ))}
@@ -1184,8 +1184,8 @@ export default function ApiTester() {
           </div>
           <div className="md:col-span-2">
             <h3 className="text-sm font-semibold text-fg mb-3">{t('guide.cors.title')}</h3>
-            <div className="bg-yellow-50 dark:bg-yellow-950 rounded-lg p-4">
-              <p className="text-sm text-yellow-700 dark:text-yellow-300">{t('guide.cors.description')}</p>
+            <div className="bg-amber-50 dark:bg-amber-950 rounded-lg p-4">
+              <p className="text-sm text-amber-800 dark:text-amber-300">{t('guide.cors.description')}</p>
             </div>
           </div>
         </div>

@@ -240,7 +240,7 @@ export default function ShippingCalc() {
                     className={`py-2 rounded-lg text-xs font-medium transition-colors ${
                       destination === dest
                         ? 'bg-primary hover:bg-blue-700 text-white'
-                        : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
+                        : 'bg-soft hover:bg-track text-body'
                     }`}
                   >
                     {label}
@@ -261,7 +261,7 @@ export default function ShippingCalc() {
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'standard'
                       ? 'bg-primary hover:bg-blue-700 text-white'
-                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
+                      : 'bg-soft hover:bg-track text-body'
                   }`}
                 >
                   <Truck className="w-3.5 h-3.5" />
@@ -273,7 +273,7 @@ export default function ShippingCalc() {
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'cvs'
                       ? 'bg-primary hover:bg-blue-700 text-white'
-                      : 'bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body'
+                      : 'bg-soft hover:bg-track text-body'
                   }`}
                 >
                   <Store className="w-3.5 h-3.5" />
@@ -285,7 +285,7 @@ export default function ShippingCalc() {
             {/* Reset */}
             <button
               onClick={handleReset}
-              className="w-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+              className="w-full bg-soft hover:bg-track text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -379,7 +379,7 @@ export default function ShippingCalc() {
                       isUnavailable
                         ? 'bg-subtle border-line opacity-50'
                         : isCheapest
-                        ? 'bg-subtle border-green-400 dark:border-green-600'
+                        ? 'bg-subtle border-primary'
                         : 'bg-subtle border-line'
                     }`}
                   >
@@ -414,7 +414,7 @@ export default function ShippingCalc() {
                             </span>
                             <button
                               onClick={() => copyToClipboard(price!.toString(), carrier.id)}
-                              className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                              className="p-1.5 hover:bg-track rounded-lg transition-colors"
                               title={t('result.copy')}
                               aria-label={`${cd(carrier.id, 'name')} ${cd(carrier.id, 'service')} ${t('result.copy')}`}
                             >
@@ -447,7 +447,7 @@ export default function ShippingCalc() {
             {availableResults.length > 1 && (
               <div className="mt-5 p-4 bg-subtle rounded-lg">
                 <div className="text-sm text-muted mb-1">{t('priceRange.title')}</div>
-                <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                <div className="text-2xl font-bold text-primary">
                   {won(availableResults[0].price!)} ~ {won(availableResults[availableResults.length - 1].price!)}
                 </div>
                 <div className="text-xs text-faint mt-1">
@@ -500,7 +500,7 @@ export default function ShippingCalc() {
             <ul className="space-y-2">
               {(t.raw('guide.calculation.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex gap-2 text-sm text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 flex-shrink-0">•</span>
+                  <span className="text-primary flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -513,7 +513,7 @@ export default function ShippingCalc() {
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, idx) => (
                 <li key={idx} className="flex gap-2 text-sm text-sub">
-                  <span className="text-green-600 dark:text-green-400 flex-shrink-0">•</span>
+                  <span className="text-primary flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}

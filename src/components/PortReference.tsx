@@ -150,9 +150,9 @@ export default function PortReference() {
 
   // ── Protocol badge color ───────────────────────────────────────────────────
   const protocolColor = (protocol: Protocol) => {
-    if (protocol === 'TCP') return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-    if (protocol === 'UDP') return 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-    return 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300'
+    if (protocol === 'TCP') return 'bg-soft text-sub'
+    if (protocol === 'UDP') return 'bg-soft text-sub'
+    return 'bg-soft text-sub'
   }
 
   // ── Category badge ─────────────────────────────────────────────────────────
@@ -163,9 +163,9 @@ export default function PortReference() {
   }
 
   const categoryColor = (cat: Category) => {
-    if (cat === 'well-known') return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-    if (cat === 'registered') return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
-    return 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+    if (cat === 'well-known') return 'bg-primary-soft text-primary'
+    if (cat === 'registered') return 'bg-soft text-sub'
+    return 'bg-soft text-muted'
   }
 
   const CATEGORY_BUTTONS: { value: CategoryFilter; label: string; range: string }[] = [
@@ -191,13 +191,13 @@ export default function PortReference() {
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-faint w-5 h-5 pointer-events-none" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="w-full pl-10 pr-4 py-3 border border-line-strong rounded-xl bg-surface text-fg placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+          className="w-full pl-10 pr-4 py-3 ui-field rounded-xl text-sm"
         />
       </div>
 
@@ -212,8 +212,8 @@ export default function PortReference() {
               onClick={() => setCategoryFilter(btn.value)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 categoryFilter === btn.value
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-white'
+                  : 'bg-soft text-body hover:bg-subtle'
               }`}
             >
               {btn.label}
@@ -233,8 +233,8 @@ export default function PortReference() {
               onClick={() => setProtocolFilter(btn.value)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 protocolFilter === btn.value
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-white'
+                  : 'bg-soft text-body hover:bg-subtle'
               }`}
             >
               {btn.label}
@@ -258,12 +258,12 @@ export default function PortReference() {
           {filtered.map((entry) => (
             <div
               key={`${entry.port}-${entry.service}`}
-              className={`${glassCard} ${glassInset} hover:shadow-md transition-shadow p-4`}
+              className={`${glassCard} ${glassInset} hover:border-line-strong transition-colors p-4`}
             >
               <div className="flex items-start gap-3">
                 {/* Port number */}
                 <div className="flex-shrink-0 w-20 text-center">
-                  <span className="text-2xl font-mono font-bold text-blue-600 dark:text-blue-400">
+                  <span className="text-2xl font-mono font-bold text-primary">
                     {entry.port}
                   </span>
                 </div>
@@ -298,7 +298,7 @@ export default function PortReference() {
                 <button
                   onClick={() => copyPort(entry.port)}
                   title={t('copyPort')}
-                  className="flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 dark:hover:text-blue-400 transition-colors"
+                  className="flex-shrink-0 p-1.5 rounded-lg text-faint hover:text-primary hover:bg-primary-soft transition-colors"
                 >
                   {copiedPort === entry.port ? (
                     <Check className="w-4 h-4 text-green-500" />
@@ -319,15 +319,15 @@ export default function PortReference() {
           className="w-full flex items-center justify-between px-6 py-4 text-left"
         >
           <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-blue-500" />
+            <Shield className="w-5 h-5 text-primary" />
             <h2 className="text-base font-semibold text-fg">
               {t('guide.title')}
             </h2>
           </div>
           {guideOpen ? (
-            <ChevronUp className="w-5 h-5 text-gray-400" />
+            <ChevronUp className="w-5 h-5 text-faint" />
           ) : (
-            <ChevronDown className="w-5 h-5 text-gray-400" />
+            <ChevronDown className="w-5 h-5 text-faint" />
           )}
         </button>
 
@@ -338,12 +338,12 @@ export default function PortReference() {
               <h3 className="font-medium text-fg mb-3">{t('guide.ranges.title')}</h3>
               <div className="grid sm:grid-cols-3 gap-3">
                 <div className="bg-subtle rounded-lg p-3">
-                  <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('catWellKnown')} (0–1023)</p>
-                  <p className="text-xs text-green-600 dark:text-green-500 mt-1">{t('guide.ranges.wellKnownDesc')}</p>
+                  <p className="text-sm font-semibold text-primary">{t('catWellKnown')} (0–1023)</p>
+                  <p className="text-xs text-muted mt-1">{t('guide.ranges.wellKnownDesc')}</p>
                 </div>
-                <div className="bg-yellow-50 dark:bg-yellow-950 rounded-lg p-3">
-                  <p className="text-sm font-semibold text-yellow-700 dark:text-yellow-400">{t('catRegistered')} (1024–49151)</p>
-                  <p className="text-xs text-yellow-600 dark:text-yellow-500 mt-1">{t('guide.ranges.registeredDesc')}</p>
+                <div className="bg-subtle rounded-lg p-3">
+                  <p className="text-sm font-semibold text-body">{t('catRegistered')} (1024–49151)</p>
+                  <p className="text-xs text-muted mt-1">{t('guide.ranges.registeredDesc')}</p>
                 </div>
                 <div className="bg-subtle rounded-lg p-3">
                   <p className="text-sm font-semibold text-body">{t('catDynamic')} (49152–65535)</p>
@@ -358,7 +358,7 @@ export default function PortReference() {
               <ul className="space-y-1.5">
                 {(t.raw('guide.security.items') as string[]).map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-sub">
-                    <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>
+                    <span className="text-primary mt-0.5 flex-shrink-0">•</span>
                     {item}
                   </li>
                 ))}
@@ -370,12 +370,12 @@ export default function PortReference() {
               <h3 className="font-medium text-fg mb-2">{t('guide.tcpUdp.title')}</h3>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="bg-subtle rounded-lg p-3">
-                  <p className="text-sm font-semibold text-blue-700 dark:text-blue-400 mb-1">TCP</p>
-                  <p className="text-xs text-blue-600 dark:text-blue-400">{t('guide.tcpUdp.tcpDesc')}</p>
+                  <p className="text-sm font-semibold text-body mb-1">TCP</p>
+                  <p className="text-xs text-muted">{t('guide.tcpUdp.tcpDesc')}</p>
                 </div>
                 <div className="bg-subtle rounded-lg p-3">
-                  <p className="text-sm font-semibold text-purple-700 dark:text-purple-400 mb-1">UDP</p>
-                  <p className="text-xs text-purple-600 dark:text-purple-400">{t('guide.tcpUdp.udpDesc')}</p>
+                  <p className="text-sm font-semibold text-body mb-1">UDP</p>
+                  <p className="text-xs text-muted">{t('guide.tcpUdp.udpDesc')}</p>
                 </div>
               </div>
             </div>

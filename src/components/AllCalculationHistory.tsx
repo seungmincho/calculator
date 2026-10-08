@@ -49,23 +49,23 @@ const TOOL_META: Record<
 }
 
 const COLOR_CLASS: Record<string, { bg: string; text: string; border: string }> = {
-  blue:    { bg: 'bg-blue-100 dark:bg-blue-900/40',    text: 'text-sub',    border: 'border-line' },
-  green:   { bg: 'bg-green-100 dark:bg-green-900/40',  text: 'text-sub',  border: 'border-line' },
-  emerald: { bg: 'bg-emerald-100 dark:bg-emerald-900/40', text: 'text-sub', border: 'border-line' },
-  orange:  { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub', border: 'border-line' },
-  red:     { bg: 'bg-red-100 dark:bg-red-900/40',      text: 'text-red-700 dark:text-red-300',      border: 'border-red-200 dark:border-red-800' },
-  yellow:  { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300', border: 'border-yellow-200 dark:border-yellow-800' },
-  purple:  { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
-  indigo:  { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
-  sky:     { bg: 'bg-sky-100 dark:bg-sky-900/40',      text: 'text-sub',      border: 'border-line' },
-  teal:    { bg: 'bg-teal-100 dark:bg-teal-900/40',    text: 'text-sub',    border: 'border-line' },
-  amber:   { bg: 'bg-amber-100 dark:bg-amber-900/40',  text: 'text-amber-700 dark:text-amber-300',  border: 'border-amber-200 dark:border-amber-800' },
-  slate:   { bg: 'bg-slate-100 dark:bg-slate-900/40',  text: 'text-sub',  border: 'border-line' },
-  pink:    { bg: 'bg-pink-100 dark:bg-pink-900/40',    text: 'text-sub',    border: 'border-line' },
-  lime:    { bg: 'bg-lime-100 dark:bg-lime-900/40',    text: 'text-sub',    border: 'border-line' },
-  rose:    { bg: 'bg-rose-100 dark:bg-rose-900/40',    text: 'text-sub',    border: 'border-line' },
-  violet:  { bg: 'bg-violet-100 dark:bg-violet-900/40', text: 'text-sub', border: 'border-line' },
-  cyan:    { bg: 'bg-cyan-100 dark:bg-cyan-900/40',    text: 'text-sub',    border: 'border-line' },
+  blue:    { bg: 'bg-soft',    text: 'text-sub',    border: 'border-line' },
+  green:   { bg: 'bg-soft',  text: 'text-sub',  border: 'border-line' },
+  emerald: { bg: 'bg-soft', text: 'text-sub', border: 'border-line' },
+  orange:  { bg: 'bg-soft', text: 'text-sub', border: 'border-line' },
+  red:     { bg: 'bg-soft',      text: 'text-sub',      border: 'border-line' },
+  yellow:  { bg: 'bg-soft', text: 'text-sub', border: 'border-line' },
+  purple:  { bg: 'bg-soft', text: 'text-sub', border: 'border-line' },
+  indigo:  { bg: 'bg-soft', text: 'text-sub', border: 'border-line' },
+  sky:     { bg: 'bg-soft',      text: 'text-sub',      border: 'border-line' },
+  teal:    { bg: 'bg-soft',    text: 'text-sub',    border: 'border-line' },
+  amber:   { bg: 'bg-soft',  text: 'text-sub',  border: 'border-line' },
+  slate:   { bg: 'bg-soft',  text: 'text-sub',  border: 'border-line' },
+  pink:    { bg: 'bg-soft',    text: 'text-sub',    border: 'border-line' },
+  lime:    { bg: 'bg-soft',    text: 'text-sub',    border: 'border-line' },
+  rose:    { bg: 'bg-soft',    text: 'text-sub',    border: 'border-line' },
+  violet:  { bg: 'bg-soft', text: 'text-sub', border: 'border-line' },
+  cyan:    { bg: 'bg-soft',    text: 'text-sub',    border: 'border-line' },
   gray:    { bg: 'bg-soft',       text: 'text-body',    border: 'border-line' },
 }
 
@@ -220,7 +220,7 @@ export default function AllCalculationHistory() {
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-faint hover:text-body"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -271,7 +271,7 @@ export default function AllCalculationHistory() {
       {/* Empty state */}
       {histories.length === 0 ? (
         <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-          <Clock className="w-16 h-16 text-gray-200 dark:text-gray-600 mx-auto mb-4" />
+          <Clock className="w-16 h-16 text-line-strong mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-body mb-2">
             {t('emptyTitle')}
           </h2>
@@ -289,11 +289,11 @@ export default function AllCalculationHistory() {
       ) : displayed.length === 0 ? (
         /* No results after filter/search */
         <div className={`${glassCard} ${glassInset} p-10 text-center`}>
-          <Search className="w-12 h-12 text-gray-200 dark:text-gray-600 mx-auto mb-3" />
+          <Search className="w-12 h-12 text-line-strong mx-auto mb-3" />
           <p className="text-muted">{t('noResults')}</p>
           <button
             onClick={() => { setSearch(''); setFilterTool('all') }}
-            className="mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+            className="mt-3 text-sm text-primary hover:underline"
           >
             {t('resetFilters')}
           </button>
@@ -364,7 +364,7 @@ export default function AllCalculationHistory() {
                             </button>
                             <button
                               onClick={() => setDeletingId(null)}
-                              className="text-xs px-2 py-1.5 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                              className="text-xs px-2 py-1.5 rounded-lg bg-soft text-sub hover:bg-track transition-colors"
                             >
                               {t('cancel')}
                             </button>
@@ -406,7 +406,7 @@ export default function AllCalculationHistory() {
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmClearAll(false)}
-                className="flex-1 py-2.5 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 font-medium transition-colors"
+                className="flex-1 py-2.5 rounded-lg bg-soft text-body hover:bg-track font-medium transition-colors"
               >
                 {t('cancel')}
               </button>

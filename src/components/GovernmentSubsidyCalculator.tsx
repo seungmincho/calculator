@@ -295,7 +295,7 @@ export default function GovernmentSubsidyCalculator() {
       )
     }
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-soft text-sub">
         {t('status.ineligible')}
       </span>
     )
@@ -424,8 +424,8 @@ export default function GovernmentSubsidyCalculator() {
                     onClick={() => updateInput('housingType', type)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       input.housingType === type
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-primary text-white'
+                        : 'bg-soft text-body hover:bg-track'
                     }`}
                   >
                     {t(`input.housing.${type}`)}
@@ -572,7 +572,7 @@ export default function GovernmentSubsidyCalculator() {
               </button>
               <button
                 onClick={handleReset}
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 transition-colors"
+                className="bg-soft hover:bg-track text-body rounded-lg px-4 py-3 transition-colors"
                 title={t('input.reset')}
               >
                 <RotateCcw className="w-4 h-4" />
@@ -592,7 +592,7 @@ export default function GovernmentSubsidyCalculator() {
                 </h2>
                 <button
                   onClick={handleCopyLink}
-                  className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                  className="flex items-center gap-1 text-sm text-primary hover:underline transition-colors"
                 >
                   {copiedLink ? <Check className="w-4 h-4" /> : <Link className="w-4 h-4" />}
                   {copiedLink ? t('result.copied') : t('result.shareLink')}
@@ -607,13 +607,13 @@ export default function GovernmentSubsidyCalculator() {
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
-                  <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('result.reviewCount')}</div>
+                  <div className="text-sm text-primary mb-1">{t('result.reviewCount')}</div>
                   <div className="text-2xl font-bold text-sub">
                     {summary.reviewCount}<span className="text-lg">{t('result.programs')}</span>
                   </div>
                 </div>
                 <div className="bg-subtle rounded-xl p-4 text-center">
-                  <div className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">{t('result.excludedCount')}</div>
+                  <div className="text-sm text-primary mb-1">{t('result.excludedCount')}</div>
                   <div className="text-2xl font-bold text-sub">
                     {summary.excludedCount}<span className="text-lg">{t('result.programs')}</span>
                   </div>
@@ -642,7 +642,7 @@ export default function GovernmentSubsidyCalculator() {
                   {[32, 40, 48, 50, 60, 100].map(pct => (
                     <div
                       key={pct}
-                      className="absolute top-0 bottom-0 w-px bg-gray-400 dark:bg-gray-500"
+                      className="absolute top-0 bottom-0 w-px bg-faint"
                       style={{ left: `${Math.min(pct, 100)}%` }}
                     >
                       <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-muted whitespace-nowrap">
@@ -686,7 +686,7 @@ export default function GovernmentSubsidyCalculator() {
                     <button
                       onClick={() => toggleCard(result.id)}
                       aria-expanded={isExpanded}
-                      className="w-full px-6 py-4 flex items-center gap-4 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
+                      className="w-full px-6 py-4 flex items-center gap-4 text-left hover:bg-subtle transition-colors"
                     >
                       <div className={`flex-shrink-0 ${meta?.color ?? 'text-gray-500'}`}>
                         {meta?.icon}
@@ -750,8 +750,8 @@ export default function GovernmentSubsidyCalculator() {
                           </div>
                         )}
 
-                        <a className="inline-block text-sm text-blue-600 dark:text-blue-400 underline" href={PROGRAM_SOURCES[result.id]} target="_blank" rel="noopener noreferrer">{t('officialSite')}</a>
-                        {result.id === 'youthRent' && <a className="block text-sm text-blue-600 dark:text-blue-400 underline" href="/youth-rent-subsidy/">{t('result.youthCalculator')}</a>}
+                        <a className="inline-block text-sm text-primary underline" href={PROGRAM_SOURCES[result.id]} target="_blank" rel="noopener noreferrer">{t('officialSite')}</a>
+                        {result.id === 'youthRent' && <a className="block text-sm text-primary underline" href="/youth-rent-subsidy/">{t('result.youthCalculator')}</a>}
                         {/* How to apply */}
                         <div>
                           <h4 className="text-xs font-medium text-muted uppercase mb-1">
@@ -772,7 +772,7 @@ export default function GovernmentSubsidyCalculator() {
           {/* Empty state */}
           {!results && (
             <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-              <Shield className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <Shield className="w-16 h-16 text-line-strong mx-auto mb-4" />
               <h3 className="text-lg font-medium text-muted mb-2">
                 {t('result.emptyTitle')}
               </h3>

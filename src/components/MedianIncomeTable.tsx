@@ -22,8 +22,8 @@ type CategoryType = 'basic' | 'employment' | 'family' | 'local' | 'other';
 
 const categoryColors: Record<CategoryType, string> = {
   basic: 'text-red-600 dark:text-red-400',
-  employment: 'text-blue-600 dark:text-blue-400',
-  family: 'text-purple-600 dark:text-purple-400',
+  employment: 'text-primary',
+  family: 'text-primary',
   local: 'text-emerald-600 dark:text-emerald-400',
   other: 'text-sub',
 };
@@ -224,8 +224,8 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
     <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
       <div className="p-6 border-b border-line">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
-            <Calculator className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <div className="p-2 bg-soft rounded-lg">
+            <Calculator className="w-5 h-5 text-body" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-fg">
@@ -398,7 +398,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   <div className="border-t border-line pt-3">
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-fg">소득인정액</span>
-                      <span className="font-bold text-xl text-blue-600 dark:text-blue-400">{formatCurrency(result.totalIncomeRecognition)}</span>
+                      <span className="font-bold text-xl text-primary">{formatCurrency(result.totalIncomeRecognition)}</span>
                     </div>
                   </div>
                 </div>
@@ -431,12 +431,12 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                 </div>
 
                 {/* 안내 메시지 */}
-                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                <div className="bg-subtle border border-line rounded-lg p-4">
                   <div className="flex items-start gap-2">
-                    <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                    <div className="text-sm text-amber-800 dark:text-amber-300">
+                    <Info className="w-5 h-5 text-muted shrink-0 mt-0.5" />
+                    <div className="text-sm text-body">
                       <p className="font-medium mb-1">참고사항</p>
-                      <ul className="list-disc list-inside space-y-1 text-amber-700 dark:text-amber-400">
+                      <ul className="list-disc list-inside space-y-1 text-sub">
                         <li>이 결과는 간이 판정으로, 실제 수급 여부와 다를 수 있습니다.</li>
                         <li>부양의무자 기준, 근로능력 유무 등은 별도 심사합니다.</li>
                         {(t.raw('checkerNotes') as string[]).map((note) => <li key={note}>{note}</li>)}
@@ -460,7 +460,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
 
         {/* 계산식 안내 (접힌 상태) */}
         <details className="mt-6">
-          <summary className="cursor-pointer text-sm font-medium text-sub hover:text-gray-900 dark:hover:text-white">
+          <summary className="cursor-pointer text-sm font-medium text-sub hover:text-fg">
             소득인정액 계산식 보기
           </summary>
           <div className="mt-4 space-y-3 text-sm">
@@ -478,7 +478,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               <p className="font-semibold text-sub">
                 소득환산액 = (재산 - 기본재산액 - 부채) × 소득환산율
               </p>
-              <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
+              <p className="text-xs text-primary mt-1">
                 환산율: 일반재산 4.17%/월, 금융재산 6.26%/월, 자동차 100%/월
               </p>
             </div>
@@ -537,7 +537,7 @@ const MedianIncomeTable = () => {
                 className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-base sm:text-lg transition-all duration-200 ${
                   selectedYear === year
                     ? 'bg-primary hover:bg-blue-700 text-white shadow-md'
-                    : 'text-sub hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-sub hover:text-fg hover:bg-soft'
                 }`}
               >
                 {year}년
@@ -549,8 +549,8 @@ const MedianIncomeTable = () => {
         {/* 100% 기준 중위소득 카드 */}
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <Calculator className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="p-2 bg-soft rounded-lg">
+              <Calculator className="w-5 h-5 text-body" />
             </div>
             <h2 className="text-xl font-bold text-fg">
               {selectedYear}년 기준 중위소득 100%
@@ -578,8 +578,8 @@ const MedianIncomeTable = () => {
         {/* 사용자 정의 비율 계산기 */}
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-              <Calculator className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            <div className="p-2 bg-soft rounded-lg">
+              <Calculator className="w-5 h-5 text-body" />
             </div>
             <h2 className="text-xl font-bold text-fg">
               중위소득 비율 계산기
@@ -622,8 +622,8 @@ const MedianIncomeTable = () => {
         <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
           <div className="p-6 border-b border-line">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                <Users className="w-5 h-5 text-green-600 dark:text-green-400" />
+              <div className="p-2 bg-soft rounded-lg">
+                <Users className="w-5 h-5 text-body" />
               </div>
               <h2 className="text-xl font-bold text-fg">
                 {selectedYear}년 비율별 기준 중위소득
@@ -646,7 +646,7 @@ const MedianIncomeTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-line">
                 {percentages.map((percentage) => {
                   const programs = welfareProgramsByPercentage[percentage] || [];
                   const isHighlighted = [32, 40, 48, 50, 100].includes(percentage);
@@ -656,13 +656,13 @@ const MedianIncomeTable = () => {
                       key={percentage}
                       className={`
                         ${isHighlighted ? 'bg-primary-soft text-primary' : ''}
-                        hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors
+                        hover:bg-subtle transition-colors
                       `}
                     >
                       <td className="px-4 py-4 sticky left-0 bg-surface z-10 border-r border-line">
                         <div className="flex flex-col gap-1">
                           <span className={`font-bold text-lg ${
-                            percentage === 100 ? 'text-blue-600 dark:text-blue-400' :
+                            percentage === 100 ? 'text-primary' :
                             percentage <= 50 ? 'text-red-600 dark:text-red-400' :
                             'text-fg'
                           }`}>
@@ -683,7 +683,7 @@ const MedianIncomeTable = () => {
                               <span
                                 className="relative group text-xs text-muted cursor-help"
                               >
-                                <span className="hover:text-blue-600 dark:hover:text-blue-400 underline decoration-dotted">
+                                <span className="hover:text-primary underline decoration-dotted">
                                   +{programs.length - 3}개
                                 </span>
                                 <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-64 p-3 bg-surface rounded-lg shadow-xl border border-line">
@@ -720,7 +720,7 @@ const MedianIncomeTable = () => {
           </div>
 
           {/* 모바일 카드 뷰 */}
-          <div className="lg:hidden divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="lg:hidden divide-y divide-line">
             {percentages.map((percentage) => {
               const programs = welfareProgramsByPercentage[percentage] || [];
               const isExpanded = expandedRow === percentage;
@@ -737,7 +737,7 @@ const MedianIncomeTable = () => {
                   >
                     <div className="flex flex-col gap-1">
                       <span className={`font-bold text-lg ${
-                        percentage === 100 ? 'text-blue-600 dark:text-blue-400' :
+                        percentage === 100 ? 'text-primary' :
                         percentage <= 50 ? 'text-red-600 dark:text-red-400' :
                         'text-fg'
                       }`}>
@@ -756,7 +756,7 @@ const MedianIncomeTable = () => {
                         ))}
                         {programs.length > 2 && (
                           <span
-                            className="text-xs text-blue-600 dark:text-blue-400 underline decoration-dotted"
+                            className="text-xs text-primary underline decoration-dotted"
                             title={programs.slice(2).map(p => p.name).join(', ')}
                           >
                             +{programs.length - 2}개
@@ -816,8 +816,8 @@ const MedianIncomeTable = () => {
         <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
           <div className="p-6 border-b border-line">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                <Heart className="w-5 h-5 text-red-600 dark:text-red-400" />
+              <div className="p-2 bg-soft rounded-lg">
+                <Heart className="w-5 h-5 text-body" />
               </div>
               <h2 className="text-xl font-bold text-fg">
                 {selectedYear}년 기초생활수급자 급여종류별 기준
@@ -837,12 +837,12 @@ const MedianIncomeTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-line">
                 {[
                   { name: '교육급여', percentage: 50, color: 'text-green-600', bg: 'bg-subtle' },
                   { name: '주거급여', percentage: 48, color: 'text-orange-600', bg: 'bg-subtle' },
                   { name: '의료급여', percentage: 40, color: 'text-pink-600', bg: 'bg-subtle' },
-                  { name: '생계급여', percentage: 32, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/10' },
+                  { name: '생계급여', percentage: 32, color: 'text-red-600', bg: 'bg-subtle' },
                 ].map((benefit) => (
                   <tr key={benefit.name} className={benefit.bg}>
                     <td className="px-4 py-3">
@@ -868,8 +868,8 @@ const MedianIncomeTable = () => {
         <div className={`${glassCard} ${glassInset} overflow-hidden mb-8`}>
           <div className="p-6 border-b border-line">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                <Building2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <div className="p-2 bg-soft rounded-lg">
+                <Building2 className="w-5 h-5 text-body" />
               </div>
               <h2 className="text-xl font-bold text-fg">
                 {selectedYear}년 지자체형 생계급여 기준
@@ -889,13 +889,13 @@ const MedianIncomeTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-line">
                 {[
                   { name: '인천형, 대구형', percentage: 50, color: 'text-teal-600' },
                   { name: '서울형', percentage: 48, color: 'text-blue-600' },
                   { name: '부산형, 광주형', percentage: 45, color: 'text-indigo-600' },
                 ].map((region) => (
-                  <tr key={region.name} className="hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                  <tr key={region.name} className="hover:bg-subtle">
                     <td className="px-4 py-3">
                       <div>
                         <span className={`font-semibold ${region.color}`}>{region.name}</span>
@@ -925,8 +925,8 @@ const MedianIncomeTable = () => {
         {/* 연도별 중위소득 비교 */}
         <div className={`${glassCard} ${glassInset} p-6`}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <div className="p-2 bg-soft rounded-lg">
+              <TrendingUp className="w-5 h-5 text-body" />
             </div>
             <h2 className="text-xl font-bold text-fg">
               연도별 기준 중위소득 100% 비교 ({cmpYears[0]}~{cmpYears[cmpYears.length - 1]})
@@ -947,14 +947,14 @@ const MedianIncomeTable = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-line">
                 {householdLabels.map((label, index) => {
                   const first = medianIncomeData[cmpYears[0]][index];
                   const last = medianIncomeData[cmpYears[cmpYears.length - 1]][index];
                   const totalIncreaseRate = ((last - first) / first * 100).toFixed(1);
 
                   return (
-                    <tr key={label} className="hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                    <tr key={label} className="hover:bg-subtle">
                       <td className="px-3 py-3 font-medium text-fg whitespace-nowrap">{label}</td>
                       {cmpYears.map((y) => (
                         <td key={y} className={`px-3 py-3 text-right text-sm ${y === currentYear ? 'text-primary font-semibold' : 'text-body'}`}>

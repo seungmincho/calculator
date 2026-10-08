@@ -30,9 +30,6 @@ interface CategoryStats {
   nameKo: string
   icon: typeof BookOpen
   color: string
-  bgColor: string
-  textColor: string
-  borderColor: string
   terms: number
   quiz: number
   interview: number
@@ -40,16 +37,16 @@ interface CategoryStats {
 }
 
 const CATEGORY_STATS: CategoryStats[] = [
-  { id: 'dataStructures', nameKo: 'categories.dataStructures', icon: Layers, color: 'blue', bgColor: 'bg-blue-100 dark:bg-blue-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 26, quiz: 25, interview: 10, algorithms: 13 },
-  { id: 'algorithms', nameKo: 'categories.algorithms', icon: Zap, color: 'purple', bgColor: 'bg-purple-100 dark:bg-purple-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 25, quiz: 25, interview: 10, algorithms: 9 },
-  { id: 'network', nameKo: 'categories.network', icon: Globe, color: 'cyan', bgColor: 'bg-cyan-100 dark:bg-cyan-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'os', nameKo: 'categories.os', icon: Monitor, color: 'orange', bgColor: 'bg-orange-100 dark:bg-orange-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'database', nameKo: 'categories.database', icon: Database, color: 'green', bgColor: 'bg-green-100 dark:bg-green-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'architecture', nameKo: 'categories.architecture', icon: Layout, color: 'indigo', bgColor: 'bg-indigo-100 dark:bg-indigo-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'softwareEngineering', nameKo: 'categories.softwareEngineering', icon: Wrench, color: 'pink', bgColor: 'bg-pink-100 dark:bg-pink-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'security', nameKo: 'categories.security', icon: Shield, color: 'red', bgColor: 'bg-red-100 dark:bg-red-900/40', textColor: 'text-red-700 dark:text-red-300', borderColor: 'border-red-300 dark:border-red-700', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'linux', nameKo: 'categories.linux', icon: Terminal, color: 'amber', bgColor: 'bg-amber-100 dark:bg-amber-900/40', textColor: 'text-amber-700 dark:text-amber-300', borderColor: 'border-amber-300 dark:border-amber-700', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
-  { id: 'web', nameKo: 'categories.web', icon: Code, color: 'teal', bgColor: 'bg-teal-100 dark:bg-teal-900/40', textColor: 'text-sub', borderColor: 'border-line', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'dataStructures', nameKo: 'categories.dataStructures', icon: Layers, color: 'blue', terms: 26, quiz: 25, interview: 10, algorithms: 13 },
+  { id: 'algorithms', nameKo: 'categories.algorithms', icon: Zap, color: 'purple', terms: 25, quiz: 25, interview: 10, algorithms: 9 },
+  { id: 'network', nameKo: 'categories.network', icon: Globe, color: 'cyan', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'os', nameKo: 'categories.os', icon: Monitor, color: 'orange', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'database', nameKo: 'categories.database', icon: Database, color: 'green', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'architecture', nameKo: 'categories.architecture', icon: Layout, color: 'indigo', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'softwareEngineering', nameKo: 'categories.softwareEngineering', icon: Wrench, color: 'pink', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'security', nameKo: 'categories.security', icon: Shield, color: 'red', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'linux', nameKo: 'categories.linux', icon: Terminal, color: 'amber', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
+  { id: 'web', nameKo: 'categories.web', icon: Code, color: 'teal', terms: 20, quiz: 25, interview: 10, algorithms: 0 },
 ]
 
 const TOTAL_TERMS = 211
@@ -64,12 +61,6 @@ interface ToolCard {
   id: string
   href: string
   icon: typeof BookOpen
-  themeGradient: string
-  themeBorder: string
-  themeAccent: string
-  themeBg: string
-  themeProgressBg: string
-  themeProgressFill: string
   totalCount: number
   progressKey?: string
 }
@@ -79,36 +70,18 @@ const TOOL_CARDS: ToolCard[] = [
     id: 'algorithm',
     href: '/algorithm/',
     icon: Brain,
-    themeGradient: 'from-indigo-500 to-violet-600',
-    themeBorder: 'border-line',
-    themeAccent: 'text-indigo-600 dark:text-indigo-400',
-    themeBg: 'bg-subtle',
-    themeProgressBg: 'bg-indigo-100 dark:bg-indigo-900/50',
-    themeProgressFill: 'bg-indigo-500',
     totalCount: TOTAL_ALGORITHMS,
   },
   {
     id: 'visualizer',
     href: '/cs-visualizer/',
     icon: Cpu,
-    themeGradient: 'from-emerald-500 to-teal-600',
-    themeBorder: 'border-line',
-    themeAccent: 'text-emerald-600 dark:text-emerald-400',
-    themeBg: 'bg-subtle',
-    themeProgressBg: 'bg-emerald-100 dark:bg-emerald-900/50',
-    themeProgressFill: 'bg-emerald-500',
     totalCount: TOTAL_VISUALIZERS,
   },
   {
     id: 'dictionary',
     href: '/cs-dictionary/',
     icon: BookOpen,
-    themeGradient: 'from-blue-500 to-cyan-600',
-    themeBorder: 'border-line',
-    themeAccent: 'text-blue-600 dark:text-blue-400',
-    themeBg: 'bg-subtle',
-    themeProgressBg: 'bg-blue-100 dark:bg-blue-900/50',
-    themeProgressFill: 'bg-blue-500',
     totalCount: TOTAL_TERMS,
     progressKey: 'cs-dictionary-progress',
   },
@@ -116,24 +89,12 @@ const TOOL_CARDS: ToolCard[] = [
     id: 'quiz',
     href: '/cs-quiz/',
     icon: FileQuestion,
-    themeGradient: 'from-purple-500 to-fuchsia-600',
-    themeBorder: 'border-line',
-    themeAccent: 'text-purple-600 dark:text-purple-400',
-    themeBg: 'bg-subtle',
-    themeProgressBg: 'bg-purple-100 dark:bg-purple-900/50',
-    themeProgressFill: 'bg-purple-500',
     totalCount: TOTAL_QUIZ,
   },
   {
     id: 'interview',
     href: '/cs-interview/',
     icon: Target,
-    themeGradient: 'from-rose-500 to-pink-600',
-    themeBorder: 'border-line',
-    themeAccent: 'text-rose-600 dark:text-rose-400',
-    themeBg: 'bg-subtle',
-    themeProgressBg: 'bg-rose-100 dark:bg-rose-900/50',
-    themeProgressFill: 'bg-rose-500',
     totalCount: TOTAL_INTERVIEW,
     progressKey: 'cs-interview-mastered',
   },
@@ -142,22 +103,12 @@ const TOOL_CARDS: ToolCard[] = [
 // ── Roadmap steps ──
 
 const ROADMAP_STEPS = [
-  { id: 1, href: '/cs-dictionary/', icon: BookOpen, color: 'blue' },
-  { id: 2, href: '/cs-visualizer/', icon: Cpu, color: 'emerald' },
-  { id: 3, href: '/algorithm/', icon: Brain, color: 'indigo' },
-  { id: 4, href: '/cs-quiz/', icon: FileQuestion, color: 'purple' },
-  { id: 5, href: '/cs-interview/', icon: Target, color: 'rose' },
+  { id: 1, href: '/cs-dictionary/', icon: BookOpen },
+  { id: 2, href: '/cs-visualizer/', icon: Cpu },
+  { id: 3, href: '/algorithm/', icon: Brain },
+  { id: 4, href: '/cs-quiz/', icon: FileQuestion },
+  { id: 5, href: '/cs-interview/', icon: Target },
 ]
-
-// ── Roadmap color classes (explicit for Tailwind JIT) ──
-
-const roadmapColors: Record<string, { bg: string; ring: string; text: string; line: string; hoverBg: string }> = {
-  blue: { bg: 'bg-blue-100 dark:bg-blue-900/40', ring: 'ring-blue-500', text: 'text-blue-600 dark:text-blue-400', line: 'bg-blue-300 dark:bg-blue-700', hoverBg: 'hover:bg-blue-50 dark:hover:bg-blue-950/30' },
-  emerald: { bg: 'bg-emerald-100 dark:bg-emerald-900/40', ring: 'ring-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', line: 'bg-emerald-300 dark:bg-emerald-700', hoverBg: 'hover:bg-emerald-50 dark:hover:bg-emerald-950/30' },
-  indigo: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', ring: 'ring-indigo-500', text: 'text-indigo-600 dark:text-indigo-400', line: 'bg-indigo-300 dark:bg-indigo-700', hoverBg: 'hover:bg-indigo-50 dark:hover:bg-indigo-950/30' },
-  purple: { bg: 'bg-purple-100 dark:bg-purple-900/40', ring: 'ring-purple-500', text: 'text-purple-600 dark:text-purple-400', line: 'bg-purple-300 dark:bg-purple-700', hoverBg: 'hover:bg-purple-50 dark:hover:bg-purple-950/30' },
-  rose: { bg: 'bg-rose-100 dark:bg-rose-900/40', ring: 'ring-rose-500', text: 'text-rose-600 dark:text-rose-400', line: 'bg-rose-300 dark:bg-rose-700', hoverBg: 'hover:bg-rose-50 dark:hover:bg-rose-950/30' },
-}
 
 // ── Component ──
 
@@ -191,13 +142,12 @@ export default function CsHub() {
   return (
     <div className="space-y-12">
       {/* ── Hero Section ── */}
-      <div className="relative overflow-hidden bg-surface rounded-2xl shadow-xl p-8 md:p-12">
-        {/* Decorative gradient blobs */}
+      <div className="relative overflow-hidden ui-card rounded-2xl p-8 md:p-12">
 
         <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center gap-8">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white shadow-lg shadow-blue-500/25">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white">
                 <GraduationCap className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 text-xs font-semibold rounded-full bg-primary-soft text-primary">
@@ -205,7 +155,7 @@ export default function CsHub() {
               </span>
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold mb-3">
-              <span className="bg-clip-text text-transparent bg-primary">
+              <span className="text-fg">
                 {t('title')}
               </span>
             </h1>
@@ -218,11 +168,11 @@ export default function CsHub() {
           <div className="flex flex-col items-center gap-2 shrink-0">
             <div className="relative w-28 h-28">
               <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="42" fill="none" strokeWidth="8" className="stroke-gray-200 dark:stroke-gray-700" />
+                <circle cx="50" cy="50" r="42" fill="none" strokeWidth="8" className="stroke-track" />
                 <circle
                   cx="50" cy="50" r="42" fill="none" strokeWidth="8"
                   strokeLinecap="round"
-                  className="stroke-blue-500 dark:stroke-blue-400"
+                  className="stroke-primary"
                   strokeDasharray={`${overallProgress * 2.64} ${264 - overallProgress * 2.64}`}
                   style={{ transition: 'stroke-dasharray 0.8s ease-out' }}
                 />
@@ -238,13 +188,13 @@ export default function CsHub() {
         {/* Progress stats bar */}
         <div className="relative z-10 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: t('progress.terms'), value: termsLearned, total: TOTAL_TERMS, icon: BookOpen, color: 'text-blue-600 dark:text-blue-400' },
-            { label: t('progress.interview'), value: interviewMastered, total: TOTAL_INTERVIEW, icon: Target, color: 'text-rose-600 dark:text-rose-400' },
-            { label: t('progress.algorithms'), value: TOTAL_ALGORITHMS, total: TOTAL_ALGORITHMS, icon: Brain, color: 'text-indigo-600 dark:text-indigo-400', isStatic: true },
-            { label: t('progress.quizQuestions'), value: TOTAL_QUIZ, total: TOTAL_QUIZ, icon: FileQuestion, color: 'text-purple-600 dark:text-purple-400', isStatic: true },
+            { label: t('progress.terms'), value: termsLearned, total: TOTAL_TERMS, icon: BookOpen },
+            { label: t('progress.interview'), value: interviewMastered, total: TOTAL_INTERVIEW, icon: Target },
+            { label: t('progress.algorithms'), value: TOTAL_ALGORITHMS, total: TOTAL_ALGORITHMS, icon: Brain, isStatic: true },
+            { label: t('progress.quizQuestions'), value: TOTAL_QUIZ, total: TOTAL_QUIZ, icon: FileQuestion, isStatic: true },
           ].map((stat) => (
             <div key={stat.label} className="flex items-center gap-3 px-4 py-3 bg-subtle rounded-xl">
-              <stat.icon className={`w-5 h-5 ${stat.color} shrink-0`} />
+              <stat.icon className={`w-5 h-5 text-sub shrink-0`} />
               <div className="min-w-0">
                 <p className="text-lg font-bold text-fg">
                   {('isStatic' in stat && stat.isStatic) ? stat.total : `${stat.value}/${stat.total}`}
@@ -273,9 +223,8 @@ export default function CsHub() {
               <Link
                 key={card.id}
                 href={card.href}
-                className={`group relative bg-surface rounded-xl shadow-lg border ${card.themeBorder} overflow-hidden transition-all duration-300 hover:shadow-xl`}
+                className={`group relative ui-card rounded-xl overflow-hidden transition-all duration-300 hover:border-line-strong`}
               >
-                {/* Top gradient bar */}
 
                 <div className="p-6">
                   {/* Icon + Stats */}
@@ -283,13 +232,13 @@ export default function CsHub() {
                     <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-soft text-body`}>
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${card.themeBg} ${card.themeAccent}`}>
+                    <span className={`px-2.5 py-1 text-xs font-semibold rounded-full bg-soft text-body`}>
                       {t(`tools.${card.id}.stats`)}
                     </span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-lg font-bold text-fg mb-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-lg font-bold text-fg mb-1.5 group-hover:text-primary transition-colors">
                     {t(`tools.${card.id}.title`)}
                   </h3>
                   <p className="text-sm text-muted mb-4 line-clamp-2">
@@ -304,12 +253,12 @@ export default function CsHub() {
                           {hasProgress ? `${progress}/${card.totalCount}` : t('progress.notStarted')}
                         </span>
                         {hasProgress && (
-                          <span className={`font-semibold ${card.themeAccent}`}>{percent}%</span>
+                          <span className={`font-semibold text-primary`}>{percent}%</span>
                         )}
                       </div>
-                      <div className={`h-2 rounded-full ${card.themeProgressBg} overflow-hidden`}>
+                      <div className={`h-2 rounded-full bg-track overflow-hidden`}>
                         <div
-                          className={`h-full rounded-full ${card.themeProgressFill} transition-all duration-700 ease-out`}
+                          className={`h-full rounded-full bg-primary transition-all duration-700 ease-out`}
                           style={{ width: `${percent}%` }}
                         />
                       </div>
@@ -324,7 +273,7 @@ export default function CsHub() {
                   )}
 
                   {/* CTA */}
-                  <div className={`flex items-center gap-1.5 text-sm font-semibold ${card.themeAccent} group-hover:gap-2.5 transition-all`}>
+                  <div className={`flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:gap-2.5 transition-all`}>
                     <span>{hasProgress ? t('cta.continue') : t('cta.start')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
@@ -336,29 +285,28 @@ export default function CsHub() {
       </section>
 
       {/* ── Learning Roadmap ── */}
-      <section className="bg-surface rounded-xl shadow-lg p-6 md:p-8">
+      <section className="ui-card rounded-xl p-6 md:p-8">
         <div className="flex items-center gap-3 mb-8">
-          <Trophy className="w-6 h-6 text-amber-500" />
+          <Trophy className="w-6 h-6 text-fg" />
           <h2 className="text-2xl font-bold text-fg">{t('roadmap.title')}</h2>
         </div>
 
         {/* Desktop horizontal stepper */}
         <div className="hidden md:flex items-start justify-between relative">
           {ROADMAP_STEPS.map((step, idx) => {
-            const c = roadmapColors[step.color]
             const Icon = step.icon
             return (
               <div key={step.id} className="flex flex-col items-center relative z-10" style={{ flex: 1 }}>
                 {/* Connector line */}
                 {idx < ROADMAP_STEPS.length - 1 && (
-                  <div className={`absolute top-6 left-[calc(50%+24px)] right-[calc(-50%+24px)] h-0.5 ${c.line}`} />
+                  <div className={`absolute top-6 left-[calc(50%+24px)] right-[calc(-50%+24px)] h-0.5 bg-line`} />
                 )}
                 <Link
                   href={step.href}
-                  className={`group flex flex-col items-center ${c.hoverBg} rounded-xl p-3 transition-all`}
+                  className={`group flex flex-col items-center hover:bg-subtle rounded-xl p-3 transition-all`}
                 >
-                  <div className={`w-12 h-12 rounded-full ${c.bg} ring-2 ${c.ring} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                    <Icon className={`w-5 h-5 ${c.text}`} />
+                  <div className={`w-12 h-12 rounded-full bg-soft ring-2 ring-line flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-5 h-5 text-body`} />
                   </div>
                   <span className="text-xs font-bold text-faint mb-1">STEP {step.id}</span>
                   <span className={`text-sm font-semibold text-fg text-center`}>
@@ -376,20 +324,19 @@ export default function CsHub() {
         {/* Mobile vertical stepper */}
         <div className="md:hidden space-y-0">
           {ROADMAP_STEPS.map((step, idx) => {
-            const c = roadmapColors[step.color]
             const Icon = step.icon
             return (
               <div key={step.id} className="relative">
                 {/* Vertical connector */}
                 {idx < ROADMAP_STEPS.length - 1 && (
-                  <div className={`absolute left-6 top-14 bottom-0 w-0.5 ${c.line}`} />
+                  <div className={`absolute left-6 top-14 bottom-0 w-0.5 bg-line`} />
                 )}
                 <Link
                   href={step.href}
-                  className={`flex items-center gap-4 p-3 rounded-xl ${c.hoverBg} transition-all group relative z-10`}
+                  className={`flex items-center gap-4 p-3 rounded-xl hover:bg-subtle transition-all group relative z-10`}
                 >
-                  <div className={`w-12 h-12 rounded-full ${c.bg} ring-2 ${c.ring} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                    <Icon className={`w-5 h-5 ${c.text}`} />
+                  <div className={`w-12 h-12 rounded-full bg-soft ring-2 ring-line flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-5 h-5 text-body`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -402,7 +349,7 @@ export default function CsHub() {
                       {t(`roadmap.step${step.id}.description`)}
                     </p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 text-faint shrink-0 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             )
@@ -425,11 +372,11 @@ export default function CsHub() {
             return (
               <div
                 key={cat.id}
-                className={`bg-surface rounded-xl shadow-md border ${cat.borderColor} p-5 hover:shadow-lg transition-shadow`}
+                className={`ui-card rounded-xl p-5`}
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-lg ${cat.bgColor} flex items-center justify-center`}>
-                    <Icon className={`w-5 h-5 ${cat.textColor}`} />
+                  <div className={`w-10 h-10 rounded-lg bg-soft flex items-center justify-center`}>
+                    <Icon className={`w-5 h-5 text-body`} />
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-sm font-bold text-fg truncate">
@@ -467,7 +414,7 @@ export default function CsHub() {
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-1.5 rounded-full bg-soft overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${cat.bgColor}`}
+                        className={`h-full rounded-full bg-primary`}
                         style={{ width: `${Math.min(100, (total / 80) * 100)}%` }}
                       />
                     </div>
@@ -481,19 +428,17 @@ export default function CsHub() {
       </section>
 
       {/* ── Quick Start CTA ── */}
-      <section className="relative overflow-hidden bg-primary rounded-2xl shadow-xl p-8 md:p-10 text-white">
-        <div className="absolute -top-20 -right-20 w-56 h-56 bg-white/5 rounded-full blur-2xl" />
-        <div className="absolute -bottom-12 -left-12 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+      <section className="relative overflow-hidden bg-primary rounded-2xl p-8 md:p-10 text-white">
 
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
           <div className="flex-1">
             <h3 className="text-2xl font-bold mb-2">{t('quickStart.title')}</h3>
-            <p className="text-blue-100 text-sm md:text-base">{t('quickStart.description')}</p>
+            <p className="text-white/70 text-sm md:text-base">{t('quickStart.description')}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0">
             <Link
               href="/cs-dictionary/"
-              className="flex items-center gap-2 px-6 py-3 bg-white text-blue-700 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+              className="flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-white/90 transition-colors"
             >
               <BookOpen className="w-5 h-5" />
               {t('quickStart.beginnerCta')}

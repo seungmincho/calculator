@@ -202,8 +202,8 @@ export default function BreathingExercise() {
                 onClick={() => setSelectedPatternId(pattern.id)}
                 className={`w-full text-left rounded-lg border-2 p-4 transition-all ${
                   selectedPatternId === pattern.id
-                    ? 'border-blue-500 bg-subtle'
-                    : 'border-line hover:border-blue-300 dark:hover:border-blue-600'
+                    ? 'border-primary bg-primary-soft'
+                    : 'border-line hover:border-primary'
                 }`}
               >
                 <div className="font-semibold text-fg">
@@ -245,7 +245,7 @@ export default function BreathingExercise() {
                   r="120"
                   fill="none"
                   stroke="currentColor"
-                  className="text-gray-100 dark:text-gray-700"
+                  className="text-soft"
                   strokeWidth="2"
                 />
                 {/* Glow ring */}
@@ -260,7 +260,7 @@ export default function BreathingExercise() {
                     : phase === 'exhale' ? 'text-green-300 dark:text-green-600'
                     : phase === 'hold1' ? 'text-yellow-300 dark:text-yellow-600'
                     : phase === 'hold2' ? 'text-purple-300 dark:text-purple-600'
-                    : 'text-gray-200 dark:text-gray-600'
+                    : 'text-line-strong'
                   }
                   strokeWidth="3"
                   opacity="0.5"
@@ -279,7 +279,7 @@ export default function BreathingExercise() {
                     : phase === 'exhale' ? 'text-green-200 dark:text-green-900'
                     : phase === 'hold1' ? 'text-yellow-200 dark:text-yellow-900'
                     : phase === 'hold2' ? 'text-purple-200 dark:text-purple-900'
-                    : 'text-gray-100 dark:text-gray-700'
+                    : 'text-soft'
                   }
                   style={{
                     transition: `r ${animationDuration} ${animTimingFn}`,
@@ -316,7 +316,7 @@ export default function BreathingExercise() {
                           : ps.phase === 'exhale' ? 'bg-green-500'
                           : ps.phase === 'hold1' ? 'bg-yellow-500'
                           : 'bg-purple-500'
-                        : 'bg-gray-200 dark:bg-gray-600'
+                        : 'bg-track'
                     }`}
                     title={getPhaseLabel(ps.phase)}
                   />
@@ -356,7 +356,7 @@ export default function BreathingExercise() {
                     {t('inhaleLabel')} {selectedPattern.inhale}s
                   </span>
                   {selectedPattern.hold1 > 0 && (
-                    <span className="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full px-3 py-1">
+                    <span className="text-xs bg-soft text-sub rounded-full px-3 py-1">
                       {t('holdLabel')} {selectedPattern.hold1}s
                     </span>
                   )}

@@ -805,8 +805,8 @@ const FuelCalculator = () => {
           aria-pressed={activeTab === 'calculator'}
           className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'calculator'
-              ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
-              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-muted hover:text-body'
           }`}
         >
           <div className="flex items-center space-x-2">
@@ -819,15 +819,15 @@ const FuelCalculator = () => {
           aria-pressed={activeTab === 'drivingLog'}
           className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'drivingLog'
-              ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
-              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-muted hover:text-body'
           }`}
         >
           <div className="flex items-center space-x-2">
             <FileText className="w-4 h-4" />
             <span>{t('tabs.drivingLog')}</span>
             {drivingLogs.length > 0 && (
-              <span className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 px-2 py-0.5 rounded-full text-xs">
+              <span className="bg-primary-soft text-primary px-2 py-0.5 rounded-full text-xs">
                 {drivingLogs.length}
               </span>
             )}
@@ -1609,10 +1609,10 @@ const FuelCalculator = () => {
 
             <div className="grid md:grid-cols-3 gap-8">
               {/* Accurate Calculation */}
-              <div className="bg-surface rounded-xl p-6 shadow-lg">
+              <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                    <Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <div className="p-3 bg-soft rounded-lg">
+                    <Calculator className="w-6 h-6 text-body" />
                   </div>
                   <h3 className="text-xl font-semibold text-fg">
                     {t('businessExpense.features.accurate.title')}
@@ -1639,10 +1639,10 @@ const FuelCalculator = () => {
               </div>
 
               {/* Legal Compliance */}
-              <div className="bg-surface rounded-xl p-6 shadow-lg">
+              <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-green-100 dark:bg-green-900 rounded-lg">
-                    <Shield className="w-6 h-6 text-green-600 dark:text-green-400" />
+                  <div className="p-3 bg-soft rounded-lg">
+                    <Shield className="w-6 h-6 text-body" />
                   </div>
                   <h3 className="text-xl font-semibold text-fg">
                     {t('businessExpense.features.legal.title')}
@@ -1669,10 +1669,10 @@ const FuelCalculator = () => {
               </div>
 
               {/* Practical Tools */}
-              <div className="bg-surface rounded-xl p-6 shadow-lg">
+              <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                    <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  <div className="p-3 bg-soft rounded-lg">
+                    <FileText className="w-6 h-6 text-body" />
                   </div>
                   <h3 className="text-xl font-semibold text-fg">
                     {t('businessExpense.features.practical.title')}
@@ -1701,7 +1701,7 @@ const FuelCalculator = () => {
           </div>
 
           {/* Expense Rules */}
-          <div className="bg-surface rounded-2xl shadow-xl p-8">
+          <div className="ui-card p-8">
             <div className="text-center mb-8">
               <div className="flex items-center justify-center space-x-3 mb-4">
                 <BookOpen className="w-8 h-8 text-indigo-600" />
@@ -1770,10 +1770,10 @@ const FuelCalculator = () => {
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Fuel Efficiency */}
-              <div className="bg-surface rounded-xl p-6 shadow-lg">
+              <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-green-100 dark:bg-green-900 rounded-lg">
-                    <Fuel className="w-6 h-6 text-green-600 dark:text-green-400" />
+                  <div className="p-3 bg-soft rounded-lg">
+                    <Fuel className="w-6 h-6 text-body" />
                   </div>
                   <h3 className="text-xl font-semibold text-fg">
                     {t('costOptimization.fuelEfficiency.title')}
@@ -1794,10 +1794,10 @@ const FuelCalculator = () => {
               </div>
 
               {/* Maintenance */}
-              <div className="bg-surface rounded-xl p-6 shadow-lg">
+              <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-orange-100 dark:bg-orange-900 rounded-lg">
-                    <Wrench className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                  <div className="p-3 bg-soft rounded-lg">
+                    <Wrench className="w-6 h-6 text-body" />
                   </div>
                   <h3 className="text-xl font-semibold text-fg">
                     {t('costOptimization.maintenance.title')}

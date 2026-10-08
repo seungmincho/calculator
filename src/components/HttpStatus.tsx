@@ -397,12 +397,12 @@ function getCategoryFromCode(code: number): Exclude<Category, 'all'> {
 
 const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: string; bg: string; border: string; tab: string; tabActive: string }> = {
   '1xx': {
-    badge: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    text: 'text-blue-600 dark:text-blue-400',
+    badge: 'bg-soft text-sub',
+    text: 'text-sub',
     bg: 'bg-subtle',
     border: 'border-line',
     tab: 'bg-surface text-sub border border-line',
-    tabActive: 'bg-blue-600 text-white border border-blue-600',
+    tabActive: 'bg-primary text-white border border-primary',
   },
   '2xx': {
     badge: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
@@ -410,23 +410,23 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     bg: 'bg-subtle',
     border: 'border-line',
     tab: 'bg-surface text-sub border border-line',
-    tabActive: 'bg-green-600 text-white border border-green-600',
+    tabActive: 'bg-primary text-white border border-primary',
   },
   '3xx': {
-    badge: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    text: 'text-yellow-600 dark:text-yellow-400',
-    bg: 'bg-yellow-50 dark:bg-yellow-950',
-    border: 'border-yellow-200 dark:border-yellow-800',
-    tab: 'bg-surface text-sub border border-line',
-    tabActive: 'bg-yellow-500 text-white border border-yellow-500',
-  },
-  '4xx': {
-    badge: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-    text: 'text-orange-600 dark:text-orange-400',
+    badge: 'bg-primary-soft text-primary',
+    text: 'text-primary',
     bg: 'bg-subtle',
     border: 'border-line',
     tab: 'bg-surface text-sub border border-line',
-    tabActive: 'bg-orange-500 text-white border border-orange-500',
+    tabActive: 'bg-primary text-white border border-primary',
+  },
+  '4xx': {
+    badge: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
+    text: 'text-amber-600 dark:text-amber-400',
+    bg: 'bg-subtle',
+    border: 'border-line',
+    tab: 'bg-surface text-sub border border-line',
+    tabActive: 'bg-primary text-white border border-primary',
   },
   '5xx': {
     badge: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
@@ -434,7 +434,7 @@ const CATEGORY_COLORS: Record<Exclude<Category, 'all'>, { badge: string; text: s
     bg: 'bg-red-50 dark:bg-red-950',
     border: 'border-red-200 dark:border-red-800',
     tab: 'bg-surface text-sub border border-line',
-    tabActive: 'bg-red-600 text-white border border-red-600',
+    tabActive: 'bg-primary text-white border border-primary',
   },
 }
 
@@ -509,13 +509,13 @@ export default function HttpStatus() {
 
       {/* Search bar */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-faint" />
         <input
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="w-full pl-10 pr-4 py-3 border border-line-strong rounded-xl bg-surface text-fg placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+          className="w-full pl-10 pr-4 py-3 ui-field rounded-xl outline-none"
         />
       </div>
 
@@ -530,8 +530,8 @@ export default function HttpStatus() {
                 onClick={() => setActiveCategory(cat.key)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 border border-gray-800 dark:border-gray-200'
-                    : 'bg-surface text-sub border border-line hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-primary text-white border border-primary'
+                    : 'bg-surface text-sub border border-line hover:bg-subtle'
                 }`}
               >
                 {cat.label}
@@ -603,7 +603,7 @@ export default function HttpStatus() {
                     <button
                       onClick={() => copyToClipboard(status.code, status.name)}
                       title={t('copyBtn')}
-                      className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="p-2 rounded-lg text-faint hover:text-sub hover:bg-soft transition-colors"
                     >
                       {isCopied ? (
                         <Check className="w-4 h-4 text-green-500" />
@@ -614,7 +614,7 @@ export default function HttpStatus() {
                     <button
                       onClick={() => setExpandedCode(isExpanded ? null : status.code)}
                       title={isExpanded ? t('collapseBtn') : t('expandBtn')}
-                      className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="p-2 rounded-lg text-faint hover:text-sub hover:bg-soft transition-colors"
                     >
                       {isExpanded ? (
                         <ChevronUp className="w-4 h-4" />
@@ -708,8 +708,8 @@ export default function HttpStatus() {
             </p>
           </div>
           {/* 3xx */}
-          <div className="bg-yellow-50 dark:bg-yellow-950 rounded-xl p-4 border border-yellow-200 dark:border-yellow-800">
-            <h3 className="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">3xx — 리다이렉트</h3>
+          <div className="bg-subtle rounded-xl p-4 border border-line">
+            <h3 className="font-semibold text-sub mb-2">3xx — 리다이렉트</h3>
             <p className="text-sm text-sub">
               요청 완료를 위해 추가 동작이 필요합니다. 영구 이동은 301, 임시 이동은 302, 캐시 검증은 304를 사용합니다.
             </p>

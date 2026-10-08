@@ -803,8 +803,8 @@ export default function MenuPicker() {
   const getCategoryLabelSafe = useCallback((cat: string): string => {
     return getCategoryLabel(cat)
   }, [getCategoryLabel])
-  const glassCard = 'bg-surface border border-line rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] dark:shadow-[0_22px_60px_rgba(0,0,0,0.28)]'
-  const glassInset = 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.24),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]'
+  const glassCard = 'ui-card'
+  const glassInset = ''
 
   return (
     <div className="space-y-6">
@@ -825,8 +825,8 @@ export default function MenuPicker() {
             aria-label={t('modeRoulette')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'roulette'
-                ? 'bg-surface text-orange-600 dark:text-orange-400 shadow-md'
-                : 'text-sub hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-primary text-white'
+                : 'text-sub hover:text-fg'
             }`}
           >
             <Zap className="w-4 h-4" />
@@ -838,8 +838,8 @@ export default function MenuPicker() {
             aria-label={t('modeTournament')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'tournament'
-                ? 'bg-surface text-purple-600 dark:text-purple-400 shadow-md'
-                : 'text-sub hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-primary text-white'
+                : 'text-sub hover:text-fg'
             }`}
           >
             <Trophy className="w-4 h-4" />
@@ -851,8 +851,8 @@ export default function MenuPicker() {
             aria-label={t('modeTop3')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               mode === 'top3'
-                ? 'bg-surface text-amber-600 dark:text-amber-400 shadow-md'
-                : 'text-sub hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-primary text-white'
+                : 'text-sub hover:text-fg'
             }`}
           >
             <Star className="w-4 h-4" />
@@ -874,7 +874,7 @@ export default function MenuPicker() {
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
                 situation === s
                   ? 'bg-primary hover:bg-blue-700 text-white shadow-md scale-105'
-                  : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                  : 'bg-soft text-sub hover:bg-track'
               }`}
             >
               {t(`situations.${s}`)}
@@ -895,7 +895,7 @@ export default function MenuPicker() {
               onClick={() => handleCategoryToggle(cat)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1 ${
                 selectedCategories.has(cat)
-                  ? 'bg-soft text-sub ring-1 ring-blue-300 dark:ring-blue-700'
+                  ? 'bg-primary-soft text-primary ring-1 ring-primary'
                   : 'bg-soft text-faint'
               }`}
             >
@@ -917,11 +917,11 @@ export default function MenuPicker() {
           </p>
           <div className="flex flex-wrap gap-2">
             {favorites.map(name => (
-              <div key={name} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+              <div key={name} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm bg-soft text-body">
                 <span>{name}</span>
                 <button
                   onClick={() => toggleFavorite(name)}
-                  className="text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-100 leading-none ml-0.5"
+                  className="text-faint hover:text-body leading-none ml-0.5"
                   title={t('removeFavorite')}
                 >
                   ×
@@ -951,7 +951,7 @@ export default function MenuPicker() {
               <button
                 onClick={handleShuffle}
                 disabled={spinning}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-all text-sm font-medium"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-soft text-body hover:bg-track disabled:opacity-50 transition-all text-sm font-medium"
               >
                 <Shuffle className="w-4 h-4" />
                 {t('shuffle')}
@@ -1008,8 +1008,8 @@ export default function MenuPicker() {
                     onClick={() => setTournamentSize(size)}
                     className={`px-6 py-3 rounded-xl text-lg font-bold transition-all ${
                       tournamentSize === size
-                        ? 'bg-purple-500 text-white shadow-lg scale-105'
-                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-primary text-white scale-105'
+                        : 'bg-soft text-sub hover:bg-track'
                     }`}
                   >
                     {t('round', { size })}
@@ -1053,12 +1053,12 @@ export default function MenuPicker() {
                       key={side}
                       onClick={() => pickTournamentWinner(side)}
                       disabled={!!tournamentPicked}
-                      className={`relative bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(168,85,247,0.10)] p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
+                      className={`relative bg-surface border border-line rounded-2xl p-6 sm:p-8 transition-all duration-500 flex flex-col items-center gap-3 ${
                         isPicked
-                          ? 'ring-4 ring-purple-500 scale-105 shadow-xl shadow-purple-200 dark:shadow-purple-900/30'
+                          ? 'ring-4 ring-primary scale-105'
                           : isOther
                           ? 'opacity-30 scale-95 grayscale'
-                          : 'hover:shadow-xl hover:scale-102 active:scale-95 cursor-pointer'
+                          : 'hover:scale-102 active:scale-95 cursor-pointer'
                       }`}
                     >
                       <span className="text-5xl sm:text-6xl">{item.emoji}</span>
@@ -1104,7 +1104,7 @@ export default function MenuPicker() {
               <div className="text-center">
                 <button
                   onClick={() => setTournamentPhase('setup')}
-                  className="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                  className="text-sm text-faint hover:text-body transition-colors"
                 >
                   {t('restartTournament')}
                 </button>
@@ -1135,14 +1135,14 @@ export default function MenuPicker() {
                 </div>
 
                 <Trophy className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
-                <p className="text-sm font-semibold text-yellow-600 dark:text-yellow-400 mb-2">
+                <p className="text-sm font-semibold text-sub mb-2">
                   {t('champion')}
                 </p>
                 <div className="text-6xl mb-4">{tournamentWinner.emoji}</div>
                 <h2 className="text-3xl font-black text-fg mb-2">
                   {tournamentWinner.name}
                 </h2>
-                <span className="inline-block text-xs px-3 py-1 rounded-full bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 font-medium">
+                <span className="inline-block text-xs px-3 py-1 rounded-full bg-soft text-sub font-medium">
                   {getCategoryLabelSafe(findCategory(tournamentWinner))}
                 </span>
 
@@ -1168,7 +1168,7 @@ export default function MenuPicker() {
                   </a>
                   <button
                     onClick={() => toggleFavorite(tournamentWinner.name)}
-                    className="text-sm px-4 py-2.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors font-medium"
+                    className="text-sm px-4 py-2.5 rounded-lg bg-soft text-body hover:bg-track transition-colors font-medium"
                   >
                     {favorites.includes(tournamentWinner.name) ? '⭐ ' + t('removeFavorite') : '☆ ' + t('addFavorite')}
                   </button>
@@ -1200,12 +1200,12 @@ export default function MenuPicker() {
                 return (
                   <div
                     key={`${item.name}-${idx}`}
-                      className={`relative bg-surface border border-line rounded-2xl shadow-[0_18px_50px_rgba(245,158,11,0.10)] overflow-hidden transition-all duration-500 ${
+                      className={`relative bg-surface border border-line rounded-2xl overflow-hidden transition-all duration-500 ${
                       isSelected
-                        ? 'ring-4 ring-amber-400 shadow-xl shadow-amber-200 dark:shadow-amber-900/30 scale-105'
+                        ? 'ring-4 ring-primary scale-105'
                         : isUnselected
                         ? 'opacity-40 scale-95 grayscale'
-                        : 'hover:shadow-xl'
+                        : 'hover:border-line-strong'
                     }`}
                   >
                     {/* Card gradient top */}
@@ -1276,7 +1276,7 @@ export default function MenuPicker() {
             {top3Selected && (
               <button
                 onClick={() => toggleFavorite(top3Selected.name)}
-                className="text-sm px-4 py-2.5 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors font-medium"
+                className="text-sm px-4 py-2.5 rounded-lg bg-soft text-body hover:bg-track transition-colors font-medium"
               >
                 {favorites.includes(top3Selected.name) ? '⭐ ' + t('removeFavorite') : '☆ ' + t('addFavorite')}
               </button>
@@ -1325,7 +1325,7 @@ export default function MenuPicker() {
                 key={`${item.name}-${i}`}
                 className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm ${
                   i === 0
-                    ? 'bg-soft text-sub ring-1 ring-orange-300 dark:ring-orange-700'
+                    ? 'bg-primary-soft text-primary'
                     : 'bg-soft text-sub'
                 }`}
               >
@@ -1368,7 +1368,7 @@ function ResultCard({
 }) {
   return (
     <div
-      className={`bg-surface border border-line rounded-xl shadow-[0_18px_50px_rgba(249,115,22,0.10)] overflow-hidden transition-all duration-500 ${
+      className={`bg-surface border border-line rounded-xl overflow-hidden transition-all duration-500 ${
         show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
@@ -1399,7 +1399,7 @@ function ResultCard({
           </a>
           <button
             onClick={() => onCopy(item.name)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600 transition-all text-sm"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-soft text-body hover:bg-track transition-all text-sm"
           >
             {copiedId === 'result' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
             {copiedId === 'result' ? t('copied') : t('copy')}
@@ -1407,13 +1407,13 @@ function ResultCard({
           <button
             onClick={() => onMarkEaten(item.name)}
             disabled={eatenToday.includes(item.name)}
-            className="text-xs px-2 py-1 bg-soft text-sub rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="text-xs px-2 py-1 bg-soft text-sub rounded-lg hover:bg-track transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {eatenToday.includes(item.name) ? t('excludedToday') : t('alreadyAte')}
           </button>
           <button
             onClick={() => onToggleFavorite(item.name)}
-            className="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors"
+            className="text-xs px-2 py-1 bg-soft text-body rounded-lg hover:bg-track transition-colors"
           >
             {favorites.includes(item.name) ? '⭐ ' + t('removeFavorite') : '☆ ' + t('addFavorite')}
           </button>

@@ -372,8 +372,8 @@ export default function YouthRentSubsidyCalculator() {
           </div>
         </details>
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          <a href="https://www.bokjiro.go.kr/ssis-tbu/cms/pc/customer/notice/1309500_1141.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">{t('policy.officialLink')}</a>
-          <a href="https://housing.seoul.go.kr/site/main/content/sh01_060513" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline">{t('policy.seoulLink')}</a>
+          <a href="https://www.bokjiro.go.kr/ssis-tbu/cms/pc/customer/notice/1309500_1141.html" target="_blank" rel="noopener noreferrer" className="text-primary underline">{t('policy.officialLink')}</a>
+          <a href="https://housing.seoul.go.kr/site/main/content/sh01_060513" target="_blank" rel="noopener noreferrer" className="text-primary underline">{t('policy.seoulLink')}</a>
         </div>
       </div>
 
@@ -663,7 +663,7 @@ export default function YouthRentSubsidyCalculator() {
               </button>
               <button
                 onClick={reset}
-                className="bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-3 transition-all"
+                className="bg-soft hover:bg-track text-body rounded-lg px-4 py-3 transition-all"
                 title={t('resetButton')}
               >
                 <RotateCcw className="w-5 h-5" />
@@ -676,8 +676,8 @@ export default function YouthRentSubsidyCalculator() {
         <div className="lg:col-span-2 min-w-0 space-y-6">
           {!result ? (
             <div className={`${glassCard} ${glassInset} p-8 text-center`}>
-              <div className="w-16 h-16 mx-auto bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center mb-4">
-                <Home className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+              <div className="w-16 h-16 mx-auto bg-soft rounded-full flex items-center justify-center mb-4">
+                <Home className="w-8 h-8 text-muted" />
               </div>
               <h3 className="text-lg font-semibold text-fg mb-2">{t('emptyTitle')}</h3>
               <p className="text-muted">{t('emptyDescription')}</p>
@@ -707,7 +707,7 @@ export default function YouthRentSubsidyCalculator() {
                   </div>
                   <button
                     onClick={shareUrl}
-                    className="flex items-center gap-2 bg-field hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg px-4 py-2 text-sm font-medium text-body border border-line transition-all"
+                    className="flex items-center gap-2 bg-field hover:bg-subtle rounded-lg px-4 py-2 text-sm font-medium text-body border border-line transition-all"
                   >
                     {copiedUrl ? <Check className="w-4 h-4 text-green-600" /> : <Share2 className="w-4 h-4" />}
                     {copiedUrl ? t('copied') : t('share')}
@@ -729,7 +729,7 @@ export default function YouthRentSubsidyCalculator() {
                   </h3>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="bg-subtle rounded-xl p-5 text-center">
-                      <div className="text-sm text-emerald-600 dark:text-emerald-400 mb-1">{t('monthlySupport')}</div>
+                      <div className="text-sm text-sub mb-1">{t('monthlySupport')}</div>
                       <div className="text-3xl font-bold text-sub">
                         {(result.monthlySupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
@@ -738,7 +738,7 @@ export default function YouthRentSubsidyCalculator() {
                       </div>
                     </div>
                     <div className="bg-subtle rounded-xl p-5 text-center">
-                      <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">{t('totalSupport')}</div>
+                      <div className="text-sm text-sub mb-1">{t('totalSupport')}</div>
                       <div id="youth-payment-total" className="text-3xl font-bold text-sub">
                         {(result.totalSupport / 10000).toLocaleString('ko-KR')}{t('manwonUnit')}
                       </div>
@@ -761,7 +761,7 @@ export default function YouthRentSubsidyCalculator() {
                       <span className="font-medium text-fg">20{t('manwonUnit')} (200,000{t('wonUnit')})</span>
                     </div>
                     <div className="border-t border-line pt-2 flex justify-between text-sm font-semibold">
-                      <span className="text-emerald-600 dark:text-emerald-400">{t('breakdown.result')}</span>
+                      <span className="text-fg">{t('breakdown.result')}</span>
                       <span className="text-sub">
                         {t('breakdown.resultValue', { monthly: (result.monthlySupport / 10000).toLocaleString('ko-KR'), total: (result.totalSupport / 10000).toLocaleString('ko-KR') })}
                       </span>
@@ -812,7 +812,7 @@ export default function YouthRentSubsidyCalculator() {
               <div className={`${glassCard} ${glassInset} overflow-hidden`}>
                 <button
                   onClick={() => setShowApplyInfo(!showApplyInfo)}
-                  className="w-full flex items-center justify-between p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                  className="w-full flex items-center justify-between p-6 hover:bg-subtle transition-colors"
                 >
                   <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
                     {t('applyInfoTitle')}
@@ -862,13 +862,13 @@ export default function YouthRentSubsidyCalculator() {
                       <tr className="border-b border-line">
                         <th className="text-left py-2 px-3 text-sub font-medium">{t('medianTable.size')}</th>
                         <th className="text-right py-2 px-3 text-sub font-medium">{t('medianTable.median')}</th>
-                        <th className="text-right py-2 px-3 text-emerald-600 dark:text-emerald-400 font-medium">{t('medianTable.sixty')}</th>
-                        <th className="text-right py-2 px-3 text-blue-600 dark:text-blue-400 font-medium">{t('medianTable.hundred')}</th>
+                        <th className="text-right py-2 px-3 text-sub font-medium">{t('medianTable.sixty')}</th>
+                        <th className="text-right py-2 px-3 text-sub font-medium">{t('medianTable.hundred')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {Object.entries(MEDIAN_INCOME_2026).map(([size, income]) => (
-                        <tr key={size} className="border-b border-line hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                        <tr key={size} className="border-b border-line hover:bg-subtle">
                           <td className="py-2 px-3 text-fg font-medium">{t('medianTable.sizeUnit', { n: size })}</td>
                           <td className="py-2 px-3 text-right text-body">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
                           <td className="py-2 px-3 text-right text-sub font-medium">{Math.floor(income * 0.6).toLocaleString('ko-KR')}{t('wonUnit')}</td>
@@ -879,7 +879,7 @@ export default function YouthRentSubsidyCalculator() {
                   </table>
                 </div>
                 <p className="text-xs text-muted mt-3">{t('medianTableNote')}</p>
-                <a href="https://www.mohw.go.kr/menu.es?mid=a10708010300" target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 dark:text-blue-400 underline">{t('medianSource')}</a>
+                <a href="https://www.mohw.go.kr/menu.es?mid=a10708010300" target="_blank" rel="noopener noreferrer" className="text-xs text-primary underline">{t('medianSource')}</a>
               </div>
             </>
           )}

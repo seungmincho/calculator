@@ -20,23 +20,10 @@ const ALL_CATEGORIES: (TermCategory | 'all')[] = [
 
 const DIFFICULTIES: TermDifficulty[] = ['beginner', 'intermediate', 'advanced']
 
-const DIFF_COLORS: Record<TermDifficulty, { bg: string; text: string; dot: string }> = {
-  beginner: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', dot: 'bg-green-500' },
-  intermediate: { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300', dot: 'bg-yellow-500' },
-  advanced: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', dot: 'bg-red-500' },
-}
-
-const CATEGORY_COLORS: Record<TermCategory, { bg: string; text: string; border: string }> = {
-  dataStructures: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-sub', border: 'border-line' },
-  algorithms: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
-  network: { bg: 'bg-cyan-100 dark:bg-cyan-900/40', text: 'text-sub', border: 'border-line' },
-  os: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub', border: 'border-line' },
-  database: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', border: 'border-line' },
-  architecture: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
-  softwareEngineering: { bg: 'bg-pink-100 dark:bg-pink-900/40', text: 'text-sub', border: 'border-line' },
-  security: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-700' },
-  linux: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  web: { bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-sub', border: 'border-line' },
+const DIFF_COLORS: Record<TermDifficulty, { dot: string }> = {
+  beginner: { dot: 'bg-green-500' },
+  intermediate: { dot: 'bg-amber-500' },
+  advanced: { dot: 'bg-red-500' },
 }
 
 type ViewMode = 'list' | 'card'
@@ -203,18 +190,18 @@ export default function CsDictionary() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <BookOpen className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+          <BookOpen className="w-7 h-7 text-primary" />
           {t('title')}
         </h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Stats Bar */}
-      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6">
+      <div className="ui-card rounded-xl p-4 sm:p-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <StatCard icon={<BookOpen className="w-5 h-5 text-blue-500" />} label={t('stats.total')} value={totalTerms} />
-          <StatCard icon={<Check className="w-5 h-5 text-green-500" />} label={t('stats.learned')} value={learnedCount} />
-          <StatCard icon={<Star className="w-5 h-5 text-yellow-500" />} label={t('stats.bookmarked')} value={bookmarkCount} />
+          <StatCard icon={<BookOpen className="w-5 h-5 text-sub" />} label={t('stats.total')} value={totalTerms} />
+          <StatCard icon={<Check className="w-5 h-5 text-sub" />} label={t('stats.learned')} value={learnedCount} />
+          <StatCard icon={<Star className="w-5 h-5 text-sub" />} label={t('stats.bookmarked')} value={bookmarkCount} />
           <div className="flex flex-col items-center justify-center">
             <span className="text-xs text-muted mb-1">{t('stats.progress')}</span>
             <div className="w-full bg-track rounded-full h-3 overflow-hidden">
@@ -232,7 +219,7 @@ export default function CsDictionary() {
           {(Object.keys(CATEGORY_INFO) as TermCategory[]).map(cat => (
             <span
               key={cat}
-              className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${CATEGORY_COLORS[cat].bg} ${CATEGORY_COLORS[cat].text}`}
+              className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-soft text-body`}
             >
               {CATEGORY_INFO[cat].icon} {categoryCounts[cat] || 0}
             </span>
@@ -241,21 +228,21 @@ export default function CsDictionary() {
       </div>
 
       {/* Search + Filters */}
-      <div className="bg-surface rounded-xl shadow-lg p-4 sm:p-6 space-y-4">
+      <div className="ui-card rounded-xl p-4 sm:p-6 space-y-4">
         {/* Search input */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-faint" />
           <input
             type="text"
             value={searchInput}
             onChange={e => setSearchInput(e.target.value)}
             placeholder={t('search.placeholder')}
-            className="w-full pl-10 pr-10 py-2.5 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full ui-field pl-10 pr-10 py-2.5 rounded-lg"
           />
           {searchInput && (
             <button
               onClick={() => setSearchInput('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-sub"
             >
               <X className="w-5 h-5" />
             </button>
@@ -278,8 +265,8 @@ export default function CsDictionary() {
                   onClick={() => setCategory(cat)}
                   className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     isActive
-                      ? 'bg-primary hover:bg-blue-700 text-white shadow-sm'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-primary text-white'
+                      : 'bg-soft text-body hover:bg-subtle'
                   }`}
                 >
                   <span>{info.icon}</span>
@@ -304,8 +291,8 @@ export default function CsDictionary() {
                     onClick={() => setDifficulty(isActive ? null : d)}
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${
                       isActive
-                        ? `${DIFF_COLORS[d].bg} ${DIFF_COLORS[d].text} ring-1 ring-current`
-                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-primary text-white'
+                        : 'bg-soft text-sub hover:bg-subtle'
                     }`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${DIFF_COLORS[d].dot}`} />
@@ -334,8 +321,8 @@ export default function CsDictionary() {
                     onClick={() => setLearningFilter(s)}
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-primary hover:bg-blue-700 text-white'
-                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-primary text-white'
+                        : 'bg-soft text-sub hover:bg-subtle'
                     }`}
                   >
                     {icons[s]}
@@ -350,14 +337,14 @@ export default function CsDictionary() {
           <div className="flex items-center gap-1 ml-auto">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-primary-soft text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+              className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-primary-soft text-primary' : 'text-faint hover:text-sub'}`}
               title={t('view.list')}
             >
               <List className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('card')}
-              className={`p-1.5 rounded-md ${viewMode === 'card' ? 'bg-primary-soft text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
+              className={`p-1.5 rounded-md ${viewMode === 'card' ? 'bg-primary-soft text-primary' : 'text-faint hover:text-sub'}`}
               title={t('view.card')}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -377,8 +364,8 @@ export default function CsDictionary() {
 
       {/* Terms display */}
       {filteredTerms.length === 0 ? (
-        <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
-          <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+        <div className="ui-card rounded-xl p-12 text-center">
+          <Search className="w-12 h-12 text-faint mx-auto mb-3" />
           <p className="text-muted">{t('search.noResults')}</p>
         </div>
       ) : viewMode === 'list' ? (
@@ -420,7 +407,7 @@ export default function CsDictionary() {
       )}
 
       {/* Related Tools */}
-      <div className="bg-surface rounded-xl shadow-lg p-6">
+      <div className="ui-card rounded-xl p-6">
         <h2 className="text-lg font-semibold text-fg mb-4">{t('relatedTools.title')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <RelatedToolLink href="/cs-quiz/" icon="📝" label={t('relatedTools.quiz')} />
@@ -451,11 +438,11 @@ function RelatedToolLink({ href, icon, label }: { href: string; icon: string; la
   return (
     <a
       href={href}
-      className="flex items-center gap-3 p-3 rounded-lg bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+      className="flex items-center gap-3 p-3 rounded-lg bg-subtle hover:bg-soft transition-colors group"
     >
       <span className="text-xl">{icon}</span>
-      <span className="text-sm font-medium text-body group-hover:text-blue-600 dark:group-hover:text-blue-400">{label}</span>
-      <ExternalLink className="w-3.5 h-3.5 text-gray-400 ml-auto" />
+      <span className="text-sm font-medium text-body group-hover:text-primary">{label}</span>
+      <ExternalLink className="w-3.5 h-3.5 text-faint ml-auto" />
     </a>
   )
 }
@@ -463,10 +450,9 @@ function RelatedToolLink({ href, icon, label }: { href: string; icon: string; la
 // ── Badges ──
 
 function CategoryBadge({ category }: { category: TermCategory }) {
-  const colors = CATEGORY_COLORS[category]
   const info = CATEGORY_INFO[category]
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-soft text-body`}>
       {info.icon} {info.nameKo}
     </span>
   )
@@ -475,7 +461,7 @@ function CategoryBadge({ category }: { category: TermCategory }) {
 function DifficultyBadge({ difficulty, t }: { difficulty: TermDifficulty; t: ReturnType<typeof useTranslations> }) {
   const colors = DIFF_COLORS[difficulty]
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-soft text-body`}>
       <span className={`w-1.5 h-1.5 rounded-full ${colors.dot}`} />
       {t(`difficulty.${difficulty}`)}
     </span>
@@ -499,14 +485,14 @@ const ListItem = forwardRef<HTMLDivElement, {
   return (
     <div
       ref={ref}
-      className={`bg-surface rounded-xl shadow-sm border transition-all duration-300 ${
-        highlighted ? 'ring-2 ring-blue-500 border-line' : 'border-line'
+      className={`ui-card rounded-xl transition-all duration-300 ${
+        highlighted ? 'ring-2 ring-primary' : ''
       }`}
     >
       {/* Header row */}
       <button
         onClick={onToggleExpand}
-        className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl transition-colors"
+        className="w-full flex items-center gap-3 p-4 text-left hover:bg-subtle rounded-xl transition-colors"
       >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
@@ -518,8 +504,8 @@ const ListItem = forwardRef<HTMLDivElement, {
         <div className="flex items-center gap-2 flex-shrink-0">
           <CategoryBadge category={term.category} />
           <DifficultyBadge difficulty={term.difficulty} t={t} />
-          {learned && <Check className="w-4 h-4 text-green-500" />}
-          {expanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+          {learned && <Check className="w-4 h-4 text-primary" />}
+          {expanded ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
         </div>
       </button>
 
@@ -557,8 +543,8 @@ const CardItem = forwardRef<HTMLDivElement, {
   return (
     <div
       ref={ref}
-      className={`bg-surface rounded-xl shadow-lg p-5 border transition-all duration-300 ${
-        highlighted ? 'ring-2 ring-blue-500 border-line' : 'border-line'
+      className={`ui-card rounded-xl p-5 transition-all duration-300 ${
+        highlighted ? 'ring-2 ring-primary' : ''
       }`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
@@ -634,7 +620,7 @@ function TermDetail({
                 <button
                   key={relId}
                   onClick={() => onRelatedClick(relId)}
-                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-subtle text-sub hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-subtle text-sub hover:bg-primary-soft hover:text-primary transition-colors"
                 >
                   {related.nameKo}
                 </button>
@@ -651,7 +637,7 @@ function TermDetail({
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             learned
               ? 'bg-primary-soft text-primary'
-              : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+              : 'bg-soft text-sub hover:bg-subtle'
           }`}
         >
           <Check className="w-3.5 h-3.5" />
@@ -661,11 +647,11 @@ function TermDetail({
           onClick={onToggleBookmark}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             bookmarked
-              ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'
-              : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+              ? 'bg-primary-soft text-primary'
+              : 'bg-soft text-sub hover:bg-subtle'
           }`}
         >
-          <Star className={`w-3.5 h-3.5 ${bookmarked ? 'fill-yellow-500' : ''}`} />
+          <Star className={`w-3.5 h-3.5 ${bookmarked ? 'fill-current' : ''}`} />
         </button>
       </div>
     </div>

@@ -159,19 +159,19 @@ export default function ChildBenefitCalculator() {
       {/* 히어로 통계 카드 3개 */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-subtle rounded-xl p-5 text-center">
-          <div className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">{t('hero.parentPay')}</div>
+          <div className="text-xs text-sub font-medium mb-1">{t('hero.parentPay')}</div>
           <div className="text-2xl font-bold text-sub">{t('hero.parentPayAmount')}</div>
-          <div className="text-xs text-indigo-500 dark:text-indigo-400 mt-1">{t('hero.parentPaySub')}</div>
+          <div className="text-xs text-muted mt-1">{t('hero.parentPaySub')}</div>
         </div>
         <div className="bg-subtle rounded-xl p-5 text-center">
-          <div className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">{t('hero.childAllowance')}</div>
+          <div className="text-xs text-sub font-medium mb-1">{t('hero.childAllowance')}</div>
           <div className="text-2xl font-bold text-sub">{t('hero.childAllowanceAmount')}</div>
-          <div className="text-xs text-green-500 dark:text-green-400 mt-1">{t('hero.childAllowanceSub')}</div>
+          <div className="text-xs text-muted mt-1">{t('hero.childAllowanceSub')}</div>
         </div>
-        <div className="bg-amber-50 dark:bg-amber-950 rounded-xl p-5 text-center">
-          <div className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">{t('hero.welcomeGrant')}</div>
-          <div className="text-2xl font-bold text-amber-700 dark:text-amber-300">{t('hero.welcomeGrantAmount')}</div>
-          <div className="text-xs text-amber-500 dark:text-amber-400 mt-1">{t('hero.welcomeGrantSub')}</div>
+        <div className="bg-subtle rounded-xl p-5 text-center">
+          <div className="text-xs text-sub font-medium mb-1">{t('hero.welcomeGrant')}</div>
+          <div className="text-2xl font-bold text-sub">{t('hero.welcomeGrantAmount')}</div>
+          <div className="text-xs text-muted mt-1">{t('hero.welcomeGrantSub')}</div>
         </div>
       </div>
 
@@ -233,7 +233,7 @@ export default function ChildBenefitCalculator() {
                     <button
                       onClick={() => updateChild(child.id, 'usesDaycare', !child.usesDaycare)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${
-                        child.usesDaycare ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                        child.usesDaycare ? 'bg-primary' : 'bg-line-strong'
                       }`}
                       role="switch"
                       aria-checked={child.usesDaycare}
@@ -253,7 +253,7 @@ export default function ChildBenefitCalculator() {
             {children.length < 5 && (
               <button
                 onClick={addChild}
-                className="w-full flex items-center justify-center gap-2 py-2 border-2 border-dashed border-line text-blue-600 dark:text-blue-400 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors text-sm"
+                className="w-full flex items-center justify-center gap-2 py-2 border-2 border-dashed border-line text-primary rounded-lg hover:border-primary hover:bg-primary-soft transition-colors text-sm"
               >
                 <Plus className="w-4 h-4" />
                 {t('addChild')}
@@ -272,7 +272,7 @@ export default function ChildBenefitCalculator() {
               </button>
               <button
                 onClick={reset}
-                className="px-3 py-3 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+                className="px-3 py-3 bg-soft hover:bg-track text-body rounded-lg transition-colors"
                 aria-label={t('reset')}
               >
                 <RefreshCw className="w-4 h-4" />
@@ -290,18 +290,18 @@ export default function ChildBenefitCalculator() {
                 <h2 className="font-semibold text-fg mb-4">{t('summaryTitle')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-subtle rounded-xl p-4 text-center">
-                    <div className="text-xs text-blue-600 dark:text-blue-400 mb-1">{t('monthlyTotal')}</div>
+                    <div className="text-xs text-sub mb-1">{t('monthlyTotal')}</div>
                     <div className="text-3xl font-bold text-sub">
                       {formatKRW(monthlyTotal)}
                     </div>
-                    <div className="text-xs text-blue-500 dark:text-blue-400 mt-1">{t('perMonth')}</div>
+                    <div className="text-xs text-muted mt-1">{t('perMonth')}</div>
                   </div>
                   <div className="bg-subtle rounded-xl p-4 text-center">
-                    <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">{t('yearlyTotal')}</div>
+                    <div className="text-xs text-sub mb-1">{t('yearlyTotal')}</div>
                     <div className="text-3xl font-bold text-sub">
                       {formatKRW(yearlyTotal)}
                     </div>
-                    <div className="text-xs text-indigo-500 dark:text-indigo-400 mt-1">{t('perYear')}</div>
+                    <div className="text-xs text-muted mt-1">{t('perYear')}</div>
                   </div>
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function ChildBenefitCalculator() {
                         <span className="font-medium text-fg">
                           {t('childLabel', { n: i + 1 })} — {r.ageLabel}
                         </span>
-                        <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                        <span className="text-lg font-bold text-primary">
                           {t('monthSuffix', { amount: formatKRW(r.total) })}
                         </span>
                       </div>
@@ -390,7 +390,7 @@ export default function ChildBenefitCalculator() {
             <p className="text-xs text-muted mb-4">{t('timelineSub')}</p>
             <ResponsiveContainer width="100%" height={280}>
               <ComposedChart data={timelineData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+                <CartesianGrid strokeDasharray="3 3" className="stroke-line" />
                 <XAxis
                   dataKey="age"
                   tick={{ fontSize: 12, fill: 'currentColor' }}

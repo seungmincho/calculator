@@ -85,12 +85,12 @@ const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'
 
 const METHOD_COLORS: Record<string, string> = {
   GET: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  POST: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  POST: 'bg-primary-soft text-primary',
   PUT: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
   PATCH: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
   DELETE: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  HEAD: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-  OPTIONS: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
+  HEAD: 'bg-soft text-sub',
+  OPTIONS: 'bg-soft text-sub',
 }
 
 const HEADER_PRESETS = [
@@ -1210,7 +1210,7 @@ export default function CurlBuilder() {
             type="checkbox"
             checked={row.enabled}
             onChange={e => updateFn(i, 'enabled', e.target.checked)}
-            className="accent-blue-600 flex-shrink-0"
+            className="accent-primary flex-shrink-0"
           />
           <input
             type="text"
@@ -1237,7 +1237,7 @@ export default function CurlBuilder() {
       ))}
       <button
         onClick={addFn}
-        className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+        className="flex items-center gap-1 text-sm text-primary hover:opacity-80"
         aria-label={t('params.add')}
       >
         <Plus className="w-4 h-4" />
@@ -1268,20 +1268,20 @@ export default function CurlBuilder() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Terminal className="w-7 h-7 text-blue-600" />
+          <Terminal className="w-7 h-7 text-primary" />
           {t('title')}
         </h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-soft rounded-lg p-1 w-fit">
         <button
           onClick={() => setActiveTab('build')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'build'
-              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-sub hover:text-gray-800 dark:hover:text-gray-200'
+              ? 'bg-primary text-white shadow-sm'
+              : 'text-sub hover:text-body'
           }`}
         >
           <Code className="w-4 h-4" />
@@ -1291,8 +1291,8 @@ export default function CurlBuilder() {
           onClick={() => setActiveTab('parse')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'parse'
-              ? 'bg-field text-blue-600 dark:text-blue-400 shadow-sm'
-              : 'text-sub hover:text-gray-800 dark:hover:text-gray-200'
+              ? 'bg-primary text-white shadow-sm'
+              : 'text-sub hover:text-body'
           }`}
         >
           <ArrowRightLeft className="w-4 h-4" />
@@ -1350,14 +1350,14 @@ export default function CurlBuilder() {
           <div className="flex gap-3">
             <button
               onClick={handleParse}
-              className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors"
+              className="flex items-center gap-2 ui-btn rounded-lg px-4 py-2 font-medium transition-colors"
             >
               <Play className="w-4 h-4" />
               {t('parse.parseButton')}
             </button>
             <button
               onClick={() => { setParseInput(''); setParseError('') }}
-              className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2"
+              className="flex items-center gap-2 bg-soft hover:bg-subtle text-body rounded-lg px-4 py-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('params.remove')}
@@ -1393,7 +1393,7 @@ export default function CurlBuilder() {
                   value={config.url}
                   onChange={e => setConfig(prev => ({ ...prev, url: e.target.value }))}
                   placeholder={t('request.urlPlaceholder')}
-                  className={`flex-1 px-3 py-2 border rounded-lg bg-field text-fg text-sm focus:ring-2 focus:ring-blue-500 ${
+                  className={`ui-field flex-1 px-3 py-2 rounded-lg text-sm ${
                     !isValidUrl
                       ? 'border-red-500 dark:border-red-500'
                       : 'border-line-strong'
@@ -1404,7 +1404,7 @@ export default function CurlBuilder() {
                 <p className="text-red-500 text-xs">{t('errors.invalidUrl')}</p>
               )}
               {showBodySection && config.method === 'GET' && (
-                <p className="text-yellow-600 dark:text-yellow-400 text-xs">{t('errors.bodyWithGet')}</p>
+                <p className="text-amber-600 dark:text-amber-400 text-xs">{t('errors.bodyWithGet')}</p>
               )}
             </div>
 
@@ -1457,12 +1457,12 @@ export default function CurlBuilder() {
                 <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                   {t('request.auth')}
                   {config.auth.type !== 'none' && (
-                    <span className="ml-2 text-xs font-normal text-blue-600 dark:text-blue-400">
+                    <span className="ml-2 text-xs font-normal text-primary">
                       ({config.auth.type})
                     </span>
                   )}
                 </h3>
-                {showAuth ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                {showAuth ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
               </button>
               {showAuth && (
                 <div className="px-6 pb-6 space-y-3">
@@ -1474,7 +1474,7 @@ export default function CurlBuilder() {
                         className={`px-3 py-1.5 text-sm rounded-lg ${
                           config.auth.type === type
                             ? 'bg-primary-soft text-primary font-medium'
-                            : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                            : 'bg-soft text-sub hover:bg-subtle'
                         }`}
                       >
                         {t(`auth.${type}`)}
@@ -1548,7 +1548,7 @@ export default function CurlBuilder() {
                       className={`px-3 py-1.5 text-sm rounded-lg ${
                         config.body.type === type
                           ? 'bg-primary-soft text-primary font-medium'
-                          : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                          : 'bg-soft text-sub hover:bg-subtle'
                       }`}
                     >
                       {t(`body.${type}`)}
@@ -1588,7 +1588,7 @@ export default function CurlBuilder() {
                             type="checkbox"
                             checked={field.isFile || false}
                             onChange={e => updateBodyField(i, 'isFile', e.target.checked)}
-                            className="accent-blue-600"
+                            className="accent-primary"
                           />
                           {t('body.isFile')}
                         </label>
@@ -1602,7 +1602,7 @@ export default function CurlBuilder() {
                     ))}
                     <button
                       onClick={addBodyField}
-                      className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                      className="flex items-center gap-1 text-sm text-primary hover:opacity-80"
                     >
                       <Plus className="w-4 h-4" />
                       {t('params.add')}
@@ -1638,7 +1638,7 @@ export default function CurlBuilder() {
                     ))}
                     <button
                       onClick={addBodyField}
-                      className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                      className="flex items-center gap-1 text-sm text-primary hover:opacity-80"
                     >
                       <Plus className="w-4 h-4" />
                       {t('params.add')}
@@ -1657,7 +1657,7 @@ export default function CurlBuilder() {
                 <h3 className="text-sm font-semibold text-body uppercase tracking-wide">
                   {t('request.options')}
                 </h3>
-                {showOptions ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                {showOptions ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
               </button>
               {showOptions && (
                 <div className="px-6 pb-6 space-y-3">
@@ -1676,7 +1676,7 @@ export default function CurlBuilder() {
                           ...prev,
                           options: { ...prev.options, [opt.key]: e.target.checked },
                         }))}
-                        className="accent-blue-600"
+                        className="accent-primary"
                       />
                       <span className="text-sm text-body">{opt.label}</span>
                     </label>
@@ -1706,14 +1706,14 @@ export default function CurlBuilder() {
               <button
                 onClick={() => config.url.trim() && saveToHistory(config)}
                 disabled={!config.url.trim() || !isValidUrl}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 ui-btn rounded-lg px-4 py-2.5 font-medium transition-colors disabled:cursor-not-allowed"
               >
                 <Clock className="w-4 h-4" />
                 {t('history.title')}
               </button>
               <button
                 onClick={resetForm}
-                className="flex items-center gap-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2.5"
+                className="flex items-center gap-2 bg-soft hover:bg-subtle text-body rounded-lg px-4 py-2.5"
               >
                 <RotateCcw className="w-4 h-4" />
                 Reset
@@ -1733,7 +1733,7 @@ export default function CurlBuilder() {
                     className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                       exportFormat === f.key
                         ? 'bg-primary-soft text-primary'
-                        : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                        : 'bg-soft text-sub hover:bg-subtle'
                     }`}
                   >
                     {f.label}
@@ -1748,7 +1748,7 @@ export default function CurlBuilder() {
                     type="checkbox"
                     checked={multiline}
                     onChange={e => setMultiline(e.target.checked)}
-                    className="accent-blue-600"
+                    className="accent-primary"
                   />
                   Multiline (backslash)
                 </label>
@@ -1800,10 +1800,10 @@ export default function CurlBuilder() {
           <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
             {t('history.title')}
             {history.length > 0 && (
-              <span className="text-sm font-normal text-gray-400">({history.length})</span>
+              <span className="text-sm font-normal text-faint">({history.length})</span>
             )}
           </h3>
-          {showHistory ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+          {showHistory ? <ChevronUp className="w-5 h-5 text-faint" /> : <ChevronDown className="w-5 h-5 text-faint" />}
         </button>
         {showHistory && (
           <div className="px-6 pb-6">
@@ -1815,7 +1815,7 @@ export default function CurlBuilder() {
                   <button
                     key={item.id}
                     onClick={() => loadFromHistory(item)}
-                    className="w-full flex items-center gap-3 px-4 py-3 bg-subtle hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-left transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-3 bg-subtle hover:bg-soft rounded-lg text-left transition-colors"
                   >
                     {renderMethodBadge(item.method, true)}
                     <span className="flex-1 min-w-0 text-sm text-body truncate font-mono">
@@ -1847,7 +1847,7 @@ export default function CurlBuilder() {
           <h3 className="text-lg font-semibold text-fg flex items-center gap-2">
             {t('guide.title')}
           </h3>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+          {showGuide ? <ChevronUp className="w-5 h-5 text-faint" /> : <ChevronDown className="w-5 h-5 text-faint" />}
         </button>
         {showGuide && (
           <div className="px-6 pb-6 space-y-6">

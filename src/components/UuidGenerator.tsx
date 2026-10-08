@@ -249,7 +249,7 @@ const UuidGenerator = () => {
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
             <div className="flex items-center space-x-2">
-              <Settings className="w-5 h-5 text-blue-600" />
+              <Settings className="w-5 h-5 text-primary" />
               <h2 className="text-xl font-semibold text-fg">
                 {t('settings.title')}
               </h2>
@@ -267,8 +267,8 @@ const UuidGenerator = () => {
                     onClick={() => setOptions(prev => ({ ...prev, version }))}
                     className={`p-3 text-sm rounded-lg border transition-all ${
                       options.version === version
-                        ? 'bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200'
-                        : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+                        ? 'bg-primary-soft border-primary text-primary'
+                        : 'bg-subtle border-line text-body hover:bg-soft'
                     }`}
                   >
                     <div className="font-medium">UUID {version.toUpperCase()}</div>
@@ -292,8 +292,8 @@ const UuidGenerator = () => {
                     onClick={() => setOptions(prev => ({ ...prev, count }))}
                     className={`px-3 py-2 text-sm rounded-lg border transition-all ${
                       options.count === count
-                        ? 'bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200'
-                        : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+                        ? 'bg-primary-soft border-primary text-primary'
+                        : 'bg-subtle border-line text-body hover:bg-soft'
                     }`}
                   >
                     {count}
@@ -306,7 +306,7 @@ const UuidGenerator = () => {
                 max="1000"
                 value={options.count}
                 onChange={(e) => setOptions(prev => ({ ...prev, count: Math.max(1, Math.min(1000, parseInt(e.target.value) || 1)) }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="ui-field w-full px-3 py-2 rounded-lg"
                 placeholder={t('settings.customCount')}
               />
             </div>
@@ -319,7 +319,7 @@ const UuidGenerator = () => {
               <select
                 value={options.format}
                 onChange={(e) => setOptions(prev => ({ ...prev, format: e.target.value as 'standard' | 'uppercase' | 'lowercase' | 'compact' | 'braces' | 'urn' }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="ui-field w-full px-3 py-2 rounded-lg"
               >
                 <option value="standard">{t('formats.standard')}</option>
                 <option value="uppercase">{t('formats.uppercase')}</option>
@@ -337,7 +337,7 @@ const UuidGenerator = () => {
                   type="checkbox"
                   checked={options.includeTimestamp}
                   onChange={(e) => setOptions(prev => ({ ...prev, includeTimestamp: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-primary border-line-strong rounded focus:ring-primary"
                 />
                 <span className="text-sm text-body">
                   {t('settings.includeTimestamp')}
@@ -349,7 +349,7 @@ const UuidGenerator = () => {
             <button
               onClick={generateUuids}
               disabled={isGenerating}
-              className="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="ui-btn w-full font-medium py-3 px-4 rounded-lg transition-all duration-200 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isGenerating ? (
                 <RefreshCw className="w-5 h-5 animate-spin" />
@@ -364,7 +364,7 @@ const UuidGenerator = () => {
           <div className="bg-subtle rounded-xl p-6 mt-6">
             <div className="flex items-start space-x-3">
               <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-soft rounded-lg flex items-center justify-center">
                   <VersionIcon className="w-5 h-5 text-sub" />
                 </div>
               </div>
@@ -375,7 +375,7 @@ const UuidGenerator = () => {
                 <p className="text-sm text-sub mb-2">
                   {versionInfo.description}
                 </p>
-                <p className="text-xs text-blue-600 dark:text-blue-400">
+                <p className="text-xs text-primary">
                   <strong>{t('versions.useCase')}:</strong> {versionInfo.useCase}
                 </p>
               </div>
@@ -388,12 +388,12 @@ const UuidGenerator = () => {
           <div className={`${glassCard} ${glassInset} p-6`}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
-                <List className="w-5 h-5 text-green-600" />
+                <List className="w-5 h-5 text-primary" />
                 <h2 className="text-xl font-semibold text-fg">
                   {t('result.title')}
                 </h2>
                 {generatedUuids.length > 0 && (
-                  <span className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded-full text-sm">
+                  <span className="bg-primary-soft text-primary px-2 py-1 rounded-full text-sm">
                     {generatedUuids.length}
                   </span>
                 )}
@@ -403,7 +403,7 @@ const UuidGenerator = () => {
                 <div className="flex space-x-2">
                   <button
                     onClick={copyAllUuids}
-                    className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="ui-btn flex items-center gap-1 px-3 py-2 rounded-lg transition-colors"
                   >
                     {isCopied['all'] ? (
                       <Check className="w-4 h-4" />
@@ -414,7 +414,7 @@ const UuidGenerator = () => {
                   </button>
                   <button
                     onClick={downloadUuids}
-                    className="flex items-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    className="ui-btn-soft flex items-center gap-1 px-3 py-2 rounded-lg transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     <span className="text-sm">{tc('export')}</span>
@@ -426,7 +426,7 @@ const UuidGenerator = () => {
             {generatedUuids.length === 0 ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-soft rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Hash className="w-8 h-8 text-gray-400" />
+                  <Hash className="w-8 h-8 text-faint" />
                 </div>
                 <p className="text-muted">
                   {t('placeholder')}
@@ -451,7 +451,7 @@ const UuidGenerator = () => {
                     </div>
                     <button
                       onClick={() => copyToClipboard(item.uuid, item.id)}
-                      className="ml-3 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                      className="ml-3 p-2 text-faint hover:text-sub transition-colors"
                     >
                       {isCopied[item.id] ? (
                         <Check className="w-4 h-4 text-green-600" />
@@ -470,7 +470,7 @@ const UuidGenerator = () => {
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <div className="flex items-center space-x-2 mb-6">
-          <Info className="w-5 h-5 text-orange-600" />
+          <Info className="w-5 h-5 text-primary" />
           <h2 className="text-xl font-semibold text-fg">
             {t('guide.title')}
           </h2>
@@ -484,7 +484,7 @@ const UuidGenerator = () => {
             <div className="space-y-3">
               {(['v1', 'v4', 'v7', 'nil'] as const).map((version) => (
                 <div key={version} className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
                   <div>
                     <div className="font-medium text-sm text-fg">
                       UUID {version.toUpperCase()}: {t(`versions.${version}.name`)}
@@ -505,7 +505,7 @@ const UuidGenerator = () => {
             <div className="space-y-3">
               {[0, 1, 2, 3].map((index) => (
                 <div key={index} className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
                   <div className="text-sm text-sub">
                     {t(`guide.useCases.${index}`)}
                   </div>

@@ -303,12 +303,12 @@ export default function QrScanner() {
 
   const getTypeBadgeColor = (type: string): string => {
     const colorMap: { [key: string]: string } = {
-      url: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      email: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      phone: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-      wifi: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-      vcard: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200',
-      text: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+      url: 'bg-primary-soft text-primary',
+      email: 'bg-primary-soft text-primary',
+      phone: 'bg-primary-soft text-primary',
+      wifi: 'bg-primary-soft text-primary',
+      vcard: 'bg-primary-soft text-primary',
+      text: 'bg-soft text-sub'
     }
     return colorMap[type] || colorMap.text
   }
@@ -323,14 +323,14 @@ export default function QrScanner() {
 
       {/* Browser Support Warning */}
       {!isBrowserSupported && (
-        <div className="bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4">
+        <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
           <div className="flex items-start space-x-3">
-            <QrCode className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+            <QrCode className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="text-sm font-semibold text-yellow-900 dark:text-yellow-100">
+              <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-100">
                 브라우저 미지원
               </h3>
-              <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+              <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
                 이 브라우저는 QR코드 스캔 기능을 지원하지 않습니다. Chrome, Edge, Safari 등 최신 브라우저를 사용해주세요.
               </p>
             </div>
@@ -348,8 +348,8 @@ export default function QrScanner() {
           }}
           className={`px-6 py-3 font-medium rounded-t-lg transition-colors ${
             activeTab === 'camera'
-              ? 'bg-blue-600 text-white'
-              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+              ? 'bg-primary text-white'
+              : 'bg-soft text-body hover:bg-subtle'
           }`}
         >
           <div className="flex items-center space-x-2">
@@ -365,8 +365,8 @@ export default function QrScanner() {
           }}
           className={`px-6 py-3 font-medium rounded-t-lg transition-colors ${
             activeTab === 'image'
-              ? 'bg-blue-600 text-white'
-              : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+              ? 'bg-primary text-white'
+              : 'bg-soft text-body hover:bg-subtle'
           }`}
         >
           <div className="flex items-center space-x-2">
@@ -393,9 +393,9 @@ export default function QrScanner() {
               {/* Scanner Overlay */}
               {isScanning && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-64 h-64 border-4 border-blue-500 rounded-lg">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 animate-scan" />
-                    <ScanLine className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 text-blue-500 animate-pulse" />
+                  <div className="relative w-64 h-64 border-4 border-primary rounded-lg">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-primary animate-scan" />
+                    <ScanLine className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 text-primary animate-pulse" />
                   </div>
                 </div>
               )}
@@ -428,7 +428,7 @@ export default function QrScanner() {
                 <button
                   onClick={startCamera}
                   disabled={!isBrowserSupported}
-                  className="bg-primary hover:bg-blue-700 text-white rounded-lg px-6 py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="ui-btn rounded-lg px-6 py-3 font-medium disabled:cursor-not-allowed transition-all"
                 >
                   {t('startCamera')}
                 </button>
@@ -451,8 +451,8 @@ export default function QrScanner() {
               onDrop={handleDrop}
               className={`relative border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
                 isDragging
-                  ? 'border-blue-500 bg-subtle'
-                  : 'border-line-strong hover:border-blue-400 dark:hover:border-blue-500'
+                  ? 'border-primary bg-primary-soft'
+                  : 'border-line-strong hover:border-primary'
               }`}
             >
               <input
@@ -485,7 +485,7 @@ export default function QrScanner() {
 
           {scanResult === '' ? (
             <div className="text-center py-8">
-              <QrCode className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+              <QrCode className="w-12 h-12 text-faint mx-auto mb-2" />
               <p className="text-muted">{t('noQrFound')}</p>
             </div>
           ) : (
@@ -508,7 +508,7 @@ export default function QrScanner() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => copyToClipboard(scanResult, 'result')}
-                  className="flex items-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-4 py-2 font-medium transition-colors"
+                  className="flex items-center space-x-2 bg-soft hover:bg-subtle text-body rounded-lg px-4 py-2 font-medium transition-colors"
                 >
                   {copiedId === 'result' ? (
                     <>
@@ -528,7 +528,7 @@ export default function QrScanner() {
                     href={scanResult}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 font-medium transition-colors"
+                    className="ui-btn flex items-center rounded-lg px-4 py-2 font-medium transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span>{t('openLink')}</span>
@@ -538,7 +538,7 @@ export default function QrScanner() {
                 {resultType === 'email' && (
                   <a
                     href={scanResult}
-                    className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 font-medium transition-colors"
+                    className="ui-btn flex items-center rounded-lg px-4 py-2 font-medium transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span>이메일 열기</span>
@@ -548,7 +548,7 @@ export default function QrScanner() {
                 {resultType === 'phone' && (
                   <a
                     href={scanResult}
-                    className="flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2 font-medium transition-colors"
+                    className="ui-btn flex items-center rounded-lg px-4 py-2 font-medium transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span>전화 걸기</span>
@@ -580,7 +580,7 @@ export default function QrScanner() {
             {history.map((item, index) => (
               <div
                 key={index}
-                className="bg-subtle rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-850 transition-colors"
+                className="bg-subtle rounded-lg p-4 hover:bg-soft transition-colors"
               >
                 <div className="flex items-start justify-between space-x-4">
                   <div className="flex-1 min-w-0">
@@ -598,7 +598,7 @@ export default function QrScanner() {
                   </div>
                   <button
                     onClick={() => copyToClipboard(item.content, `history-${index}`)}
-                    className="flex-shrink-0 p-2 rounded-lg bg-track hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                    className="flex-shrink-0 p-2 rounded-lg bg-track hover:bg-line-strong transition-colors"
                   >
                     {copiedId === `history-${index}` ? (
                       <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
@@ -627,7 +627,7 @@ export default function QrScanner() {
             <ul className="space-y-2">
               {(t.raw('guide.howTo.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start space-x-2 text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
+                  <span className="text-primary mt-1">•</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -641,7 +641,7 @@ export default function QrScanner() {
             <ul className="space-y-2">
               {(t.raw('guide.tips.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start space-x-2 text-sub">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
+                  <span className="text-primary mt-1">•</span>
                   <span>{item}</span>
                 </li>
               ))}

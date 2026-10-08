@@ -74,44 +74,9 @@ const TRACK_ICONS: Record<RoadmapTrack, typeof Code> = {
   devops: Terminal,
 }
 
-const TRACK_COLORS: Record<string, {
-  bg: string; bgLight: string; border: string; text: string; ring: string
-  gradientFrom: string; gradientTo: string; badge: string; badgeText: string
-  progressBg: string; progressBar: string
-}> = {
-  blue: {
-    bg: 'bg-blue-600', bgLight: 'bg-subtle',
-    border: 'border-blue-500', text: 'text-blue-600 dark:text-blue-400',
-    ring: 'ring-blue-500', gradientFrom: 'from-blue-600', gradientTo: 'to-blue-700',
-    badge: 'bg-blue-100 dark:bg-blue-900', badgeText: 'text-sub',
-    progressBg: 'bg-blue-100 dark:bg-blue-900', progressBar: 'bg-blue-500',
-  },
-  green: {
-    bg: 'bg-green-600', bgLight: 'bg-subtle',
-    border: 'border-green-500', text: 'text-green-600 dark:text-green-400',
-    ring: 'ring-green-500', gradientFrom: 'from-green-600', gradientTo: 'to-green-700',
-    badge: 'bg-green-100 dark:bg-green-900', badgeText: 'text-sub',
-    progressBg: 'bg-green-100 dark:bg-green-900', progressBar: 'bg-green-500',
-  },
-  purple: {
-    bg: 'bg-purple-600', bgLight: 'bg-subtle',
-    border: 'border-purple-500', text: 'text-purple-600 dark:text-purple-400',
-    ring: 'ring-purple-500', gradientFrom: 'from-purple-600', gradientTo: 'to-purple-700',
-    badge: 'bg-purple-100 dark:bg-purple-900', badgeText: 'text-sub',
-    progressBg: 'bg-purple-100 dark:bg-purple-900', progressBar: 'bg-purple-500',
-  },
-  orange: {
-    bg: 'bg-orange-600', bgLight: 'bg-subtle',
-    border: 'border-orange-500', text: 'text-orange-600 dark:text-orange-400',
-    ring: 'ring-orange-500', gradientFrom: 'from-orange-600', gradientTo: 'to-orange-700',
-    badge: 'bg-orange-100 dark:bg-orange-900', badgeText: 'text-sub',
-    progressBg: 'bg-orange-100 dark:bg-orange-900', progressBar: 'bg-orange-500',
-  },
-}
-
 const LEVEL_CONFIG: Record<SkillLevel, { dot: string; label: string }> = {
   beginner: { dot: 'bg-green-500', label: 'level.beginner' },
-  intermediate: { dot: 'bg-yellow-500', label: 'level.intermediate' },
+  intermediate: { dot: 'bg-amber-500', label: 'level.intermediate' },
   advanced: { dot: 'bg-red-500', label: 'level.advanced' },
 }
 
@@ -150,7 +115,6 @@ export default function DevRoadmap() {
     () => ROADMAP_TRACKS.find(t => t.id === selectedTrack)!,
     [selectedTrack]
   )
-  const colors = TRACK_COLORS[currentTrack.color]
   const currentProgress = progress[selectedTrack]
 
   const totalSkills = useMemo(() => countSkills(currentTrack.sections), [currentTrack])
@@ -211,7 +175,7 @@ export default function DevRoadmap() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <Map className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+          <Map className="w-7 h-7 text-primary" />
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         </div>
         <p className="text-sm text-muted">{t('description')}</p>
@@ -221,7 +185,6 @@ export default function DevRoadmap() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {ROADMAP_TRACKS.map(track => {
           const Icon = TRACK_ICONS[track.id]
-          const tc = TRACK_COLORS[track.color]
           const trackStudied = progress[track.id].studied.length
           const trackTotal = countSkills(track.sections)
           const isSelected = selectedTrack === track.id
@@ -231,13 +194,13 @@ export default function DevRoadmap() {
               onClick={() => { setSelectedTrack(track.id); setFilter('all'); setExpandedSkill(null) }}
               className={`relative text-left p-4 rounded-xl border-2 transition-all ${
                 isSelected
-                  ? `${tc.border} ${tc.bgLight} shadow-lg`
-                  : 'border-line bg-surface hover:border-gray-300 dark:hover:border-gray-600'
+                  ? 'border-primary bg-primary-soft'
+                  : 'border-line bg-surface hover:border-line-strong'
               }`}
             >
               <div className="flex items-center gap-2 mb-2">
-                <Icon className={`w-5 h-5 ${isSelected ? tc.text : 'text-muted'}`} />
-                <span className={`font-semibold ${isSelected ? tc.text : 'text-fg'}`}>
+                <Icon className={`w-5 h-5 ${isSelected ? 'text-primary' : 'text-muted'}`} />
+                <span className={`font-semibold ${isSelected ? 'text-primary' : 'text-fg'}`}>
                   {track.title}
                 </span>
               </div>
@@ -247,16 +210,16 @@ export default function DevRoadmap() {
               <div className="flex items-center justify-between text-xs">
                 <span className="text-faint">{trackTotal} {t('stats.total')}</span>
                 {trackStudied > 0 && (
-                  <span className={tc.badgeText + ' font-medium'}>
+                  <span className="text-sub font-medium">
                     {trackStudied}/{trackTotal}
                   </span>
                 )}
               </div>
               {/* Mini progress bar */}
               {trackStudied > 0 && (
-                <div className={`mt-2 h-1 rounded-full ${tc.progressBg}`}>
+                <div className={`mt-2 h-1 rounded-full bg-track`}>
                   <div
-                    className={`h-1 rounded-full ${tc.progressBar} transition-all`}
+                    className={`h-1 rounded-full bg-primary transition-all`}
                     style={{ width: `${Math.round((trackStudied / trackTotal) * 100)}%` }}
                   />
                 </div>
@@ -267,26 +230,26 @@ export default function DevRoadmap() {
       </div>
 
       {/* Stats + Filter Bar */}
-      <div className="bg-surface rounded-xl shadow-lg p-4">
+      <div className="ui-card rounded-xl p-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <div className="flex items-center gap-1.5">
-              <Zap className={`w-4 h-4 ${colors.text}`} />
+              <Zap className="w-4 h-4 text-primary" />
               <span className="text-body">
-                {t('stats.progress')}: <strong className={colors.text}>{studiedCount}</strong> / {totalSkills}
+                {t('stats.progress')}: <strong className="text-primary">{studiedCount}</strong> / {totalSkills}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Star className="w-4 h-4 text-yellow-500" />
+              <Star className="w-4 h-4 text-primary" />
               <span className="text-body">
-                {t('stats.essentialProgress')}: <strong className="text-yellow-600 dark:text-yellow-400">{essentialStudied}</strong> / {totalEssential}
+                {t('stats.essentialProgress')}: <strong className="text-primary">{essentialStudied}</strong> / {totalEssential}
               </span>
             </div>
             {studiedCount > 0 && (
               <button
                 onClick={resetTrackProgress}
-                className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors"
+                className="flex items-center gap-1 text-xs text-faint hover:text-red-500 transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
                 초기화
@@ -296,15 +259,15 @@ export default function DevRoadmap() {
 
           {/* Filters */}
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-400" />
+            <Filter className="w-4 h-4 text-faint" />
             {(['all', 'essential', 'beginner', 'intermediate', 'advanced'] as SkillFilter[]).map(f => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                   filter === f
-                    ? `${colors.bg} text-white`
-                    : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-primary text-white'
+                    : 'bg-soft text-sub hover:bg-subtle'
                 }`}
               >
                 {f === 'all' ? t('filter.all')
@@ -316,13 +279,13 @@ export default function DevRoadmap() {
         </div>
 
         {/* Overall progress bar */}
-        <div className={`mt-4 h-2 rounded-full ${colors.progressBg}`}>
+        <div className={`mt-4 h-2 rounded-full bg-track`}>
           <div
-            className={`h-2 rounded-full ${colors.progressBar} transition-all duration-500`}
+            className={`h-2 rounded-full bg-primary transition-all duration-500`}
             style={{ width: `${totalSkills > 0 ? Math.round((studiedCount / totalSkills) * 100) : 0}%` }}
           />
         </div>
-        <div className="text-right mt-1 text-xs text-gray-400">
+        <div className="text-right mt-1 text-xs text-faint">
           {totalSkills > 0 ? Math.round((studiedCount / totalSkills) * 100) : 0}%
         </div>
       </div>
@@ -335,9 +298,9 @@ export default function DevRoadmap() {
             <span>{t(LEVEL_CONFIG[level].label)}</span>
           </div>
         ))}
-        <span className="text-gray-300 dark:text-gray-600">|</span>
+        <span className="text-faint">|</span>
         <div className="flex items-center gap-1.5">
-          <Star className="w-3 h-3 text-yellow-500" />
+          <Star className="w-3 h-3 text-primary" />
           <span>{t('legend.essential')}</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -358,41 +321,41 @@ export default function DevRoadmap() {
             <div key={section.id} className="relative">
               {/* Timeline connector */}
               {sIdx < currentTrack.sections.length - 1 && (
-                <div className={`absolute left-5 top-14 bottom-0 w-0.5 ${colors.progressBg}`} />
+                <div className={`absolute left-5 top-14 bottom-0 w-0.5 bg-line`} />
               )}
 
-              <div className={`bg-surface rounded-xl border border-line overflow-hidden`}>
+              <div className={`ui-card rounded-xl overflow-hidden`}>
                 {/* Section header */}
                 <button
                   onClick={() => toggleSection(section.id)}
-                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="w-full flex items-center justify-between p-4 hover:bg-subtle transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{section.icon}</span>
                     <div className="text-left">
                       <h3 className="font-semibold text-fg">
                         {section.title}
-                        <span className="ml-2 text-xs font-normal text-gray-400">
+                        <span className="ml-2 text-xs font-normal text-faint">
                           {section.titleEn}
                         </span>
                       </h3>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-faint">
                         {sectionStudied}/{section.skills.length} {t('stats.studied')}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     {/* Section mini progress */}
-                    <div className={`hidden sm:block w-24 h-1.5 rounded-full ${colors.progressBg}`}>
+                    <div className={`hidden sm:block w-24 h-1.5 rounded-full bg-track`}>
                       <div
-                        className={`h-1.5 rounded-full ${colors.progressBar} transition-all`}
+                        className={`h-1.5 rounded-full bg-primary transition-all`}
                         style={{ width: `${section.skills.length > 0 ? Math.round((sectionStudied / section.skills.length) * 100) : 0}%` }}
                       />
                     </div>
                     {isExpanded ? (
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                      <ChevronDown className="w-5 h-5 text-faint" />
                     ) : (
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                      <ChevronRight className="w-5 h-5 text-faint" />
                     )}
                   </div>
                 </button>
@@ -410,7 +373,7 @@ export default function DevRoadmap() {
                             className={`flex items-center gap-3 p-3 rounded-lg transition-all cursor-pointer ${
                               isStudied
                                 ? 'bg-subtle'
-                                : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                                : 'hover:bg-subtle'
                             }`}
                             onClick={() => setExpandedSkill(isDetailOpen ? null : skill.id)}
                           >
@@ -419,8 +382,8 @@ export default function DevRoadmap() {
                               onClick={(e) => { e.stopPropagation(); toggleStudied(skill.id) }}
                               className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
                                 isStudied
-                                  ? `${colors.bg} ${colors.border} text-white`
-                                  : 'border-line-strong hover:border-gray-400 dark:hover:border-gray-500'
+                                  ? 'bg-primary border-primary text-white'
+                                  : 'border-line-strong hover:border-faint'
                               }`}
                               aria-label={isStudied ? t('skill.studied') : t('skill.notStudied')}
                             >
@@ -441,13 +404,13 @@ export default function DevRoadmap() {
                                   {skill.name}
                                 </span>
                                 {skill.isEssential && (
-                                  <Star className="w-3 h-3 text-yellow-500 flex-shrink-0" />
+                                  <Star className="w-3 h-3 text-primary flex-shrink-0" />
                                 )}
                               </div>
                             </div>
 
                             {/* Arrow */}
-                            <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform ${isDetailOpen ? 'rotate-90' : ''}`} />
+                            <ChevronRight className={`w-4 h-4 text-faint transition-transform ${isDetailOpen ? 'rotate-90' : ''}`} />
                           </div>
 
                           {/* Expanded detail */}
@@ -456,12 +419,12 @@ export default function DevRoadmap() {
                               <p className="text-sub">{skill.description}</p>
                               {skill.resources && skill.resources.length > 0 && (
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  <BookOpen className="w-3.5 h-3.5 text-gray-400" />
-                                  <span className="text-xs text-gray-400">{t('skill.resources')}:</span>
+                                  <BookOpen className="w-3.5 h-3.5 text-faint" />
+                                  <span className="text-xs text-faint">{t('skill.resources')}:</span>
                                   {skill.resources.map((res, i) => (
                                     <span
                                       key={i}
-                                      className={`text-xs px-2 py-0.5 rounded-full ${colors.badge} ${colors.badgeText}`}
+                                      className={`text-xs px-2 py-0.5 rounded-full bg-soft text-body`}
                                     >
                                       {res}
                                     </span>
@@ -470,12 +433,12 @@ export default function DevRoadmap() {
                               )}
                               <div className="flex items-center gap-2">
                                 <span className={`w-2 h-2 rounded-full ${LEVEL_CONFIG[skill.level].dot}`} />
-                                <span className="text-xs text-gray-400">{t(LEVEL_CONFIG[skill.level].label)}</span>
+                                <span className="text-xs text-faint">{t(LEVEL_CONFIG[skill.level].label)}</span>
                                 {skill.isEssential && (
                                   <>
-                                    <span className="text-gray-300 dark:text-gray-600">|</span>
-                                    <Star className="w-3 h-3 text-yellow-500" />
-                                    <span className="text-xs text-yellow-600 dark:text-yellow-400">{t('legend.essential')}</span>
+                                    <span className="text-faint">|</span>
+                                    <Star className="w-3 h-3 text-primary" />
+                                    <span className="text-xs text-primary">{t('legend.essential')}</span>
                                   </>
                                 )}
                               </div>
@@ -494,9 +457,9 @@ export default function DevRoadmap() {
 
       {/* Completion message */}
       {studiedCount === totalSkills && totalSkills > 0 && (
-        <div className={`text-center py-8 px-6 rounded-xl ${colors.bgLight} border-2 ${colors.border}`}>
+        <div className={`text-center py-8 px-6 rounded-xl bg-subtle border-2 border-primary`}>
           <div className="text-4xl mb-3">🎉</div>
-          <h3 className={`text-xl font-bold ${colors.text} mb-2`}>
+          <h3 className={`text-xl font-bold text-primary mb-2`}>
             {currentTrack.title} {t('stats.total')} {t('stats.studied')}!
           </h3>
           <p className="text-sm text-muted">

@@ -5,7 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/algorithmHub'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
-import { algorithms, categoryColors, categoryLabels, difficultyLabels, type AlgorithmCategory } from '@/config/algorithmConfig'
+import { algorithms, categoryLabels, difficultyLabels, type AlgorithmCategory } from '@/config/algorithmConfig'
 
 interface AlgorithmSidebarProps {
   onNavigate?: () => void
@@ -36,21 +36,6 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
     })
   }
 
-  // Category color mapping for chips - use explicit Tailwind classes
-  const catColorClasses: Record<string, { bg: string; text: string; border: string }> = {
-    red: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400', border: 'border-red-200 dark:border-red-800' },
-    blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400', border: 'border-line' },
-    purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-400', border: 'border-line' },
-    amber: { bg: 'bg-amber-100 dark:bg-amber-900/30', text: 'text-amber-700 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
-    emerald: { bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-700 dark:text-emerald-400', border: 'border-line' },
-    teal: { bg: 'bg-teal-100 dark:bg-teal-900/30', text: 'text-teal-700 dark:text-teal-400', border: 'border-line' },
-    cyan: { bg: 'bg-cyan-100 dark:bg-cyan-900/30', text: 'text-cyan-700 dark:text-cyan-400', border: 'border-line' },
-    pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-700 dark:text-pink-400', border: 'border-line' },
-    indigo: { bg: 'bg-indigo-100 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-400', border: 'border-line' },
-    rose: { bg: 'bg-rose-100 dark:bg-rose-900/30', text: 'text-rose-700 dark:text-rose-400', border: 'border-line' },
-    sky: { bg: 'bg-sky-100 dark:bg-sky-900/30', text: 'text-sky-700 dark:text-sky-400', border: 'border-line' },
-  }
-
   return (
     <nav className="p-4 space-y-2">
       {/* Hub link */}
@@ -59,8 +44,8 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
         onClick={onNavigate}
         className={`block px-3 py-2 rounded-lg font-medium transition-colors ${
           pathname === '/algorithm' || pathname === '/algorithm/'
-            ? 'bg-subtle text-blue-700 dark:text-blue-400 border-l-2 border-blue-500'
-            : 'text-body hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+            ? 'bg-primary-soft text-primary border-l-2 border-primary'
+            : 'text-body hover:bg-subtle'
         }`}
       >
         {t('title')}
@@ -70,15 +55,13 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
 
       {/* Category accordion */}
       {(Object.entries(categories) as [AlgorithmCategory, typeof algorithms][]).map(([cat, algos]) => {
-        const color = categoryColors[cat]
-        const classes = catColorClasses[color] || catColorClasses.blue
         const isOpen = openCategories.has(cat)
 
         return (
           <div key={cat}>
             <button
               onClick={() => toggleCategory(cat)}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${classes.bg} ${classes.text}`}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-soft text-body`}
             >
               <span>{t(categoryLabels[cat])}</span>
               <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -92,7 +75,7 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
                   return (
                     <div key={algo.id}>
                       {isComingSoon ? (
-                        <span className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                        <span className="flex items-center gap-2 px-3 py-1.5 text-sm text-faint cursor-not-allowed">
                           <span>{algo.icon}</span>
                           <span>{t(`algorithms.${algo.labelKey}.title`)}</span>
                           <span className="text-xs opacity-50">Soon</span>
@@ -103,13 +86,13 @@ export default function AlgorithmSidebar({ onNavigate }: AlgorithmSidebarProps) 
                           onClick={onNavigate}
                           className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
                             isActive
-                              ? 'bg-subtle text-blue-700 dark:text-blue-400 border-l-2 border-blue-500 font-medium'
-                              : 'text-sub hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+                              ? 'bg-primary-soft text-primary border-l-2 border-primary font-medium'
+                              : 'text-sub hover:bg-subtle'
                           }`}
                         >
                           <span>{algo.icon}</span>
                           <span>{t(`algorithms.${algo.labelKey}.title`)}</span>
-                          <span className="text-xs text-gray-400 ml-auto">{difficultyLabels[algo.difficulty]}</span>
+                          <span className="text-xs text-faint ml-auto">{difficultyLabels[algo.difficulty]}</span>
                         </Link>
                       )}
                     </div>

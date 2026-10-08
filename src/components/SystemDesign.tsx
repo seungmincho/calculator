@@ -16,17 +16,9 @@ import {
 type Mode = 'overview' | 'detail'
 type DetailTab = 'requirements' | 'estimation' | 'architecture' | 'deepDive' | 'scaleTradeoffs'
 
-const CATEGORY_COLORS: Record<DesignCategory, { bg: string; text: string; border: string }> = {
-  web: { bg: 'bg-blue-100 dark:bg-blue-900/40', text: 'text-sub', border: 'border-line' },
-  data: { bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-sub', border: 'border-line' },
-  messaging: { bg: 'bg-green-100 dark:bg-green-900/40', text: 'text-sub', border: 'border-line' },
-  storage: { bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-300 dark:border-amber-700' },
-  infrastructure: { bg: 'bg-indigo-100 dark:bg-indigo-900/40', text: 'text-sub', border: 'border-line' },
-}
-
 const DIFFICULTY_COLORS: Record<DesignDifficulty, { bg: string; text: string }> = {
-  intermediate: { bg: 'bg-yellow-100 dark:bg-yellow-900/40', text: 'text-yellow-700 dark:text-yellow-300' },
-  advanced: { bg: 'bg-orange-100 dark:bg-orange-900/40', text: 'text-sub' },
+  intermediate: { bg: 'bg-soft', text: 'text-body' },
+  advanced: { bg: 'bg-soft', text: 'text-body' },
   expert: { bg: 'bg-red-100 dark:bg-red-900/40', text: 'text-red-700 dark:text-red-300' },
 }
 
@@ -148,16 +140,16 @@ export default function SystemDesign() {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-surface rounded-xl shadow-lg p-4 text-center">
+        <div className="ui-card rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-fg">{SYSTEM_DESIGN_QUESTIONS.length}</div>
           <div className="text-xs text-muted">{t('stats.total')}</div>
         </div>
-        <div className="bg-surface rounded-xl shadow-lg p-4 text-center">
-          <div className="text-2xl font-bold text-green-600 dark:text-green-400">{completed.length}</div>
+        <div className="ui-card rounded-xl p-4 text-center">
+          <div className="text-2xl font-bold text-primary">{completed.length}</div>
           <div className="text-xs text-muted">{t('stats.completed')}</div>
         </div>
-        <div className="bg-surface rounded-xl shadow-lg p-4 text-center">
-          <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{bookmarks.length}</div>
+        <div className="ui-card rounded-xl p-4 text-center">
+          <div className="text-2xl font-bold text-fg">{bookmarks.length}</div>
           <div className="text-xs text-muted">{t('stats.bookmarked')}</div>
         </div>
       </div>
@@ -169,8 +161,8 @@ export default function SystemDesign() {
             onClick={() => setCategoryFilter('all')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               categoryFilter === 'all'
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-body hover:bg-subtle'
             }`}
           >
             {t('filter.all')}
@@ -183,8 +175,8 @@ export default function SystemDesign() {
                 onClick={() => setCategoryFilter(cat)}
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   categoryFilter === cat
-                    ? `${CATEGORY_COLORS[cat].bg} ${CATEGORY_COLORS[cat].text} ring-2 ${CATEGORY_COLORS[cat].border}`
-                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-primary text-white'
+                    : 'bg-soft text-body hover:bg-subtle'
                 }`}
               >
                 {catInfo.icon} {catInfo.nameKo}
@@ -199,8 +191,8 @@ export default function SystemDesign() {
             onClick={() => setDifficultyFilter('all')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               difficultyFilter === 'all'
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-body hover:bg-subtle'
             }`}
           >
             {t('filter.all')}
@@ -211,8 +203,8 @@ export default function SystemDesign() {
               onClick={() => setDifficultyFilter(diff)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 difficultyFilter === diff
-                  ? `${DIFFICULTY_COLORS[diff].bg} ${DIFFICULTY_COLORS[diff].text}`
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-white'
+                  : 'bg-soft text-body hover:bg-subtle'
               }`}
             >
               {t(`difficulty.${diff}`)}
@@ -230,27 +222,27 @@ export default function SystemDesign() {
             <div
               key={q.id}
               onClick={() => openDetail(q.id)}
-              className="bg-surface rounded-xl shadow-lg p-5 cursor-pointer hover:shadow-xl transition-all relative group"
+              className="ui-card rounded-xl p-5 cursor-pointer hover:border-line-strong transition-all relative group"
             >
               {/* Bookmark star */}
               <button
                 onClick={e => { e.stopPropagation(); toggleBookmark(q.id) }}
-                className="absolute top-3 right-3 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="absolute top-3 right-3 p-1.5 rounded-lg hover:bg-soft transition-colors"
                 title={isBookmarked ? t('bookmark.remove') : t('bookmark.add')}
               >
-                <Star className={`w-4 h-4 ${isBookmarked ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-gray-600 group-hover:text-gray-400'}`} />
+                <Star className={`w-4 h-4 ${isBookmarked ? 'fill-primary text-primary' : 'text-faint group-hover:text-muted'}`} />
               </button>
 
               {/* Completed check */}
               {isCompleted && (
                 <div className="absolute top-3 right-10">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <CheckCircle className="w-4 h-4 text-primary" />
                 </div>
               )}
 
               {/* Badges */}
               <div className="flex items-center gap-2 mb-3">
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[q.category].bg} ${CATEGORY_COLORS[q.category].text}`}>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium bg-soft text-body`}>
                   {DESIGN_CATEGORIES[q.category].icon} {DESIGN_CATEGORIES[q.category].nameKo}
                 </span>
                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${DIFFICULTY_COLORS[q.difficulty].bg} ${DIFFICULTY_COLORS[q.difficulty].text}`}>
@@ -301,7 +293,7 @@ export default function SystemDesign() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <button
             onClick={backToOverview}
-            className="flex items-center gap-2 text-sub hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sub hover:text-fg transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-medium">{t('back')}</span>
@@ -310,16 +302,16 @@ export default function SystemDesign() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => toggleBookmark(q.id)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-soft transition-colors"
               title={isBookmarked ? t('bookmark.remove') : t('bookmark.add')}
             >
-              <Star className={`w-5 h-5 ${isBookmarked ? 'fill-amber-400 text-amber-400' : 'text-gray-400'}`} />
+              <Star className={`w-5 h-5 ${isBookmarked ? 'fill-primary text-primary' : 'text-faint'}`} />
             </button>
 
             {!practicing ? (
               <button
                 onClick={startPractice}
-                className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                className="flex items-center gap-2 ui-btn rounded-lg px-4 py-2 text-sm font-medium transition-colors"
               >
                 <Play className="w-4 h-4" />
                 {t('practice.start')}
@@ -327,7 +319,7 @@ export default function SystemDesign() {
             ) : (
               <button
                 onClick={resetPractice}
-                className="flex items-center gap-2 bg-soft text-body rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="flex items-center gap-2 bg-soft text-body rounded-lg px-4 py-2 text-sm font-medium hover:bg-subtle transition-colors"
               >
                 {t('practice.reset')}
               </button>
@@ -336,9 +328,9 @@ export default function SystemDesign() {
         </div>
 
         {/* Title card */}
-        <div className="bg-surface rounded-xl shadow-lg p-6">
+        <div className="ui-card rounded-xl p-6">
           <div className="flex items-center gap-2 mb-3">
-            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[q.category].bg} ${CATEGORY_COLORS[q.category].text}`}>
+            <span className={`px-2 py-0.5 rounded-full text-xs font-medium bg-soft text-body`}>
               {DESIGN_CATEGORIES[q.category].icon} {DESIGN_CATEGORIES[q.category].nameKo}
             </span>
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${DIFFICULTY_COLORS[q.difficulty].bg} ${DIFFICULTY_COLORS[q.difficulty].text}`}>
@@ -362,15 +354,15 @@ export default function SystemDesign() {
                 {!isPracticeComplete && (
                   <button
                     onClick={nextPracticeStep}
-                    className="flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+                    className="flex items-center gap-1 text-sm font-medium text-primary hover:opacity-80 transition-colors"
                   >
                     {t('practice.next')} <ArrowRight className="w-3 h-3" />
                   </button>
                 )}
               </div>
-              <div className="w-full bg-blue-200 dark:bg-blue-800 rounded-full h-1.5">
+              <div className="w-full bg-track rounded-full h-1.5">
                 <div
-                  className="bg-blue-600 dark:bg-blue-400 h-1.5 rounded-full transition-all duration-300"
+                  className="bg-primary h-1.5 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min(((practiceStep + 1) / TABS.length) * 100, 100)}%` }}
                 />
               </div>
@@ -379,7 +371,7 @@ export default function SystemDesign() {
         </div>
 
         {/* Tabs */}
-        <div className="flex overflow-x-auto gap-1 bg-surface rounded-xl shadow-lg p-1.5">
+        <div className="flex overflow-x-auto gap-1 ui-card rounded-xl p-1.5">
           {TABS.map((tab, idx) => {
             const visible = shouldShowTab(idx)
             if (!visible) return null
@@ -396,8 +388,8 @@ export default function SystemDesign() {
                 onClick={() => setActiveTab(tab)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                   activeTab === tab
-                    ? 'bg-primary-soft text-primary'
-                    : 'text-muted hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-primary text-white'
+                    : 'text-muted hover:bg-soft'
                 }`}
               >
                 {icons[tab]}
@@ -408,7 +400,7 @@ export default function SystemDesign() {
         </div>
 
         {/* Tab content */}
-        <div className="bg-surface rounded-xl shadow-lg p-6">
+        <div className="ui-card rounded-xl p-6">
           {activeTab === 'requirements' && renderRequirements(q)}
           {activeTab === 'estimation' && renderEstimation(q)}
           {activeTab === 'architecture' && renderArchitecture(q)}
@@ -441,7 +433,7 @@ export default function SystemDesign() {
         <ol className="space-y-2">
           {q.requirements.nonFunctional.map((item, i) => (
             <li key={i} className="flex gap-3 text-sm text-body">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center text-xs font-bold">{i + 1}</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub flex items-center justify-center text-xs font-bold">{i + 1}</span>
               {item}
             </li>
           ))}
@@ -458,7 +450,7 @@ export default function SystemDesign() {
       <div className="bg-subtle rounded-lg p-4 space-y-2">
         {q.estimations.items.map((item, i) => (
           <div key={i} className="flex items-start gap-2 text-sm text-body font-mono">
-            <span className="text-purple-500 flex-shrink-0">{'>'}</span>
+            <span className="text-primary flex-shrink-0">{'>'}</span>
             {item}
           </div>
         ))}
@@ -476,7 +468,7 @@ export default function SystemDesign() {
 
       {/* ASCII diagram */}
       {q.diagramAscii && (
-        <div className="font-mono bg-gray-900 dark:bg-gray-950 text-green-400 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed">
+        <div className="font-mono bg-subtle text-body p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed">
           {q.diagramAscii}
         </div>
       )}
@@ -488,7 +480,7 @@ export default function SystemDesign() {
         </h3>
         <div className="grid sm:grid-cols-2 gap-3">
           {q.architecture.components.map((comp, i) => (
-            <div key={i} className="p-3 rounded-lg border border-line bg-gray-50 dark:bg-gray-700/30">
+            <div key={i} className="p-3 rounded-lg border border-line bg-subtle">
               <div className="font-semibold text-sm text-fg mb-1">{comp.name}</div>
               <div className="text-xs text-sub">{comp.description}</div>
             </div>
@@ -509,7 +501,7 @@ export default function SystemDesign() {
                   {i + 1}
                 </div>
                 {i < q.architecture.dataFlow.length - 1 && (
-                  <div className="w-0.5 h-6 bg-teal-200 dark:bg-teal-800" />
+                  <div className="w-0.5 h-6 bg-line" />
                 )}
               </div>
               <p className="text-sm text-body pt-1">{step}</p>
@@ -528,10 +520,10 @@ export default function SystemDesign() {
           <div key={i} className="border border-line rounded-lg overflow-hidden">
             <button
               onClick={() => setExpandedDive(isExpanded ? null : i)}
-              className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-subtle transition-colors"
             >
               <span className="font-medium text-sm text-fg">{dive.title}</span>
-              {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+              {isExpanded ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
             </button>
             {isExpanded && (
               <div className="px-4 pb-4 text-sm text-sub leading-relaxed border-t border-line pt-3">
@@ -554,7 +546,7 @@ export default function SystemDesign() {
         <div className="space-y-2">
           {q.scalability.map((item, i) => (
             <div key={i} className="flex items-start gap-2 text-sm text-body">
-              <span className="text-green-500 flex-shrink-0 mt-0.5">&#x2191;</span>
+              <span className="text-primary flex-shrink-0 mt-0.5">&#x2191;</span>
               {item}
             </div>
           ))}
@@ -569,7 +561,7 @@ export default function SystemDesign() {
         <div className="space-y-2">
           {q.tradeoffs.map((item, i) => (
             <div key={i} className="flex items-start gap-2 text-sm text-body">
-              <Scale className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+              <Scale className="w-4 h-4 text-muted flex-shrink-0 mt-0.5" />
               {item}
             </div>
           ))}
@@ -577,13 +569,13 @@ export default function SystemDesign() {
       </div>
 
       {/* Interview tips */}
-      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-200 mb-3 flex items-center gap-2">
+      <div className="bg-subtle border border-line rounded-lg p-4">
+        <h3 className="text-lg font-semibold text-fg mb-3 flex items-center gap-2">
           {t('section.interviewTips')}
         </h3>
         <div className="space-y-2">
           {q.interviewTips.map((tip, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-amber-800 dark:text-amber-300">
+            <div key={i} className="flex items-start gap-2 text-sm text-body">
               <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
               {tip}
             </div>

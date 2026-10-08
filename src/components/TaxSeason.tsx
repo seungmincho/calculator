@@ -138,7 +138,7 @@ export default function TaxSeason() {
             <p className="text-muted text-sm">{t('hero.deadlinePast')}</p>
           ) : (
             <>
-              <p className="text-sm font-medium text-orange-600 dark:text-orange-400 mb-3">
+              <p className="text-sm font-medium text-primary mb-3">
                 {t('hero.deadlineLabel', { month: filing.deadline.getMonth() + 1, day: filing.deadline.getDate() })}
               </p>
               <div className="grid grid-cols-4 gap-3">
@@ -152,7 +152,7 @@ export default function TaxSeason() {
                     key={label}
                     className="bg-subtle rounded-xl p-3 text-center"
                   >
-                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400 tabular-nums">
+                    <div className="text-2xl font-bold text-fg tabular-nums">
                       {String(value).padStart(2, '0')}
                     </div>
                     <div className="text-xs text-muted mt-1">{label}</div>
@@ -177,7 +177,7 @@ export default function TaxSeason() {
           </Link>
           <Link
             href="/freelancer-tax"
-            className="inline-flex items-center gap-2 bg-surface text-orange-600 dark:text-orange-400 border border-line px-6 py-3 rounded-xl font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all"
+            className="inline-flex items-center gap-2 bg-surface text-primary border border-line px-6 py-3 rounded-xl font-medium hover:bg-primary-soft transition-all"
           >
             <Briefcase className="w-4 h-4" />
             {t('hero.ctaSecondary')}
@@ -226,13 +226,13 @@ export default function TaxSeason() {
             ] as const
           ).map(({ icon, color, titleKey, descKey }) => {
             const colorMap = {
-              blue: 'bg-subtle text-blue-600 dark:text-blue-400 border-line',
+              blue: 'bg-subtle text-body border-line',
               purple:
-                'bg-subtle text-purple-600 dark:text-purple-400 border-line',
+                'bg-subtle text-body border-line',
               green:
-                'bg-subtle text-green-600 dark:text-green-400 border-line',
+                'bg-subtle text-body border-line',
               amber:
-                'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800',
+                'bg-subtle text-body border-line',
             }
             return (
               <div
@@ -278,13 +278,13 @@ export default function TaxSeason() {
             <Link
               key={href}
               href={href}
-              className={`group ${glassCard} ${glassInset} p-5 hover:border-orange-400 dark:hover:border-orange-500 hover:shadow-md transition-all`}
+              className={`group ${glassCard} ${glassInset} p-5 hover:border-primary transition-all`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">{icon}</span>
                   <div>
-                    <h3 className="font-semibold text-fg text-sm group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                    <h3 className="font-semibold text-fg text-sm group-hover:text-primary transition-colors">
                       {t(titleKey)}
                     </h3>
                     <p className="text-xs text-muted mt-1 leading-relaxed">
@@ -292,10 +292,10 @@ export default function TaxSeason() {
                     </p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-orange-500 flex-shrink-0 mt-0.5 transition-colors" />
+                <ArrowRight className="w-4 h-4 text-faint group-hover:text-primary flex-shrink-0 mt-0.5 transition-colors" />
               </div>
               <div className="mt-3 pt-3 border-t border-line">
-                <span className="text-xs font-medium text-orange-500 dark:text-orange-400 group-hover:underline">
+                <span className="text-xs font-medium text-primary group-hover:underline">
                   {t('toolBundle.cta')}
                 </span>
               </div>
@@ -338,8 +338,8 @@ export default function TaxSeason() {
                   return (
                     <tr
                       key={range}
-                      className={`border-b border-line last:border-0 transition-colors hover:bg-orange-50/50 dark:hover:bg-orange-900/10 ${
-                        i % 2 === 0 ? '' : 'bg-gray-50/50 dark:bg-gray-750/20'
+                      className={`border-b border-line last:border-0 transition-colors hover:bg-soft ${
+                        i % 2 === 0 ? '' : 'bg-subtle'
                       }`}
                     >
                       <td className="px-5 py-3 text-body">{range}</td>
@@ -363,7 +363,7 @@ export default function TaxSeason() {
               </tbody>
             </table>
           </div>
-          <div className="px-5 py-3 bg-gray-50 dark:bg-gray-750/30 border-t border-line">
+          <div className="px-5 py-3 bg-subtle border-t border-line">
             <p className="text-xs text-muted flex items-center gap-1.5">
               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
               {t('taxRates.note')}
@@ -409,13 +409,13 @@ export default function TaxSeason() {
               },
               {
                 icon: <Shield className="w-5 h-5" />,
-                color: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300',
+                color: 'bg-soft text-sub',
                 titleKey: 'tips.t4.title',
                 descKey: 'tips.t4.desc',
               },
               {
                 icon: <DollarSign className="w-5 h-5" />,
-                color: 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300',
+                color: 'bg-soft text-sub',
                 titleKey: 'tips.t5.title',
                 descKey: 'tips.t5.desc',
               },
@@ -496,10 +496,10 @@ export default function TaxSeason() {
             ).map(({ dateKey, titleKey, descKey, color }) => (
               <li key={titleKey} className="ml-5">
                 <span
-                  className={`absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full ${color} ring-2 ring-white dark:ring-gray-800`}
+                  className={`absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full ${color} ring-2 ring-surface`}
                 />
                 <div className="flex flex-col sm:flex-row sm:items-start sm:gap-4">
-                  <span className="inline-block text-xs font-bold text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/40 px-2.5 py-1 rounded-full whitespace-nowrap mb-1 sm:mb-0 sm:mt-0.5">
+                  <span className="inline-block text-xs font-bold text-sub bg-soft px-2.5 py-1 rounded-full whitespace-nowrap mb-1 sm:mb-0 sm:mt-0.5">
                     {t(dateKey)}
                   </span>
                   <div>
@@ -517,9 +517,9 @@ export default function TaxSeason() {
         </div>
 
         <div className="bg-subtle border border-line rounded-xl p-4 flex items-start gap-3">
-          <Clock className="w-5 h-5 text-orange-500 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+          <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-body">
-            <strong className="text-orange-700 dark:text-orange-400">{t('timeline.penaltyLabel')}</strong>{' '}
+            <strong className="text-amber-700 dark:text-amber-400">{t('timeline.penaltyLabel')}</strong>{' '}
             {t('timeline.penaltyDesc')}
           </p>
         </div>
@@ -542,9 +542,9 @@ export default function TaxSeason() {
               key={qKey}
               className={`group ${glassCard} ${glassInset} overflow-hidden`}
             >
-              <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-fg text-sm hover:bg-gray-50 dark:hover:bg-gray-750/30 transition-colors list-none">
+              <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-fg text-sm hover:bg-subtle transition-colors list-none">
                 <span className="flex items-center gap-2">
-                  <span className="text-orange-500 font-bold">Q.</span>
+                  <span className="text-primary font-bold">Q.</span>
                   {t(qKey)}
                 </span>
                 <ChevronRight className="w-4 h-4 text-gray-400 group-open:rotate-90 transition-transform flex-shrink-0 ml-2" />

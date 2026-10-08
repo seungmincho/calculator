@@ -43,7 +43,7 @@ const JsonCodeEditor = dynamic(() => import('./JsonCodeEditor'), {
   ssr: false,
   loading: () => (
     <div className="h-96 bg-subtle rounded-lg animate-pulse flex items-center justify-center">
-      <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+      <Loader2 className="w-6 h-6 animate-spin text-faint" />
     </div>
   ),
 })
@@ -263,14 +263,14 @@ const TreeNode = React.memo<TreeNodeProps>(function TreeNode({
           </span>
         )
       default:
-        return <span className="text-gray-600">{String(value)}</span>
+        return <span className="text-sub">{String(value)}</span>
     }
   }
 
   return (
     <div>
       <div
-        className={`group flex items-center py-0.5 pr-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer rounded ${
+        className={`group flex items-center py-0.5 pr-2 hover:bg-subtle cursor-pointer rounded ${
           matchesSearch ? 'bg-yellow-100 dark:bg-yellow-900/40' : ''
         }`}
         style={{ paddingLeft: `${level * 20 + 8}px` }}
@@ -280,7 +280,7 @@ const TreeNode = React.memo<TreeNodeProps>(function TreeNode({
       >
         {isExpandable ? (
           <button
-            className="w-4 h-4 flex items-center justify-center mr-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex-shrink-0"
+            className="w-4 h-4 flex items-center justify-center mr-1 text-faint hover:text-sub flex-shrink-0"
             onClick={(e) => {
               e.stopPropagation()
               onToggle(path)
@@ -294,19 +294,19 @@ const TreeNode = React.memo<TreeNodeProps>(function TreeNode({
 
         <span className="font-medium text-body text-sm mr-1 flex-shrink-0">
           {/^\d+$/.test(nodeKey) ? (
-            <span className="text-gray-500">[{nodeKey}]</span>
+            <span className="text-muted">[{nodeKey}]</span>
           ) : (
             <>
               &quot;<span className="text-red-700 dark:text-red-400">{nodeKey}</span>&quot;
             </>
           )}
-          <span className="text-gray-400">: </span>
+          <span className="text-faint">: </span>
         </span>
 
         <span className="text-sm truncate">{renderValue()}</span>
 
         <button
-          className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-blue-500 p-0.5 flex-shrink-0"
+          className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-faint hover:text-primary p-0.5 flex-shrink-0"
           onClick={(e) => {
             e.stopPropagation()
             onCopyPath(path)
@@ -666,14 +666,14 @@ const JsonFormatter = () => {
   return (
     <div
       className={`${
-        isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 overflow-auto p-4' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'
+        isFullscreen ? 'fixed inset-0 z-50 bg-canvas overflow-auto p-4' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'
       }`}
     >
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
               <FileJson className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -685,21 +685,21 @@ const JsonFormatter = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowShortcuts(!showShortcuts)}
-              className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg text-muted hover:bg-soft transition-colors"
               title={t('shortcuts.title')}
             >
               <Keyboard className="w-4 h-4" />
             </button>
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg text-muted hover:bg-soft transition-colors"
               title={t('controls.settings')}
             >
               <Settings className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsFullscreen(!isFullscreen)}
-              className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg text-muted hover:bg-soft transition-colors"
               title={isFullscreen ? t('controls.exitFullscreen') : t('controls.fullscreen')}
             >
               {isFullscreen ? <Shrink className="w-4 h-4" /> : <Expand className="w-4 h-4" />}
@@ -752,7 +752,7 @@ const JsonFormatter = () => {
                   type="checkbox"
                   checked={sortKeys}
                   onChange={(e) => setSortKeys(e.target.checked)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-line-strong text-primary focus:ring-primary"
                 />
                 <span className="text-sub">{t('settings.sortKeys')}</span>
               </label>
@@ -763,13 +763,13 @@ const JsonFormatter = () => {
                   className="flex items-center"
                 >
                   {json5Mode ? (
-                    <ToggleRight className="w-5 h-5 text-blue-500" />
+                    <ToggleRight className="w-5 h-5 text-primary" />
                   ) : (
-                    <ToggleLeft className="w-5 h-5 text-gray-400" />
+                    <ToggleLeft className="w-5 h-5 text-faint" />
                   )}
                 </button>
                 <span className="text-sub">{t('settings.json5Mode')}</span>
-                <span className="text-xs text-gray-400">({t('settings.json5Desc')})</span>
+                <span className="text-xs text-faint">({t('settings.json5Desc')})</span>
               </label>
             </div>
           </div>
@@ -779,7 +779,7 @@ const JsonFormatter = () => {
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
         {/* Mode tabs */}
-        <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
+        <div className="flex bg-soft rounded-lg p-0.5">
           {modes.map(({ key, icon, label }) => (
             <button
               key={key}
@@ -787,7 +787,7 @@ const JsonFormatter = () => {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                 mode === key
                   ? 'bg-primary text-white shadow-sm'
-                  : 'text-sub hover:text-gray-800 dark:hover:text-gray-200'
+                  : 'text-sub hover:text-body'
               }`}
             >
               {icon}
@@ -796,12 +796,12 @@ const JsonFormatter = () => {
           ))}
         </div>
 
-        <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block" />
+        <div className="h-6 w-px bg-line-strong hidden sm:block" />
 
         {/* Action buttons */}
         <button
           onClick={insertExample}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-sub hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-sub hover:bg-soft rounded-lg transition-colors"
         >
           <Info className="w-4 h-4" />
           <span className="hidden sm:inline">{t('controls.example')}</span>
@@ -809,7 +809,7 @@ const JsonFormatter = () => {
 
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-sub hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-sub hover:bg-soft rounded-lg transition-colors"
         >
           <FileUp className="w-4 h-4" />
           <span className="hidden sm:inline">{t('controls.upload')}</span>
@@ -826,8 +826,8 @@ const JsonFormatter = () => {
           onClick={() => setShowUrlImport(!showUrlImport)}
           className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg transition-colors ${
             showUrlImport
-              ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600'
-              : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
+              ? 'bg-primary-soft text-primary'
+              : 'text-sub hover:bg-soft'
           }`}
         >
           <Link className="w-4 h-4" />
@@ -838,8 +838,8 @@ const JsonFormatter = () => {
           onClick={() => setShowJsonPath(!showJsonPath)}
           className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg transition-colors ${
             showJsonPath
-              ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-600'
-              : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
+              ? 'bg-primary-soft text-primary'
+              : 'text-sub hover:bg-soft'
           }`}
         >
           <Search className="w-4 h-4" />
@@ -854,7 +854,7 @@ const JsonFormatter = () => {
                 className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg transition-colors ${
                   copied
                     ? 'bg-green-100 dark:bg-green-900/50 text-green-600'
-                    : 'text-sub hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-sub hover:bg-soft'
                 }`}
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -862,7 +862,7 @@ const JsonFormatter = () => {
               </button>
               <button
                 onClick={handleDownload}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-sub hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-sub hover:bg-soft rounded-lg transition-colors"
               >
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">{t('controls.download')}</span>
@@ -895,13 +895,13 @@ const JsonFormatter = () => {
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             placeholder={t('urlImport.placeholder')}
-            className="flex-1 px-3 py-2 rounded-lg border border-line-strong bg-field text-body text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="ui-field flex-1 px-3 py-2 rounded-lg text-sm"
             onKeyDown={(e) => e.key === 'Enter' && handleUrlImport()}
           />
           <button
             onClick={handleUrlImport}
             disabled={isLoadingUrl || !urlInput.trim()}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="ui-btn px-4 py-2 rounded-lg text-sm font-medium disabled:cursor-not-allowed flex items-center gap-2"
           >
             {isLoadingUrl ? <Loader2 className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4" />}
             {isLoadingUrl ? t('urlImport.loading') : t('urlImport.fetch')}
@@ -918,13 +918,13 @@ const JsonFormatter = () => {
               value={jsonPathQuery}
               onChange={(e) => setJsonPathQuery(e.target.value)}
               placeholder={t('jsonPath.placeholder')}
-              className="flex-1 px-3 py-2 rounded-lg border border-line bg-field text-body text-sm font-mono focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="ui-field flex-1 px-3 py-2 rounded-lg text-sm font-mono"
               onKeyDown={(e) => e.key === 'Enter' && executeJsonPath()}
             />
             <button
               onClick={executeJsonPath}
               disabled={!parsedResult?.data || !jsonPathQuery.trim()}
-              className="px-4 py-2 bg-purple-500 text-white rounded-lg text-sm font-medium hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="ui-btn px-4 py-2 rounded-lg text-sm font-medium disabled:cursor-not-allowed"
             >
               {t('jsonPath.run')}
             </button>
@@ -932,7 +932,7 @@ const JsonFormatter = () => {
 
           {/* Example queries */}
           <div className="flex flex-wrap gap-2 mb-3">
-            <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">{t('jsonPath.examples')}:</span>
+            <span className="text-xs text-primary font-medium">{t('jsonPath.examples')}:</span>
             {[
               { query: '$.store.book[*].author', label: t('jsonPath.exampleQueries.allAuthors') },
               { query: '$.store.book[?(@.price<10)]', label: t('jsonPath.exampleQueries.filterByPrice') },
@@ -941,7 +941,7 @@ const JsonFormatter = () => {
               <button
                 key={query}
                 onClick={() => setJsonPathQuery(query)}
-                className="px-2 py-0.5 text-xs bg-soft text-sub rounded-full hover:bg-purple-200 dark:hover:bg-purple-700/50 transition-colors"
+                className="px-2 py-0.5 text-xs bg-soft text-sub rounded-full hover:bg-primary-soft transition-colors"
                 title={label}
               >
                 {query}
@@ -958,7 +958,7 @@ const JsonFormatter = () => {
           )}
           {jsonPathResult && (
             <div className="mt-2">
-              <div className="text-xs text-purple-600 dark:text-purple-400 mb-1 font-medium">{t('jsonPath.result')}:</div>
+              <div className="text-xs text-primary mb-1 font-medium">{t('jsonPath.result')}:</div>
               <pre className="text-sm bg-surface p-3 rounded-lg border border-line overflow-auto max-h-60 text-body font-mono">
                 {jsonPathResult}
               </pre>
@@ -1001,7 +1001,7 @@ const JsonFormatter = () => {
                 </span>
               )}
               {json5Mode && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-soft text-primary">
                   JSON5
                 </span>
               )}
@@ -1018,11 +1018,11 @@ const JsonFormatter = () => {
 
           {/* Drag overlay */}
           {isDragging && (
-            <div className="absolute inset-0 bg-blue-500/10 border-2 border-dashed border-blue-500 rounded-lg flex items-center justify-center z-10">
+            <div className="absolute inset-0 bg-primary/10 border-2 border-dashed border-primary rounded-lg flex items-center justify-center z-10">
               <div className="text-center">
-                <Upload className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-                <p className="text-blue-600 dark:text-blue-400 font-medium">{t('dragDrop.message')}</p>
-                <p className="text-blue-500/70 text-sm">{t('dragDrop.supported')}</p>
+                <Upload className="w-8 h-8 text-primary mx-auto mb-2" />
+                <p className="text-primary font-medium">{t('dragDrop.message')}</p>
+                <p className="text-primary/70 text-sm">{t('dragDrop.supported')}</p>
               </div>
             </div>
           )}
@@ -1059,18 +1059,18 @@ const JsonFormatter = () => {
             {mode === 'tree' && !!parsedResult?.data && (
               <div className="flex items-center gap-2">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-faint" />
                   <input
                     type="text"
                     value={treeSearchQuery}
                     onChange={(e) => setTreeSearchQuery(e.target.value)}
                     placeholder={t('treeView.search')}
-                    className="pl-8 pr-3 py-1 text-xs rounded-lg border border-line bg-field text-body w-48 focus:ring-1 focus:ring-blue-500"
+                    className="ui-field pl-8 pr-3 py-1 text-xs rounded-lg w-48"
                   />
                   {treeSearchQuery && (
                     <button
                       onClick={() => setTreeSearchQuery('')}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-faint hover:text-sub"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -1078,13 +1078,13 @@ const JsonFormatter = () => {
                 </div>
                 <button
                   onClick={expandAll}
-                  className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="text-xs text-muted hover:text-body px-2 py-1 rounded hover:bg-soft"
                 >
                   {t('controls.expandAll')}
                 </button>
                 <button
                   onClick={collapseAll}
-                  className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="text-xs text-muted hover:text-body px-2 py-1 rounded hover:bg-soft"
                 >
                   {t('controls.collapseAll')}
                 </button>
@@ -1152,7 +1152,7 @@ const JsonFormatter = () => {
                   )}
                 </div>
               ) : (
-                <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+                <div className="h-full flex items-center justify-center text-faint text-sm">
                   {t('treeView.empty')}
                 </div>
               )}
@@ -1172,28 +1172,28 @@ const JsonFormatter = () => {
                   <div>
                     <h3 className="text-sm font-semibold text-body mb-3">{t('stats.overview')}</h3>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      <div className="p-3 rounded-lg bg-blue-50 dark:bg-gray-700">
+                      <div className="p-3 rounded-lg bg-subtle">
                         <div className="flex items-center gap-2 text-muted mb-1">
                           <Hash className="w-4 h-4" />
                           <span className="text-xs">{t('stats.totalNodes')}</span>
                         </div>
                         <div className="text-xl font-bold text-body">{stats.totalNodes}</div>
                       </div>
-                      <div className="p-3 rounded-lg bg-green-50 dark:bg-gray-700">
+                      <div className="p-3 rounded-lg bg-subtle">
                         <div className="flex items-center gap-2 text-muted mb-1">
                           <Type className="w-4 h-4" />
                           <span className="text-xs">{t('stats.totalKeys')}</span>
                         </div>
                         <div className="text-xl font-bold text-body">{stats.totalKeys}</div>
                       </div>
-                      <div className="p-3 rounded-lg bg-purple-50 dark:bg-gray-700">
+                      <div className="p-3 rounded-lg bg-subtle">
                         <div className="flex items-center gap-2 text-muted mb-1">
                           <TreePine className="w-4 h-4" />
                           <span className="text-xs">{t('stats.maxDepth')}</span>
                         </div>
                         <div className="text-xl font-bold text-body">{stats.maxDepth}</div>
                       </div>
-                      <div className="p-3 rounded-lg bg-orange-50 dark:bg-gray-700">
+                      <div className="p-3 rounded-lg bg-subtle">
                         <div className="flex items-center gap-2 text-muted mb-1">
                           <FileJson className="w-4 h-4" />
                           <span className="text-xs">{t('stats.dataSize')}</span>
@@ -1262,7 +1262,7 @@ const JsonFormatter = () => {
                             <code className="text-xs font-mono text-body w-32 truncate">{name}</code>
                             <div className="flex-1 bg-soft rounded-full h-4">
                               <div
-                                className="bg-blue-500 h-4 rounded-full flex items-center justify-end pr-2"
+                                className="bg-primary h-4 rounded-full flex items-center justify-end pr-2"
                                 style={{
                                   width: `${Math.max(10, (value / stats.topKeys[0].value) * 100)}%`,
                                 }}
@@ -1277,7 +1277,7 @@ const JsonFormatter = () => {
                   )}
                 </div>
               ) : (
-                <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+                <div className="h-full flex items-center justify-center text-faint text-sm">
                   {t('treeView.empty')}
                 </div>
               )}
@@ -1297,17 +1297,17 @@ const JsonFormatter = () => {
             {statusData.isValid ? <Check className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
             {statusData.isValid ? t('statusBar.valid') : t('statusBar.invalid')}
           </span>
-          <span className="text-gray-300 dark:text-gray-600">|</span>
+          <span className="text-line-strong">|</span>
           <span>{t('statusBar.keys')}: <strong>{statusData.keyCount}</strong></span>
-          <span className="text-gray-300 dark:text-gray-600">|</span>
+          <span className="text-line-strong">|</span>
           <span>{t('statusBar.depth')}: <strong>{statusData.maxDepth}</strong></span>
-          <span className="text-gray-300 dark:text-gray-600">|</span>
+          <span className="text-line-strong">|</span>
           <span>{t('statusBar.nodes')}: <strong>{statusData.nodeCount}</strong></span>
-          <span className="text-gray-300 dark:text-gray-600">|</span>
+          <span className="text-line-strong">|</span>
           <span>{t('statusBar.size')}: <strong>{statusData.inputSize}</strong>{output ? ` → ${statusData.outputSize}` : ''}</span>
           {statusData.processingTime && (
             <>
-              <span className="text-gray-300 dark:text-gray-600">|</span>
+              <span className="text-line-strong">|</span>
               <span>{t('statusBar.time')}: <strong>{statusData.processingTime}ms</strong></span>
             </>
           )}
@@ -1327,21 +1327,21 @@ const JsonFormatter = () => {
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
-              <Code className="w-5 h-5 text-green-600" />
+              <Code className="w-5 h-5 text-primary" />
               <h3 className="font-semibold text-fg ml-2">{t('guide.features.syntaxHighlight')}</h3>
             </div>
             <p className="text-sub text-sm">{t('guide.features.syntaxHighlightDesc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
-              <TreePine className="w-5 h-5 text-blue-600" />
+              <TreePine className="w-5 h-5 text-primary" />
               <h3 className="font-semibold text-fg ml-2">{t('guide.features.treeView')}</h3>
             </div>
             <p className="text-sub text-sm">{t('guide.features.treeViewDesc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
-              <Search className="w-5 h-5 text-purple-600" />
+              <Search className="w-5 h-5 text-primary" />
               <h3 className="font-semibold text-fg ml-2">{t('guide.features.jsonPath')}</h3>
             </div>
             <p className="text-sub text-sm">{t('guide.features.jsonPathDesc')}</p>
@@ -1349,23 +1349,23 @@ const JsonFormatter = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-6">
+          <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
-              <FileJson className="w-5 h-5 text-amber-600" />
-              <h3 className="font-semibold text-amber-900 dark:text-amber-200 ml-2">{t('guide.features.json5')}</h3>
+              <FileJson className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold text-fg ml-2">{t('guide.features.json5')}</h3>
             </div>
-            <p className="text-amber-800 dark:text-amber-300 text-sm">{t('guide.features.json5Desc')}</p>
+            <p className="text-sub text-sm">{t('guide.features.json5Desc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
-              <BarChart3 className="w-5 h-5 text-cyan-600" />
+              <BarChart3 className="w-5 h-5 text-primary" />
               <h3 className="font-semibold text-fg ml-2">{t('guide.features.stats')}</h3>
             </div>
             <p className="text-sub text-sm">{t('guide.features.statsDesc')}</p>
           </div>
           <div className="bg-subtle rounded-lg p-6">
             <div className="flex items-center mb-3">
-              <Zap className="w-5 h-5 text-orange-600" />
+              <Zap className="w-5 h-5 text-primary" />
               <h3 className="font-semibold text-fg ml-2">{t('guide.features.performance')}</h3>
             </div>
             <p className="text-sub text-sm">{t('guide.features.performanceDesc')}</p>
@@ -1404,7 +1404,7 @@ const JsonFormatter = () => {
                 t('guide.tips.tip5'),
               ].map((tip, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">{'>'}</span>
+                  <span className="text-primary mt-0.5">{'>'}</span>
                   {tip}
                 </li>
               ))}
