@@ -264,32 +264,17 @@ export default function MarginCalculator() {
   }, [])
 
   // ── 역산: 목표 마진율에서 판매가 산출 ──
+  // 순이익 = 목표율 × 판매가 를 판매가로 바로 푼다. 부가세는 판매가에 선형(일반 (판매가−원가)×10/110, 간이 판매가×1.5%).
+  // 예전 반복 20회는 수수료+부가세+목표율이 100%에 가까우면 덜 수렴하고(목표 80%·쿠팡 → 마진 79%, 판매가 1/3),
+  // 100%를 넘으면(목표 85%·쿠팡) 수억 원으로 발산했다 → 불가능한 조합은 0(결과 없음)
   const calcReverseSellingPrice = useCallback((): number => {
     const targetRate = targetMargin / 100
     const baseCost = costPrice + shippingCost + packagingCost + adCost
-
-    // 면세: 간단 공식
-    if (taxType === 'exempt') {
-      const denom = 1 - commissionRate - targetRate
-      if (denom <= 0) return 0
-      return baseCost / denom
-    }
-
-    // 세금 포함: 반복 수렴
-    let sp = baseCost / (1 - commissionRate - targetRate) // 초기값
-    for (let i = 0; i < 20; i++) {
-      const comm = sp * commissionRate
-      const vat = calcVAT(sp, costPrice, taxType)
-      const totalCost = costPrice + comm + shippingCost + packagingCost + adCost + vat
-      const requiredSp = totalCost / (1 - targetRate)
-      if (Math.abs(requiredSp - sp) < 1) {
-        sp = requiredSp
-        break
-      }
-      sp = requiredSp
-    }
-    return Math.max(0, sp)
-  }, [costPrice, shippingCost, packagingCost, adCost, commissionRate, targetMargin, taxType, calcVAT])
+    const vatRate = taxType === 'exempt' ? 0 : taxType === 'simplified' ? SIMPLIFIED_TAX_RATIO * 0.1 : 10 / 110
+    const denom = 1 - commissionRate - targetRate - vatRate
+    if (denom <= 0) return 0
+    return (baseCost - (taxType === 'general' ? costPrice * vatRate : 0)) / denom
+  }, [costPrice, shippingCost, packagingCost, adCost, commissionRate, targetMargin, taxType])
 
   // ── 메인 계산 결과 ──
   const result: CalcResult | null = useMemo(() => {
@@ -308,7 +293,8 @@ export default function MarginCalculator() {
     const commAmount = sp * commissionRate
     const vat = calcVAT(sp, cp, taxType)
     const totalCost = cp + commAmount + shippingCost + packagingCost + adCost + vat
-    const netProfit = sp - totalCost
+    // 부동소수 잔차(−1e-12) 때문에 목표 0%·원가 판매가 "-0원 (적자)"·"-0.0%" 로 나오지 않게 0.01원에서 정리
+    const netProfit = Math.round((sp - totalCost) * 100) / 100 || 0
     const marginRate = sp > 0 ? (netProfit / sp) * 100 : 0
     const markupRate = cp > 0 ? (netProfit / cp) * 100 : 0
 

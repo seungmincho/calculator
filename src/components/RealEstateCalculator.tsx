@@ -61,7 +61,8 @@ export default function RealEstateCalculator() {
   const [ltv, setLtv] = useState(() => Math.min(100, Math.max(0, numOr(sp.get('ltv'), 40))))
   const [loanAmt, setLoanAmt] = useState(() => (sp.has('loan') ? parseNum(sp.get('loan')) : 3 * EOK)) // loan=0(대출 없음)도 그대로
   const [rate, setRate] = useState(() => sp.get('r') ?? '4.0')
-  const [years, setYears] = useState(() => numOr(sp.get('y'), 30))
+  // 링크의 y는 선택지 범위(1~50년)로 — ?y=99999999 면 상환 스케줄이 수십억 회차를 돌며 멈춤
+  const [years, setYears] = useState(() => Math.min(50, Math.max(1, numOr(sp.get('y'), 30))))
   const [method, setMethod] = useState<RepayMethod>(() => (sp.get('m') === 'ep' ? 'equalPrincipal' : 'equalPayment'))
   const [income, setIncome] = useState(() => numOr(sp.get('inc'), 60_000_000))
   const [vat, setVat] = useState(() => sp.get('vat') !== '0')

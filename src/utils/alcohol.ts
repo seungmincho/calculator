@@ -103,6 +103,8 @@ export function status(bac: number): Status {
 /** 차트용 시계열: 시작~끝(h), 간격 step */
 export function series(ds: Drink[], kg: number, r: number, until: number, step = 0.25) {
   const pts: { h: number; typical: number; slow: number }[] = []
+  // 점 2,000개 상한(500시간까지는 그대로): 5L·50잔 입력이면 분해에 수만 시간 → 점 수십만 개로 화면이 멈춘다
+  step = Math.max(step, until / 2000)
   for (let h = 0; h <= until + 1e-9; h += step) {
     pts.push({ h: +h.toFixed(4), typical: +bacAt(ds, kg, r, BETA.typical, h).toFixed(4), slow: +bacAt(ds, kg, r, BETA.slow, h).toFixed(4) })
   }

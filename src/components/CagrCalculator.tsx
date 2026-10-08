@@ -188,12 +188,14 @@ export default function CagrCalculator() {
       const end = parseNumber(endValue)
       if (start <= 0 || end <= 0 || years <= 0) return null
       const cagr = calculateCAGR(start, end, years)
+      if (!Number.isFinite(cagr)) return null // 기간이 아주 짧으면 거듭제곱이 Infinity
       const totalReturn = ((end - start) / start) * 100
       return { cagr: cagr * 100, totalReturn, totalGain: end - start, startValue: start, endValue: end, years }
     } else if (mode === 'future') {
       const rate = parseFloat(cagrRate) || 0
       if (start <= 0 || rate <= 0 || years <= 0) return null
       const fv = calculateFutureValue(start, rate, years)
+      if (!Number.isFinite(fv)) return null // 기간·수익률이 너무 크면 Infinity
       const totalReturn = ((fv - start) / start) * 100
       return { futureValue: fv, totalReturn, totalGain: fv - start, startValue: start, rate, years }
     } else {
@@ -201,8 +203,12 @@ export default function CagrCalculator() {
       const rate = parseFloat(cagrRate) || 0
       if (start <= 0 || target <= start || rate <= 0) return null
       const reqYears = calculateRequiredPeriod(start, target, rate)
-      const fullYears = Math.floor(reqYears)
-      const months = Math.round((reqYears - fullYears) * 12)
+      // 수익률이 0에 가까우면 log(1+r) = 0 → Infinity년 → 차트 루프(y += Infinity)가 끝나지 않음
+      if (!Number.isFinite(reqYears)) return null
+      // 개월을 먼저 반올림해야 2.97년이 "2년 12개월"이 아니라 3년
+      const totalMonths = Math.round(reqYears * 12)
+      const fullYears = Math.floor(totalMonths / 12)
+      const months = totalMonths % 12
       return { requiredYears: reqYears, fullYears, months, startValue: start, targetValue: target, rate, totalReturn: ((target - start) / start) * 100 }
     }
   }, [mode, startValue, endValue, period, cagrRate, targetValue, compoundFreq, calculateCAGR, calculateFutureValue, calculateRequiredPeriod, getYearsFromPeriod])
@@ -216,12 +222,14 @@ export default function CagrCalculator() {
       const end = parseNumber(endValueB)
       if (start <= 0 || end <= 0 || years <= 0) return null
       const cagr = calculateCAGR(start, end, years)
+      if (!Number.isFinite(cagr)) return null // 기간이 아주 짧으면 거듭제곱이 Infinity
       const totalReturn = ((end - start) / start) * 100
       return { cagr: cagr * 100, totalReturn, totalGain: end - start, startValue: start, endValue: end, years }
     } else if (mode === 'future') {
       const rate = parseFloat(cagrRateB) || 0
       if (start <= 0 || rate <= 0 || years <= 0) return null
       const fv = calculateFutureValue(start, rate, years)
+      if (!Number.isFinite(fv)) return null // 기간·수익률이 너무 크면 Infinity
       const totalReturn = ((fv - start) / start) * 100
       return { futureValue: fv, totalReturn, totalGain: fv - start, startValue: start, rate, years }
     } else {
@@ -229,8 +237,12 @@ export default function CagrCalculator() {
       const rate = parseFloat(cagrRateB) || 0
       if (start <= 0 || target <= start || rate <= 0) return null
       const reqYears = calculateRequiredPeriod(start, target, rate)
-      const fullYears = Math.floor(reqYears)
-      const months = Math.round((reqYears - fullYears) * 12)
+      // 수익률이 0에 가까우면 log(1+r) = 0 → Infinity년 → 차트 루프(y += Infinity)가 끝나지 않음
+      if (!Number.isFinite(reqYears)) return null
+      // 개월을 먼저 반올림해야 2.97년이 "2년 12개월"이 아니라 3년
+      const totalMonths = Math.round(reqYears * 12)
+      const fullYears = Math.floor(totalMonths / 12)
+      const months = totalMonths % 12
       return { requiredYears: reqYears, fullYears, months, startValue: start, targetValue: target, rate, totalReturn: ((target - start) / start) * 100 }
     }
   }, [compareMode, mode, startValueB, endValueB, periodB, cagrRateB, targetValueB, period, compoundFreq, calculateCAGR, calculateFutureValue, calculateRequiredPeriod, getYearsFromPeriod])

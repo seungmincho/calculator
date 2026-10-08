@@ -43,12 +43,13 @@ export default function ShippingCalc() {
   const [carrierCategory, setCarrierCategory] = useState<CarrierCategoryType>('standard')
 
   // 요금은 실제 무게 단계와 크기(세 변 합) 단계 중 높은 단계로 정해진다 (findTier)
-  const actualWeight = parseFloat(weight) || 0
+  // 음수 입력(-5 등)은 0으로 — '-5kg'·음수 세 변 합이 그대로 표시되고 최소 단계 요금이 나오던 문제
+  const actualWeight = Math.max(0, parseFloat(weight) || 0)
 
   const girth = useMemo(() => {
-    const w = parseFloat(width) || 0
-    const h = parseFloat(height) || 0
-    const d = parseFloat(depth) || 0
+    const w = Math.max(0, parseFloat(width) || 0)
+    const h = Math.max(0, parseFloat(height) || 0)
+    const d = Math.max(0, parseFloat(depth) || 0)
     return w + h + d
   }, [width, height, depth])
 
@@ -345,7 +346,7 @@ export default function ShippingCalc() {
               <div className="p-3 bg-subtle rounded-lg text-center">
                 <div className="text-xs text-muted">{t('result.actualWeight')}</div>
                 <div className="text-xl font-bold text-fg mt-1">
-                  {parseFloat(weight) || 0}<span className="text-sm font-normal ml-1">kg</span>
+                  {actualWeight}<span className="text-sm font-normal ml-1">kg</span>
                 </div>
               </div>
               <div className="p-3 bg-subtle rounded-lg text-center">

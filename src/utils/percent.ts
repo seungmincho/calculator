@@ -26,7 +26,8 @@ export function parseNum(input: string): number | null {
   if (!s) return null
   let sign = 1
   if (/^[-+−]/.test(s)) { if (s[0] !== '+') sign = -1; s = s.slice(1) }
-  if (/^(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(s)) return sign * Number(s)
+  // '1e999'·수백 자리 숫자 = Infinity → round() 가 0 으로 바꿔 '0' 이 결과로 나온다 → 해석 불가로
+  if (/^(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(s)) return Number.isFinite(Number(s)) ? sign * Number(s) : null
   const tokens = s.match(/\d+(?:\.\d+)?|\.\d+|[천백십]|[조억만]/g)
   if (!tokens || tokens.join('') !== s) return null
   let total = 0, section = 0

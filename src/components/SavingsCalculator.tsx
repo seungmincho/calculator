@@ -77,8 +77,9 @@ export default function SavingsCalculator() {
   const equiv = isSaving ? savingToDepositRate(rate, months) : depositToSavingRate(rate, months)
   const need = requiredAmount(goal, kind, rate, months, compound, tax)
   const cmp = products.map((p) => {
-    const n = Math.floor(num(p.months))
-    return { p, n, ...calc({ kind, amount, rate: num(p.rate), months: n, compound: p.compound, tax: p.tax }) }
+    // 본 입력과 같은 상한(금리 100%·600개월) — 없으면 금리 9999999% 월복리에서 이자가 Infinity → NaN
+    const n = Math.min(600, Math.floor(num(p.months)))
+    return { p, n, ...calc({ kind, amount, rate: Math.min(100, num(p.rate)), months: n, compound: p.compound, tax: p.tax }) }
   })
   const best = cmp.reduce((b, x, i) => (x.yearly > cmp[b].yearly ? i : b), 0)
 

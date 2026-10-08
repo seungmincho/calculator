@@ -78,7 +78,10 @@ export default function ParkingFee() {
   }, [mode, entry, exit, durH, durM, discount, lots, active])
 
   const start = parseLocal(entry)?.start ?? parseLocal(DEFAULT_ENTRY)!.start
-  const total = mode === 'dur' ? durH * 60 + durM : minutesBetween(entry, exit)
+  // 시각 입력도 주차 시간 입력과 같은 최대 720시간까지 — 입차 연도를 타이핑하는 중(0002년 → 1902년)엔
+  // 백 년 넘게 잡혀 calcFee·timeline 이 수억 번 돌며 화면이 멈춘다
+  const span = minutesBetween(entry, exit)
+  const total = mode === 'dur' ? durH * 60 + durM : span == null ? null : Math.min(span, 720 * 60)
   const lotName = (i: number) => lots[i]?.name || t('lots.defaultName', { n: ABC[i] })
 
   const fmtDur = (min: number) => {

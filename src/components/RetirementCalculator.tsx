@@ -14,6 +14,8 @@ import MobileResultLink from '@/components/MobileResultLink'
 import { calcRetirement, addMonths, isDate, isoOf, periodSegments, delaySimulation } from '@/utils/retirementPay'
 
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+// 공제 행: 퇴직금이 근속연수공제 이하(환산급여 0)면 '-0원' 대신 '0원'
+const minus = (n: number) => (Math.round(n) > 0 ? '-' : '') + won(n)
 const digits = (s: string) => s.replace(/\D/g, '').slice(0, 12)
 const num = (s: string) => Number(s) || 0
 const today = () => { const d = new Date(); return isoOf(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())) }
@@ -281,9 +283,9 @@ export default function RetirementCalculator() {
                   <p className="text-xs text-muted mt-1">{t('rc.tax.basis')}</p>
                   <dl className="mt-4 space-y-2 text-sm tabular-nums">
                     <Row label={t('rc.tax.years')} value={t('rc.tax.yearsValue', { n: r.taxYears })} />
-                    <Row label={t('rc.tax.serviceDed')} value={`-${won(r.serviceDed)}${W}`} />
+                    <Row label={t('rc.tax.serviceDed')} value={`${minus(r.serviceDed)}${W}`} />
                     <Row label={t('rc.tax.converted')} value={`${won(r.converted)}${W}`} />
-                    <Row label={t('rc.tax.convertedDed')} value={`-${won(r.convertedDed)}${W}`} />
+                    <Row label={t('rc.tax.convertedDed')} value={`${minus(r.convertedDed)}${W}`} />
                     <Row label={t('rc.tax.base')} value={`${won(r.base)}${W}`} />
                     <Row label={t('rc.tax.convertedTax')} value={`${won(r.convertedTax)}${W}`} />
                     <Row label={t('rc.tax.tax', { n: r.taxYears })} value={`${won(r.tax)}${W}`} />

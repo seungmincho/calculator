@@ -130,6 +130,11 @@ export function bestCans(need: number, sizes: number[] = [18, 4, 1], prices: num
   const useReal = prices.length === sizes.length && prices.every((p) => p > 0)
   const unit = (i: number) => (useReal ? prices[i] : sizes[i] * (REL_PER_L[sizes[i]] ?? 1.3))
   if (!(need > 0)) return { picks: [], liters: 0, cost: 0 }
+  // 전수 탐색은 need² 라 수십만 L(치수를 mm로 넣는 실수)면 화면이 멈춘다. 최적해에서 L당 가장 싼 통 말고 다른 통은
+  // (그 통 크기 − 1)개 미만이라 다른 통 용량 ≤ 85L → 1,000L 넘는 몫은 가장 싼 통으로 미리 채우고 나머지만 탐색
+  const cheap = sizes.reduce((b, s, i) => (unit(i) / s < unit(b) / sizes[b] ? i : b), 0)
+  const bulk = need > 1000 ? Math.floor((need - 1000) / sizes[cheap]) : 0
+  need -= bulk * sizes[cheap]
   let best: { counts: number[]; cost: number; vol: number; n: number } | null = null
   const counts = new Array(sizes.length).fill(0)
   const rec = (i: number, rest: number) => {
@@ -148,9 +153,10 @@ export function bestCans(need: number, sizes: number[] = [18, 4, 1], prices: num
   }
   rec(0, need)
   const b = best as unknown as { counts: number[]; vol: number }
+  b.counts[cheap] += bulk
   return {
     picks: sizes.map((size, i) => ({ size, count: b.counts[i] })).filter((p) => p.count > 0),
-    liters: b.vol,
+    liters: b.vol + bulk * sizes[cheap],
     cost: useReal ? b.counts.reduce((s, c, k) => s + c * prices[k], 0) : 0,
   }
 }
@@ -280,7 +286,9 @@ export function calculate(rooms: Room[], s: Settings): Totals {
     if (!priced) partial = true
   }
   const rolls = rollsFor(paperParts, rollLen, s.paperLoss)
-  add({ key: 'paper', qty: rolls, area: paperArea, cost: rolls * s.paperPrice }, s.paperPrice > 0)
+  // 롤보다 긴 폭(rolls = Infinity, 높이를 cm로 넣는 실수)이면 금액은 빼고 부분합으로 — 안 그러면 총액 '∞원'
+  const paperOk = Number.isFinite(rolls)
+  add({ key: 'paper', qty: rolls, area: paperArea, cost: paperOk ? rolls * s.paperPrice : 0 }, paperOk && s.paperPrice > 0)
   const liters = paintLiters(paintArea, s.coats, s.coverage, s.paintLoss)
   const cans = bestCans(liters, [18, 4, 1], [s.can18, s.can4, s.can1])
   add({ key: 'paint', qty: cans.picks.reduce((n, p) => n + p.count, 0), area: paintArea, cost: cans.cost, cans: cans.picks, liters }, cans.cost > 0)

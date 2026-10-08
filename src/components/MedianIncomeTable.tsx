@@ -158,7 +158,8 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
   // 소득인정액 계산
   const calculateIncomeRecognition = () => {
     const income = parseNumber(monthlyIncome);
-    const work = parseNumber(workIncome);
+    // 근로소득은 월 총소득 '그 중' 금액 → 총소득을 넘으면 공제가 총소득보다 커짐
+    const work = Math.min(parseNumber(workIncome), income);
     const general = parseNumber(generalProperty);
     const financial = parseNumber(financialProperty);
     const car = parseNumber(carValue);
@@ -388,7 +389,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   </div>
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-muted pl-4">- 근로소득 공제</span>
-                    <span className="text-green-600 dark:text-green-400">-{formatCurrency(result.workIncomeDeduction)}</span>
+                    <span className="text-green-600 dark:text-green-400">{result.workIncomeDeduction >= 1 ? '-' : ''}{formatCurrency(result.workIncomeDeduction)}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sub">재산 소득환산액</span>

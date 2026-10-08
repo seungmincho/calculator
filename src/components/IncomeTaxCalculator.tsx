@@ -148,7 +148,7 @@ export default function IncomeTaxCalculator() {
   const field = 'ui-field w-full px-4 py-3 text-sm'
   const seg = (sel: boolean) => `flex-1 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${sel ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
   const W = t('won')
-  const minus = (n: number) => `−${won(n)}`
+  const minus = (n: number) => (n > 0 ? `−${won(n)}` : '0') // 수입을 지우면 경비·공제 0 → "−0" 대신 0
 
   return (
     <div className="space-y-8">

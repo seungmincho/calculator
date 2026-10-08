@@ -90,7 +90,8 @@ export default function EvSubsidyCalculator() {
     return () => { dead = true }
   }, [searchParams])
 
-  const n = (k: Key) => Number(s[k]) || 0
+  // 금액·거리·연비는 모두 0 이상 — type=number 라도 "-5" 를 칠 수 있어 음수 유지비·차량가가 그대로 나왔다
+  const n = (k: Key) => Math.max(0, Number(s[k]) || 0)
   const man = (v: number) => t('ev.man', { n: fmt(v), won: fmt(v * 10_000) })
   const won = (v: number) => t('ev.won', { n: fmt(v) })
 
@@ -117,7 +118,7 @@ export default function EvSubsidyCalculator() {
   })
   const pf = priceFactor(price)
   const chargeWon = CHARGE_RATES.find((c) => c.id === s.rate)?.won ?? CHARGE_RATES[2].won
-  const fuelWon = Number(s.fp) || 0
+  const fuelWon = n('fp')
   const cost = runningCost({ kmPerYear: n('km'), years: 5, evEff: n('ee'), chargeWon, iceEff: n('ie'), fuelWon })
 
   // 같은 시·도 지자체 비교 / 선택 지역의 모델 비교

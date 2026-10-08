@@ -60,6 +60,10 @@ assert.equal(c20.cost, 110000)
 assert.deepEqual(bestCans(16, [18, 4, 1], [200000, 28000, 10000]).picks, [{ size: 4, count: 4 }])
 // 항상 필요량 이상
 for (let n = 0.5; n < 60; n += 0.7) assert.ok(bestCans(n).liters >= n - 1e-6)
+// 큰 필요량: 1,000L 넘는 몫을 18L로 미리 채워도 전수 탐색과 같은 답, 수백만 L도 즉시 끝남(예전엔 멈춤)
+assert.deepEqual(bestCans(20000).picks, [{ size: 18, count: 1111 }, { size: 1, count: 2 }])
+assert.deepEqual(bestCans(5000, [18, 4, 1], [200000, 28000, 10000]).picks, [{ size: 4, count: 1250 }])
+assert.ok(bestCans(1e7).liters >= 1e7)
 
 // 장판: 4×3 폭 1.8 → 세로방향 ceil(4/1.8)=3×3.1=9.3 vs ceil(3/1.8)=2×4.1=8.2 → 8.2m
 near(vinylMeters(4, 3, 1.8), 8.2)

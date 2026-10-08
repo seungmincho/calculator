@@ -155,7 +155,9 @@ export default function SalesCommissionCalculator() {
     if (plans.length < 2) return null
     const net = (p: Plan, s: number) => calc(p, s, vatIncl, tax).net
     const aLeads = net(plans[0], 0) >= net(plans[1], 0)
-    for (let s = 100_000; s <= chartMax * 2; s += 100_000) {
+    // 탐색은 최대 2만 번: 매출 10조 입력이면 10만원 단위로 3억 번 돌아 화면이 멈춘다 (매출 6.6억 이하는 10만원 단위 그대로)
+    const inc = Math.max(100_000, Math.ceil(chartMax / 10_000 / 100_000) * 100_000)
+    for (let s = inc; s <= chartMax * 2; s += inc) {
       if ((net(plans[0], s) >= net(plans[1], s)) !== aLeads) return { sales: s, winner: aLeads ? 1 : 0 }
     }
     return null

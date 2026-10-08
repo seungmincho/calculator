@@ -98,6 +98,8 @@ const toDateStr = (d: Date) => d.toISOString().slice(0, 10)
 const today = () => toDateStr(new Date())
 let _uid = Date.now()
 const uid = () => `m_${++_uid}`
+// 열량·영양소는 0 이상 ('-500' 입력이 하루 합계를 깎던 문제)
+const amount = (v: string) => Math.max(0, parseFloat(v) || 0)
 
 function loadEntries(): DailyEntry[] {
   try {
@@ -225,10 +227,10 @@ export default function MealDiary() {
       foodId: '',
       customName: manualName.trim(),
       portion: 1,
-      cal: parseFloat(manualCal) || 0,
-      protein: parseFloat(manualProtein) || 0,
-      fat: parseFloat(manualFat) || 0,
-      carbs: parseFloat(manualCarbs) || 0,
+      cal: amount(manualCal),
+      protein: amount(manualProtein),
+      fat: amount(manualFat),
+      carbs: amount(manualCarbs),
       mealType: activeMeal,
     }
     updateDay(selectedDate, day => ({ ...day, meals: [...day.meals, record] }))
@@ -323,10 +325,10 @@ export default function MealDiary() {
             id: uid(),
             foodId: foodName,
             portion: parseFloat(portion) || 1,
-            cal: parseFloat(cal) || 0,
-            protein: parseFloat(protein) || 0,
-            fat: parseFloat(fat) || 0,
-            carbs: parseFloat(carbs) || 0,
+            cal: amount(cal),
+            protein: amount(protein),
+            fat: amount(fat),
+            carbs: amount(carbs),
             mealType: mealType as MealType,
           }
           const existing = newEntries.get(date) ?? []

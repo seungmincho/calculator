@@ -93,7 +93,9 @@ export default function MinimumWageCalculator() {
   const r = calcMinWage(year, effHours, effDays)
   const raise = raiseFrom(year)
   const minHourly = hourlyFor(year, probation)
-  const c = checkWage(pay, payType, minHourly, r.monthlyHours)
+  // 근무시간을 지워 월 환산시간이 0이면 월급 → 시급 환산이 불가 → 미입력 상태로 (시급 0원·전액 미달로 나오지 않게)
+  const payIn = payType === 'monthly' && !(r.monthlyHours > 0) ? 0 : pay
+  const c = checkWage(payIn, payType, minHourly, r.monthlyHours)
   const basis = mode === 'ft' ? t('u.basisFt') : t('u.basisPt', { h: dec(r.hours), d: r.days, mh: r.monthlyHours })
   const W = t('won')
 
@@ -259,7 +261,7 @@ export default function MinimumWageCalculator() {
             {probation && <p className="text-xs text-muted -mt-2">{t('u.check.probationHint', { wage: won(minHourly) })}</p>}
 
             <div aria-live="polite">
-              {pay <= 0 ? (
+              {payIn <= 0 ? (
                 <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('u.check.empty')}</p>
               ) : c.below ? (
                 <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 space-y-1">

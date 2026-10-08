@@ -17,6 +17,8 @@ import { todayKST, ddayLabel } from '@/utils/dday'
 const BASE_YEAR = 2026 // 정적 HTML·첫 렌더의 '올해'. 마운트 후 KST 오늘 기준 올해·내년
 const CC_PRESETS = [998, 1598, 1999, 2497, 3470] as const
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+// 경감·공제액: 배기량을 지워 0원이면 '-0' 대신 '0'
+const minus = (n: number) => (Math.round(n) > 0 ? '-' : '') + won(n)
 const pick = <T,>(v: string | null, list: readonly T[], def: T, map: (s: string) => T = (s) => s as T): T => {
   if (v == null) return def
   const x = map(v)
@@ -210,7 +212,7 @@ export default function AnnualCarTax() {
 
             <div className="divide-y divide-line border-y border-line text-sm">
               <Row label={t('u.row.base')} value={`${won(fullAnnual)}${t('u.won')}`} />
-              {r.ageApplies && <Row label={t('u.row.age', { age: curAge })} value={ageCut ? `-${won(reducedBy)}${t('u.won')}` : t('u.row.noAge')} />}
+              {r.ageApplies && <Row label={t('u.row.age', { age: curAge })} value={ageCut ? `${minus(reducedBy)}${t('u.won')}` : t('u.row.noAge')} />}
               <Row label={t('u.row.tax')} value={`${won(r.tax)}${t('u.won')}`} strong />
               <Row label={t('u.row.edu')} value={r.hasEdu ? `${won(r.edu)}${t('u.won')}` : t('u.row.noEdu')} strong />
             </div>
@@ -246,7 +248,7 @@ export default function AnnualCarTax() {
                   { label: t('u.h1'), value: `${won(r.h1.total)}${t('u.won')}` },
                   { label: t('u.h2'), value: `${won(r.h2.total)}${t('u.won')}` },
                   { label: t('u.row.edu'), value: `${won(r.edu)}${t('u.won')}` },
-                  { label: t('u.share.lump'), value: `${won(jan.total)}${t('u.won')} (-${won(jan.saved)})` },
+                  { label: t('u.share.lump'), value: `${won(jan.total)}${t('u.won')} (${minus(jan.saved)})` },
                 ],
               }}
               text={t('u.share.text', { year, total: won(r.total), saved: won(jan.saved) })}
@@ -282,7 +284,7 @@ export default function AnnualCarTax() {
                       <tr key={l.month} className={`border-b border-line ${best ? 'bg-primary-soft' : ''}`}>
                         <td className={`py-2.5 pl-1 ${best ? 'text-primary font-semibold' : 'text-body'}`}>{t('u.lump.month', { m: l.month })}</td>
                         <td className="py-2.5 text-right tabular-nums font-semibold text-fg">{won(l.total)}</td>
-                        <td className="py-2.5 text-right tabular-nums text-primary">-{won(l.saved)}</td>
+                        <td className="py-2.5 text-right tabular-nums text-primary">{minus(l.saved)}</td>
                         <td className="py-2.5 pr-1 text-right tabular-nums text-sub">{l.pct.toFixed(2)}%</td>
                       </tr>
                     )

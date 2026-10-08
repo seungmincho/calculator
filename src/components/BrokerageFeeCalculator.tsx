@@ -77,7 +77,8 @@ export default function BrokerageFeeCalculator() {
 
   // 거래금액별 중개보수 곡선 (상한 요율, 한쪽 부담, 부가세 포함)
   const chart = useMemo(() => {
-    const max = Math.max(20, Math.ceil(r.amount / EOK) + 1)
+    // 100억 상한: 월세 1조 입력이면 환산액 100조 → 점 400만 개라 화면이 멈춘다 (15억 넘으면 어차피 직선)
+    const max = Math.min(100, Math.max(20, Math.ceil(r.amount / EOK) + 1))
     return Array.from({ length: max * 4 }, (_, k) => {
       const p = (k + 1) * 0.25
       return { p, fee: Math.round(calcFee({ deal: lease ? 'jeonse' : 'sale', prop, deposit: p * EOK, vat }).total / MAN) }

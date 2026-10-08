@@ -134,7 +134,8 @@ export default function DutchPay() {
   const transfers = res.transfers
   const n = people.length
   const nonLeaderPays = simple.pay.filter((_, i) => i !== simple.leader)
-  const uniform = nonLeaderPays.length > 0 && nonLeaderPays.every((p) => p === nonLeaderPays[0])
+  // 혼자면 nonLeaderPays = [] → 범위 표시가 Math.min()/max() = ∞~-∞ 가 되므로 균등(= 총액)으로
+  const uniform = nonLeaderPays.every((p) => p === nonLeaderPays[0])
 
   const heroLabel = mode === 's'
     ? (uniform ? t('hero.perPerson') : t('hero.perPersonRange'))

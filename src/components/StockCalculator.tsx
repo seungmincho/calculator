@@ -20,9 +20,10 @@ const TABS: Tab[] = ['trade', 'avg', 'target', 'us']
 const TARGET_ROWS = [-10, -5, 0, 5, 10, 20, 30, 50]
 
 const num = (s: string) => { const v = parseFloat(s.replace(/,/g, '')); return Number.isFinite(v) ? v : 0 }
-const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
+// `|| 0`: 반올림한 −0.3 → −0 이 "-0"으로 찍히지 않게
+const won = (v: number) => (Math.round(v) || 0).toLocaleString('ko-KR')
 const usd = (v: number) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-const pct = (v: number) => `${v > 0 ? '+' : ''}${v.toFixed(2)}%`
+const pct = (v: number) => { const r = +v.toFixed(2) || 0; return `${r > 0 ? '+' : ''}${r.toFixed(2)}%` }
 const signed = (v: number) => `${v > 0 ? '+' : ''}${won(v)}`
 /** 입력값에 천 단위 쉼표 (소수점 유지) */
 const withCommas = (raw: string) => {
@@ -402,7 +403,7 @@ export default function StockCalculator() {
                   </>
                 ) : <p className="text-sm text-body mt-1">{t('avg.unreachable')}</p>}
               </div>
-              {avg.qty > 0 && num(cur) > 0 && (
+              {avg.avg > 0 && num(cur) > 0 && (
                 <div className={resultBox}>
                   <Row label={t('avg.evalAmount')} value={`${won(num(cur) * avg.qty)}${W}`} />
                   <Row label={t('avg.evalPnl')} value={`${signed(num(cur) * avg.qty - avg.amount)}${W} (${pct((num(cur) / avg.avg - 1) * 100)})`} />

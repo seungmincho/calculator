@@ -38,6 +38,7 @@ eq('goal minimal', calc({ kind: 'saving', amount: need - 1, rate: 4, months: 12,
 eq('goal approx', need, 10_000_000 / (12 + 0.04 / 12 * 78 * 0.846), 2)
 const needD = requiredAmount(10_000_000, 'deposit', 3, 12, false, 'normal')
 eq('goal deposit', needD, 9_752_483, 1) // 1e7 / (1 + 0.03 × 0.846)
+eq('huge goal ends', requiredAmount(1e20, 'saving', 3.5, 12, false, 'normal') > 0 ? 1 : 0, 1) // 예전엔 무한 루프
 eq('zero rate', interestPerWon('saving', 0, 12, true), 0)
 eq('zero months', calc({ kind: 'saving', amount: 1, rate: 5, months: 0, compound: false, tax: 'normal' }).maturity, 0)
 

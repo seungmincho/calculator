@@ -72,9 +72,12 @@ const SalaryCalculatorContent = () => {
     setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
   }, [salary, salaryType, nonTaxableAmount, dependents, childrenUnder20]);
 
+  // 근로소득공제(연봉 × 0.7 등)는 원 미만이 생김 → 반올림 (소수에 쉼표가 끼어 '864,196.8,999,999,999'로 보이던 문제)
   const formatNumber = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
+  // 공제 0원 행에 '-0원'이 붙지 않게
+  const minus = (num: number) => (num > 0 ? '-' : '');
 
   // 월별 실수령액 계산 (상여금 포함) - 올바른 상여금 분할 방식
   const calculateMonthlyTakeHome = () => {
@@ -157,7 +160,8 @@ const SalaryCalculatorContent = () => {
 
   const handleSalaryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
-    if (/^\d*$/.test(value)) {
+    // 15자리 상한: 넘으면 Number가 '1e+21' 꼴이 돼 parseInt가 1로 읽음
+    if (/^\d{0,15}$/.test(value)) {
       // 빈 칸은 빈 칸으로 둠 (예전엔 '0'으로 바뀌어 지울 수가 없었음)
       const formattedValue = value === '' ? '' : formatNumber(Number(value));
       setSalary(formattedValue);
@@ -167,7 +171,7 @@ const SalaryCalculatorContent = () => {
 
   const handleNonTaxableChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/,/g, '');
-    if (/^\d*$/.test(value)) {
+    if (/^\d{0,15}$/.test(value)) {
       const formattedValue = value === '' ? '' : formatNumber(Number(value));
       setNonTaxableAmount(formattedValue);
       updateURL({ nonTaxable: value });
@@ -240,13 +244,13 @@ const SalaryCalculatorContent = () => {
     const dependentsParam = searchParams.get('dependents');
     const childrenParam = searchParams.get('children');
 
-    if (salaryParam && /^\d+$/.test(salaryParam)) {
+    if (salaryParam && /^\d{1,15}$/.test(salaryParam)) {
       setSalary(formatNumber(Number(salaryParam)));
     }
     if (typeParam && ['annual', 'monthly'].includes(typeParam)) {
       setSalaryType(typeParam as 'annual' | 'monthly');
     }
-    if (nonTaxableParam && /^\d+$/.test(nonTaxableParam)) {
+    if (nonTaxableParam && /^\d{1,15}$/.test(nonTaxableParam)) {
       setNonTaxableAmount(formatNumber(Number(nonTaxableParam)));
     }
     if (dependentsParam && /^\d+$/.test(dependentsParam)) {
@@ -665,7 +669,7 @@ const SalaryCalculatorContent = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.workIncomeDeduction')}</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.workIncomeDeduction)}{t('input.currency')}</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.workIncomeDeduction)}{formatNumber(result.workIncomeDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.workIncome')}</span>
@@ -673,11 +677,11 @@ const SalaryCalculatorContent = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.personalDeduction')} ({t('input.people', { n: dependents })})</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.taxInfo.personalDeduction)}{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.pensionDeduction')}</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.deductions.nationalPension)}{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.taxableStandard')}</span>
@@ -685,7 +689,7 @@ const SalaryCalculatorContent = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.taxCredit')}</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.taxCredit)}{t('input.currency')}</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.taxInfo.taxCredit)}{formatNumber(result.taxInfo.taxCredit)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.annualTaxEstimate')}</span>

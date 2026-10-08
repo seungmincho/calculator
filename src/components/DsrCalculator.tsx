@@ -39,7 +39,7 @@ function eokMan(v: number): string {
   const man = Math.floor((v % EOK) / MAN)
   return [eok > 0 ? `${eok}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
 }
-const pct = (v: number) => `${v.toFixed(1)}%`
+const pct = (v: number) => (Number.isFinite(v) ? `${v.toFixed(1)}%` : '-') // 소득 0원 → DSR 무한대
 const rateStr = (v: number) => `${+v.toFixed(2)}`
 
 // 기존 대출 URL 인코딩: kind.amount.rate.years.method.counted (숫자·코드만)

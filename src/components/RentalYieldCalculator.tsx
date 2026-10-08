@@ -32,6 +32,8 @@ const NUM: Record<NumKey, [string, number]> = {
 const LINKS = ['rent-converter', 'acquisition-tax', 'brokerage-fee', 'comprehensive-property-tax', 'loan-calculator'] as const
 
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
+// 차감 행: 보증금·대출·공실 0이면 '−0원' 대신 '0원'
+const minus = (v: number) => `${Math.round(v) > 0 ? '−' : ''}${won(v)}`
 const signed = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${won(Math.abs(v))}`
 const pct = (v: number | null) => (v == null ? '—' : `${v.toFixed(2)}%`)
 const digits = (s: string) => Number(s.replace(/[^\d]/g, '')) || 0
@@ -182,17 +184,17 @@ export default function RentalYieldCalculator() {
     [t('bd.broker'), `+${won(r.acq.broker)}${W}`],
     [t('bd.misc'), `+${won(r.acq.misc)}${W}`],
     ...(r.acq.extra > 0 ? [[t('bd.extra'), `+${won(r.acq.extra)}${W}`] as [string, string]] : []),
-    [t('bd.deposit'), `−${won(inp.deposit)}${W}`],
+    [t('bd.deposit'), `${minus(inp.deposit)}${W}`],
     [t('bd.base'), `${won(r.base)}${W}`, true],
-    [t('bd.loan'), `−${won(inp.loan)}${W}`],
+    [t('bd.loan'), `${minus(inp.loan)}${W}`],
     [t('bd.cash'), `${won(r.cash)}${W}`, true],
   ]
   const yearly: [string, string, boolean?][] = [
     [t('bd.grossRent'), `${won(r.grossRent)}${W}`],
-    [t('bd.vacancyLoss', { v: inp.vacancy }), `−${won(r.vacancyLoss)}${W}`],
-    [t('bd.opCost'), `−${won(r.opCost)}${W}`],
+    [t('bd.vacancyLoss', { v: inp.vacancy }), `${minus(r.vacancyLoss)}${W}`],
+    [t('bd.opCost'), `${minus(r.opCost)}${W}`],
     [t('bd.noi'), `${won(r.noi)}${W}`, true],
-    [t('bd.interest'), `−${won(r.interest)}${W}`],
+    [t('bd.interest'), `${minus(r.interest)}${W}`],
     [t('bd.profit'), `${won(r.profit)}${W}`, true],
   ]
 

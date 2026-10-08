@@ -132,7 +132,8 @@ export function requiredMonthly(target: number, p: Omit<Plan, 'monthly'>): numbe
   const per = simulate({ ...p, principal: 0, monthly: 1 }).value // 수령액은 월 적립액에 비례
   if (per <= 0) return 0
   let m = Math.ceil((target - base) / per)
-  while (m > 0 && simulate({ ...p, monthly: m - 1 }).value >= target) m--
+  // 횟수 제한 — 목표가 수천경 원이면 m − 1 이 부동소수 정밀도에 묻혀(m − 1 === m) 무한 루프
+  for (let k = 0; k < 100 && m > 0 && simulate({ ...p, monthly: m - 1 }).value >= target; k++) m--
   return m
 }
 

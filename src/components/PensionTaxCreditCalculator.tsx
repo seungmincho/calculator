@@ -316,13 +316,13 @@ export default function PensionTaxCreditCalculator() {
                     <tr key={k} className="border-b border-line">
                       <th scope="row" className="text-left font-medium py-3 pr-2 text-body">{t(`later.${k}`)}</th>
                       <td className="text-right py-3 px-2 text-sub">{['5.5', '4.4', '3.3'][i]}%</td>
-                      <td className="text-right py-3 pl-2 text-fg">−{won(ex.annuity[i])}</td>
+                      <td className="text-right py-3 pl-2 text-fg">{ex.annuity[i] > 0 ? '−' : ''}{won(ex.annuity[i])}</td>
                     </tr>
                   ))}
                   <tr>
                     <th scope="row" className="text-left font-medium py-3 pr-2 text-body">{t('later.early')}</th>
                     <td className="text-right py-3 px-2 text-sub">16.5%</td>
-                    <td className="text-right py-3 pl-2 text-fg">−{won(ex.early)}</td>
+                    <td className="text-right py-3 pl-2 text-fg">{ex.early > 0 ? '−' : ''}{won(ex.early)}</td>
                   </tr>
                 </tbody>
               </table>

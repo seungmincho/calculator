@@ -69,7 +69,7 @@ export function requiredAmount(target: number, kind: Kind, rate: number, n: numb
   const per = interestPerWon(kind, rate, n, compound) * (1 - TAX_RATES[tax])
   const base = kind === 'saving' ? n : 1
   let a = Math.ceil(target / (base + per))
-  // 절사(floor) 때문에 1~2원 모자랄 수 있어 보정
-  while (calc({ kind, amount: a, rate, months: n, compound, tax }).maturity < target) a++
+  // 절사(floor) 때문에 1~2원 모자랄 수 있어 보정. 횟수 제한 — 1e18원 넘는 목표는 a++ 가 부동소수 정밀도에 묻혀 무한 루프
+  for (let k = 0; k < 100 && calc({ kind, amount: a, rate, months: n, compound, tax }).maturity < target; k++) a++
   return a
 }

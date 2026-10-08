@@ -20,7 +20,7 @@ export interface NetSalaryInput {
 }
 
 export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}) {
-  const nonTaxableMonthly = opt.nonTaxableMonthly ?? 200_000
+  const nonTaxableMonthly = Math.max(0, opt.nonTaxableMonthly ?? 200_000)
   const dependents = Math.max(1, opt.dependents ?? 1)
   const children = Math.max(0, opt.children ?? 0)
   if (!grossAnnual || grossAnnual <= 0) return null
@@ -34,18 +34,20 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
   const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
   const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
 
-  // 근로소득공제 (총급여 기준, 한도 2천만)
+  // 근로소득공제 (총급여 기준, 한도 2천만). 총급여 = 연봉 − 비과세(소득세법 §20②) — 연봉으로 잡으면
+  // 비과세가 연봉보다 클 때 과세급여 0인데 과세표준이 수천만 원으로 나온다
+  const totalPay = taxableAnnual
   let workIncomeDeduction: number
-  if (grossAnnual <= 5_000_000) workIncomeDeduction = grossAnnual * 0.7
-  else if (grossAnnual <= 15_000_000) workIncomeDeduction = 3_500_000 + (grossAnnual - 5_000_000) * 0.4
-  else if (grossAnnual <= 45_000_000) workIncomeDeduction = 7_500_000 + (grossAnnual - 15_000_000) * 0.15
-  else if (grossAnnual <= 100_000_000) workIncomeDeduction = 12_000_000 + (grossAnnual - 45_000_000) * 0.05
-  else workIncomeDeduction = 14_750_000 + (grossAnnual - 100_000_000) * 0.02
+  if (totalPay <= 5_000_000) workIncomeDeduction = totalPay * 0.7
+  else if (totalPay <= 15_000_000) workIncomeDeduction = 3_500_000 + (totalPay - 5_000_000) * 0.4
+  else if (totalPay <= 45_000_000) workIncomeDeduction = 7_500_000 + (totalPay - 15_000_000) * 0.15
+  else if (totalPay <= 100_000_000) workIncomeDeduction = 12_000_000 + (totalPay - 45_000_000) * 0.05
+  else workIncomeDeduction = 14_750_000 + (totalPay - 100_000_000) * 0.02
   workIncomeDeduction = Math.min(workIncomeDeduction, 20_000_000)
 
   // 인적공제: 공제대상가족 1인당 150만 (자녀는 가족 수에 이미 포함)
   const personalDeduction = dependents * 1_500_000
-  const workIncome = grossAnnual - workIncomeDeduction
+  const workIncome = totalPay - workIncomeDeduction
   const taxableIncome = Math.max(0, workIncome - nationalPension - personalDeduction)
 
   // 산출세액 (2026 누진세율)
@@ -63,10 +65,10 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
   // 근로소득세액공제 (소득세법 §59): 산출세액 130만 이하 55%, 초과분 30% — 총급여별 한도
   let workTaxCredit = computedTax <= 1_300_000 ? computedTax * 0.55 : 715_000 + (computedTax - 1_300_000) * 0.3
   let creditCap: number
-  if (grossAnnual <= 33_000_000) creditCap = 740_000
-  else if (grossAnnual <= 70_000_000) creditCap = Math.max(660_000, 740_000 - (grossAnnual - 33_000_000) * 0.008)
-  else if (grossAnnual <= 120_000_000) creditCap = Math.max(500_000, 660_000 - (grossAnnual - 70_000_000) * 0.5)
-  else creditCap = Math.max(200_000, 500_000 - (grossAnnual - 120_000_000) * 0.5)
+  if (totalPay <= 33_000_000) creditCap = 740_000
+  else if (totalPay <= 70_000_000) creditCap = Math.max(660_000, 740_000 - (totalPay - 33_000_000) * 0.008)
+  else if (totalPay <= 120_000_000) creditCap = Math.max(500_000, 660_000 - (totalPay - 70_000_000) * 0.5)
+  else creditCap = Math.max(200_000, 500_000 - (totalPay - 120_000_000) * 0.5)
   workTaxCredit = Math.min(workTaxCredit, creditCap)
 
   // 자녀세액공제 (소득세법 §59의2): yearEndTax.ts와 같은 공식(1명 25만, 2명 55만, 3명째부터 +40만).

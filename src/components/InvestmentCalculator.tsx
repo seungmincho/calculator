@@ -64,8 +64,8 @@ export default function InvestmentCalculator() {
 
   const won = (v: number) => `${Math.round(v).toLocaleString('ko-KR')}${t('won')}`
   const short = (v: number) => {
-    const sign = v < 0 ? '-' : ''
     const a = Math.abs(Math.round(v))
+    const sign = v < 0 && a ? '-' : '' // −0.3원 → "-0원" 방지
     const eok = Math.floor(a / 1e8), man = Math.floor((a % 1e8) / 1e4)
     if (eok) return `${sign}${eok}${t('eok')}${man ? ` ${man.toLocaleString('ko-KR')}${t('man')}` : ''}${t('won')}`
     if (man) return `${sign}${man.toLocaleString('ko-KR')}${t('man')}${t('won')}`
@@ -78,7 +78,8 @@ export default function InvestmentCalculator() {
   const plan: PlanInput = {
     initial: s.init * 1e4, monthly: s.mode === 'lump' ? 0 : s.mon * 1e4, rate: s.r, years: s.y, growth: s.mode === 'lump' ? 0 : s.g, compounding: s.c,
   }
-  const valid = s.y > 0 && plan.initial + plan.monthly > 0
+  // 기간이 반 달 미만(0.01년 등)이면 contributions가 0개월 → rows 비어 calc.last 접근에서 죽음
+  const valid = Math.round(s.y * 12) > 0 && plan.initial + plan.monthly > 0
   const deflate = (v: number, year: number) => (s.real ? realValue(v, year, s.inf) : v)
 
   const calc = useMemo(() => {

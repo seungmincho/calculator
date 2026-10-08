@@ -1099,7 +1099,7 @@ const FuelCalculator = () => {
                         inputMode="numeric"
                         aria-label={t(`fuelTypes.${ft}`)}
                         value={tempPrices[ft] || ''}
-                        onChange={(e) => setTempPrices(prev => ({ ...prev, [ft]: Number(e.target.value) }))}
+                        onChange={(e) => setTempPrices(prev => ({ ...prev, [ft]: Math.max(0, Number(e.target.value) || 0) }))}
                         className="w-24 ui-field px-2 py-1 text-sm text-right"
                         min="0"
                       />
@@ -1404,7 +1404,7 @@ const FuelCalculator = () => {
                   id="fuel-log-toll"
                   type="number"
                   value={newLogEntry.tollFee || ''}
-                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, tollFee: Number(e.target.value) }))}
+                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, tollFee: Math.max(0, Number(e.target.value) || 0) }))}
                   placeholder={t('drivingLog.form.placeholder.tollFee')}
                   min="0"
                   step="100"
@@ -1419,7 +1419,7 @@ const FuelCalculator = () => {
                   id="fuel-log-parking"
                   type="number"
                   value={newLogEntry.parkingFee || ''}
-                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, parkingFee: Number(e.target.value) }))}
+                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, parkingFee: Math.max(0, Number(e.target.value) || 0) }))}
                   placeholder={t('drivingLog.form.placeholder.parkingFee')}
                   min="0"
                   step="100"

@@ -76,6 +76,7 @@ const goalP = { ...dca, tax: 'normal' as const }
 const m = requiredMonthly(1e8, goalP)
 eq(simulate({ ...goalP, monthly: m }).value >= 1e8 && simulate({ ...goalP, monthly: m - 1 }).value < 1e8, true, '필요 월 적립 최소')
 eq(requiredMonthly(1e7, { ...goalP, principal: 2e7 }), 0, '원금만으로 충분')
+eq(requiredMonthly(1e22, goalP) > 0, true, '목표 1e22 도 끝남(예전엔 무한 루프)')
 const r = requiredRate(1e8, { ...goalP, monthly: 600_000 })!
 near(simulate({ ...goalP, monthly: 600_000, rate: r }).value, 1e8, 1, '필요 수익률')
 eq(requiredRate(5e7, { ...goalP, monthly: 600_000 }), 0, '납입만으로 충분')

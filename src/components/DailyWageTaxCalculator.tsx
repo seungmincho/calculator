@@ -237,7 +237,7 @@ export default function DailyWageTaxCalculator() {
                   {rows.map((x) => (
                     <tr key={x.key} className="border-b border-line">
                       <th scope="row" className="text-left font-medium py-3 pr-2 text-body">{t(`u.rows.${x.key}`)}</th>
-                      <td className="text-right py-3 px-2 text-sub">{x.minus && x.day > 0 ? '−' : ''}{won(x.day)}{W}</td>
+                      <td className="text-right py-3 px-2 text-sub">{x.minus && Math.round(x.day) > 0 ? '−' : ''}{won(x.day)}{W}</td>
                       <td className="text-right py-3 pl-2 text-fg">{x.minus && x.total > 0 ? '−' : ''}{won(x.total)}{W}</td>
                     </tr>
                   ))}

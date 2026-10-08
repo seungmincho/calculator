@@ -87,7 +87,8 @@ export default function AcquisitionTaxCalculator() {
     under1eok, relief: mode === 'buy' ? relief : 'none', inheritSole: sole, giftStd3eok: g3, giftFromSingle: gs,
   }
   const r = calcTax(input)
-  const extras = mode === 'buy' ? buyExtras(price, kind, METRO.includes(region)) : null
+  // 가액을 지우면(0) 법무사 보수만 남아 '부대비용 ÷ 0 = Infinity%' → 가액이 있을 때만 총비용 카드
+  const extras = mode === 'buy' && price > 0 ? buyExtras(price, kind, METRO.includes(region)) : null
   const due = /^\d{4}-\d{2}-\d{2}$/.test(date) ? dueDate(date, mode) : ''
   const penalty = latePenalty(r.total, late, false)
 

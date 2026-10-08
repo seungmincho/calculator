@@ -68,7 +68,10 @@ function minSellFor(target: number, i: Omit<TradeInput, 'sell'>): number {
   const k = 1 - n(i.feePct) / 100 - sellTaxRate(i.market)
   if (k <= 0) return 0
   const cost = trade({ ...i, sell: 0 }).cost
-  let p = Math.ceil((cost + target) / (qty * k))
+  // 손실 목표가 −100%를 넘으면 연속식이 음수 → 매도가 0원이 하한
+  let p = Math.max(0, Math.ceil((cost + target) / (qty * k)))
+  // 2^53 넘으면 p − 1 === p 라 아래 루프가 끝나지 않는다(1원 보정도 의미 없음)
+  if (p > Number.MAX_SAFE_INTEGER) return p
   // 절사 때문에 연속식보다 조금 낮은 가격에서도 목표를 넘을 수 있음 → 내려가며 확인
   while (p > 1 && trade({ ...i, sell: p - 1 }).profit >= target) p--
   while (trade({ ...i, sell: p }).profit < target) p++

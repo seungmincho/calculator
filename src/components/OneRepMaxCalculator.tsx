@@ -27,7 +27,8 @@ const SHARE_KEYS = ['m', 'e', 'w', 'r', 'pt', 'inc', 'bar', 'bw', 'u', ...LIFTS.
 
 const fmt = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
 const fmt1 = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits: 1 })
-const num = (s: string) => parseFloat(s) || 0
+// 공유 링크와 같은 유효 범위(0 초과 MAX_W 이하) 밖이면 0(결과 없음) — 9,999,999kg 는 원판 23만 장을 그려 화면이 멈췄다
+const num = (s: string) => { const n = parseFloat(s) || 0; return n <= MAX_W ? n : 0 }
 /** 숫자와 소수점 하나만 남김 */
 const decimal = (s: string) => {
   const c = s.replace(/[^\d.]/g, '')

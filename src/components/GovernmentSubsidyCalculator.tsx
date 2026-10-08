@@ -399,7 +399,7 @@ export default function GovernmentSubsidyCalculator() {
                   min={0}
                   max={120}
                   value={input.age}
-                  onChange={e => updateInput('age', parseInt(e.target.value) || 0)}
+                  onChange={e => updateInput('age', Math.min(120, Math.max(0, parseInt(e.target.value) || 0)))}
                   className={`w-full px-3 py-2 pr-10 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">{t('input.years')}</span>
@@ -524,7 +524,7 @@ export default function GovernmentSubsidyCalculator() {
                     min={1}
                     max={10}
                     value={input.childrenCount}
-                    onChange={e => updateInput('childrenCount', parseInt(e.target.value) || 1)}
+                    onChange={e => updateInput('childrenCount', Math.min(10, Math.max(1, parseInt(e.target.value) || 1)))}
                     className={`w-20 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>

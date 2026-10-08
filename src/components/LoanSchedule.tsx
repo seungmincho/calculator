@@ -48,8 +48,9 @@ export default function LoanSchedule() {
   const searchParams = useSearchParams()
   const [s, setS] = useState<State>(() => decode(searchParams))
   const set = <K extends keyof State>(k: K, v: State[K]) => setS((p) => ({ ...p, [k]: v }))
-  const setNum = (k: keyof State) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const n = Number(e.target.value); setS((p) => ({ ...p, [k]: Number.isFinite(n) ? Math.max(0, n) : 0 }))
+  // 칸의 max 까지 — 금리 상한이 없으면 1만%대에서 (1+r)^n 이 Infinity 가 돼 표가 NaN 으로 찬다
+  const setNum = (k: keyof State, max = Infinity) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const n = Number(e.target.value); setS((p) => ({ ...p, [k]: Number.isFinite(n) ? Math.min(max, Math.max(0, n)) : 0 }))
   }
   const [open, setOpen] = useState<Set<number>>(() => new Set([1]))
   const [copied, setCopied] = useState(false)
@@ -151,7 +152,7 @@ export default function LoanSchedule() {
       <label htmlFor={`ls-${k}`} className="block text-sm font-medium text-body mb-2">{label}</label>
       <div className="relative">
         <input id={`ls-${k}`} type="number" inputMode="decimal" min={0} max={opts.max} step={opts.step ?? 1} value={s[k] as number}
-          onChange={setNum(k)} className={`ui-field px-4 py-3 tabular-nums ${opts.suffix ? 'pr-14' : ''}`} />
+          onChange={setNum(k, opts.max)} className={`ui-field px-4 py-3 tabular-nums ${opts.suffix ? 'pr-14' : ''}`} />
         {opts.suffix && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted">{opts.suffix}</span>}
       </div>
       {opts.hint && <p className="text-xs text-muted mt-1">{opts.hint}</p>}

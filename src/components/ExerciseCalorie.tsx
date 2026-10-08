@@ -132,7 +132,8 @@ export default function ExerciseCalorie() {
   // ── 단일 계산 ──
   const calc = useMemo(() => {
     const gross = kcal(act.met, kg, minutes)
-    const rmr = harrisBenedict(sex, kg, height, age)
+    // 나이·키도 체중처럼 입력칸 범위로 (나이 300 같은 값이면 안정 대사량이 음수 kcal로 표시됨)
+    const rmr = harrisBenedict(sex, kg, clampNum(height, 100, 230, DEF.h), clampNum(age, 15, 100, DEF.age))
     const ml = rmrMl(rmr, kg)
     return {
       gross, net: netKcal(act.met, kg, minutes), perMin: kcal(act.met, kg, 1),

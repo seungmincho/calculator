@@ -67,10 +67,11 @@ export default function BodyFatCalculator() {
     window.history.replaceState({}, '', url)
   }, [sex, age, height, weight, neck, waist, hip, method, goalIn])
 
-  const input = useMemo(() => ({
-    sex, age: Number(age) || 0, heightCm: Number(height) || 0, weightKg: Number(weight) || 0,
-    waistCm: Number(waist) || 0, neckCm: Number(neck) || 0, hipCm: Number(hip) || 0,
-  }), [sex, age, height, weight, waist, neck, hip])
+  // 음수 입력은 0으로 (min="0"이어도 '-70' 입력 가능) — 체중 음수면 체지방량·제지방량이 음수 kg로 나옴
+  const input = useMemo(() => {
+    const n = (v: string) => Math.max(0, Number(v) || 0)
+    return { sex, age: n(age), heightCm: n(height), weightKg: n(weight), waistCm: n(waist), neckCm: n(neck), hipCm: n(hip) }
+  }, [sex, age, height, weight, waist, neck, hip])
 
   const est = useMemo(() => estimate(input), [input])
   // 고른 방법이 계산 불가(예: 목 ≥ 허리)면 계산되는 첫 방법으로

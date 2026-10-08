@@ -250,7 +250,7 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const principalFirst = loan / months + loan * r
   const principalLast = loan / months + (loan / months) * r
   const methods = {
-    annuity: { first: monthly, last: monthly, interest: monthly * months - loan },
+    annuity: { first: monthly, last: monthly, interest: Math.max(0, monthly * months - loan) }, // 희망액 수백 원이면 월 상환 반올림이 0원 → 음수 이자
     principal: { first: Math.round(principalFirst), last: Math.round(principalLast), interest: Math.round(loan * r * (months + 1) / 2) },
   }
 

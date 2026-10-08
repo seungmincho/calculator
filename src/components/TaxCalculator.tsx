@@ -199,8 +199,11 @@ const TaxCalculatorContent = () => {
   };
 
   const formatNumber = (num: number) => {
-    return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // toString 은 1e21 이상에서 '1e+21' 을 내고, 입력란에 그대로 들어가 parseInt 가 1 로 읽는다
+    return (Math.floor(num) || 0).toLocaleString('ko-KR');
   };
+  // 공제 행: 0원이면 '-0원' 대신 '0원'
+  const minus = (num = 0) => (Math.floor(num) > 0 ? '-' : '') + formatNumber(num);
 
   // 계산 저장
   const handleSaveCalculation = () => {
@@ -772,25 +775,25 @@ const TaxCalculatorContent = () => {
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-sub">소득세</span>
                         <span className="text-red-600 dark:text-red-400">
-                          -{formatNumber(result.breakdown.incomeTax || 0)}원
+                          {minus(result.breakdown.incomeTax)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-sub">지방소득세</span>
                         <span className="text-red-600 dark:text-red-400">
-                          -{formatNumber(result.breakdown.localIncomeTax || 0)}원
+                          {minus(result.breakdown.localIncomeTax)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-sub">국민연금</span>
                         <span className="text-red-600 dark:text-red-400">
-                          -{formatNumber(result.breakdown.nationalPension || 0)}원
+                          {minus(result.breakdown.nationalPension)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-sub">건강보험</span>
                         <span className="text-red-600 dark:text-red-400">
-                          -{formatNumber(result.breakdown.healthInsurance || 0)}원
+                          {minus(result.breakdown.healthInsurance)}원
                         </span>
                       </div>
                     </>
@@ -810,13 +813,13 @@ const TaxCalculatorContent = () => {
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-sub">양도소득세</span>
                         <span className="text-red-600 dark:text-red-400">
-                          -{formatNumber(result.breakdown.capitalGainsTax || 0)}원
+                          {minus(result.breakdown.capitalGainsTax)}원
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-sub">지방소득세</span>
                         <span className="text-red-600 dark:text-red-400">
-                          -{formatNumber(result.breakdown.localTax || 0)}원
+                          {minus(result.breakdown.localTax)}원
                         </span>
                       </div>
                     </>

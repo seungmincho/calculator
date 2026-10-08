@@ -16,6 +16,8 @@ import {
 } from '@/utils/weeklyHolidayPay'
 
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
+// 공제 행: 0원(저소득 소득세 등)이면 '-0원' 대신 '0원'
+const minus = (n: number) => (Math.round(n) > 0 ? '-' : '') + won(n)
 const hrs = (n: number) => +n.toFixed(2)
 const DEDUCTS: DeductMode[] = ['none', 'tax33', 'ins']
 const SCENARIOS = [14.5, 15, 20, 30, 40]
@@ -289,13 +291,13 @@ export default function WeeklyHolidayPay() {
               <div className="bg-subtle rounded-2xl p-5 space-y-2 text-sm">
                 <div className="flex justify-between"><span className="text-sub">{t('u.monthlyTotal')}</span><span className="text-fg tabular-nums">{won(r.monthlyTotal)}{t('u.won')}</span></div>
                 {deduct === 'tax33' ? (
-                  <div className="flex justify-between"><span className="text-sub">{t('u.ded.tax33')}</span><span className="text-fg tabular-nums">-{won(ded.tax)}{t('u.won')}</span></div>
+                  <div className="flex justify-between"><span className="text-sub">{t('u.ded.tax33')}</span><span className="text-fg tabular-nums">{minus(ded.tax)}{t('u.won')}</span></div>
                 ) : (
                   <>
                     {(['pension', 'health', 'care', 'employment'] as const).map((k) => (
-                      <div key={k} className="flex justify-between"><span className="text-sub">{t(`u.ded.${k}`)}</span><span className="text-fg tabular-nums">-{won(ded[k])}{t('u.won')}</span></div>
+                      <div key={k} className="flex justify-between"><span className="text-sub">{t(`u.ded.${k}`)}</span><span className="text-fg tabular-nums">{minus(ded[k])}{t('u.won')}</span></div>
                     ))}
-                    <div className="flex justify-between"><span className="text-sub">{t('u.ded.incomeTax')}</span><span className="text-fg tabular-nums">-{won(incomeTax)}{t('u.won')}</span></div>
+                    <div className="flex justify-between"><span className="text-sub">{t('u.ded.incomeTax')}</span><span className="text-fg tabular-nums">{minus(incomeTax)}{t('u.won')}</span></div>
                   </>
                 )}
                 <div className="flex justify-between items-baseline border-t border-line pt-2">

@@ -62,6 +62,8 @@ near(grams(somaek(50, 150).ml, somaek(50, 150).abv), grams(50, 15.7) + grams(150
 
 // 시계열: 느린 β가 항상 ≥ 평균 β
 for (const pt of series(bottle, 70, R.male, 10)) assert.ok(pt.slow >= pt.typical)
+assert.equal(series(bottle, 70, R.male, 10).length, 41) // 짧은 구간은 0.25시간 간격 그대로
+assert.ok(series(bottle, 70, R.male, 50_000).length <= 2001) // 큰 입력에도 점 수 상한
 
 // 시각
 assert.equal(parseHM('20:30'), 1230)

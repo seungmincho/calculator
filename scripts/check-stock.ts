@@ -121,5 +121,8 @@ assert.ok(usTrade({ buy: 100, sell: be - 0.01, qty: 50, buyFx: 1_300, sellFx: 1_
 // 잘못된 입력은 0
 assert.equal(trade({ buy: NaN, sell: -1, qty: 0, feePct: 0.015, market: 'kospi' }).profit, 0)
 assert.equal(breakeven({ buy: 0, qty: 10, feePct: 0.015, market: 'kospi' }).price, 0)
+// −100% 넘는 손실 목표 → 음수 매도가 대신 0원, 2^53 넘는 가격 → 루프 멈춤 없이 반환
+assert.equal(targetSell({ buy: 70_000, qty: 100, feePct: 0.015, market: 'kospi' }, -150).price, 0)
+assert.ok(breakeven({ buy: 99_999_999_999_999_999, qty: 1, feePct: 0.015, market: 'kospi' }).price > 1e17)
 
 console.log('check-stock: all passed')

@@ -430,7 +430,7 @@ export default function VatCalculator() {
                   ['report.eFilingCredit', ret.eFilingCredit, '−'],
                 ] as const).map(([k, v, sign]) => (
                   <div key={k} className="flex justify-between py-2.5 gap-2">
-                    <dt className="text-sub">{t(k)}</dt><dd className="font-semibold text-fg tabular-nums">{sign}{won(v)}{t('won')}</dd>
+                    <dt className="text-sub">{t(k)}</dt><dd className="font-semibold text-fg tabular-nums">{v > 0 ? sign : ''}{won(v)}{t('won')}</dd>
                   </div>
                 ))}
                 <div className="flex justify-between py-2.5 gap-2">

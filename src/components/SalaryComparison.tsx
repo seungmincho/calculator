@@ -435,7 +435,8 @@ export default function SalaryComparison() {
                   {baseResult && scenarios.slice(1).map((s, idx) => {
                     const r = results[idx + 1]
                     if (!r) return null
-                    const diff = r.taxInfo.effectiveTaxRate - baseResult.taxInfo.effectiveTaxRate
+                    // 표시 자리(0.1)에서 반올림 — 차이가 −0.04%p 면 toFixed 가 '-0.0%p' 를 낸다
+                    const diff = Math.round((r.taxInfo.effectiveTaxRate - baseResult.taxInfo.effectiveTaxRate) * 10) / 10 || 0
                     return (
                       <td key={`diff-rate-${s.id}`} className="px-4 py-3 text-right">
                         <span className={`font-medium ${diff > 0.05 ? 'text-red-600 dark:text-red-400' : diff < -0.05 ? 'text-green-600 dark:text-green-400' : 'text-muted'}`}>

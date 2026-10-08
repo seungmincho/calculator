@@ -128,7 +128,8 @@ export const existingAnnual = (loans: Loan[]) => loans.reduce((a, l) => a + annu
 export const creditBalance = (loans: Loan[]) =>
   loans.filter((l) => l.kind === 'credit' || l.kind === 'revolving').reduce((a, l) => a + l.amount, 0)
 
-export const dsr = (income: number, annual: number) => (income > 0 ? (annual / income) * 100 : 0)
+// 소득 0원에 갚을 돈이 있으면 DSR은 무한대(한도 초과) — 0%로 두면 '한도 이내'로 잘못 판정
+export const dsr = (income: number, annual: number) => (income > 0 ? (annual / income) * 100 : annual > 0 ? Infinity : 0)
 
 /** 신규 대출 연간 원리금(스트레스 적용 여부 선택) */
 export function newLoanAnnual(s: NewLoanSpec, amount: number, existing: Loan[], stressed: boolean): { annual: number; add: number } {

@@ -20,6 +20,7 @@ assert.equal(parseNum(''), null)
 assert.equal(parseNum('  '), null)
 assert.equal(parseNum('abc'), null)
 assert.equal(parseNum('1.2.3'), null)
+assert.equal(parseNum('1e999'), null) // Infinity 는 해석 불가
 assert.equal(parseNum('12,000'), 12000)
 assert.equal(parseNum('5만'), 50000)
 assert.equal(parseNum('5만원'), 50000)

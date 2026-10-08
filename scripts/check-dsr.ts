@@ -54,6 +54,8 @@ eq(maxNewLoan(64_375_000, 40, [], C, true), 100_000_000, '신용 1억 경계까�
 eq(maxNewLoan(120_000_000, 40, [], C, true), Math.floor(48_000_000 / 0.265 / 1e4) * 1e4, '신용 1억 초과 → 6.5% 기준')
 
 eq(dsr(50_000_000, 20_000_000), 40, 'DSR 40%')
+eq(dsr(0, 20_000_000) > 1000, true, '소득 0원 + 상환액 → 한도 초과(무한대)')
+eq(dsr(0, 0), 0, '소득·상환 모두 0 → 0%')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-dsr: all passed')

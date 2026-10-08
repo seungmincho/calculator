@@ -115,7 +115,7 @@ export default function AverageCalculator() {
       .map(s => s.trim())
       .filter(s => s.length > 0)
       .map(Number)
-      .filter(n => !isNaN(n))
+      .filter(Number.isFinite) // 'Infinity'·'1e999'·수백 자리 숫자 → Infinity 가 평균·합계에 'Infinity'·'NaN' 으로 번지지 않게
     return parts
   }, [inputText, isWeightedMode])
 
@@ -125,7 +125,7 @@ export default function AverageCalculator() {
     return weightedPairs
       .filter(p => p.value.trim() !== '' && p.weight.trim() !== '')
       .map(p => ({ value: Number(p.value), weight: Number(p.weight) }))
-      .filter(p => !isNaN(p.value) && !isNaN(p.weight) && p.weight > 0)
+      .filter(p => Number.isFinite(p.value) && Number.isFinite(p.weight) && p.weight > 0)
   }, [weightedPairs, isWeightedMode])
 
   const activeNumbers = isWeightedMode ? validPairs.map(p => p.value) : numbers
@@ -157,7 +157,8 @@ export default function AverageCalculator() {
     if (!hasData) return { value: null, error: false }
     if (activeNumbers.some(n => n === 0)) return { value: null, error: true }
     const reciprocalSum = activeNumbers.reduce((acc, n) => acc + 1 / n, 0)
-    return { value: activeNumbers.length / reciprocalSum, error: false }
+    // 1, −1 처럼 역수 합이 0 이면 n/0 = Infinity → 값 없음('-')
+    return { value: reciprocalSum === 0 ? null : activeNumbers.length / reciprocalSum, error: false }
   }, [activeNumbers, hasData])
 
   // ---- Statistics ----

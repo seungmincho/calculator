@@ -66,6 +66,10 @@ export default function BloodPressure() {
     return 'normal'
   }, [])
 
+  // 실시간 분류는 기록 저장과 같은 범위일 때만 — 0/0·음수도 '정상'으로 나왔다
+  const sysLive = parseFloat(systolic), diaLive = parseFloat(diastolic)
+  const liveValid = sysLive > 0 && sysLive <= 300 && diaLive > 0 && diaLive <= 200
+
   // Get classification color
   const getClassificationColor = useCallback((classification: Classification) => {
     switch (classification) {
@@ -258,7 +262,7 @@ export default function BloodPressure() {
         {/* Classification Panel */}
         <div className="lg:col-span-2 space-y-6">
           {/* Current Classification */}
-          {systolic && diastolic && (
+          {liveValid && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <h2 className="text-lg font-semibold text-fg mb-4">
                 {t('classification.title')}
