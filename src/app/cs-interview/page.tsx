@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CS 기술 면접 - 100문제 모범 답안 | 툴허브',
     description: '10개 분야 100개 기술 면접 질문과 모범 답안으로 면접 완벽 대비.',
-    url: 'https://toolhub.ai.kr/cs-interview',
+    url: 'https://toolhub.ai.kr/cs-interview/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/cs-interview.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/cs-interview',
+    canonical: 'https://toolhub.ai.kr/cs-interview/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function CsInterviewPage() {
     '@type': 'WebApplication',
     name: 'CS 기술 면접 준비',
     description: '10개 분야 100개 기술 면접 질문과 모범 답안을 제공하는 면접 준비 도구',
-    url: 'https://toolhub.ai.kr/cs-interview',
+    url: 'https://toolhub.ai.kr/cs-interview/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

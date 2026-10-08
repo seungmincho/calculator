@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '인터넷 속도 측정 | 툴허브',
     description: '다운로드 속도와 핑(지연 시간)을 브라우저에서 바로 측정하세요.',
-    url: 'https://toolhub.ai.kr/speed-test',
+    url: 'https://toolhub.ai.kr/speed-test/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -34,7 +34,7 @@ export default function SpeedTestPage() {
       '@type': 'WebApplication',
       name: '인터넷 속도 측정',
       description: 'Cloudflare 서버 기준으로 인터넷 다운로드·업로드 속도와 핑·지터를 브라우저에서 무료로 측정합니다.',
-      url: 'https://toolhub.ai.kr/speed-test',
+      url: 'https://toolhub.ai.kr/speed-test/',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

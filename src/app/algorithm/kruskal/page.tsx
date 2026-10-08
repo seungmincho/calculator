@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '크루스칼 MST 시각화 | 툴허브',
     description: '최소 신장 트리를 크루스칼 알고리즘으로 구성하는 과정을 시각적으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/kruskal',
+    url: 'https://toolhub.ai.kr/algorithm/kruskal/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-kruskal.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/kruskal',
+    canonical: 'https://toolhub.ai.kr/algorithm/kruskal/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function KruskalPage() {
     '@type': 'WebApplication',
     name: '크루스칼 MST 시각화',
     description: '크루스칼 알고리즘으로 최소 신장 트리를 구성하는 과정을 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/kruskal',
+    url: 'https://toolhub.ai.kr/algorithm/kruskal/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

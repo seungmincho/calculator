@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '삽입정렬 시각화 | 툴허브',
     description: '삽입정렬을 막대 차트 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/insertion-sort',
+    url: 'https://toolhub.ai.kr/algorithm/insertion-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-insertion-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/insertion-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/insertion-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function InsertionSortPage() {
     '@type': 'WebApplication',
     name: '삽입정렬 시각화',
     description: '삽입정렬 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/insertion-sort',
+    url: 'https://toolhub.ai.kr/algorithm/insertion-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

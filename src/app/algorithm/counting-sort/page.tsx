@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '카운팅정렬 시각화 | 툴허브',
     description: '카운팅정렬을 3단계 막대 차트 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/counting-sort',
+    url: 'https://toolhub.ai.kr/algorithm/counting-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-counting-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/counting-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/counting-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function CountingSortPage() {
     '@type': 'WebApplication',
     name: '카운팅정렬 시각화',
     description: '카운팅정렬(Counting Sort) 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/counting-sort',
+    url: 'https://toolhub.ai.kr/algorithm/counting-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '백색소음 생성기 | 툴허브',
     description: '수면·집중을 위한 6가지 소음 생성기. 타이머 지원.',
-    url: 'https://toolhub.ai.kr/white-noise',
+    url: 'https://toolhub.ai.kr/white-noise/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function WhiteNoisePage() {
     '@type': 'WebApplication',
     name: '백색소음 생성기',
     description: '수면과 집중을 위한 백색소음 생성기',
-    url: 'https://toolhub.ai.kr/white-noise',
+    url: 'https://toolhub.ai.kr/white-noise/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, Web Audio API',

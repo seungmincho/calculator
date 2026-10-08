@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '다익스트라 최단경로 시각화 | 툴허브',
     description: '가중치 그래프의 최단 경로를 다익스트라로 찾아보세요.',
-    url: 'https://toolhub.ai.kr/algorithm/dijkstra',
+    url: 'https://toolhub.ai.kr/algorithm/dijkstra/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-dijkstra.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/dijkstra',
+    canonical: 'https://toolhub.ai.kr/algorithm/dijkstra/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function DijkstraPage() {
     '@type': 'WebApplication',
     name: '다익스트라 최단경로 시각화',
     description: '다익스트라 알고리즘으로 가중치 그래프의 최단 경로를 찾는 과정을 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/dijkstra',
+    url: 'https://toolhub.ai.kr/algorithm/dijkstra/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

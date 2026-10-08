@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '간트 차트 생성기 | 툴허브',
     description: '프로젝트 일정을 간트 차트로 시각화하고 PNG/CSV/JSON으로 내보내세요.',
-    url: 'https://toolhub.ai.kr/gantt-chart',
+    url: 'https://toolhub.ai.kr/gantt-chart/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -56,7 +56,7 @@ export default function GanttChartPage() {
     '@type': 'WebApplication',
     name: '간트 차트 생성기',
     description: '프로젝트 일정을 간트 차트로 시각화합니다. 작업 관리, 진행률 추적, 내보내기 지원.',
-    url: 'https://toolhub.ai.kr/gantt-chart',
+    url: 'https://toolhub.ai.kr/gantt-chart/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

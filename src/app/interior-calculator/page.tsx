@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '인테리어 면적 계산기 | 툴허브',
     description: '방 치수 입력만으로 페인트·벽지·타일 소요량과 비용을 즉시 계산. 다중 방 지원, 문·창문 자동 공제.',
-    url: 'https://toolhub.ai.kr/interior-calculator',
+    url: 'https://toolhub.ai.kr/interior-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -34,7 +34,7 @@ export default function InteriorCalculatorPage() {
       '@type': 'WebApplication',
       name: '인테리어 면적 계산기',
       description: '방 치수를 입력하면 바닥·벽·천장 면적과 페인트·벽지·타일 소요량 및 비용을 자동으로 계산합니다.',
-      url: 'https://toolhub.ai.kr/interior-calculator',
+      url: 'https://toolhub.ai.kr/interior-calculator/',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

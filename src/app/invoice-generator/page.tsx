@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '견적서·세금계산서 생성기 | 툴허브',
     description: '견적서, 인보이스를 쉽게 만들고 PDF로 출력하세요.',
-    url: 'https://toolhub.ai.kr/invoice-generator',
+    url: 'https://toolhub.ai.kr/invoice-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function InvoiceGeneratorPage() {
     '@type': 'WebApplication',
     name: '견적서·세금계산서 생성기',
     description: '견적서·거래명세서·청구서를 만들고 한글 PDF로 출력합니다. 부가세 자동 계산.',
-    url: 'https://toolhub.ai.kr/invoice-generator',
+    url: 'https://toolhub.ai.kr/invoice-generator/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

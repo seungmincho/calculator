@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '연말정산 계산기 2027 (2026년 귀속) | 툴허브',
     description: '2026년 귀속 연말정산 환급액·결정세액을 자동 계산. 소득공제·세액공제 항목별 분석.',
-    url: 'https://toolhub.ai.kr/year-end-tax',
+    url: 'https://toolhub.ai.kr/year-end-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

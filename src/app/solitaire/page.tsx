@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '카드 솔리테어 - 클래식 카드 게임 | 툴허브',
     description: '클래식 클론다이크 솔리테어를 브라우저에서 무료로 즐기세요!',
-    url: 'https://toolhub.ai.kr/solitaire',
+    url: 'https://toolhub.ai.kr/solitaire/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function SolitairePage() {
     '@type': 'WebApplication',
     name: '카드 솔리테어',
     description: '클래식 클론다이크 솔리테어 카드 게임',
-    url: 'https://toolhub.ai.kr/solitaire',
+    url: 'https://toolhub.ai.kr/solitaire/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

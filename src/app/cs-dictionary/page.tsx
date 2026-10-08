@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CS 용어 사전 - 200+ 핵심 용어 | 툴허브',
     description: '10개 분야 200+ 컴퓨터 과학 핵심 용어를 검색하고 학습하세요. 북마크, 진행률 추적, 관련 퀴즈 연동.',
-    url: 'https://toolhub.ai.kr/cs-dictionary',
+    url: 'https://toolhub.ai.kr/cs-dictionary/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/cs-dictionary.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/cs-dictionary',
+    canonical: 'https://toolhub.ai.kr/cs-dictionary/',
   },
 }
 
@@ -33,7 +33,7 @@ export default function CsDictionaryPage() {
     '@type': 'WebApplication',
     name: 'CS 용어 사전',
     description: '10개 분야 200+ 컴퓨터 과학 핵심 용어를 검색하고 학습할 수 있는 온라인 사전',
-    url: 'https://toolhub.ai.kr/cs-dictionary',
+    url: 'https://toolhub.ai.kr/cs-dictionary/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

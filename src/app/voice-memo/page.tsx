@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '음성 메모 - 온라인 녹음기 | 툴허브',
     description: '설치 없이 브라우저에서 바로 음성 녹음 - 파형 시각화, 다운로드, 일시정지 지원',
-    url: 'https://toolhub.ai.kr/voice-memo',
+    url: 'https://toolhub.ai.kr/voice-memo/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function VoiceMemoPage() {
     '@type': 'WebApplication',
     name: '음성 메모 - 온라인 녹음기',
     description: '브라우저에서 바로 음성을 녹음하는 무료 온라인 도구. 실시간 파형 시각화, 일시정지/재개, 녹음 파일 다운로드를 지원합니다.',
-    url: 'https://toolhub.ai.kr/voice-memo',
+    url: 'https://toolhub.ai.kr/voice-memo/',
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, MediaRecorder API, getUserMedia',

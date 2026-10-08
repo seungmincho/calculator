@@ -33,7 +33,7 @@ export default function MbtiCompatibilityPage() {
     '@type': 'WebApplication',
     name: 'MBTI 궁합 분석',
     description: 'MBTI 유형별 연애 궁합 분석 - 16×16 궁합 매트릭스, 남녀 관점별 첫인상, 연애 장점, 갈등 포인트, 극복 방법',
-    url: 'https://toolhub.ai.kr/mbti-compatibility',
+    url: 'https://toolhub.ai.kr/mbti-compatibility/',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

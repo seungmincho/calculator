@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '플러드필 시각화 | 툴허브',
     description: '페인트 버킷처럼 클릭해서 BFS/DFS 플러드필 알고리즘을 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/flood-fill',
+    url: 'https://toolhub.ai.kr/algorithm/flood-fill/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-flood-fill.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/flood-fill',
+    canonical: 'https://toolhub.ai.kr/algorithm/flood-fill/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function FloodFillPage() {
     '@type': 'WebApplication',
     name: '플러드필 시각화',
     description: '플러드필 영역 채우기 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/flood-fill',
+    url: 'https://toolhub.ai.kr/algorithm/flood-fill/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

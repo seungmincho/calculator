@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이미지 편집기 | 툴허브',
     description: '브라우저에서 바로 이미지를 편집하고 다운로드하세요',
-    url: 'https://toolhub.ai.kr/image-editor',
+    url: 'https://toolhub.ai.kr/image-editor/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ImageEditorPage() {
     '@type': 'WebApplication',
     name: '이미지 편집기',
     description: '브라우저에서 바로 이미지를 편집하세요. 크롭, 회전, 필터, 텍스트 추가 등 다양한 편집 기능 제공.',
-    url: 'https://toolhub.ai.kr/image-editor',
+    url: 'https://toolhub.ai.kr/image-editor/',
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

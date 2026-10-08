@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       '오늘 점심 저녁 메뉴 고민 끝! 메뉴 추천 룰렛으로 랜덤하게 오늘의 메뉴를 결정하세요.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/menu-roulette',
+    url: 'https://toolhub.ai.kr/menu-roulette/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [

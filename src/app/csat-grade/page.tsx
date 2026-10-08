@@ -33,7 +33,7 @@ export default function CsatGradePage() {
     '@type': 'WebApplication',
     name: '수능 등급컷 계산기',
     description: '2026학년도 수능 과목별 등급 판정 계산기',
-    url: 'https://toolhub.ai.kr/csat-grade',
+    url: 'https://toolhub.ai.kr/csat-grade/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

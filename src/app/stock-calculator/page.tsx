@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '주식 수익률 계산기 | 툴허브',
     description: '수수료·증권거래세 뺀 순수익률, 손익분기 매도가, 물타기 평단, 미국 주식 양도세까지 한 번에 계산하세요',
-    url: 'https://toolhub.ai.kr/stock-calculator',
+    url: 'https://toolhub.ai.kr/stock-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -29,7 +29,7 @@ export default function StockCalculatorPage() {
     '@type': 'WebApplication',
     name: '주식 수익률 계산기',
     description: '수수료·증권거래세를 반영한 주식 순수익률, 손익분기 매도가, 목표가, 물타기 평균단가, 미국 주식 양도소득세 계산',
-    url: 'https://toolhub.ai.kr/stock-calculator',
+    url: 'https://toolhub.ai.kr/stock-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -33,7 +33,7 @@ export default function OvulationCalculatorPage() {
     '@type': 'WebApplication',
     name: '배란일 계산기',
     description: '생리주기 기반 배란일·가임기 예측 계산기',
-    url: 'https://toolhub.ai.kr/ovulation-calculator',
+    url: 'https://toolhub.ai.kr/ovulation-calculator/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

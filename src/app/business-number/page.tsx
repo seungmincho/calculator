@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '사업자등록번호 검증기 - 유효성 확인, 형식 검증 | 툴허브',
   description: '사업자등록번호 10자리를 입력하는 즉시 국세청 검증번호 알고리즘으로 유효성을 확인하고, 개인·법인 구분 해석, 여러 번호 일괄 검증과 CSV 저장, 휴·폐업 상태조회까지 한 번에 처리하세요.',
   keywords: '사업자등록번호 검증, 사업자번호 확인, 사업자등록번호 유효성, 사업자번호 조회, 휴폐업 조회, 사업자번호 일괄 검증, business number validator, 사업자번호 검증기',
-  openGraph: { title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증', url: 'https://toolhub.ai.kr/business-number', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/business-number.png', width: 1200, height: 630, alt: '사업자등록번호 검증기' }] },
+  openGraph: { title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증', url: 'https://toolhub.ai.kr/business-number/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/business-number.png', width: 1200, height: 630, alt: '사업자등록번호 검증기' }] },
   twitter: { card: 'summary_large_image', title: '사업자등록번호 검증기 | 툴허브', description: '사업자등록번호 유효성 검증', images: ['https://toolhub.ai.kr/og/business-number.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/business-number/' },
 }
 
 export default function BusinessNumberPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '사업자등록번호 검증기', description: '사업자등록번호 유효성 검증', url: 'https://toolhub.ai.kr/business-number', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['입력 즉시 검증번호 확인', '개인/법인 구분코드 해석', '일괄 검증 및 CSV 내보내기', '휴·폐업 상태조회', '검증 이력'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '사업자등록번호 검증기', description: '사업자등록번호 유효성 검증', url: 'https://toolhub.ai.kr/business-number/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['입력 즉시 검증번호 확인', '개인/법인 구분코드 해석', '일괄 검증 및 CSV 내보내기', '휴·폐업 상태조회', '검증 이력'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

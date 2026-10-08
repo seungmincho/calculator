@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '래딕스정렬 시각화 | 툴허브',
     description: '래딕스정렬 LSD를 10개 버킷 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/radix-sort',
+    url: 'https://toolhub.ai.kr/algorithm/radix-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-radix-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/radix-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/radix-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function RadixSortPage() {
     '@type': 'WebApplication',
     name: '래딕스정렬 시각화',
     description: '래딕스정렬(Radix Sort) LSD 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/radix-sort',
+    url: 'https://toolhub.ai.kr/algorithm/radix-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

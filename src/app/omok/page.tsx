@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 오목 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 오목 대전을 즐기세요. 19x19 바둑판에서 온라인 오목 게임!',
-    url: 'https://toolhub.ai.kr/omok',
+    url: 'https://toolhub.ai.kr/omok/',
     type: 'website',
     siteName: '툴허브',
     images: [

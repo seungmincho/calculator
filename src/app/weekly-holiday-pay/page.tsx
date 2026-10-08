@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '주휴수당 계산기 | 툴허브',
     description: '알바 주휴수당 포함 주급·월급·연봉을 자동으로 계산합니다.',
-    url: 'https://toolhub.ai.kr/weekly-holiday-pay',
+    url: 'https://toolhub.ai.kr/weekly-holiday-pay/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function WeeklyHolidayPayPage() {
     '@type': 'WebApplication',
     name: '주휴수당 계산기',
     description: '알바 주휴수당을 자동으로 계산합니다. 시급, 근무시간, 근무일수 입력으로 주급·월급·연봉을 확인하세요.',
-    url: 'https://toolhub.ai.kr/weekly-holiday-pay',
+    url: 'https://toolhub.ai.kr/weekly-holiday-pay/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

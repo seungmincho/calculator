@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '자동차세 계산기 2026 | 툴허브',
     description: '배기량·차령별 연간 자동차세와 1월 연납 할인액을 한 번에.',
-    url: 'https://toolhub.ai.kr/annual-car-tax',
+    url: 'https://toolhub.ai.kr/annual-car-tax/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/annual-car-tax.png', width: 1200, height: 630, alt: '자동차세 계산기 2026' }],
   },

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '내용증명 양식 작성기 | 툴허브',
     description: '목적만 고르면 완성되는 내용증명. 보증금 반환·대금 청구·임금체불 초안, 기한 검사, PDF 출력.',
-    url: 'https://toolhub.ai.kr/certified-letter',
+    url: 'https://toolhub.ai.kr/certified-letter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -65,7 +65,7 @@ export default function CertifiedLetterPage() {
     '@type': 'WebApplication',
     name: '내용증명 양식 작성기',
     description: '목적별 내용증명 초안을 자동으로 만들고 A4 PDF로 저장·인쇄합니다. 이행 기한·갱신 거절 기간 검사, 우체국 요금 안내.',
-    url: 'https://toolhub.ai.kr/certified-letter',
+    url: 'https://toolhub.ai.kr/certified-letter/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

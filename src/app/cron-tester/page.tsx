@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Cron 표현식 테스터 | 툴허브',
     description: 'Cron 표현식 테스터 - 실시간 검증 + 다음 실행시간 예측 + 한국어 설명',
-    url: 'https://toolhub.ai.kr/cron-tester',
+    url: 'https://toolhub.ai.kr/cron-tester/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CronTesterPage() {
     '@type': 'WebApplication',
     name: 'Cron 표현식 테스터',
     description: 'Cron 표현식을 실시간으로 테스트하고 분석하는 도구',
-    url: 'https://toolhub.ai.kr/cron-tester',
+    url: 'https://toolhub.ai.kr/cron-tester/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

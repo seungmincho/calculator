@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '신경망 시각화 - 순전파·역전파 인터랙티브 학습 | 툴허브',
     description: '인공 신경망의 순전파·역전파 과정을 뉴런 단위로 시각화하며 딥러닝 원리를 이해하세요.',
-    url: 'https://toolhub.ai.kr/neural-network',
+    url: 'https://toolhub.ai.kr/neural-network/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function NeuralNetworkPage() {
     '@type': 'WebApplication',
     name: '신경망 시각화',
     description: '인공 신경망의 순전파·역전파 과정을 뉴런 단위로 시각화하는 인터랙티브 학습 도구',
-    url: 'https://toolhub.ai.kr/neural-network',
+    url: 'https://toolhub.ai.kr/neural-network/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

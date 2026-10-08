@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '자동차 유지비 계산기 - 연간 차량 유지 비용 | 툴허브',
     description: '보험, 세금, 주유비, 정비비, 감가상각까지 연간 차량 유지 비용을 한번에 계산하세요.',
-    url: 'https://toolhub.ai.kr/car-maintenance',
+    url: 'https://toolhub.ai.kr/car-maintenance/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CarMaintenancePage() {
     '@type': 'WebApplication',
     name: '자동차 유지비 계산기',
     description: '보험, 세금, 주유비, 정비비, 감가상각까지 연간 차량 유지 비용을 한번에 계산하는 무료 온라인 도구',
-    url: 'https://toolhub.ai.kr/car-maintenance',
+    url: 'https://toolhub.ai.kr/car-maintenance/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

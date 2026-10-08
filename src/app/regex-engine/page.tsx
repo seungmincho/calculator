@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '정규표현식 엔진 시각화 | 툴허브',
     description: '정규표현식 매칭 과정을 단계별로 시각화하고 학습하세요.',
-    url: 'https://toolhub.ai.kr/regex-engine',
+    url: 'https://toolhub.ai.kr/regex-engine/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function RegexEnginePage() {
     '@type': 'WebApplication',
     name: '정규표현식 엔진 시각화',
     description: '정규표현식(regex) 매칭 과정을 단계별로 시각화하는 학습 도구',
-    url: 'https://toolhub.ai.kr/regex-engine',
+    url: 'https://toolhub.ai.kr/regex-engine/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

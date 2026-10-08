@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '세금 계산기 - 소득세, 부가세, 양도소득세 | 툴허브',
     description: '한국 기준 소득세, 부가가치세, 양도소득세를 정확하게 계산하세요',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/tax-calculator',
+    url: 'https://toolhub.ai.kr/tax-calculator/',
     images: [
       {
         url: 'https://toolhub.ai.kr/og/tax-calculator.png',
@@ -36,7 +36,7 @@ export default function TaxCalculatorPage() {
     '@type': 'WebApplication',
     name: '세금 계산기',
     description: '소득세, 부가가치세, 양도소득세를 계산하는 한국 기준 세금 계산 도구',
-    url: 'https://toolhub.ai.kr/tax-calculator',
+    url: 'https://toolhub.ai.kr/tax-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Web',
     offers: {

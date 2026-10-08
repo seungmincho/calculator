@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '수평계·나침반 | 툴허브',
     description: '스마트폰으로 기울기와 방위를 측정하세요. 디지털 수평계 & 나침반.',
-    url: 'https://toolhub.ai.kr/spirit-level',
+    url: 'https://toolhub.ai.kr/spirit-level/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function SpiritLevelPage() {
     '@type': 'WebApplication',
     name: '수평계·나침반',
     description: '스마트폰 센서를 활용한 디지털 수평계와 나침반',
-    url: 'https://toolhub.ai.kr/spirit-level',
+    url: 'https://toolhub.ai.kr/spirit-level/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, DeviceOrientation API',

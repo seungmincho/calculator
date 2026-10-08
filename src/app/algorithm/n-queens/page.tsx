@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'N-Queens 시각화 | 툴허브',
     description: '백트래킹으로 N-Queens를 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/n-queens',
+    url: 'https://toolhub.ai.kr/algorithm/n-queens/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-n-queens.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/n-queens',
+    canonical: 'https://toolhub.ai.kr/algorithm/n-queens/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function NQueensPage() {
     '@type': 'WebApplication',
     name: 'N-Queens 시각화',
     description: 'N-Queens 백트래킹 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/n-queens',
+    url: 'https://toolhub.ai.kr/algorithm/n-queens/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

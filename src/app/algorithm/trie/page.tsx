@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '트라이 시각화 | 툴허브',
     description: 'Trie 삽입/탐색/자동완성을 단계별 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/trie',
+    url: 'https://toolhub.ai.kr/algorithm/trie/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-trie.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/trie',
+    canonical: 'https://toolhub.ai.kr/algorithm/trie/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function TriePage() {
     '@type': 'WebApplication',
     name: '트라이 시각화',
     description: '트라이(Trie) 자료구조 삽입/탐색/자동완성 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/trie',
+    url: 'https://toolhub.ai.kr/algorithm/trie/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

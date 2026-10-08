@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: '혈당 기록기 | 툴허브',
     description:
       '혈당 수치를 기록하고 통계로 관리하세요. 측정 시점별 분류와 7일/30일 평균을 한눈에.',
-    url: 'https://toolhub.ai.kr/blood-sugar',
+    url: 'https://toolhub.ai.kr/blood-sugar/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -39,7 +39,7 @@ export default function BloodSugarPage() {
       name: '혈당 기록기',
       description:
         '혈당 수치를 기록하고 분류하세요. 공복·식전·식후·취침 전 혈당 측정 시점별 기록, 7일/30일 통계, CSV 내보내기.',
-      url: 'https://toolhub.ai.kr/blood-sugar',
+      url: 'https://toolhub.ai.kr/blood-sugar/',
       applicationCategory: 'HealthApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

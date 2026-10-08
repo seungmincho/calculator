@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '내 IP 주소 확인 - 공인 IP, 위치, ISP 정보 조회 | 툴허브',
   description: '내 IP 주소 확인 - 공인 IP 주소, 위치 정보, ISP, 네트워크 정보를 한눈에 확인하세요. VPN 연결 확인, 서버 설정 시 유용합니다.',
   keywords: '내 아이피 확인, 내 IP 주소, IP 주소 조회, my ip address, 공인 IP 확인, 아이피 확인',
-  openGraph: { title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치, ISP 정보 조회', url: 'https://toolhub.ai.kr/ip-checker', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/ip-checker.png', width: 1200, height: 630, alt: '내 IP 주소 확인' }] },
+  openGraph: { title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치, ISP 정보 조회', url: 'https://toolhub.ai.kr/ip-checker/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/ip-checker.png', width: 1200, height: 630, alt: '내 IP 주소 확인' }] },
   twitter: { card: 'summary_large_image', title: '내 IP 주소 확인 | 툴허브', description: '공인 IP 주소, 위치 정보 확인', images: ['https://toolhub.ai.kr/og/ip-checker.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/ip-checker/' },
 }
 
 export default function IpCheckerPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '내 IP 주소 확인', description: '공인 IP 주소, 위치, ISP, 네트워크 정보 확인', url: 'https://toolhub.ai.kr/ip-checker', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['공인 IPv4/IPv6 확인', '위치·시간대 정보', 'ISP·ASN 정보', 'HTTP/TLS 프로토콜 확인', '브라우저·기기 정보', 'WebRTC IP 유출 검사', 'VPN 의심 시간대 비교', 'IP 주소 형식·사설/공인 판별'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '내 IP 주소 확인', description: '공인 IP 주소, 위치, ISP, 네트워크 정보 확인', url: 'https://toolhub.ai.kr/ip-checker/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['공인 IPv4/IPv6 확인', '위치·시간대 정보', 'ISP·ASN 정보', 'HTTP/TLS 프로토콜 확인', '브라우저·기기 정보', 'WebRTC IP 유출 검사', 'VPN 의심 시간대 비교', 'IP 주소 형식·사설/공인 판별'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

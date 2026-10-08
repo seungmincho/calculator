@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '슬라이딩 윈도우 시각화 | 툴허브',
     description: '고정/가변 크기 윈도우 기법으로 부분 배열 문제를 효율적으로 풀어보세요.',
-    url: 'https://toolhub.ai.kr/algorithm/sliding-window',
+    url: 'https://toolhub.ai.kr/algorithm/sliding-window/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-sliding-window.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/sliding-window',
+    canonical: 'https://toolhub.ai.kr/algorithm/sliding-window/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function SlidingWindowPage() {
     '@type': 'WebApplication',
     name: '슬라이딩 윈도우 시각화',
     description: '슬라이딩 윈도우 기법 고정/가변 크기 모드 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/sliding-window',
+    url: 'https://toolhub.ai.kr/algorithm/sliding-window/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

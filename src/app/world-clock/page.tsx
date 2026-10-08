@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '세계 시계 - 전 세계 주요 도시 현재 시간, 시차 확인 | 툴허브',
   description: '세계 시계 - 뉴욕, 런던, 도쿄 등 전 세계 주요 도시의 현재 시간과 시차를 확인하세요. 미국 시간, 유럽 시간, 일본 시간 확인.',
   keywords: '세계 시간, 세계 시계, 미국 시간, 시차 계산, world clock, 뉴욕 시간, 런던 시간',
-  openGraph: { title: '세계 시계 | 툴허브', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/world-clock.png', width: 1200, height: 630, alt: '세계 시계' }] },
+  openGraph: { title: '세계 시계 | 툴허브', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/world-clock.png', width: 1200, height: 630, alt: '세계 시계' }] },
   twitter: { card: 'summary_large_image', title: '세계 시계 | 툴허브', description: '세계 주요 도시 현재 시간', images: ['https://toolhub.ai.kr/og/world-clock.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/world-clock/' },
 }
 
 export default function WorldClockPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '세계 시계', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주요 도시 실시간 시계', '서울 기준 시차·오늘/내일 표시', '서머타임(DST) 자동 반영', '해외 미팅 시간 플래너(업무시간 겹침)', '미국·한국 증시 정규장 한국시간', '도시 목록 저장·링크 공유'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '세계 시계', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주요 도시 실시간 시계', '서울 기준 시차·오늘/내일 표시', '서머타임(DST) 자동 반영', '해외 미팅 시간 플래너(업무시간 겹침)', '미국·한국 증시 정규장 한국시간', '도시 목록 저장·링크 공유'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'TCP 핸드셰이크 시각화 | 툴허브',
     description: 'TCP 3-way Handshake 과정을 인터랙티브 애니메이션으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/tcp-handshake',
+    url: 'https://toolhub.ai.kr/tcp-handshake/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/tcp-handshake.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/tcp-handshake',
+    canonical: 'https://toolhub.ai.kr/tcp-handshake/',
   },
 }
 
@@ -33,7 +33,7 @@ export default function TcpHandshakePage() {
     '@type': 'WebApplication',
     name: 'TCP 핸드셰이크 시각화',
     description: 'TCP 3-way Handshake와 4-way Termination 과정을 인터랙티브 시각화로 학습하는 교육 도구',
-    url: 'https://toolhub.ai.kr/tcp-handshake',
+    url: 'https://toolhub.ai.kr/tcp-handshake/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '회의록 작성기 | 툴허브',
     description: '5가지 템플릿으로 회의록을 쉽게 작성하고 내보내세요.',
-    url: 'https://toolhub.ai.kr/meeting-minutes',
+    url: 'https://toolhub.ai.kr/meeting-minutes/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function MeetingMinutesPage() {
     '@type': 'WebApplication',
     name: '회의록 작성기',
     description: '회의록을 쉽게 작성하고 Markdown, HTML로 내보내는 도구. 5가지 회의 템플릿 제공.',
-    url: 'https://toolhub.ai.kr/meeting-minutes',
+    url: 'https://toolhub.ai.kr/meeting-minutes/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

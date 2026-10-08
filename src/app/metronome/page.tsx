@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '메트로놈 | 툴허브',
     description: '온라인 메트로놈. BPM 조절, 박자표, 탭 템포, 진동 지원.',
-    url: 'https://toolhub.ai.kr/metronome',
+    url: 'https://toolhub.ai.kr/metronome/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -56,7 +56,7 @@ export default function MetronomePage() {
     '@type': 'WebApplication',
     name: '메트로놈',
     description: '온라인 메트로놈 - BPM 박자기, 탭 템포, 스피드 트레이너, 박별 강박',
-    url: 'https://toolhub.ai.kr/metronome',
+    url: 'https://toolhub.ai.kr/metronome/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, Web Audio API',

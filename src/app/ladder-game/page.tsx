@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: '사다리타기 게임 - 온라인 사다리 타기 | 툴허브',
     description: '참가자와 결과를 입력하면 바로 사다리타기. 블라인드 모드, 이미지 저장, 링크 공유.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/ladder-game',
+    url: 'https://toolhub.ai.kr/ladder-game/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [

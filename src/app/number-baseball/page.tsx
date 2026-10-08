@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '숫자야구 게임 | 툴허브',
     description: '스트라이크, 볼, 아웃으로 숨겨진 숫자를 맞추는 두뇌 게임',
-    url: 'https://toolhub.ai.kr/number-baseball',
+    url: 'https://toolhub.ai.kr/number-baseball/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -34,7 +34,7 @@ export default function NumberBaseballPage() {
     '@type': 'WebApplication',
     name: '숫자야구 게임',
     description: '숫자 맞추기 두뇌 게임',
-    url: 'https://toolhub.ai.kr/number-baseball',
+    url: 'https://toolhub.ai.kr/number-baseball/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

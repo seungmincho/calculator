@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SVG 편집기 & 최적화 | 툴허브',
     description: 'SVG 코드 편집, 최적화, PNG/JPEG 변환을 한번에',
-    url: 'https://toolhub.ai.kr/svg-editor',
+    url: 'https://toolhub.ai.kr/svg-editor/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function SvgEditorPage() {
     '@type': 'WebApplication',
     name: 'SVG 편집기 & 최적화',
     description: 'SVG 코드 편집, 최적화, PNG/JPEG 변환을 한번에. 파일 크기 최적화, 색상 교체, 실시간 미리보기 지원.',
-    url: 'https://toolhub.ai.kr/svg-editor',
+    url: 'https://toolhub.ai.kr/svg-editor/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

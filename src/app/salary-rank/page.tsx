@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '내 연봉 상위 몇 %? | 툴허브',
     description: '내 연봉은 한국에서 상위 몇 %일까? 공식 데이터 기반 연봉 순위 계산',
-    url: 'https://toolhub.ai.kr/salary-rank',
+    url: 'https://toolhub.ai.kr/salary-rank/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/salary-rank.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/salary-rank',
+    canonical: 'https://toolhub.ai.kr/salary-rank/',
   },
 }
 

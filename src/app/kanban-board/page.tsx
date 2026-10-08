@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '칸반보드 - 프로젝트 관리 | 툴허브',
     description: '드래그 앤 드롭 칸반보드로 프로젝트를 관리하세요.',
-    url: 'https://toolhub.ai.kr/kanban-board',
+    url: 'https://toolhub.ai.kr/kanban-board/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function KanbanBoardPage() {
     '@type': 'WebApplication',
     name: '칸반보드',
     description: '드래그 앤 드롭으로 작업을 관리하는 칸반보드. 우선순위, 마감일, 컬럼 커스터마이징 지원.',
-    url: 'https://toolhub.ai.kr/kanban-board',
+    url: 'https://toolhub.ai.kr/kanban-board/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

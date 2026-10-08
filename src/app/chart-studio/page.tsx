@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '차트 스튜디오 - 데이터 시각화 | 툴허브',
     description: 'JSON/CSV 데이터로 차트를 즉시 생성하고 ECharts 코드를 복사하세요.',
-    url: 'https://toolhub.ai.kr/chart-studio',
+    url: 'https://toolhub.ai.kr/chart-studio/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -56,7 +56,7 @@ export default function ChartStudioPage() {
     '@type': 'WebApplication',
     name: '차트 스튜디오',
     description: 'JSON, CSV 데이터를 차트로 시각화하고 ECharts 코드를 자동 생성합니다.',
-    url: 'https://toolhub.ai.kr/chart-studio',
+    url: 'https://toolhub.ai.kr/chart-studio/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

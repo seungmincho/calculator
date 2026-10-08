@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '편집 거리(Levenshtein) 시각화 | 툴허브',
     description: '두 문자열 간 최소 편집 연산을 DP 테이블로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/edit-distance',
+    url: 'https://toolhub.ai.kr/algorithm/edit-distance/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-edit-distance.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/edit-distance',
+    canonical: 'https://toolhub.ai.kr/algorithm/edit-distance/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function EditDistancePage() {
     '@type': 'WebApplication',
     name: '편집 거리(Levenshtein Distance) 시각화',
     description: '두 문자열 간 최소 편집 연산(삽입, 삭제, 치환)을 DP 테이블로 단계별 시각화하여 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/edit-distance',
+    url: 'https://toolhub.ai.kr/algorithm/edit-distance/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

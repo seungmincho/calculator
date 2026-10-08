@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'UUID 생성기 | 툴허브',
     description: '개발자용 UUID 생성 도구 - 다양한 버전 지원 + 대량 생성 + 다양한 출력 형식',
-    url: 'https://toolhub.ai.kr/uuid-generator',
+    url: 'https://toolhub.ai.kr/uuid-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function UuidGeneratorPage() {
     '@type': 'WebApplication',
     name: 'UUID 생성기',
     description: '다양한 버전의 UUID를 안전하게 생성하는 개발자 도구',
-    url: 'https://toolhub.ai.kr/uuid-generator',
+    url: 'https://toolhub.ai.kr/uuid-generator/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'API 테스터 - REST API 클라이언트 | 툴허브',
     description: '브라우저에서 바로 REST API를 테스트하세요. 다양한 HTTP 메서드, 인증, 응답 분석, 코드 생성 지원.',
-    url: 'https://toolhub.ai.kr/api-tester',
+    url: 'https://toolhub.ai.kr/api-tester/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ApiTesterPage() {
     '@type': 'WebApplication',
     name: 'API 테스터',
     description: '브라우저에서 REST API를 테스트하는 도구. HTTP 요청 전송, 응답 분석, cURL/fetch/axios 코드 생성.',
-    url: 'https://toolhub.ai.kr/api-tester',
+    url: 'https://toolhub.ai.kr/api-tester/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

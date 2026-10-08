@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '시스템 디자인 면접 - 10개 설계 문제 | 툴허브',
     description: '10개 클래식 시스템 설계 문제와 아키텍처 해설로 면접 완벽 대비.',
-    url: 'https://toolhub.ai.kr/system-design',
+    url: 'https://toolhub.ai.kr/system-design/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/system-design.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/system-design',
+    canonical: 'https://toolhub.ai.kr/system-design/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function SystemDesignPage() {
     '@type': 'WebApplication',
     name: '시스템 디자인 면접 준비',
     description: '10개 시스템 설계 면접 문제와 아키텍처 해설을 제공하는 면접 준비 도구',
-    url: 'https://toolhub.ai.kr/system-design',
+    url: 'https://toolhub.ai.kr/system-design/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

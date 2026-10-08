@@ -43,8 +43,8 @@ const TOOL_META: Record<
   workHours: { icon: '⏱️', nameKo: '근로시간 계산기', nameEn: 'Work Hours Calculator', href: '/work-hours-calculator', color: 'violet' },
   lotto: { icon: '🎱', nameKo: '로또 번호 생성', nameEn: 'Lotto Generator', href: '/lotto-generator', color: 'yellow' },
   ladder: { icon: '🪜', nameKo: '사다리 타기', nameEn: 'Ladder Game', href: '/ladder-game', color: 'orange' },
-  rentSubsidy: { icon: '🏘️', nameKo: '월세보조금 계산기', nameEn: 'Rent Subsidy Calculator', href: '/rent-subsidy-calculator', color: 'cyan' },
-  bogeumjariLoan: { icon: '🏡', nameKo: '보금자리론 계산기', nameEn: 'Bogeumjari Loan', href: '/bogeumjari-loan-calculator', color: 'green' },
+  rentSubsidy: { icon: '🏘️', nameKo: '월세보조금 계산기', nameEn: 'Rent Subsidy Calculator', href: '/youth-rent-subsidy', color: 'cyan' },
+  bogeumjariLoan: { icon: '🏡', nameKo: '보금자리론 계산기', nameEn: 'Bogeumjari Loan', href: '/bogeumjari-loan', color: 'green' },
   shipping: { icon: '📦', nameKo: '배송비 계산기', nameEn: 'Shipping Calculator', href: '/shipping-calculator', color: 'gray' },
 }
 

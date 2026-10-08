@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Minimax 시각화 | 툴허브',
     description: 'Minimax 알고리즘으로 게임 AI 전략을 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/minimax',
+    url: 'https://toolhub.ai.kr/algorithm/minimax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-minimax.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/minimax',
+    canonical: 'https://toolhub.ai.kr/algorithm/minimax/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function MinimaxPage() {
     '@type': 'WebApplication',
     name: 'Minimax 게임 AI 시각화',
     description: 'Minimax와 알파-베타 가지치기 게임 트리 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/minimax',
+    url: 'https://toolhub.ai.kr/algorithm/minimax/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

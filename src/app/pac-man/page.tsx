@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '팩맨 - 클래식 아케이드 미로 게임 | 툴허브',
     description: '미로를 돌아다니며 점을 먹고 유령을 피하는 클래식 팩맨 게임. 파워 펠릿으로 유령을 역습하세요!',
-    url: 'https://toolhub.ai.kr/pac-man',
+    url: 'https://toolhub.ai.kr/pac-man/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function PacManPage() {
     '@type': 'VideoGame',
     name: '팩맨',
     description: '미로를 돌아다니며 점을 먹고 유령을 피하는 클래식 아케이드 게임',
-    url: 'https://toolhub.ai.kr/pac-man',
+    url: 'https://toolhub.ai.kr/pac-man/',
     genre: 'Arcade',
     gamePlatform: 'Web Browser',
     applicationCategory: 'GameApplication',

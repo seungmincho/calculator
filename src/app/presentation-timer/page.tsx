@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '프레젠테이션 타이머 - 발표·회의용 카운트다운 | 툴허브',
     description: '발표, 회의, 세미나에 최적화된 프레젠테이션 타이머. 경고/위험 단계 색상 변화, 전체화면 모드, 알림음 지원.',
-    url: 'https://toolhub.ai.kr/presentation-timer',
+    url: 'https://toolhub.ai.kr/presentation-timer/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

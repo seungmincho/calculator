@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '소음 측정기 (데시벨 미터) | 툴허브',
     description: '마이크로 주변 소음을 실시간 측정. 층간소음 체크에 유용.',
-    url: 'https://toolhub.ai.kr/noise-meter',
+    url: 'https://toolhub.ai.kr/noise-meter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -56,7 +56,7 @@ export default function EnneagramPage() {
     '@type': 'WebApplication',
     name: '에니어그램 테스트',
     description: '36문항 에니어그램 성격유형 분석 - 9가지 유형, 레이더 차트, MBTI 연계',
-    url: 'https://toolhub.ai.kr/enneagram',
+    url: 'https://toolhub.ai.kr/enneagram/',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

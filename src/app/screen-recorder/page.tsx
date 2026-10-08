@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '화면 녹화기 | 툴허브',
     description: '무설치 무료 온라인 화면 녹화 도구. 브라우저에서 바로 화면을 녹화하세요.',
-    url: 'https://toolhub.ai.kr/screen-recorder',
+    url: 'https://toolhub.ai.kr/screen-recorder/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ScreenRecorderPage() {
     '@type': 'WebApplication',
     name: '화면 녹화기',
     description: '무설치 무료 온라인 화면 녹화 도구',
-    url: 'https://toolhub.ai.kr/screen-recorder',
+    url: 'https://toolhub.ai.kr/screen-recorder/',
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, MediaRecorder API',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '인사말 생성기 | 툴허브',
     description: '연말·새해·명절 인사말부터 크리스마스 문구, 송년회 건배사, 수능 응원까지 바로 만들기.',
-    url: 'https://toolhub.ai.kr/greeting-generator',
+    url: 'https://toolhub.ai.kr/greeting-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -57,7 +57,7 @@ export default function GreetingGeneratorPage() {
     '@type': 'WebApplication',
     name: '인사말 생성기',
     description: '연말·새해·설날·추석·크리스마스·감사·생일·승진·퇴사 인사말과 송년회 건배사, 수능 응원 문구를 받는 사람과 말투에 맞춰 만들어 주는 무료 도구.',
-    url: 'https://toolhub.ai.kr/greeting-generator',
+    url: 'https://toolhub.ai.kr/greeting-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

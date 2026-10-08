@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       '참가자 이름을 입력하면 랜덤으로 순서를 뽑아드립니다. 발표 순서, 회식 자리, 게임 순서를 공정하게 결정하세요.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/order-picker',
+    url: 'https://toolhub.ai.kr/order-picker/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [

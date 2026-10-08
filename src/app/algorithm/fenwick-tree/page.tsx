@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: '펜윅 트리 (BIT) 시각화 | 툴허브',
     description: '펜윅 트리 업데이트·누적합 쿼리를 lowbit 연산과 함께 단계별 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/fenwick-tree',
+    url: 'https://toolhub.ai.kr/algorithm/fenwick-tree/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-fenwick-tree.png', width: 1200, height: 630, alt: '펜윅 트리 (BIT) 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: '펜윅 트리 (BIT) 시각화', description: '누적합 업데이트·쿼리 O(log n) lowbit 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-fenwick-tree.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/fenwick-tree' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/fenwick-tree/' },
 }
 
 export default function FenwickTreePage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '펜윅 트리 (BIT) 시각화', description: '펜윅 트리 점 업데이트·누적합 쿼리 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/fenwick-tree',
+    url: 'https://toolhub.ai.kr/algorithm/fenwick-tree/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['점 업데이트 lowbit 경로 시각화', '누적합 쿼리 과정 추적', '이진 표현 실시간 표시', '담당 구간 브래킷 표시', '코드 하이라이팅'],

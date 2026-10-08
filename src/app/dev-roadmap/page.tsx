@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '개발자 로드맵 - 4가지 학습 경로 | 툴허브',
     description: '프론트엔드, 백엔드, 풀스택, DevOps 개발자 학습 경로를 단계별로 안내합니다.',
-    url: 'https://toolhub.ai.kr/dev-roadmap',
+    url: 'https://toolhub.ai.kr/dev-roadmap/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '프론트엔드, 백엔드, 풀스택, DevOps 개발자 학습 경로를 단계별로 안내합니다.',
     images: ['https://toolhub.ai.kr/og/dev-roadmap.png'],
   },
-  alternates: { canonical: 'https://toolhub.ai.kr/dev-roadmap' },
+  alternates: { canonical: 'https://toolhub.ai.kr/dev-roadmap/' },
 }
 
 export default function DevRoadmapPage() {
@@ -32,7 +32,7 @@ export default function DevRoadmapPage() {
     '@type': 'WebApplication',
     name: '개발자 로드맵',
     description: '프론트엔드, 백엔드, 풀스택, DevOps 4가지 개발자 학습 경로 가이드',
-    url: 'https://toolhub.ai.kr/dev-roadmap',
+    url: 'https://toolhub.ai.kr/dev-roadmap/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

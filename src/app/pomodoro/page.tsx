@@ -33,7 +33,7 @@ export default function PomodoroPage() {
     '@type': 'WebApplication',
     name: '포모도로 타이머',
     description: '포모도로 기법으로 25분 집중 후 5분 휴식. 집중력과 생산성을 높이는 온라인 타이머.',
-    url: 'https://toolhub.ai.kr/pomodoro',
+    url: 'https://toolhub.ai.kr/pomodoro/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

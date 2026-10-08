@@ -33,7 +33,7 @@ export default function LlmTokenCalculatorPage() {
     '@type': 'WebApplication',
     name: 'LLM 토큰 계산기',
     description: 'Claude·GPT·Gemini·DeepSeek API 단가로 토큰 수를 추정하고 일·월 비용, 프롬프트 캐싱 절감액을 계산합니다.',
-    url: 'https://toolhub.ai.kr/llm-token-calculator',
+    url: 'https://toolhub.ai.kr/llm-token-calculator/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

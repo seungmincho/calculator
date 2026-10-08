@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '진법 변환기 | 툴허브',
     description: '2진수, 8진수, 10진수, 16진수 실시간 변환',
-    url: 'https://toolhub.ai.kr/base-converter',
+    url: 'https://toolhub.ai.kr/base-converter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export default function BaseConverterPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '진법 변환기', description: '2진수, 8진수, 10진수, 16진수 실시간 변환',
-    url: 'https://toolhub.ai.kr/base-converter', applicationCategory: 'DeveloperApplication',
+    url: 'https://toolhub.ai.kr/base-converter/', applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['2·8·10·16진수 및 2~36진법 동시 변환', '임의 크기 정수(BigInt)·소수·순환소수', '2의 보수·1의 보수·부호-크기 (8~64비트)', '클릭으로 비트 토글', 'IEEE 754 float32/float64 분해', '나눗셈·자리값·묶음법 풀이 과정', '텍스트 ↔ UTF-8 바이트'],

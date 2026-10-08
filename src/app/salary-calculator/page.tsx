@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '연봉 실수령액 계산기 | 툴허브 - 종합 금융 도구',
     description: '2026년 4대보험·세율로 월 실수령액 계산. 국세청 기준 내 연봉 상위 %, 연봉 인상 시뮬레이션까지',
-    url: 'https://toolhub.ai.kr/salary-calculator',
+    url: 'https://toolhub.ai.kr/salary-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '이미지 변환기 - 포맷 변환 | 툴허브',
   description: '아이폰 HEIC·PNG·WebP 사진을 JPG·PNG·WebP로 변환하세요. 여러 장 일괄 변환·ZIP 저장, 품질 조절, EXIF 회전 반영. 서버 업로드 없이 브라우저에서 처리합니다.',
   keywords: 'HEIC JPG 변환, 아이폰 사진 JPG, PNG JPG 변환, 이미지 변환기, 이미지 포맷 변환, JPEG PNG 변환, WebP 변환, image converter',
-  openGraph: { title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-converter.png', width: 1200, height: 630, alt: '이미지 변환기' }] },
+  openGraph: { title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-converter.png', width: 1200, height: 630, alt: '이미지 변환기' }] },
   twitter: { card: 'summary_large_image', title: '이미지 변환기 | 툴허브', description: 'JPEG/PNG/WebP 이미지 포맷 변환', images: ['https://toolhub.ai.kr/og/image-converter.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-converter/' },
 }
 
 export default function ImageConverterPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 변환기', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['HEIC→JPG 변환(사파리)', 'JPG·PNG·WebP·AVIF 변환', '일괄 변환·ZIP 다운로드', 'EXIF 회전 반영·메타데이터 제거', '서버 업로드 없음'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 변환기', description: 'JPEG/PNG/WebP 이미지 포맷 변환', url: 'https://toolhub.ai.kr/image-converter/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['HEIC→JPG 변환(사파리)', 'JPG·PNG·WebP·AVIF 변환', '일괄 변환·ZIP 다운로드', 'EXIF 회전 반영·메타데이터 제거', '서버 업로드 없음'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

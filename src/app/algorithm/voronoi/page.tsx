@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '보로노이 다이어그램 시각화 | 툴허브',
     description: '보로노이 다이어그램을 인터랙티브하게 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/voronoi',
+    url: 'https://toolhub.ai.kr/algorithm/voronoi/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-voronoi.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/voronoi',
+    canonical: 'https://toolhub.ai.kr/algorithm/voronoi/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function VoronoiPage() {
     '@type': 'WebApplication',
     name: '보로노이 다이어그램 시각화',
     description: '보로노이 다이어그램 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/voronoi',
+    url: 'https://toolhub.ai.kr/algorithm/voronoi/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

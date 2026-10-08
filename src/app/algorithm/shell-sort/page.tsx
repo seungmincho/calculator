@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '셸정렬 시각화 | 툴허브',
     description: '셸정렬을 갭 수열별로 시각적으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/shell-sort',
+    url: 'https://toolhub.ai.kr/algorithm/shell-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-shell-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/shell-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/shell-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function ShellSortPage() {
     '@type': 'WebApplication',
     name: '셸정렬 시각화',
     description: '셸정렬 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/shell-sort',
+    url: 'https://toolhub.ai.kr/algorithm/shell-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '한글 워들 - 매일 새로운 단어 맞추기 | 툴허브',
     description: '오늘의 단어 #N — 6번 안에 맞히고 단톡방에 결과를 공유해 보세요!',
-    url: 'https://toolhub.ai.kr/korean-wordle',
+    url: 'https://toolhub.ai.kr/korean-wordle/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '전세사기 체크리스트 | 툴허브',
     description: '전세 계약 전 반드시 확인해야 할 16가지 체크리스트. 전세사기 예방을 위한 단계별 안전 점검.',
-    url: 'https://toolhub.ai.kr/jeonse-checklist',
+    url: 'https://toolhub.ai.kr/jeonse-checklist/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/jeonse-checklist.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/jeonse-checklist',
+    canonical: 'https://toolhub.ai.kr/jeonse-checklist/',
   },
 }
 
@@ -33,7 +33,7 @@ export default function JeonseChecklistPage() {
       '@type': 'WebApplication',
       name: '전세사기 체크리스트',
       description: '전세 계약 전 반드시 확인해야 할 16가지 체크리스트. 전세사기 예방을 위한 단계별 안전 점검.',
-      url: 'https://toolhub.ai.kr/jeonse-checklist',
+      url: 'https://toolhub.ai.kr/jeonse-checklist/',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

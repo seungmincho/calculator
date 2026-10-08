@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '메모리 관리 시각화 - 페이지 교체 알고리즘 비교 | 툴허브',
     description: 'FIFO, LRU, LFU, Optimal 페이지 교체 알고리즘을 프레임 테이블로 시각화하고 비교',
-    url: 'https://toolhub.ai.kr/memory-management',
+    url: 'https://toolhub.ai.kr/memory-management/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function MemoryManagementPage() {
     '@type': 'WebApplication',
     name: '메모리 관리 시각화',
     description: '페이지 교체 알고리즘(FIFO, LRU, LFU, Optimal)을 프레임 테이블로 시각화하고 비교하는 교육 도구',
-    url: 'https://toolhub.ai.kr/memory-management',
+    url: 'https://toolhub.ai.kr/memory-management/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

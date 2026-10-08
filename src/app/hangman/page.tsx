@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '단어 맞추기 (행맨) - 한글 단어 추측 게임 | 툴허브',
     description: '자음과 모음을 선택해서 숨겨진 한글 단어를 맞춰보세요!',
-    url: 'https://toolhub.ai.kr/hangman',
+    url: 'https://toolhub.ai.kr/hangman/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '퍼센트 계산기 | 툴허브',
     description: '퍼센트 계산, 비율 계산, 증감률, 할인율 등 다양한 퍼센트 계산을 한 곳에서 간편하게',
-    url: 'https://toolhub.ai.kr/percent-calculator',
+    url: 'https://toolhub.ai.kr/percent-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function PercentCalculatorPage() {
     '@type': 'WebApplication',
     name: '퍼센트 계산기',
     description: 'A의 B%, 비율, 증감률, 할인가, 정가 역산, 중복 할인, 퍼센트포인트, 부가세 역산을 한 화면에서 동시에 계산합니다.',
-    url: 'https://toolhub.ai.kr/percent-calculator',
+    url: 'https://toolhub.ai.kr/percent-calculator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

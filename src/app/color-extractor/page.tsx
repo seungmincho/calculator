@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이미지 색상 추출기 | 툴허브',
     description: '이미지에서 색상을 추출하고 팔레트를 만드세요!',
-    url: 'https://toolhub.ai.kr/color-extractor',
+    url: 'https://toolhub.ai.kr/color-extractor/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/color-extractor.png', width: 1200, height: 630, alt: '이미지 색상 추출기' }],
   },
@@ -22,7 +22,7 @@ export default function ColorExtractorPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '이미지 색상 추출기', description: '이미지에서 색상 추출 및 팔레트 생성',
-    url: 'https://toolhub.ai.kr/color-extractor', applicationCategory: 'DesignApplication',
+    url: 'https://toolhub.ai.kr/color-extractor/', applicationCategory: 'DesignApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['클릭 색상 추출', '자동 팔레트 추출', 'HEX/RGB/HSL 변환', 'CSS/Tailwind 내보내기', '돋보기 기능'],

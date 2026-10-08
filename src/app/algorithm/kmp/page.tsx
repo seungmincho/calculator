@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'KMP 패턴 매칭 시각화 | 툴허브',
     description: 'KMP 실패 함수 구축과 O(n+m) 문자열 검색을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/kmp',
+    url: 'https://toolhub.ai.kr/algorithm/kmp/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-kmp.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/kmp',
+    canonical: 'https://toolhub.ai.kr/algorithm/kmp/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function KMPPage() {
     '@type': 'WebApplication',
     name: 'KMP 패턴 매칭 시각화',
     description: 'KMP 알고리즘 실패 함수 구축 및 문자열 패턴 매칭 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/kmp',
+    url: 'https://toolhub.ai.kr/algorithm/kmp/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

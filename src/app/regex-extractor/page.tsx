@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: '정규식 추출기 | grep, 패턴 매칭, 문자열 치환 도구',
     description: '강력한 정규식으로 텍스트를 검색, 추출, 변환하세요. grep 필터링, 패턴 매칭, 문자열 치환을 한 곳에서!',
     type: 'website',
-    url: 'https://toolhub.ai.kr/regex-extractor',
+    url: 'https://toolhub.ai.kr/regex-extractor/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [
@@ -69,7 +69,7 @@ export default function RegexExtractorPage() {
     '@type': 'WebApplication',
     name: '정규식 추출기',
     description: '강력한 정규식으로 텍스트를 검색, 추출, 변환하세요. grep 필터링, 패턴 매칭, 문자열 치환을 한 곳에서!',
-    url: 'https://toolhub.ai.kr/regex-extractor',
+    url: 'https://toolhub.ai.kr/regex-extractor/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

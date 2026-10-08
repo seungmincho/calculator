@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: '비즈니스 이메일 템플릿 생성기 | 툴허브',
     description:
       '8가지 카테고리, 3가지 톤으로 한국어·영어 비즈니스 이메일을 자동 생성. 제목과 본문을 원클릭 복사.',
-    url: 'https://toolhub.ai.kr/email-template',
+    url: 'https://toolhub.ai.kr/email-template/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -37,7 +37,7 @@ export default function EmailTemplatePage() {
     name: '비즈니스 이메일 템플릿 생성기',
     description:
       '거래 제안, 감사, 사과, 회의 요청 등 8가지 카테고리와 3가지 톤으로 한국어·영어 비즈니스 이메일을 자동 생성하는 무료 도구',
-    url: 'https://toolhub.ai.kr/email-template',
+    url: 'https://toolhub.ai.kr/email-template/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

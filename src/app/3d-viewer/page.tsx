@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '3D 변환기 | 툴허브',
     description: '3D 파일 변환, 최적화, 프린팅 분석까지 한 번에',
-    url: 'https://toolhub.ai.kr/3d-viewer',
+    url: 'https://toolhub.ai.kr/3d-viewer/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function Viewer3DPage() {
     '@type': 'WebApplication',
     name: '3D 변환기',
     description: '3D 파일 변환, 최적화, 프린팅 분석까지 한 번에. GLB, OBJ, STL 등 다양한 포맷 지원',
-    url: 'https://toolhub.ai.kr/3d-viewer',
+    url: 'https://toolhub.ai.kr/3d-viewer/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, WebGPU or WebGL',

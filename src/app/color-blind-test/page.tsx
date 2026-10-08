@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   title: '색약 테스트 - 적색약·녹색약 자가 검사 | 툴허브',
   description: '나는 색각 이상일까? 이시하라식 가성동색표 14판으로 적색약·녹색약·청황색약 가능성을 3분 만에 확인하세요. 판마다 색약자에게 어떻게 보이는지 비교하고 결과를 공유할 수 있습니다.',
   keywords: '색약 테스트, 색맹 테스트, 색맹 검사, 색각 이상, 적록색약, 적색약, 녹색약, 이시하라 테스트, color blind test',
-  openGraph: { title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/color-blind-test.png', width: 1200, height: 630, alt: '색약 테스트' }] },
+  openGraph: { title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/color-blind-test.png', width: 1200, height: 630, alt: '색약 테스트' }] },
   twitter: { card: 'summary_large_image', title: '색약 테스트 | 툴허브', description: '색각 이상 검사 (이시하라 테스트)', images: ['https://toolhub.ai.kr/og/color-blind-test.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/color-blind-test/' },
 }
 
 export default function ColorBlindTestPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '색약 테스트', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['이시하라식 가성동색표 14판', '적색약·녹색약 유형 분류', '청황색약 검사판', '색약자 시야로 검사판 보기', '결과 이미지 공유'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '색약 테스트', description: '색각 이상 검사 (이시하라 테스트)', url: 'https://toolhub.ai.kr/color-blind-test/', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['이시하라식 가성동색표 14판', '적색약·녹색약 유형 분류', '청황색약 검사판', '색약자 시야로 검사판 보기', '결과 이미지 공유'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'GIF 메이커 - 이미지로 애니메이션 GIF 만들기 | 툴허브',
     description: '여러 이미지를 업로드하여 애니메이션 GIF를 무료로 만들어보세요. 프레임 간격, 크기, 반복 횟수 설정 가능.',
-    url: 'https://toolhub.ai.kr/gif-maker',
+    url: 'https://toolhub.ai.kr/gif-maker/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -34,7 +34,7 @@ export default function GifMakerPage() {
       '@type': 'WebApplication',
       name: 'GIF 메이커',
       description: '여러 이미지를 업로드하여 애니메이션 GIF를 무료로 만드는 온라인 도구',
-      url: 'https://toolhub.ai.kr/gif-maker',
+      url: 'https://toolhub.ai.kr/gif-maker/',
       applicationCategory: 'MultimediaApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

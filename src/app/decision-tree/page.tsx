@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '의사결정 트리 시각화 | 툴허브',
     description: '의사결정 트리 분류 알고리즘을 인터랙티브하게 학습하세요.',
-    url: 'https://toolhub.ai.kr/decision-tree',
+    url: 'https://toolhub.ai.kr/decision-tree/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function DecisionTreePage() {
     '@type': 'WebApplication',
     name: '의사결정 트리 시각화',
     description: '의사결정 트리(Decision Tree) 분류 알고리즘을 인터랙티브하게 시각화합니다. 엔트로피, 정보 이득, 지니 계수를 단계별로 확인하세요.',
-    url: 'https://toolhub.ai.kr/decision-tree',
+    url: 'https://toolhub.ai.kr/decision-tree/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

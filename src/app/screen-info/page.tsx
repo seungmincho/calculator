@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '화면/기기 정보 - 해상도, 브라우저, OS 확인 | 툴허브',
   description: '내 화면 크기, 해상도, 뷰포트, 브라우저, OS, CPU 코어 수 등 기기 정보를 한눈에 확인하세요. 웹 개발, 기술 지원에 유용합니다.',
   keywords: '화면 크기 확인, 해상도 확인, 뷰포트 크기, 내 화면 해상도, screen resolution, 브라우저 정보',
-  openGraph: { title: '화면/기기 정보 | 툴허브', description: '화면 해상도, 브라우저, OS 정보 확인', url: 'https://toolhub.ai.kr/screen-info', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/screen-info.png', width: 1200, height: 630, alt: '화면/기기 정보' }] },
+  openGraph: { title: '화면/기기 정보 | 툴허브', description: '화면 해상도, 브라우저, OS 정보 확인', url: 'https://toolhub.ai.kr/screen-info/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/screen-info.png', width: 1200, height: 630, alt: '화면/기기 정보' }] },
   twitter: { card: 'summary_large_image', title: '화면/기기 정보 | 툴허브', description: '화면 해상도, 브라우저, OS 정보 확인', images: ['https://toolhub.ai.kr/og/screen-info.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/screen-info/' },
 }
 
 export default function ScreenInfoPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면/기기 정보', description: '화면 해상도, 뷰포트, 브라우저, OS 정보 확인', url: 'https://toolhub.ai.kr/screen-info', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['화면 해상도/뷰포트', '브라우저 정보', '기기 정보', '전체 복사'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면/기기 정보', description: '화면 해상도, 뷰포트, 브라우저, OS 정보 확인', url: 'https://toolhub.ai.kr/screen-info/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['화면 해상도/뷰포트', '브라우저 정보', '기기 정보', '전체 복사'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

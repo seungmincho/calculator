@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '플래피버드 - 파이프 사이를 날아가는 캐주얼 게임 | 툴허브',
     description: '클릭이나 탭으로 새를 날려 파이프를 통과하는 캐주얼 게임. 최고 점수에 도전하세요!',
-    url: 'https://toolhub.ai.kr/flappy-bird',
+    url: 'https://toolhub.ai.kr/flappy-bird/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function FlappyBirdPage() {
     '@type': 'VideoGame',
     name: '플래피버드',
     description: '클릭이나 탭으로 새를 날려 파이프를 통과하는 캐주얼 브라우저 게임',
-    url: 'https://toolhub.ai.kr/flappy-bird',
+    url: 'https://toolhub.ai.kr/flappy-bird/',
     genre: 'Casual',
     gamePlatform: 'Web Browser',
     applicationCategory: 'GameApplication',

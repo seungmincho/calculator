@@ -33,7 +33,7 @@ export default function WebserverConfigPage() {
     '@type': 'WebApplication',
     name: '웹서버 설정 생성기',
     description: 'Nginx, Caddy 웹서버 설정 파일을 상황별 베스트 프리셋으로 자동 생성합니다.',
-    url: 'https://toolhub.ai.kr/webserver-config',
+    url: 'https://toolhub.ai.kr/webserver-config/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

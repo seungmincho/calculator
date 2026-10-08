@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '상속세 증여세 계산기 2026 | 툴허브',
     description: '상속세·증여세 간편 계산. 2026년 현행 세율과 공제를 반영한 계산기.',
-    url: 'https://toolhub.ai.kr/inheritance-gift-tax',
+    url: 'https://toolhub.ai.kr/inheritance-gift-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function InheritanceGiftTaxPage() {
     '@type': 'WebApplication',
     name: '상속세 증여세 계산기',
     description: '2026년 기준 상속세와 증여세를 간편하게 계산하는 온라인 도구',
-    url: 'https://toolhub.ai.kr/inheritance-gift-tax',
+    url: 'https://toolhub.ai.kr/inheritance-gift-tax/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이미지 배경 제거 - 색상 기반 크로마키 | 툴허브',
     description: '클릭으로 배경색 선택 후 허용 오차 조절로 정밀한 배경 제거. 서버 업로드 없이 브라우저에서 처리.',
-    url: 'https://toolhub.ai.kr/background-remover',
+    url: 'https://toolhub.ai.kr/background-remover/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function BackgroundRemoverPage() {
     '@type': 'WebApplication',
     name: '이미지 배경 제거',
     description: '이미지에서 배경을 제거하여 투명 PNG로 저장하세요. 색상 기반 크로마키 방식으로 배경색을 선택하고 허용 오차를 조절해 정밀한 배경 제거가 가능합니다.',
-    url: 'https://toolhub.ai.kr/background-remover',
+    url: 'https://toolhub.ai.kr/background-remover/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

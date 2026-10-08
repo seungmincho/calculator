@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '벽돌깨기 - 클래식 아케이드 게임 | 툴허브',
     description: '공으로 벽돌을 깨는 클래식 아케이드 게임. 다양한 레벨과 파워업!',
-    url: 'https://toolhub.ai.kr/breakout-game',
+    url: 'https://toolhub.ai.kr/breakout-game/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function BreakoutGamePage() {
     '@type': 'WebApplication',
     name: '벽돌깨기',
     description: '공으로 벽돌을 깨는 클래식 아케이드 게임',
-    url: 'https://toolhub.ai.kr/breakout-game',
+    url: 'https://toolhub.ai.kr/breakout-game/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

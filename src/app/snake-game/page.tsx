@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '스네이크 게임 - 클래식 뱀 게임 | 툴허브',
     description: '클래식 뱀 게임을 브라우저에서 즐기세요! 3가지 모드, 4단계 난이도, 모바일 지원.',
-    url: 'https://toolhub.ai.kr/snake-game',
+    url: 'https://toolhub.ai.kr/snake-game/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function SnakeGamePage() {
     '@type': 'WebApplication',
     name: '스네이크 게임',
     description: '클래식 뱀 게임 - 3가지 모드, 4단계 난이도, 커스텀 스킨',
-    url: 'https://toolhub.ai.kr/snake-game',
+    url: 'https://toolhub.ai.kr/snake-game/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

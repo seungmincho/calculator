@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '네모로직 - 논리 퍼즐 게임 | 툴허브',
     description: '숫자 힌트로 그림을 완성하는 네모로직! 3단계 난이도와 매일 새 퍼즐.',
-    url: 'https://toolhub.ai.kr/picross',
+    url: 'https://toolhub.ai.kr/picross/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -46,7 +46,7 @@ export default function PicrossPage() {
     '@type': 'VideoGame',
     name: '네모로직 (피크로스/노노그램)',
     description: '숫자 힌트로 그림을 완성하는 논리 퍼즐 게임. 5x5, 10x10, 15x15 크기와 매일 새 퍼즐 제공.',
-    url: 'https://toolhub.ai.kr/picross',
+    url: 'https://toolhub.ai.kr/picross/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

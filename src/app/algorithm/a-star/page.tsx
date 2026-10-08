@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'A* 경로탐색 시각화 | 툴허브',
     description: '휴리스틱 기반 최단경로 알고리즘을 시각적으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/a-star',
+    url: 'https://toolhub.ai.kr/algorithm/a-star/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-a-star.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/a-star',
+    canonical: 'https://toolhub.ai.kr/algorithm/a-star/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function AStarPage() {
     '@type': 'WebApplication',
     name: 'A* 경로탐색 시각화',
     description: 'A* 최단경로 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/a-star',
+    url: 'https://toolhub.ai.kr/algorithm/a-star/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

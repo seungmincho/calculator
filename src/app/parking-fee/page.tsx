@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: '주차 요금 계산기 - 주차장 요금, 시간별 주차비 | 툴허브',
   description: '주차 요금 계산기 - 입·출차 시각이나 주차 시간만 넣으면 기본요금·추가요금·일 최대·회차·마트 영수증 무료·경차 할인까지 반영해 주차비를 계산하고, 주차장 3곳을 비교합니다.',
   keywords: '주차 요금 계산기, 주차비 계산, 주차장 요금, parking fee calculator, 주차 시간 계산',
-  openGraph: { title: '주차 요금 계산기 | 툴허브', description: '주차 시간별 요금 계산', url: 'https://toolhub.ai.kr/parking-fee', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/parking-fee.png', width: 1200, height: 630, alt: '주차 요금 계산기' }] },
+  openGraph: { title: '주차 요금 계산기 | 툴허브', description: '주차 시간별 요금 계산', url: 'https://toolhub.ai.kr/parking-fee/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/parking-fee.png', width: 1200, height: 630, alt: '주차 요금 계산기' }] },
   twitter: { card: 'summary_large_image', title: '주차 요금 계산기 | 툴허브', description: '주차 시간별 요금 계산', images: ['https://toolhub.ai.kr/og/parking-fee.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/parking-fee/' },
 }

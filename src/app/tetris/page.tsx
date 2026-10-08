@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '테트리스 - 클래식 블록 퍼즐 & 2인 대전 | 툴허브',
     description: '브라우저에서 즐기는 무료 클래식 테트리스 & 2인 실시간 대전',
-    url: 'https://toolhub.ai.kr/tetris',
+    url: 'https://toolhub.ai.kr/tetris/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function TetrisPage() {
     '@type': 'VideoGame',
     name: '테트리스',
     description: '클래식 블록 퍼즐 게임 & 2인 실시간 대전',
-    url: 'https://toolhub.ai.kr/tetris',
+    url: 'https://toolhub.ai.kr/tetris/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

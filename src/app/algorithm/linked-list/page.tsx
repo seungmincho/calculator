@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: '연결 리스트 시각화 | 툴허브',
     description: '연결 리스트 삽입·삭제·뒤집기 포인터 변경 시각화.',
-    url: 'https://toolhub.ai.kr/algorithm/linked-list',
+    url: 'https://toolhub.ai.kr/algorithm/linked-list/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-linked-list.png', width: 1200, height: 630, alt: '연결 리스트 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: '연결 리스트 시각화', description: 'Singly/Doubly Linked List 시각화', images: ['https://toolhub.ai.kr/og/algorithm-linked-list.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/linked-list' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/linked-list/' },
 }
 
 export default function LinkedListPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '연결 리스트 시각화', description: '연결 리스트 삽입·삭제·검색·뒤집기 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/linked-list',
+    url: 'https://toolhub.ai.kr/algorithm/linked-list/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['단일/이중 연결 리스트', '삽입 (Head/Tail/Index)', '삭제 + 포인터 재연결', '값 검색 애니메이션', '리스트 뒤집기 시각화'],

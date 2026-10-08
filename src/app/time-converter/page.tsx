@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description: '타임존 변환부터 Unix 타임스탬프까지, 모든 시간 변환을 한 곳에서',
     type: 'website',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/time-converter',
+    url: 'https://toolhub.ai.kr/time-converter/',
     images: [
       {
         url: 'https://toolhub.ai.kr/og/time-converter.png',
@@ -37,7 +37,7 @@ export default function TimeConverterPage() {
     '@type': 'WebApplication',
     name: '시간 변환기',
     description: '전 세계 타임존 변환, Unix 타임스탬프 변환, 상대시간 계산을 한 번에. 티켓팅, 국제회의, 해외 이벤트 시간 확인에 최적화된 도구입니다.',
-    url: 'https://toolhub.ai.kr/time-converter',
+    url: 'https://toolhub.ai.kr/time-converter/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

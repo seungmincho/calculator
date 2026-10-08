@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '생활비 계산기 - 월간 예산 관리 | 툴허브',
     description: '카테고리별 월간 지출을 관리하고 예산을 계획하세요. 50/30/20 규칙, 시각적 분석, 절약 추천 제공.',
-    url: 'https://toolhub.ai.kr/budget-calculator',
+    url: 'https://toolhub.ai.kr/budget-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function BudgetCalculatorPage() {
     '@type': 'WebApplication',
     name: '생활비 계산기',
     description: '카테고리별 월간 지출을 관리하고 예산을 계획하는 도구. 50/30/20·통장 쪼개기 규칙, 월별 계획 대비 실제 지출, 남은 하루 예산, 비상금 목표, 연봉→실수령 연동.',
-    url: 'https://toolhub.ai.kr/budget-calculator',
+    url: 'https://toolhub.ai.kr/budget-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

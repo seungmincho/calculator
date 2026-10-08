@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'LCS 시각화 | 툴허브',
     description: '최장 공통 부분수열 DP 테이블과 역추적을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/lcs',
+    url: 'https://toolhub.ai.kr/algorithm/lcs/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-lcs.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/lcs',
+    canonical: 'https://toolhub.ai.kr/algorithm/lcs/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function LCSPage() {
     '@type': 'WebApplication',
     name: 'LCS 시각화',
     description: 'LCS(최장 공통 부분수열) DP 테이블 계산 및 역추적 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/lcs',
+    url: 'https://toolhub.ai.kr/algorithm/lcs/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

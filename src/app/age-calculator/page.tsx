@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '나이 계산기 | 툴허브',
     description: '만 나이, 한국 나이, 학년 정보, 생일 D-Day, 인생 타임라인 등 다양한 나이 정보를 한눈에 확인하세요',
-    url: 'https://toolhub.ai.kr/age-calculator',
+    url: 'https://toolhub.ai.kr/age-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function AgeCalculatorPage() {
     '@type': 'WebApplication',
     name: '나이 계산기',
     description: '생년월일을 입력하면 만 나이, 한국 나이, 연 나이, 학년 정보, 같은 학년 또래, 다음 생일 D-Day, 인생 타임라인, 띠, 별자리 등을 한눈에 확인할 수 있는 나이 계산기입니다.',
-    url: 'https://toolhub.ai.kr/age-calculator',
+    url: 'https://toolhub.ai.kr/age-calculator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: '힙 / 우선순위 큐 시각화 | 툴허브',
     description: '힙 삽입·추출·Heapify를 트리+배열로 동시 시각화.',
-    url: 'https://toolhub.ai.kr/algorithm/heap',
+    url: 'https://toolhub.ai.kr/algorithm/heap/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-heap.png', width: 1200, height: 630, alt: '힙 / 우선순위 큐 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: '힙 시각화', description: 'Min/Max Heap 트리+배열 이중 뷰 시각화', images: ['https://toolhub.ai.kr/og/algorithm-heap.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/heap' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/heap/' },
 }
 
 export default function HeapPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '힙 / 우선순위 큐 시각화', description: '힙 자료구조 삽입·추출·Heapify 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/heap',
+    url: 'https://toolhub.ai.kr/algorithm/heap/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['트리+배열 이중 뷰', 'Min/Max Heap 전환', 'Bubble Up/Down 애니메이션', '배열 인덱스 ↔ 트리 매핑', 'Heapify (Bottom-up) 시각화'],

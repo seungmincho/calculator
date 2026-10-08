@@ -33,7 +33,7 @@ export default function MilitaryDischargePage() {
     '@type': 'WebApplication',
     name: '전역일 계산기',
     description: '입대일과 군별을 선택하면 전역일, D-Day, 복무 진행률, 진급 일정을 자동으로 계산합니다.',
-    url: 'https://toolhub.ai.kr/military-discharge',
+    url: 'https://toolhub.ai.kr/military-discharge/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

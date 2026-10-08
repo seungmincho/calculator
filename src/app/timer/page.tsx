@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '타이머/스톱워치 | 툴허브',
     description: '온라인 타이머·스톱워치, 1·3·5·10분 바로 시작, 전체화면, 랩 기록',
-    url: 'https://toolhub.ai.kr/timer',
+    url: 'https://toolhub.ai.kr/timer/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export default function TimerPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '타이머/스톱워치', description: '온라인 타이머·스톱워치, 1·3·5·10분 바로 시작, 전체화면, 랩 기록',
-    url: 'https://toolhub.ai.kr/timer', applicationCategory: 'UtilityApplication',
+    url: 'https://toolhub.ai.kr/timer/', applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['카운트다운 타이머', '1·3·5·10·15·30분 바로 시작', '+1분 추가', '전체화면 큰 숫자', '스톱워치 랩 간격·최고·최저 랩, CSV 복사', '키보드 단축키(Space·R·F·L)', '화면 꺼짐 방지', '공유 링크(?m=10)', '종료 알림음·진동·브라우저 알림'],

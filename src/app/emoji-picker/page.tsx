@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '이모지 검색 - 이모지 복사, 카테고리별 모음 | 툴허브',
   description: '이모지 검색 도구 - 한글/영어로 이모지를 검색하고 클릭 한 번으로 복사하세요. 표정, 동물, 음식 등 카테고리별로 분류된 이모지 모음.',
   keywords: '이모지 검색, 이모지 복사, 이모지 모음, emoji picker, 이모티콘 복사, 특수문자',
-  openGraph: { title: '이모지 검색 | 툴허브', description: '이모지 검색, 클릭으로 복사, 카테고리별 모음', url: 'https://toolhub.ai.kr/emoji-picker', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/emoji-picker.png', width: 1200, height: 630, alt: '이모지 검색' }] },
+  openGraph: { title: '이모지 검색 | 툴허브', description: '이모지 검색, 클릭으로 복사, 카테고리별 모음', url: 'https://toolhub.ai.kr/emoji-picker/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/emoji-picker.png', width: 1200, height: 630, alt: '이모지 검색' }] },
   twitter: { card: 'summary_large_image', title: '이모지 검색 | 툴허브', description: '이모지 검색, 복사, 카테고리별 모음', images: ['https://toolhub.ai.kr/og/emoji-picker.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/emoji-picker/' },
 }
 
 export default function EmojiPickerPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이모지 검색', description: '이모지 검색, 클릭으로 복사, 카테고리별 모음', url: 'https://toolhub.ai.kr/emoji-picker', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 키워드·초성 이모지 검색', '특수문자(ㅁ+한자 기호) 모음', '텍스트 이모티콘(카오모지)', '피부색 선택', '여러 개 담아 한 번에 복사', '유니코드·HTML 코드 복사', '최근 사용 기록'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이모지 검색', description: '이모지 검색, 클릭으로 복사, 카테고리별 모음', url: 'https://toolhub.ai.kr/emoji-picker/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 키워드·초성 이모지 검색', '특수문자(ㅁ+한자 기호) 모음', '텍스트 이모티콘(카오모지)', '피부색 선택', '여러 개 담아 한 번에 복사', '유니코드·HTML 코드 복사', '최근 사용 기록'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

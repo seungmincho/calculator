@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '라빈-카프 패턴 매칭 시각화 | 툴허브',
     description: '롤링 해시 기반 문자열 패턴 매칭을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/rabin-karp',
+    url: 'https://toolhub.ai.kr/algorithm/rabin-karp/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-rabin-karp.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/rabin-karp',
+    canonical: 'https://toolhub.ai.kr/algorithm/rabin-karp/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function RabinKarpPage() {
     '@type': 'WebApplication',
     name: '라빈-카프 패턴 매칭 시각화',
     description: '롤링 해시를 활용한 문자열 패턴 매칭 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/rabin-karp',
+    url: 'https://toolhub.ai.kr/algorithm/rabin-karp/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

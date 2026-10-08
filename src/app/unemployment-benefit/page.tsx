@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '실업급여 계산기 | 툴허브',
     description: '2026년 기준 실업급여(구직급여) 수급액을 자동으로 계산합니다.',
-    url: 'https://toolhub.ai.kr/unemployment-benefit',
+    url: 'https://toolhub.ai.kr/unemployment-benefit/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function UnemploymentBenefitPage() {
     '@type': 'WebApplication',
     name: '실업급여 계산기',
     description: '2026년 고용보험 기준 실업급여(구직급여) 수급액을 자동으로 계산합니다.',
-    url: 'https://toolhub.ai.kr/unemployment-benefit',
+    url: 'https://toolhub.ai.kr/unemployment-benefit/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

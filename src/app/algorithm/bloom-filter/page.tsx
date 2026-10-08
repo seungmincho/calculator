@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '블룸 필터 시각화 | 툴허브',
     description: '블룸 필터의 삽입·검색과 거짓 양성을 시각적으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/bloom-filter',
+    url: 'https://toolhub.ai.kr/algorithm/bloom-filter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-bloom-filter.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/bloom-filter',
+    canonical: 'https://toolhub.ai.kr/algorithm/bloom-filter/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function BloomFilterPage() {
     '@type': 'WebApplication',
     name: '블룸 필터 시각화',
     description: '블룸 필터의 삽입·검색 과정과 거짓 양성을 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/bloom-filter',
+    url: 'https://toolhub.ai.kr/algorithm/bloom-filter/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

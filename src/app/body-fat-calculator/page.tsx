@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: '체지방률 계산기 | Navy, YMCA 공식으로 정확한 체지방 측정',
     description: 'Navy·RFM·BMI 기반·YMCA 공식으로 허리, 목, 엉덩이 둘레에서 체지방률을 추정하세요. 체지방량·제지방량, 목표 체지방률까지!',
     type: 'website',
-    url: 'https://toolhub.ai.kr/body-fat-calculator',
+    url: 'https://toolhub.ai.kr/body-fat-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [
@@ -68,7 +68,7 @@ export default function BodyFatCalculatorPage() {
     '@type': 'WebApplication',
     name: '체지방률 계산기',
     description: 'Navy·RFM·BMI 기반·YMCA 공식으로 체지방률을 추정하는 무료 온라인 도구',
-    url: 'https://toolhub.ai.kr/body-fat-calculator',
+    url: 'https://toolhub.ai.kr/body-fat-calculator/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },

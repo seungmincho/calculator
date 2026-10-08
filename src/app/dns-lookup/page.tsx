@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'DNS 조회 과정 시각화 | 툴허브',
     description: 'DNS 조회 과정을 단계별 애니메이션으로 학습하세요',
-    url: 'https://toolhub.ai.kr/dns-lookup',
+    url: 'https://toolhub.ai.kr/dns-lookup/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function DnsLookupPage() {
     '@type': 'WebApplication',
     name: 'DNS 조회 과정 시각화',
     description: 'DNS 조회 과정을 단계별 애니메이션으로 시각화하는 교육 도구. 브라우저 캐시, 재귀 리졸버, 루트/TLD/권한 네임서버 흐름을 학습합니다.',
-    url: 'https://toolhub.ai.kr/dns-lookup',
+    url: 'https://toolhub.ai.kr/dns-lookup/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

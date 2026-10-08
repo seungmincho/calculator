@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: '세그먼트 트리 시각화 | 툴허브',
     description: '세그먼트 트리 빌드·쿼리·업데이트를 단계별 애니메이션으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/segment-tree',
+    url: 'https://toolhub.ai.kr/algorithm/segment-tree/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-segment-tree.png', width: 1200, height: 630, alt: '세그먼트 트리 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: '세그먼트 트리 시각화', description: '구간 합/최솟값/최댓값 쿼리 O(log n) 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-segment-tree.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/segment-tree' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/segment-tree/' },
 }
 
 export default function SegmentTreePage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '세그먼트 트리 시각화', description: '세그먼트 트리 빌드·구간 쿼리·점 업데이트 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/segment-tree',
+    url: 'https://toolhub.ai.kr/algorithm/segment-tree/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['구간 합/최소/최대 쿼리 시각화', '점 업데이트 경로 추적', '트리 빌드 과정 단계별 재생', '쿼리 타입 전환', '코드 하이라이팅'],

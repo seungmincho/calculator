@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '차용증 양식 작성기 | 툴허브',
     description: '빈칸만 채우면 완성되는 차용증. 금액 한글 표기·이자 상한 확인·상환표·PDF 출력.',
-    url: 'https://toolhub.ai.kr/iou-generator',
+    url: 'https://toolhub.ai.kr/iou-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/iou-generator.png', width: 1200, height: 630, alt: '차용증 양식 작성기' }] },
@@ -57,7 +57,7 @@ export default function IouGeneratorPage() {
     '@type': 'WebApplication',
     name: '차용증 양식 작성기',
     description: '차용증 양식을 작성하고 A4 PDF로 저장·인쇄합니다. 금액 한글 표기, 이자 상한 확인, 상환 일정표.',
-    url: 'https://toolhub.ai.kr/iou-generator',
+    url: 'https://toolhub.ai.kr/iou-generator/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

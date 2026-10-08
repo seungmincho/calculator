@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '코딩 테스트 패턴 - 15개 핵심 패턴 | 툴허브',
     description: '15개 코딩 테스트 핵심 패턴으로 알고리즘 문제 풀이 실력을 높이세요.',
-    url: 'https://toolhub.ai.kr/coding-patterns',
+    url: 'https://toolhub.ai.kr/coding-patterns/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: '15개 코딩 테스트 핵심 패턴으로 알고리즘 문제 풀이 실력을 높이세요.',
     images: ['https://toolhub.ai.kr/og/coding-patterns.png'],
   },
-  alternates: { canonical: 'https://toolhub.ai.kr/coding-patterns' },
+  alternates: { canonical: 'https://toolhub.ai.kr/coding-patterns/' },
 }
 
 export default function CodingPatternsPage() {
@@ -32,7 +32,7 @@ export default function CodingPatternsPage() {
     '@type': 'WebApplication',
     name: '코딩 테스트 패턴',
     description: '15개 코딩 테스트 핵심 알고리즘 패턴 학습 도구',
-    url: 'https://toolhub.ai.kr/coding-patterns',
+    url: 'https://toolhub.ai.kr/coding-patterns/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '호흡 운동 가이드 | 툴허브',
     description: '4-7-8 호흡법, 박스 호흡 등 스트레스 해소 호흡 운동 가이드.',
-    url: 'https://toolhub.ai.kr/breathing-exercise',
+    url: 'https://toolhub.ai.kr/breathing-exercise/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function BreathingExercisePage() {
     '@type': 'WebApplication',
     name: '호흡 운동 가이드',
     description: '4-7-8 호흡법, 박스 호흡, 릴렉싱 호흡 등 스트레스 해소 호흡 운동 가이드',
-    url: 'https://toolhub.ai.kr/breathing-exercise',
+    url: 'https://toolhub.ai.kr/breathing-exercise/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

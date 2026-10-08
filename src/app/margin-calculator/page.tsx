@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '마진 계산기 | 툴허브',
     description: '온라인 셀러 순이익·마진율 자동 계산. 플랫폼 수수료·배송비·부가세 반영.',
-    url: 'https://toolhub.ai.kr/margin-calculator',
+    url: 'https://toolhub.ai.kr/margin-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

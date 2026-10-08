@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '연차 계산기 - 입사일 기준 연차 일수 계산 | 툴허브',
   description: '연차 계산기 - 입사일만 넣으면 근로기준법 기준 연차 일수, 남은 연차, 미사용 연차수당, 입사일·회계연도 기준 비교와 퇴사 정산까지 계산합니다.',
   keywords: '연차 계산기, 연차 일수 계산, 연차 발생, 잔여 연차, annual leave calculator',
-  openGraph: { title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/annual-leave.png', width: 1200, height: 630, alt: '연차 계산기' }] },
+  openGraph: { title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/annual-leave.png', width: 1200, height: 630, alt: '연차 계산기' }] },
   twitter: { card: 'summary_large_image', title: '연차 계산기 | 툴허브', description: '입사일 기준 연차 일수 계산', images: ['https://toolhub.ai.kr/og/annual-leave.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/annual-leave/' },
 }
 
 export default function AnnualLeavePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '연차 계산기', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['입사일·회계연도 기준 연차 비교', '퇴사 시 연차 정산', '미사용 연차수당 계산', '연도별 연차 발생표', '징검다리 연휴 추천', '근로기준법 제60조 기반'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '연차 계산기', description: '입사일 기준 연차 일수 계산', url: 'https://toolhub.ai.kr/annual-leave/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['입사일·회계연도 기준 연차 비교', '퇴사 시 연차 정산', '미사용 연차수당 계산', '연도별 연차 발생표', '징검다리 연휴 추천', '근로기준법 제60조 기반'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

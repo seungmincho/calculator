@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이사 비용 계산기 | 툴허브',
     description: '평수, 이사 유형, 거리, 층수별 이사 비용을 계산하세요. 포장이사, 일반이사, 반포장이사 견적 비교.',
-    url: 'https://toolhub.ai.kr/moving-cost',
+    url: 'https://toolhub.ai.kr/moving-cost/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function MovingCostPage() {
     '@type': 'WebApplication',
     name: '이사 비용 계산기',
     description: '평수, 이사 유형, 거리, 층수별 이사 비용 견적 계산',
-    url: 'https://toolhub.ai.kr/moving-cost',
+    url: 'https://toolhub.ai.kr/moving-cost/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

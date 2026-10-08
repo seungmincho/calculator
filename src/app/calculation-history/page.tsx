@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '계산 히스토리 - 저장된 계산 기록 | 툴허브',
     description: '모든 계산기에서 저장한 계산 기록을 한곳에서 확인하고 관리하세요',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/calculation-history',
+    url: 'https://toolhub.ai.kr/calculation-history/',
     locale: 'ko_KR',
     type: 'website',
     images: [
@@ -38,7 +38,7 @@ export default function CalculationHistoryPage() {
     '@type': 'WebApplication',
     name: '계산 히스토리',
     description: '모든 계산기에서 저장한 계산 기록을 한곳에서 확인하고 관리하는 도구',
-    url: 'https://toolhub.ai.kr/calculation-history',
+    url: 'https://toolhub.ai.kr/calculation-history/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: '5월 종합소득세 신고 가이드 | 툴허브',
     description:
       '5월 종합소득세 신고 기간 완벽 가이드. 신고 대상, 세율, 공제 항목, 신고 방법부터 절세 팁까지.',
-    url: 'https://toolhub.ai.kr/tax-season',
+    url: 'https://toolhub.ai.kr/tax-season/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -44,7 +44,7 @@ export default function TaxSeasonPage() {
     name: '5월 종합소득세 신고 가이드',
     description:
       '5월 종합소득세 신고 기간 완벽 가이드. 신고 대상, 세율, 공제 항목, 신고 방법부터 절세 팁까지.',
-    url: 'https://toolhub.ai.kr/tax-season',
+    url: 'https://toolhub.ai.kr/tax-season/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

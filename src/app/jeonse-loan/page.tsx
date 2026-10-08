@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '전세대출 계산기 2026 | 툴허브',
     description: '버팀목·청년·신혼 전세대출 금리·한도 비교, 월 이자 자동 계산.',
-    url: 'https://toolhub.ai.kr/jeonse-loan',
+    url: 'https://toolhub.ai.kr/jeonse-loan/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

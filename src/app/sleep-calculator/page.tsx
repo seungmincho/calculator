@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: '수면 계산기 - 최적 취침·기상 시간 계산 | 툴허브',
     description:
       '90분 수면 주기를 기반으로 최적의 취침 시간과 기상 시간을 계산합니다. 개운한 아침을 위한 수면 계산기.',
-    url: 'https://toolhub.ai.kr/sleep-calculator',
+    url: 'https://toolhub.ai.kr/sleep-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -39,7 +39,7 @@ export default function SleepCalculatorPage() {
       name: '수면 계산기',
       description:
         '90분 수면 주기를 기반으로 최적의 취침 시간과 기상 시간을 계산합니다. 연령별 권장 수면 시간과 수면 습관 가이드를 제공합니다.',
-      url: 'https://toolhub.ai.kr/sleep-calculator',
+      url: 'https://toolhub.ai.kr/sleep-calculator/',
       applicationCategory: 'HealthApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

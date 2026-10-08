@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '성과급 계산기 - 세후 실수령액 계산 | 툴허브',
     description: '성과급·인센티브 세후 실수령액 계산, 비율별 시뮬레이션, 세금 분석까지 한번에',
-    url: 'https://toolhub.ai.kr/bonus-calculator',
+    url: 'https://toolhub.ai.kr/bonus-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/bonus-calculator.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/bonus-calculator',
+    canonical: 'https://toolhub.ai.kr/bonus-calculator/',
   },
 }
 

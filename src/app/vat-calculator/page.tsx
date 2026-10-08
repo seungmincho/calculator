@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '부가세 계산기 - 부가가치세 10% 계산, 역산 | 툴허브',
   description: '부가세 계산기 - 공급가액↔합계 부가가치세 10% 즉시 계산·역산(1원 끝수 안내), 여러 품목 세금계산서 합계(과세·영세·면세), 일반·간이과세자 부가세 신고 예상 납부세액과 신고 기한.',
   keywords: '부가세 계산기, 부가가치세 계산, VAT 계산, 부가세 역산, 공급가액 계산, 세금계산서',
-  openGraph: { title: '부가세 계산기 | 툴허브', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/vat-calculator.png', width: 1200, height: 630, alt: '부가세 계산기' }] },
+  openGraph: { title: '부가세 계산기 | 툴허브', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/vat-calculator.png', width: 1200, height: 630, alt: '부가세 계산기' }] },
   twitter: { card: 'summary_large_image', title: '부가세 계산기 | 툴허브', description: '부가가치세 계산, 역산', images: ['https://toolhub.ai.kr/og/vat-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/vat-calculator/' },
 }
 
 export default function VatCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '부가세 계산기', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부가세 계산', '부가세 역산', '여러 품목 세금계산서 합계', '과세·영세율·면세 구분', '일반·간이과세자 부가세 신고 예상', '신용카드 발행세액공제', '신고 기한 D-day'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '부가세 계산기', description: '부가가치세 10% 계산, 역산', url: 'https://toolhub.ai.kr/vat-calculator/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부가세 계산', '부가세 역산', '여러 품목 세금계산서 합계', '과세·영세율·면세 구분', '일반·간이과세자 부가세 신고 예상', '신용카드 발행세액공제', '신고 기한 D-day'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

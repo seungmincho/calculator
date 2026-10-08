@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '청년월세지원 자격 계산기 - 월 20만원 지원 확인 | 툴허브',
     description: '국가사업 생애 누적 최대 24회·480만원. 기수혜 차감과 2026년 신규 신청 종료를 확인하세요.',
-    url: 'https://toolhub.ai.kr/youth-rent-subsidy',
+    url: 'https://toolhub.ai.kr/youth-rent-subsidy/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/youth-rent-subsidy.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/youth-rent-subsidy',
+    canonical: 'https://toolhub.ai.kr/youth-rent-subsidy/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function YouthRentSubsidyPage() {
     '@type': 'WebApplication',
     name: '청년월세지원 자격 계산기',
     description: '2026년 국가사업 청년월세지원 간이 요건 및 기수혜 회차 차감 예상액 계산기',
-    url: 'https://toolhub.ai.kr/youth-rent-subsidy',
+    url: 'https://toolhub.ai.kr/youth-rent-subsidy/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

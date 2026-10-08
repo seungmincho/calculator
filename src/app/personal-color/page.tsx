@@ -33,7 +33,7 @@ export default function PersonalColorPage() {
     '@type': 'WebApplication',
     name: '퍼스널컬러 자가진단',
     description: '12문항 셀프 퍼스널컬러 진단 - 봄웜/여름쿨/가을웜/겨울쿨 유형 분석',
-    url: 'https://toolhub.ai.kr/personal-color',
+    url: 'https://toolhub.ai.kr/personal-color/',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

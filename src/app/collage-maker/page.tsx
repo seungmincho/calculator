@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '사진 콜라주 메이커 - 여러 사진 합치기 | 툴허브',
     description: '사진 1~9장을 19가지 레이아웃·인생네컷 스타일로 합쳐 고화질 저장. 서버 업로드 없이 브라우저에서 바로 처리.',
-    url: 'https://toolhub.ai.kr/collage-maker',
+    url: 'https://toolhub.ai.kr/collage-maker/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CollageMakerPage() {
     '@type': 'WebApplication',
     name: '사진 콜라주 메이커',
     description: '여러 사진을 19가지 레이아웃으로 합쳐 콜라주를 만드는 브라우저 도구. 장수별 자동 레이아웃, 칸별 위치·확대, 인생네컷 스타일, 고화질 저장을 지원합니다.',
-    url: 'https://toolhub.ai.kr/collage-maker',
+    url: 'https://toolhub.ai.kr/collage-maker/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

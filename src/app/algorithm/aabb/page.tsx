@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AABB 충돌감지 시각화 | 툴허브',
     description: 'AABB 바운딩 박스 충돌감지를 인터랙티브하게 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/aabb',
+    url: 'https://toolhub.ai.kr/algorithm/aabb/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-aabb.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/aabb',
+    canonical: 'https://toolhub.ai.kr/algorithm/aabb/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function AABBPage() {
     '@type': 'WebApplication',
     name: 'AABB 충돌감지 시각화',
     description: 'AABB 충돌감지 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/aabb',
+    url: 'https://toolhub.ai.kr/algorithm/aabb/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

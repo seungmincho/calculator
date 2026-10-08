@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '기준 중위소득 조회 - 2025년, 2026년 | 툴허브',
     description: '가구원수별, 비율별 기준 중위소득과 정부 복지사업 자격요건을 한눈에 확인하세요',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/median-income',
+    url: 'https://toolhub.ai.kr/median-income/',
     images: [
       {
         url: 'https://toolhub.ai.kr/og/median-income.png',
@@ -38,7 +38,7 @@ export default function MedianIncomePage() {
     '@type': 'WebApplication',
     name: '기준 중위소득 조회',
     description: '한국 기준 중위소득을 연도별, 가구원수별, 비율별로 조회하고 복지사업 자격요건을 확인하는 도구',
-    url: 'https://toolhub.ai.kr/median-income',
+    url: 'https://toolhub.ai.kr/median-income/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Web',
     offers: {

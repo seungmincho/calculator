@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '화면 크기 비교 | 툴허브',
     description: '스마트폰·태블릿·모니터 화면 크기 시각적 비교',
-    url: 'https://toolhub.ai.kr/screen-compare',
+    url: 'https://toolhub.ai.kr/screen-compare/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ScreenComparePage() {
     '@type': 'WebApplication',
     name: '화면 크기 비교',
     description: '스마트폰, 태블릿, 노트북, 모니터 화면 크기 시각적 비교 도구',
-    url: 'https://toolhub.ai.kr/screen-compare',
+    url: 'https://toolhub.ai.kr/screen-compare/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

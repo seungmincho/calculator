@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '국민연금 수령액 계산기 | 툴허브',
     description: '나이·월 소득만으로 국민연금 예상 수령액과 월 보험료(본인·회사 몫)를 바로 계산. 2026년 연금개혁·A값 반영.',
-    url: 'https://toolhub.ai.kr/pension-calculator',
+    url: 'https://toolhub.ai.kr/pension-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -39,7 +39,7 @@ export default function PensionCalculatorPage() {
     '@type': 'WebApplication',
     name: '국민연금 수령액 계산기',
     description: '나이와 월 소득만으로 국민연금 예상 수령액, 월 보험료(본인·회사 몫), 소득대체율을 계산하는 무료 간편 계산기',
-    url: 'https://toolhub.ai.kr/pension-calculator',
+    url: 'https://toolhub.ai.kr/pension-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

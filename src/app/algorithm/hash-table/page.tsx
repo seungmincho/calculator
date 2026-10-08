@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '해시테이블 시각화 | 툴허브',
     description: '해시 충돌 해결(체이닝·선형·이차 프로빙)을 인터랙티브하게 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/hash-table',
+    url: 'https://toolhub.ai.kr/algorithm/hash-table/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-hash-table.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/hash-table',
+    canonical: 'https://toolhub.ai.kr/algorithm/hash-table/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function HashTablePage() {
     '@type': 'WebApplication',
     name: '해시테이블 시각화',
     description: '해시테이블 자료구조 인터랙티브 교육 도구 — 체이닝 및 오픈 어드레싱 충돌 해결',
-    url: 'https://toolhub.ai.kr/algorithm/hash-table',
+    url: 'https://toolhub.ai.kr/algorithm/hash-table/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

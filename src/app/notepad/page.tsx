@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 메모장 | 툴허브',
     description: '자동 저장, 여러 메모 관리, .txt 내보내기',
-    url: 'https://toolhub.ai.kr/notepad',
+    url: 'https://toolhub.ai.kr/notepad/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export default function NotepadPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '온라인 메모장', description: '자동 저장, 여러 메모 관리, .txt 내보내기',
-    url: 'https://toolhub.ai.kr/notepad', applicationCategory: 'UtilityApplication',
+    url: 'https://toolhub.ai.kr/notepad/', applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['로그인 없는 자동 저장 메모장', '여러 메모·검색·고정', '찾기·바꾸기', '전체 백업·복원(JSON)', '.txt 저장·불러오기', '글자수·원고지 매수·바이트', '집중 모드', '다른 탭 자동 반영'],

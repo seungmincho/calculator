@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description:
       'Git 명령을 인터랙티브 커밋 그래프로 시각화하며 학습하세요. branch, merge, rebase, cherry-pick을 직접 실행하고 결과를 눈으로 확인합니다.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/git-visualizer',
+    url: 'https://toolhub.ai.kr/git-visualizer/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [{ url: 'https://toolhub.ai.kr/og/git-visualizer.png', width: 1200, height: 630, alt: 'Git 시각화' }],
@@ -38,7 +38,7 @@ export default function GitVisualizerPage() {
     name: 'Git 시각화 도구',
     description:
       'Git의 branch, merge, rebase, cherry-pick을 인터랙티브 커밋 그래프로 시각화하며 학습하는 교육 도구',
-    url: 'https://toolhub.ai.kr/git-visualizer',
+    url: 'https://toolhub.ai.kr/git-visualizer/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -33,7 +33,7 @@ export default function MbtiTestPage() {
     '@type': 'WebApplication',
     name: 'MBTI 성격유형 검사',
     description: '48문항 5점 척도 성격유형 검사(비공식) - 축별 비율, 강점·약점, 잘 맞는 유형, 결과 공유',
-    url: 'https://toolhub.ai.kr/mbti-test',
+    url: 'https://toolhub.ai.kr/mbti-test/',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

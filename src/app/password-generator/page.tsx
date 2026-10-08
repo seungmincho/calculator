@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '비밀번호 생성기 | 툴허브',
     description: '안전한 비밀번호와 패스프레이즈 생성 도구 - 강도 분석, 엔트로피 계산, 일괄 생성',
-    url: 'https://toolhub.ai.kr/password-generator',
+    url: 'https://toolhub.ai.kr/password-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function PasswordGeneratorPage() {
     '@type': 'WebApplication',
     name: '비밀번호 생성기',
     description: '강력하고 안전한 비밀번호와 패스프레이즈를 생성하는 도구',
-    url: 'https://toolhub.ai.kr/password-generator',
+    url: 'https://toolhub.ai.kr/password-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

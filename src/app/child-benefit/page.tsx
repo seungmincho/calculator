@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '부모급여·아동수당 계산기 | 툴허브',
     description: '2026년 부모급여·아동수당·양육수당·첫만남이용권 월 수령액 자동 계산',
-    url: 'https://toolhub.ai.kr/child-benefit',
+    url: 'https://toolhub.ai.kr/child-benefit/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/child-benefit.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/child-benefit',
+    canonical: 'https://toolhub.ai.kr/child-benefit/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function ChildBenefitPage() {
     '@type': 'WebApplication',
     name: '부모급여·아동수당 계산기',
     description: '2026년 기준 부모급여, 아동수당, 양육수당, 첫만남이용권을 한번에 계산하는 무료 계산기',
-    url: 'https://toolhub.ai.kr/child-benefit',
+    url: 'https://toolhub.ai.kr/child-benefit/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

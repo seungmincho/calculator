@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI 프롬프트 생성기 | 툴허브',
     description: 'ChatGPT·Claude·Midjourney용 프롬프트를 쉽게 만드세요.',
-    url: 'https://toolhub.ai.kr/prompt-generator',
+    url: 'https://toolhub.ai.kr/prompt-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function PromptGeneratorPage() {
     '@type': 'WebApplication',
     name: 'AI 프롬프트 생성기',
     description: 'ChatGPT, Claude, Midjourney, DALL-E용 프롬프트를 자동으로 생성합니다.',
-    url: 'https://toolhub.ai.kr/prompt-generator',
+    url: 'https://toolhub.ai.kr/prompt-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

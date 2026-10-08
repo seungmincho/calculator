@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '전세 월세 전환 계산기 - 전월세 전환율 계산 | 툴허브',
   description: '전세 월세 전환 계산기 - 전세 보증금을 월세로, 월세를 전세금으로 변환합니다. 전월세 전환율 기준 계산, 연간 비용 비교.',
   keywords: '전세 월세 전환, 전월세 전환율, 전세 월세 계산기, 전세금 월세 변환, rent converter, 전환율 계산',
-  openGraph: { title: '전세 월세 전환 계산기 | 툴허브', description: '전세↔월세 전환율 기준 변환', url: 'https://toolhub.ai.kr/rent-converter', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/rent-converter.png', width: 1200, height: 630, alt: '전세 월세 전환 계산기' }] },
+  openGraph: { title: '전세 월세 전환 계산기 | 툴허브', description: '전세↔월세 전환율 기준 변환', url: 'https://toolhub.ai.kr/rent-converter/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/rent-converter.png', width: 1200, height: 630, alt: '전세 월세 전환 계산기' }] },
   twitter: { card: 'summary_large_image', title: '전세 월세 전환 계산기 | 툴허브', description: '전세↔월세 전환 계산', images: ['https://toolhub.ai.kr/og/rent-converter.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/rent-converter/' },
 }
 
 export default function RentConverterPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '전세 월세 전환 계산기', description: '전세↔월세 전환율 기준 변환', url: 'https://toolhub.ai.kr/rent-converter', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['전세→월세 변환', '월세→전세 변환', '법정 전환율 상한 계산', '보증금 조정', '전세·반전세·월세 총비용 비교', '갱신 5% 상한 계산'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '전세 월세 전환 계산기', description: '전세↔월세 전환율 기준 변환', url: 'https://toolhub.ai.kr/rent-converter/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['전세→월세 변환', '월세→전세 변환', '법정 전환율 상한 계산', '보증금 조정', '전세·반전세·월세 총비용 비교', '갱신 5% 상한 계산'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

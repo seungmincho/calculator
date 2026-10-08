@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '코드 스크린샷 생성기 | 툴허브',
     description: '코드를 아름다운 이미지로 변환하세요',
-    url: 'https://toolhub.ai.kr/code-screenshot',
+    url: 'https://toolhub.ai.kr/code-screenshot/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CodeScreenshotPage() {
     '@type': 'WebApplication',
     name: '코드 스크린샷 생성기',
     description: '코드를 아름다운 이미지로 변환',
-    url: 'https://toolhub.ai.kr/code-screenshot',
+    url: 'https://toolhub.ai.kr/code-screenshot/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

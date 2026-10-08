@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: '칼로리 계산기 - BMR, TDEE 다이어트 | 툴허브',
     description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량, 유지를 위한 일일 칼로리 목표를 설정하세요.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/calorie-calculator',
+    url: 'https://toolhub.ai.kr/calorie-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [
@@ -68,7 +68,7 @@ export default function CalorieCalculatorPage() {
     '@type': 'WebApplication',
     name: '칼로리 계산기',
     description: '기초대사율(BMR)과 활동대사율(TDEE)을 계산하여 다이어트, 체중 증량 목표 칼로리를 설정하는 도구',
-    url: 'https://toolhub.ai.kr/calorie-calculator',
+    url: 'https://toolhub.ai.kr/calorie-calculator/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },

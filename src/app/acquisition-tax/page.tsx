@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '취득세 계산기 2026 | 툴허브',
     description: '부동산 취득세·농특세·지방교육세 자동 계산. 다주택 중과 반영.',
-    url: 'https://toolhub.ai.kr/acquisition-tax',
+    url: 'https://toolhub.ai.kr/acquisition-tax/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/acquisition-tax.png', width: 1200, height: 630, alt: '취득세 계산기 2026' }],
   },

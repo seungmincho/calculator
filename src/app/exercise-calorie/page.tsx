@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '운동 칼로리 계산기 | 툴허브',
     description: '70여 가지 운동별 소모 칼로리를 2024 Compendium MET 기준으로 계산.',
-    url: 'https://toolhub.ai.kr/exercise-calorie',
+    url: 'https://toolhub.ai.kr/exercise-calorie/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function ExerciseCaloriePage() {
     '@type': 'WebApplication',
     name: '운동 칼로리 계산기',
     description: '운동별 소모 칼로리를 MET 기반으로 계산하는 온라인 도구',
-    url: 'https://toolhub.ai.kr/exercise-calorie',
+    url: 'https://toolhub.ai.kr/exercise-calorie/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '타잔 SCC 강연결 요소 시각화 | 툴허브',
     description: 'DFS 기반 타잔 알고리즘으로 방향 그래프의 SCC를 찾아보세요.',
-    url: 'https://toolhub.ai.kr/algorithm/tarjan-scc',
+    url: 'https://toolhub.ai.kr/algorithm/tarjan-scc/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-tarjan-scc.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/tarjan-scc',
+    canonical: 'https://toolhub.ai.kr/algorithm/tarjan-scc/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function TarjanSccPage() {
     '@type': 'WebApplication',
     name: '타잔 SCC 강연결 요소 시각화',
     description: '타잔 알고리즘으로 방향 그래프의 강연결 요소를 찾는 과정을 DFS 탐색과 함께 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/tarjan-scc',
+    url: 'https://toolhub.ai.kr/algorithm/tarjan-scc/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

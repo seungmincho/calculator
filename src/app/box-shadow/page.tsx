@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CSS 박스 그림자 생성기 | 툴허브',
     description: 'CSS box-shadow 코드를 시각적으로 생성하세요',
-    url: 'https://toolhub.ai.kr/box-shadow',
+    url: 'https://toolhub.ai.kr/box-shadow/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function BoxShadowPage() {
     '@type': 'WebApplication',
     name: 'CSS 박스 그림자 생성기',
     description: 'CSS box-shadow 코드를 시각적으로 생성',
-    url: 'https://toolhub.ai.kr/box-shadow',
+    url: 'https://toolhub.ai.kr/box-shadow/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

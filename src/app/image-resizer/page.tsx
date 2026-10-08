@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이미지 리사이저 | 툴허브',
     description: '사진 용량 줄이기·크기 조절, 목표 KB 맞추기, 증명사진 프리셋 — 서버 업로드 없음',
-    url: 'https://toolhub.ai.kr/image-resizer',
+    url: 'https://toolhub.ai.kr/image-resizer/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ImageResizerPage() {
     '@type': 'WebApplication',
     name: '이미지 리사이저',
     description: '사진 용량 줄이기·크기 조절을 브라우저에서 바로. 픽셀·퍼센트 변경, 500KB 같은 목표 용량 맞추기, 증명사진·여권·SNS 프리셋, 여러 장 한꺼번에 ZIP 저장. 서버 업로드 없이 작동합니다.',
-    url: 'https://toolhub.ai.kr/image-resizer',
+    url: 'https://toolhub.ai.kr/image-resizer/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 배틀십 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 배틀십 대전! 상대 함선을 침몰시키세요!',
-    url: 'https://toolhub.ai.kr/battleship',
+    url: 'https://toolhub.ai.kr/battleship/',
     type: 'website',
     siteName: '툴허브',
     images: [{ url: 'https://toolhub.ai.kr/og/battleship.png', width: 1200, height: 630, alt: '온라인 배틀십' }],
@@ -34,7 +34,7 @@ export default function BattleshipPage() {
     '@type': 'VideoGame',
     name: '배틀쉽 (Battleship)',
     description: '배틀쉽 - AI 대전을 지원하는 해전 전략 게임',
-    url: 'https://toolhub.ai.kr/battleship',
+    url: 'https://toolhub.ai.kr/battleship/',
     genre: 'Strategy Game',
     gamePlatform: 'Web Browser',
     operatingSystem: 'Any',

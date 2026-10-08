@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '글꼴 미리보기 - 폰트 테스트, 웹폰트 비교 | 툴허브',
   description: '상업용 무료 한글 폰트 38종(본고딕·프리텐다드·나눔·배민체 등)을 내 문구로 미리보고 최대 4개 나란히 비교. 굵기·자간·행간 조절, 라이선스 확인, CSS 복사, 내 폰트 파일 미리보기.',
   keywords: '폰트 미리보기, 한글 폰트 미리보기, 글꼴 테스트, 무료 한글 폰트, 상업용 무료 폰트, 웹폰트 비교, 구글 폰트 한글, font preview',
-  openGraph: { title: '글꼴 미리보기 | 툴허브', description: '다양한 폰트로 텍스트 미리보기', url: 'https://toolhub.ai.kr/font-preview', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/font-preview.png', width: 1200, height: 630, alt: '글꼴 미리보기' }] },
+  openGraph: { title: '글꼴 미리보기 | 툴허브', description: '다양한 폰트로 텍스트 미리보기', url: 'https://toolhub.ai.kr/font-preview/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/font-preview.png', width: 1200, height: 630, alt: '글꼴 미리보기' }] },
   twitter: { card: 'summary_large_image', title: '글꼴 미리보기 | 툴허브', description: '폰트 미리보기, 비교, CSS 복사', images: ['https://toolhub.ai.kr/og/font-preview.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/font-preview/' },
 }
 
 export default function FontPreviewPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '글꼴 미리보기', description: '다양한 웹폰트로 텍스트 미리보기 및 비교', url: 'https://toolhub.ai.kr/font-preview', applicationCategory: 'DesignApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['상업용 무료 한글 폰트 38종 (SIL OFL)', '분류·검색·즐겨찾기', '최대 4개 나란히 비교', '크기·굵기·행간·자간·다크 배경', 'CSS 스니펫 복사', '내 폰트 파일(ttf/otf/woff2) 로컬 미리보기', '공유 링크'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '글꼴 미리보기', description: '다양한 웹폰트로 텍스트 미리보기 및 비교', url: 'https://toolhub.ai.kr/font-preview/', applicationCategory: 'DesignApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['상업용 무료 한글 폰트 38종 (SIL OFL)', '분류·검색·즐겨찾기', '최대 4개 나란히 비교', '크기·굵기·행간·자간·다크 배경', 'CSS 스니펫 복사', '내 폰트 파일(ttf/otf/woff2) 로컬 미리보기', '공유 링크'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

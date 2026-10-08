@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '식단/칼로리 일지 | 툴허브',
     description: '매일 식단 기록, 칼로리·영양소 트렌드 추적',
-    url: 'https://toolhub.ai.kr/meal-diary',
+    url: 'https://toolhub.ai.kr/meal-diary/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/meal-diary.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/meal-diary',
+    canonical: 'https://toolhub.ai.kr/meal-diary/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function MealDiaryPage() {
     '@type': 'WebApplication',
     name: '식단/칼로리 일지',
     description: '매일 식단을 기록하고 칼로리와 영양소 트렌드를 추적하는 도구',
-    url: 'https://toolhub.ai.kr/meal-diary',
+    url: 'https://toolhub.ai.kr/meal-diary/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

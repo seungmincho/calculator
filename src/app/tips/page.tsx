@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '금융 꿀팁 모음 | 툴허브',
     description: '현명한 재정 관리부터 투자 전략까지, 실생활에 도움되는 금융 팁 300선',
-    url: 'https://toolhub.ai.kr/tips',
+    url: 'https://toolhub.ai.kr/tips/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -30,7 +30,7 @@ export default function TipsPage() {
     '@type': 'WebPage',
     name: '금융 꿀팁 모음',
     description: '현명한 재정 관리부터 투자 전략까지, 실생활에 도움되는 금융 팁 모음',
-    url: 'https://toolhub.ai.kr/tips',
+    url: 'https://toolhub.ai.kr/tips/',
     mainEntity: {
       '@type': 'ItemList',
       name: '금융 팁 리스트',
@@ -50,7 +50,7 @@ export default function TipsPage() {
           '@type': 'ListItem',
           position: 2,
           name: '금융 팁',
-          item: 'https://toolhub.ai.kr/tips',
+          item: 'https://toolhub.ai.kr/tips/',
         },
       ],
     },

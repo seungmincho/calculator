@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '스택 & 큐 시각화 | 툴허브',
     description: '스택과 큐를 직접 조작하며 LIFO/FIFO를 시각적으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/stack-queue',
+    url: 'https://toolhub.ai.kr/algorithm/stack-queue/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-stack-queue.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/stack-queue',
+    canonical: 'https://toolhub.ai.kr/algorithm/stack-queue/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function StackQueuePage() {
     '@type': 'WebApplication',
     name: '스택 & 큐 시각화',
     description: '스택(Stack)과 큐(Queue) 자료구조 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/stack-queue',
+    url: 'https://toolhub.ai.kr/algorithm/stack-queue/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

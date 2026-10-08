@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '한글 초성 추출기 - 자음/모음 분리, 초성 검색 | 툴허브',
   description: '한글 초성 추출기 - 초성만 추출(초성 퀴즈·초성 검색), 자음/모음 분리(겹받침 분리), 자모 합치기, 로마자 표기(음운 변화 반영), 을/를·이/가 조사 자동 선택, 유니코드·NFD까지 입력 즉시 변환.',
   keywords: '초성 추출, 초성 변환기, 한글 자모 분리, 자음 모음 분리, 자모 합치기, 겹받침 분리, 로마자 표기 변환, 조사 자동 선택, 받침 유무, 한글 유니코드, NFD NFC, korean syllable decompose',
-  openGraph: { title: '한글 초성 추출기 | 툴허브', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/korean-syllable.png', width: 1200, height: 630, alt: '한글 초성 추출기' }] },
+  openGraph: { title: '한글 초성 추출기 | 툴허브', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/korean-syllable.png', width: 1200, height: 630, alt: '한글 초성 추출기' }] },
   twitter: { card: 'summary_large_image', title: '한글 초성 추출기 | 툴허브', description: '한글 초성 추출, 자모 분리', images: ['https://toolhub.ai.kr/og/korean-syllable.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/korean-syllable/' },
 }
 
 export default function KoreanSyllablePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '한글 초성 추출기', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['초성 추출', '자모 분리(겹받침·겹모음)', '자모 합치기·두벌식 키 변환', '로마자 표기(국어의 로마자 표기법)', '조사 자동 선택(을/를·이/가·으로/로)', '유니코드 코드포인트·NFD 변환'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '한글 초성 추출기', description: '한글 초성/자모 분리', url: 'https://toolhub.ai.kr/korean-syllable/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['초성 추출', '자모 분리(겹받침·겹모음)', '자모 합치기·두벌식 키 변환', '로마자 표기(국어의 로마자 표기법)', '조사 자동 선택(을/를·이/가·으로/로)', '유니코드 코드포인트·NFD 변환'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

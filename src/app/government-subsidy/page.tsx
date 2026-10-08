@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '정부지원금 계산기 - 2026년 간이 기준 확인 | 툴허브',
     description: '2026년 12개 사업 기준·조건부 계산·공식 안내',
-    url: 'https://toolhub.ai.kr/government-subsidy',
+    url: 'https://toolhub.ai.kr/government-subsidy/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/government-subsidy.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/government-subsidy',
+    canonical: 'https://toolhub.ai.kr/government-subsidy/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function GovernmentSubsidyPage() {
     '@type': 'WebApplication',
     name: '정부지원금 자격 계산기',
     description: '2026년 12개 지원사업의 일부 기준과 추가 심사 조건을 확인하는 간이 도구',
-    url: 'https://toolhub.ai.kr/government-subsidy',
+    url: 'https://toolhub.ai.kr/government-subsidy/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

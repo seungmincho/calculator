@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '더치페이 계산기 | 툴허브',
     description: '회식비·여행비 N빵부터 여러 명 결제 정산, 단톡방 공지까지.',
-    url: 'https://toolhub.ai.kr/dutch-pay',
+    url: 'https://toolhub.ai.kr/dutch-pay/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/dutch-pay.png', width: 1200, height: 630, alt: '더치페이 계산기' }],
   },
@@ -22,7 +22,7 @@ export default function DutchPayPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '더치페이 계산기', description: '회식비, 모임비를 정확하게 나누는 더치페이 계산기',
-    url: 'https://toolhub.ai.kr/dutch-pay', applicationCategory: 'FinanceApplication',
+    url: 'https://toolhub.ai.kr/dutch-pay/', applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['N빵 균등 분배', '100원·1,000원 단위 올림/내림', '항목별 참가자 제외', '부담 비율(가중치)', '여러 명 결제 최소 송금 정산', '단톡방 공지 복사', '읽기 전용 정산 링크 공유'],

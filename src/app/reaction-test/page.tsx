@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '반응속도 테스트 - 반응 시간 측정 | 툴허브',
   description: '반응속도 테스트 - 화면이 초록색으로 변할 때 클릭하여 반응 속도를 측정합니다. 평균, 최고 기록 제공.',
   keywords: '반응속도 테스트, reaction time test, 반응 속도 측정, 반응 테스트, 클릭 속도',
-  openGraph: { title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/reaction-test.png', width: 1200, height: 630, alt: '반응속도 테스트' }] },
+  openGraph: { title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/reaction-test.png', width: 1200, height: 630, alt: '반응속도 테스트' }] },
   twitter: { card: 'summary_large_image', title: '반응속도 테스트 | 툴허브', description: '반응 속도 측정 테스트', images: ['https://toolhub.ai.kr/og/reaction-test.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/reaction-test/' },
 }
 
 export default function ReactionTestPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '반응속도 테스트', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test', applicationCategory: 'GameApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['시각 반응속도 5회 측정', '평균·중앙값·최고 기록', '상위 % 참고 비교', '기록 추이 그래프', '결과 카드 공유·친구 도전 링크', '부정 출발 감지'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '반응속도 테스트', description: '반응 속도 측정 테스트', url: 'https://toolhub.ai.kr/reaction-test/', applicationCategory: 'GameApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['시각 반응속도 5회 측정', '평균·중앙값·최고 기록', '상위 % 참고 비교', '기록 추이 그래프', '결과 카드 공유·친구 도전 링크', '부정 출발 감지'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

@@ -33,7 +33,7 @@ export default function CapitalGainsTaxPage() {
     '@type': 'WebApplication',
     name: '양도소득세 계산기',
     description: '부동산 양도소득세를 자동 계산합니다. 장기보유특별공제, 1세대1주택 비과세(12억), 다주택 중과세율, 지방소득세까지 2026년 기준 단계별 계산.',
-    url: 'https://toolhub.ai.kr/capital-gains-tax',
+    url: 'https://toolhub.ai.kr/capital-gains-tax/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

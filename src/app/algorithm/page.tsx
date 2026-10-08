@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '알고리즘 시각화 - 인터랙티브 교육 | 툴허브',
     description: '알고리즘을 인터랙티브 시각화로 직관적으로 이해하세요.',
-    url: 'https://toolhub.ai.kr/algorithm',
+    url: 'https://toolhub.ai.kr/algorithm/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm',
+    canonical: 'https://toolhub.ai.kr/algorithm/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function AlgorithmPage() {
     '@type': 'WebApplication',
     name: '알고리즘 시각화',
     description: '알고리즘을 인터랙티브 시각화로 직관적으로 이해하는 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm',
+    url: 'https://toolhub.ai.kr/algorithm/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

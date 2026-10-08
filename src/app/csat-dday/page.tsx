@@ -33,7 +33,7 @@ export default function CsatDdayPage() {
     '@type': 'WebApplication',
     name: '수능 D-day · 시간표 · 준비물',
     description: '2027학년도 수능 D-day 카운트다운, 교시별 시간표, 준비물 체크리스트, 가채점표',
-    url: 'https://toolhub.ai.kr/csat-dday',
+    url: 'https://toolhub.ai.kr/csat-dday/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

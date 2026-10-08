@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '국민연금 수령액 계산기 | 툴허브',
     description: '국민연금 예상 수령액 계산, 조기/정상/연기 수령 비교',
-    url: 'https://toolhub.ai.kr/national-pension',
+    url: 'https://toolhub.ai.kr/national-pension/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/national-pension.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/national-pension',
+    canonical: 'https://toolhub.ai.kr/national-pension/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function NationalPensionPage() {
     '@type': 'WebApplication',
     name: '국민연금 수령액 계산기',
     description: '가입 기간과 소득을 기반으로 국민연금 예상 수령액을 계산합니다',
-    url: 'https://toolhub.ai.kr/national-pension',
+    url: 'https://toolhub.ai.kr/national-pension/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

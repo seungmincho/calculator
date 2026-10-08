@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '오일러 경로/회로 시각화 | 툴허브',
     description: '그래프의 모든 간선을 한 번씩 방문하는 오일러 경로를 찾아보세요.',
-    url: 'https://toolhub.ai.kr/algorithm/euler-path',
+    url: 'https://toolhub.ai.kr/algorithm/euler-path/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-euler-path.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/euler-path',
+    canonical: 'https://toolhub.ai.kr/algorithm/euler-path/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function EulerPathPage() {
     '@type': 'WebApplication',
     name: '오일러 경로/회로 시각화',
     description: 'Hierholzer 알고리즘으로 그래프의 모든 간선을 한 번씩 방문하는 오일러 경로와 회로를 찾는 과정을 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/euler-path',
+    url: 'https://toolhub.ai.kr/algorithm/euler-path/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

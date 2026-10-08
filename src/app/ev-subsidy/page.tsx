@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '전기차 보조금 계산기 - 국비·지방비 보조금 계산 | 툴허브',
     description: '2026년 전기차 국비·지방비 보조금, 전환지원금·청년·다자녀 추가지원, 160개 시·군 비교, 실구매가 계산',
-    url: 'https://toolhub.ai.kr/ev-subsidy',
+    url: 'https://toolhub.ai.kr/ev-subsidy/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/ev-subsidy.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/ev-subsidy',
+    canonical: 'https://toolhub.ai.kr/ev-subsidy/',
   },
 }
 
@@ -33,7 +33,7 @@ export default function EvSubsidyPage() {
       '@type': 'WebApplication',
       name: '전기차 보조금 계산기',
       description: '2026년 보조금 지침과 무공해차 통합누리집 공고 금액으로 전기차 국비·지방비·추가지원과 실구매가를 계산하는 도구',
-      url: 'https://toolhub.ai.kr/ev-subsidy',
+      url: 'https://toolhub.ai.kr/ev-subsidy/',
       applicationCategory: 'FinanceApplication',
       operatingSystem: 'Any',
       browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '급여명세서 양식 작성기 | 툴허브',
     description: '법정 기재사항을 갖춘 임금명세서. 4대보험·소득세 자동 공제, 연장·야간·휴일수당 계산방법, PDF 출력.',
-    url: 'https://toolhub.ai.kr/pay-slip',
+    url: 'https://toolhub.ai.kr/pay-slip/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -43,7 +43,7 @@ export default function PaySlipPage() {
     '@type': 'WebApplication',
     name: '급여명세서 양식 작성기',
     description: '근로기준법 시행령 제27조의2 기재사항을 갖춘 임금명세서를 작성하고 A4 PDF로 저장·인쇄합니다. 4대보험·소득세 자동 공제.',
-    url: 'https://toolhub.ai.kr/pay-slip',
+    url: 'https://toolhub.ai.kr/pay-slip/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

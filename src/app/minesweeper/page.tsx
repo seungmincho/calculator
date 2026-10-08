@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '지뢰찾기 - 마인스위퍼 | 툴허브',
     description: '클래식 지뢰찾기를 무료로! 추측 없는 판·오늘의 지뢰찾기·0.01초 기록.',
-    url: 'https://toolhub.ai.kr/minesweeper',
+    url: 'https://toolhub.ai.kr/minesweeper/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -31,7 +31,7 @@ export default function MinesweeperPage() {
     '@type': 'WebApplication',
     name: '지뢰찾기 (마인스위퍼)',
     description: '클래식 지뢰찾기 게임. 초급/중급/고급/사용자 지정, 추측 없는 판, 오늘의 지뢰찾기 지원.',
-    url: 'https://toolhub.ai.kr/minesweeper',
+    url: 'https://toolhub.ai.kr/minesweeper/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

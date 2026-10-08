@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '플로이드-워셜 모든 쌍 최단경로 시각화 | 툴허브',
     description: '거리 행렬 DP로 모든 정점 쌍 간 최단 경로를 구해보세요.',
-    url: 'https://toolhub.ai.kr/algorithm/floyd-warshall',
+    url: 'https://toolhub.ai.kr/algorithm/floyd-warshall/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-floyd-warshall.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/floyd-warshall',
+    canonical: 'https://toolhub.ai.kr/algorithm/floyd-warshall/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function FloydWarshallPage() {
     '@type': 'WebApplication',
     name: '플로이드-워셜 모든 쌍 최단경로 시각화',
     description: '플로이드-워셜 알고리즘으로 모든 정점 쌍 간 최단 경로를 구하는 과정을 거리 행렬과 그래프로 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/floyd-warshall',
+    url: 'https://toolhub.ai.kr/algorithm/floyd-warshall/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

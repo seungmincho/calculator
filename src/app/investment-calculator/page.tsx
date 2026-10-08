@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '투자 수익률 계산기 | 툴허브',
     description: '적립식·거치식 미래 가치, 목표 역산, 계좌별 세후 비교, 실질 가치.',
-    url: 'https://toolhub.ai.kr/investment-calculator',
+    url: 'https://toolhub.ai.kr/investment-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function InvestmentCalculatorPage() {
     '@type': 'WebApplication',
     name: '투자 수익률 계산기',
     description: '적립식·거치식 투자 미래 가치, 목표 금액 역산, 수익률 시나리오, 일반·ISA·연금저축 세후 비교, 실질 가치 계산',
-    url: 'https://toolhub.ai.kr/investment-calculator',
+    url: 'https://toolhub.ai.kr/investment-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

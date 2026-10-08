@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '중개수수료 계산기 2026 | 툴허브',
     description: '매매·전세·월세 부동산 복비 자동 계산. 상한 요율·부가세·협의 요율 반영.',
-    url: 'https://toolhub.ai.kr/brokerage-fee',
+    url: 'https://toolhub.ai.kr/brokerage-fee/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/brokerage-fee.png', width: 1200, height: 630, alt: '중개수수료 계산기 2026' }],
   },

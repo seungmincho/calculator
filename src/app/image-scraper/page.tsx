@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이미지 스크래퍼 - 웹페이지 이미지 일괄 다운로드 | 툴허브',
     description: '웹페이지의 모든 이미지를 자동 수집하고 ZIP 다운로드 또는 세로 이미지로 합치기',
-    url: 'https://toolhub.ai.kr/image-scraper',
+    url: 'https://toolhub.ai.kr/image-scraper/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -32,7 +32,7 @@ export default function ImageScraperPage() {
     '@type': 'WebApplication',
     name: '이미지 스크래퍼',
     description: '웹페이지 URL을 입력하면 모든 이미지를 자동 수집하고 ZIP 일괄 다운로드 또는 세로 이미지 합치기를 지원합니다.',
-    url: 'https://toolhub.ai.kr/image-scraper',
+    url: 'https://toolhub.ai.kr/image-scraper/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

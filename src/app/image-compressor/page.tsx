@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이미지 압축기 | 툴허브',
     description: '무료 온라인 이미지 압축 도구. JPG, PNG, WebP 파일의 용량을 최대 90%까지 줄여보세요.',
-    url: 'https://toolhub.ai.kr/image-compressor',
+    url: 'https://toolhub.ai.kr/image-compressor/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -26,7 +26,7 @@ export default function ImageCompressorPage() {
     '@type': 'WebApplication',
     name: '이미지 압축기',
     description: '무료 온라인 이미지 압축 도구. JPG, PNG, WebP 파일의 용량을 최대 90%까지 줄여보세요.',
-    url: 'https://toolhub.ai.kr/image-compressor',
+    url: 'https://toolhub.ai.kr/image-compressor/',
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

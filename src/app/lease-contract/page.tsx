@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '부동산 임대차계약서 작성기 | 툴허브',
     description: '표준계약서 기반 전세·월세 계약서. 전세사기 예방 특약 추천·금액 검사·PDF 출력.',
-    url: 'https://toolhub.ai.kr/lease-contract',
+    url: 'https://toolhub.ai.kr/lease-contract/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/lease-contract.png', width: 1200, height: 630, alt: '부동산 임대차계약서 작성기' }] },
@@ -61,7 +61,7 @@ export default function LeaseContractPage() {
     '@type': 'WebApplication',
     name: '부동산 임대차계약서 작성기',
     description: '주택임대차표준계약서 구조로 전세·월세 계약서를 작성하고 A4 PDF로 저장·인쇄합니다. 전세사기 예방 특약 추천.',
-    url: 'https://toolhub.ai.kr/lease-contract',
+    url: 'https://toolhub.ai.kr/lease-contract/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

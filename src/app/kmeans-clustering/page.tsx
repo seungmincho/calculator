@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'K-means 클러스터링 시각화 | 툴허브',
     description: 'K-means 군집 분석을 인터랙티브 애니메이션으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/kmeans-clustering',
+    url: 'https://toolhub.ai.kr/kmeans-clustering/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function KmeansClusteringPage() {
     '@type': 'WebApplication',
     name: 'K-means 클러스터링 시각화',
     description: 'K-means 클러스터링 알고리즘을 단계별 애니메이션으로 학습하는 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/kmeans-clustering',
+    url: 'https://toolhub.ai.kr/kmeans-clustering/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '퀵정렬 시각화 | 툴허브',
     description: '퀵정렬의 파티션 과정을 막대 차트 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/quick-sort',
+    url: 'https://toolhub.ai.kr/algorithm/quick-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-quick-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/quick-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/quick-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function QuickSortPage() {
     '@type': 'WebApplication',
     name: '퀵정렬 시각화',
     description: '퀵정렬 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/quick-sort',
+    url: 'https://toolhub.ai.kr/algorithm/quick-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

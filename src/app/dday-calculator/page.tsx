@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '디데이 계산기 | 툴허브',
     description: 'D-Day 카운트다운·저장·공유, 100일 기념일, 날짜 차이, 영업일 계산',
-    url: 'https://toolhub.ai.kr/dday-calculator',
+    url: 'https://toolhub.ai.kr/dday-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

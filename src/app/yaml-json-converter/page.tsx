@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'YAML ↔ JSON 변환기 | 툴허브',
     description: 'YAML과 JSON을 실시간으로 상호 변환. Kubernetes, Docker Compose 등 설정 파일 변환에 최적화.',
-    url: 'https://toolhub.ai.kr/yaml-json-converter',
+    url: 'https://toolhub.ai.kr/yaml-json-converter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function YamlJsonConverterPage() {
     '@type': 'WebApplication',
     name: 'YAML ↔ JSON 변환기',
     description: 'YAML과 JSON을 실시간으로 상호 변환하는 온라인 도구',
-    url: 'https://toolhub.ai.kr/yaml-json-converter',
+    url: 'https://toolhub.ai.kr/yaml-json-converter/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

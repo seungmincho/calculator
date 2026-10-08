@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '서명 생성기 - 전자 서명 만들기, 이미지 다운로드 | 툴허브',
   description: '서명 만들기 - 마우스·터치·펜으로 직접 그리거나 이름을 입력해 손글씨 폰트 서명을 만들고, 여백을 자른 투명 PNG·SVG·JPG로 저장합니다. 전자계약·PDF·이메일용, 서버 전송 없음.',
   keywords: '서명 생성기, 서명 만들기, 전자 서명, 전자서명 이미지, 서명 이미지 만들기, 손글씨 서명, 이름 서명, 투명 서명 PNG, e-signature generator',
-  openGraph: { title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/signature-generator.png', width: 1200, height: 630, alt: '서명 생성기' }] },
+  openGraph: { title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/signature-generator.png', width: 1200, height: 630, alt: '서명 생성기' }] },
   twitter: { card: 'summary_large_image', title: '서명 생성기 | 툴허브', description: '전자 서명 생성 및 다운로드', images: ['https://toolhub.ai.kr/og/signature-generator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/signature-generator/' },
 }
 
 export default function SignatureGeneratorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '서명 생성기', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부드러운 필압 느낌 서명 그리기', '이름 입력 손글씨 폰트 서명', '여백 자동 자르기 투명 PNG(2x/3x)', 'SVG 벡터·흰 배경 JPG', '클립보드 복사', '서명 5개 로컬 저장'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '서명 생성기', description: '전자 서명 생성 및 다운로드', url: 'https://toolhub.ai.kr/signature-generator/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['부드러운 필압 느낌 서명 그리기', '이름 입력 손글씨 폰트 서명', '여백 자동 자르기 투명 PNG(2x/3x)', 'SVG 벡터·흰 배경 JPG', '클립보드 복사', '서명 5개 로컬 저장'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

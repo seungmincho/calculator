@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '접미사 배열 시각화 | 툴허브',
     description: '접미사 배열 구축 + LCP + 이진탐색 패턴 매칭 시각화',
-    url: 'https://toolhub.ai.kr/algorithm/suffix-array',
+    url: 'https://toolhub.ai.kr/algorithm/suffix-array/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-suffix-array.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/suffix-array',
+    canonical: 'https://toolhub.ai.kr/algorithm/suffix-array/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function SuffixArrayPage() {
     '@type': 'WebApplication',
     name: '접미사 배열 시각화',
     description: '접미사 배열 구축, LCP 배열, 이진탐색 패턴 매칭 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/suffix-array',
+    url: 'https://toolhub.ai.kr/algorithm/suffix-array/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

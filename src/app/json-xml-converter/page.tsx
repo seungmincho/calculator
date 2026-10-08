@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/json-xml-converter',
+    url: 'https://toolhub.ai.kr/json-xml-converter/',
     images: [{ url: 'https://toolhub.ai.kr/og/json-xml-converter.png', width: 1200, height: 630, alt: 'JSON/XML 변환기' }],
   },
   twitter: {
@@ -47,7 +47,7 @@ export default function JsonXmlConverterPage() {
     '@type': 'WebApplication',
     name: 'JSON/XML 변환기',
     description: 'JSON을 XML로, XML을 JSON으로 상호 변환하는 개발자 도구. 실시간 구문 검증, 포맷팅, 다양한 프리셋 지원',
-    url: 'https://toolhub.ai.kr/json-xml-converter',
+    url: 'https://toolhub.ai.kr/json-xml-converter/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

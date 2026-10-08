@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '출산 예정일 계산기 - 임신 주수 | 툴허브',
   description: '출산 예정일 계산기 - 마지막 생리일(주기 보정)·수정일·초음파·시험관 이식일로 출산 예정일과 현재 임신 주수(N주 M일)를 계산합니다. 기형아 검사·정밀초음파·임신성 당뇨 검사 날짜, 출산휴가 시작일, 임신 바우처까지 한 번에 확인하세요.',
   keywords: '출산 예정일 계산, 임신 주수 계산, 출산일 계산기, 시험관 예정일, 초음파 예정일, 기형아 검사 시기, 출산휴가 시작일, 임신 바우처, due date calculator, 임신 계산기',
-  openGraph: { title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일·임신 주수·검사 일정·출산휴가 시작일', url: 'https://toolhub.ai.kr/due-date', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/due-date.png', width: 1200, height: 630, alt: '출산 예정일 계산기' }] },
+  openGraph: { title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일·임신 주수·검사 일정·출산휴가 시작일', url: 'https://toolhub.ai.kr/due-date/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/due-date.png', width: 1200, height: 630, alt: '출산 예정일 계산기' }] },
   twitter: { card: 'summary_large_image', title: '출산 예정일 계산기 | 툴허브', description: '출산 예정일·임신 주수·검사 일정·출산휴가 시작일', images: ['https://toolhub.ai.kr/og/due-date.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/due-date/' },
 }
 
 export default function DueDatePage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '출산 예정일 계산기', description: '출산 예정일 및 임신 주수 계산', url: 'https://toolhub.ai.kr/due-date', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['LMP 주기 보정 예정일', '수정일·초음파·시험관(IVF) 기준 예정일', '임신 주수·개월·분기', '기형아 검사·정밀초음파·임신성 당뇨 검사 날짜', '출산전후휴가 시작일', '임신·출산 진료비 바우처', '결과 공유 링크'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '출산 예정일 계산기', description: '출산 예정일 및 임신 주수 계산', url: 'https://toolhub.ai.kr/due-date/', applicationCategory: 'HealthApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['LMP 주기 보정 예정일', '수정일·초음파·시험관(IVF) 기준 예정일', '임신 주수·개월·분기', '기형아 검사·정밀초음파·임신성 당뇨 검사 날짜', '출산전후휴가 시작일', '임신·출산 진료비 바우처', '결과 공유 링크'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

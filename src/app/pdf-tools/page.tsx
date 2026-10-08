@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'PDF 도구 - PDF 합치기, 분할, 회전 | 툴허브',
     description: 'PDF 합치기, 분할, 페이지 회전, 이미지→PDF 변환을 브라우저에서 무료로',
-    url: 'https://toolhub.ai.kr/pdf-tools',
+    url: 'https://toolhub.ai.kr/pdf-tools/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -32,7 +32,7 @@ export default function PdfToolsPage() {
     '@type': 'WebApplication',
     name: 'PDF 도구',
     description: 'PDF 합치기, 분할, 페이지 회전, 이미지→PDF 변환',
-    url: 'https://toolhub.ai.kr/pdf-tools',
+    url: 'https://toolhub.ai.kr/pdf-tools/',
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

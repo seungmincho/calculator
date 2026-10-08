@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'chmod 권한 계산기 - 파일 권한 변환 | 툴허브',
     description: 'Unix/Linux 파일 권한을 시각적으로 설정하세요. rwxrwxrwx 체크박스로 권한을 선택하면 chmod 숫자와 명령어가 자동 생성됩니다.',
-    url: 'https://toolhub.ai.kr/chmod-calculator',
+    url: 'https://toolhub.ai.kr/chmod-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -50,7 +50,7 @@ export default function ChmodCalculatorPage() {
     '@type': 'WebApplication',
     name: 'chmod 권한 계산기',
     description: 'Unix/Linux 파일 권한을 시각적으로 설정하세요. rwxrwxrwx 체크박스로 권한을 선택하면 chmod 숫자(755, 644 등)와 명령어가 자동 생성됩니다.',
-    url: 'https://toolhub.ai.kr/chmod-calculator',
+    url: 'https://toolhub.ai.kr/chmod-calculator/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '퇴직금 계산기 | 툴허브',
     description: '법정 퇴직금·평균임금부터 퇴직소득세·세후 실수령액, IRP 절세까지 한 번에',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/retirement-calculator',
+    url: 'https://toolhub.ai.kr/retirement-calculator/',
     images: [
       {
         url: 'https://toolhub.ai.kr/og/retirement-calculator.png',
@@ -38,7 +38,7 @@ export default function RetirementCalculatorPage() {
     '@type': 'WebApplication',
     name: '퇴직금 계산기',
     description: '입사일·퇴사일과 임금으로 법정 퇴직금, 평균임금, 퇴직소득세, 세후 실수령액, IRP 과세이연 효과를 계산하는 도구',
-    url: 'https://toolhub.ai.kr/retirement-calculator',
+    url: 'https://toolhub.ai.kr/retirement-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Web',
     offers: {

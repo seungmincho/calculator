@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '모니터 테스트 - 18가지 종합 모니터 품질 검사 | 툴허브',
     description: '불량화소부터 빛샘·번인·주사율까지! 18가지 모니터 테스트와 빠른 점검 결과 카드. 무료 온라인 모니터 품질 검사 도구.',
-    url: 'https://toolhub.ai.kr/monitor-test',
+    url: 'https://toolhub.ai.kr/monitor-test/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function MonitorTestPage() {
     '@type': 'WebApplication',
     name: '모니터 테스트 - 18가지 종합 품질 검사',
     description: '불량화소, 빛샘, 균일도, 시야각, 암부·명부 계조, 명암비, 감마, 밴딩, 색상비, 가독성, 선명도, 잔상(UFO), 번인, 화이트밸런스, 블랙밸런스, 이미지표현, 화면조정, 불량화소 복구 등 18가지 모니터 테스트',
-    url: 'https://toolhub.ai.kr/monitor-test',
+    url: 'https://toolhub.ai.kr/monitor-test/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, Fullscreen API',

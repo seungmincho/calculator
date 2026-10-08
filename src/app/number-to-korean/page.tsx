@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: '금액 한글표기 변환기 - 숫자를 한글·한자 금액으로 | 툴허브',
   description: '숫자를 입력하면 계약서용 한글 금액(금 삼백만원정), 한자 갖은자(金 參佰萬圓整), 숫자+한글 혼용, 영문 표기로 바로 바꿔 줍니다. 수표·영수증·견적서에 쓸 표기를 복사 한 번에, 한글 금액을 숫자로 바꾸는 역변환도 지원.',
   keywords: '숫자 한글 변환, 금액 한글 표기, 수표 금액 한글, number to korean, 한글 숫자, 금일봉',
-  openGraph: { title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액 표기로 변환', url: 'https://toolhub.ai.kr/number-to-korean', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/number-to-korean.png', width: 1200, height: 630, alt: '숫자 한글 변환' }] },
+  openGraph: { title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액 표기로 변환', url: 'https://toolhub.ai.kr/number-to-korean/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/number-to-korean.png', width: 1200, height: 630, alt: '숫자 한글 변환' }] },
   twitter: { card: 'summary_large_image', title: '숫자 한글 변환 | 툴허브', description: '숫자를 한글 금액으로 변환', images: ['https://toolhub.ai.kr/og/number-to-korean.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/number-to-korean/' },
 }

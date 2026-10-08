@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '환율 계산기 - 실시간 환전 계산 | 툴허브',
     description: '달러·엔화·유로 등 18개 통화 환산, 현찰·송금 환율과 환율 우대 적용 금액',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/exchange-calculator',
+    url: 'https://toolhub.ai.kr/exchange-calculator/',
     images: [
       {
         url: 'https://toolhub.ai.kr/og/exchange-calculator.png',
@@ -38,7 +38,7 @@ export default function ExchangeCalculatorPage() {
     '@type': 'WebApplication',
     name: '환율 계산기',
     description: '매일 갱신되는 환율로 현찰·송금·우대 적용 환전 금액을 계산하는 도구',
-    url: 'https://toolhub.ai.kr/exchange-calculator',
+    url: 'https://toolhub.ai.kr/exchange-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Web',
     offers: {

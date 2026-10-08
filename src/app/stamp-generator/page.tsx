@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '인감 도장 생성기 - 온라인 도장 만들기 | 툴허브',
     description: '원형·사각·타원 도장을 무료로 만들고 PNG 다운로드. 전통 붉은 인감부터 현대적 스타일까지.',
-    url: 'https://toolhub.ai.kr/stamp-generator',
+    url: 'https://toolhub.ai.kr/stamp-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

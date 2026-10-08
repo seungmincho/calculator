@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: '로또번호 생성기 | 당첨번호 조회, 통계 기반 번호추천',
     description: '로또 6/45 당첨번호 조회, 통계 기반 번호 추천으로 똑똑한 로또번호를 생성하세요.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/lotto-generator',
+    url: 'https://toolhub.ai.kr/lotto-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
       "name": "로또번호 생성기",
       "alternateName": "로또 6/45 번호 생성기",
       "description": "통계 기반 로또 번호 추천 및 과거 당첨번호 조회 서비스. 핫/콜드 번호 분석으로 더 똑똑한 번호 선택을 도와드립니다.",
-      "url": "https://toolhub.ai.kr/lotto-generator",
+      "url": "https://toolhub.ai.kr/lotto-generator/",
       "applicationCategory": "GameApplication",
       "operatingSystem": "Any",
       "browserRequirements": "Requires JavaScript. Chrome, Firefox, Safari, Edge 지원",

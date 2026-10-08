@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CPU 스케줄링 시각화 - FCFS, SJF, Round Robin 비교 | 툴허브',
     description: 'CPU 스케줄링 알고리즘을 간트 차트로 시각화하고 비교하세요. FCFS, SJF, SRTF, Round Robin, Priority 스케줄링을 애니메이션으로 학습합니다.',
-    url: 'https://toolhub.ai.kr/cpu-scheduling',
+    url: 'https://toolhub.ai.kr/cpu-scheduling/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CpuSchedulingPage() {
     '@type': 'WebApplication',
     name: 'CPU 스케줄링 시각화',
     description: 'CPU 스케줄링 알고리즘을 간트 차트로 시각화하고 비교하세요. FCFS, SJF, SRTF, Round Robin, Priority 스케줄링을 애니메이션으로 학습합니다.',
-    url: 'https://toolhub.ai.kr/cpu-scheduling',
+    url: 'https://toolhub.ai.kr/cpu-scheduling/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 체커 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 체커 대전! 상대 말을 모두 잡으세요!',
-    url: 'https://toolhub.ai.kr/checkers',
+    url: 'https://toolhub.ai.kr/checkers/',
     type: 'website',
     siteName: '툴허브',
     images: [{ url: 'https://toolhub.ai.kr/og/checkers.png', width: 1200, height: 630, alt: '온라인 체커' }],
@@ -34,7 +34,7 @@ export default function CheckersPage() {
     '@type': 'VideoGame',
     name: '체커 (Checkers)',
     description: '체커 - AI 대전을 지원하는 클래식 체커 보드게임',
-    url: 'https://toolhub.ai.kr/checkers',
+    url: 'https://toolhub.ai.kr/checkers/',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',
     operatingSystem: 'Any',

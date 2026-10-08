@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '레이캐스팅 시각화 | 툴허브',
     description: 'DDA 알고리즘 기반 2.5D 렌더링을 체험하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/raycasting',
+    url: 'https://toolhub.ai.kr/algorithm/raycasting/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-raycasting.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/raycasting',
+    canonical: 'https://toolhub.ai.kr/algorithm/raycasting/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function RaycastingPage() {
     '@type': 'WebApplication',
     name: '레이캐스팅 시각화',
     description: '레이캐스팅 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/raycasting',
+    url: 'https://toolhub.ai.kr/algorithm/raycasting/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '영수증 양식 작성기 | 툴허브',
     description: '빈칸만 채우면 완성되는 간이 영수증. 금액 한글 표기·2부 절취선·PDF 출력.',
-    url: 'https://toolhub.ai.kr/receipt-generator',
+    url: 'https://toolhub.ai.kr/receipt-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -61,7 +61,7 @@ export default function ReceiptGeneratorPage() {
     '@type': 'WebApplication',
     name: '영수증 양식 작성기',
     description: '간이 영수증 양식을 작성하고 A4 PDF로 저장·인쇄합니다. 금액 한글 표기, 품목·부가세 계산, 2부 절취선.',
-    url: 'https://toolhub.ai.kr/receipt-generator',
+    url: 'https://toolhub.ai.kr/receipt-generator/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

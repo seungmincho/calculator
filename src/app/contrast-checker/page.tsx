@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '색상 대비 체커 - WCAG 접근성 검사 | 툴허브',
     description: 'WCAG 색상 대비율 검사 및 접근성 준수 확인',
-    url: 'https://toolhub.ai.kr/contrast-checker',
+    url: 'https://toolhub.ai.kr/contrast-checker/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -34,7 +34,7 @@ export default function ContrastCheckerPage() {
     '@type': 'WebApplication',
     name: '색상 대비 체커',
     description: 'WCAG 접근성 색상 대비율 검사',
-    url: 'https://toolhub.ai.kr/contrast-checker',
+    url: 'https://toolhub.ai.kr/contrast-checker/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

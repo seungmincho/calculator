@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '사직서 양식 작성기 | 툴허브',
     description: '사유만 고르면 완성되는 사직서. 퇴직금·사직 효력일·실업급여 주의점 확인, PDF 출력.',
-    url: 'https://toolhub.ai.kr/resignation-letter',
+    url: 'https://toolhub.ai.kr/resignation-letter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -57,7 +57,7 @@ export default function ResignationLetterPage() {
     '@type': 'WebApplication',
     name: '사직서 양식 작성기',
     description: '사직서 양식을 작성하고 A4 PDF로 저장·인쇄합니다. 사직 사유 예시, 퇴직금·사직 효력일·실업급여 주의점 확인.',
-    url: 'https://toolhub.ai.kr/resignation-letter',
+    url: 'https://toolhub.ai.kr/resignation-letter/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

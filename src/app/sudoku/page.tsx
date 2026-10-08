@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '스도쿠 - 숫자 퍼즐 | 툴허브',
     description: '4단계 난이도 스도쿠! 메모, 힌트, 되돌리기 지원.',
-    url: 'https://toolhub.ai.kr/sudoku',
+    url: 'https://toolhub.ai.kr/sudoku/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -31,7 +31,7 @@ export default function SudokuPage() {
     '@type': 'WebApplication',
     name: '스도쿠 퍼즐',
     description: '4단계 난이도 스도쿠 퍼즐 게임. 메모, 힌트, 오류 검사 지원.',
-    url: 'https://toolhub.ai.kr/sudoku',
+    url: 'https://toolhub.ai.kr/sudoku/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

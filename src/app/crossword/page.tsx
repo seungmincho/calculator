@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '십자말풀이 - 한국어 퍼즐 | 툴허브',
     description: '가로세로 힌트로 한글 단어를 채우는 십자말풀이! 매일 새로운 퍼즐.',
-    url: 'https://toolhub.ai.kr/crossword',
+    url: 'https://toolhub.ai.kr/crossword/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/crossword.png', width: 1200, height: 630, alt: '십자말풀이' }] },

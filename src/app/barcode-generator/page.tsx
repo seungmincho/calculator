@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/barcode-generator',
+    url: 'https://toolhub.ai.kr/barcode-generator/',
     images: [{ url: 'https://toolhub.ai.kr/og/barcode-generator.png', width: 1200, height: 630, alt: '바코드 생성기' }],
   },
   twitter: {
@@ -48,7 +48,7 @@ export default function BarcodeGeneratorPage() {
     '@type': 'WebApplication',
     name: '바코드 생성기',
     description: '다양한 형식의 바코드를 생성하고 다운로드하세요. CODE128·EAN-13·EAN-8·UPC-A·CODE39·ITF-14 6가지 형식, 체크디지트 자동 계산, A4 라벨지 대량 인쇄 지원',
-    url: 'https://toolhub.ai.kr/barcode-generator',
+    url: 'https://toolhub.ai.kr/barcode-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

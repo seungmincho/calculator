@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'JSON ↔ CSV 변환기 | 툴허브',
     description: '고성능 JSON-CSV 변환기 + 대용량 파일 처리 + 개발자 친화적 옵션',
-    url: 'https://toolhub.ai.kr/json-csv-converter',
+    url: 'https://toolhub.ai.kr/json-csv-converter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -27,7 +27,7 @@ export default function JsonCsvConverterPage() {
     '@type': 'WebApplication',
     name: 'JSON-CSV 변환기',
     description: '고성능 JSON과 CSV 상호 변환 도구',
-    url: 'https://toolhub.ai.kr/json-csv-converter',
+    url: 'https://toolhub.ai.kr/json-csv-converter/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

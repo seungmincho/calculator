@@ -33,7 +33,7 @@ export default function NameCompatibilityPage() {
     '@type': 'WebApplication',
     name: '이름 궁합 테스트',
     description: 'ㅇ/ㅎ 획수 기반 이름 궁합 테스트 - 단계별 애니메이션, 결과 카드 공유',
-    url: 'https://toolhub.ai.kr/name-compatibility',
+    url: 'https://toolhub.ai.kr/name-compatibility/',
     applicationCategory: 'LifestyleApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

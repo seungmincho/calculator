@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '학점 계산기 | 툴허브',
     description: '대학교 학점(GPA) 계산기 - 4.5/4.3 만점 지원',
-    url: 'https://toolhub.ai.kr/gpa-calculator',
+    url: 'https://toolhub.ai.kr/gpa-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/gpa-calculator.png', width: 1200, height: 630, alt: '학점 계산기' }] },

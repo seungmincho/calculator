@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'IP 서브넷 계산기 | 툴허브',
     description: 'CIDR·마스크·와일드카드 인식, VLSM 분할, 경로 요약, 범위→CIDR, IPv6까지.',
-    url: 'https://toolhub.ai.kr/subnet-calculator',
+    url: 'https://toolhub.ai.kr/subnet-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -56,7 +56,7 @@ export default function SubnetCalculatorPage() {
     '@type': 'WebApplication',
     name: 'IP 서브넷 계산기',
     description: 'IPv4·IPv6 서브넷 계산, VLSM 분할, 경로 요약, 범위→CIDR 변환 도구',
-    url: 'https://toolhub.ai.kr/subnet-calculator',
+    url: 'https://toolhub.ai.kr/subnet-calculator/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: '텍스트 읽어주기 (TTS) - 긴 글 한국어 음성 | 툴허브',
   description: '텍스트 읽어주기 - 한국어 긴 글도 문장 단위로 끊김 없이 읽어줍니다. 읽는 문장 하이라이트, 문장 클릭 재생, 느리게 학습 속도, 링크 공유. 설치·가입 없이 무료.',
   keywords: '텍스트 읽어주기, TTS, 한국어 TTS, text to speech, 음성 변환, 텍스트 음성, 글 읽어주는 사이트, 나레이션',
-  openGraph: { title: '텍스트 읽어주기 (TTS) | 툴허브', description: '텍스트를 음성으로 변환', url: 'https://toolhub.ai.kr/text-to-speech', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/text-to-speech.png', width: 1200, height: 630, alt: '텍스트 읽어주기 (TTS)' }] },
+  openGraph: { title: '텍스트 읽어주기 (TTS) | 툴허브', description: '텍스트를 음성으로 변환', url: 'https://toolhub.ai.kr/text-to-speech/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/text-to-speech.png', width: 1200, height: 630, alt: '텍스트 읽어주기 (TTS)' }] },
   twitter: { card: 'summary_large_image', title: '텍스트 읽어주기 | 툴허브', description: '텍스트를 음성으로 변환', images: ['https://toolhub.ai.kr/og/text-to-speech.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/text-to-speech/' },
 }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '연봉 실수령액 비교기 | 툴허브',
     description: '연봉 2~4개를 나란히 비교! 4대보험, 소득세, 월 실수령액 차이를 한눈에 확인하세요.',
-    url: 'https://toolhub.ai.kr/salary-comparison',
+    url: 'https://toolhub.ai.kr/salary-comparison/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function SalaryComparisonPage() {
     '@type': 'WebApplication',
     name: '연봉 실수령액 비교기',
     description: '연봉 2~4개를 나란히 비교하여 4대보험, 소득세, 실수령액 차이를 확인하는 계산기',
-    url: 'https://toolhub.ai.kr/salary-comparison',
+    url: 'https://toolhub.ai.kr/salary-comparison/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '판매수수료·영업 커미션 계산기 | 툴허브',
     description: '구간 누진·목표 가속 커미션과 3.3% 실수령액, 오픈마켓 수수료 비교',
-    url: 'https://toolhub.ai.kr/sales-commission',
+    url: 'https://toolhub.ai.kr/sales-commission/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/sales-commission.png', width: 1200, height: 630, alt: '판매수수료·영업 커미션 계산기' }],
   },

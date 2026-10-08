@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SAT 충돌감지 시각화 | 툴허브',
     description: 'SAT 분리축 정리를 인터랙티브하게 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/sat',
+    url: 'https://toolhub.ai.kr/algorithm/sat/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-sat.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/sat',
+    canonical: 'https://toolhub.ai.kr/algorithm/sat/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function SATPage() {
     '@type': 'WebApplication',
     name: 'SAT 충돌감지 시각화',
     description: 'SAT(Separating Axis Theorem) 충돌감지 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/sat',
+    url: 'https://toolhub.ai.kr/algorithm/sat/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

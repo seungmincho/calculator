@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '개인정보처리방침 | 툴허브',
     description: '툴허브의 개인정보처리방침',
     siteName: '툴허브',
-    url: 'https://toolhub.ai.kr/privacy',
+    url: 'https://toolhub.ai.kr/privacy/',
     images: [{ url: 'https://toolhub.ai.kr/og/privacy.png', width: 1200, height: 630, alt: '개인정보처리방침' }],
   },
   alternates: {

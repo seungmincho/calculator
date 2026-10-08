@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CSS 단위 변환기 - px, rem, em, vw, vh 변환 | 툴허브',
     description: 'px, rem, em, vw, vh, %, pt, cm, mm, in 단위를 즉시 변환',
-    url: 'https://toolhub.ai.kr/css-unit-converter',
+    url: 'https://toolhub.ai.kr/css-unit-converter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CssUnitConverterPage() {
     '@type': 'WebApplication',
     name: 'CSS 단위 변환기',
     description: 'CSS 단위를 즉시 변환하세요. px, rem, em, vw, vh, %, pt, cm, mm, in 상호 변환.',
-    url: 'https://toolhub.ai.kr/css-unit-converter',
+    url: 'https://toolhub.ai.kr/css-unit-converter/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

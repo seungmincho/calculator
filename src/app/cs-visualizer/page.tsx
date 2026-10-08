@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CS 개념 시각화 - 인터랙티브 컴퓨터과학 학습 | 툴허브',
     description: '10개 CS 핵심 개념을 인터랙티브 시각화로 학습하세요',
-    url: 'https://toolhub.ai.kr/cs-visualizer',
+    url: 'https://toolhub.ai.kr/cs-visualizer/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/cs-visualizer.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/cs-visualizer',
+    canonical: 'https://toolhub.ai.kr/cs-visualizer/',
   },
 }
 
@@ -33,7 +33,7 @@ export default function CsVisualizerPage() {
     '@type': 'WebApplication',
     name: 'CS 개념 시각화',
     description: 'Git, CPU, 네트워크, ML 등 CS 핵심 개념을 인터랙티브 시각화로 학습',
-    url: 'https://toolhub.ai.kr/cs-visualizer',
+    url: 'https://toolhub.ai.kr/cs-visualizer/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },

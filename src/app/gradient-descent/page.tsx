@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '경사하강법 시각화 | 툴허브',
     description: '손실 함수 위에서 최적점을 찾아가는 경사하강법을 인터랙티브하게 학습',
-    url: 'https://toolhub.ai.kr/gradient-descent',
+    url: 'https://toolhub.ai.kr/gradient-descent/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function GradientDescentPage() {
     '@type': 'WebApplication',
     name: '경사하강법 시각화',
     description: '2D 손실 함수 위에서 경사하강법 최적화 과정을 인터랙티브하게 시각화하는 교육 도구',
-    url: 'https://toolhub.ai.kr/gradient-descent',
+    url: 'https://toolhub.ai.kr/gradient-descent/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

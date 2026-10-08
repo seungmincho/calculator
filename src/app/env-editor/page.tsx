@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '환경변수(.env) 편집기 | 툴허브',
     description: '.env 파일 편집, 검증, 형식 변환 도구. Docker, YAML, JSON, Shell export 지원.',
-    url: 'https://toolhub.ai.kr/env-editor',
+    url: 'https://toolhub.ai.kr/env-editor/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -44,7 +44,7 @@ export default function EnvEditorPage() {
     '@type': 'WebApplication',
     name: '환경변수(.env) 편집기',
     description: '.env 파일을 온라인에서 편집, 검증, 변환하는 도구',
-    url: 'https://toolhub.ai.kr/env-editor',
+    url: 'https://toolhub.ai.kr/env-editor/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '학점 변환기 - 4.5·4.3·4.0·백분율 | 툴허브',
     description: '학점을 4.5·4.3·4.0·백분율로 한 번에 변환 + 등급 확인',
-    url: 'https://toolhub.ai.kr/gpa-converter',
+    url: 'https://toolhub.ai.kr/gpa-converter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'HTML 엔티티 변환기 | 툴허브',
     description: 'HTML 특수문자 인코딩·디코딩. Named, Decimal, Hex 형식 지원.',
-    url: 'https://toolhub.ai.kr/html-entity-converter',
+    url: 'https://toolhub.ai.kr/html-entity-converter/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function HtmlEntityConverterPage() {
     '@type': 'WebApplication',
     name: 'HTML 엔티티 변환기',
     description: 'HTML 특수문자를 엔티티로 인코딩하거나 디코딩하는 온라인 도구',
-    url: 'https://toolhub.ai.kr/html-entity-converter',
+    url: 'https://toolhub.ai.kr/html-entity-converter/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

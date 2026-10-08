@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '오늘 뭐 먹지? 메뉴 추천 룰렛 | 툴허브',
     description: '메뉴 고르기 힘들 때! 룰렛을 돌려 오늘의 메뉴를 정해보세요. 12개 카테고리 300가지 넘는 메뉴에서 랜덤 추천.',
-    url: 'https://toolhub.ai.kr/menu-picker',
+    url: 'https://toolhub.ai.kr/menu-picker/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

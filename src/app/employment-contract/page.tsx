@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '근로계약서 양식 작성기 | 툴허브',
     description: '빈칸만 채우면 완성되는 표준근로계약서. 최저임금·휴게·근로시간 자동 검사, 주휴수당 계산, PDF 출력.',
-    url: 'https://toolhub.ai.kr/employment-contract',
+    url: 'https://toolhub.ai.kr/employment-contract/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -61,7 +61,7 @@ export default function EmploymentContractPage() {
     '@type': 'WebApplication',
     name: '근로계약서 양식 작성기',
     description: '고용노동부 표준근로계약서 양식으로 근로계약서를 작성하고 A4 PDF로 저장·인쇄합니다. 최저임금·휴게시간·근로시간 자동 검사.',
-    url: 'https://toolhub.ai.kr/employment-contract',
+    url: 'https://toolhub.ai.kr/employment-contract/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

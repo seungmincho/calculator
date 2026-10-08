@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: '그래프 표현 시각화 | 툴허브',
     description: '그래프·인접행렬·인접리스트 3가지 뷰 실시간 동기화.',
-    url: 'https://toolhub.ai.kr/algorithm/graph-repr',
+    url: 'https://toolhub.ai.kr/algorithm/graph-repr/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-graph-repr.png', width: 1200, height: 630, alt: '그래프 표현 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: '그래프 표현 시각화', description: '인접행렬·인접리스트 실시간 동기화', images: ['https://toolhub.ai.kr/og/algorithm-graph-repr.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/graph-repr' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/graph-repr/' },
 }
 
 export default function GraphReprPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '그래프 표현 시각화', description: '그래프 인접행렬·인접리스트 표현 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/graph-repr',
+    url: 'https://toolhub.ai.kr/algorithm/graph-repr/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['그래프+행렬+리스트 3뷰 동기화', '노드 드래그', '방향/무방향 토글', '가중치 간선', '클릭으로 간선 추가/삭제'],

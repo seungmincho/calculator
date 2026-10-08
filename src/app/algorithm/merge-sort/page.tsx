@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '병합정렬 시각화 | 툴허브',
     description: '병합정렬의 분할과 병합 과정을 막대 차트로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/merge-sort',
+    url: 'https://toolhub.ai.kr/algorithm/merge-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-merge-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/merge-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/merge-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function MergeSortPage() {
     '@type': 'WebApplication',
     name: '병합정렬 시각화',
     description: '병합정렬 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/merge-sort',
+    url: 'https://toolhub.ai.kr/algorithm/merge-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

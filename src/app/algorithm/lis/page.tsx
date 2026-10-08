@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'LIS 최장 증가 부분수열 시각화 | 툴허브',
     description: 'LIS DP와 이진탐색 풀이를 단계별로 비교하며 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/lis',
+    url: 'https://toolhub.ai.kr/algorithm/lis/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-lis.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/lis',
+    canonical: 'https://toolhub.ai.kr/algorithm/lis/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function LisPage() {
     '@type': 'WebApplication',
     name: 'LIS 최장 증가 부분수열 시각화',
     description: 'LIS DP 및 이진탐색 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/lis',
+    url: 'https://toolhub.ai.kr/algorithm/lis/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

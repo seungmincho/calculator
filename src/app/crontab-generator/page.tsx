@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Crontab 생성기 - 비주얼 크론 표현식 빌더 | 툴허브',
     description: '비주얼 UI로 Crontab 표현식 생성 + 한국어 설명 + 다음 실행 시간 미리보기',
-    url: 'https://toolhub.ai.kr/crontab-generator',
+    url: 'https://toolhub.ai.kr/crontab-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function CrontabGeneratorPage() {
     '@type': 'WebApplication',
     name: 'Crontab 생성기',
     description: '비주얼 UI로 Crontab 표현식을 생성하는 도구',
-    url: 'https://toolhub.ai.kr/crontab-generator',
+    url: 'https://toolhub.ai.kr/crontab-generator/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

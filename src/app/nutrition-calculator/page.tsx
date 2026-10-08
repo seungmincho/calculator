@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '영양소 계산기 | 툴허브',
     description: '한국 음식 영양소와 칼로리를 계산하고 일일 권장량과 비교하세요.',
-    url: 'https://toolhub.ai.kr/nutrition-calculator',
+    url: 'https://toolhub.ai.kr/nutrition-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function NutritionCalculatorPage() {
     '@type': 'WebApplication',
     name: '영양소 계산기',
     description: '한국 음식 영양소와 칼로리를 계산합니다. 40여 종 음식의 탄수화물·단백질·지방 비율을 확인하세요.',
-    url: 'https://toolhub.ai.kr/nutrition-calculator',
+    url: 'https://toolhub.ai.kr/nutrition-calculator/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'BMI 계산기 - 체질량지수 계산 | 툴허브',
     description: 'BMI(체질량지수)를 계산하여 건강 상태를 확인해보세요. 키와 몸무게로 간단하게 비만도를 측정하고 건강 관리에 도움이 되는 정보를 제공합니다.',
-    url: 'https://toolhub.ai.kr/bmi-calculator',
+    url: 'https://toolhub.ai.kr/bmi-calculator/',
     siteName: '툴허브',
     type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/bmi-calculator.png', width: 1200, height: 630, alt: 'BMI 계산기' }],
@@ -32,7 +32,7 @@ export default function BMICalculatorPage() {
     '@type': 'WebApplication',
     name: 'BMI 계산기',
     description: 'BMI(체질량지수)를 계산하여 건강 상태를 확인하는 도구',
-    url: 'https://toolhub.ai.kr/bmi-calculator',
+    url: 'https://toolhub.ai.kr/bmi-calculator/',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '택시 요금 계산기 - 심야·시외할증 자동 | 툴허브',
     description: '지역·거리·탑승 시각 기반 예상 택시비 계산. 심야할증·시외할증 자동 반영.',
-    url: 'https://toolhub.ai.kr/taxi-fare',
+    url: 'https://toolhub.ai.kr/taxi-fare/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

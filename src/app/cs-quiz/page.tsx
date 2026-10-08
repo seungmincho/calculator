@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CS 기초 퀴즈 - 10개 분야 250문제 컴퓨터공학 학습 | 툴허브',
     description: '컴퓨터 과학 10대 핵심 분야를 문제 풀이로 학습하세요. 자료구조, 알고리즘, 네트워크, OS, DB, 컴퓨터구조, SW공학, 보안, 리눅스, 웹 총 250문제.',
-    url: 'https://toolhub.ai.kr/cs-quiz',
+    url: 'https://toolhub.ai.kr/cs-quiz/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -32,7 +32,7 @@ export default function CsQuizPage() {
     '@type': 'WebApplication',
     name: 'CS 기초 퀴즈',
     description: '자료구조, 알고리즘, 네트워크, 운영체제, 데이터베이스 125문제로 컴퓨터 과학 기초를 다지세요.',
-    url: 'https://toolhub.ai.kr/cs-quiz',
+    url: 'https://toolhub.ai.kr/cs-quiz/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

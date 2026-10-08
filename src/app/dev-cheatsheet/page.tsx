@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '개발자 치트시트 - 220개 필수 명령어 | 툴허브',
     description: 'Git, Linux, Docker, SQL 등 8개 분야 220개 개발 필수 명령어를 검색하고 복사하세요.',
-    url: 'https://toolhub.ai.kr/dev-cheatsheet',
+    url: 'https://toolhub.ai.kr/dev-cheatsheet/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/dev-cheatsheet.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/dev-cheatsheet',
+    canonical: 'https://toolhub.ai.kr/dev-cheatsheet/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function DevCheatsheetPage() {
     '@type': 'WebApplication',
     name: '개발자 치트시트',
     description: '8개 분야 220개 개발 필수 명령어를 검색하고 복사할 수 있는 치트시트',
-    url: 'https://toolhub.ai.kr/dev-cheatsheet',
+    url: 'https://toolhub.ai.kr/dev-cheatsheet/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

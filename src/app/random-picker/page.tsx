@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '랜덤 뽑기 - 경품 추첨기 | 툴허브',
     description: '명단 붙여넣고 당첨자 뽑기. 시드 검증 링크로 누구나 결과 확인',
-    url: 'https://toolhub.ai.kr/random-picker',
+    url: 'https://toolhub.ai.kr/random-picker/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '사진 모자이크/블러 | 툴허브',
     description: '사진에 모자이크/블러를 간편하게 적용하세요!',
-    url: 'https://toolhub.ai.kr/image-mosaic',
+    url: 'https://toolhub.ai.kr/image-mosaic/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/image-mosaic.png', width: 1200, height: 630, alt: '사진 모자이크/블러' }],
   },
@@ -22,7 +22,7 @@ export default function ImageMosaicPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '사진 모자이크/블러', description: '사진 모자이크 및 블러 처리 도구',
-    url: 'https://toolhub.ai.kr/image-mosaic', applicationCategory: 'MultimediaApplication',
+    url: 'https://toolhub.ai.kr/image-mosaic/', applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['Ctrl+V 스크린샷 붙여넣기', '사각형·원형·브러시 영역', '모자이크·블러·검정/흰색 박스', '영역 이동·크기 조절·삭제', '되돌리기/다시 실행', '확대/축소', 'EXIF(GPS) 제거 PNG/JPG 저장', '클립보드 복사'],

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '볼록 껍질 시각화 | 툴허브',
     description: 'Graham Scan으로 볼록 껍질을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/convex-hull',
+    url: 'https://toolhub.ai.kr/algorithm/convex-hull/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-convex-hull.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/convex-hull',
+    canonical: 'https://toolhub.ai.kr/algorithm/convex-hull/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function ConvexHullPage() {
     '@type': 'WebApplication',
     name: '볼록 껍질 시각화',
     description: '볼록 껍질 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/convex-hull',
+    url: 'https://toolhub.ai.kr/algorithm/convex-hull/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

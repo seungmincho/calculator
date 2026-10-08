@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '로또 당첨금 세금 계산기 | 툴허브',
     description: '로또·복권 당첨금 세금(22%/33%) 자동 계산, 실수령액 확인',
-    url: 'https://toolhub.ai.kr/lotto-tax',
+    url: 'https://toolhub.ai.kr/lotto-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/lotto-tax.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/lotto-tax',
+    canonical: 'https://toolhub.ai.kr/lotto-tax/',
   },
 }
 
@@ -32,7 +32,7 @@ export default function LottoTaxPage() {
     '@type': 'WebApplication',
     name: '로또 당첨금 세금 계산기',
     description: '로또·복권 당첨금에 부과되는 세금을 계산하고 실수령액을 확인하는 계산기',
-    url: 'https://toolhub.ai.kr/lotto-tax',
+    url: 'https://toolhub.ai.kr/lotto-tax/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

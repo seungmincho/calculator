@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '대출 상환 스케줄러 | 툴허브',
     description: '원리금균등, 원금균등, 만기일시상환 방식별 상세 상환 계획표 생성',
-    url: 'https://toolhub.ai.kr/loan-schedule',
+    url: 'https://toolhub.ai.kr/loan-schedule/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function LoanSchedulePage() {
     '@type': 'WebApplication',
     name: '대출 상환 스케줄러',
     description: '원리금균등, 원금균등, 만기일시상환 방식별 상세 상환 계획표를 생성하고 비교합니다. 거치기간, 조기상환 시뮬레이션 지원.',
-    url: 'https://toolhub.ai.kr/loan-schedule',
+    url: 'https://toolhub.ai.kr/loan-schedule/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '타일 매칭 게임 - 기억력 짝 맞추기 | 툴허브',
     description: '카드를 뒤집어 같은 짝을 찾으세요! 다양한 테마와 난이도로 기억력을 테스트해보세요.',
-    url: 'https://toolhub.ai.kr/memory-game',
+    url: 'https://toolhub.ai.kr/memory-game/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -31,7 +31,7 @@ export default function MemoryGamePage() {
     '@type': 'WebApplication',
     name: '타일 매칭 게임',
     description: '카드를 뒤집어 같은 짝을 찾는 기억력 게임. 다양한 테마와 난이도 지원.',
-    url: 'https://toolhub.ai.kr/memory-game',
+    url: 'https://toolhub.ai.kr/memory-game/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

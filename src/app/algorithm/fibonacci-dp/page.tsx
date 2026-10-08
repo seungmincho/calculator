@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '피보나치 DP 시각화 | 툴허브',
     description: '재귀 트리 폭발 vs DP 효율을 단계별 애니메이션으로 비교하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/fibonacci-dp',
+    url: 'https://toolhub.ai.kr/algorithm/fibonacci-dp/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-fibonacci-dp.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/fibonacci-dp',
+    canonical: 'https://toolhub.ai.kr/algorithm/fibonacci-dp/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function FibonacciDpPage() {
     '@type': 'WebApplication',
     name: '피보나치 DP 시각화',
     description: '피보나치 수열로 배우는 동적 프로그래밍 입문 — 재귀 vs 메모이제이션 vs 테이블레이션',
-    url: 'https://toolhub.ai.kr/algorithm/fibonacci-dp',
+    url: 'https://toolhub.ai.kr/algorithm/fibonacci-dp/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

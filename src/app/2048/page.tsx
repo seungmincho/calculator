@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '2048 게임 - 숫자 퍼즐 | 툴허브',
     description: '같은 숫자를 합쳐 2048을 만들어보세요! 무료 온라인 퍼즐 게임.',
-    url: 'https://toolhub.ai.kr/2048',
+    url: 'https://toolhub.ai.kr/2048/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -31,7 +31,7 @@ export default function Game2048Page() {
     '@type': 'WebApplication',
     name: '2048 게임',
     description: '같은 숫자 타일을 합쳐 2048을 만드는 퍼즐 게임',
-    url: 'https://toolhub.ai.kr/2048',
+    url: 'https://toolhub.ai.kr/2048/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

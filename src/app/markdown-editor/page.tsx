@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '마크다운 에디터 - 실시간 미리보기 | 툴허브',
     description: '실시간 분할 화면으로 마크다운을 편집하고 미리보세요. 툴바, 내보내기, 전체화면 지원.',
-    url: 'https://toolhub.ai.kr/markdown-editor',
+    url: 'https://toolhub.ai.kr/markdown-editor/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function MarkdownEditorPage() {
     '@type': 'WebApplication',
     name: '마크다운 에디터',
     description: '실시간 미리보기 마크다운 에디터. 분할 화면, 툴바, .md 파일 다운로드, HTML 변환 지원.',
-    url: 'https://toolhub.ai.kr/markdown-editor',
+    url: 'https://toolhub.ai.kr/markdown-editor/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B-트리 시각화 | 툴허브',
     description: 'B-트리 삽입·삭제·분할을 단계별 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/b-tree',
+    url: 'https://toolhub.ai.kr/algorithm/b-tree/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-b-tree.png', width: 1200, height: 630, alt: 'B-트리 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: 'B-트리 시각화', description: 'B-트리 노드 분할과 검색 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-b-tree.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/b-tree' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/b-tree/' },
 }
 
 export default function BTreePage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: 'B-트리 시각화', description: 'B-트리 삽입·삭제·검색·분할 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/b-tree',
+    url: 'https://toolhub.ai.kr/algorithm/b-tree/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['삽입 + 노드 분할 시각화', '차수(t) 조절 가능', '검색 경로 애니메이션', '삭제 + 병합/차용 처리', 'TypeScript 코드 보기'],

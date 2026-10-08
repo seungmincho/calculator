@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: '텍스트 꾸미기 - 닉네임 특수문자 | 툴허브',
     description:
       '영문 글꼴 23종 + 한글 꾸미기 + ꧁ ꧂ 닉네임 테두리. 누르면 바로 복사, 인스타·카톡에 붙여넣기.',
-    url: 'https://toolhub.ai.kr/fancy-text',
+    url: 'https://toolhub.ai.kr/fancy-text/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

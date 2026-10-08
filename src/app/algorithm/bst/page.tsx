@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '이진탐색트리 시각화 | 툴허브',
     description: 'BST 삽입·탐색·삭제를 단계별 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/bst',
+    url: 'https://toolhub.ai.kr/algorithm/bst/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-bst.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/bst',
+    canonical: 'https://toolhub.ai.kr/algorithm/bst/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function BSTPage() {
     '@type': 'WebApplication',
     name: '이진탐색트리 시각화',
     description: '이진탐색트리(BST) 삽입·탐색·삭제 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/bst',
+    url: 'https://toolhub.ai.kr/algorithm/bst/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

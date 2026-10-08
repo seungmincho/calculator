@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: '복리 계산기 - 복리 이자, 투자 수익률 계산 | 툴허브',
   description: '복리 계산기 - 원금, 이율, 기간을 입력해 세후 복리 이자를 계산하세요. 거치식·적립식·목표 역산(월 적립액·필요 수익률), 72의 법칙, 단리 vs 복리 비교, 연도별 성장 그래프를 제공합니다.',
   keywords: '복리 계산기, 복리 이자 계산, 투자 수익률, 적립식 투자, compound interest calculator, 72법칙',
-  openGraph: { title: '복리 계산기 | 툴허브', description: '복리 이자 계산, 투자 수익률 시뮬레이션', url: 'https://toolhub.ai.kr/compound-calculator', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/compound-calculator.png', width: 1200, height: 630, alt: '복리 계산기' }] },
+  openGraph: { title: '복리 계산기 | 툴허브', description: '복리 이자 계산, 투자 수익률 시뮬레이션', url: 'https://toolhub.ai.kr/compound-calculator/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/compound-calculator.png', width: 1200, height: 630, alt: '복리 계산기' }] },
   twitter: { card: 'summary_large_image', title: '복리 계산기 | 툴허브', description: '복리 이자 계산, 투자 수익률 시뮬레이션', images: ['https://toolhub.ai.kr/og/compound-calculator.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/compound-calculator/' },
 }
 
 export default function CompoundCalculatorPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '복리 계산기', description: '복리 이자 계산, 투자 수익률 시뮬레이션, 단리 vs 복리 비교', url: 'https://toolhub.ai.kr/compound-calculator', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['복리 이자 계산(연·반기·분기·월·일복리)', '월 적립식 투자(월초·월말 납입)', '세후 계산(15.4%·9.5%·비과세, 만기·매년 과세)', '목표 역산(월 적립액·필요 수익률)', '72의 법칙', '물가 반영 실질 수익률', '수익률 시나리오 비교', '단리 vs 복리 비교', '연도별 성장 그래프'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '복리 계산기', description: '복리 이자 계산, 투자 수익률 시뮬레이션, 단리 vs 복리 비교', url: 'https://toolhub.ai.kr/compound-calculator/', applicationCategory: 'FinanceApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['복리 이자 계산(연·반기·분기·월·일복리)', '월 적립식 투자(월초·월말 납입)', '세후 계산(15.4%·9.5%·비과세, 만기·매년 과세)', '목표 역산(월 적립액·필요 수익률)', '72의 법칙', '물가 반영 실질 수익률', '수익률 시나리오 비교', '단리 vs 복리 비교', '연도별 성장 그래프'] }
   const howToJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',

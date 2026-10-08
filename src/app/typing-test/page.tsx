@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: '타자 연습 - 한글 타수·영문 WPM 측정, 오늘의 문장 | 툴허브',
   description: '한글 타자 속도를 한컴타자 방식(자모 타수, 타/분)으로 정확히 측정하세요. 오늘의 문장 매일 도전, 짧은 글·긴 글·30초/60초 시간제, 영문 WPM, 정확도와 자주 틀린 자모, 등급, 기록 그래프, 결과 공유까지.',
   keywords: '타자 연습, 타자 속도 측정, 한글 타수, 타자 테스트, 타이핑 테스트, 영타 연습, WPM 측정, 오늘의 문장, 타자 급수',
-  openGraph: { title: '타자 연습 - 오늘의 문장 | 툴허브', description: '한글 타수(타/분)·영문 WPM 측정, 매일 오늘의 문장 도전', url: 'https://toolhub.ai.kr/typing-test', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/typing-test.png', width: 1200, height: 630, alt: '타자 연습' }] },
+  openGraph: { title: '타자 연습 - 오늘의 문장 | 툴허브', description: '한글 타수(타/분)·영문 WPM 측정, 매일 오늘의 문장 도전', url: 'https://toolhub.ai.kr/typing-test/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/typing-test.png', width: 1200, height: 630, alt: '타자 연습' }] },
   twitter: { card: 'summary_large_image', title: '타자 연습 | 툴허브', description: '한글 타수·영문 WPM 측정, 오늘의 문장', images: ['https://toolhub.ai.kr/og/typing-test.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/typing-test/' },
 }
@@ -20,7 +20,7 @@ const FAQ = [
 ]
 
 export default function TypingTestPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '타자 연습', description: '한글 타수(타/분)·영문 WPM 측정, 오늘의 문장, 시간제 연습', url: 'https://toolhub.ai.kr/typing-test', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 자모 타수 측정', '오늘의 문장', '30초/60초 시간제', '영문 WPM', '자주 틀린 자모 분석', '기록 그래프', '결과 공유'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '타자 연습', description: '한글 타수(타/분)·영문 WPM 측정, 오늘의 문장, 시간제 연습', url: 'https://toolhub.ai.kr/typing-test/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한글 자모 타수 측정', '오늘의 문장', '30초/60초 시간제', '영문 WPM', '자주 틀린 자모 분석', '기록 그래프', '결과 공유'] }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

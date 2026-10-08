@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: '정규식 빌더 - 비주얼 정규표현식 생성기 | 툴허브',
     description: '클릭 한 번으로 정규식을 만들고 테스트하세요. 이메일, 전화번호, URL 등 자주 쓰는 패턴 라이브러리, 실시간 하이라이팅, 치환 기능 제공.',
     type: 'website',
-    url: 'https://toolhub.ai.kr/regex-builder',
+    url: 'https://toolhub.ai.kr/regex-builder/',
     siteName: '툴허브',
     locale: 'ko_KR',
     images: [
@@ -68,7 +68,7 @@ export default function RegexBuilderPage() {
     '@type': 'WebApplication',
     name: '정규식 빌더',
     description: '클릭 한 번으로 정규식을 만들고 테스트하세요. 이메일, 전화번호, URL 등 자주 쓰는 패턴 라이브러리, 실시간 하이라이팅, 치환 기능 제공.',
-    url: 'https://toolhub.ai.kr/regex-builder',
+    url: 'https://toolhub.ai.kr/regex-builder/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 커넥트4 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 커넥트4 대전! 4개를 연결하세요!',
-    url: 'https://toolhub.ai.kr/connect4',
+    url: 'https://toolhub.ai.kr/connect4/',
     type: 'website',
     siteName: '툴허브',
     images: [{ url: 'https://toolhub.ai.kr/og/connect4.png', width: 1200, height: 630, alt: '온라인 커넥트4' }],
@@ -33,7 +33,7 @@ export default function Connect4Page() {
     '@type': 'VideoGame',
     name: '커넥트4 (Connect Four)',
     description: '사목 - AI 대전을 지원하는 4목 연결 보드게임',
-    url: 'https://toolhub.ai.kr/connect4',
+    url: 'https://toolhub.ai.kr/connect4/',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',
     operatingSystem: 'Any',

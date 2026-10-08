@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '대출 계산기 | 툴허브',
     description: '다양한 대출 방식을 비교하고 최적의 상환 방법을 찾아보세요',
-    url: 'https://toolhub.ai.kr/loan-calculator',
+    url: 'https://toolhub.ai.kr/loan-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -31,7 +31,7 @@ export default function LoanCalculatorPage() {
     '@type': 'WebApplication',
     name: '대출 계산기',
     description: '원리금균등상환, 원금균등상환, 만기일시상환, 거치식대출 등 다양한 대출 방식 비교 계산기',
-    url: 'https://toolhub.ai.kr/loan-calculator',
+    url: 'https://toolhub.ai.kr/loan-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

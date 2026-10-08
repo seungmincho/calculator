@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'QR 코드 생성기 | 툴허브',
     description: '가입·만료·워터마크 없는 QR 코드 생성 — 와이파이·연락처·URL 등 8가지, 로고·SVG·인쇄',
-    url: 'https://toolhub.ai.kr/qr-generator',
+    url: 'https://toolhub.ai.kr/qr-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function QrGeneratorPage() {
     '@type': 'WebApplication',
     name: 'QR 코드 생성기',
     description: 'URL·와이파이·연락처 등 8가지 QR 코드를 가입·만료·워터마크 없이 브라우저에서 생성하는 무료 도구',
-    url: 'https://toolhub.ai.kr/qr-generator',
+    url: 'https://toolhub.ai.kr/qr-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

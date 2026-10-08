@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '마작 솔리테어 - 타일 매칭 퍼즐 | 툴허브',
     description: '같은 패를 찾아 짝을 맞추는 클래식 마작 솔리테어! 힌트, 셔플, 되돌리기 지원.',
-    url: 'https://toolhub.ai.kr/mahjong-solitaire',
+    url: 'https://toolhub.ai.kr/mahjong-solitaire/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -46,7 +46,7 @@ export default function MahjongSolitairePage() {
     '@type': 'VideoGame',
     name: '마작 솔리테어 (상하이)',
     description: '같은 패를 찾아 짝을 맞추는 클래식 타일 매칭 퍼즐 게임. 힌트, 셔플, 되돌리기 기능 지원.',
-    url: 'https://toolhub.ai.kr/mahjong-solitaire',
+    url: 'https://toolhub.ai.kr/mahjong-solitaire/',
     applicationCategory: 'GameApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

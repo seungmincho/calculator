@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '유류비 계산기 | 툴허브',
     description: '회사 업무용 차량 유류비 계산기 - 차종별 연비 + 실시간 유가 + 감가상각비',
-    url: 'https://toolhub.ai.kr/fuel-calculator',
+    url: 'https://toolhub.ai.kr/fuel-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

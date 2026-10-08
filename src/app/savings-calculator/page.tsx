@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '적금 계산기 | 툴허브',
     description: '적금·예금 만기 수령액과 세전·세후 이자 계산. 일반과세 15.4%·세금우대·비과세, 적금↔예금 실질 수익률, 상품 3개 비교, 목표 금액 역산.',
-    url: 'https://toolhub.ai.kr/savings-calculator',
+    url: 'https://toolhub.ai.kr/savings-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -31,7 +31,7 @@ export default function SavingsCalculatorPage() {
     '@type': 'WebApplication',
     name: '적금 계산기',
     description: '적금·예금 세전·세후 이자와 만기 수령액 계산기',
-    url: 'https://toolhub.ai.kr/savings-calculator',
+    url: 'https://toolhub.ai.kr/savings-calculator/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '동전 교환 시각화 | 툴허브',
     description: 'Coin Change DP 배열 계산과 역추적을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/coin-change',
+    url: 'https://toolhub.ai.kr/algorithm/coin-change/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-coin-change.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/coin-change',
+    canonical: 'https://toolhub.ai.kr/algorithm/coin-change/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function CoinChangePage() {
     '@type': 'WebApplication',
     name: '동전 교환 시각화',
     description: 'Coin Change DP 배열 계산 및 역추적 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/coin-change',
+    url: 'https://toolhub.ai.kr/algorithm/coin-change/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 도트앤박스 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 도트앤박스 대전! 더 많은 상자를 차지하세요!',
-    url: 'https://toolhub.ai.kr/dots-and-boxes',
+    url: 'https://toolhub.ai.kr/dots-and-boxes/',
     type: 'website',
     siteName: '툴허브',
     images: [{ url: 'https://toolhub.ai.kr/og/dots-and-boxes.png', width: 1200, height: 630, alt: '온라인 도트앤박스' }],
@@ -34,7 +34,7 @@ export default function DotsAndBoxesPage() {
     '@type': 'VideoGame',
     name: '점과선 (Dots and Boxes)',
     description: '점과선 - AI 대전을 지원하는 점잇기 전략 게임',
-    url: 'https://toolhub.ai.kr/dots-and-boxes',
+    url: 'https://toolhub.ai.kr/dots-and-boxes/',
     genre: 'Strategy Game',
     gamePlatform: 'Web Browser',
     operatingSystem: 'Any',

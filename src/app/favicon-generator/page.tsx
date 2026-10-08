@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '파비콘 생성기 - 모든 사이즈 자동 생성 | 툴허브',
     description: '이미지 하나로 웹, iOS, Android, Windows 등 모든 파비콘 한 번에 생성',
-    url: 'https://toolhub.ai.kr/favicon-generator',
+    url: 'https://toolhub.ai.kr/favicon-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function FaviconGeneratorPage() {
     '@type': 'WebApplication',
     name: '파비콘 생성기',
     description: '이미지를 업로드하면 웹, iOS, Android, Windows 등 모든 플랫폼에 필요한 파비콘을 한 번에 생성합니다.',
-    url: 'https://toolhub.ai.kr/favicon-generator',
+    url: 'https://toolhub.ai.kr/favicon-generator/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

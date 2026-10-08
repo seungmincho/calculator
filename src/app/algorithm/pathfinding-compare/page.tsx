@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: '경로탐색 비교 A* vs Dijkstra | 툴허브',
     description: 'A*와 Dijkstra를 동일 맵에서 동시 비교 시각화.',
-    url: 'https://toolhub.ai.kr/algorithm/pathfinding-compare',
+    url: 'https://toolhub.ai.kr/algorithm/pathfinding-compare/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-pathfinding-compare.png', width: 1200, height: 630, alt: '경로탐색 비교 A* vs Dijkstra' }],
   },
   twitter: { card: 'summary_large_image', title: 'A* vs Dijkstra 비교', description: '두 경로탐색 알고리즘 동시 비교', images: ['https://toolhub.ai.kr/og/algorithm-pathfinding-compare.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/pathfinding-compare' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/pathfinding-compare/' },
 }
 
 export default function PathfindingComparePage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: '경로탐색 비교 (A* vs Dijkstra)', description: 'A*와 다익스트라 경로탐색 알고리즘 동시 비교 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/pathfinding-compare',
+    url: 'https://toolhub.ai.kr/algorithm/pathfinding-compare/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['A* vs Dijkstra 동시 실행', '탐색 범위 색상 비교', '벽 그리기 + 미로 생성', '탐색 노드 수 / 경로 길이 비교', '단계별 재생 컨트롤'],

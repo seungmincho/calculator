@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '허프만 코딩 시각화 | 툴허브',
     description: '허프만 트리 구축과 최적 접두사 코드 생성을 단계별로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/huffman-coding',
+    url: 'https://toolhub.ai.kr/algorithm/huffman-coding/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-huffman-coding.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/huffman-coding',
+    canonical: 'https://toolhub.ai.kr/algorithm/huffman-coding/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function HuffmanCodingPage() {
     '@type': 'WebApplication',
     name: '허프만 코딩 시각화',
     description: '허프만 코딩 알고리즘 트리 구축 및 최적 접두사 코드 생성 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/huffman-coding',
+    url: 'https://toolhub.ai.kr/algorithm/huffman-coding/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '색맹 시뮬레이터 - 색각이상 체험 | 툴허브',
     description: '이미지와 색 팔레트에 색각이상 시뮬레이션을 적용해 색맹·색약의 시야를 체험하세요',
-    url: 'https://toolhub.ai.kr/color-blindness-simulator',
+    url: 'https://toolhub.ai.kr/color-blindness-simulator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function ColorBlindnessSimulatorPage() {
     '@type': 'WebApplication',
     name: '색맹 시뮬레이터',
     description: '이미지에 색각이상(CVD) 필터를 적용하여 색맹·색약의 시야를 체험하는 도구',
-    url: 'https://toolhub.ai.kr/color-blindness-simulator',
+    url: 'https://toolhub.ai.kr/color-blindness-simulator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript, Canvas API',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '힙정렬 시각화 | 툴허브',
     description: '힙정렬의 이진 힙 구성과 정렬 과정을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/heap-sort',
+    url: 'https://toolhub.ai.kr/algorithm/heap-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-heap-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/heap-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/heap-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function HeapSortPage() {
     '@type': 'WebApplication',
     name: '힙정렬 시각화',
     description: '힙정렬 알고리즘 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/heap-sort',
+    url: 'https://toolhub.ai.kr/algorithm/heap-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

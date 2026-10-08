@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'DSR 계산기 2026 | 툴허브',
     description: 'DSR 계산 + 대출한도 역산 + 스트레스 DSR 반영',
-    url: 'https://toolhub.ai.kr/dsr-calculator',
+    url: 'https://toolhub.ai.kr/dsr-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '유니온-파인드 시각화 | 툴허브',
     description: '서로소 집합 자료구조의 Union/Find 연산을 시각적으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/union-find',
+    url: 'https://toolhub.ai.kr/algorithm/union-find/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-union-find.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/union-find',
+    canonical: 'https://toolhub.ai.kr/algorithm/union-find/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function UnionFindPage() {
     '@type': 'WebApplication',
     name: '유니온-파인드 시각화',
     description: '유니온-파인드 자료구조의 Union, Find 연산과 최적화를 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/union-find',
+    url: 'https://toolhub.ai.kr/algorithm/union-find/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

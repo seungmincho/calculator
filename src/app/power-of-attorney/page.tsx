@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '위임장 양식 작성기 | 툴허브',
     description: '용도만 고르면 위임 사항·준비 서류가 채워지는 위임장. 도장·PDF 출력.',
-    url: 'https://toolhub.ai.kr/power-of-attorney',
+    url: 'https://toolhub.ai.kr/power-of-attorney/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -57,7 +57,7 @@ export default function PowerOfAttorneyPage() {
     '@type': 'WebApplication',
     name: '위임장 양식 작성기',
     description: '용도별 위임장을 작성하고 A4 PDF로 저장·인쇄합니다. 위임 사항 자동 입력, 준비 서류 안내, 포괄 위임 경고.',
-    url: 'https://toolhub.ai.kr/power-of-attorney',
+    url: 'https://toolhub.ai.kr/power-of-attorney/',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

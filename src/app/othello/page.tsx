@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온라인 오셀로 - 실시간 대전 게임 | 툴허브',
     description: '친구와 실시간으로 오셀로(리버시) 대전을 즐기세요. 8x8 보드에서 온라인 오셀로 게임!',
-    url: 'https://toolhub.ai.kr/othello',
+    url: 'https://toolhub.ai.kr/othello/',
     type: 'website',
     siteName: '툴허브',
     images: [
@@ -58,7 +58,7 @@ export default function OthelloPage() {
     '@type': 'VideoGame',
     name: '오셀로 (Reversi)',
     description: '오셀로 - AI 대전을 지원하는 리버시 보드게임',
-    url: 'https://toolhub.ai.kr/othello',
+    url: 'https://toolhub.ai.kr/othello/',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',
     operatingSystem: 'Any',

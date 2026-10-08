@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '보금자리론 계산기 2026 — 생애최초·신혼부부·다자녀 금리 즉시 계산',
     description: '생애최초 보금자리론 LTV 80%(수도권 70%)·4.2억, 신혼부부 0.3%p 우대, 다자녀 4억 — 내 조건에 맞는 보금자리론을 바로 계산하세요.',
-    url: 'https://toolhub.ai.kr/bogeumjari-loan',
+    url: 'https://toolhub.ai.kr/bogeumjari-loan/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

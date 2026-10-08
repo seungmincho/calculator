@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '배낭 문제 시각화 | 툴허브',
     description: '0/1 Knapsack DP 테이블 계산과 역추적을 단계별로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/knapsack',
+    url: 'https://toolhub.ai.kr/algorithm/knapsack/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-knapsack.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/knapsack',
+    canonical: 'https://toolhub.ai.kr/algorithm/knapsack/',
   },
 }
 
@@ -34,7 +34,7 @@ export default function KnapsackPage() {
     '@type': 'WebApplication',
     name: '배낭 문제 시각화',
     description: '0/1 Knapsack DP 테이블 계산 및 역추적 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/knapsack',
+    url: 'https://toolhub.ai.kr/algorithm/knapsack/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

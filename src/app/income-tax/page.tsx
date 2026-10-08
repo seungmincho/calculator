@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '종합소득세 계산기 2026 (2025년 귀속) | 툴허브',
     description: '프리랜서·사업자 종합소득세 자동 계산. 업종별 경비율·세액공제 반영.',
-    url: 'https://toolhub.ai.kr/income-tax',
+    url: 'https://toolhub.ai.kr/income-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',

@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: '문의/건의하기 | 툴허브',
     description: '툴허브에 대한 문의사항, 버그 신고, 기능 요청, 개선 제안을 남겨주세요.',
-    url: 'https://toolhub.ai.kr/inquiry',
+    url: 'https://toolhub.ai.kr/inquiry/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/inquiry.png', width: 1200, height: 630, alt: '문의/건의하기' }],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/inquiry',
+    canonical: 'https://toolhub.ai.kr/inquiry/',
   },
   robots: {
     index: false,

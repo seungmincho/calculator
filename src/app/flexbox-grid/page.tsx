@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CSS Flexbox & Grid 생성기 | 툴허브',
     description: 'CSS Flexbox와 Grid 레이아웃을 시각적으로 만들고 CSS 코드를 복사하세요.',
-    url: 'https://toolhub.ai.kr/flexbox-grid',
+    url: 'https://toolhub.ai.kr/flexbox-grid/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function FlexboxGridPage() {
     '@type': 'WebApplication',
     name: 'CSS Flexbox & Grid 생성기',
     description: 'CSS Flexbox와 Grid 레이아웃을 시각적으로 만들고 CSS 코드를 복사하세요. 실시간 미리보기, 프리셋, 반응형 테스트 지원.',
-    url: 'https://toolhub.ai.kr/flexbox-grid',
+    url: 'https://toolhub.ai.kr/flexbox-grid/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

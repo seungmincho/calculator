@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '15퍼즐 - 슬라이딩 타일 퍼즐 게임 | 툴허브',
     description: '숫자 타일을 슬라이드하여 순서대로 정렬하는 클래식 15퍼즐 게임을 무료로 즐기세요!',
-    url: 'https://toolhub.ai.kr/15-puzzle',
+    url: 'https://toolhub.ai.kr/15-puzzle/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -33,7 +33,7 @@ export default function FifteenPuzzlePage() {
     '@type': 'VideoGame',
     name: '15퍼즐',
     description: '숫자 타일을 슬라이드하여 순서대로 정렬하는 클래식 슬라이딩 퍼즐 게임',
-    url: 'https://toolhub.ai.kr/15-puzzle',
+    url: 'https://toolhub.ai.kr/15-puzzle/',
     genre: '퍼즐',
     gamePlatform: '웹 브라우저',
     applicationCategory: 'GameApplication',

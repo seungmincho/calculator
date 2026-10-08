@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '프리랜서 세금 계산기 2026 | 툴허브',
     description: '3.3% 원천징수 vs 실제 세금 비교. 업종별 경비율 반영, 환급액 자동 계산.',
-    url: 'https://toolhub.ai.kr/freelancer-tax',
+    url: 'https://toolhub.ai.kr/freelancer-tax/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -48,7 +48,7 @@ export default function FreelancerTaxPage() {
     '@type': 'WebApplication',
     name: '프리랜서 세금 계산기',
     description: '프리랜서·자영업자의 3.3% 원천징수와 종합소득세를 계산하는 온라인 도구',
-    url: 'https://toolhub.ai.kr/freelancer-tax',
+    url: 'https://toolhub.ai.kr/freelancer-tax/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

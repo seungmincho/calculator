@@ -37,7 +37,7 @@ export default function ChessPage() {
     '@type': 'VideoGame',
     name: '체스 (Chess)',
     description: '체스 - AI 대전을 지원하는 클래식 체스 보드게임. 캐슬링, 앙파상, 프로모션 등 정식 규칙 완벽 지원.',
-    url: 'https://toolhub.ai.kr/chess',
+    url: 'https://toolhub.ai.kr/chess/',
     genre: 'Board Game',
     gamePlatform: 'Web Browser',
     operatingSystem: 'Any',

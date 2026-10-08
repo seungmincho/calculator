@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '위상정렬 시각화 | 툴허브',
     description: 'DAG 의존성 순서를 위상정렬로 결정하는 과정을 시각적으로 학습하세요.',
-    url: 'https://toolhub.ai.kr/algorithm/topological-sort',
+    url: 'https://toolhub.ai.kr/algorithm/topological-sort/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-topological-sort.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/topological-sort',
+    canonical: 'https://toolhub.ai.kr/algorithm/topological-sort/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function TopologicalSortPage() {
     '@type': 'WebApplication',
     name: '위상정렬 시각화',
     description: '위상정렬로 DAG의 의존성 순서를 결정하는 과정을 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/topological-sort',
+    url: 'https://toolhub.ai.kr/algorithm/topological-sort/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',

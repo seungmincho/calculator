@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AVL 트리 시각화 | 툴허브',
     description: 'AVL 트리 삽입·삭제·회전을 단계별 애니메이션으로 배우세요.',
-    url: 'https://toolhub.ai.kr/algorithm/avl-tree',
+    url: 'https://toolhub.ai.kr/algorithm/avl-tree/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/algorithm-avl-tree.png', width: 1200, height: 630, alt: 'AVL 트리 시각화' }],
   },
   twitter: { card: 'summary_large_image', title: 'AVL 트리 시각화', description: 'AVL 트리 회전 LL/RR/LR/RL 단계별 시각화', images: ['https://toolhub.ai.kr/og/algorithm-avl-tree.png'] },
-  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/avl-tree' },
+  alternates: { canonical: 'https://toolhub.ai.kr/algorithm/avl-tree/' },
 }
 
 export default function AVLTreePage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication',
     name: 'AVL 트리 시각화', description: 'AVL 트리 삽입·삭제·회전 인터랙티브 교육 도구',
-    url: 'https://toolhub.ai.kr/algorithm/avl-tree',
+    url: 'https://toolhub.ai.kr/algorithm/avl-tree/',
     applicationCategory: 'EducationalApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: ['AVL 삽입 + 자동 회전 시각화', 'LL/RR/LR/RL 회전 타입 표시', '균형 인수(BF) 실시간 계산', '높이 변화 추적', 'TypeScript 코드 보기'],

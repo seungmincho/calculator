@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '벨만-포드 최단경로 시각화 | 툴허브',
     description: '음수 가중치 그래프의 최단 경로를 벨만-포드로 찾아보세요.',
-    url: 'https://toolhub.ai.kr/algorithm/bellman-ford',
+    url: 'https://toolhub.ai.kr/algorithm/bellman-ford/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['https://toolhub.ai.kr/og/algorithm-bellman-ford.png'],
   },
   alternates: {
-    canonical: 'https://toolhub.ai.kr/algorithm/bellman-ford',
+    canonical: 'https://toolhub.ai.kr/algorithm/bellman-ford/',
   },
 }
 
@@ -35,7 +35,7 @@ export default function BellmanFordPage() {
     '@type': 'WebApplication',
     name: '벨만-포드 최단경로 시각화',
     description: '벨만-포드 알고리즘으로 음수 가중치 그래프의 최단 경로를 찾는 과정을 인터랙티브하게 학습하는 도구',
-    url: 'https://toolhub.ai.kr/algorithm/bellman-ford',
+    url: 'https://toolhub.ai.kr/algorithm/bellman-ford/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
