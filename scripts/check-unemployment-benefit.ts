@@ -3,7 +3,7 @@ import {
   DAILY_CAP, dailyCap, dailyFloor, benefitDays, daysIn3Months, avgDailyWage, dailyBenefit,
   earlyBonus, lastEligiblePaidDay, schedule, nextBusinessDay,
 } from '../src/utils/unemploymentBenefit.ts'
-import { MIN_WAGE_2026, MIN_WAGE_2027, minWageFor, minWageOn } from '../src/utils/minimumWage.ts'
+import { MIN_WAGE_2026, MIN_WAGE_2027, minWageFor, minWageOn, minWageAt } from '../src/utils/minimumWage.ts'
 
 let fail = 0
 const eq = (a: unknown, b: unknown, msg: string) => {
@@ -31,6 +31,10 @@ eq([minWageFor(2025), minWageFor(2026), minWageFor(2027)], [10030, 10320, 10700]
 eq(MIN_WAGE_2026 * 209, 2_156_880, '2026 월 환산 209시간')
 eq(MIN_WAGE_2027 * 209, 2_236_300, '2027 월 환산 209시간 (2026.8.5 고시)')
 eq(minWageOn('2027-01-01'), 10700, '2027.1.1 시행')
+// 화면용 '올해' 최저임금: 빈 값(정적 HTML) = 2026, 표 밖 연도는 라벨도 표에 있는 연도
+eq(minWageAt(''), { year: 2026, wage: 10320, next: 10700 }, '첫 렌더 기본 2026')
+eq(minWageAt('2027-01-01'), { year: 2027, wage: 10700, next: undefined }, '2027년엔 2027 금액')
+eq(minWageAt('2030-05-01').year, 2027, '고시 전 연도는 마지막 고시 연도로 라벨')
 
 // 이직일별 상·하한 (시행령 제68조·부칙 제4조, 법 제45조④ 이직일 당시 최저임금)
 eq(dailyCap('2025-12-31'), 66000, '2025 이직 상한 66,000 (종전)')

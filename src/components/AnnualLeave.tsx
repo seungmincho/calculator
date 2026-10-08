@@ -10,8 +10,9 @@ import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import { getKoreanHolidays } from '@/utils/koreanHolidays'
 import { todayKST, addMonths, addDays, ymd, isValidDate } from '@/utils/dday'
+import { minWageAt } from '@/utils/minimumWage'
 import {
-  summarize, settlement, timeline, dailyWage, bridges, MIN_WAGE_2026, HOURLY_LEAVE_FROM,
+  summarize, settlement, timeline, dailyWage, bridges, HOURLY_LEAVE_FROM,
   type WageMode, type GrantKind,
 } from '@/utils/annualLeave'
 
@@ -22,7 +23,7 @@ const fmtDays = (n: number) => n.toLocaleString('ko-KR', { maximumFractionDigits
 const fmtWon = (n: number) => Math.round(n).toLocaleString('ko-KR')
 const dot = (d: string) => d.replaceAll('-', '.')
 const num = (s: string | null, d: number) => { const n = Number(s); return s != null && s !== '' && Number.isFinite(n) && n >= 0 ? n : d }
-const WAGE_DEFAULT: Record<WageMode, number> = { monthly: 3_000_000, hourly: 10_320, daily: 100_000 }
+const WAGE_DEFAULT: Record<WageMode, number> = { monthly: 3_000_000, hourly: 10_320, daily: 100_000 } // hourly는 화면에서 올해 최저임금으로 바꿈
 
 export default function AnnualLeave() {
   const t = useTranslations('annualLeave')
@@ -56,7 +57,9 @@ export default function AnnualLeave() {
     setRef(r => r || d)
   }, [])
 
-  const amount = pay || WAGE_DEFAULT[wageMode]
+  const mw = minWageAt(today) // 올해 최저임금 (마운트 전엔 2026)
+  const wageDefault = wageMode === 'hourly' ? mw.wage : WAGE_DEFAULT[wageMode]
+  const amount = pay || wageDefault
 
   // URL 동기화 (기본값은 생략)
   useEffect(() => {
@@ -106,7 +109,7 @@ export default function AnnualLeave() {
   const payDays = Math.round((remForPay + settleDays) * 100) / 100
   const leavePay = Math.round(payDays * daily)
   const hourly = wageMode === 'monthly' ? amount / 209 : wageMode === 'hourly' ? amount : daily / hours
-  const belowMin = hourly > 0 && hourly < MIN_WAGE_2026
+  const belowMin = hourly > 0 && hourly < mw.wage
 
   const kindLabel = (k: GrantKind) => t(`table.${k}`)
   const seg = (on: boolean) => `px-3 py-2 text-sm font-medium rounded-lg transition-colors ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
@@ -303,11 +306,11 @@ export default function AnnualLeave() {
                     <div>
                       <label className="block text-sm font-medium text-body mb-2" htmlFor="al-pay">{t(`pay.amount.${wageMode}`)}</label>
                       <div className="relative">
-                        <input id="al-pay" type="text" inputMode="numeric" value={pay ? fmtWon(pay) : ''} placeholder={fmtWon(WAGE_DEFAULT[wageMode])}
+                        <input id="al-pay" type="text" inputMode="numeric" value={pay ? fmtWon(pay) : ''} placeholder={fmtWon(wageDefault)}
                           onChange={e => setPay(Number(e.target.value.replace(/[^\d]/g, '')) || 0)} className="ui-field w-full px-4 py-3 pr-10 tabular-nums" />
                         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-faint">{t('won')}</span>
                       </div>
-                      {belowMin && <p className="text-xs text-amber-700 mt-1.5">{t('pay.minWage', { wage: fmtWon(MIN_WAGE_2026) })}</p>}
+                      {belowMin && <p className="text-xs text-amber-700 mt-1.5">{t('pay.minWage', { wage: fmtWon(mw.wage), year: mw.year })}</p>}
                     </div>
                     {wageMode !== 'daily' && (
                       <div>

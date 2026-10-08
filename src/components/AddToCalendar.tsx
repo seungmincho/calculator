@@ -1,8 +1,12 @@
 'use client'
 
+import { useSyncExternalStore } from 'react'
 import { CalendarPlus } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n/navigation'
 import { buildIcs, type IcsEvent } from '@/utils/carMaintenance'
+import { todayKST } from '@/utils/dday'
+
+const noSub = () => () => {}
 
 /** 마감 일정 하나 (문구 = 공통 homePage.deadline.<key>, 메모에 도구 링크 — 알림 받고 다시 들어오게) */
 export function useDeadlineEvent() {
@@ -18,9 +22,13 @@ export function useDeadlineEvent() {
  *  title을 주면 아이콘만 있는 44px 버튼(aria-label = "{title} 캘린더에 추가"), 없으면 글자 버튼. */
 export default function AddToCalendar({ events, file, title, className = '' }: { events: IcsEvent[]; file: string; title?: string; className?: string }) {
   const tc = useTranslations('common')
+  // 지난 일정은 빼고, 모두 지났으면 버튼을 숨김 (KST 오늘은 마운트 후 — 정적 HTML·하이드레이션은 전부 표시)
+  const today = useSyncExternalStore(noSub, todayKST, () => null)
+  const live = today ? events.filter((e) => (e.end ?? e.date) >= today) : events
+  if (!live.length) return null
   const save = () => {
     const a = document.createElement('a')
-    a.href = URL.createObjectURL(new Blob([buildIcs(events, new Date().toISOString().slice(0, 10))], { type: 'text/calendar;charset=utf-8' }))
+    a.href = URL.createObjectURL(new Blob([buildIcs(live, new Date().toISOString().slice(0, 10))], { type: 'text/calendar;charset=utf-8' }))
     a.download = file
     a.click()
     setTimeout(() => URL.revokeObjectURL(a.href), 1000)

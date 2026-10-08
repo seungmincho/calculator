@@ -75,6 +75,7 @@ eq(calcByAge(58, 3_000_000, 57, 60).eligible, false, '3년 가입 = 수급권 �
 // 간편 → 상세 딥링크(b·s·y·i): /national-pension 범위(가입 18세 이후·65세 전) 안에 들어가야 같은 금액이 나옴
 eq(ageInput(30, 3_000_000, 27, 65), { birthYear: 1996, startYear: 2023, years: 38, income: 3_000_000 }, '딥링크 입력 변환')
 eq(ageInput(60, 3_000_000, 20, 65), { birthYear: 1966, startYear: 1988, years: 43, income: 3_000_000 }, '1988년 이전 가입 나이는 1988년부터')
+eq(ageInput(30, 3_000_000, 27, 65, 2027).birthYear, 1997, '2027년엔 올해 기준으로 출생연도 환산')
 
 if (fail) { console.log(`${fail} failed`); process.exit(1) }
 console.log('check-national-pension: all passed')

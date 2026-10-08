@@ -6,7 +6,7 @@
  *       소득세법 시행령 제17조의2(식대 월 20만원)·제12조3호(자가운전보조금 월 20만원), 소득세법 제12조3호러목(출산·보육수당 월 20만원),
  *       소득세 = 근로소득 간이세액표(wageTaxTable.ts), 최저임금 2026 시간급 10,320원(월 209시간 2,156,880원), 4대보험 요율은 insuranceRates.ts
  */
-import { MIN_WAGE_2026 } from './minimumWage.ts'
+import { MIN_WAGE_2026, minWageAt } from './minimumWage.ts'
 import { monthlyDeduction } from './weeklyHolidayPay.ts'
 import { withholding33 } from './salesCommission.ts'
 import { wageTax } from './wageTaxTable.ts'
@@ -50,6 +50,7 @@ export interface PayInput {
   insBase: number // 4대보험 보수월액 직접 입력 (0 = 자동)
   ded: Record<DedKey, number | null> // null = 자동
   extraDeds: { name: string; amount: number }[]
+  month?: string // 귀속월 YYYY-MM — 최저임금 적용 연도 (없으면 2026)
 }
 
 export interface Line {
@@ -178,8 +179,9 @@ export function computePay(i: PayInput) {
   // 최저임금: 시급제는 시급, 월급제는 (기본급 + 매월 지급 수당 — 상여·자가운전보조금 제외) ÷ 기준시간
   const forMin = i.wageType === 'hourly' ? i.base : i.base + i.rows.filter((x) => x.type !== 'bonus' && x.type !== 'car').reduce((s, x) => s + (x.amount || 0), 0)
   const minHourly = i.wageType === 'hourly' ? i.base : i.monthHours > 0 ? forMin / i.monthHours : 0
-  const required = i.wageType === 'hourly' ? MIN_WAGE_2026 : MIN_WAGE_2026 * i.monthHours
-  const minWage = { hourly: Math.floor(minHourly), ok: minHourly >= MIN_WAGE_2026, required, shortfall: Math.max(0, Math.ceil(required - forMin)) }
+  const { year: minYear, wage: min } = minWageAt(i.month)
+  const required = i.wageType === 'hourly' ? min : min * i.monthHours
+  const minWage = { hourly: Math.floor(minHourly), ok: minHourly >= min, required, shortfall: Math.max(0, Math.ceil(required - forMin)), min, year: minYear }
 
   const missingMethod = i.rows.filter((x) => x.amount > 0 && !x.method.trim()).map((x) => x.name.trim() || ROW_NAME[x.type])
 

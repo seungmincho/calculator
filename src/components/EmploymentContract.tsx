@@ -10,8 +10,9 @@ import { Section, Field, AmountField, DateField, NumberField, TextField, Segment
 import { EMPTY_PARTY, maskId, krDate, won, docFileName, type Party } from '@/utils/document'
 import { addYears, addDays } from '@/utils/dday'
 import { monthlyHoursFor } from '@/utils/weeklyHolidayPay'
+import { minWageAt } from '@/utils/minimumWage'
 import {
-  week, minWageCheck, monthlyEstimate, minorLimit, ageAt, MIN_WAGE_2026,
+  week, minWageCheck, monthlyEstimate, minorLimit, ageAt,
   type Slot, type WageType, type Week,
 } from '@/utils/employmentContract'
 import '@/lib/i18n/ns/employmentContract'
@@ -72,10 +73,10 @@ const MINOR: Slot = { start: '10:00', end: '16:30', bStart: '12:00', bEnd: '12:3
 const weekdays = (n: number) => Array.from({ length: 7 }, (_, i) => i < n)
 const isPartGroup = (k: Kind) => k === 'part' || k === 'minor'
 
-/** 유형별 근무시간·임금 기본값 (정규직 월급 / 알바 시급) */
-function preset(k: Kind): Pick<V, 'on' | 'perDay' | 'time' | 'days' | 'wageType' | 'wage' | 'holiday'> {
+/** 유형별 근무시간·임금 기본값 (정규직 월급 / 알바 시급). 연소자 시급 = 근로개시일 해의 최저임금 */
+function preset(k: Kind, start = ''): Pick<V, 'on' | 'perDay' | 'time' | 'days' | 'wageType' | 'wage' | 'holiday'> {
   if (k === 'part') return { on: weekdays(5), perDay: true, time: PART, days: Array(7).fill(PART), wageType: 'hourly', wage: 11_000, holiday: 6 }
-  if (k === 'minor') return { on: [false, false, false, false, false, true, true], perDay: false, time: MINOR, days: Array(7).fill(MINOR), wageType: 'hourly', wage: MIN_WAGE_2026, holiday: 0 }
+  if (k === 'minor') return { on: [false, false, false, false, false, true, true], perDay: false, time: MINOR, days: Array(7).fill(MINOR), wageType: 'hourly', wage: minWageAt(start).wage, holiday: 0 }
   return { on: weekdays(5), perDay: false, time: FULL, days: Array(7).fill(FULL), wageType: 'monthly', wage: 2_600_000, holiday: 6 }
 }
 
@@ -121,8 +122,9 @@ function insights(v: V, t: TFn): Insight[] {
   else {
     // 최저임금
     if (v.wage > 0) {
-      const m = minWageCheck(v.wageType, v.wage, allowanceSum(v), w)
-      const vars = { hourly: won(m.hourly), min: won(MIN_WAGE_2026), required: won(m.required), hours: w.monthlyHours, short: won(m.shortfall) }
+      const mw = minWageAt(v.start) // 근로개시일 해의 최저임금 (빈 값이면 2026)
+      const m = minWageCheck(v.wageType, v.wage, allowanceSum(v), w, mw.wage)
+      const vars = { hourly: won(m.hourly), min: won(mw.wage), year: mw.year, required: won(m.required), hours: w.monthlyHours, short: won(m.shortfall) }
       if (m.ok) out.push({ level: 'info', text: t('insight.minWageOk', vars) })
       else if (v.wageType === 'monthly' && m.okWithAllowance) out.push({ level: 'warn', text: t('insight.minWageAllowance', vars) })
       else out.push({ level: 'error', text: t(v.wageType === 'hourly' ? 'insight.minWageHourly' : 'insight.minWageMonthly', vars) })
@@ -215,13 +217,14 @@ function Row({ k, v }: { k: string; v: string }) {
 function Form({ v, set, t }: { v: V; set: (p: Partial<V>) => void; t: TFn }) {
   const w = calc(v)
   const est = monthlyEstimate(v.wageType, v.wage, w, v.small)
-  const m = minWageCheck(v.wageType, v.wage, allowanceSum(v), w)
+  const mw = minWageAt(v.start)
+  const m = minWageCheck(v.wageType, v.wage, allowanceSum(v), w, mw.wage)
   const dayNames = t.raw('days') as string[]
   const hUnit = t('hourUnit')
 
   const setKind = (kind: Kind) => {
     const p: Partial<V> = { kind }
-    if (isPartGroup(kind) !== isPartGroup(v.kind)) Object.assign(p, preset(kind))
+    if (isPartGroup(kind) !== isPartGroup(v.kind)) Object.assign(p, preset(kind, v.start))
     if (kind === 'fixed') p.fixedTerm = true
     set(p)
   }
@@ -321,7 +324,7 @@ function Form({ v, set, t }: { v: V; set: (p: Partial<V>) => void; t: TFn }) {
           <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(est.total)}<span className="text-lg font-semibold ml-1">{t('won')}</span></p>
           <dl className="mt-3 space-y-1 text-sm">
             <Row k={t('summary.hourly')} v={`${won(m.hourly)}${t('won')}`} />
-            <Row k={t('summary.minWage')} v={`${won(MIN_WAGE_2026)}${t('won')}`} />
+            <Row k={t('summary.minWage', { year: mw.year })} v={`${won(mw.wage)}${t('won')}`} />
             {v.wageType === 'hourly' && w.holidayHours > 0 && <Row k={t('summary.weeklyHolidayPay')} v={`${won(est.weeklyHolidayPay)}${t('won')}`} />}
             {est.overtime > 0 && <Row k={t('summary.overtimePay')} v={`${won(est.overtime)}${t('won')}`} />}
           </dl>

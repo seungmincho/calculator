@@ -65,6 +65,9 @@ const hr = computePay({ ...base, wageType: 'hourly', base: 10_320, workHours: 13
 assert.equal(hr.gross, 10_320 * 156)
 assert.ok(hr.minWage.ok)
 assert.equal(computePay({ ...base, wageType: 'hourly', base: 10_000, workHours: 100, holidayHours: 0 }).minWage.ok, false)
+// 최저임금은 귀속월 해 기준: 2026 시급 10,320원은 2027년 1월분부터 미달 (2027 10,700원)
+assert.equal(computePay({ ...base, wageType: 'hourly', base: 10_320, workHours: 100, holidayHours: 0, month: '2027-01' }).minWage.ok, false)
+assert.equal(computePay({ ...base, wageType: 'hourly', base: 10_320, workHours: 100, holidayHours: 0, month: '2026-12' }).minWage.ok, true)
 
 // 최저임금 미달 월급: 210만 / 209h → 미달 56,880원
 const low = computePay({ ...base, base: 2_100_000 })

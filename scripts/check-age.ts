@@ -64,6 +64,9 @@ eq(bad === null || bad.days >= 0, true, '30일생 처리')
 eq(zodiacOf('2000-01-15').key, 'rabbit', '2000년 1월 설 전 = 토끼')
 eq(zodiacOf('2000-02-10').key, 'dragon', '2000년 설 후 = 용')
 eq(zodiacOf('2026-03-01').ganzi, '병오', '2026 병오')
+// 2027 설 = 양력 2/7 (KASI): 전날까지 병오(말), 설부터 정미(양)
+eq([zodiacOf('2027-02-06').key, zodiacOf('2027-02-06').ganzi], ['horse', '병오'], '2027 설 전날 = 말')
+eq([zodiacOf('2027-02-07').key, zodiacOf('2027-02-07').ganzi], ['goat', '정미'], '2027 설 = 양')
 eq(['01-19', '01-20', '03-20', '03-21', '06-21', '06-22', '12-21', '12-22'].map(d => westernSign(`2000-${d}`)),
   ['capricorn', 'aquarius', 'pisces', 'aries', 'gemini', 'cancer', 'sagittarius', 'capricorn'], '별자리 경계')
 

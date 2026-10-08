@@ -1169,7 +1169,7 @@ function upcoming(key: 'seollal' | 'chuseok', today: string, year: number) {
     // 날짜는 연휴가 45일 이내일 때만 — 지난 추석 직후에 '내년 9월 ○일 연휴가 코앞'이 되지 않게
     if (eve && after && after.date >= today) return { year: y, from: Date.parse(eve.date) - Date.parse(today) <= 45 * 864e5 ? md(eve.date) : null }
   }
-  return null // ponytail: 음력 공휴일 표가 2030년까지 — 이후엔 날짜 없이 문구만
+  return null // ponytail: 음력 공휴일은 2050년까지(KASI 음력표) — 이후엔 날짜 없이 문구만
 }
 
 export function dateContext(now: Date): DateCtx {

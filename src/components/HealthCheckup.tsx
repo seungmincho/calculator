@@ -10,7 +10,7 @@ import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import { MEMBERS, CANCER_CYCLE, checkup, daysLeft, sameParity, type Sex, type Member, type Extra } from '@/utils/healthCheckup'
 
-const YEARS = [2026, 2027] as const
+const BASE_YEAR = 2026 // 검진 기준(고시) 연도 = 정적 HTML·첫 렌더의 '올해'. 마운트 후 오늘 기준 올해·내년
 const BIRTH_MIN = 1920
 const BIRTH_MAX = 2011
 const BIRTH_YEARS = Array.from({ length: BIRTH_MAX - BIRTH_MIN + 1 }, (_, k) => BIRTH_MAX - k)
@@ -34,19 +34,29 @@ export default function HealthCheckup() {
     const v = sp.get('t') as Member
     return MEMBERS.includes(v) ? v : 'office'
   })
-  const [year, setYear] = useState<number>(() => (sp.get('y') === '2027' ? 2027 : 2026))
+  const [year, setYear] = useState<number>(() => (Number(sp.get('y')) === BASE_YEAR + 1 ? BASE_YEAR + 1 : BASE_YEAR))
   // 흡연·간질환은 건강 정보라 URL에 넣지 않음
   const [smoker30, setSmoker30] = useState(false)
   const [liverRisk, setLiverRisk] = useState(false)
   const [today, setToday] = useState<string | null>(null) // 클라이언트에서만 (하이드레이션 불일치 방지)
   const resultRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => { setToday(new Date().toLocaleDateString('sv-SE')) }, [])
+  const thisYear = today ? Math.max(BASE_YEAR, Number(today.slice(0, 4))) : BASE_YEAR
+  const years = [thisYear, thisYear + 1]
+
+  useEffect(() => {
+    const d = new Date().toLocaleDateString('sv-SE')
+    setToday(d)
+    // 조회 연도 기본값 = 올해. 공유 링크의 y는 올해·내년일 때만
+    const ty = Math.max(BASE_YEAR, Number(d.slice(0, 4)))
+    const y = Number(sp.get('y'))
+    setYear(y === ty + 1 ? y : ty)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const q = new URLSearchParams({ by: String(birthYear), g: sex, t: member })
-    if (year !== 2026) q.set('y', String(year))
+    if (year !== thisYear) q.set('y', String(year))
     window.history.replaceState(null, '', `?${q}`)
-  }, [birthYear, sex, member, year])
+  }, [birthYear, sex, member, year, thisYear])
 
   const r = checkup({ birthYear, sex, member, year, smoker30, liverRisk })
   const age = r.age
@@ -126,8 +136,8 @@ export default function HealthCheckup() {
             </div>
 
             <div>
-              {radioGroup<number>('hc-year', t('in.year'), year, YEARS.map((y): [number, string] => [y, t('in.yearOpt', { y })]), setYear, 'grid-cols-2')}
-              {year !== 2026 && <p className="text-xs text-muted mt-1.5">{t('in.yearNote')}</p>}
+              {radioGroup<number>('hc-year', t('in.year'), year, years.map((y): [number, string] => [y, t('in.yearOpt', { y })]), setYear, 'grid-cols-2')}
+              {year > BASE_YEAR && <p className="text-xs text-muted mt-1.5">{t('in.yearNote', { y: year, base: BASE_YEAR })}</p>}
             </div>
 
             <fieldset className="space-y-3">

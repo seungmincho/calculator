@@ -23,3 +23,10 @@ export const minWageFor = (year: number) => MIN_WAGE_BY_YEAR[Math.min(LAST, Math
 
 /** 'YYYY-MM-DD' 날짜에 적용되는 최저임금 시간급 */
 export const minWageOn = (date: string) => minWageFor(Number(date.slice(0, 4)))
+
+/** 화면용: 그 날짜의 최저임금과 '표에 있는' 연도(라벨용), 고시된 다음 해 금액(없으면 undefined).
+ *  빈 값 = 2026 (정적 HTML·첫 렌더 기본값 — 화면은 마운트 후 오늘 날짜를 넘긴다) */
+export function minWageAt(date = '') {
+  const year = Math.min(LAST, Math.max(FIRST, Number(date.slice(0, 4)) || 2026))
+  return { year, wage: MIN_WAGE_BY_YEAR[year], next: MIN_WAGE_BY_YEAR[year + 1] as number | undefined }
+}

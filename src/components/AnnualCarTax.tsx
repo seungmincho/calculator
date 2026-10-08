@@ -14,7 +14,7 @@ import {
 } from '@/utils/annualCarTax'
 import { todayKST, ddayLabel } from '@/utils/dday'
 
-const YEARS = [2026, 2027] as const
+const BASE_YEAR = 2026 // 정적 HTML·첫 렌더의 '올해'. 마운트 후 KST 오늘 기준 올해·내년
 const CC_PRESETS = [998, 1598, 1999, 2497, 3470] as const
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 const pick = <T,>(v: string | null, list: readonly T[], def: T, map: (s: string) => T = (s) => s as T): T => {
@@ -28,7 +28,7 @@ export default function AnnualCarTax() {
   const t = useTranslations('annualCarTax')
   const sp = useSearchParams()
 
-  const [year, setYear] = useState<number>(() => pick(sp.get('y'), YEARS, 2026, Number))
+  const [year, setYear] = useState<number>(() => pick(sp.get('y'), [BASE_YEAR, BASE_YEAR + 1], BASE_YEAR, Number))
   const [kind, setKind] = useState<Kind>(() => pick(sp.get('k'), KINDS, 'car'))
   const [use, setUse] = useState<Use>(() => (sp.get('u') === 'b' ? 'business' : 'private'))
   const [cc, setCc] = useState(() => Math.min(Number(sp.get('cc')) || 1999, 20_000))
@@ -39,10 +39,19 @@ export default function AnnualCarTax() {
   const [saleDate, setSaleDate] = useState(() => sp.get('sd') ?? '')
   const today = useSyncExternalStore(noSub, todayKST, () => null) // KST, 서버·하이드레이션은 null (불일치 방지)
   const sale = saleDate || today || '' // 매도일 기본값 = 오늘
+  const thisYear = today ? Math.max(BASE_YEAR, Number(today.slice(0, 4))) : BASE_YEAR
+  const years = [thisYear, thisYear + 1]
+
+  // 과세 연도 기본값 = 올해. 공유 링크의 y는 올해·내년일 때만 (마운트 시점 URL)
+  useEffect(() => {
+    const ty = Math.max(BASE_YEAR, Number(todayKST().slice(0, 4)))
+    const y = Number(sp.get('y'))
+    setYear(y === ty + 1 ? y : ty)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const q = new URLSearchParams()
-    if (year !== 2026) q.set('y', String(year))
+    if (year !== thisYear) q.set('y', String(year))
     if (kind !== 'car') q.set('k', kind)
     if (use === 'business') q.set('u', 'b')
     if (kind === 'car') { q.set('cc', String(cc)); q.set('ry', String(regYear)); q.set('rm', String(regMonth)) }
@@ -50,7 +59,7 @@ export default function AnnualCarTax() {
     if (kind === 'truck') q.set('ton', String(ton))
     if (sp.get('sd')) q.set('sd', saleDate)
     window.history.replaceState(null, '', `?${q}`)
-  }, [year, kind, use, cc, regYear, regMonth, van, ton, saleDate]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [year, thisYear, kind, use, cc, regYear, regMonth, van, ton, saleDate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const ry = Math.min(regYear, year)
   const input: CarInput = { kind, use, cc, regYear: ry, regMonth, van, ton }
@@ -173,9 +182,9 @@ export default function AnnualCarTax() {
             <div>
               <p className="block text-sm font-medium text-body mb-2">{t('u.year')}</p>
               <div className="grid grid-cols-2 gap-2">
-                {YEARS.map((y) => <button key={y} onClick={() => setYear(y)} className={seg(year === y)} aria-pressed={year === y}>{t('u.yearOpt', { y })}</button>)}
+                {years.map((y) => <button key={y} onClick={() => setYear(y)} className={seg(year === y)} aria-pressed={year === y}>{t('u.yearOpt', { y })}</button>)}
               </div>
-              {year !== 2026 && <p className="text-xs text-muted mt-1.5">{t('u.yearNote')}</p>}
+              {year > thisYear && <p className="text-xs text-muted mt-1.5">{t('u.yearNote', { y: year })}</p>}
             </div>
           </div>
         </div>

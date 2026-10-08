@@ -1,6 +1,6 @@
 // 공휴일 회귀 체크: node scripts/check-korean-holidays.ts
-// 기대값 출처: 관공서의 공휴일에 관한 규정 제2·3조(2026-04-28 개정 — 노동절·제헌절), 인사혁신처 월력요항,
-// 선거일(공직선거법 제34조)·임시공휴일(국무회의 의결)
+// 기대값 출처: 관공서의 공휴일에 관한 규정 제2·3조(2026-04-28 개정 — 노동절·제헌절), 우주항공청 월력요항
+// (2027년도: 2026-06-29 관보, 한국천문연구원 astro.kasi.re.kr 달력자료), 선거일(공직선거법 제34조)·임시공휴일(국무회의 의결)
 import assert from 'node:assert/strict'
 import { getKoreanHolidays, csatDate, getPresetDates } from '../src/utils/koreanHolidays.ts'
 
@@ -21,6 +21,16 @@ assert.deepEqual(subs(2027), md(2027, '02-09 05-03 07-19 08-16 10-04 10-11 12-27
 assert.ok(subs(2028).includes('2028-10-05'), '2028 추석 연휴·개천절 겹침 → 10/5')
 assert.ok(!subs(2028).includes('2028-01-03'), '2028 신정(토) 대체 없음')
 assert.ok(!subs(2027).some(d => d.startsWith('2027-06')), '2027 현충일(일) 대체 없음')
+// 2027 월력요항: 음력 공휴일 날짜와 대체공휴일 사유까지 (날짜만 맞고 이름이 뒤바뀌는 것 방지)
+assert.deepEqual(getKoreanHolidays(2027).filter(h => ['seollal', 'buddhasBirthday', 'chuseok'].includes(h.nameKey)).map(h => h.date), md(2027, '02-07 05-13 09-15'))
+assert.deepEqual(getKoreanHolidays(2027).filter(h => h.nameKey === 'substituteHoliday').map(h => h.name.slice(7, -1)),
+  ['설날', '노동절', '제헌절', '광복절', '개천절', '한글날', '크리스마스'])
+
+// 음력 공휴일은 lunarCalendar(KASI) 환산 — 2030 이후도 빠지지 않음 (2031 설 1/23·추석 10/1, 2050 추석 9/30: KASI)
+const lunarOf = (y: number, key: string) => getKoreanHolidays(y).find(h => h.nameKey === key)?.date
+assert.deepEqual([lunarOf(2031, 'seollal'), lunarOf(2031, 'chuseok'), lunarOf(2050, 'chuseok')], ['2031-01-23', '2031-10-01', '2050-09-30'])
+for (let y = 2024; y <= 2050; y++) assert.equal(getKoreanHolidays(y).filter(h => h.isLunar).length, 7, `${y} 음력 공휴일 7일`)
+assert.equal(getKoreanHolidays(2051).filter(h => h.isLunar).length, 0, '2051은 음력표 밖')
 
 // 노동절·제헌절은 2026년부터
 const has = (d: string, key: string) => getKoreanHolidays(+d.slice(0, 4)).some(h => h.date === d && h.nameKey === key)

@@ -148,8 +148,8 @@ export function calcPension(p: PensionInput): PensionResult {
 
 /** 나이 기준 간이 입력(/pension-calculator) → calcPension 입력. 60세 이후 납부는 임의계속가입(최대 65세, 제13조)으로 본다.
  *  /national-pension 딥링크(b·s·y·i)도 이 값을 그대로 쓴다. 제도 시행(1988) 전 기간은 빼고 센다 */
-export function ageInput(currentAge: number, income: number, joinAge: number, retireAge: number): PensionInput {
-  const birthYear = YEAR - currentAge
+export function ageInput(currentAge: number, income: number, joinAge: number, retireAge: number, now: number = YEAR): PensionInput {
+  const birthYear = now - currentAge // now = 올해 (화면은 마운트 후 오늘 기준, 기본값 = 요율 기준 연도)
   const startYear = Math.max(1988, birthYear + joinAge)
   return { birthYear, startYear, years: Math.max(0, birthYear + Math.min(retireAge, 65) - startYear), income }
 }

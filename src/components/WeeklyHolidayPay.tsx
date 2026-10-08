@@ -10,6 +10,7 @@ import MobileResultLink from '@/components/MobileResultLink'
 import { calculateNetSalary } from '@/utils/netSalary'
 import { requiredBreak, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM } from '@/utils/workHours'
 import { todayKST } from '@/utils/dday'
+import { minWageAt } from '@/utils/minimumWage'
 import {
   calcWeek, evenDays, netDayHours, monthlyDeduction, MIN_WAGE_2026, type DeductMode,
 } from '@/utils/weeklyHolidayPay'
@@ -53,7 +54,12 @@ export default function WeeklyHolidayPay() {
 
   // 법 개정 안내는 마운트 후 KST 날짜로 (첫 렌더 = 정적 HTML)
   const [today, setToday] = useState('')
-  useEffect(() => setToday(todayKST()), [])
+  useEffect(() => {
+    const d = todayKST()
+    setToday(d)
+    if (!(parseInt(sp.get('wage') || '') > 0)) setWageText(minWageAt(d).wage.toLocaleString('ko-KR')) // 기본값 = 올해 최저시급
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const mw = minWageAt(today) // 올해 최저임금 (마운트 전엔 2026)
 
   const wage = parseInt(wageText.replace(/,/g, '')) || 0
   const stay = mode === 'even' ? evenDays(days, hours) : perDay
@@ -80,7 +86,7 @@ export default function WeeklyHolidayPay() {
   const totalDeduct = ded.total + incomeTax
   const netMonthly = r.monthlyTotal - totalDeduct
 
-  const belowMin = wage > 0 && wage < MIN_WAGE_2026
+  const belowMin = wage > 0 && wage < mw.wage
   const breakShort = work.some((h, i) => stay[i] > 0 && brk < requiredBreak(h * 60))
   const under = calcWeek(wage, [5, 5, 4.5])
   const at15 = calcWeek(wage, evenDays(3, 5))
@@ -129,10 +135,12 @@ export default function WeeklyHolidayPay() {
               </div>
               <div className="flex items-center justify-between mt-1.5">
                 <p className={`text-xs ${belowMin ? 'text-red-600' : 'text-muted'}`}>
-                  {belowMin ? t('u.belowMin', { min: won(MIN_WAGE_2026) }) : t('input.hourlyWageHint')}
+                  {belowMin ? t('u.belowMin', { min: won(mw.wage), year: mw.year })
+                    : mw.next ? t('input.hourlyWageHint', { year: mw.year, wage: won(mw.wage), nextYear: mw.year + 1, next: won(mw.next) })
+                      : t('input.hourlyWageHintCurrent', { year: mw.year, wage: won(mw.wage) })}
                 </p>
-                {wage !== MIN_WAGE_2026 && (
-                  <button onClick={() => setWageText(MIN_WAGE_2026.toLocaleString('ko-KR'))} className="text-xs text-primary font-medium">
+                {wage !== mw.wage && (
+                  <button onClick={() => setWageText(mw.wage.toLocaleString('ko-KR'))} className="text-xs text-primary font-medium">
                     {t('u.useMin')}
                   </button>
                 )}
@@ -302,7 +310,7 @@ export default function WeeklyHolidayPay() {
             {(!r.eligible || belowMin || r.overtimeHours > 0 || breakShort) && (
               <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 text-sm space-y-1">
                 {!r.eligible && <p>{t('u.warnUnder15', { need: hrs(Math.max(0, 15 - r.contractHours)) })}</p>}
-                {belowMin && <p>{t('u.warnMinWage', { min: won(MIN_WAGE_2026), diff: won(MIN_WAGE_2026 - wage) })}</p>}
+                {belowMin && <p>{t('u.warnMinWage', { min: won(mw.wage), diff: won(mw.wage - wage), year: mw.year })}</p>}
                 {r.overtimeHours > 0 && <p>{t('u.warnOvertime', { ot: hrs(r.overtimeHours) })}</p>}
                 {breakShort && <p>{t('u.warnBreak')}{today >= BREAK_WAIVER_FROM && ' ' + t('u.law.breakWaiverWarn')}</p>}
               </div>

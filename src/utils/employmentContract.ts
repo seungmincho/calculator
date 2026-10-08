@@ -73,16 +73,16 @@ export type WageType = 'hourly' | 'monthly'
 export const hourlyOf = (type: WageType, amount: number, w: Week) =>
   type === 'hourly' ? amount : w.monthlyHours > 0 ? amount / w.monthlyHours : 0
 
-/** 최저임금 검사: 기본급 기준, 매월 정기 지급 수당을 더하면 충족하는지도 */
-export function minWageCheck(type: WageType, amount: number, monthlyAllowance: number, w: Week) {
+/** 최저임금 검사: 기본급 기준, 매월 정기 지급 수당을 더하면 충족하는지도. min = 그 해 최저시급(화면은 근로개시일 기준) */
+export function minWageCheck(type: WageType, amount: number, monthlyAllowance: number, w: Week, min = MIN_WAGE_2026) {
   const hourly = hourlyOf(type, amount, w)
-  const required = type === 'hourly' ? MIN_WAGE_2026 : MIN_WAGE_2026 * w.monthlyHours
+  const required = type === 'hourly' ? min : min * w.monthlyHours
   const withAllowance = type === 'monthly' ? hourlyOf(type, amount + monthlyAllowance, w) : hourly
   return {
     hourly: Math.round(hourly),
     required,
-    ok: hourly >= MIN_WAGE_2026,
-    okWithAllowance: withAllowance >= MIN_WAGE_2026,
+    ok: hourly >= min,
+    okWithAllowance: withAllowance >= min,
     shortfall: Math.max(0, required - amount),
   }
 }

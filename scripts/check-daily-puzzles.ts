@@ -105,7 +105,8 @@ assert.deepEqual(picks('2027-02-09'), ['yearEnd:19'])
 assert.deepEqual(picks('2027-05-20'), ['incomeTax:11'])
 assert.deepEqual(picks('2027-07-01'), [])
 assert.deepEqual(picks('2026-09-20'), ['chuseok:6', 'csatDday:60']) // 추석(09-25)이 수능보다 우선
-assert.deepEqual(picks('2031-09-20'), [])                         // 음력 데이터 없는 해: 조용히 없음
+assert.deepEqual(picks('2031-09-20'), ['chuseok:12'])             // 2031 추석 10/1 (KASI 음력표 ~2050)
+assert.deepEqual(picks('2051-09-20'), [])                         // 음력 데이터 없는 해: 조용히 없음
 assert.equal(seasonalPicks(kst('2026-11-19'), 1).length, 1)
 // UTC로는 11-18 15:00 = KST 11-19 00:00
 assert.equal(seasonalPicks(new Date(Date.UTC(2026, 10, 18, 15)))[0].key, 'csatToday')

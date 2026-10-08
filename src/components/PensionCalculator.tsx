@@ -10,6 +10,7 @@ import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import { INSURANCE, pct } from '@/utils/insuranceRates'
 import { A_VALUE, INCOME_CAP, INCOME_FLOOR, NEW_COEF, YEAR, ageInput, calcPension } from '@/utils/nationalPension'
+import { todayKST } from '@/utils/dday'
 
 // 간편 계산(나이·월 소득) + 월 보험료. 조기·연기·크레딧·부양가족은 /national-pension (딥링크로 입력 전달)
 const DEFAULTS = { age: 30, income: 300, start: 27, retire: 65 }
@@ -25,6 +26,7 @@ export default function PensionCalculator() {
   const [monthlyIncome, setMonthlyIncome] = useState(DEFAULTS.income)
   const [startAge, setStartAge] = useState(DEFAULTS.start)
   const [retirementAge, setRetirementAge] = useState(DEFAULTS.retire)
+  const [thisYear, setThisYear] = useState<number>(YEAR) // 나이 → 출생연도 환산용 올해 (마운트 후 KST)
 
   // URL → 입력 (마운트 후, 첫 렌더는 기본값)
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function PensionCalculator() {
     if (income) setMonthlyIncome(Number(income))
     if (start) setStartAge(Number(start))
     if (retire) setRetirementAge(Number(retire))
+    setThisYear(Math.max(YEAR, Number(todayKST().slice(0, 4))))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // 입력 → URL
@@ -52,7 +55,7 @@ export default function PensionCalculator() {
   }
 
   const valid = monthlyIncome > 0 && startAge >= 18 && startAge < currentAge && currentAge <= retirementAge && retirementAge <= 70
-  const input = valid ? ageInput(currentAge, monthlyIncome * 10_000, startAge, retirementAge) : null
+  const input = valid ? ageInput(currentAge, monthlyIncome * 10_000, startAge, retirementAge, thisYear) : null
   const r = input ? calcPension(input) : null
   const premium = r ? Math.round(r.B * INSURANCE.pensionRate) : 0
   const replacement = r ? (r.basic / (monthlyIncome * 10_000)) * 100 : 0

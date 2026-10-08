@@ -7,7 +7,7 @@ import '@/lib/i18n/ns/hourlyWage'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { MIN_WAGE_2026, calcPay, shiftMinutes, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM } from '@/utils/workHours'
 import { todayKST } from '@/utils/dday'
-import { MIN_WAGE_2027 } from '@/utils/minimumWage'
+import { minWageAt } from '@/utils/minimumWage'
 import { wageTable, type WageType } from '@/utils/weeklyHolidayPay'
 import { calculateNetSalary } from '@/utils/netSalary'
 import { NTS_AVG_SALARY, NTS_SOURCE_YEAR } from '@/utils/salaryInsights'
@@ -34,6 +34,7 @@ export default function HourlyWage() {
   const [dHoliday, setDHoliday] = useState(false)
   const [small, setSmall] = useState(false)
   const [today, setToday] = useState('') // 법 개정 안내용 KST 날짜 (마운트 후)
+  const mw = minWageAt(today) // 올해 최저임금 (마운트 전엔 2026)
 
   // 공유 링크 복원은 마운트 후 1회 → 정적 HTML과 hydration 첫 렌더는 항상 기본값
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function HourlyWage() {
     if (TYPES.includes(ty)) setInputType(ty)
     const w = parseInt(sp.get('wage') || '')
     if (w > 0) setAmount(w.toLocaleString('ko-KR'))
+    else setAmount(minWageAt(todayKST()).wage.toLocaleString('ko-KR')) // 기본값 = 올해 최저시급
     const d = parseFloat(sp.get('days') || '')
     if (d > 0 && d <= 7) setDaysPerWeek(d)
     const wh = parseFloat(sp.get('wh') || '')
@@ -87,7 +89,7 @@ export default function HourlyWage() {
 
   const handleReset = () => {
     setInputType('hourly')
-    setAmount(MIN_WAGE_2026.toLocaleString('ko-KR'))
+    setAmount(mw.wage.toLocaleString('ko-KR'))
     setWeeklyHours(40)
     setDaysPerWeek(5)
     setHoliday(true)
@@ -100,10 +102,10 @@ export default function HourlyWage() {
   )
   const typeLabel = (ty: InputType) => (ty === 'weekly' ? t('u.weeklyShort') : t(ty))
 
-  const minPct = r ? Math.round((r.hourly / MIN_WAGE_2026) * 100) : 0
-  const isAbove = r ? Math.round(r.hourly) >= MIN_WAGE_2026 : true
+  const minPct = r ? Math.round((r.hourly / mw.wage) * 100) : 0
+  const isAbove = r ? Math.round(r.hourly) >= mw.wage : true
   // 바 스케일: 최저임금의 150%까지, 최저임금 마커는 2/3 지점
-  const barWidth = r ? Math.min(100, (r.hourly / (MIN_WAGE_2026 * 1.5)) * 100) : 0
+  const barWidth = r ? Math.min(100, (r.hourly / (mw.wage * 1.5)) * 100) : 0
 
   const rows: { key: InputType | 'weekly'; gross: number; net?: number }[] = r
     ? [
@@ -301,7 +303,7 @@ export default function HourlyWage() {
                 {/* 최저임금 비교 */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-fg">{t('minWage.title', { wage: won(MIN_WAGE_2026) })}</h3>
+                    <h3 className="text-sm font-semibold text-fg">{t('minWage.title', { wage: won(mw.wage), year: mw.year })}</h3>
                     <span className={`text-sm font-bold tabular-nums ${isAbove ? 'text-fg' : 'text-red-600'}`}>{minPct}%</span>
                   </div>
                   <div className="relative h-3 bg-track rounded-full">
@@ -313,20 +315,22 @@ export default function HourlyWage() {
                   </div>
                   <div className="flex justify-between text-xs text-muted">
                     <span>{t('minWage.mine', { wage: won(r.hourly) })}</span>
-                    <span>{t('minWage.monthlyMin', { hours: r.monthlyHours, amount: won(MIN_WAGE_2026 * r.monthlyHours) })}</span>
+                    <span>{t('minWage.monthlyMin', { hours: r.monthlyHours, amount: won(mw.wage * r.monthlyHours) })}</span>
                   </div>
                   <p className={`text-sm font-medium ${isAbove ? 'text-body' : 'text-red-600'}`} aria-live="polite">
                     {isAbove
-                      ? t('minWage.above', { diff: won(r.hourly - MIN_WAGE_2026) })
-                      : t('minWage.below', { diff: won(MIN_WAGE_2026 - r.hourly) })}
+                      ? t('minWage.above', { diff: won(r.hourly - mw.wage) })
+                      : t('minWage.below', { diff: won(mw.wage - r.hourly) })}
                   </p>
                   {!isAbove && !holiday && (inputType === 'monthly' || inputType === 'yearly') && (
                     <p className="text-xs text-muted">{t('minWage.holidayNote')}</p>
                   )}
-                  <p className="text-xs text-muted">
-                    {t('minWage.next', { wage: won(MIN_WAGE_2027), hours: r.monthlyHours, amount: won(MIN_WAGE_2027 * r.monthlyHours) })}
-                    {isAbove && Math.round(r.hourly) < MIN_WAGE_2027 && ` ${t('minWage.nextBelow', { diff: won(MIN_WAGE_2027 - r.hourly) })}`}
-                  </p>
+                  {mw.next && ( // 다음 해 고시가 표에 있을 때만
+                    <p className="text-xs text-muted">
+                      {t('minWage.next', { wage: won(mw.next), hours: r.monthlyHours, amount: won(mw.next * r.monthlyHours), year: mw.year + 1, pct: Math.round((mw.next / mw.wage - 1) * 1000) / 10 })}
+                      {isAbove && Math.round(r.hourly) < mw.next && ` ${t('minWage.nextBelow', { diff: won(mw.next - r.hourly), year: mw.year + 1 })}`}
+                    </p>
+                  )}
                   <p className="text-xs text-muted">
                     {t('avgCompare', { percent: Math.round((r.yearly / NTS_AVG_SALARY) * 100), avg: Math.round(NTS_AVG_SALARY / 10_000).toLocaleString('ko-KR'), year: NTS_SOURCE_YEAR })}
                   </p>
@@ -338,7 +342,7 @@ export default function HourlyWage() {
                     tool: t('title'),
                     label: t('u.share.label', { type: typeLabel(inputType), amount: amount, hours: weeklyHours }),
                     headline: `${t('hourly')} ${won(r.hourly)}${t('result.won')}`,
-                    sub: t('u.share.sub', { pct: minPct }),
+                    sub: t('u.share.sub', { pct: minPct, year: mw.year }),
                     rows: [
                       { label: t('result.dailyWage'), value: `${won(r.daily)}${t('result.won')}` },
                       { label: t('u.weeklyShort'), value: `${won(r.weekly)}${t('result.won')}` },

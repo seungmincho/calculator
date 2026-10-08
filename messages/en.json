@@ -5350,7 +5350,7 @@
     },
     "warn": {
       "over52": "{hours}h this week — exceeds the 52-hour weekly limit (40 regular + 12 overtime).",
-      "belowMin": "The hourly wage is below the 2026 minimum wage of {min} KRW.",
+      "belowMin": "The hourly wage is below the {year} minimum wage of {min} KRW.",
       "breakShort": "{count} day(s) have less than the legal minimum break (30 min for 4h of work, 1h for 8h)."
     },
     "title": "Work Hours Calculator",
@@ -5360,6 +5360,7 @@
       "conversion": "Wage Converter"
     },
     "input": {
+      "hourlyWageNoteCurrent": "{year} Minimum Wage: {wage} KRW",
       "minWageSource": "Source: MOEL minimum wage notice",
       "useMinWage": "Min. wage",
       "autoBreak": "Apply legal minimum break",
@@ -5373,7 +5374,7 @@
       "weeklyScheduleNote": "Tap a day to toggle it. If the end time is earlier than the start, it counts as ending the next day. Check 'Holiday' for work on a weekly rest day or public holiday.",
       "title": "Work Information",
       "hourlyWage": "Hourly Wage (KRW)",
-      "hourlyWageNote": "2026 Minimum Wage: 10,320 KRW (10,700 KRW from 2027-01-01)",
+      "hourlyWageNote": "{year} Minimum Wage: {wage} KRW ({next} KRW from {nextYear}-01-01)",
       "weeklyHours": "Weekly Standard Hours",
       "weeklyHoursNote": "Generally 40 hours (5 days × 8 hours)",
       "workSchedule": "Work Schedule",
@@ -5505,8 +5506,8 @@
       }
     },
     "minimumWage": {
-      "2026": "2026 Minimum Hourly Rate",
-      "title": "2026 Minimum Wage Info",
+      "2026": "{year} Minimum Hourly Rate",
+      "title": "{year} Minimum Wage Info",
       "monthly": "Monthly Min. Wage (incl. holiday pay)",
       "monthlyHours": "Monthly Standard Hours",
       "note": "* Based on 40 hours/week, 209 monthly hours including weekly holiday pay"
@@ -16146,7 +16147,7 @@
       "weeklyShort": "Weekly",
       "share": {
         "label": "{type} KRW {amount} · {hours} h/week",
-        "sub": "{pct}% of the 2026 minimum wage"
+        "sub": "{pct}% of the {year} minimum wage"
       },
       "day": {
         "title": "Daily pay (overtime, night, holiday premiums)",
@@ -16237,9 +16238,9 @@
     "holidayUnder15": "No weekly holiday pay under 15 hours per week.",
     "holidayExcluded": "Calculated without weekly holiday pay.",
     "minWage": {
-      "next": "From 1 Jan 2027 the minimum wage is {wage} KRW/h (+3.7%) — minimum monthly pay for these hours {amount} KRW ({hours} h).",
-      "nextBelow": "Your current wage is {diff} KRW/h below the 2027 rate and must be raised next year.",
-      "title": "2026 minimum wage {wage} KRW",
+      "next": "From 1 Jan {year} the minimum wage is {wage} KRW/h (+{pct}%) — minimum monthly pay for these hours {amount} KRW ({hours} h).",
+      "nextBelow": "Your current wage is {diff} KRW/h below the {year} rate and must be raised next year.",
+      "title": "{year} minimum wage {wage} KRW",
       "mine": "Your wage {wage} KRW",
       "monthlyMin": "Minimum monthly {amount} KRW ({hours} h)",
       "above": "{diff} KRW/h above the minimum wage",
@@ -16814,7 +16815,7 @@
       "dailyFromMonthly": "Daily wage = KRW {amount} ÷ 209 h × {hours} h = KRW {daily}",
       "dailyFromHourly": "Daily wage = KRW {amount} × {hours} h = KRW {daily}",
       "dailyDirect": "Uses the daily ordinary wage you entered.",
-      "minWage": "Below the 2026 minimum hourly wage of KRW {wage}. Please check the amount.",
+      "minWage": "Below the {year} minimum hourly wage of KRW {wage}. Please check the amount.",
       "note": "209 hours/month = 40 h/week + 8 h weekly paid holiday (part-timers: enter hourly wage). Ordinary wage is base pay plus fixed monthly allowances; regular, uniform bonuses may be included. Rules of employment may use average wage instead (Art. 60). The allowance is taxable wage income."
     },
     "table": {
@@ -29544,7 +29545,7 @@
       "subtitle": "Enter your hourly wage and hours to get weekly holiday pay, weekly pay, monthly pay (209-hour method), effective hourly wage incl. holiday pay, and estimated take-home pay. Based on the 2026 minimum wage of KRW 10,320.",
       "won": "KRW",
       "useMin": "Use minimum wage",
-      "belowMin": "Below the 2026 minimum wage (KRW {min})",
+      "belowMin": "Below the {year} minimum wage (KRW {min})",
       "inputMode": "How to enter hours",
       "modeEven": "N days × N hours",
       "modeDays": "By weekday",
@@ -29588,7 +29589,7 @@
         "insNote": "2026 employee rates, single-dependent estimate. Part-timers under 60 hours/month may be exempt from national pension and health insurance."
       },
       "warnUnder15": "Contract hours are under 15/week, so there is no weekly holiday pay. Work {need} more hours to qualify.",
-      "warnMinWage": "Your hourly wage is KRW {diff} below the 2026 minimum wage of KRW {min}. Paying below minimum wage is illegal (Minimum Wage Act Art. 6).",
+      "warnMinWage": "Your hourly wage is KRW {diff} below the {year} minimum wage of KRW {min}. Paying below minimum wage is illegal (Minimum Wage Act Art. 6).",
       "warnOvertime": "{ot} hours exceed 8 h/day or 40 h/week and count as overtime. Workplaces with 5+ employees must pay a 50% premium, which is not included here. Use the work hours calculator.",
       "warnBreak": "Your break is shorter than the legal minimum for these hours (30 min per 4 h, 1 h per 8 h).",
       "share": {
@@ -29698,9 +29699,10 @@
     "copied": "Copied",
     "copyResult": "Copy result",
     "input": {
+      "hourlyWageHintCurrent": "{year} minimum wage: ₩{wage}",
       "title": "Work Information",
       "hourlyWage": "Hourly Wage",
-      "hourlyWageHint": "2026 minimum wage: ₩10,320 (₩10,700 from 2027-01-01)",
+      "hourlyWageHint": "{year} minimum wage: ₩{wage} (₩{next} from {nextYear}-01-01)",
       "workDays": "Working Days per Week",
       "daysUnit": " days",
       "dailyHours": "Daily Working Hours",
@@ -53181,7 +53183,7 @@
       "monthlyHours": "Paid hours / month",
       "monthlyPay": "Estimated monthly pay (gross)",
       "hourly": "Hourly equivalent",
-      "minWage": "2026 minimum wage",
+      "minWage": "{year} minimum wage",
       "weeklyHolidayPay": "Weekly holiday pay",
       "overtimePay": "Overtime pay / month",
       "payNote": "Monthly figures use 365÷7÷12 ≈ 4.345 weeks. Bonuses, allowances and taxes are excluded."
@@ -53223,8 +53225,8 @@
     "insight": {
       "noDays": "Enter working days and hours.",
       "noWage": "Enter the wage.",
-      "minWageOk": "Hourly {hourly} KRW meets the 2026 minimum wage of {min} KRW.",
-      "minWageHourly": "Minimum wage violation: {hourly} KRW/h is below the 2026 minimum of {min} KRW. The shortfall is void and the minimum wage must be paid.",
+      "minWageOk": "Hourly {hourly} KRW meets the {year} minimum wage of {min} KRW.",
+      "minWageHourly": "Minimum wage violation: {hourly} KRW/h is below the {year} minimum of {min} KRW. The shortfall is void and the minimum wage must be paid.",
       "minWageMonthly": "Minimum wage violation: monthly pay ÷ {hours} paid hours = {hourly} KRW/h. It must be at least {required} KRW ({short} KRW short).",
       "minWageAllowance": "Base pay alone is {hourly} KRW/h, below the {min} KRW minimum. Regular monthly allowances make up the difference, but re-check if some allowances (e.g. overtime pay) don't count toward minimum wage.",
       "holidayPay": "{weekly} contractual hours/week → {hours} h of paid weekly holiday, {pay} KRW per week with full attendance. Added to the wage clause.",
@@ -53673,7 +53675,7 @@
       "tonLabel": "Up to {ton} t",
       "tonHint": "Trucks over 10 tons pay extra per 10 tons; check with your local tax office.",
       "year": "Tax year",
-      "yearNote": "2027 is an estimate assuming current rates and the 5% lump-sum rate stay the same.",
+      "yearNote": "{y} is an estimate assuming current rates and the 5% lump-sum rate stay the same.",
       "resultLabel": "{year} car tax (incl. local education tax, annual)",
       "descCar": "{cc}cc × {rate} KRW/cc · {use}",
       "h1": "June (1st half)",
@@ -54056,10 +54058,10 @@
       "noId": "Enter a date of birth or employee number so the employee can be identified.",
       "noPayDate": "Enter the pay date. It is a mandatory item.",
       "negative": "Deductions exceed total pay. Please check the amounts.",
-      "minWageOk": "Hourly equivalent {hourly} KRW meets the 2026 minimum wage of {min} KRW.",
-      "minWageOkHourly": "Hourly wage {hourly} KRW meets the 2026 minimum wage of {min} KRW.",
+      "minWageOk": "Hourly equivalent {hourly} KRW meets the {year} minimum wage of {min} KRW.",
+      "minWageOkHourly": "Hourly wage {hourly} KRW meets the {year} minimum wage of {min} KRW.",
       "minWageLow": "Below minimum wage: at least {required} KRW is required for {hours} hours a month, {short} KRW short (hourly {hourly} < {min} KRW).",
-      "minWageLowHourly": "Hourly wage {hourly} KRW is below the 2026 minimum wage of {min} KRW.",
+      "minWageLowHourly": "Hourly wage {hourly} KRW is below the {year} minimum wage of {min} KRW.",
       "taxFreeOver": "{name} is tax-free only up to {limit} KRW a month, so the extra {excess} KRW is treated as taxable.",
       "noMethod": "Missing calculation method: {names}. Add the payment basis (e.g. fixed monthly).",
       "pensionCap": "The insurance base exceeds the national pension cap of {cap} KRW, so the cap is used.",
@@ -55215,7 +55217,7 @@
       },
       "year": "Year",
       "yearOpt": "{y}",
-      "yearNote": "Reference: 2027 applies the current (2026) rules as-is and may change.",
+      "yearNote": "Reference: {y} applies the {base} rules as-is and may change.",
       "risk": "Check if it applies (optional)",
       "smoker": "I currently smoke and have 30+ pack-years",
       "smokerHint": "30 pack-years = 1 pack a day for 30 years or 2 packs for 15. Used only for lung cancer screening (ages 54-74).",

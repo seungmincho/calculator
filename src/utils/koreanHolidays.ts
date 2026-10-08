@@ -1,3 +1,5 @@
+import { lunarToSolar } from './lunarCalendar.ts'
+
 export interface KoreanHoliday {
   date: string        // YYYY-MM-DD
   name: string        // Korean name
@@ -5,15 +7,16 @@ export interface KoreanHoliday {
   isLunar: boolean
 }
 
-// Pre-computed lunar holiday dates (lunar->solar conversion)
-const LUNAR_HOLIDAYS: Record<number, { seollal: string; buddha: string; chuseok: string }> = {
-  2024: { seollal: '2024-02-10', buddha: '2024-05-15', chuseok: '2024-09-17' },
-  2025: { seollal: '2025-01-29', buddha: '2025-05-05', chuseok: '2025-10-06' },
-  2026: { seollal: '2026-02-17', buddha: '2026-05-24', chuseok: '2026-09-25' },
-  2027: { seollal: '2027-02-07', buddha: '2027-05-13', chuseok: '2027-09-15' },
-  2028: { seollal: '2028-01-27', buddha: '2028-05-02', chuseok: '2028-10-03' },
-  2029: { seollal: '2029-02-13', buddha: '2029-05-20', chuseok: '2029-09-22' },
-  2030: { seollal: '2030-02-03', buddha: '2030-05-09', chuseok: '2030-09-12' },
+// 음력 공휴일(설 1/1·부처님오신날 4/8·추석 8/15)의 양력 날짜 — lunarCalendar(KASI 음양력, ~2050) 환산.
+// 2024년 전은 예전 표 범위 밖이라 넣지 않음(대체공휴일 규정 연혁 미반영). 2051년부터는 음력표가 없어 null
+function lunarHolidays(year: number): { seollal: string; buddha: string; chuseok: string } | null {
+  if (year < 2024) return null
+  const iso = (m: number, d: number) => {
+    const s = lunarToSolar(year, m, d)
+    return s && `${s.year}-${String(s.month).padStart(2, '0')}-${String(s.day).padStart(2, '0')}`
+  }
+  const [seollal, buddha, chuseok] = [iso(1, 1), iso(4, 8), iso(8, 15)]
+  return seollal && buddha && chuseok ? { seollal, buddha, chuseok } : null
 }
 
 function formatDate(d: Date): string {
@@ -56,7 +59,7 @@ const BLOCK = new Set(['seollalEve', 'seollal', 'seollalAfter', 'chuseokEve', 'c
 
 const cache = new Map<number, KoreanHoliday[]>()
 
-/** 해당 연도 관공서 공휴일 (대체공휴일 포함, 날짜순). 음력 공휴일은 2024~2030만 */
+/** 해당 연도 관공서 공휴일 (대체공휴일 포함, 날짜순). 음력 공휴일은 2024~2050만 */
 export function getKoreanHolidays(year: number): KoreanHoliday[] {
   const hit = cache.get(year)
   if (hit) return hit
@@ -80,7 +83,7 @@ export function getKoreanHolidays(year: number): KoreanHoliday[] {
     if (date.startsWith(`${year}-`)) holidays.push({ date, ...h, isLunar: false })
   }
 
-  const lunar = LUNAR_HOLIDAYS[year]
+  const lunar = lunarHolidays(year)
   if (lunar) {
     holidays.push(
       { date: addDaysToDate(lunar.seollal, -1), name: '설날 연휴', nameKey: 'seollalEve', isLunar: true },
@@ -226,13 +229,13 @@ export function getPresetDates(year: number): { key: string; date: string; name:
   }
 
   // Lunar holidays
-  const lunar = LUNAR_HOLIDAYS[year]
+  const lunar = lunarHolidays(year)
   if (lunar) {
     const seollalDate = new Date(lunar.seollal + 'T00:00:00')
     if (seollalDate >= new Date(new Date().toDateString())) {
       presets.push({ key: 'seollal', date: lunar.seollal, name: '설날' })
     } else {
-      const nextLunar = LUNAR_HOLIDAYS[year + 1]
+      const nextLunar = lunarHolidays(year + 1)
       if (nextLunar) {
         presets.push({ key: 'seollal', date: nextLunar.seollal, name: '설날' })
       }
@@ -242,7 +245,7 @@ export function getPresetDates(year: number): { key: string; date: string; name:
     if (chuseokDate >= new Date(new Date().toDateString())) {
       presets.push({ key: 'chuseok', date: lunar.chuseok, name: '추석' })
     } else {
-      const nextLunar = LUNAR_HOLIDAYS[year + 1]
+      const nextLunar = lunarHolidays(year + 1)
       if (nextLunar) {
         presets.push({ key: 'chuseok', date: nextLunar.chuseok, name: '추석' })
       }

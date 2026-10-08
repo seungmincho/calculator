@@ -10,7 +10,7 @@ import { Section, Field, DateField, NumberField, TextField, Segmented, Check, fi
 import { krDate, won, docFileName } from '@/utils/document'
 import { INSURANCE } from '@/utils/insuranceRates'
 import {
-  computePay, ordinaryHourly, MIN_WAGE_2026, ROW_TYPES, ROW_NAME, TAX_FREE_LIMIT, DED_KEYS,
+  computePay, ordinaryHourly, ROW_TYPES, ROW_NAME, TAX_FREE_LIMIT, DED_KEYS,
   type PayInput, type PayRow, type RowType, type DedKey, type Line,
 } from '@/utils/paySlip'
 import '@/lib/i18n/ns/paySlip'
@@ -82,7 +82,7 @@ function insights(v: V, t: TFn): Insight[] {
 
   if (ins && v.base > 0) {
     const m = r.minWage
-    const vars = { hourly: won(m.hourly), min: won(MIN_WAGE_2026), short: won(m.shortfall), hours: hr(v.monthHours), required: won(m.required) }
+    const vars = { hourly: won(m.hourly), min: won(m.min), year: m.year, short: won(m.shortfall), hours: hr(v.monthHours), required: won(m.required) }
     if (m.ok) out.push({ level: 'info', text: t(v.wageType === 'hourly' ? 'insight.minWageOkHourly' : 'insight.minWageOk', vars) })
     else out.push({ level: 'error', text: t(v.wageType === 'hourly' ? 'insight.minWageLowHourly' : 'insight.minWageLow', vars) })
   }

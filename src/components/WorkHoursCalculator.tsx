@@ -14,6 +14,7 @@ import MobileResultLink from '@/components/MobileResultLink'
 import { INSURANCE } from '@/utils/insuranceRates'
 import { MIN_WAGE_2026, WEEKS_PER_MONTH, calcPay, legalMinBreak, toMin, weekOf, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM, type Shift } from '@/utils/workHours'
 import { todayKST } from '@/utils/dday'
+import { minWageAt } from '@/utils/minimumWage'
 
 // ─── 상수 ─────────────────────────────────────────────
 const INSURANCE_RATES = {
@@ -181,7 +182,15 @@ export default function WorkHoursCalculator() {
 
   // 법 개정 안내는 마운트 후 KST 날짜로 (첫 렌더 = 정적 HTML)
   const [today, setToday] = useState('')
-  useEffect(() => setToday(todayKST()), [])
+  useEffect(() => {
+    const d = todayKST()
+    setToday(d)
+    // 시급 기본값 = 올해 최저시급 (공유 링크 값이 있으면 그대로)
+    const w = String(minWageAt(d).wage)
+    if (!searchParams.get('wage')) setHourlyWage(w)
+    if (!searchParams.get('cwage')) setConvWage(w)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const mw = minWageAt(today) // 올해 최저임금 (마운트 전엔 2026)
 
   // ─── 시급 환산 ─────────────────────────────────────────
   const convResult = useMemo<ConversionResult | null>(() => {
@@ -408,10 +417,10 @@ export default function WorkHoursCalculator() {
           text={t('share.text', { hours: fmtH(result.totalHours), total: fmt(result.totalPay) })}
         />
 
-        {(over52 || wageNum < MIN_WAGE_2026 || (!autoBreak && result.breakShortDays > 0)) && (
+        {(over52 || wageNum < mw.wage || (!autoBreak && result.breakShortDays > 0)) && (
           <div className="rounded-2xl p-4 bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200 text-sm space-y-1">
             {over52 && <p>{t('warn.over52', { hours: fmtH(maxWeekH) })}</p>}
-            {wageNum < MIN_WAGE_2026 && <p>{t('warn.belowMin', { min: fmt(MIN_WAGE_2026) })}</p>}
+            {wageNum < mw.wage && <p>{t('warn.belowMin', { min: fmt(mw.wage), year: mw.year })}</p>}
             {!autoBreak && result.breakShortDays > 0 && <p>{t('warn.breakShort', { count: result.breakShortDays })}{today >= BREAK_WAIVER_FROM && ' ' + t('law.breakWaiverWarn')}</p>}
           </div>
         )}
@@ -480,7 +489,7 @@ export default function WorkHoursCalculator() {
             const brk = Number(inp.break)
             setActiveTab('daily')
             setInputMode(inp.inputMode === 'individual' || inp.inputMode === 'period' ? inp.inputMode : 'weekly')
-            setHourlyWage(inp.hourlyWage?.toString() || String(MIN_WAGE_2026))
+            setHourlyWage(inp.hourlyWage?.toString() || String(mw.wage))
             setAutoBreak(inp.autoBreak === true)
             setSmallBiz(inp.smallBiz === true)
             setSchedule(decodeWeek(str(inp.ws, '')) || WEEK_PRESETS[0].week())
@@ -526,12 +535,13 @@ export default function WorkHoursCalculator() {
                     className="ui-field w-full pl-3 pr-8 py-2.5 text-sm" />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted">원</span>
                 </div>
-                <button onClick={() => setHourlyWage(String(MIN_WAGE_2026))} className="ui-btn-soft px-3 py-2 text-xs whitespace-nowrap">
+                <button onClick={() => setHourlyWage(String(mw.wage))} className="ui-btn-soft px-3 py-2 text-xs whitespace-nowrap">
                   {t('input.useMinWage')}
                 </button>
               </div>
               <p className="text-xs text-muted mt-1">
-                {t('input.hourlyWageNote')}{' '}
+                {mw.next ? t('input.hourlyWageNote', { year: mw.year, wage: fmt(mw.wage), nextYear: mw.year + 1, next: fmt(mw.next) })
+                  : t('input.hourlyWageNoteCurrent', { year: mw.year, wage: fmt(mw.wage) })}{' '}
                 <a href="https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                   {t('input.minWageSource')}
                 </a>
@@ -738,7 +748,7 @@ export default function WorkHoursCalculator() {
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted">원</span>
               </div>
               <div className="flex gap-2 flex-wrap">
-                {[MIN_WAGE_2026, 12000, 15000, 20000].map(w => (
+                {[mw.wage, 12000, 15000, 20000].map(w => (
                   <button key={w} onClick={() => setConvWage(String(w))}
                     className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${convWage === String(w) ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}
                   >{fmt(w)}원</button>
@@ -844,13 +854,13 @@ export default function WorkHoursCalculator() {
         </div>
       )}
 
-      {/* ═══ 2026 최저임금 ═══ */}
+      {/* ═══ 올해 최저임금 ═══ */}
       <div className="ui-card p-6">
-        <h3 className="text-lg font-bold text-fg mb-5">{t('minimumWage.title')}</h3>
+        <h3 className="text-lg font-bold text-fg mb-5">{t('minimumWage.title', { year: mw.year })}</h3>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { val: `${fmt(MIN_WAGE_2026)}원`, label: t('minimumWage.2026') },
-            { val: `${fmt(MIN_WAGE_2026 * 209)}원`, label: t('minimumWage.monthly') },
+            { val: `${fmt(mw.wage)}원`, label: t('minimumWage.2026', { year: mw.year }) },
+            { val: `${fmt(mw.wage * 209)}원`, label: t('minimumWage.monthly') },
             { val: '209시간', label: t('minimumWage.monthlyHours') },
           ].map((item, i) => (
             <div key={i} className="text-center p-4 bg-subtle rounded-xl">
