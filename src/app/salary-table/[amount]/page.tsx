@@ -74,7 +74,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: '홈', item: SITE },
+          { '@type': 'ListItem', position: 1, name: '홈', item: `${SITE}/` },
           { '@type': 'ListItem', position: 2, name: '연봉 실수령액 표', item: `${SITE}/salary-table/` },
           { '@type': 'ListItem', position: 3, name: `연봉 ${salaryLabel(man)}`, item: `${SITE}/salary-table/${man}/` },
         ],

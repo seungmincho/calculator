@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://toolhub.ai.kr',
+    url: 'https://toolhub.ai.kr/',
     siteName: '툴허브',
     title: '툴허브 - 필수 계산기와 개발자 도구 모음',
     description: '연봉, 대출, 시간변환부터 바코드 생성, JSON 포맷터까지 모든 계산을 한 곳에서 해결하세요',

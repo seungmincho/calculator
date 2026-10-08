@@ -122,7 +122,7 @@ export default function HourlyWage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description', { year: mw.year, wage: won(mw.wage) })}</p>
         </div>
       </div>
 

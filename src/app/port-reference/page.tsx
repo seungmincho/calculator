@@ -6,11 +6,11 @@ import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '포트 번호 레퍼런스 - TCP/UDP 검색 | 툴허브',
-  description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. HTTP, HTTPS, SSH, MySQL, PostgreSQL, Redis 등 60개 이상의 주요 포트 번호와 보안 주의사항을 확인할 수 있습니다.',
+  description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. HTTP, HTTPS, SSH, MySQL, PostgreSQL, Redis 등 55개 주요 포트 번호와 보안 주의사항을 확인할 수 있습니다.',
   keywords: '포트번호, TCP포트, UDP포트, 포트검색, well-known port, HTTP포트, HTTPS포트, SSH포트, MySQL포트, 데이터베이스포트, 방화벽포트',
   openGraph: {
     title: '포트 번호 레퍼런스 - TCP/UDP 검색 | 툴허브',
-    description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. 60개 이상의 주요 포트와 보안 주의사항 제공.',
+    description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. 55개 주요 포트와 보안 주의사항 제공.',
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/port-reference/',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '포트 번호 레퍼런스 - TCP/UDP 검색',
-    description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. HTTP, SSH, MySQL 등 60개 이상의 주요 포트 번호 제공.',
+    description: '잘 알려진 TCP/UDP 포트 번호를 빠르게 검색하세요. HTTP, SSH, MySQL 등 55개 주요 포트 번호 제공.',
     images: ['https://toolhub.ai.kr/og/port-reference.png'],
   },
   alternates: {
@@ -43,7 +43,7 @@ export default function PortReferencePage() {
       '포트 번호/서비스명/설명 통합 검색',
       '잘 알려진/등록/동적 포트 범주 필터',
       'TCP/UDP 프로토콜 필터',
-      '60개 이상 주요 포트 데이터',
+      '55개 주요 포트 데이터',
       '보안 주의사항 안내',
       '포트 번호 복사',
     ],

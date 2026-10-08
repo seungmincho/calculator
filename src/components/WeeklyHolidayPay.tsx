@@ -11,6 +11,7 @@ import { calculateNetSalary } from '@/utils/netSalary'
 import { requiredBreak, BREAK_WAIVER_FROM, EI_INCOME_BASIS_FROM } from '@/utils/workHours'
 import { todayKST } from '@/utils/dday'
 import { minWageAt } from '@/utils/minimumWage'
+import { INSURANCE } from '@/utils/insuranceRates'
 import {
   calcWeek, evenDays, netDayHours, monthlyDeduction, MIN_WAGE_2026, type DeductMode,
 } from '@/utils/weeklyHolidayPay'
@@ -111,7 +112,7 @@ export default function WeeklyHolidayPay() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('u.subtitle')}</p>
+        <p className="text-sm text-muted mt-1">{t('u.subtitle', { year: mw.year, wage: won(mw.wage) })}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -304,7 +305,7 @@ export default function WeeklyHolidayPay() {
                   <span className="font-semibold text-body">{t('u.netMonthly')}</span>
                   <span className="text-xl font-bold text-primary tabular-nums">{won(netMonthly)}{t('u.won')}</span>
                 </div>
-                <p className="text-xs text-muted">{t(deduct === 'tax33' ? 'u.ded.tax33Note' : 'u.ded.insNote')}</p>
+                <p className="text-xs text-muted">{t(deduct === 'tax33' ? 'u.ded.tax33Note' : 'u.ded.insNote', { year: INSURANCE.year })}</p>
                 {deduct === 'ins' && today && <p className="text-xs text-muted">{t(today >= EI_INCOME_BASIS_FROM ? 'u.law.eiAfter' : 'u.law.eiBefore')}</p>}
               </div>
             )}

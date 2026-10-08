@@ -97,7 +97,7 @@ export default function AnnualCarTax() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('subtitle')}</p>
+        <p className="text-sm text-muted mt-1">{t('subtitle', { year: thisYear })}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

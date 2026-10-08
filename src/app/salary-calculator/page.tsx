@@ -77,7 +77,7 @@ export default function SalaryCalculatorPage() {
     creator: {
       '@type': 'Organization',
       name: '툴허브',
-      url: 'https://toolhub.ai.kr'
+      url: 'https://toolhub.ai.kr/'
     },
     isAccessibleForFree: true,
   }

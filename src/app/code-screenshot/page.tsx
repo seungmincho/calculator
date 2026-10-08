@@ -6,7 +6,7 @@ import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '코드 스크린샷 - 코드를 예쁜 이미지로 변환 | 툴허브',
-  description: '코드 스크린샷 생성기 - 코드를 아름다운 이미지로 변환하세요. 8가지 테마, 그라디언트 배경, 구문 강조, PNG/SVG 내보내기를 지원합니다.',
+  description: '코드 스크린샷 생성기 - 코드를 아름다운 이미지로 변환하세요. 10가지 테마, 그라디언트 배경, 구문 강조, PNG/SVG 내보내기를 지원합니다.',
   keywords: '코드 스크린샷, code screenshot, Carbon, 코드 이미지, 코드 캡처, syntax highlighting, 코드 공유',
   openGraph: {
     title: '코드 스크린샷 생성기 | 툴허브',
@@ -39,7 +39,7 @@ export default function CodeScreenshotPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['8가지 테마', '그라디언트 배경', '구문 강조', 'PNG/SVG 내보내기', '클립보드 복사'],
+    featureList: ['10가지 테마', '그라디언트 배경', '구문 강조', 'PNG/SVG 내보내기', '클립보드 복사'],
   }
 
   const faq = [
@@ -70,7 +70,7 @@ export default function CodeScreenshotPage() {
               코드 스크린샷 생성기란?
             </h2>
             <p className="text-body leading-relaxed mb-6">
-              코드 스크린샷 생성기는 <strong>코드를 구문 강조가 적용된 아름다운 이미지로 변환</strong>하는 무료 온라인 도구입니다. Carbon, Poet.so와 같은 인기 서비스와 유사하게 8가지 테마, 그라디언트 배경, 다양한 언어 구문 강조를 지원하며 PNG·SVG 내보내기와 클립보드 복사까지 가능합니다. SNS 코드 공유, 기술 블로그 이미지, 개발자 포트폴리오에 필수적인 도구입니다.
+              코드 스크린샷 생성기는 <strong>코드를 구문 강조가 적용된 아름다운 이미지로 변환</strong>하는 무료 온라인 도구입니다. Carbon, Poet.so와 같은 인기 서비스와 유사하게 10가지 테마, 그라디언트 배경, 다양한 언어 구문 강조를 지원하며 PNG·SVG 내보내기와 클립보드 복사까지 가능합니다. SNS 코드 공유, 기술 블로그 이미지, 개발자 포트폴리오에 필수적인 도구입니다.
             </p>
             <h3 className="text-lg font-semibold text-fg mb-3">
               코드 스크린샷 활용 팁

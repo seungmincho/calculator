@@ -91,7 +91,7 @@ export const metadata: Metadata = {
       "creator": {
         "@type": "Organization",
         "name": "툴허브",
-        "url": "https://toolhub.ai.kr"
+        "url": "https://toolhub.ai.kr/"
       },
       "audience": {
         "@type": "Audience",

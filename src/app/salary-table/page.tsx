@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   keywords: '연봉 실수령액 표, 연봉별 실수령액, 2026 실수령액 표, 월급 실수령액, 연봉 3000 실수령액, 연봉 4000 실수령액, 연봉 5000 실수령액, 연봉 6000 실수령액, 연봉 1억 실수령액',
-  openGraph: { title: TITLE, description: DESC, url: `${SITE}/salary-table`, siteName: '툴허브', locale: 'ko_KR', type: 'website' },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE}/salary-table/`, siteName: '툴허브', locale: 'ko_KR', type: 'website' },
   twitter: { card: 'summary_large_image', title: TITLE, description: DESC, images: ['https://toolhub.ai.kr/og/salary-table.png'] },
-  alternates: { canonical: `${SITE}/salary-table` },
+  alternates: { canonical: `${SITE}/salary-table/` },
 }
 
 const FAQ = [
@@ -35,14 +35,6 @@ export default function SalaryTablePage() {
       name: `연봉 실수령액 표 ${YEAR}`,
       description: DESC,
       url: `${SITE}/salary-table/`,
-      breadcrumb: {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: '홈', item: SITE },
-          { '@type': 'ListItem', position: 2, name: '금융·생활 계산기', item: `${SITE}/calculators/` },
-          { '@type': 'ListItem', position: 3, name: '연봉 실수령액 표', item: `${SITE}/salary-table/` },
-        ],
-      },
     },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
   ]

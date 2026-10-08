@@ -36,7 +36,7 @@ export async function generateMetadata(
       openGraph: {
         title: '팁을 찾을 수 없습니다 | 툴허브',
         description: '요청하신 금융 팁을 찾을 수 없습니다.',
-        url: `https://toolhub.ai.kr/tips/${resolvedParams.id}`,
+        url: `https://toolhub.ai.kr/tips/${resolvedParams.id}/`,
         siteName: '툴허브',
         locale: 'ko_KR',
         type: 'website',
@@ -54,7 +54,7 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      url: `https://toolhub.ai.kr/tips/${tip.id}`,
+      url: `https://toolhub.ai.kr/tips/${tip.id}/`,
       siteName: '툴허브',
       locale: 'ko_KR',
       type: 'article',
@@ -65,7 +65,7 @@ export async function generateMetadata(
       description,
     },
     alternates: {
-      canonical: `https://toolhub.ai.kr/tips/${tip.id}`,
+      canonical: `https://toolhub.ai.kr/tips/${tip.id}/`,
     },
   };
 }

@@ -4,11 +4,11 @@ import TipsContent from '@/components/TipsContent'
 
 export const metadata: Metadata = {
   title: '금융 꿀팁 모음 - 300개 재테크 팁 | 툴허브',
-  description: '가계 관리, 저축/투자, 신용/대출, 세금/절세, 보험, 부동산, 은퇴/연금 등 10개 카테고리의 실생활 금융 팁 300개를 만나보세요.',
+  description: '가계 관리, 저축/투자, 신용/대출, 세금/절세, 보험, 부동산, 은퇴/연금 등 14개 카테고리의 실생활 금융 팁 400개를 만나보세요.',
   keywords: '금융팁, 재테크, 저축방법, 투자전략, 절세방법, 대출팁, 보험팁, 부동산팁, 연금, 가계관리',
   openGraph: {
     title: '금융 꿀팁 모음 | 툴허브',
-    description: '현명한 재정 관리부터 투자 전략까지, 실생활에 도움되는 금융 팁 300선',
+    description: '현명한 재정 관리부터 투자 전략까지, 실생활에 도움되는 금융 팁 400선',
     url: 'https://toolhub.ai.kr/tips/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -34,8 +34,8 @@ export default function TipsPage() {
     mainEntity: {
       '@type': 'ItemList',
       name: '금융 팁 리스트',
-      description: '실생활에 도움되는 300개의 금융 팁',
-      numberOfItems: 300,
+      description: '실생활에 도움되는 400개의 금융 팁',
+      numberOfItems: 400,
     },
     breadcrumb: {
       '@type': 'BreadcrumbList',
@@ -44,7 +44,7 @@ export default function TipsPage() {
           '@type': 'ListItem',
           position: 1,
           name: '홈',
-          item: 'https://toolhub.ai.kr',
+          item: 'https://toolhub.ai.kr/',
         },
         {
           '@type': 'ListItem',

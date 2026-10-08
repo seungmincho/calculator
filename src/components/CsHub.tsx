@@ -53,7 +53,7 @@ const CATEGORY_STATS: CategoryStats[] = [
 ]
 
 const TOTAL_TERMS = 211
-const TOTAL_QUIZ = 251
+const TOTAL_QUIZ = 250
 const TOTAL_INTERVIEW = 100
 const TOTAL_ALGORITHMS = 55
 const TOTAL_VISUALIZERS = 10

@@ -62,7 +62,7 @@ export default function TaxSeasonPage() {
     publisher: {
       '@type': 'Organization',
       name: '툴허브',
-      url: 'https://toolhub.ai.kr',
+      url: 'https://toolhub.ai.kr/',
     },
   }
 

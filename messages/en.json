@@ -196,7 +196,7 @@
       "s": "seconds"
     },
     "outOfRange": "Out of the supported date range.",
-    "holidayNote": "Business days exclude weekends and Korean public holidays (including substitute holidays and election days). Lunar holidays are covered for 2024–2030; temporary holidays only once designated.",
+    "holidayNote": "Business days exclude weekends and Korean public holidays (including substitute holidays and election days). Lunar holidays are covered for 2024–2050; temporary holidays only once designated.",
     "diff": {
       "title": "Between two times",
       "desc": "Difference from the time above to an end time",
@@ -350,7 +350,7 @@
           },
           {
             "q": "How are business days counted?",
-            "a": "Weekends and Korean public holidays (including substitute holidays and election days) are excluded, counting from the day after the start through the end date. Lunar holidays are covered for 2024–2030; temporary holidays only once designated by the government."
+            "a": "Weekends and Korean public holidays (including substitute holidays and election days) are excluded, counting from the day after the start through the end date. Lunar holidays are covered for 2024–2050; temporary holidays only once designated by the government."
           }
         ]
       }
@@ -5354,7 +5354,7 @@
       "breakShort": "{count} day(s) have less than the legal minimum break (30 min for 4h of work, 1h for 8h)."
     },
     "title": "Work Hours Calculator",
-    "description": "Calculate part-time wages based on 2026 minimum wage: basic pay, overtime, night shift, weekly holiday pay",
+    "description": "Calculate part-time wages based on {year} minimum wage: basic pay, overtime, night shift, weekly holiday pay",
     "tabs": {
       "daily": "Daily Work",
       "conversion": "Wage Converter"
@@ -5440,7 +5440,7 @@
       "withoutHoliday": "(excl. holiday pay)",
       "insuranceTitle": "Social Insurance Deductions (Monthly)",
       "nationalPension": "National Pension (4.75%)",
-      "healthInsurance": "Health Insurance (3.545%)",
+      "healthInsurance": "Health Insurance (3.595%)",
       "longTermCare": "Long-term Care (13.14% of health insurance)",
       "employmentInsurance": "Employment Insurance (0.9%)",
       "totalDeduction": "Total Deductions",
@@ -6413,7 +6413,7 @@
           },
           {
             "q": "How many participants can join?",
-            "a": "Up to 10 participants. The ladder width adjusts automatically to fit the number of participants."
+            "a": "Up to 8 participants. The ladder width adjusts automatically to fit the number of participants."
           },
           {
             "q": "Can results be saved or shared?",
@@ -7656,7 +7656,7 @@
       },
       "randomPicker": {
         "title": "Random Picker",
-        "description": "Random number, name picker, team divider"
+        "description": "Draw winners from a list without duplicates, share a verify link"
       },
       "timer": {
         "title": "Timer/Stopwatch",
@@ -7832,7 +7832,7 @@
       },
       "monitorTest": {
         "title": "Monitor Test",
-        "description": "14 comprehensive monitor quality tests"
+        "description": "18 comprehensive monitor quality tests"
       },
       "game2048": {
         "title": "2048 Game",
@@ -8028,7 +8028,7 @@
       },
       "fancyText": {
         "title": "Unicode Fancy Text",
-        "description": "Convert text to 15+ Unicode styles: bold, italic, script, fraktur, circled & more"
+        "description": "Convert text to 23 Unicode styles: bold, italic, script, fraktur, circled & more"
       },
       "interiorCalc": {
         "title": "Interior Area Calculator",
@@ -8084,7 +8084,7 @@
       },
       "invoiceGenerator": {
         "title": "Invoice Generator",
-        "description": "Create invoices with auto VAT calculation, PDF export"
+        "description": "Create quotations, statements and bills with auto VAT calculation, PDF export"
       },
       "iouGenerator": {
         "title": "Promissory Note (IOU) Generator",
@@ -8172,7 +8172,7 @@
       },
       "menuPicker": {
         "title": "What to Eat Today",
-        "description": "Can't decide what to eat? Spin the roulette! 100+ menus in 8 categories"
+        "description": "Can't decide what to eat? Spin the roulette! 300+ menus in 12 categories"
       },
       "breakoutGame": {
         "title": "Breakout",
@@ -10591,7 +10591,7 @@
           },
           {
             "q": "Which years of Korean holidays are supported?",
-            "a": "2024-2030, including Seollal/Chuseok, substitute holidays, Labor Day and Constitution Day (public holidays since 2026), election days and temporary holidays. New temporary holidays are added after they are designated."
+            "a": "2024-2050, including Seollal/Chuseok, substitute holidays, Labor Day and Constitution Day (public holidays since 2026), election days and temporary holidays. New temporary holidays are added after they are designated."
           },
           {
             "q": "Does it handle February 29?",
@@ -16177,7 +16177,7 @@
           },
           {
             "q": "How do I check if my monthly pay violates the minimum wage?",
-            "a": "Switch the input to monthly with holiday pay included and check that the hourly figure is at least KRW 10,320. Some allowances and bonuses have separate inclusion rules, so the actual judgment may differ."
+            "a": "Switch the input to monthly with holiday pay included and check that the hourly figure is at least that year's minimum (KRW 10,320 in 2026, KRW 10,700 in 2027). Some allowances and bonuses have separate inclusion rules, so the actual judgment may differ."
           },
           {
             "q": "When should holiday pay be excluded?",
@@ -16253,7 +16253,7 @@
       "workHours": "Work Hours Calculator"
     },
     "title": "Hourly Wage Calculator",
-    "description": "Convert hourly, daily, weekly, monthly and annual pay with weekly holiday pay included, check against the 2026 minimum wage of KRW 10,320, and calculate daily pay with overtime and night premiums.",
+    "description": "Convert hourly, daily, weekly, monthly and annual pay with weekly holiday pay included, check against the {year} minimum wage of KRW {wage}, and calculate daily pay with overtime and night premiums.",
     "inputType": "Input Basis",
     "hourly": "Hourly",
     "daily": "Daily",
@@ -16946,7 +16946,7 @@
             "url": "https://www.moel.go.kr"
           },
           {
-            "label": "Minimum Wage Commission — 2026 minimum wage KRW 10,320/hour",
+            "label": "Minimum Wage Commission — minimum wage KRW 10,320/hour (2026), KRW 10,700/hour (2027)",
             "url": "https://www.minimumwage.go.kr"
           }
         ],
@@ -20236,7 +20236,7 @@
           "Drag an image or use the upload button to load an image",
           "Click anywhere on the image to extract the color at that position",
           "Use the magnifier to pinpoint the exact location",
-          "Auto palette extracts 8 dominant colors from the image",
+          "Auto palette extracts 10 dominant colors from the image",
           "Export extracted colors as CSS variables, Tailwind, or JSON format"
         ]
       },
@@ -23949,7 +23949,7 @@
     },
     "hero": {
       "title": "All the tools you need, in one place",
-      "subtitle": "Financial calculators, developer tools, image editors, health tools, and games - 240+ free online tools",
+      "subtitle": "Financial calculators, developer tools, image editors, health tools, and games - 270+ free online tools",
       "searchPlaceholder": "Search for a tool... (Ctrl+K)",
       "totalTools": "Total Tools"
     },
@@ -25647,7 +25647,7 @@
           "Named: &copy; — Human-readable but only supports predefined characters",
           "Decimal: &#169; — Unicode code point in decimal, supports all characters",
           "Hex: &#xA9; — Unicode code point in hexadecimal, supports all characters",
-          "Named format only covers about 250 predefined entities."
+          "Named format only works for predefined entities (about 2,200 in the HTML standard; this tool converts the 62 most common)."
         ]
       },
       "usage": {
@@ -28827,7 +28827,7 @@
         "title": "Supported Formats",
         "items": [
           "WebM/Opus: Supported in most modern browsers",
-          "OGG/Opus: Default format in Firefox",
+          "OGG/Opus: Fallback for browsers that can't record WebM",
           "All files can be played back in the browser",
           "Compatible with VLC and other media players"
         ]
@@ -29542,7 +29542,7 @@
         "eiBefore": "Employment insurance: until Dec 31, 2026 you are covered if you work 60+ hours a month (15+ h/week) or for 3+ consecutive months. From Jan 1, 2027 coverage depends on pay (income) instead of hours; the threshold will be set by Enforcement Decree (reflected once final) (Employment Insurance Act Art. 10, Act No. 21473).",
         "eiAfter": "Employment insurance: from Jan 1, 2027 you are covered if your pay at that workplace meets the income threshold, regardless of hours. The threshold is set by Enforcement Decree (reflected once final). Daily workers and those employed 3+ consecutive months are covered even below it, and people with two or more jobs can apply to combine pay (Employment Insurance Act Art. 10)."
       },
-      "subtitle": "Enter your hourly wage and hours to get weekly holiday pay, weekly pay, monthly pay (209-hour method), effective hourly wage incl. holiday pay, and estimated take-home pay. Based on the 2026 minimum wage of KRW 10,320.",
+      "subtitle": "Enter your hourly wage and hours to get weekly holiday pay, weekly pay, monthly pay (209-hour method), effective hourly wage incl. holiday pay, and estimated take-home pay. Based on the {year} minimum wage of KRW {wage}.",
       "won": "KRW",
       "useMin": "Use minimum wage",
       "belowMin": "Below the {year} minimum wage (KRW {min})",
@@ -29586,7 +29586,7 @@
         "employment": "Employment insurance 0.9%",
         "incomeTax": "Income tax + local tax (est.)",
         "tax33Note": "3.3% is the freelancer (business income) withholding method. Part-timers working under an employer's direction are employees and are entitled to holiday pay and social insurance.",
-        "insNote": "2026 employee rates, single-dependent estimate. Part-timers under 60 hours/month may be exempt from national pension and health insurance."
+        "insNote": "{year} employee rates, single-dependent estimate. Part-timers under 60 hours/month may be exempt from national pension and health insurance."
       },
       "warnUnder15": "Contract hours are under 15/week, so there is no weekly holiday pay. Work {need} more hours to qualify.",
       "warnMinWage": "Your hourly wage is KRW {diff} below the {year} minimum wage of KRW {min}. Paying below minimum wage is illegal (Minimum Wage Act Art. 6).",
@@ -29648,7 +29648,7 @@
           },
           {
             "q": "Is an hourly wage 'including holiday pay' a minimum wage violation?",
-            "a": "For 40 h/week, the wage including holiday pay must be at least KRW 12,384 (10,320 × 1.2). Anything less means the base wage falls below the minimum."
+            "a": "For 40 h/week, the wage including holiday pay must be at least KRW 12,384 in 2026 (10,320 × 1.2) and KRW 12,840 in 2027 (10,700 × 1.2). Anything less means the base wage falls below the minimum."
           },
           {
             "q": "Do part-timers taxed at 3.3% get holiday pay?",
@@ -29674,6 +29674,10 @@
           {
             "label": "MOEL — 2026 minimum wage notice (KRW 10,320/h)",
             "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18144"
+          },
+          {
+            "label": "MOEL — 2027 minimum wage notice (KRW 10,700/h, 5 Aug 2026)",
+            "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744"
           },
           {
             "label": "Minimum Wage Commission",
@@ -31160,13 +31164,13 @@
       },
       "whatIs": {
         "title": "What is 'What Should I Eat Today'?",
-        "description": "A random meal suggestion tool to solve the daily meal decision dilemma. Spin a roulette wheel, pick via tournament (repeatedly choose between two options), or let it auto-pick the top 3. Over 350 built-in options covering Korean, Chinese, Japanese, and Western cuisines, with the ability to add your own custom menu items."
+        "description": "A random meal suggestion tool to solve the daily meal decision dilemma. Spin a roulette wheel, pick via tournament (repeatedly choose between two options), or let it auto-pick the top 3. Over 300 built-in options in 12 categories such as Korean, Chinese, Japanese, Western and snacks, with situation presets and favorites to narrow things down."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
           "1. Select a mode — Roulette (random), Tournament (pick between two options repeatedly), or Top 3 (automatic top 3).",
-          "2. Filter by category (Korean/Chinese/Japanese/Western) or add custom menu items.",
+          "2. Narrow the options by situation (solo, group dinner, date...) or category (Korean/Chinese/Japanese/Western...).",
           "3. Click 'Spin' or 'Start'.",
           "4. If you don't like the result, spin again."
         ]
@@ -31175,20 +31179,20 @@
         "title": "Pro Tips",
         "items": [
           "For team lunches or office dinners, use tournament mode to fairly aggregate everyone's preferences.",
-          "Remove or uncheck items you want to avoid — they'll be excluded from results.",
-          "Add your favorite delivery options to quickly resolve delivery app decision fatigue."
+          "Tap 'Already ate today' on a menu to exclude it from results.",
+          "Add go-to menus to Favorites to see them right away next time."
         ]
       },
       "faq": {
         "title": "FAQ",
         "items": [
           {
-            "q": "Are custom menu items saved?",
-            "a": "Yes, saved in browser localStorage and persisted on next visit. Clearing browser data resets them."
+            "q": "Are my favorites saved?",
+            "a": "Yes, favorites are saved in browser localStorage and persist on your next visit. Clearing browser data resets them."
           },
           {
             "q": "The same menu keeps coming up — is it broken?",
-            "a": "The roulette is completely random, so the same item can appear repeatedly. Deactivate specific items you don't want to see."
+            "a": "The roulette is completely random, so the same item can appear repeatedly. Exclude an item with 'Already ate today' or deselect its category."
           },
           {
             "q": "Does it work well on mobile?",
@@ -31496,7 +31500,7 @@
           },
           {
             "q": "What are the power-up types?",
-            "a": "W(Wide): Paddle expands for 10 seconds. M(Multi): Ball splits into 3. +(Life): Adds 1 life (max 5)."
+            "a": "W(Wide): Paddle expands for 10 seconds. M(Multi): Each ball splits in two (ball count doubles). +(Life): Adds 1 life (max 5)."
           },
           {
             "q": "What happens when the ball falls?",
@@ -36673,7 +36677,7 @@
       ]
     },
     "title": "Jeonse Loan Calculator",
-    "description": "Auto-calculate jeonse loan rates, limits, and monthly payments (2025)",
+    "description": "Auto-calculate jeonse loan rates, limits, and monthly payments (2026)",
     "loanType": {
       "title": "Loan Type",
       "general": {
@@ -40848,7 +40852,7 @@
   },
   "httpStatus": {
     "title": "HTTP Status Code Reference",
-    "description": "Search meanings, causes, and fixes for 60+ HTTP status codes",
+    "description": "Search meanings, causes, and fixes for 39 common HTTP status codes",
     "searchPlaceholder": "Search by code number or description (e.g. 404, not found, redirect)",
     "catAll": "All",
     "cat1xx": "1xx Informational",
@@ -50709,7 +50713,7 @@
   },
   "csQuiz": {
     "title": "CS Fundamentals Quiz",
-    "description": "Test your CS knowledge across 5 core areas with problem-solving.",
+    "description": "Test your CS knowledge across 10 core areas with problem-solving.",
     "selectCategory": "Select Category",
     "selectDifficulty": "Select Difficulty",
     "categories": {
@@ -50825,12 +50829,12 @@
       "title": "Guide",
       "whatIs": {
         "title": "What is the CS Fundamentals Quiz?",
-        "description": "A problem-solving learning tool covering 5 core computer science areas: Data Structures, Algorithms, Network, Operating Systems, and Database. 125 total questions (25 per category) with 3 difficulty levels: Beginner, Intermediate, and Advanced."
+        "description": "A problem-solving learning tool covering 10 core computer science areas: Data Structures, Algorithms, Network, Operating Systems, Database, Computer Architecture, Software Engineering, Security, Linux/System, and Web Basics. 250 total questions (25 per category) with 3 difficulty levels: Beginner, Intermediate, and Advanced."
       },
       "howToUse": {
         "title": "How to Use",
         "items": [
-          "Select a category (Data Structures/Algorithms/Network/OS/DB)",
+          "Select a category (Data Structures/Algorithms/Network/OS/DB and more, 10 in total)",
           "Choose a difficulty level (Beginner/Intermediate/Advanced)",
           "Answer multiple-choice questions in order",
           "Each answer immediately shows the correct answer and explanation",
@@ -51158,8 +51162,8 @@
       "quiz": {
         "cta": "Solve by topic, get scored instantly",
         "title": "CS Quiz",
-        "description": "Test your skills with 251 questions across 10 categories",
-        "stats": "251 Questions"
+        "description": "Test your skills with 250 questions across 10 categories",
+        "stats": "250 Questions"
       },
       "interview": {
         "title": "Interview Prep",
@@ -51241,7 +51245,7 @@
   },
   "devCheatsheet": {
     "title": "Developer Cheatsheet",
-    "description": "220 essential commands across Git, Linux, Docker, SQL and more",
+    "description": "218 essential commands across Git, Linux, Docker, SQL and more",
     "search": {
       "placeholder": "Search commands",
       "noResults": "No results found.",
@@ -51271,7 +51275,7 @@
       "title": "Guide",
       "whatIs": {
         "title": "What is Developer Cheatsheet?",
-        "description": "A comprehensive reference tool with 220 essential commands across Git, Linux, Docker, SQL, Vim, HTTP Status Codes, CSS Flexbox/Grid, and Regex. Quickly search, copy, and bookmark the commands you need."
+        "description": "A comprehensive reference tool with 218 essential commands across Git, Linux, Docker, SQL, Vim, HTTP Status Codes, CSS Flexbox/Grid, and Regex. Quickly search, copy, and bookmark the commands you need."
       },
       "howToUse": {
         "title": "How to Use",
@@ -53624,7 +53628,7 @@
   },
   "annualCarTax": {
     "title": "Annual Car Tax Calculator",
-    "subtitle": "Enter engine size and first registration date to get your 2026 Korean annual car tax, the June/December installments, and the January lump-sum discount.",
+    "subtitle": "Enter engine size and first registration date to get your {year} Korean annual car tax, the June/December installments, and the January lump-sum discount.",
     "u": {
       "window": {
         "next": "Days until the {m}/{y} lump-sum window opens. Pay the full year between {m}/16 and {dm}/{dd} to save {saved} KRW (about {pct}%) on this car.",

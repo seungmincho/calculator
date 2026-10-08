@@ -477,7 +477,7 @@ export default function WorkHoursCalculator() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-          <p className="text-sm text-muted mt-1">{t('description')}</p>
+          <p className="text-sm text-muted mt-1">{t('description', { year: mw.year })}</p>
         </div>
         <CalculationHistory
           histories={histories} isLoading={false}

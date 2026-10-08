@@ -6,7 +6,7 @@ import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'HTTP 상태코드 레퍼런스 | 툴허브',
-  description: 'HTTP 상태코드 전체 레퍼런스. 200, 301, 404, 500 등 60개 이상 코드의 의미, 원인, 해결 방법을 한국어로 확인하세요. 번호 또는 설명으로 검색 가능.',
+  description: 'HTTP 상태코드 전체 레퍼런스. 200, 301, 404, 500 등 39개 코드의 의미, 원인, 해결 방법을 한국어로 확인하세요. 번호 또는 설명으로 검색 가능.',
   keywords: [
     'HTTP 상태코드',
     'HTTP status code',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'HTTP 상태코드 레퍼런스 | 툴허브',
-    description: '60개 이상 HTTP 상태코드의 의미, 원인, 해결 방법을 한국어로 검색하세요.',
+    description: '39개 HTTP 상태코드의 의미, 원인, 해결 방법을 한국어로 검색하세요.',
     url: 'https://toolhub.ai.kr/http-status/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'HTTP 상태코드 레퍼런스 | 툴허브',
-    description: '60개 이상 HTTP 상태코드의 의미, 원인, 해결 방법을 한국어로 검색하세요.',
+    description: '39개 HTTP 상태코드의 의미, 원인, 해결 방법을 한국어로 검색하세요.',
     images: ['https://toolhub.ai.kr/og/http-status.png'],
   },
   alternates: {
@@ -63,14 +63,14 @@ export default function HttpStatusPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'HTTP 상태코드 레퍼런스',
-    description: 'HTTP 상태코드 전체 레퍼런스. 200, 301, 404, 500 등 60개 이상 코드의 의미, 원인, 해결 방법을 한국어로 확인하세요.',
+    description: 'HTTP 상태코드 전체 레퍼런스. 200, 301, 404, 500 등 39개 코드의 의미, 원인, 해결 방법을 한국어로 확인하세요.',
     url: 'https://toolhub.ai.kr/http-status/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '60개 이상 HTTP 상태코드',
+      '39개 HTTP 상태코드',
       '번호/설명 검색',
       '카테고리별 필터 (1xx~5xx)',
       '원인 및 해결 방법 상세 안내',
