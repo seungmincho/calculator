@@ -1,6 +1,7 @@
 'use client'
 
-// 종합소득세 계산기 (2025년 귀속, 2026년 5월 신고). 계산 로직: src/utils/incomeTax.ts (회귀 체크 scripts/check-income-tax.ts)
+// 종합소득세 계산기 — 귀속연도 선택: 2026년 귀속(2027년 5월 신고, 기본) · 2025년 귀속(2026년 5월 신고).
+// 계산 로직: src/utils/incomeTax.ts (연도별 규칙 RULES, 회귀 체크 scripts/check-income-tax.ts)
 // i18n: incomeTaxCalc.it.* (새 키), title·won·disclaimer (기존 키). 업종명은 freelancerTax.ft.ind.* 재사용.
 
 import { useState, useMemo, useEffect, useRef } from 'react'
@@ -13,7 +14,7 @@ import { AlertCircle, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import { INDUSTRIES, industryOf, isDoubleEntry, SIMPLE_PREV_LIMIT } from '@/utils/freelancerTax'
-import { calc, eligibleMethod, BRACKETS, OTHER_SEPARATE_LIMIT, type Input, type Method } from '@/utils/incomeTax'
+import { calc, eligibleMethod, BRACKETS, OTHER_SEPARATE_LIMIT, RULES, TAX_YEARS, DEFAULT_YEAR, type Input, type Method, type TaxYear } from '@/utils/incomeTax'
 
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 const man = (n: number) => won(n / 10_000)
@@ -40,12 +41,14 @@ const DEFAULT_MONEY: Record<MoneyKey, string> = {
 const COUNTS = { persons: 'p', elderly: 'el', disabled: 'dis', children: 'c' } as const
 type CountKey = keyof typeof COUNTS
 const DEFAULT_COUNTS: Record<CountKey, number> = { persons: 1, elderly: 0, disabled: 0, children: 0 }
+const PARAMS = ['inc', 'occ', 'cs', 'cd', 'method', 'or', 'w33', 'ef', ...Object.values(MONEY), ...Object.values(COUNTS)]
 
 export default function IncomeTaxCalculator() {
   const t = useTranslations('incomeTaxCalc')
   const tf = useTranslations('freelancerTax')
   const searchParams = useSearchParams()
 
+  const [year, setYear] = useState<TaxYear>(DEFAULT_YEAR)
   const [types, setTypes] = useState<TypeKey[]>(['b'])
   const [m, setM] = useState<Record<MoneyKey, string>>(DEFAULT_MONEY)
   const [counts, setCounts] = useState<Record<CountKey, number>>(DEFAULT_COUNTS)
@@ -64,6 +67,10 @@ export default function IncomeTaxCalculator() {
     if (loaded.current) return
     loaded.current = true
     const g = (k: string) => searchParams.get(k)
+    // y 없는 예전 공유 링크는 2025년 귀속 시절에 만든 것 → 보낸 사람 결과 그대로 2025로 연다
+    const y = g('y')
+    if (y === '2025' || y === '2026') setYear(Number(y) as TaxYear)
+    else if (PARAMS.some((k) => g(k) != null)) setYear(2025)
     const inc = g('inc')
     if (inc) { const v = TYPES.filter((x) => inc.includes(x)); if (v.length) setTypes(v) }
     const money: Partial<Record<MoneyKey, string>> = {}
@@ -99,11 +106,12 @@ export default function IncomeTaxCalculator() {
     if (oRate !== '60') q.or = oRate
     if (!w33) q.w33 = '0'
     if (!efiling) q.ef = '0'
-    const all = ['inc', 'occ', 'cs', 'cd', 'method', 'or', 'w33', 'ef', ...Object.values(MONEY), ...Object.values(COUNTS)]
-    for (const k of all) url.searchParams.delete(k)
+    // 입력이 하나라도 URL에 실리면 y도 싣는다 (y 없는 링크 = 예전 2025 링크로 읽으므로)
+    if (year !== DEFAULT_YEAR || Object.keys(q).length) q.y = String(year)
+    for (const k of [...PARAMS, 'y']) url.searchParams.delete(k)
     for (const [k, v] of Object.entries(q)) url.searchParams.set(k, v)
     window.history.replaceState(window.history.state, '', url)
-  }, [types, m, counts, code, cSimple, cStandard, method, oRate, w33, efiling])
+  }, [year, types, m, counts, code, cSimple, cStandard, method, oRate, w33, efiling])
 
   const on = (k: TypeKey) => types.includes(k)
   const toggle = (k: TypeKey) => setTypes((s) => (s.includes(k) ? (s.length > 1 ? s.filter((x) => x !== k) : s) : [...s, k]))
@@ -117,6 +125,7 @@ export default function IncomeTaxCalculator() {
   const active: Method = method || eligible
 
   const input: Input = {
+    year,
     biz: on('b'), revenue: rev, prev: prv, industry, method: active, major: num(m.major), bookExpense: num(m.book), withheld33: w33,
     wage: on('w'), salary: num(m.salary), wageTax: m.wageTax === '' ? null : num(m.wageTax),
     otherDeduction: num(m.otherDeduction), otherCredit: num(m.otherCredit),
@@ -154,6 +163,17 @@ export default function IncomeTaxCalculator() {
           <div className="ui-card p-6 space-y-5">
             <MobileResultLink href="#income-tax-result" label={t(res.refund >= 0 ? 'it.row.refund' : 'it.row.pay')} value={`${won(Math.abs(res.refund))}${W}`} />
             <div>
+              <div className="block text-sm font-medium text-body mb-1.5">{t('it.year.label')}</div>
+              <div className="flex gap-1.5" role="radiogroup" aria-label={t('it.year.label')}>
+                {TAX_YEARS.map((y) => (
+                  <button key={y} type="button" role="radio" aria-checked={year === y} onClick={() => setYear(y)} className={seg(year === y)}>
+                    {t('it.year.option', { year: y })}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-1.5">{t(`it.year.hint${year}`)}</p>
+            </div>
+            <div>
               <div className="block text-sm font-medium text-body mb-1.5">{t('it.in.types')}</div>
               <div className="grid grid-cols-2 gap-1.5">
                 {TYPES.map((x) => (
@@ -185,7 +205,7 @@ export default function IncomeTaxCalculator() {
                     <p className="text-xs text-muted mt-1.5">{t('it.in.rateLine', { simple: industry.simple, excess: industry.excess, standard: industry.standard })}</p>
                   )}
                 </div>
-                <Money label={t('it.in.prev')} value={m.prev} onChange={setMoney('prev')} hint={t('it.in.prevHint')} unit={W} />
+                <Money label={t('it.in.prev', { prevYear: year - 1 })} value={m.prev} onChange={setMoney('prev')} hint={t('it.in.prevHint', { year })} unit={W} />
                 <div>
                   <div className="block text-sm font-medium text-body mb-1.5">{t('it.in.method')}</div>
                   <div className="flex gap-1.5" role="radiogroup" aria-label={t('it.in.method')}>
@@ -243,7 +263,7 @@ export default function IncomeTaxCalculator() {
             <div className="grid grid-cols-2 gap-2">
               {(Object.keys(COUNTS) as CountKey[]).map((k) => (
                 <div key={k}>
-                  <label htmlFor={`it-${k}`} className="block text-xs font-medium text-body mb-1">{t(`it.in.${k}`)}</label>
+                  <label htmlFor={`it-${k}`} className="block text-xs font-medium text-body mb-1">{t(k === 'children' && year === 2026 ? 'it.year.children2026' : `it.in.${k}`)}</label>
                   <select id={`it-${k}`} value={counts[k]} className="ui-field w-full px-3 py-2 text-sm"
                     onChange={(e) => setCounts((s) => ({ ...s, [k]: Number(e.target.value) }))}>
                     {Array.from({ length: k === 'persons' ? 10 : 6 }, (_, i) => (k === 'persons' ? i + 1 : i)).map((n) => (
@@ -253,7 +273,7 @@ export default function IncomeTaxCalculator() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-muted -mt-1">{t('it.in.personsHint')}</p>
+            <p className="text-xs text-muted -mt-1">{t(year === 2026 ? 'it.year.personsHint2026' : 'it.in.personsHint')}</p>
             <Money label={t('it.in.pension')} value={m.pension} onChange={setMoney('pension')} hint={t('it.in.pensionHint')} unit={W} />
             {on('b') && (
               <Money label={t('it.in.yellow')} value={m.yellow} onChange={setMoney('yellow')} hint={t('it.in.yellowHint', { limit: man(res.yellowLimit), limitWon: won(res.yellowLimit) })} unit={W} />
@@ -264,14 +284,14 @@ export default function IncomeTaxCalculator() {
             </div>
             <p className="text-xs text-muted -mt-2">{t('it.in.pensionAccountHint')}</p>
             <Money label={t('it.in.midterm')} value={m.midterm} onChange={setMoney('midterm')} hint={t('it.in.midtermHint')} unit={W} />
-            <Check label={t('it.in.efiling')} checked={efiling} onChange={setEfiling} />
+            <Check label={t('it.in.efiling', { amount: won(RULES[year].efiling) })} checked={efiling} onChange={setEfiling} />
           </div>
         </div>
 
         {/* ── 결과 ── */}
         <div className="lg:col-span-2 space-y-6 min-w-0">
           <div id="income-tax-result" className="ui-hero p-6 scroll-mt-20">
-            <div className="text-sm text-white/70">{t('it.hero.label', { types: typeNames })}</div>
+            <div className="text-sm text-white/70">{t('it.hero.label', { types: typeNames, year })}</div>
             <div className="text-3xl sm:text-4xl font-bold mt-2 tabular-nums">{headline}</div>
             <div className="text-sm text-white/80 mt-2 tabular-nums">
               {t('it.hero.vs', { tax: won(res.totalTax), paid: won(res.prepaid.total) })}
@@ -285,7 +305,7 @@ export default function IncomeTaxCalculator() {
           <ShareResult
             card={{
               tool: t('title'),
-              label: t('it.share.label', { types: typeNames }),
+              label: t('it.share.label', { types: typeNames, year }),
               headline,
               sub: t('it.hero.eff', { rate: res.effRate.toFixed(1) }),
               rows: [
@@ -375,7 +395,7 @@ export default function IncomeTaxCalculator() {
                 </div>
               </div>
             </dl>
-            <Notes t={t} res={res} wageOnly={types.length === 1 && on('w')} />
+            <Notes t={t} res={res} wageOnly={types.length === 1 && on('w')} highDividend={year === 2026 && on('f')} />
           </div>
 
           {/* 경비 방식 비교 */}
@@ -463,7 +483,7 @@ export default function IncomeTaxCalculator() {
   )
 }
 
-function Notes({ t, res, wageOnly }: { t: ReturnType<typeof useTranslations>; res: ReturnType<typeof calc>; wageOnly: boolean }) {
+function Notes({ t, res, wageOnly, highDividend }: { t: ReturnType<typeof useTranslations>; res: ReturnType<typeof calc>; wageOnly: boolean; highDividend: boolean }) {
   const notes: string[] = []
   if (wageOnly) notes.push(t('it.note.wageOnly'))
   if (res.wageTaxEstimated) notes.push(t('it.note.wageEstimated'))
@@ -471,6 +491,7 @@ function Notes({ t, res, wageOnly }: { t: ReturnType<typeof useTranslations>; re
   if (res.otherMustInclude) notes.push(t('it.note.otherMust', { limit: man(OTHER_SEPARATE_LIMIT), limitWon: won(OTHER_SEPARATE_LIMIT) }))
   if (res.finSeparated) notes.push(t('it.note.finSeparated'))
   if (res.fin > 0) notes.push(t('it.note.finGrossUp'))
+  if (highDividend) notes.push(t('it.note.highDividend'))
   if (res.biz.capped) notes.push(t('it.note.capped'))
   if (!notes.length && res.penalty === 0) return null
   return (

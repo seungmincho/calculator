@@ -1,5 +1,7 @@
-// 종합소득세 (2025년 귀속 → 2026년 5월 확정신고) — 사업·근로·기타·금융소득 합산. 회귀 체크: node scripts/check-income-tax.ts
-// 금액 단위: 원(정수). 세율표·경비율·노란우산·자녀공제는 freelancerTax.ts, 근로소득공제·근로소득세액공제는 yearEndTax.ts 재사용.
+// 종합소득세 (2026년 귀속 → 2027년 5월 / 2025년 귀속 → 2026년 5월 확정신고) — 사업·근로·기타·금융소득 합산.
+// 회귀 체크: node scripts/check-income-tax.ts. 금액 단위: 원(정수).
+// 세율표·경비율·노란우산·자녀공제는 freelancerTax.ts, 근로소득공제·근로소득세액공제는 yearEndTax.ts 재사용.
+// 귀속연도별로 다른 값은 RULES 한 곳. 기준일 2026-10-08 국가법령정보센터 현행 조문.
 import {
   BRACKETS, bracketIndex, progressiveTax, simpleExpense, standardIncome, eligibleMethod, isDoubleEntry,
   yellowUmbrellaLimit, childCredit, withholding33, SMALL_BIZ_LIMIT, type Industry, type Method,
@@ -12,14 +14,31 @@ export const FIN_THRESHOLD = 20_000_000   // 금융소득 종합과세 기준 (�
 export const FIN_RATE = 0.14              // 이자·배당 원천징수세율 (§129①1호라·2호나)
 export const OTHER_SEPARATE_LIMIT = 3_000_000 // 기타소득금액 300만 이하 분리과세 선택 (§14③8호)
 export const OTHER_WH_RATE = 0.2          // 기타소득 원천징수 20% (§129①6호)
-export const EFILING_CREDIT = 20_000      // 전자신고세액공제 (조특법 §104의8①)
 export const STD_CREDIT_EARNED = 130_000  // 표준세액공제: 근로소득 있음, 특별공제 미신청 (§59의4⑨1호)
 export const STD_CREDIT_OTHER = 70_000    // 표준세액공제: 근로소득 없는 종합소득자 (§59의4⑨2호)
+
+// ── 귀속연도별 규칙. 세율(§55)·근로소득공제(§47)·근로소득세액공제(§59)·인적공제(§50·§51)·연금계좌(§59의3)·
+//    표준세액공제(§59의4⑨)·노란우산(조특법 §86의3)·원천징수세율(§129)·지방소득세(지방세법 §92)는 2026 귀속도 같다.
+//    자녀세액공제는 금액(§59의2①)이 같고 대상만 다르다 — 대상 자녀 수는 입력이 센다:
+//    2025 귀속 8세 이상, 2026 귀속 9세 이상이되 2017년생 제외 = 2016년 이전 출생 (부칙 2026.4.21 §2)
+//    경비율은 2026 귀속 고시(2027년 3월경) 전이라 두 해 모두 2025 귀속 고시(freelancerTax.ts INDUSTRIES).
+//    미반영: 2026년 이후 받는 고배당기업 배당 분리과세 선택(조특법 §104의27) — 화면 안내만 ──
+export type TaxYear = 2025 | 2026
+export const TAX_YEARS: TaxYear[] = [2026, 2025]
+export const DEFAULT_YEAR: TaxYear = 2026
+// 전자신고세액공제 (조특법 §104의8①, 시행령 §104의5②1호): 종합소득 확정신고 2만원 → 1만원 (2026.2.27 개정).
+// 부칙 §25 '시행 이후 전자신고하는 경우부터' → 2026년 5월에 신고한 2025 귀속분도 1만원.
+// 미반영: 근로소득만 있는 확정신고 예외자(§73)는 min(추가납부·환급 결정세액, 5천원)
+export const RULES: Record<TaxYear, { efiling: number }> = {
+  2025: { efiling: 10_000 },
+  2026: { efiling: 10_000 },
+}
 
 const floor10 = (x: number) => Math.floor(Math.max(0, x) / 10 + 1e-9) * 10
 const trunc10 = (n: number) => Math.trunc(n / 10) * 10 // 차감세액 10원 미만 절사 (국고금관리법 §47)
 
 export interface Input {
+  year: TaxYear           // 귀속연도
   // 사업소득 (biz = false면 무시)
   biz: boolean
   revenue: number
@@ -46,7 +65,7 @@ export interface Input {
   persons: number         // 기본공제 인원 (본인 포함)
   elderly: number         // 70세 이상 (+100만, §51①1호)
   disabled: number        // 장애인 (+200만, §51①2호)
-  children: number        // 8세 이상 기본공제 자녀 (§59의2)
+  children: number        // 자녀세액공제 대상 기본공제 자녀 (§59의2 — 연도별 대상은 RULES 주석)
   pension: number         // 국민연금 본인 부담 (§51의3)
   yellow: number          // 노란우산 (조특법 §86의3, 사업소득 있을 때)
   pensionSavings: number  // 연금저축 (600만 한도)
@@ -56,6 +75,7 @@ export interface Input {
 }
 
 export const DEFAULT_INPUT: Input = {
+  year: DEFAULT_YEAR,
   biz: true, revenue: 30_000_000, prev: 25_000_000, industry: { code: '940909', simple: 64.1, excess: 49.7, standard: 17.4 },
   method: 'simple', major: 0, bookExpense: 0, withheld33: true,
   wage: false, salary: 40_000_000, wageTax: null, otherDeduction: 0, otherCredit: 0,
@@ -126,7 +146,7 @@ function core(i: Input, otherIncluded: boolean) {
   const pensionCr = pensionAccountCredit(i.pensionSavings, i.irp, total, wageOnly, salary)
   const otherCr = i.wage ? Math.max(0, i.otherCredit) : 0
   const standard = i.wage ? (otherCr > 0 ? 0 : STD_CREDIT_EARNED) : STD_CREDIT_OTHER
-  const efiling = i.efiling ? EFILING_CREDIT : 0
+  const efiling = i.efiling ? RULES[i.year].efiling : 0
   const creditsRaw = earnedCr + child + pensionCr + otherCr + standard + efiling
   const credits = Math.min(computed, creditsRaw)
 

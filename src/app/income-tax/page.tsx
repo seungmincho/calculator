@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '종합소득세 계산기 2026 (2025년 귀속) - 프리랜서 세금 자동계산 | 툴허브',
-  description: '2025년 귀속 종합소득세를 자동으로 계산합니다. 프리랜서 3.3% 원천징수 환급액, 업종별 단순경비율·기준경비율, 사업소득 세액공제까지 단계별로 확인하세요.',
+  description: '2026·2025년 귀속 종합소득세를 자동으로 계산합니다. 프리랜서 3.3% 원천징수 환급액, 업종별 단순경비율·기준경비율, 사업소득 세액공제까지 단계별로 확인하세요.',
   keywords: '종합소득세 계산기, 종합소득세 2026, 프리랜서 세금, 3.3% 원천징수, 단순경비율, 기준경비율, 사업소득세, 종합소득세 환급, 프리랜서 환급, 5월 종합소득세',
   openGraph: {
     title: '종합소득세 계산기 2026 (2025년 귀속) | 툴허브',
@@ -32,21 +32,21 @@ export default function IncomeTaxPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '종합소득세 계산기',
-    description: '2025년 귀속 프리랜서·사업자 종합소득세 자동 계산. 업종별 경비율·세액공제 반영.',
+    description: '2026·2025년 귀속 프리랜서·사업자 종합소득세 자동 계산. 업종별 경비율·세액공제 반영.',
     url: 'https://toolhub.ai.kr/income-tax/',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '2025년 귀속 최신 세율 반영',
+      '2026·2025년 귀속 선택',
       '프리랜서 3.3% 원천징수 환급 계산',
       '업종별 단순경비율 자동 적용',
       '기준경비율 vs 단순경비율 비교',
       '사업·근로·기타·금융소득 합산 계산',
       '기타소득 분리과세 vs 종합과세 자동 선택',
       '인적공제·노란우산 소득공제, 연금저축·IRP 세액공제',
-      '자녀 세액공제 (2025 확대)',
+      '자녀 세액공제 (2026 귀속 2016년 이전 출생)',
       '지방소득세 포함 최종 세액',
       '단계별 계산 내역 표시',
     ],
@@ -85,7 +85,7 @@ export default function IncomeTaxPage() {
         name: '종합소득세 세율은 얼마인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '2025년 귀속 기준 6%~45%의 8단계 누진세율이 적용됩니다. 과세표준 1,400만원 이하 6%, 5,000만원 이하 15%, 8,800만원 이하 24%, 1.5억 이하 35%, 3억 이하 38%, 5억 이하 40%, 10억 이하 42%, 10억 초과 45%입니다.',
+          text: '2025·2026년 귀속 모두 6%~45%의 8단계 누진세율이 적용됩니다. 과세표준 1,400만원 이하 6%, 5,000만원 이하 15%, 8,800만원 이하 24%, 1.5억 이하 35%, 3억 이하 38%, 5억 이하 40%, 10억 이하 42%, 10억 초과 45%입니다.',
         },
       },
     ],

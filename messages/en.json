@@ -5226,7 +5226,7 @@
     "warn": {
       "over52": "{hours}h this week — exceeds the 52-hour weekly limit (40 regular + 12 overtime).",
       "belowMin": "The hourly wage is below the 2026 minimum wage of {min} KRW.",
-      "breakShort": "{count} day(s) have less than the legal minimum break (30 min per 4h, 1h per 8h)."
+      "breakShort": "{count} day(s) have less than the legal minimum break (30 min for 4h of work, 1h for 8h)."
     },
     "title": "Work Hours Calculator",
     "description": "Calculate part-time wages based on 2026 minimum wage: basic pay, overtime, night shift, weekly holiday pay",
@@ -6925,12 +6925,6 @@
     },
     "guide": {
       "title": "Fuel Calculator Usage Guide",
-      "tips": {
-        "0": "Keep accurate mileage records for business vehicle use",
-        "1": "Attach calculation sheet with receipts for easy reimbursement",
-        "2": "Maintain vehicle regularly to preserve fuel efficiency",
-        "3": "Check company policy for depreciation cost applicability"
-      },
       "whatIs": {
         "title": "What is the Fuel Cost Calculator?",
         "description": "A settlement tool that calculates fuel costs for business trips as distance ÷ fuel efficiency × fuel price. Pick a vehicle class (compact to truck) and fuel (gasoline, premium gasoline, diesel, LPG), choose a region and trip date to apply that day's OPINET average price, and it shows the settlement amount after your company's adjustment factor, plus reference depreciation and running cost. The driving log collects tolls and parking for a monthly statement."
@@ -18154,6 +18148,7 @@
     "privacyNote": "The number is processed only in this browser. It is never sent to a server and is not stored in the URL, history or local storage.",
     "mask": "Hide number",
     "status": {
+      "checksumMismatchForeignerDesc": "Foreigner registration numbers follow a separate scheme set by the Ministry of Justice (13 digits showing birth date, sex and registering office — Immigration Act Enforcement Decree Art. 40-3), not the October 2020 resident-number reform. The check-digit formula is not published in law, so a mismatch alone does not prove the number is invalid. Check for typos first.",
       "incomplete": "{count}/13 digits",
       "valid": "Format and checksum OK",
       "validDesc": "Both the birth date and the check digit follow the rules. Whether the number was actually issued cannot be verified.",
@@ -18932,7 +18927,7 @@
       "simulatorDesc": "See how photos and designs look to people with color vision deficiency in the simulator.",
       "breakdown": "Plate breakdown",
       "viewAs": "View as",
-      "viewDesc": "Use the buttons to compare how each plate looks to each type of color vision (Viénot 1999 dichromat simulation).",
+      "viewDesc": "Use the buttons to compare how each plate looks to each type of color vision (dichromat simulation: Viénot 1999 for red-green; tritan uses the same projection with the Brettel 1997 660 nm anchor).",
       "plateN": "Plate {n}",
       "yourAnswer": "Your answer",
       "title": "Test Results",
@@ -36634,7 +36629,15 @@
   },
   "incomeTaxCalc": {
     "it": {
-      "subtitle": "Combine business, employment, other and interest/dividend income to estimate your 2025 Korean comprehensive income tax (filed May 2026) and your refund or balance due.",
+      "year": {
+        "label": "Tax year",
+        "option": "Tax year {year}",
+        "hint2026": "To be filed in May 2027. The child tax credit covers only children born in 2016 or earlier (not 2017), and the e-filing credit is ₩10,000. Expense rates use the 2025 notice until the 2026 rates are published.",
+        "hint2025": "Filed in May 2026. The child tax credit covers children aged 8 or older.",
+        "children2026": "Children born 2016 or earlier",
+        "personsHint2026": "Including yourself, ₩1.5M each. +₩1M for 70+, +₩2M for disabled. Child credit counts dependent children (20 or under) born in 2016 or earlier."
+      },
+      "subtitle": "Combine business, employment, other and interest/dividend income to estimate your Korean comprehensive income tax for 2026 (filed May 2027) or 2025 (filed May 2026) and your refund or balance due.",
       "disclaimer": "Estimate for reference only. Tax reductions, bookkeeping credits, pension income, dividend gross-up and industry-specific rules are not included. Confirm with Hometax or a tax professional before filing.",
       "people": "{n}",
       "type": {
@@ -36656,8 +36659,8 @@
         "industry": "Industry code",
         "customHint": "Enter the rates from Hometax → expense-rate lookup by industry code. The rate above ₩40M is approximated as 100−(100−simple)×1.4.",
         "rateLine": "Simple rate {simple}% ({excess}% above ₩40M) · standard rate {standard}% — 2025 official rates",
-        "prev": "Previous-year (2024) revenue",
-        "prevHint": "Enter 0 if you started in 2025. Used to decide which expense method and bookkeeping duty apply.",
+        "prev": "Previous-year ({prevYear}) revenue",
+        "prevHint": "Enter 0 if you started in {year}. Used to decide which expense method and bookkeeping duty apply.",
         "method": "Expense method",
         "eligible": "Applies to you: {method}",
         "doubleEntry": "Double-entry bookkeeping required (estimated filing uses half the standard rate)",
@@ -36697,10 +36700,10 @@
         "pensionAccountHint": "Pension savings up to ₩6M, combined with IRP up to ₩9M. 15% credit if total income ≤ ₩45M (salary ≤ ₩55M if employment only), otherwise 12%.",
         "midterm": "Interim prepayment (income tax)",
         "midtermHint": "Interim income tax billed and paid last November. 0 if none.",
-        "efiling": "I file electronically myself on Hometax (₩20,000 e-filing credit)"
+        "efiling": "I file electronically myself on Hometax (₩{amount} e-filing credit)"
       },
       "hero": {
-        "label": "2025 comprehensive income tax · {types}",
+        "label": "{year} comprehensive income tax · {types}",
         "refund": "₩{amount} refund",
         "pay": "₩{amount} to pay",
         "zero": "Nothing to pay, nothing to refund",
@@ -36709,7 +36712,7 @@
         "marginal": "Marginal rate {rate} ({withLocal} incl. local)"
       },
       "share": {
-        "label": "2025 comprehensive income tax ({types})",
+        "label": "{year} comprehensive income tax ({types})",
         "text": "{types} income tax result: {result}"
       },
       "bracket": {
@@ -36766,6 +36769,7 @@
         "pay": "Amount to pay"
       },
       "note": {
+        "highDividend": "From 2026, dividends from qualifying high-dividend listed companies can be taxed separately at 14–30% instead of being combined (Restriction of Special Taxation Act Art. 104-27). This calculator treats all interest and dividends as ordinary financial income.",
         "wageOnly": "With employment income only, year-end settlement completes your filing and no May return is needed. Missed deductions can still be claimed in May or via a correction claim.",
         "wageEstimated": "Year-end settlement tax was left blank, so an estimate is used. Enter the amount from your withholding receipt for accuracy.",
         "otherSeparated": "Separate taxation is cheaper, so other income is treated as settled by withholding (₩{tax} incl. local tax).",
@@ -36830,14 +36834,14 @@
             "National pension contributions are fully deductible. Regional health insurance is not an income deduction but a business expense when filing with books.",
             "Yellow Umbrella: up to ₩6M if business income ≤ ₩40M, ₩5M if ≤ ₩60M, ₩4M if ≤ ₩100M, ₩2M above (from 2025 contributions)",
             "Pension accounts: pension savings up to ₩6M, with IRP up to ₩9M, credited at 15% or 12%",
-            "Child tax credit (from tax year 2025): children aged 8+ — 1 child ₩250K, 2 children ₩550K, ₩400K for each from the third",
+            "Child tax credit: ₩250K for 1 child, ₩550K for 2, plus ₩400K for each from the third. Eligible children: aged 8+ for tax year 2025; born 2016 or earlier for 2026–2029 (2017 births excluded); aged 13+ from 2030",
             "Standard credit: ₩70K without employment income; ₩130K for employees who claim no special deductions"
           ]
         },
         "filing": {
           "title": "Filing period",
           "items": [
-            "File and pay May 1–31 each year. If the 31st is a weekend or holiday, the next business day (June 1 in 2026).",
+            "File and pay May 1–31 each year. If the 31st is a weekend or holiday, the next business day (May 31, 2027 for tax year 2026; June 1, 2026 for tax year 2025).",
             "Businesses subject to sincere-filing confirmation file by June 30.",
             "If tax due exceeds ₩10M, it can be paid in installments within 2 months after the deadline.",
             "Local income tax is filed via Wetax, but it is linked automatically after filing on Hometax.",
@@ -36853,7 +36857,7 @@
             "If other income is ₩3M or less, you can choose separate or combined taxation (this calculator picks the cheaper)."
           ]
         },
-        "sources": "Sources: Income Tax Act Arts. 14, 47, 51, 51-3, 55, 59, 59-2, 59-3, 59-4, 62, 77, 81-5, 129; Enforcement Decree Arts. 87, 143; Restriction of Special Taxation Act Arts. 86-3, 104-8; Local Tax Act Art. 92; NTS 2025 expense-rate notice."
+        "sources": "Sources: Income Tax Act Arts. 14, 47, 51, 51-3, 55, 59, 59-2, 59-3, 59-4, 62, 77, 81-5, 129 and Addenda (Act No. 21548, 2026.4.21) Art. 2; Enforcement Decree Arts. 87, 143; Restriction of Special Taxation Act Arts. 86-3, 104-8, 104-27 and its Enforcement Decree Art. 104-5 (amended 2026.2.27); Local Tax Act Art. 92; NTS 2025 expense-rate notice (also used for 2026 until the new notice)."
       }
     },
     "title": "Income Tax Calculator",
@@ -37594,39 +37598,6 @@
       "dependent": "Dependent Eligibility",
       "comparison": "Workplace vs Regional"
     },
-    "workplace": {
-      "monthlySalary": "Monthly Remuneration",
-      "annualSalary": "Annual Salary",
-      "inputAsAnnual": "Enter as annual salary",
-      "nonTaxable": "Non-taxable Income (monthly)",
-      "employee": "Employee",
-      "employer": "Employer",
-      "employerShare": "Employer Total",
-      "remuneration": "Remuneration",
-      "rateInfo": "2026 Health Insurance Rate: 7.19% (Employee 3.595% + Employer 3.595%), Long-term Care 13.14%",
-      "netSalary": "Net Salary (after 4 insurances)",
-      "annualProjection": "Annual Premium Projection"
-    },
-    "regional": {
-      "incomeSection": "Income Information (Annual)",
-      "businessIncome": "Business Income (Annual)",
-      "employmentIncome": "Employment Income (Annual)",
-      "financialIncome": "Interest/Dividend Income (Annual)",
-      "otherIncome": "Other Income (Annual)",
-      "pensionIncome": "Pension Income (Annual)",
-      "propertySection": "Property Information",
-      "propertyTaxBase": "Property Tax Base",
-      "deposit": "Rental Deposit",
-      "result": "Regional Subscriber Premium",
-      "totalAnnualIncome": "Total Annual Income",
-      "monthlyIncome": "Monthly Income",
-      "incomePremium": "Income Premium",
-      "propertyPoints": "Property Score",
-      "points": "pts",
-      "propertyPremium": "Property Premium",
-      "monthlyTotal": "Monthly Total Premium",
-      "minimumApplied": "Income below threshold; minimum premium (19,780 KRW) applied."
-    },
     "dependent": {
       "relationship": "Relationship",
       "relationships": {
@@ -37645,8 +37616,6 @@
       "eligible": "Eligible as Dependent",
       "notEligible": "Not Eligible as Dependent",
       "noPremium": "No health insurance premium obligation",
-      "mustPayRegional": "Must pay premiums as regional subscriber",
-      "switchToRegional": "Estimated premium as regional subscriber",
       "conditions": "Condition Check",
       "incomeCondition": "Income (under 20M KRW/year)",
       "businessCondition": "Business Income",
@@ -37657,34 +37626,6 @@
       "cohabitationMet": "Cohabitation condition met",
       "cohabitationRequired": "Siblings must live together to be eligible"
     },
-    "comparison": {
-      "freelancer": "Regional (Freelancer)",
-      "incorporated": "Workplace (Incorporated)",
-      "ceoSalary": "CEO Monthly Salary (incorporated)",
-      "ceoNote": "As a corporate CEO, you effectively bear both employee and employer portions of health insurance and national pension.",
-      "result": "Premium Comparison",
-      "item": "Item",
-      "difference": "Monthly Difference",
-      "annualDifference": "Annual Difference",
-      "freelancerMore": "Regional subscriber pays",
-      "workplaceMore": "Workplace subscriber pays",
-      "chartTitle": "Premium Comparison by Item",
-      "importantNote": "Important Note",
-      "corporateNote": "Incorporating may reduce health insurance premiums, but you must consider total costs including incorporation fees, tax accountant fees, corporate tax, and employer-side insurance contributions.",
-      "ceoEmployerNote": "CEO effectively pays both employee + employer portions",
-      "regionalPensionNote": "Regional subscriber pays full 9% national pension"
-    },
-    "insurance": {
-      "healthInsurance": "Health Insurance",
-      "longTermCare": "Long-term Care",
-      "nationalPension": "National Pension",
-      "employmentInsurance": "Employment Insurance",
-      "total": "Total Premium",
-      "total4": "Total 4 Insurances (My Share)",
-      "myShare": "My Share Total",
-      "rate2025": "2025 Rates",
-      "showAll4": "Show All 4 Insurances"
-    },
     "unit": {
       "won": " KRW",
       "man": "0K",
@@ -37692,14 +37633,6 @@
       "month": "mo",
       "monthly": "Monthly",
       "perYear": "Annual"
-    },
-    "copy": "Copy",
-    "copied": "Copied",
-    "placeholder": {
-      "enterSalary": "Enter monthly remuneration on the left to calculate premiums.",
-      "enterIncome": "Enter income or property information on the left.",
-      "enterDependentInfo": "Enter dependent information on the left to check eligibility.",
-      "enterComparison": "Enter income information and CEO salary on both sides to compare."
     },
     "guide": {
       "howItWorks": {
@@ -37713,35 +37646,6 @@
         ]
       },
       "title": "Health Insurance Guide",
-      "rates": {
-        "title": "2025 Premium Rates",
-        "items": [
-          "Health Insurance: 7.09% (Employee 3.545% + Employer 3.545%)",
-          "Long-term Care: 12.95% of health insurance premium",
-          "Regional subscriber point value: 208.4 KRW",
-          "National Pension: 9% (Employee 4.5% + Employer 4.5%), cap 6.17M KRW/month",
-          "Employment Insurance: 0.9% (employee portion)"
-        ]
-      },
-      "dependentRules": {
-        "title": "Dependent Eligibility Criteria",
-        "items": [
-          "Annual income under 20 million KRW",
-          "No registered business (business income must be 0)",
-          "Property tax base 540 million KRW or less",
-          "Between 540M~900M: additional requirement of income under 10M KRW",
-          "Siblings: must live together, under 30 or over 65 or disabled"
-        ]
-      },
-      "regionalCalc": {
-        "title": "Regional Subscriber Calculation",
-        "items": [
-          "Income premium = Monthly income x 7.09% (minimum 19,780 KRW)",
-          "Property premium = Property score x 208.4 KRW",
-          "Property amount = Tax base + Deposit x 30% - Basic deduction 100M KRW",
-          "Monthly premium = Income premium + Property premium + Long-term care"
-        ]
-      },
       "tips": {
         "title": "Tips",
         "items": [
@@ -37751,47 +37655,6 @@
           "Regional subscribers with loans taken to buy or rent a home can apply to NHIS for a property deduction.",
           "Employee premiums are settled every April based on the previous year's total pay, which may lead to extra payments or refunds."
         ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the Health Insurance Calculator?",
-          "description": "The Health Insurance Calculator accurately computes national health insurance and long-term care insurance premiums for both employee-insured and locally-insured individuals based on 2025 rates. It also determines dependent eligibility, compares employee versus local insurance status, and reflects property and financial income, giving you a clear view of your actual monthly premium."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Select your insurance type (employee-insured, locally-insured, or dependent).",
-            "2. For employees: enter your monthly salary (pre-tax).",
-            "3. For locally-insured: enter annual income, assets (real estate, vehicles, financial), and number of dependents.",
-            "4. View your health insurance premium, long-term care premium, and total monthly payment."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "Employers pay 50% of the employee's health insurance premium. When calculating total compensation cost, include the employer's share.",
-            "Dependent eligibility requires meeting income and asset thresholds. In 2025, annual income over 20 million KRW or real estate assessed value over 900 million KRW disqualifies dependents.",
-            "Locally-insured individuals receive a basic 50 million KRW property deduction. The assessed real estate value minus 50 million KRW is the premium calculation base.",
-            "The voluntary continuation system (임의계속가입) lets retirees maintain their prior employee-rate premium for up to 36 months, often cheaper than switching to local insurance."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "Are non-salary incomes (rental, financial) also subject to premiums?",
-              "a": "Yes. Employees with annual non-salary income exceeding 20 million KRW are assessed additional premiums on rental income, financial income, and business income."
-            },
-            {
-              "q": "Is long-term care insurance billed separately?",
-              "a": "No, it is collected together with the health insurance premium. The 2025 long-term care rate is 12.95% of the health insurance premium."
-            },
-            {
-              "q": "Are freelancers employee-insured or locally-insured?",
-              "a": "Freelancers not obligated to enroll in workplace insurance are locally-insured. Even those with 3.3% withholding are classified as locally-insured based on business income."
-            }
-          ]
-        }
       },
       "whatIs": {
         "title": "What is the health insurance calculator?",
@@ -38328,209 +38191,7 @@
       }
     },
     "title": "Parental Leave Benefit Calculator",
-    "description": "2026 Korean parental leave benefit (caps: KRW 2.5M for months 1-3, 2.0M for 4-6, 1.6M from month 7) with the 6+6 parents' leave and single-parent rules. See a month-by-month payout table and compare mom-first, dad-first, simultaneous leave and reduced working hours.",
-    "tabs": {
-      "individual": "Individual",
-      "couple": "Couple Simulation"
-    },
-    "inputs": {
-      "settings": "Settings",
-      "ordinaryWage": "Ordinary Wage (Monthly)",
-      "ordinaryWagePlaceholder": "Enter monthly wage",
-      "inputAsAnnual": "Enter as annual salary",
-      "monthlyConverted": "Monthly equivalent",
-      "won": " KRW",
-      "leaveStartMonth": "Leave Start Month",
-      "leaveDuration": "Leave Duration",
-      "monthsLabel": " months",
-      "sixPlusSix": "6+6 Parental Leave System",
-      "apply": "Apply",
-      "notApply": "Not Applied",
-      "childBirthMonth": "Child's Birth Month",
-      "spouseLeaveStart": "Spouse's Leave Start Month",
-      "spouseLeaveDuration": "Spouse's Leave Duration",
-      "fatherWage": "Father's Wage (Monthly)",
-      "motherWage": "Mother's Wage (Monthly)",
-      "fatherLeaveStart": "Father's Leave Start",
-      "fatherLeaveDuration": "Father's Leave Duration",
-      "motherLeaveStart": "Mother's Leave Start",
-      "motherLeaveDuration": "Mother's Leave Duration"
-    },
-    "results": {
-      "monthlyTable": "Monthly Benefit Details",
-      "monthCol": "Month",
-      "monthUnit": "M",
-      "payRate": "Pay Rate",
-      "cap": "Cap",
-      "actualBenefit": "Benefit",
-      "vsWage": "vs Wage",
-      "note": "Note",
-      "totalBenefit": "Total Benefit",
-      "monthlyAverage": "Monthly Average",
-      "incomeReplacement": "Income Replacement",
-      "incomeLoss": "Total Income Loss",
-      "enhanced": "6+6 Enhanced",
-      "standard": "Standard",
-      "lowerLimit": "Min Applied",
-      "upperLimit": "Cap Applied",
-      "manwon": "0K KRW",
-      "manwonUnit": "0K",
-      "chartTitle": "Monthly Benefit Comparison",
-      "wageLabel": "Ordinary Wage",
-      "benefitLabel": "Parental Leave Benefit",
-      "placeholder": "Enter your wage on the left to calculate monthly benefits."
-    },
-    "couple": {
-      "father": "Father",
-      "mother": "Mother",
-      "fatherShort": "F",
-      "motherShort": "M",
-      "fatherSection": "Father's Information",
-      "motherSection": "Mother's Information",
-      "total": "Total",
-      "item": "Item",
-      "period": "Leave Period",
-      "timeline": "Leave Timeline",
-      "householdIncome": "Household Monthly Income",
-      "summary": "Combined Summary",
-      "childBirthHint": "Enter child's birth month for 6+6 eligibility check.",
-      "placeholder": "Enter both parents' wage and leave start month to see simulation results.",
-      "fatherEnhanced": "Father 6+6",
-      "fatherStandard": "Father Std",
-      "motherEnhanced": "Mother 6+6",
-      "motherStandard": "Mother Std"
-    },
-    "reducedHours": {
-      "title": "Reduced Work Hours Benefit",
-      "description": "Calculate government benefits and company pay when using reduced work hours for childcare. Minimum 15 hours per week required.",
-      "beforeHours": "Hours Before Reduction",
-      "afterHours": "Hours After Reduction",
-      "hoursPerWeek": " hrs",
-      "reducedTime": "Reduced Hours",
-      "first10h": "First 10h reduction (100%, cap 550K)",
-      "remaining": "Remaining reduction (80%, cap 1.5M)",
-      "govBenefit": "Government Benefit Subtotal",
-      "companyPay": "Company Pay (for hours worked)",
-      "totalIncome": "Total Income"
-    },
-    "warnings": {
-      "childOver18Months": "Child is over 18 months old. The 6+6 Parental Leave system does not apply.",
-      "maxLeave": "Maximum 18 months allowed.",
-      "abolishedPostPay": "Post-payment system abolished (from 2025)"
-    },
-    "share": "Copy URL to Share",
-    "shared": "URL Copied!",
-    "copyResult": "Copy Results",
-    "copied": "Copied!",
-    "guide": {
-      "title": "2025 Parental Leave Benefit Guide",
-      "changes2025": {
-        "title": "Key Changes in 2025",
-        "items": [
-          "Parental leave benefit cap significantly raised (up to 2.5M KRW/month)",
-          "Post-payment (25%) system abolished — full payment during leave",
-          "6+6 system months 1-2 cap raised to 2.5M KRW",
-          "Month 7+ cap raised from 1.5M to 1.6M KRW",
-          "Reduced work hours benefit cap raised to 550K KRW"
-        ]
-      },
-      "comparison": {
-        "title": "Standard vs 6+6 Comparison",
-        "monthCol": "Period",
-        "general": "Standard",
-        "sixPlusSix": "6+6 Enhanced",
-        "note": "* Cap amounts in 10K KRW, minimum benefit 700K KRW for all"
-      },
-      "eligibility": {
-        "title": "6+6 Eligibility Requirements",
-        "items": [
-          "Child under 18 months old",
-          "Both parents take parental leave",
-          "Employment insurance coverage for 180+ days",
-          "Leave starts in 2025 or later"
-        ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the Parental Leave Pay Calculator?",
-          "description": "The Parental Leave Pay Calculator fully implements the expanded 6+6 Parental Leave Program effective in 2025, calculating monthly parental leave pay in detail. Simulate benefits for both parents taking leave simultaneously or sequentially, including deferred payment rules and ordinary wage calculations, to accurately determine the total amount receivable. An essential tool for couples planning financially around a new child."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Select who is taking leave (mother, father, or both simultaneously).",
-            "2. Enter ordinary monthly wage.",
-            "3. Set the start timing (child's age) and duration of the leave.",
-            "4. View monthly pay details (including 6+6 special benefit periods) and total payout."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "6+6 Program: when both parents take leave, each receives up to 100% of ordinary wage (max 4.5 million KRW/month) for the first 6 months. If only one parent takes leave, this benefit does not apply.",
-            "Deferred payment: 25% of pay is held back and paid after 6+ months of return to work. Failing to return forfeits the deferred amount.",
-            "You need at least 180 days of Employment Insurance enrollment to qualify. Verify eligibility if you recently changed jobs.",
-            "Spousal birth leave (10 days) is separate from parental leave and must be applied for within 90 days of birth."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "Can freelancers or self-employed individuals receive parental leave pay?",
-              "a": "Self-employed individuals who voluntarily enrolled in Employment Insurance can receive it. Freelancers or sole proprietors not enrolled in Employment Insurance are not eligible."
-            },
-            {
-              "q": "Is parental leave pay taxable?",
-              "a": "Parental leave pay is a social insurance benefit, not employment income, and is therefore tax-exempt. It does not appear in year-end tax settlements and does not affect health insurance premiums."
-            },
-            {
-              "q": "For twins, can leave be taken for each child separately?",
-              "a": "No. Parental leave is granted per parent, not per child. Each parent can take up to 1 year total, regardless of the number of children. A couple with twins can each take up to 1 year."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the Parental Leave Pay Calculator?",
-        "description": "The Parental Leave Pay Calculator fully implements the expanded 6+6 Parental Leave Program effective in 2025, calculating monthly parental leave pay in detail. Simulate benefits for both parents taking leave simultaneously or sequentially, including deferred payment rules and ordinary wage calculations, to accurately determine the total amount receivable. An essential tool for couples planning financially around a new child."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Select who is taking leave (mother, father, or both simultaneously).",
-          "2. Enter ordinary monthly wage.",
-          "3. Set the start timing (child's age) and duration of the leave.",
-          "4. View monthly pay details (including 6+6 special benefit periods) and total payout."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "6+6 Program: when both parents take leave, each receives up to 100% of ordinary wage (max 4.5 million KRW/month) for the first 6 months. If only one parent takes leave, this benefit does not apply.",
-          "Deferred payment: 25% of pay is held back and paid after 6+ months of return to work. Failing to return forfeits the deferred amount.",
-          "You need at least 180 days of Employment Insurance enrollment to qualify. Verify eligibility if you recently changed jobs.",
-          "Spousal birth leave (10 days) is separate from parental leave and must be applied for within 90 days of birth."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Can freelancers or self-employed individuals receive parental leave pay?",
-            "a": "Self-employed individuals who voluntarily enrolled in Employment Insurance can receive it. Freelancers or sole proprietors not enrolled in Employment Insurance are not eligible."
-          },
-          {
-            "q": "Is parental leave pay taxable?",
-            "a": "Parental leave pay is a social insurance benefit, not employment income, and is therefore tax-exempt. It does not appear in year-end tax settlements and does not affect health insurance premiums."
-          },
-          {
-            "q": "For twins, can leave be taken for each child separately?",
-            "a": "No. Parental leave is granted per parent, not per child. Each parent can take up to 1 year total, regardless of the number of children. A couple with twins can each take up to 1 year."
-          }
-        ]
-      }
-    }
+    "description": "2026 Korean parental leave benefit (caps: KRW 2.5M for months 1-3, 2.0M for 4-6, 1.6M from month 7) with the 6+6 parents' leave and single-parent rules. See a month-by-month payout table and compare mom-first, dad-first, simultaneous leave and reduced working hours."
   },
   "curlBuilder": {
     "title": "cURL Command Builder",
@@ -41413,24 +41074,6 @@
         "Use CVD-friendly palettes (e.g., Okabe-Ito) for data visualizations"
       ]
     },
-    "faq": {
-      "q1": {
-        "q": "What is the difference between color blindness and color weakness?",
-        "a": "Color blindness (dichromacy) means a specific cone type is completely absent, so the person cannot distinguish that color at all. Color weakness (anomalous trichromacy) means the cone is present but has reduced sensitivity. Color weakness is far more common than color blindness."
-      },
-      "q2": {
-        "q": "How accurate is this simulator?",
-        "a": "The simulator uses color transformation matrices based on the Brettel/Viénot algorithm to approximate color-blind vision. While individual variation means it cannot be perfectly accurate, it is widely used for design accessibility reviews."
-      },
-      "q3": {
-        "q": "Is my uploaded image sent to a server?",
-        "a": "No. All image processing is done entirely in your browser using the Canvas API. Your images are never uploaded to any server."
-      },
-      "q4": {
-        "q": "Can color blindness be treated?",
-        "a": "Congenital color blindness has no known cure. Specialty lenses (e.g., EnChroma glasses) can improve color discrimination for some people, but effectiveness varies. Consult an ophthalmologist if you suspect a color vision deficiency."
-      }
-    },
     "guide": {
       "howItWorks": {
         "title": "How It Works",
@@ -43111,184 +42754,7 @@
         ]
       }
     },
-    "title": "National Pension Calculator",
-    "description": "Estimate your national pension from birth year, contribution period and income (2026 reform applied)",
-    "birthYear": "Birth Year",
-    "year": "",
-    "contributionYears": "Contribution Period",
-    "yearUnit": "years",
-    "monthlyIncome": "Monthly Average Income",
-    "incomeMin": "Min",
-    "incomeMax": "Max",
-    "pensionStartAge": "Pension Start Age",
-    "autoCalculated": "Auto-calculated from birth year",
-    "calculate": "Calculate",
-    "reset": "Reset",
-    "linkCopied": "Copied",
-    "copyLink": "Copy Link",
-    "enterToCalculate": "Enter your information and calculate",
-    "minContribution": "Minimum 10 years (120 months) of contribution required",
-    "earlyPension": "Early Pension",
-    "normalPension": "Normal Pension",
-    "deferredPension": "Deferred Pension",
-    "earlyDesc": "Up to 5 years early, 6% reduction per year",
-    "normalDesc": "Standard pension at normal retirement age",
-    "deferredDesc": "Up to 5 years deferred, 7.2% increase per year",
-    "recommended": "Recommended",
-    "startAge": "Start Age",
-    "monthlyAmount": "Monthly Amount",
-    "yearlyAmount": "Yearly Amount",
-    "earlyReduction": "Early Reduction",
-    "deferredIncrease": "Deferred Increase",
-    "standardAmount": "Base Pension",
-    "totalComparison": "Total Benefit Comparison",
-    "totalBy80": "By age 80",
-    "totalBy85": "By age 85",
-    "totalBy90": "By age 90",
-    "cumulativeChart": "Cumulative Benefits",
-    "cumulativeDesc": "Compare cumulative benefits by age for all three options",
-    "age": "",
-    "cumulativeAmount": "Cumulative Amount",
-    "won": "KRW",
-    "man": "万",
-    "eok": "억",
-    "calculationDetails": "Calculation Details",
-    "aValue": "A Value (Average Monthly Income of All Contributors)",
-    "aValueDesc": "3-year average monthly income of all NPS contributors (2024)",
-    "bValue": "B Value (Your Average Monthly Income)",
-    "bValueDesc": "Your average monthly income during contribution period",
-    "replacementRate": "Income Replacement Rate",
-    "year2025": "2026 standard",
-    "extraYears": "Extra Years (beyond 20)",
-    "extraYearsDesc": "5% additional benefit per year beyond 20 years",
-    "guide": {
-      "title": "National Pension Guide",
-      "formula": {
-        "title": "Calculation Formula",
-        "items": [
-          "Monthly Basic = {Replacement Rate × (A + B) × (1 + 0.05n)} / 12",
-          "A: Average monthly income of all contributors (~2.86M KRW in 2024)",
-          "B: Your average monthly standard income during contribution",
-          "n: Years of contribution beyond 20 (0 if less than 20)",
-          "Replacement rate: 43% from 2026 (2025 pension reform) · contribution rate 9.5%, +0.5%p yearly to 13% by 2033"
-        ]
-      },
-      "earlyVsDeferred": {
-        "title": "Early vs Deferred",
-        "items": [
-          "Early: Up to 5 years early, 6%/year reduction (max 30%). Useful for those needing income sooner",
-          "Deferred: Up to 5 years late, 7.2%/year increase (max 36%). Better for longer life expectancy",
-          "Normal pension is the most balanced choice based on average life expectancy",
-          "Consider your health and other income sources when deciding",
-          "Early pension may be reduced if you have employment income"
-        ]
-      },
-      "requirements": {
-        "title": "Eligibility Requirements",
-        "items": [
-          "Minimum contribution: 10 years (120 months)",
-          "Pension start age: 60-65 depending on birth year",
-          "Early pension: 10+ years contribution + not working + from 5 years before start age",
-          "Survivor pension: Paid to survivors of contributors with 10+ years",
-          "Disability pension: Paid based on disability grade for illness/injury during contribution"
-        ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the National Pension Calculator?",
-          "description": "The National Pension Calculator estimates your expected monthly National Pension benefit based on years of contribution and average monthly income, using 2025 rules. Compare three scenarios—early collection (up to 5 years early, 6% reduction per year), standard collection (age 63), and deferred collection (up to 5 years delayed, 7.2% increase per year)—to find the optimal claiming strategy."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Enter your total years of National Pension contributions.",
-            "2. Enter your average monthly income during the contribution period (based on actual premiums paid).",
-            "3. Select your intended collection timing (early, standard, or deferred).",
-            "4. View the estimated monthly benefit, annual total, and the break-even points for early vs. deferred collection."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "The minimum contribution period is 10 years. Below that, you receive a lump-sum refund instead of a monthly pension. You can use voluntary continued enrollment to reach 10 years.",
-            "Deferred collection advantage: delaying by 1 year increases your benefit by 7.2%, and the maximum 5-year delay boosts it by 36%. If you expect good health and longevity, deferral can pay off significantly.",
-            "If a spouse dies and you receive survivor's pension, there are limits on collecting both your own old-age pension and the survivor's pension simultaneously. Compare both amounts to make the best choice.",
-            "The National Pension Service's 내연금 app or website provides more precise estimated benefits based on your actual contribution record."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "If the pension fund runs out, will I stop receiving payments?",
-              "a": "The fund is projected to be depleted around 2055, but payments would continue from the contributions of active workers at that time. Benefit levels or retirement age may be adjusted, but the system itself would not disappear."
-            },
-            {
-              "q": "Can voluntary enrollees (housewives, students, etc.) receive a pension?",
-              "a": "Yes. Anyone aged 27–60 may enroll voluntarily. Premiums start from as low as 90,000 KRW/month, and 10+ years of contributions qualify you for a retirement pension."
-            },
-            {
-              "q": "Is pension income taxable?",
-              "a": "Pension amounts corresponding to premiums paid after 2002 are subject to income tax as pension income. After the pension income deduction, the effective tax is minimal for annual pensions under approximately 9 million KRW."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the National Pension Calculator?",
-        "description": "The National Pension Calculator estimates your expected monthly National Pension benefit based on years of contribution and average monthly income, using 2025 rules. Compare three scenarios—early collection (up to 5 years early, 6% reduction per year), standard collection (age 63), and deferred collection (up to 5 years delayed, 7.2% increase per year)—to find the optimal claiming strategy."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter your total years of National Pension contributions.",
-          "2. Enter your average monthly income during the contribution period (based on actual premiums paid).",
-          "3. Select your intended collection timing (early, standard, or deferred).",
-          "4. View the estimated monthly benefit, annual total, and the break-even points for early vs. deferred collection."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "The minimum contribution period is 10 years. Below that, you receive a lump-sum refund instead of a monthly pension. You can use voluntary continued enrollment to reach 10 years.",
-          "Deferred collection advantage: delaying by 1 year increases your benefit by 7.2%, and the maximum 5-year delay boosts it by 36%. If you expect good health and longevity, deferral can pay off significantly.",
-          "If a spouse dies and you receive survivor's pension, there are limits on collecting both your own old-age pension and the survivor's pension simultaneously. Compare both amounts to make the best choice.",
-          "The National Pension Service's 내연금 app or website provides more precise estimated benefits based on your actual contribution record."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "If the pension fund runs out, will I stop receiving payments?",
-            "a": "The fund is projected to be depleted around 2055, but payments would continue from the contributions of active workers at that time. Benefit levels or retirement age may be adjusted, but the system itself would not disappear."
-          },
-          {
-            "q": "Can voluntary enrollees (housewives, students, etc.) receive a pension?",
-            "a": "Yes. Anyone aged 27–60 may enroll voluntarily. Premiums start from as low as 90,000 KRW/month, and 10+ years of contributions qualify you for a retirement pension."
-          },
-          {
-            "q": "Is pension income taxable?",
-            "a": "Pension amounts corresponding to premiums paid after 2002 are subject to income tax as pension income. After the pension income deduction, the effective tax is minimal for annual pensions under approximately 9 million KRW."
-          }
-        ]
-      }
-    },
-    "faqTitle": "FAQ",
-    "faq": {
-      "q1": {
-        "question": "What is the minimum contribution period?",
-        "answer": "You need at least 10 years (120 months) of contributions to receive the old-age pension. If less than 10 years, you receive a lump-sum refund."
-      },
-      "q2": {
-        "question": "Is early or deferred pension better?",
-        "answer": "If you live to average life expectancy (~83), total benefits are similar. Deferred is better if you live past 85, early is better if below average."
-      },
-      "q3": {
-        "question": "Is inflation adjustment included?",
-        "answer": "Yes, the national pension adjusts annually based on CPI changes. This calculator shows amounts without inflation adjustment."
-      }
-    }
+    "title": "National Pension Calculator"
   },
   "mealDiary": {
     "title": "Meal/Calorie Diary",

@@ -26,8 +26,11 @@ export default function ResidentNumber() {
   const result = parseRrn(digits)
   const hasDetails = result && (result.status === 'valid' || result.status === 'checksumMismatch')
 
+  // 외국인등록번호는 주민번호 개편(2020.10)과 별개 체계(출입국관리법 시행령 §40의3) → 개편 안내를 쓰지 않는다
   const statusDesc = (r: RrnResult) =>
-    r.status === 'checksumMismatch' && r.afterReform
+    r.status === 'checksumMismatch' && r.foreigner
+      ? t('status.checksumMismatchForeignerDesc')
+      : r.status === 'checksumMismatch' && r.afterReform
       ? t('status.checksumMismatchAfterReform')
       : t(`status.${r.status}Desc`)
 
