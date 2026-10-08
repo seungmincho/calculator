@@ -801,7 +801,7 @@ export default function LottoGenerator() {
 
         {/* 결과 표시 영역 */}
         {generatedSets.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-4" aria-live="polite">
             {generatedSets.map((set, index) => (
               <div key={index} className="bg-subtle rounded-xl p-6 border border-line">
                 <div className="flex items-center justify-between mb-4">
@@ -875,13 +875,14 @@ export default function LottoGenerator() {
           <div className="mt-4 space-y-4 pt-4 border-t border-line">
             {/* 생성 방식 */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="lotto-method" className="block text-sm font-medium text-body mb-2">
                 {t('settings.method')}
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="lotto-method">
                 {(['random', 'statistics', 'mixed'] as const).map((method) => (
                   <button
                     key={method}
+                    aria-pressed={generateMethod === method}
                     onClick={() => {
                       setGenerateMethod(method)
                       updateURL({ method })
@@ -900,13 +901,14 @@ export default function LottoGenerator() {
 
             {/* 게임 수 */}
             <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-body">
+              <label id="lotto-sets" className="text-sm font-medium text-body">
                 {t('settings.numberOfSets')}
               </label>
-              <div className="flex gap-1">
+              <div className="flex gap-1" role="group" aria-labelledby="lotto-sets">
                 {[1, 2, 3, 4, 5].map(num => (
                   <button
                     key={num}
+                    aria-pressed={numberOfSets === num}
                     onClick={() => {
                       setNumberOfSets(num)
                       updateURL({ sets: num.toString() })
@@ -926,7 +928,7 @@ export default function LottoGenerator() {
             {/* 제외 번호 */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium text-body">
+                <label id="lotto-exclude" className="text-sm font-medium text-body">
                   {t('settings.excludeNumbers')} {excludedNumbers.length > 0 && `(${excludedNumbers.length})`}
                 </label>
                 {excludedNumbers.length > 0 && (
@@ -938,11 +940,12 @@ export default function LottoGenerator() {
                   </button>
                 )}
               </div>
-              <div className="grid grid-cols-9 gap-1.5">
+              <div className="grid grid-cols-9 gap-1.5" role="group" aria-labelledby="lotto-exclude">
                 {Array.from({ length: 45 }, (_, i) => i + 1).map(number => (
                   <button
                     key={number}
                     onClick={() => toggleExcludeNumber(number)}
+                    aria-pressed={excludedNumbers.includes(number)}
                     className={`w-7 h-7 rounded text-xs font-medium transition-colors ${
                       excludedNumbers.includes(number)
                         ? 'bg-red-500 text-white'
@@ -1008,6 +1011,7 @@ export default function LottoGenerator() {
                 inputMode="numeric"
                 value={num}
                 onChange={(e) => handleCheckNumberChange(index, e.target.value)}
+                aria-label={t('a11y.checkNumber', { n: index + 1 })}
                 placeholder={String(index + 1)}
                 className="w-11 h-11 text-center text-lg font-bold border-2 border-line-strong rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 maxLength={2}
@@ -1025,6 +1029,7 @@ export default function LottoGenerator() {
             </button>
             <button
               onClick={resetCheckNumbers}
+              aria-label={t('a11y.clearCheck')}
               className="p-2.5 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               <X className="w-5 h-5" />
@@ -1083,6 +1088,7 @@ export default function LottoGenerator() {
                 type="number"
                 value={searchRound}
                 onChange={(e) => setSearchRound(e.target.value)}
+                aria-label={t('searchRound')}
                 placeholder={t('searchRoundPlaceholder')}
                 className="flex-1 px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
@@ -1152,7 +1158,7 @@ export default function LottoGenerator() {
                   onClick={checkForUpdates}
                   disabled={isUpdating}
                   className="p-1.5 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="최신 회차 확인"
+                  title={t('a11y.checkLatest')}
                 >
                   <RefreshCw className={`w-4 h-4 ${isUpdating ? 'animate-spin' : ''}`} />
                 </button>

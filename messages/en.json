@@ -357,6 +357,92 @@
     }
   },
   "salary": {
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "pdfTitle": "Salary Calculation Result",
+    "advanced": {
+      "title": "Advanced settings",
+      "summary": "(bonus · performance pay · experience)",
+      "bonus": {
+        "title": "Bonus settings",
+        "infoTitle": "A bonus splits your annual salary into more payments",
+        "infoExample": "e.g. 30M KRW salary + 800% bonus = 30M KRW paid in 20 installments (12+8)",
+        "ratioLabel": "Bonus rate",
+        "none": "No bonus (salary ÷ 12 months)",
+        "option": "{pct}% (salary ÷ {n} payments)",
+        "monthsLabel": "Bonus months"
+      },
+      "performance": {
+        "title": "Performance pay settings",
+        "infoTitle": "Performance pay is paid on top of your annual salary",
+        "infoExample": "e.g. 30M KRW salary + 200% performance pay = 30M KRW + (200% of 30M KRW)",
+        "ratioLabel": "Performance pay rate",
+        "none": "No performance pay",
+        "option": "{pct}% ({pct}% of salary)",
+        "note": "Performance pay can vary with company results"
+      },
+      "experience": {
+        "label": "Experience (years)",
+        "options": {
+          "0": "Entry level",
+          "1": "1-2 years",
+          "3": "3-4 years",
+          "5": "5-7 years",
+          "8": "8-10 years",
+          "10": "10+ years"
+        }
+      }
+    },
+    "charts": {
+      "title": "Detailed charts",
+      "show": "Show charts",
+      "hide": "Hide charts",
+      "axisMan": "{won}",
+      "axisEok": "{won}",
+      "monthly": {
+        "title": "Monthly take-home (including bonus)",
+        "series": {
+          "takeHome": "Take-home",
+          "bonus": "Bonus",
+          "performance": "Performance pay"
+        },
+        "bonusMethodLabel": "Bonus payment:",
+        "bonusMethod": "{salary} KRW annual salary split into {n} payments",
+        "bonusMonths": "Bonus months: {months} ({per} payments each)",
+        "basePay": "Base pay: {amount} KRW per payment",
+        "performanceLabel": "Performance pay:",
+        "performance": "{pct}% of salary = {amount} KRW (paid in December)"
+      },
+      "career": {
+        "title": "Average salary by experience",
+        "series": "Average salary",
+        "levels": {
+          "0": "Entry",
+          "1": "1-2 yrs",
+          "3": "3-4 yrs",
+          "5": "5-7 yrs",
+          "8": "8-10 yrs",
+          "10": "10+ yrs"
+        },
+        "current": "Current salary: {salary} KRW | Selected experience: {level}"
+      },
+      "tax": {
+        "title": "Deductions by item",
+        "longTermCare": "Long-term care"
+      }
+    },
     "viral": {
       "salaryMan": "₩{won}",
       "heroTop": "{salary} salary · Top {top}% (NTS data)",
@@ -383,6 +469,8 @@
     "title": "Salary Take-Home Calculator",
     "description": "Enter your salary to calculate the actual amount you can receive after deducting 4 major insurances, income tax, and local income tax.",
     "input": {
+      "amountLabel": "{type} (pre-tax)",
+      "people": "{n}",
       "salaryType": "Salary Type",
       "annual": "Annual Salary",
       "monthly": "Monthly Salary",
@@ -619,6 +707,37 @@
       }
     },
     "taxBracket": {
+      "rows": {
+        "0": {
+          "bracket": "Up to 14M KRW",
+          "range": "Up to 30M KRW"
+        },
+        "1": {
+          "bracket": "14M–50M KRW",
+          "deduction": "1.26M KRW",
+          "range": "30M–70M KRW"
+        },
+        "2": {
+          "bracket": "50M–88M KRW",
+          "deduction": "5.76M KRW",
+          "range": "70M–100M KRW"
+        },
+        "3": {
+          "bracket": "88M–150M KRW",
+          "deduction": "15.44M KRW",
+          "range": "100M–200M KRW"
+        },
+        "4": {
+          "bracket": "150M–300M KRW",
+          "deduction": "19.94M KRW",
+          "range": "200M–400M KRW"
+        },
+        "5": {
+          "bracket": "Over 300M KRW",
+          "deduction": "Varies",
+          "range": "400M KRW and up"
+        }
+      },
       "title": "Complete Analysis of Income Tax Progressive Rates",
       "description": "Learn about the 8-tier progressive income tax rates for 2026 and check the tax rate for your salary bracket.",
       "headers": {
@@ -6058,6 +6177,11 @@
     "completedBox": "completed a box! Extra turn!"
   },
   "lotto": {
+    "a11y": {
+      "checkNumber": "My number {n}",
+      "clearCheck": "Clear entered numbers",
+      "checkLatest": "Check for the latest draw"
+    },
     "title": "Lotto Number Generator",
     "description": "Generate lottery 6/45 numbers automatically and create better number combinations with past winning number analysis",
     "settings": {
@@ -6200,6 +6324,11 @@
     }
   },
   "ladder": {
+    "a11y": {
+      "participantAnimal": "Participant {n} animal",
+      "participantName": "Participant {n} name",
+      "outcome": "Outcome {n}"
+    },
     "title": "Ladder Game",
     "description": "Enjoy online ladder game with friends! Make fair decisions for various situations like determining order, penalties, and team division",
     "settings": {
@@ -6850,6 +6979,9 @@
     "placeholder": "Enter content and your QR code appears instantly"
   },
   "fuelCalculator": {
+    "a11y": {
+      "period": "Period"
+    },
     "share": {
       "label": "{vehicle} · {fuel} · {km} km fuel reimbursement",
       "won": " KRW",
@@ -57552,5 +57684,68 @@
       ]
     },
     "source": "Sources: Restriction of Special Taxation Act Art. 58 (amended 2025-12-23, donations from 2026-01-01) and Decree Art. 53-2; Hometown Love Donation Act Arts. 4, 8, 9 and Decree Art. 5; Gohyangsarang e-eum guide. As of October 2026."
+  },
+  "decisionTools": {
+    "header": {
+      "title": "Decision Tools",
+      "subtitle": "Decide fairly with a spinning wheel and a random order draw",
+      "rouletteTitle": "Menu Roulette",
+      "rouletteSubtitle": "Spin the wheel to decide today's menu",
+      "orderTitle": "Pick an Order",
+      "orderSubtitle": "Enter the participants and we'll draw a random order"
+    },
+    "tabs": {
+      "roulette": "Wheel",
+      "order": "Order Draw"
+    },
+    "common": {
+      "removeItem": "Remove {item}",
+      "copied": "Copied"
+    },
+    "presets": {
+      "dinner": "Dinner",
+      "lunch": "Lunch",
+      "korean": "Korean",
+      "chinese": "Chinese",
+      "japanese": "Japanese",
+      "western": "Western",
+      "bunsik": "Street food",
+      "lateNight": "Late-night delivery",
+      "cafe": "Cafe",
+      "penalty": "Penalties"
+    },
+    "roulette": {
+      "itemsTitle": "Items",
+      "presetsLabel": "Presets",
+      "addPlaceholder": "Add an item...",
+      "addInputLabel": "Item to add",
+      "addButton": "Add item",
+      "history": "Spin history ({count})",
+      "resultAnnounce": "Result: {result}",
+      "wheelLabel": "Wheel: {items}",
+      "spin": "🎡 Spin!",
+      "spinning": "Spinning...",
+      "result": "Result",
+      "saveImage": "Image",
+      "saved": "Saved",
+      "copy": "Copy",
+      "imageHeading": "🎡 Today's pick",
+      "imageFooter": "toolhub.ai.kr · Menu Roulette"
+    },
+    "order": {
+      "participantsTitle": "Participants",
+      "addPlaceholder": "Add a participant...",
+      "addInputLabel": "Participant to add",
+      "addButton": "Add participant",
+      "draw": "Draw!",
+      "shuffling": "Shuffling...",
+      "reset": "Reset",
+      "resultTitle": "Order result",
+      "revealAll": "Reveal all",
+      "copyResult": "Copy result",
+      "empty": "Press Draw and the order will appear here",
+      "rank": "#{rank}",
+      "copyLine": "#{rank}: {name}"
+    }
   }
 }

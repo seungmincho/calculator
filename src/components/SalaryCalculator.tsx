@@ -117,7 +117,7 @@ const SalaryCalculatorContent = () => {
       const monthlyDeductions = Math.floor(monthlyGross * monthlyTaxRate);
 
       monthlyData.push({
-        month: `${month}월`,
+        month: (t.raw('months') as string[])[month - 1],
         grossSalary: monthlyGross,
         takeHome: monthlyGross - monthlyDeductions,
         bonus: bonusAmount,
@@ -131,13 +131,14 @@ const SalaryCalculatorContent = () => {
   };
 
   // 경력별 평균 연봉 데이터 (한국 IT 업계 기준)
+  // years = 경력 select 값 (차트 라벨은 charts.career.levels.<years>)
   const careerAverageSalary = [
-    { experience: '신입', average: 35000000, min: 28000000, max: 42000000 },
-    { experience: '1-2년', average: 42000000, min: 35000000, max: 50000000 },
-    { experience: '3-4년', average: 52000000, min: 45000000, max: 65000000 },
-    { experience: '5-7년', average: 65000000, min: 55000000, max: 80000000 },
-    { experience: '8-10년', average: 80000000, min: 65000000, max: 100000000 },
-    { experience: '10년+', average: 95000000, min: 75000000, max: 150000000 }
+    { years: '0', average: 35000000, min: 28000000, max: 42000000 },
+    { years: '1', average: 42000000, min: 35000000, max: 50000000 },
+    { years: '3', average: 52000000, min: 45000000, max: 65000000 },
+    { years: '5', average: 65000000, min: 55000000, max: 80000000 },
+    { years: '8', average: 80000000, min: 65000000, max: 100000000 },
+    { years: '10', average: 95000000, min: 75000000, max: 150000000 }
   ];
 
   // 세금 구성 차트 데이터
@@ -145,12 +146,12 @@ const SalaryCalculatorContent = () => {
     if (!result) return [];
     
     return [
-      { name: '국민연금', value: result.deductions.nationalPension, color: '#3B82F6' },
-      { name: '건강보험', value: result.deductions.healthInsurance, color: '#10B981' },
-      { name: '장기요양', value: result.deductions.longTermCare, color: '#8B5CF6' },
-      { name: '고용보험', value: result.deductions.employmentInsurance, color: '#F59E0B' },
-      { name: '소득세', value: result.deductions.incomeTax, color: '#EF4444' },
-      { name: '지방소득세', value: result.deductions.localIncomeTax, color: '#EC4899' }
+      { name: t('result.nationalPension'), value: result.deductions.nationalPension, color: '#3B82F6' },
+      { name: t('result.healthInsurance'), value: result.deductions.healthInsurance, color: '#10B981' },
+      { name: t('charts.tax.longTermCare'), value: result.deductions.longTermCare, color: '#8B5CF6' },
+      { name: t('result.employmentInsurance'), value: result.deductions.employmentInsurance, color: '#F59E0B' },
+      { name: t('result.incomeTax'), value: result.deductions.incomeTax, color: '#EF4444' },
+      { name: t('result.localIncomeTax'), value: result.deductions.localIncomeTax, color: '#EC4899' }
     ];
   };
 
@@ -346,7 +347,7 @@ const SalaryCalculatorContent = () => {
             {/* 급여 입력 */}
             <div>
               <label htmlFor="salary-amount" className="block text-sm font-medium text-body mb-2">
-                {salaryType === 'annual' ? `${t('input.annual')} (세전)` : `${t('input.monthly')} (세전)`}
+                {t('input.amountLabel', { type: t(salaryType === 'annual' ? 'input.annual' : 'input.monthly') })}
               </label>
               <div className="relative">
                 <input
@@ -400,7 +401,7 @@ const SalaryCalculatorContent = () => {
                   className={`ui-field px-3 py-3`}
                 >
                   {[1,2,3,4,5,6,7,8,9,10].map(num => (
-                    <option key={num} value={num}>{num}명</option>
+                    <option key={num} value={num}>{t('input.people', { n: num })}</option>
                   ))}
                 </select>
               </div>
@@ -419,7 +420,7 @@ const SalaryCalculatorContent = () => {
                   className={`ui-field px-3 py-3`}
                 >
                   {[0,1,2,3,4,5].filter(num => num < (parseInt(dependents) || 1)).map(num => (
-                    <option key={num} value={num}>{num}명</option>
+                    <option key={num} value={num}>{t('input.people', { n: num })}</option>
                   ))}
                 </select>
               </div>
@@ -428,41 +429,38 @@ const SalaryCalculatorContent = () => {
             {/* 고급 설정 (접이식) */}
             <details className="group rounded-2xl border border-line bg-surface overflow-hidden">
               <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-body select-none list-none">
-                <span>고급 설정 <span className="font-normal text-faint">(상여금 · 성과급 · 경력)</span></span>
+                <span>{t('advanced.title')} <span className="font-normal text-faint">{t('advanced.summary')}</span></span>
                 <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none" aria-hidden="true">+</span>
               </summary>
               <div className="border-t border-line px-5 py-5 space-y-5">
                 {/* 상여금 설정 */}
                 <div>
-                  <h3 className="text-sm font-medium text-body mb-2">상여금 설정</h3>
+                  <h3 className="text-sm font-medium text-body mb-2">{t('advanced.bonus.title')}</h3>
                   <div className="bg-subtle rounded-xl p-3 mb-3">
                     <p className="text-xs text-sub">
-                      <strong className="text-body">상여금은 연봉을 분할 지급하는 방식입니다</strong><br/>
-                      예: 연봉 3000만원 + 상여 800% = 3000만원을 20회(12+8)로 나누어 지급
+                      <strong className="text-body">{t('advanced.bonus.infoTitle')}</strong><br/>
+                      {t('advanced.bonus.infoExample')}
                     </p>
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <label htmlFor="salary-bonus-pct" className="block text-xs text-sub mb-1.5">상여금 비율</label>
+                      <label htmlFor="salary-bonus-pct" className="block text-xs text-sub mb-1.5">{t('advanced.bonus.ratioLabel')}</label>
                       <select
                         id="salary-bonus-pct"
                         value={bonusPercentage}
                         onChange={(e) => setBonusPercentage(e.target.value)}
                         className={`ui-field px-3 py-2`}
                       >
-                        <option value="0">상여금 없음 (연봉÷12개월)</option>
+                        <option value="0">{t('advanced.bonus.none')}</option>
                         {/* 계산식(12 + 비율/100 회)과 라벨을 일치시킴 — 예전 라벨은 ÷14/÷16…로 계산과 달랐음 */}
-                        <option value="100">100% (연봉÷13회)</option>
-                        <option value="200">200% (연봉÷14회)</option>
-                        <option value="300">300% (연봉÷15회)</option>
-                        <option value="400">400% (연봉÷16회)</option>
-                        <option value="600">600% (연봉÷18회)</option>
-                        <option value="800">800% (연봉÷20회)</option>
+                        {[100, 200, 300, 400, 600, 800].map(p => (
+                          <option key={p} value={p}>{t('advanced.bonus.option', { pct: p, n: 12 + p / 100 })}</option>
+                        ))}
                       </select>
                     </div>
                     {bonusPercentage !== '0' && (
                       <div>
-                        <label id="salary-bonus-months-label" className="block text-xs text-sub mb-1.5">상여금 지급 월</label>
+                        <label id="salary-bonus-months-label" className="block text-xs text-sub mb-1.5">{t('advanced.bonus.monthsLabel')}</label>
                         <div className="grid grid-cols-4 sm:grid-cols-6 gap-2" role="group" aria-labelledby="salary-bonus-months-label">
                           {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
                             <button
@@ -481,7 +479,7 @@ const SalaryCalculatorContent = () => {
                                   : 'bg-surface border border-line text-body hover:bg-soft'
                               }`}
                             >
-                              {month}월
+                              {(t.raw('months') as string[])[month - 1]}
                             </button>
                           ))}
                         </div>
@@ -492,45 +490,40 @@ const SalaryCalculatorContent = () => {
 
                 {/* 성과급 설정 */}
                 <div className="border-t border-line pt-5">
-                  <h3 className="text-sm font-medium text-body mb-2">성과급 설정</h3>
+                  <h3 className="text-sm font-medium text-body mb-2">{t('advanced.performance.title')}</h3>
                   <div className="bg-subtle rounded-xl p-3 mb-3">
                     <p className="text-xs text-sub">
-                      <strong className="text-body">성과급은 연봉에 추가로 지급되는 금액입니다</strong><br/>
-                      예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)
+                      <strong className="text-body">{t('advanced.performance.infoTitle')}</strong><br/>
+                      {t('advanced.performance.infoExample')}
                     </p>
                   </div>
-                  <label htmlFor="salary-performance" className="block text-xs text-sub mb-1.5">성과급 비율</label>
+                  <label htmlFor="salary-performance" className="block text-xs text-sub mb-1.5">{t('advanced.performance.ratioLabel')}</label>
                   <select
                     id="salary-performance"
                     value={performanceBonus}
                     onChange={(e) => setPerformanceBonus(e.target.value)}
                     className={`ui-field px-3 py-2`}
                   >
-                    <option value="0">성과급 없음</option>
-                    <option value="50">50% (연봉의 50%)</option>
-                    <option value="100">100% (연봉의 100%)</option>
-                    <option value="150">150% (연봉의 150%)</option>
-                    <option value="200">200% (연봉의 200%)</option>
-                    <option value="300">300% (연봉의 300%)</option>
+                    <option value="0">{t('advanced.performance.none')}</option>
+                    {[50, 100, 150, 200, 300].map(p => (
+                      <option key={p} value={p}>{t('advanced.performance.option', { pct: p })}</option>
+                    ))}
                   </select>
-                  <p className="text-xs text-muted mt-1.5">성과급은 회사 실적에 따라 변동될 수 있습니다</p>
+                  <p className="text-xs text-muted mt-1.5">{t('advanced.performance.note')}</p>
                 </div>
 
                 {/* 경력 정보 */}
                 <div className="border-t border-line pt-5">
-                  <label htmlFor="salary-experience" className="block text-sm font-medium text-body mb-2">경력 (연차)</label>
+                  <label htmlFor="salary-experience" className="block text-sm font-medium text-body mb-2">{t('advanced.experience.label')}</label>
                   <select
                     id="salary-experience"
                     value={experienceYears}
                     onChange={(e) => setExperienceYears(e.target.value)}
                     className={`ui-field px-3 py-3`}
                   >
-                    <option value="0">신입</option>
-                    <option value="1">1-2년</option>
-                    <option value="3">3-4년</option>
-                    <option value="5">5-7년</option>
-                    <option value="8">8-10년</option>
-                    <option value="10">10년 이상</option>
+                    {['0', '1', '3', '5', '8', '10'].map(y => (
+                      <option key={y} value={y}>{t(`advanced.experience.options.${y}`)}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -561,7 +554,7 @@ const SalaryCalculatorContent = () => {
                     <TrendingUp className="w-5 h-5 shrink-0 text-white/80" />
                   </div>
                   <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-2 tabular-nums" aria-live="polite">
-                    {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-white/70">원</span>
+                    {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-white/70">{t('input.currency')}</span>
                   </div>
                   <p className="text-sm font-semibold text-white mb-5">
                     {t('viral.heroTop', { salary: toMan(result.gross), top: topPct })}
@@ -569,7 +562,7 @@ const SalaryCalculatorContent = () => {
                   <div className="grid grid-cols-2 gap-3 mb-5">
                     <div className="rounded-2xl bg-white/[0.14] px-4 py-3">
                       <div className="text-xs text-white/70 mb-1">{t('result.annualTakeHome')}</div>
-                      <div className="text-base font-semibold text-white">{formatNumber(result.netAnnual)}원</div>
+                      <div className="text-base font-semibold text-white">{formatNumber(result.netAnnual)}{t('input.currency')}</div>
                     </div>
                     <div className="rounded-2xl bg-white/[0.14] px-4 py-3">
                       <div className="text-xs text-white/70 mb-1">{t('result.effectiveTaxRate')}</div>
@@ -679,7 +672,7 @@ const SalaryCalculatorContent = () => {
                       <span className="font-medium text-fg">{formatNumber(result.workIncome)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sub">{t('result.personalDeduction')} ({dependents}명)</span>
+                      <span className="text-sub">{t('result.personalDeduction')} ({t('input.people', { n: dependents })})</span>
                       <span className="font-medium text-green-600 dark:text-green-400">-{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
@@ -753,7 +746,7 @@ const SalaryCalculatorContent = () => {
                 <PDFExport
                   data={result}
                   calculatorType="salary"
-                  title="연봉 계산 결과"
+                  title={t('pdfTitle')}
                   className="w-full sm:w-auto"
                 />
                 <FeedbackWidget 
@@ -857,14 +850,14 @@ const SalaryCalculatorContent = () => {
       {result && (
         <div className={`mt-12 ui-card p-8`}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-fg">상세 분석 차트</h2>
+            <h2 className="text-2xl font-semibold text-fg">{t('charts.title')}</h2>
             <button
               onClick={() => setShowCharts(!showCharts)}
               aria-expanded={showCharts}
               className="inline-flex items-center gap-2 bg-surface hover:bg-soft border border-line px-4 py-2 rounded-xl text-body text-sm font-medium transition-colors"
             >
               <BarChart3 className="w-4 h-4" />
-              <span>{showCharts ? '차트 숨기기' : '차트 보기'}</span>
+              <span>{showCharts ? t('charts.hide') : t('charts.show')}</span>
             </button>
           </div>
 
@@ -873,47 +866,46 @@ const SalaryCalculatorContent = () => {
               {/* 월별 실수령액 차트 */}
               <div className="bg-surface border border-line rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
-                  월별 실수령액 변화 (상여금 포함)
+                  {t('charts.monthly.title')}
                 </h3>
                 <ReactECharts option={{
                   tooltip: { trigger: 'axis', formatter: (params: { seriesName?: string; value?: number; marker?: string }[]) => {
                     if (!Array.isArray(params)) return '';
                     const month = (params[0] as { axisValue?: string }).axisValue || '';
-                    return `<strong>${month}</strong><br/>` + params.map((p: { seriesName?: string; value?: number; marker?: string }) => `${p.marker} ${p.seriesName}: ${formatNumber(p.value ?? 0)}원`).join('<br/>');
+                    return `<strong>${month}</strong><br/>` + params.map((p: { seriesName?: string; value?: number; marker?: string }) => `${p.marker} ${p.seriesName}: ${formatNumber(p.value ?? 0)}${t('input.currency')}`).join('<br/>');
                   }},
-                  legend: { data: ['실수령액', '상여금', '성과급'], bottom: 0 },
+                  legend: { data: [t('charts.monthly.series.takeHome'), t('charts.monthly.series.bonus'), t('charts.monthly.series.performance')], bottom: 0 },
                   grid: { left: '3%', right: '4%', bottom: '12%', containLabel: true },
                   xAxis: { type: 'category', data: calculateMonthlyTakeHome().map(d => d.month) },
-                  yAxis: { type: 'value', axisLabel: { formatter: (v: number) => `${(v / 10000).toFixed(0)}만` } },
+                  yAxis: { type: 'value', axisLabel: { formatter: (v: number) => t('charts.axisMan', { man: (v / 10000).toFixed(0), won: formatNumber(v) }) } },
                   series: [
-                    { name: '실수령액', type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.takeHome), lineStyle: { width: 2, color: '#3B82F6' }, itemStyle: { color: '#3B82F6' }, symbolSize: 8 },
-                    { name: '상여금', type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.bonus), lineStyle: { width: 2, color: '#10B981', type: 'dashed' }, itemStyle: { color: '#10B981' }, symbolSize: 8 },
-                    { name: '성과급', type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.performance), lineStyle: { width: 2, color: '#F59E0B', type: 'dotted' }, itemStyle: { color: '#F59E0B' }, symbolSize: 8 }
+                    { name: t('charts.monthly.series.takeHome'), type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.takeHome), lineStyle: { width: 2, color: '#3B82F6' }, itemStyle: { color: '#3B82F6' }, symbolSize: 8 },
+                    { name: t('charts.monthly.series.bonus'), type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.bonus), lineStyle: { width: 2, color: '#10B981', type: 'dashed' }, itemStyle: { color: '#10B981' }, symbolSize: 8 },
+                    { name: t('charts.monthly.series.performance'), type: 'line', smooth: true, data: calculateMonthlyTakeHome().map(d => d.performance), lineStyle: { width: 2, color: '#F59E0B', type: 'dotted' }, itemStyle: { color: '#F59E0B' }, symbolSize: 8 }
                   ]
                 }} style={{ height: '300px' }} />
                 <div className="mt-4 space-y-2">
                   <div className="p-3 bg-surface border border-line rounded-xl">
                     <p className="text-sm text-body">
-                      <strong>상여금 지급 방식:</strong> 연봉 {formatNumber(result.gross)}원을 {12 + parseInt(bonusPercentage)/100}회로 분할
+                      <strong>{t('charts.monthly.bonusMethodLabel')}</strong> {t('charts.monthly.bonusMethod', { salary: formatNumber(result.gross), n: 12 + parseInt(bonusPercentage)/100 })}
                     </p>
                     {bonusMonths.length > 0 && (
                       <p className="text-sm text-muted mt-1">
-                        상여금 지급월: {[...bonusMonths].sort((a, b) => a - b).join(', ')}월 
-                        (월 {(parseInt(bonusPercentage)/100/bonusMonths.length).toFixed(1)}회분씩)
+                        {t('charts.monthly.bonusMonths', { months: [...bonusMonths].sort((a, b) => a - b).join(', '), per: (parseInt(bonusPercentage)/100/bonusMonths.length).toFixed(1) })}
                       </p>
                     )}
                     <p className="text-xs text-muted mt-1">
-                      기본 월급: {formatNumber(Math.floor(result.gross / (12 + parseInt(bonusPercentage)/100)))}원/회
+                      {t('charts.monthly.basePay', { amount: formatNumber(Math.floor(result.gross / (12 + parseInt(bonusPercentage)/100))) })}
                     </p>
                   </div>
                   
                   {parseInt(performanceBonus) > 0 && (
                     <div className="p-3 bg-surface border border-amber-200/40 dark:border-amber-400/20 rounded-xl">
                       <p className="text-sm text-body">
-                        <strong>성과급:</strong> 연봉의 {performanceBonus}% = {formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100)))}원 (12월 지급)
+                        <strong>{t('charts.monthly.performanceLabel')}</strong> {t('charts.monthly.performance', { pct: performanceBonus, amount: formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100))) })}
                       </p>
                       <p className="text-xs text-muted mt-1">
-                        성과급은 회사 실적에 따라 변동될 수 있습니다
+                        {t('advanced.performance.note')}
                       </p>
                     </div>
                   )}
@@ -923,28 +915,22 @@ const SalaryCalculatorContent = () => {
               {/* 경력별 연봉 비교 */}
               <div className="bg-surface border border-line rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
-                  경력별 평균 연봉 비교
+                  {t('charts.career.title')}
                 </h3>
                 <ReactECharts option={{
                   tooltip: { trigger: 'axis', formatter: (params: { seriesName?: string; value?: number; marker?: string }[]) => {
                     if (!Array.isArray(params)) return '';
                     const label = (params[0] as { axisValue?: string }).axisValue || '';
-                    return `<strong>${label}</strong><br/>` + params.map((p: { seriesName?: string; value?: number; marker?: string }) => `${p.marker} ${p.seriesName}: ${formatNumber(p.value ?? 0)}원`).join('<br/>');
+                    return `<strong>${label}</strong><br/>` + params.map((p: { seriesName?: string; value?: number; marker?: string }) => `${p.marker} ${p.seriesName}: ${formatNumber(p.value ?? 0)}${t('input.currency')}`).join('<br/>');
                   }},
                   grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-                  xAxis: { type: 'category', data: careerAverageSalary.map(d => d.experience) },
-                  yAxis: { type: 'value', axisLabel: { formatter: (v: number) => `${(v / 100000000).toFixed(1)}억` } },
+                  xAxis: { type: 'category', data: careerAverageSalary.map(d => t(`charts.career.levels.${d.years}`)) },
+                  yAxis: { type: 'value', axisLabel: { formatter: (v: number) => t('charts.axisEok', { eok: (v / 100000000).toFixed(1), won: formatNumber(v) }) } },
                   series: [{
-                    name: '평균 연봉', type: 'bar', barWidth: '60%',
+                    name: t('charts.career.series'), type: 'bar', barWidth: '60%',
                     itemStyle: { borderRadius: [4, 4, 0, 0] },
                     data: careerAverageSalary.map(entry => {
-                      const isCurrentExperience =
-                        (experienceYears === '0' && entry.experience === '신입') ||
-                        (experienceYears === '1' && entry.experience === '1-2년') ||
-                        (experienceYears === '3' && entry.experience === '3-4년') ||
-                        (experienceYears === '5' && entry.experience === '5-7년') ||
-                        (experienceYears === '8' && entry.experience === '8-10년') ||
-                        (experienceYears === '10' && entry.experience === '10년+');
+                      const isCurrentExperience = experienceYears === entry.years;
                       return { value: entry.average, itemStyle: { color: isCurrentExperience ? '#10B981' : '#3B82F6' } };
                     })
                   }]
@@ -952,14 +938,7 @@ const SalaryCalculatorContent = () => {
                 {result && (
                   <div className="mt-4 p-4 bg-surface border border-line rounded-xl">
                     <p className="text-sm text-body">
-                      현재 연봉: {formatNumber(result.gross)}원 | 
-                      선택한 경력: {
-                        experienceYears === '0' ? '신입' :
-                        experienceYears === '1' ? '1-2년' :
-                        experienceYears === '3' ? '3-4년' :
-                        experienceYears === '5' ? '5-7년' :
-                        experienceYears === '8' ? '8-10년' : '10년+'
-                      }
+                      {t('charts.career.current', { salary: formatNumber(result.gross), level: t(`charts.career.levels.${experienceYears}`) })}
                     </p>
                   </div>
                 )}
@@ -968,7 +947,7 @@ const SalaryCalculatorContent = () => {
               {/* 세금 구성 차트 */}
               <div className="bg-surface border border-line rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-fg mb-6 flex items-center">
-                  공제항목별 구성
+                  {t('charts.tax.title')}
                 </h3>
                 <div className="grid lg:grid-cols-2 gap-8">
                   <ReactECharts option={{
@@ -991,7 +970,7 @@ const SalaryCalculatorContent = () => {
                         </div>
                         <div className="text-right">
                           <div className="font-medium text-fg">
-                            {formatNumber(item.value)}원
+                            {formatNumber(item.value)}{t('input.currency')}
                           </div>
                           <div className="text-xs text-gray-500">
                             {((item.value / result.deductions.total) * 100).toFixed(1)}%
@@ -1001,9 +980,9 @@ const SalaryCalculatorContent = () => {
                     ))}
                     <div className="pt-3 border-t border-line">
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-fg">총 공제액</span>
+                        <span className="font-semibold text-fg">{t('result.totalDeduction')}</span>
                         <span className="font-bold text-red-600 dark:text-red-400">
-                          {formatNumber(result.deductions.total)}원
+                          {formatNumber(result.deductions.total)}{t('input.currency')}
                         </span>
                       </div>
                     </div>
@@ -1178,40 +1157,40 @@ const SalaryCalculatorContent = () => {
               </thead>
               <tbody className="divide-y divide-white/20 dark:divide-white/[0.06]">
                 <tr className="hover:bg-soft transition-colors">
-                  <td className="px-6 py-4 text-sm text-fg">1,400만원 이하</td>
+                  <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.0.bracket')}</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-green-600">6%</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-500">-</td>
-                  <td className="px-6 py-4 text-sm text-sub">~3,000만원</td>
+                  <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.0.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
-                  <td className="px-6 py-4 text-sm text-fg">1,400~5,000만원</td>
+                  <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.1.bracket')}</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-blue-600">15%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">126만원</td>
-                  <td className="px-6 py-4 text-sm text-sub">3,000~7,000만원</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.1.deduction')}</td>
+                  <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.1.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
-                  <td className="px-6 py-4 text-sm text-fg">5,000~8,800만원</td>
+                  <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.2.bracket')}</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-purple-600">24%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">576만원</td>
-                  <td className="px-6 py-4 text-sm text-sub">7,000~1억원</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.2.deduction')}</td>
+                  <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.2.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
-                  <td className="px-6 py-4 text-sm text-fg">8,800만원~1.5억원</td>
+                  <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.3.bracket')}</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-orange-600">35%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">1,544만원</td>
-                  <td className="px-6 py-4 text-sm text-sub">1억~2억원</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.3.deduction')}</td>
+                  <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.3.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
-                  <td className="px-6 py-4 text-sm text-fg">1.5억~3억원</td>
+                  <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.4.bracket')}</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-red-600">38%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">1,994만원</td>
-                  <td className="px-6 py-4 text-sm text-sub">2억~4억원</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.4.deduction')}</td>
+                  <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.4.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
-                  <td className="px-6 py-4 text-sm text-fg">3억원 초과</td>
+                  <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.5.bracket')}</td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-red-700">40%+</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">다양</td>
-                  <td className="px-6 py-4 text-sm text-sub">4억원 이상</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.5.deduction')}</td>
+                  <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.5.range')}</td>
                 </tr>
               </tbody>
             </table>

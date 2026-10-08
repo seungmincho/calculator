@@ -357,6 +357,92 @@
     }
   },
   "salary": {
+    "months": [
+      "1월",
+      "2월",
+      "3월",
+      "4월",
+      "5월",
+      "6월",
+      "7월",
+      "8월",
+      "9월",
+      "10월",
+      "11월",
+      "12월"
+    ],
+    "pdfTitle": "연봉 계산 결과",
+    "advanced": {
+      "title": "고급 설정",
+      "summary": "(상여금 · 성과급 · 경력)",
+      "bonus": {
+        "title": "상여금 설정",
+        "infoTitle": "상여금은 연봉을 분할 지급하는 방식입니다",
+        "infoExample": "예: 연봉 3000만원 + 상여 800% = 3000만원을 20회(12+8)로 나누어 지급",
+        "ratioLabel": "상여금 비율",
+        "none": "상여금 없음 (연봉÷12개월)",
+        "option": "{pct}% (연봉÷{n}회)",
+        "monthsLabel": "상여금 지급 월"
+      },
+      "performance": {
+        "title": "성과급 설정",
+        "infoTitle": "성과급은 연봉에 추가로 지급되는 금액입니다",
+        "infoExample": "예: 연봉 3000만원 + 성과급 200% = 3000만원 + (3000만원의 200%)",
+        "ratioLabel": "성과급 비율",
+        "none": "성과급 없음",
+        "option": "{pct}% (연봉의 {pct}%)",
+        "note": "성과급은 회사 실적에 따라 변동될 수 있습니다"
+      },
+      "experience": {
+        "label": "경력 (연차)",
+        "options": {
+          "0": "신입",
+          "1": "1-2년",
+          "3": "3-4년",
+          "5": "5-7년",
+          "8": "8-10년",
+          "10": "10년 이상"
+        }
+      }
+    },
+    "charts": {
+      "title": "상세 분석 차트",
+      "show": "차트 보기",
+      "hide": "차트 숨기기",
+      "axisMan": "{man}만",
+      "axisEok": "{eok}억",
+      "monthly": {
+        "title": "월별 실수령액 변화 (상여금 포함)",
+        "series": {
+          "takeHome": "실수령액",
+          "bonus": "상여금",
+          "performance": "성과급"
+        },
+        "bonusMethodLabel": "상여금 지급 방식:",
+        "bonusMethod": "연봉 {salary}원을 {n}회로 분할",
+        "bonusMonths": "상여금 지급월: {months}월 (월 {per}회분씩)",
+        "basePay": "기본 월급: {amount}원/회",
+        "performanceLabel": "성과급:",
+        "performance": "연봉의 {pct}% = {amount}원 (12월 지급)"
+      },
+      "career": {
+        "title": "경력별 평균 연봉 비교",
+        "series": "평균 연봉",
+        "levels": {
+          "0": "신입",
+          "1": "1-2년",
+          "3": "3-4년",
+          "5": "5-7년",
+          "8": "8-10년",
+          "10": "10년+"
+        },
+        "current": "현재 연봉: {salary}원 | 선택한 경력: {level}"
+      },
+      "tax": {
+        "title": "공제항목별 구성",
+        "longTermCare": "장기요양"
+      }
+    },
     "viral": {
       "salaryMan": "{man}만원",
       "heroTop": "연봉 {salary} · 국세청 통계 기준 상위 {top}%",
@@ -383,6 +469,8 @@
     "title": "연봉 실수령액 계산기",
     "description": "연봉을 입력하시면 4대보험, 소득세, 지방소득세를 제외한 실제 받을 수 있는 금액을 계산해드립니다.",
     "input": {
+      "amountLabel": "{type} (세전)",
+      "people": "{n}명",
       "salaryType": "급여 유형",
       "annual": "연봉",
       "monthly": "월급",
@@ -619,6 +707,37 @@
       }
     },
     "taxBracket": {
+      "rows": {
+        "0": {
+          "bracket": "1,400만원 이하",
+          "range": "~3,000만원"
+        },
+        "1": {
+          "bracket": "1,400~5,000만원",
+          "deduction": "126만원",
+          "range": "3,000~7,000만원"
+        },
+        "2": {
+          "bracket": "5,000~8,800만원",
+          "deduction": "576만원",
+          "range": "7,000~1억원"
+        },
+        "3": {
+          "bracket": "8,800만원~1.5억원",
+          "deduction": "1,544만원",
+          "range": "1억~2억원"
+        },
+        "4": {
+          "bracket": "1.5억~3억원",
+          "deduction": "1,994만원",
+          "range": "2억~4억원"
+        },
+        "5": {
+          "bracket": "3억원 초과",
+          "deduction": "다양",
+          "range": "4억원 이상"
+        }
+      },
       "title": "소득세 누진세율 완전 분석",
       "description": "2026년 소득세 8단계 누진세율을 상세히 알아보고 내 연봉구간의 세율을 확인해보세요.",
       "headers": {
@@ -6057,6 +6176,11 @@
     "completedBox": "박스 완성! 추가 턴!"
   },
   "lotto": {
+    "a11y": {
+      "checkNumber": "내 번호 {n}번째",
+      "clearCheck": "입력한 번호 지우기",
+      "checkLatest": "최신 회차 확인"
+    },
     "title": "로또번호 생성기",
     "description": "로또 6/45 번호를 자동으로 생성하고 과거 당첨번호 분석으로 더 나은 번호 조합을 만들어보세요",
     "settings": {
@@ -6199,6 +6323,11 @@
     }
   },
   "ladder": {
+    "a11y": {
+      "participantAnimal": "참가자 {n} 동물",
+      "participantName": "참가자 {n} 이름",
+      "outcome": "결과 {n}"
+    },
     "title": "사다리 타기 게임",
     "description": "친구들과 함께 즐기는 온라인 사다리 타기 게임! 순서 정하기, 벌칙 정하기, 팀 나누기 등 다양한 상황에서 공정하게 결정하세요",
     "settings": {
@@ -6849,6 +6978,9 @@
     "placeholder": "내용을 입력하면 바로 QR 코드가 만들어져요"
   },
   "fuelCalculator": {
+    "a11y": {
+      "period": "조회 기간"
+    },
     "share": {
       "label": "{vehicle} · {fuel} · {km}km 정산 유류비",
       "won": "원",
@@ -57696,5 +57828,68 @@
       ]
     },
     "source": "근거: 조세특례제한법 제58조(2025.12.23 개정, 2026.1.1 이후 기부분)·시행령 제53조의2, 고향사랑 기부금에 관한 법률 제4·8·9조와 시행령 제5조, 고향사랑e음 안내. 2026년 10월 기준."
+  },
+  "decisionTools": {
+    "header": {
+      "title": "결정 도구",
+      "subtitle": "돌림판과 순서뽑기로 공정하게 결정하세요",
+      "rouletteTitle": "메뉴 룰렛",
+      "rouletteSubtitle": "돌림판을 돌려 오늘의 메뉴를 정하세요",
+      "orderTitle": "순서 정하기",
+      "orderSubtitle": "참가자를 입력하면 랜덤으로 순서를 뽑아드려요"
+    },
+    "tabs": {
+      "roulette": "돌림판",
+      "order": "순서뽑기"
+    },
+    "common": {
+      "removeItem": "{item} 삭제",
+      "copied": "복사됨"
+    },
+    "presets": {
+      "dinner": "저녁메뉴",
+      "lunch": "점심메뉴",
+      "korean": "한식",
+      "chinese": "중식",
+      "japanese": "일식",
+      "western": "양식",
+      "bunsik": "분식",
+      "lateNight": "야식배달",
+      "cafe": "카페",
+      "penalty": "벌칙"
+    },
+    "roulette": {
+      "itemsTitle": "항목 설정",
+      "presetsLabel": "프리셋",
+      "addPlaceholder": "항목 추가...",
+      "addInputLabel": "추가할 항목",
+      "addButton": "항목 추가",
+      "history": "뽑기 기록 ({count})",
+      "resultAnnounce": "결과: {result}",
+      "wheelLabel": "돌림판: {items}",
+      "spin": "🎡 돌리기!",
+      "spinning": "돌아가는 중...",
+      "result": "결과",
+      "saveImage": "이미지",
+      "saved": "저장됨",
+      "copy": "복사",
+      "imageHeading": "🎡 오늘의 선택",
+      "imageFooter": "toolhub.ai.kr · 메뉴 룰렛"
+    },
+    "order": {
+      "participantsTitle": "참가자 목록",
+      "addPlaceholder": "참가자 추가...",
+      "addInputLabel": "추가할 참가자",
+      "addButton": "참가자 추가",
+      "draw": "뽑기!",
+      "shuffling": "섞는 중...",
+      "reset": "초기화",
+      "resultTitle": "순서 결과",
+      "revealAll": "전체 공개",
+      "copyResult": "결과 복사",
+      "empty": "뽑기를 누르면 여기에 순서가 나와요",
+      "rank": "{rank}위",
+      "copyLine": "{rank}위: {name}"
+    }
   }
 }

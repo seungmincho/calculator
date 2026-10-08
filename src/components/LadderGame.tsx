@@ -924,10 +924,10 @@ export default function LadderGame() {
           <div className="space-y-6">
             {/* Presets */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="ladder-presets" className="block text-sm font-medium text-body mb-2">
                 {t('presets.title')}
               </label>
-              <div className="flex flex-wrap gap-2 pb-1">
+              <div className="flex flex-wrap gap-2 pb-1" role="group" aria-labelledby="ladder-presets">
                 {PRESETS.map(preset => (
                   <button
                     key={preset.id}
@@ -979,6 +979,7 @@ export default function LadderGame() {
                       <button
                         key={idx}
                         onClick={() => setSelectedParticipant(isSelected ? null : idx)}
+                        aria-pressed={isSelected}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all
                           ${isSelected
                             ? 'scale-105'
@@ -1035,6 +1036,7 @@ export default function LadderGame() {
                     <select
                       value={p.animal}
                       onChange={e => updateParticipantAnimal(i, e.target.value)}
+                      aria-label={t('a11y.participantAnimal', { n: i + 1 })}
                       className="w-12 px-1 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-center flex-shrink-0"
                     >
                       {animalIcons.map(a => <option key={a} value={a}>{a}</option>)}
@@ -1043,6 +1045,7 @@ export default function LadderGame() {
                       type="text"
                       value={p.name}
                       onChange={e => updateParticipant(i, e.target.value)}
+                      aria-label={t('a11y.participantName', { n: i + 1 })}
                       className="flex-1 min-w-0 px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                       placeholder={`참가자 ${i + 1}`}
                     />
@@ -1071,6 +1074,7 @@ export default function LadderGame() {
                     type="text"
                     value={o}
                     onChange={e => updateOutcome(i, e.target.value)}
+                    aria-label={t('a11y.outcome', { n: i + 1 })}
                     className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                     placeholder={`결과 ${i + 1}`}
                   />
@@ -1080,10 +1084,11 @@ export default function LadderGame() {
 
             {/* Complexity */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label htmlFor="ladder-complexity" className="block text-sm font-medium text-body mb-2">
                 {t('settings.complexity')}
               </label>
               <select
+                id="ladder-complexity"
                 value={ladderComplexity}
                 onChange={e => { const v = parseInt(e.target.value); setLadderComplexity(v); updateURL({ complexity: v.toString() }) }}
                 className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
@@ -1097,10 +1102,11 @@ export default function LadderGame() {
 
             {/* Speed */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label htmlFor="ladder-speed" className="block text-sm font-medium text-body mb-2">
                 {t('settings.speed')}
               </label>
               <select
+                id="ladder-speed"
                 value={animationSpeed}
                 onChange={e => { const v = parseInt(e.target.value); setAnimationSpeed(v); updateURL({ speed: v.toString() }) }}
                 className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
@@ -1113,12 +1119,13 @@ export default function LadderGame() {
 
             {/* Feature 4 & 5: Mode toggles */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="ladder-mode" className="block text-sm font-medium text-body mb-2">
                 게임 모드
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3" role="group" aria-labelledby="ladder-mode">
                 <button
                   onClick={() => setBlindMode(prev => !prev)}
+                  aria-pressed={blindMode}
                   disabled={isPlaying}
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     blindMode
@@ -1131,6 +1138,7 @@ export default function LadderGame() {
                 </button>
                 <button
                   onClick={() => setRevealOneByOne(prev => !prev)}
+                  aria-pressed={revealOneByOne}
                   disabled={isPlaying}
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     revealOneByOne
@@ -1528,7 +1536,7 @@ export default function LadderGame() {
                 {t('result.title')}
               </h3>
 
-              <div className="space-y-2.5 mb-6">
+              <div className="space-y-2.5 mb-6" aria-live="polite">
                 {Object.entries(results).map(([name, outcome]) => {
                   const color = COLORS[participants.findIndex(p => p.name === name) % COLORS.length]
                   const revealed = revealedResults.has(name)
@@ -1644,6 +1652,7 @@ export default function LadderGame() {
             <div className={`${glass.card} ${glass.cardInset} overflow-hidden`}>
               <button
                 onClick={() => setShowRoundHistory(prev => !prev)}
+                aria-expanded={showRoundHistory}
                 className="w-full flex items-center justify-between p-4 hover:bg-soft transition-colors"
               >
                 <span className="text-sm font-bold text-fg flex items-center gap-2">

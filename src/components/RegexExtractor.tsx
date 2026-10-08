@@ -517,13 +517,14 @@ export default function RegexExtractor() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <Wand2 className="w-6 h-6 text-green-600" />
-            <h2 className="text-xl font-bold text-fg">
+            <h2 id="rx-smart" className="text-xl font-bold text-fg">
               {t('smartMode.title')}
             </h2>
           </div>
           <div className="flex space-x-2">
             <button
               onClick={() => setShowGuide(!showGuide)}
+              aria-expanded={showGuide}
               className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
             >
               <BookOpen className="w-4 h-4" />
@@ -531,6 +532,7 @@ export default function RegexExtractor() {
             </button>
             <button
               onClick={() => setShowPatternBuilder(!showPatternBuilder)}
+              aria-expanded={showPatternBuilder}
               className="flex items-center space-x-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
             >
               <Target className="w-4 h-4" />
@@ -544,10 +546,11 @@ export default function RegexExtractor() {
         </p>
 
         {/* 스마트 모드 선택 */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4" role="group" aria-labelledby="rx-smart">
           {smartModes.map((mode) => (
             <button
               key={mode.id}
+              aria-pressed={smartMode === mode.id}
               onClick={() => {
                 setSmartMode(mode.id)
                 setUserDescription('')
@@ -575,6 +578,7 @@ export default function RegexExtractor() {
               type="text"
               value={userDescription}
               onChange={(e) => setUserDescription(e.target.value)}
+              aria-label={smartModes.find(m => m.id === smartMode)?.title}
               placeholder={smartModes.find(m => m.id === smartMode)?.placeholder}
               className="flex-1 px-4 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               disabled={!!smartModes.find(m => m.id === smartMode)?.noInput}
@@ -600,6 +604,7 @@ export default function RegexExtractor() {
             <button
               onClick={() => setShowGuide(false)}
               className="p-1 text-gray-400 hover:text-gray-600"
+              aria-label={tCommon('close')}
             >
               <EyeOff className="w-5 h-5" />
             </button>
@@ -659,6 +664,7 @@ export default function RegexExtractor() {
             <button
               onClick={() => setShowPatternBuilder(false)}
               className="p-1 text-gray-400 hover:text-gray-600"
+              aria-label={tCommon('close')}
             >
               <EyeOff className="w-5 h-5" />
             </button>
@@ -701,11 +707,11 @@ export default function RegexExtractor() {
         <div className="space-y-6">
           {/* 작업 유형 선택 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <h2 className="text-xl font-bold text-fg mb-4 flex items-center">
+            <h2 id="rx-op" className="text-xl font-bold text-fg mb-4 flex items-center">
               {t('operation.title')}
             </h2>
             
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-3" role="group" aria-labelledby="rx-op">
               {[
                 { key: 'grep', icon: Filter, label: t('operation.grep'), desc: t('operation.grepDesc') },
                 { key: 'replace', icon: Replace, label: t('operation.replace'), desc: t('operation.replaceDesc') },
@@ -713,6 +719,7 @@ export default function RegexExtractor() {
               ].map(({ key, icon: Icon, label, desc }) => (
                 <button
                   key={key}
+                  aria-pressed={operation === key}
                   onClick={() => {
                     setOperation(key as 'grep' | 'replace' | 'extract')
                     updateURL({ operation: key })
@@ -739,6 +746,7 @@ export default function RegexExtractor() {
               </h3>
               <button
                 onClick={() => setShowPresets(!showPresets)}
+                aria-expanded={showPresets}
                 className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
               >
                 <Eye className="w-4 h-4" />
@@ -755,6 +763,8 @@ export default function RegexExtractor() {
                   updateURL({ pattern: encodeURIComponent(e.target.value) })
                 }}
                 placeholder={t('pattern.placeholder')}
+                aria-label={t('pattern.title')}
+                aria-invalid={!isValid}
                 className={`w-full px-4 py-3 border rounded-lg font-mono text-sm focus:ring-2 focus:border-transparent dark:bg-gray-700 dark:text-white ${
                   isValid 
                     ? 'border-line-strong focus:ring-blue-500' 
@@ -793,10 +803,10 @@ export default function RegexExtractor() {
 
             {/* 플래그 */}
             <div className="mt-4">
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="rx-flags" className="block text-sm font-medium text-body mb-2">
                 {t('flags.title')}
               </label>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2" role="group" aria-labelledby="rx-flags">
                 {[
                   { flag: 'g', label: 'Global', desc: t('flags.global') },
                   { flag: 'i', label: 'Ignore Case', desc: t('flags.ignoreCase') },
@@ -806,6 +816,7 @@ export default function RegexExtractor() {
                   <button
                     key={flag}
                     onClick={() => toggleFlag(flag)}
+                    aria-pressed={flags.includes(flag)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       flags.includes(flag)
                         ? 'bg-blue-500 text-white'
@@ -822,10 +833,11 @@ export default function RegexExtractor() {
             {/* 교체 문자열 (replace 모드일 때만) */}
             {operation === 'replace' && (
               <div className="mt-4">
-                <label className="block text-sm font-medium text-body mb-2">
+                <label htmlFor="rx-replacement" className="block text-sm font-medium text-body mb-2">
                   {t('replacement.title')}
                 </label>
                 <input
+                  id="rx-replacement"
                   type="text"
                   value={replacement}
                   onChange={(e) => setReplacement(e.target.value)}
@@ -843,23 +855,25 @@ export default function RegexExtractor() {
           {showPresets && (
             <div className={`${glassCard} ${glassInset} p-6`}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-fg">
+                <h3 id="rx-presets" className="text-lg font-semibold text-fg">
                   {t('presets.title')}
                 </h3>
                 <button
                   onClick={() => setShowPresets(false)}
                   className="p-1 text-gray-400 hover:text-gray-600"
+                  aria-label={tCommon('close')}
                 >
                   <EyeOff className="w-5 h-5" />
                 </button>
               </div>
 
               {/* 카테고리 선택 */}
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4" role="group" aria-labelledby="rx-presets">
                 {['common', 'email', 'web', 'numbers', 'dates', 'code', 'hash'].map(category => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
+                    aria-pressed={selectedCategory === category}
                     className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-sm transition-colors ${
                       selectedCategory === category
                         ? 'bg-blue-500 text-white'
@@ -931,6 +945,7 @@ export default function RegexExtractor() {
                 updateURL({ input: encodeURIComponent(e.target.value) })
               }}
               placeholder={t('input.placeholder')}
+              aria-label={t('input.title')}
               rows={12}
               className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
             />
@@ -964,7 +979,7 @@ export default function RegexExtractor() {
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-3 bg-subtle rounded-lg">
+                <div className="text-center p-3 bg-subtle rounded-lg" aria-live="polite" aria-atomic="true">
                   <div className="text-2xl font-bold text-blue-600">{matches.length}</div>
                   <div className="text-sm text-sub">{t('results.matches')}</div>
                 </div>
@@ -1041,6 +1056,7 @@ export default function RegexExtractor() {
               value={outputText}
               readOnly
               placeholder={t('results.placeholder')}
+              aria-label={t('results.title')}
               rows={15}
               className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm bg-subtle dark:text-white resize-none"
             />

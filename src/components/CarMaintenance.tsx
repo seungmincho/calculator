@@ -247,9 +247,9 @@ export default function CarMaintenance() {
   const label = 'block text-sm font-medium text-body mb-1'
   const unit = 'absolute right-3 top-1/2 -translate-y-1/2 text-sm text-faint'
 
-  const numField = (value: number, set: (n: number) => void, suffix: string, max = 1e9) => (
+  const numField = (id: string, value: number, set: (n: number) => void, suffix: string, max = 1e9) => (
     <div className="relative">
-      <input type="number" inputMode="numeric" min={0} value={value || ''} onChange={(e) => set(clampNum(e.target.value, max))}
+      <input id={id} type="number" inputMode="numeric" min={0} value={value || ''} onChange={(e) => set(clampNum(e.target.value, max))}
         className="ui-field w-full px-4 py-3 pr-16" />
       <span className={unit}>{suffix}</span>
     </div>
@@ -277,10 +277,10 @@ export default function CarMaintenance() {
             <div className="ui-card p-6 space-y-4">
               {saved.length > 0 && (
                 <div>
-                  <p className={label}>{t('m.myCars')}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p id="cm-mycars" className={label}>{t('m.myCars')}</p>
+                  <div className="flex flex-wrap gap-2" role="group" aria-labelledby="cm-mycars">
                     {saved.map((c, i) => (
-                      <button key={c.id} onClick={() => { setCar(c); setEditing(null) }} className={seg(c.id === car.id)}>{carLabel(c, i)}</button>
+                      <button key={c.id} onClick={() => { setCar(c); setEditing(null) }} aria-pressed={c.id === car.id} className={seg(c.id === car.id)}>{carLabel(c, i)}</button>
                     ))}
                   </div>
                 </div>
@@ -291,31 +291,31 @@ export default function CarMaintenance() {
                   placeholder={t('m.carNamePlaceholder')} className="ui-field w-full px-4 py-3" />
               </div>
               <div>
-                <p className={label}>{t('fuelType')}</p>
-                <div className="flex flex-wrap gap-2">
+                <p id="cm-sfuel" className={label}>{t('fuelType')}</p>
+                <div className="flex flex-wrap gap-2" role="group" aria-labelledby="cm-sfuel">
                   {FUELS.map((f) => (
-                    <button key={f} onClick={() => patch({ fuel: f })} className={seg(car.fuel === f)}>{t(`fuelTypes.${f}`)}</button>
+                    <button key={f} onClick={() => patch({ fuel: f })} aria-pressed={car.fuel === f} className={seg(car.fuel === f)}>{t(`fuelTypes.${f}`)}</button>
                   ))}
                 </div>
               </div>
               <div>
-                <p className={label}>{t('m.condition')}</p>
-                <div className="flex gap-2">
-                  <button onClick={() => patch({ severe: false })} className={seg(!car.severe)}>{t('m.normal')}</button>
-                  <button onClick={() => patch({ severe: true })} className={seg(car.severe)}>{t('m.severe')}</button>
+                <p id="cm-cond" className={label}>{t('m.condition')}</p>
+                <div className="flex gap-2" role="group" aria-labelledby="cm-cond">
+                  <button onClick={() => patch({ severe: false })} aria-pressed={!car.severe} className={seg(!car.severe)}>{t('m.normal')}</button>
+                  <button onClick={() => patch({ severe: true })} aria-pressed={car.severe} className={seg(car.severe)}>{t('m.severe')}</button>
                 </div>
                 <p className="bg-subtle rounded-xl p-3 mt-2 text-xs text-sub leading-relaxed">{t('m.severeHelp')}</p>
               </div>
               <div>
-                <label className={label}>{t('m.currentKm')}</label>
-                {numField(car.km, (n) => patch({ km: n }), 'km', 2000000)}
+                <label htmlFor="cm-km" className={label}>{t('m.currentKm')}</label>
+                {numField('cm-km', car.km, (n) => patch({ km: n }), 'km', 2000000)}
               </div>
               <div>
-                <label className={label}>{t('m.monthlyKm')}</label>
-                {numField(car.monthlyKm, (n) => patch({ monthlyKm: n }), 'km', 20000)}
+                <label htmlFor="cm-mkm" className={label}>{t('m.monthlyKm')}</label>
+                {numField('cm-mkm', car.monthlyKm, (n) => patch({ monthlyKm: n }), 'km', 20000)}
                 <div className="flex gap-2 mt-2 flex-wrap">
                   {[500, 1000, 1500, 2500].map((km) => (
-                    <button key={km} onClick={() => patch({ monthlyKm: km })} className={`px-3 py-1 text-xs rounded-full transition-colors ${car.monthlyKm === km ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}>
+                    <button key={km} onClick={() => patch({ monthlyKm: km })} aria-pressed={car.monthlyKm === km} className={`px-3 py-1 text-xs rounded-full transition-colors ${car.monthlyKm === km ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}>
                       {fmt(km)}km
                     </button>
                   ))}
@@ -345,7 +345,7 @@ export default function CarMaintenance() {
           <div className="lg:col-span-2 space-y-6">
             <div className="ui-hero p-6">
               <p className="text-sm text-white/70">{next?.overdue ? t('m.heroOverdueLabel') : t('m.heroLabel')}</p>
-              <p className="text-3xl font-bold mt-1 tabular-nums">{heroHeadline}</p>
+              <p className="text-3xl font-bold mt-1 tabular-nums" aria-live="polite">{heroHeadline}</p>
               {heroSub && <p className="text-sm text-white/80 mt-1 tabular-nums">{heroSub}</p>}
               <div className="grid grid-cols-2 gap-3 mt-5 text-sm">
                 <div>
@@ -418,14 +418,14 @@ export default function CarMaintenance() {
                       {open && (
                         <div className="bg-subtle rounded-xl p-4 mt-3 grid sm:grid-cols-[1fr_1fr_auto] gap-3 items-end">
                           <div>
-                            <label className="block text-xs text-sub mb-1">{t('m.lastKm')}</label>
-                            <input type="number" inputMode="numeric" min={0} max={car.km} value={rec?.km ?? ''} placeholder={fmt(d.lastKm)}
+                            <label htmlFor={`cm-lkm-${d.id}`} className="block text-xs text-sub mb-1">{t('m.lastKm')}</label>
+                            <input id={`cm-lkm-${d.id}`} type="number" inputMode="numeric" min={0} max={car.km} value={rec?.km ?? ''} placeholder={fmt(d.lastKm)}
                               onChange={(e) => setRecord(d.id, { ...rec, km: e.target.value === '' ? undefined : clampNum(e.target.value, car.km) })}
                               className="ui-field w-full px-3 py-2" />
                           </div>
                           <div>
-                            <label className="block text-xs text-sub mb-1">{t('m.lastDate')}</label>
-                            <input type="date" max={today} value={rec?.date ?? ''}
+                            <label htmlFor={`cm-ldate-${d.id}`} className="block text-xs text-sub mb-1">{t('m.lastDate')}</label>
+                            <input id={`cm-ldate-${d.id}`} type="date" max={today} value={rec?.date ?? ''}
                               onChange={(e) => setRecord(d.id, { ...rec, date: e.target.value || undefined })}
                               className="ui-field w-full px-3 py-2" />
                           </div>
@@ -478,15 +478,15 @@ export default function CarMaintenance() {
                 </select>
               </div>
               <div>
-                <p className={label}>{t('fuelType')}</p>
-                <div className="flex flex-wrap gap-2">
-                  {FUELS.map((f) => <button key={f} onClick={() => handleFuelTypeChange(f)} className={seg(fuelType === f)}>{t(`fuelTypes.${f}`)}</button>)}
+                <p id="cm-cfuel" className={label}>{t('fuelType')}</p>
+                <div className="flex flex-wrap gap-2" role="group" aria-labelledby="cm-cfuel">
+                  {FUELS.map((f) => <button key={f} onClick={() => handleFuelTypeChange(f)} aria-pressed={fuelType === f} className={seg(fuelType === f)}>{t(`fuelTypes.${f}`)}</button>)}
                 </div>
               </div>
               {fuelType !== 'electric' && (
                 <div>
-                  <label className={label}>{t('displacement')}</label>
-                  {numField(displacement, setDisplacement, 'cc', 8000)}
+                  <label htmlFor="cm-cc" className={label}>{t('displacement')}</label>
+                  {numField('cm-cc', displacement, setDisplacement, 'cc', 8000)}
                 </div>
               )}
               <div>
@@ -515,37 +515,37 @@ export default function CarMaintenance() {
             <div className="ui-card p-6 space-y-4">
               <h2 className="text-lg font-semibold text-fg">{t('drivingCosts')}</h2>
               <div>
-                <label className={label}>{t('annualDistance')}</label>
-                {numField(annualKm, setAnnualKm, 'km', 200000)}
+                <label htmlFor="cm-ak" className={label}>{t('annualDistance')}</label>
+                {numField('cm-ak', annualKm, setAnnualKm, 'km', 200000)}
                 <div className="flex gap-2 mt-2 flex-wrap">
                   {[10000, 15000, 20000, 30000].map((km) => (
-                    <button key={km} onClick={() => setAnnualKm(km)} className={`px-3 py-1 text-xs rounded-full transition-colors ${annualKm === km ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}>
+                    <button key={km} onClick={() => setAnnualKm(km)} aria-pressed={annualKm === km} className={`px-3 py-1 text-xs rounded-full transition-colors ${annualKm === km ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}>
                       {fmt(km)}km
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <label className={label}>{t('fuelPrice')} ({fuelType === 'electric' ? t('wonPerKwh') : t('wonPerLiter')})</label>
-                {numField(fuelPrice, setFuelPrice, t('won'), 10000)}
+                <label htmlFor="cm-fp" className={label}>{t('fuelPrice')} ({fuelType === 'electric' ? t('wonPerKwh') : t('wonPerLiter')})</label>
+                {numField('cm-fp', fuelPrice, setFuelPrice, t('won'), 10000)}
               </div>
               <div>
-                <label className={label}>{t('monthlyParking')}</label>
-                {numField(monthlyParking, setMonthlyParking, t('won'))}
+                <label htmlFor="cm-pk" className={label}>{t('monthlyParking')}</label>
+                {numField('cm-pk', monthlyParking, setMonthlyParking, t('won'))}
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={label}>{t('carWashFrequency')}</label>
-                  {numField(carWashFrequency, setCarWashFrequency, t('timesPerMonth'), 30)}
+                  <label htmlFor="cm-wf" className={label}>{t('carWashFrequency')}</label>
+                  {numField('cm-wf', carWashFrequency, setCarWashFrequency, t('timesPerMonth'), 30)}
                 </div>
                 <div>
-                  <label className={label}>{t('carWashCost')}</label>
-                  {numField(carWashCost, setCarWashCost, t('won'))}
+                  <label htmlFor="cm-wc" className={label}>{t('carWashCost')}</label>
+                  {numField('cm-wc', carWashCost, setCarWashCost, t('won'))}
                 </div>
               </div>
               <div>
-                <label className={label}>{t('monthlyToll')}</label>
-                {numField(monthlyToll, setMonthlyToll, t('won'))}
+                <label htmlFor="cm-tl" className={label}>{t('monthlyToll')}</label>
+                {numField('cm-tl', monthlyToll, setMonthlyToll, t('won'))}
               </div>
               <button onClick={handleReset} className="ui-btn-soft w-full px-4 py-2"><RotateCcw className="w-4 h-4" />{t('reset')}</button>
             </div>
@@ -555,7 +555,7 @@ export default function CarMaintenance() {
           <div className="lg:col-span-2 space-y-6">
             <div id="car-maintenance-result" className="ui-hero p-6 scroll-mt-20">
               <p className="text-sm text-white/70">{t('annualTotal')}</p>
-              <p className="text-3xl font-bold mt-1 tabular-nums">{won(annualTotal)}</p>
+              <p className="text-3xl font-bold mt-1 tabular-nums" aria-live="polite">{won(annualTotal)}</p>
               <div className="grid grid-cols-2 gap-3 mt-5 text-sm">
                 <div><p className="text-white/70">{t('monthlyAverage')}</p><p className="font-semibold tabular-nums">{won(monthlyTotal)}</p></div>
                 <div><p className="text-white/70">{t('costPerKm')}</p><p className="font-semibold tabular-nums">{fmt(costPerKm)}{t('wonPerKm')}</p></div>

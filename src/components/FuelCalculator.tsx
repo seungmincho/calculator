@@ -802,6 +802,7 @@ const FuelCalculator = () => {
       <div className="flex border-b border-line">
         <button
           onClick={() => setActiveTab('calculator')}
+          aria-pressed={activeTab === 'calculator'}
           className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'calculator'
               ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
@@ -815,6 +816,7 @@ const FuelCalculator = () => {
         </button>
         <button
           onClick={() => setActiveTab('drivingLog')}
+          aria-pressed={activeTab === 'drivingLog'}
           className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'drivingLog'
               ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
@@ -891,10 +893,11 @@ const FuelCalculator = () => {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-body mb-2">
+                  <label htmlFor="fuel-vehicle" className="block text-sm font-medium text-body mb-2">
                     {t('input.vehicleType')}
                   </label>
                   <select
+                    id="fuel-vehicle"
                     value={vehicleType}
                     onChange={(e) => setVehicleType(e.target.value)}
                     className="w-full ui-field px-3 py-2"
@@ -908,10 +911,11 @@ const FuelCalculator = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-body mb-2">
+                  <label htmlFor="fuel-type" className="block text-sm font-medium text-body mb-2">
                     {t('input.fuelType')}
                   </label>
                   <select
+                    id="fuel-type"
                     value={fuelType}
                     onChange={(e) => setFuelType(e.target.value as FuelType)}
                     className="w-full ui-field px-3 py-2"
@@ -939,6 +943,7 @@ const FuelCalculator = () => {
                   {useCustomEfficiency && (
                     <input
                       type="number"
+                      aria-label={t('input.customEfficiency')}
                       value={customEfficiency || ''}
                       onChange={(e) => setCustomEfficiency(Number(e.target.value))}
                       placeholder="12.5"
@@ -1021,10 +1026,11 @@ const FuelCalculator = () => {
               <div className="space-y-3">
                 {/* 지역 선택 */}
                 <div>
-                  <label className="block text-xs font-medium text-sub mb-1">
+                  <label htmlFor="fuel-sido" className="block text-xs font-medium text-sub mb-1">
                     {t('region.label')}
                   </label>
                   <select
+                    id="fuel-sido"
                     value={selectedSido}
                     onChange={(e) => {
                       const sido = e.target.value
@@ -1142,11 +1148,12 @@ const FuelCalculator = () => {
               </h2>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-xs font-medium text-sub mb-1">
+                  <label htmlFor="fuel-depr" className="block text-xs font-medium text-sub mb-1">
                     {t('depreciation.multiplier')}
                   </label>
                   <div className="flex items-center gap-3">
                     <input
+                      id="fuel-depr"
                       type="range"
                       min="1.0"
                       max="1.5"
@@ -1363,10 +1370,11 @@ const FuelCalculator = () => {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
+                <label htmlFor="fuel-log-date" className="block text-xs font-medium text-sub mb-1">
                   {t('drivingLog.date')}
                 </label>
                 <input
+                  id="fuel-log-date"
                   type="date"
                   value={newLogEntry.date}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, date: e.target.value }))}
@@ -1374,10 +1382,11 @@ const FuelCalculator = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
+                <label htmlFor="fuel-log-distance" className="block text-xs font-medium text-sub mb-1">
                   {t('drivingLog.distance')}
                 </label>
                 <input
+                  id="fuel-log-distance"
                   type="number"
                   value={newLogEntry.distance || ''}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, distance: Number(e.target.value) }))}
@@ -1388,10 +1397,11 @@ const FuelCalculator = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
+                <label htmlFor="fuel-log-toll" className="block text-xs font-medium text-sub mb-1">
                   {t('drivingLog.tollFee')}
                 </label>
                 <input
+                  id="fuel-log-toll"
                   type="number"
                   value={newLogEntry.tollFee || ''}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, tollFee: Number(e.target.value) }))}
@@ -1402,10 +1412,11 @@ const FuelCalculator = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
+                <label htmlFor="fuel-log-parking" className="block text-xs font-medium text-sub mb-1">
                   {t('drivingLog.parkingFee')}
                 </label>
                 <input
+                  id="fuel-log-parking"
                   type="number"
                   value={newLogEntry.parkingFee || ''}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, parkingFee: Number(e.target.value) }))}
@@ -1416,10 +1427,11 @@ const FuelCalculator = () => {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-sub mb-1">
+                <label htmlFor="fuel-log-memo" className="block text-xs font-medium text-sub mb-1">
                   {t('drivingLog.routeMemo')}
                 </label>
                 <input
+                  id="fuel-log-memo"
                   type="text"
                   value={newLogEntry.memo}
                   onChange={(e) => setNewLogEntry(prev => ({ ...prev, memo: e.target.value }))}
@@ -1460,7 +1472,7 @@ const FuelCalculator = () => {
                 {t('drivingLog.title')}
               </h2>
               {drivingLogs.length > 0 && (
-                <div className="grid grid-cols-3 gap-1 p-1 bg-soft rounded-xl" role="group">
+                <div className="grid grid-cols-3 gap-1 p-1 bg-soft rounded-xl" role="group" aria-label={t('a11y.period')}>
                   {(['thisMonth', 'last3Months', 'all'] as const).map(f => (
                     <button
                       key={f}

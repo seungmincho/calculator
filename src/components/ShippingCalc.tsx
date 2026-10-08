@@ -162,10 +162,11 @@ export default function ShippingCalc() {
 
             {/* Weight */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label htmlFor="sc-weight" className="block text-sm font-medium text-body mb-2">
                 {t('weight')}
               </label>
               <input
+                id="sc-weight"
                 type="number" step="0.1" min="0"
                 value={weight}
                 onChange={e => { setWeight(e.target.value); setShowSaveButton(true) }}
@@ -176,10 +177,10 @@ export default function ShippingCalc() {
 
             {/* Box Dimensions */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="sc-box" className="block text-sm font-medium text-body mb-2">
                 {t('boxSize')}
               </label>
-              <div className="grid grid-cols-3 gap-1.5 mb-3">
+              <div className="grid grid-cols-3 gap-1.5 mb-3" role="group" aria-labelledby="sc-box">
                 {BOX_PRESETS.map(b => {
                   const active = width === String(b.w) && height === String(b.h) && depth === String(b.d)
                   return (
@@ -201,8 +202,9 @@ export default function ShippingCalc() {
               <div className="space-y-3">
                 {([['width', t('width')], ['height', t('height')], ['depth', t('depth')]] as [string, string][]).map(([field, label]) => (
                   <div key={field}>
-                    <label className="block text-xs text-muted mb-1">{label}</label>
+                    <label htmlFor={`sc-${field}`} className="block text-xs text-muted mb-1">{label}</label>
                     <input
+                      id={`sc-${field}`}
                       type="number" step="0.1" min="0"
                       value={field === 'width' ? width : field === 'height' ? height : depth}
                       onChange={e => {
@@ -225,14 +227,15 @@ export default function ShippingCalc() {
 
             {/* Destination */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="sc-dest" className="block text-sm font-medium text-body mb-2">
                 {t('destination')}
               </label>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-3 gap-1.5" role="group" aria-labelledby="sc-dest">
                 {(['mainland', 'jeju', 'island'] as DestinationType[]).map(dest => [dest, t(`destinations.${dest}`)] as const).map(([dest, label]) => (
                   <button
                     key={dest}
                     onClick={() => { setDestination(dest); setShowSaveButton(true) }}
+                    aria-pressed={destination === dest}
                     className={`py-2 rounded-lg text-xs font-medium transition-colors ${
                       destination === dest
                         ? 'bg-primary hover:bg-blue-700 text-white'
@@ -247,12 +250,13 @@ export default function ShippingCalc() {
 
             {/* Carrier Category */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label id="sc-carrier" className="block text-sm font-medium text-body mb-2">
                 {t('carrierType')}
               </label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="sc-carrier">
                 <button
                   onClick={() => { setCarrierCategory('standard'); setShowSaveButton(true) }}
+                  aria-pressed={carrierCategory === 'standard'}
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'standard'
                       ? 'bg-primary hover:bg-blue-700 text-white'
@@ -264,6 +268,7 @@ export default function ShippingCalc() {
                 </button>
                 <button
                   onClick={() => { setCarrierCategory('cvs'); setShowSaveButton(true) }}
+                  aria-pressed={carrierCategory === 'cvs'}
                   className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
                     carrierCategory === 'cvs'
                       ? 'bg-primary hover:bg-blue-700 text-white'
@@ -410,6 +415,7 @@ export default function ShippingCalc() {
                               onClick={() => copyToClipboard(price!.toString(), carrier.id)}
                               className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                               title={t('result.copy')}
+                              aria-label={`${cd(carrier.id, 'name')} ${cd(carrier.id, 'service')} ${t('result.copy')}`}
                             >
                               {copiedId === carrier.id
                                 ? <Check className="w-3.5 h-3.5 text-green-600" />
