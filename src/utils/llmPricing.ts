@@ -32,6 +32,8 @@ export interface LlmModel {
   batchCachedFull?: boolean
   /** 이 날짜까지 프로모션 가격 */
   promoUntil?: string
+  /** promoUntil 다음 날부터 적용되는 정가 */
+  regular?: Price
   preview?: boolean
 }
 
@@ -58,7 +60,7 @@ export const MODELS: LlmModel[] = [
   { id: 'gpt-6.1-sol', name: 'GPT-6.1 Sol', vendor: 'openai', ...OAI_CTX, price: { input: 2, output: 10, cached: 0.1, cacheWrite: 2.5 }, long: { over: 272_000, input: 4, output: 15, cached: 0.2, cacheWrite: 5 } },
   { id: 'gpt-6-luna', name: 'GPT-6 Luna', vendor: 'openai', ...OAI_CTX, price: { input: 0.1, output: 0.5, cached: 0.01, cacheWrite: 0.125 }, long: { over: 272_000, input: 0.2, output: 0.75, cached: 0.02, cacheWrite: 0.25 } },
   // Google — 유료 Standard 단가. 명시적 캐시는 저장료(시간당) 별도
-  { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash', vendor: 'google', ...GEM_CTX, promoUntil: '2026-12-31', price: { input: 0.75, output: 3.75, cached: 0.075 } },
+  { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash', vendor: 'google', ...GEM_CTX, promoUntil: '2026-12-31', price: { input: 0.75, output: 3.75, cached: 0.075 }, regular: { input: 1.5, output: 7.5, cached: 0.15 } },
   { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash', vendor: 'google', ...GEM_CTX, price: { input: 1.5, output: 9, cached: 0.15 } },
   { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash-Lite', vendor: 'google', ...GEM_CTX, price: { input: 0.3, output: 2.5, cached: 0.03 } },
   { id: 'gemini-3.1-pro-preview', name: 'Gemini 3.1 Pro', vendor: 'google', ...GEM_CTX, preview: true, batchCachedFull: true, price: { input: 2, output: 12, cached: 0.2 }, long: { over: 200_000, input: 4, output: 18, cached: 0.4 } },
@@ -66,6 +68,12 @@ export const MODELS: LlmModel[] = [
   { id: 'deepseek-flash', name: 'DeepSeek V4.1 Flash', vendor: 'deepseek', ctx: M, maxOutput: 384_000, tok: 'deepseek', batch: null, price: { input: 0.3, output: 1.2, cached: 0.006 } },
   { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', vendor: 'deepseek', ctx: M, maxOutput: 384_000, tok: 'deepseek', batch: null, price: { input: 1.32, output: 3.96, cached: 0.044 } },
 ]
+
+/** today(KST 'YYYY-MM-DD')에 적용되는 단가표: 프로모션이 끝난 모델은 정가로 바꾸고 promoUntil을 지운다 */
+export function modelsOn(today: string): LlmModel[] {
+  return MODELS.map((m) => (m.promoUntil && m.regular && today > m.promoUntil ? { ...m, price: m.regular, promoUntil: undefined } : m))
+}
+export const kstToday = () => new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 10)
 
 /** 기본 환율: Frankfurter(ECB 기준환율) 2026-09-30 */
 export const FX_DEFAULT = { rate: 1355, date: '2026-09-30' }

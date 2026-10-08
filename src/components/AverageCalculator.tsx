@@ -15,7 +15,7 @@
  * - harmonic, harmonicDesc, harmonicError
  * - statsTitle
  * - statSum, statCount, statMax, statMin, statRange
- * - statVariance, statStdDev, statMedian
+ * - statVariance, statStdDev, statSampleVariance, statSampleStdDev, statMedian
  * - resultLabel
  * - guide.title
  * - guide.arithmetic.title, guide.arithmetic.items (array)
@@ -107,11 +107,11 @@ export default function AverageCalculator() {
     }
   }, [])
 
-  // Parse numbers from textarea (comma or newline separated)
+  // 쉼표·공백·탭·줄바꿈 구분 (스프레드시트 한 행을 붙여 넣어도 됨). 음수·소수는 Number로 그대로 파싱
   const numbers = useMemo<number[]>(() => {
     if (isWeightedMode) return []
     const parts = inputText
-      .split(/[,\n]+/)
+      .split(/[,\s]+/)
       .map(s => s.trim())
       .filter(s => s.length > 0)
       .map(Number)
@@ -170,13 +170,16 @@ export default function AverageCalculator() {
     const max = sorted[n - 1]
     const min = sorted[0]
     const range = max - min
-    const variance = sorted.reduce((acc, v) => acc + (v - mean) ** 2, 0) / n
+    // 모분산(÷n)과 표본분산(÷(n−1), 2개 이상일 때만)
+    const ss = sorted.reduce((acc, v) => acc + (v - mean) ** 2, 0)
+    const variance = ss / n
     const stdDev = Math.sqrt(variance)
+    const sampleVariance = n >= 2 ? ss / (n - 1) : null
     const median = n % 2 === 1
       ? sorted[Math.floor(n / 2)]
       : (sorted[n / 2 - 1] + sorted[n / 2]) / 2
 
-    return { sum, count: n, max, min, range, variance, stdDev, median }
+    return { sum, count: n, max, min, range, variance, stdDev, sampleVariance, median }
   }, [activeNumbers, hasData])
 
   const formatNum = (n: number) => {
@@ -242,6 +245,10 @@ export default function AverageCalculator() {
     { key: 'statRange', value: formatNum(stats.range) },
     { key: 'statVariance', value: formatNum(stats.variance) },
     { key: 'statStdDev', value: formatNum(stats.stdDev) },
+    ...(stats.sampleVariance != null ? [
+      { key: 'statSampleVariance', value: formatNum(stats.sampleVariance) },
+      { key: 'statSampleStdDev', value: formatNum(Math.sqrt(stats.sampleVariance)) },
+    ] : []),
     { key: 'statMedian', value: formatNum(stats.median) },
   ] : []
 

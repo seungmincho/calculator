@@ -65,23 +65,20 @@ export const MAX_LOAN: Record<LoanType, number> = {
 export const FRAUD = { priceLimit: 90_000 * M, ltv: 0.80, dti: 100, maxLoan: 40_000 * M }
 
 /** 우대금리 (합산 최대 1.0%p). 신혼가구 0.3, 다자녀 2자녀 0.5 / 3자녀+ 0.7 은 입력값에서 자동 적용. 신혼가구와 신생아출산가구는 중복 불가 */
-export const PERKS: { id: string; label: string; rate: number; desc: string }[] = [
-  { id: 'newborn', label: '신생아출산가구', rate: 0.2, desc: '신혼가구 우대와 중복 불가' },
-  { id: 'youth', label: '저소득청년', rate: 0.1, desc: '청년·소득 요건 충족 시' },
-  { id: 'single', label: '한부모가구', rate: 0.7, desc: '사회적 배려층' },
-  { id: 'disabled', label: '장애인가구', rate: 0.7, desc: '사회적 배려층' },
-  { id: 'multicultural', label: '다문화가구', rate: 0.7, desc: '사회적 배려층' },
-  { id: 'green', label: '녹색건축물', rate: 0.1, desc: '인증 주택 구입 시' },
-  { id: 'unsold', label: '미분양주택', rate: 0.2, desc: '미분양관리지역 미분양주택' },
-  { id: 'fraud', label: '전세사기피해자', rate: 1.0, desc: '결정문 확인 시 · 소득 무관·9억 이하·LTV 80%·한도 4억' },
+// 화면 문구(이름·설명)는 messages bogeumjariLoan.perks.<id> · <id>Desc. label 은 discounts(회귀 체크)용
+export const PERKS: { id: string; label: string; rate: number }[] = [
+  { id: 'newborn', label: '신생아출산가구', rate: 0.2 },
+  { id: 'youth', label: '저소득청년', rate: 0.1 },
+  { id: 'single', label: '한부모가구', rate: 0.7 },
+  { id: 'disabled', label: '장애인가구', rate: 0.7 },
+  { id: 'multicultural', label: '다문화가구', rate: 0.7 },
+  { id: 'green', label: '녹색건축물', rate: 0.1 },
+  { id: 'unsold', label: '미분양주택', rate: 0.2 },
+  { id: 'fraud', label: '전세사기피해자', rate: 1.0 },
 ]
 
-export const LOAN_TYPE_INFO: Record<LoanType, { label: string; sublabel: string; benefit: string }> = {
-  first: { label: '생애최초', sublabel: '처음 집 구입', benefit: 'LTV 80%(수도권 70%) · 한도 4.2억' },
-  newlywed: { label: '신혼부부', sublabel: '혼인 7년 이내', benefit: '소득 8.5천만 · 우대 0.3%p' },
-  multichild: { label: '다자녀', sublabel: '미성년 자녀 2명 이상', benefit: '한도 4억 · 우대 0.5~0.7%p' },
-  general: { label: '일반', sublabel: '기본 조건', benefit: 'LTV 70% · 한도 3.6억' },
-}
+/** 신청 유형 (화면 순서). 이름·설명은 messages bogeumjariLoan.loanType.<type> */
+export const LOAN_TYPES: LoanType[] = ['first', 'newlywed', 'multichild', 'general']
 
 /**
  * 디딤돌대출(주택도시기금) 자격 힌트 — 금리 계산 없이 소득·주택가격·무주택 여부만 비교.
@@ -118,7 +115,8 @@ export interface BogeumjariInput {
 }
 
 export type CheckStatus = 'pass' | 'warn' | 'fail'
-export interface CheckItem { label: string; status: CheckStatus; detail: string }
+/** 화면 문구는 messages bogeumjariLoan.checks.<id>.label · checks.<id>.<msg> (vars 치환). label 은 회귀 체크용 */
+export interface CheckItem { id: string; label: string; status: CheckStatus; msg: string; vars?: Record<string, string | number> }
 
 export const annuity = (loan: number, annualRate: number, months: number) => {
   const r = annualRate / 100 / 12
@@ -165,14 +163,14 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const priceLimit = fraud ? FRAUD.priceLimit : HOUSE_PRICE_LIMIT
 
   // ── 우대금리 ──
-  const discounts: { label: string; rate: number }[] = []
-  if (isNewlywed) discounts.push({ label: '신혼가구', rate: 0.3 })
-  if (i.children >= 3) discounts.push({ label: '다자녀(3자녀 이상)', rate: 0.7 })
-  else if (i.children === 2) discounts.push({ label: '다자녀(2자녀)', rate: 0.5 })
+  const discounts: { id: string; label: string; rate: number }[] = []
+  if (isNewlywed) discounts.push({ id: 'newlywed', label: '신혼가구', rate: 0.3 })
+  if (i.children >= 3) discounts.push({ id: 'multichild3', label: '다자녀(3자녀 이상)', rate: 0.7 })
+  else if (i.children === 2) discounts.push({ id: 'multichild2', label: '다자녀(2자녀)', rate: 0.5 })
   for (const p of PERKS) {
     if (!i.perks.includes(p.id)) continue
     if (p.id === 'newborn' && isNewlywed) continue // 신혼가구와 중복 불가 (0.3 > 0.2)
-    discounts.push({ label: p.label, rate: p.rate })
+    discounts.push({ id: p.id, label: p.label, rate: p.rate })
   }
   const discountSum = discounts.reduce((s, d) => s + d.rate, 0)
   const totalDiscount = Math.min(discountSum, DISCOUNT_CAP)
@@ -190,14 +188,14 @@ export function calcBogeumjari(i: BogeumjariInput) {
   // ponytail: 원금균등 선택 시에도 원리금균등으로 역산 — 실제 심사는 첫해 상환액 기준일 수 있음
   const monthlyBudget = (i.income / 12) * (dtiCap / 100) - i.debtMonthly
   const dtiLimit = monthlyBudget > 0 ? Math.floor(monthlyBudget / annuity(1, rate, months)) : 0
-  const deductions = [ltvDeducted && '규제지역', cbDeducted && '신용점수'].filter(Boolean)
-  const ltvNote = fraud ? '전세사기피해자 신규주택'
-    : deductions.length ? `${deductions.join('·')} 10%p${deductions.length > 1 ? '씩' : ''} 차감`
-    : i.type === 'first' && i.region !== 'local' ? '수도권·규제지역 생애최초' : '주택가격 기준'
+  // LTV 근거. 화면 문구는 messages bogeumjariLoan.limits.ltvNote.<id>
+  const ltvNote = fraud ? 'fraud'
+    : ltvDeducted && cbDeducted ? 'both' : ltvDeducted ? 'regulated' : cbDeducted ? 'credit'
+    : i.type === 'first' && i.region !== 'local' ? 'firstCapital' : 'price'
   const limits = [
-    { key: 'ltv' as const, label: `LTV ${Math.round(ltv * 100)}% (${ltvNote})`, amount: ltvLimit },
-    { key: 'cap' as const, label: `${fraud ? '전세사기피해자' : LOAN_TYPE_INFO[i.type].label} 상품 상한`, amount: capLimit },
-    { key: 'dti' as const, label: `DTI ${dtiCap}% (소득 기준)`, amount: dtiLimit },
+    { key: 'ltv' as const, amount: ltvLimit },
+    { key: 'cap' as const, amount: capLimit },
+    { key: 'dti' as const, amount: dtiLimit },
   ]
   const binding = limits.reduce((a, b) => (b.amount < a.amount ? b : a))
   const maxLoan = Math.max(0, Math.floor(binding.amount / 10_000) * 10_000)
@@ -207,34 +205,34 @@ export function calcBogeumjari(i: BogeumjariInput) {
 
   // ── 자격 체크리스트 ──
   const checks: CheckItem[] = []
+  const incomeVars = { income: fmtKRW(i.income), limit: fmtKRW(incomeLimit) }
   checks.push(fraud
-    ? { label: '소득', status: 'pass', detail: '전세사기피해자는 소득 상한 없음' }
+    ? { id: 'income', label: '소득', status: 'pass', msg: 'fraud' }
     : i.income <= incomeLimit
-      ? { label: '소득', status: 'pass', detail: `연 ${fmtKRW(i.income)} ≤ 기준 ${fmtKRW(incomeLimit)}` }
-      : { label: '소득', status: 'fail', detail: `연 ${fmtKRW(i.income)} — 기준 ${fmtKRW(incomeLimit)} 초과` })
+      ? { id: 'income', label: '소득', status: 'pass', msg: 'pass', vars: incomeVars }
+      : { id: 'income', label: '소득', status: 'fail', msg: 'fail', vars: incomeVars })
+  const priceVars = { price: fmtKRW(i.price), limit: fmtKRW(priceLimit) }
   checks.push(i.price <= priceLimit
-    ? { label: '주택가격', status: 'pass', detail: `${fmtKRW(i.price)} ≤ ${fmtKRW(priceLimit)}` }
-    : { label: '주택가격', status: 'fail', detail: `${fmtKRW(i.price)} — ${fmtKRW(priceLimit)} 초과 주택은 대상 아님` })
-  if (credit === 'low') checks.push({ label: '신용점수', status: 'fail', detail: 'NICE 신용점수 271점 이상만 신청 가능' })
-  else if (cbDeducted) checks.push({ label: '신용점수', status: 'warn', detail: 'NICE 271~614점 — LTV 10%p 차감 적용' })
-  if (i.owned === '2') checks.push({ label: '주택 보유', status: 'fail', detail: '2주택 이상 보유 시 신청 불가 (무주택 또는 1주택만)' })
-  else if (i.owned === '1' && i.type === 'first') checks.push({ label: '주택 보유', status: 'fail', detail: '생애최초는 신청일 현재 부부 모두 무주택이고 과거 소유 이력이 없어야 함' })
-  else if (i.owned === '1') checks.push({ label: '주택 보유', status: 'warn', detail: '1주택자는 기존 주택을 대출실행일로부터 3년 내 처분하는 조건' })
-  else checks.push({ label: '주택 보유', status: 'pass', detail: i.type === 'first' ? '무주택 · 과거 소유 이력 없음 (본인 확인)' : '무주택' })
-  if (i.type === 'multichild' && i.children < 2) checks.push({ label: '유형 요건', status: 'fail', detail: '다자녀 유형은 미성년 자녀 2명 이상' })
-  else if (i.type === 'newlywed') checks.push({ label: '유형 요건', status: 'warn', detail: '혼인신고일 7년 이내인지 확인' })
+    ? { id: 'price', label: '주택가격', status: 'pass', msg: 'pass', vars: priceVars }
+    : { id: 'price', label: '주택가격', status: 'fail', msg: 'fail', vars: priceVars })
+  if (credit === 'low') checks.push({ id: 'credit', label: '신용점수', status: 'fail', msg: 'low' })
+  else if (cbDeducted) checks.push({ id: 'credit', label: '신용점수', status: 'warn', msg: 'mid' })
+  if (i.owned === '2') checks.push({ id: 'owned', label: '주택 보유', status: 'fail', msg: 'two' })
+  else if (i.owned === '1' && i.type === 'first') checks.push({ id: 'owned', label: '주택 보유', status: 'fail', msg: 'oneFirst' })
+  else if (i.owned === '1') checks.push({ id: 'owned', label: '주택 보유', status: 'warn', msg: 'one' })
+  else checks.push({ id: 'owned', label: '주택 보유', status: 'pass', msg: i.type === 'first' ? 'noneFirst' : 'none' })
+  if (i.type === 'multichild' && i.children < 2) checks.push({ id: 'type', label: '유형 요건', status: 'fail', msg: 'multichild' })
+  else if (i.type === 'newlywed') checks.push({ id: 'type', label: '유형 요건', status: 'warn', msg: 'newlywed' })
   const p = i.period
   if (p === '40' || p === '50') {
+    // 40년: 만 40세 미만(신혼가구 만 50세 미만), 50년: 만 35세 미만(신혼가구 만 40세 미만)
     const ok = p === '40' ? i.age < 40 || (isNewlywed && i.age < 50) : i.age < 35 || (isNewlywed && i.age < 40)
-    const rule = p === '40' ? '만 40세 미만 (신혼가구 만 50세 미만)' : '만 35세 미만 (신혼가구 만 40세 미만)'
-    checks.push(ok
-      ? { label: `만기 ${p}년`, status: 'pass', detail: `만 ${i.age}세 — ${rule}` }
-      : { label: `만기 ${p}년`, status: 'fail', detail: `만 ${i.age}세 — ${rule} 조건 미충족, 더 짧은 만기 선택` })
+    checks.push({ id: 'maturity', label: `만기 ${p}년`, status: ok ? 'pass' : 'fail', msg: `${ok ? 'pass' : 'fail'}${p}`, vars: { years: p, age: i.age } })
   }
   checks.push(monthlyBudget > 0
-    ? { label: '상환능력(DTI)', status: 'pass', detail: `DTI ${dti.toFixed(1)}% ≤ ${dtiCap}%` }
-    : { label: '상환능력(DTI)', status: 'fail', detail: `기존 대출 상환액만으로 DTI ${dtiCap}% 초과` })
-  if (i.region !== 'local') checks.push({ label: '전입 의무', status: 'warn', detail: '수도권·규제지역 주택은 대출 실행 후 6개월 이내 전입 필수' })
+    ? { id: 'dti', label: '상환능력(DTI)', status: 'pass', msg: 'pass', vars: { dti: dti.toFixed(1), cap: dtiCap } }
+    : { id: 'dti', label: '상환능력(DTI)', status: 'fail', msg: 'fail', vars: { cap: dtiCap } })
+  if (i.region !== 'local') checks.push({ id: 'moveIn', label: '전입 의무', status: 'warn', msg: 'warn' })
 
   const eligible = !checks.some((c) => c.status === 'fail') && loan > 0
 
@@ -249,6 +247,6 @@ export function calcBogeumjari(i: BogeumjariInput) {
 
   return {
     eligible, checks, incomeLimit, discounts, discountSum, totalDiscount, surcharge, baseRate, rate,
-    ltv, dtiCap, limits, binding, maxLoan, loan, monthly, dti, methods, months,
+    ltv, ltvNote, dtiCap, limits, binding, maxLoan, loan, monthly, dti, methods, months,
   }
 }

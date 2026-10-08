@@ -40,7 +40,14 @@ assert.deepEqual([q.eligible, q.limit, q.rate], [true, 150_000_000, 2.6])
 q = quote('youth', { ...base, age: 24, sme: 1 })
 assert.deepEqual([q.limit, q.discountTotal, q.rate], [120_000_000, 0.5, 2.4])
 assert.equal(quote('youth', { ...base, age: 35 }).eligible, false)
-assert.equal(quote('youth', { ...base, age: 36, sme: 1 }).eligible, true) // 병역 연장 최대 39
+// 병역 연장: 중소·중견 재직(창업) 청년만, 복무 기간만큼, 최대 만 39세
+assert.equal(quote('youth', { ...base, age: 36, sme: 1 }).eligible, false, '병역 없으면 34세까지')
+assert.equal(quote('youth', { ...base, age: 35, sme: 1, military: 18 }).eligible, true, '18개월 → 35세')
+assert.equal(quote('youth', { ...base, age: 36, sme: 1, military: 18 }).eligible, false, '18개월 → 36세는 불가(보수적)')
+assert.equal(quote('youth', { ...base, age: 36, sme: 1, military: 24 }).eligible, true, '24개월 → 36세')
+assert.equal(quote('youth', { ...base, age: 36, military: 24 }).eligible, false, '중소·중견 아니면 연장 없음')
+assert.equal(quote('youth', { ...base, age: 39, sme: 1, military: 120 }).eligible, true, '최대 39세')
+assert.equal(quote('youth', { ...base, age: 40, sme: 1, military: 120 }).eligible, false, '39세 초과 불가')
 assert.equal(quote('youth', { ...base, deposit: 310_000_000 }).eligible, false)
 
 // 소액 대출 우대: 희망액 ≤ 한도 30% → 0.2

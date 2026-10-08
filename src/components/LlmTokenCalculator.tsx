@@ -8,7 +8,7 @@ import { Copy, Check, Upload, Trash2, ExternalLink } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import {
-  MODELS, VENDORS, VENDOR_IDS, FX_DEFAULT, textStats, estimateTokens, scenarioCost, contextFit, compareModels,
+  MODELS, VENDORS, VENDOR_IDS, FX_DEFAULT, modelsOn, kstToday, textStats, estimateTokens, scenarioCost, contextFit, compareModels,
   fmtUSD, fmtKRW, fmtTokens, toMarkdown, type LlmModel, type VendorId, type Scenario, type Tokenizer,
 } from '@/utils/llmPricing'
 
@@ -47,8 +47,11 @@ export default function LlmTokenCalculator() {
   const [vendor, setVendor] = useState<VendorId | 'all'>('all')
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  // 프로모션 종료 후 정가: 날짜는 마운트 후에 본다(정적 HTML = 첫 렌더는 MODELS 그대로)
+  const [models, setModels] = useState<LlmModel[]>(MODELS)
+  useEffect(() => setModels(modelsOn(kstToday())), [])
 
-  const model = MODELS.find((x) => x.id === s.m) ?? MODELS[0]
+  const model = models.find((x) => x.id === s.m) ?? models[0]
   const stats = useMemo(() => textStats(text), [text])
   const useText = src === 'text' && stats.chars > 0
   const inTokOf = useCallback(
@@ -71,8 +74,8 @@ export default function LlmTokenCalculator() {
   const cost = scenarioCost(model, scenario)
   const fit = contextFit(model, inTok, s.out)
   const rows = useMemo(
-    () => compareModels(vendor === 'all' ? MODELS : MODELS.filter((m) => m.vendor === vendor), scenario, inTokOf),
-    [vendor, JSON.stringify(scenario), inTokOf], // eslint-disable-line react-hooks/exhaustive-deps
+    () => compareModels(vendor === 'all' ? models : models.filter((m) => m.vendor === vendor), scenario, inTokOf),
+    [models, vendor, JSON.stringify(scenario), inTokOf], // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const krw = (usd: number) => fmtKRW(usd, s.fx)
@@ -441,10 +444,11 @@ export default function LlmTokenCalculator() {
                   </tr>
                 </thead>
                 <tbody>
-                  {MODELS.filter((m) => m.vendor === v).map((m) => {
+                  {models.filter((m) => m.vendor === v).map((m) => {
                     const notes = [
                       m.long && t('prices.long', { over: fmtTokens(m.long.over), input: per1M(m.long.input), output: per1M(m.long.output) }),
                       m.promoUntil && t('prices.promo', { date: m.promoUntil }),
+                      m.promoUntil && m.regular && t('prices.regular', { input: per1M(m.regular.input), output: per1M(m.regular.output) }),
                       m.preview && t('prices.preview'),
                     ].filter(Boolean)
                     return (

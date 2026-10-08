@@ -3817,6 +3817,88 @@
     }
   },
   "bogeumjariLoan": {
+    "loanType": {
+      "first": {
+        "label": "First-time buyer",
+        "sublabel": "Buying your first home",
+        "benefit": "LTV 80% (capital area 70%) · limit ₩420M"
+      },
+      "newlywed": {
+        "label": "Newlyweds",
+        "sublabel": "Married within 7 years",
+        "benefit": "Income up to ₩85M · 0.3%p discount"
+      },
+      "multichild": {
+        "label": "Multi-child",
+        "sublabel": "2+ minor children",
+        "benefit": "Limit ₩400M · 0.5–0.7%p discount"
+      },
+      "general": {
+        "label": "General",
+        "sublabel": "Standard terms",
+        "benefit": "LTV 70% · limit ₩360M"
+      }
+    },
+    "limits": {
+      "ltv": "LTV {pct}% ({note})",
+      "ltvNote": {
+        "fraud": "new home, jeonse fraud victim",
+        "regulated": "regulated area −10%p",
+        "credit": "credit score −10%p",
+        "both": "regulated area & credit score −10%p each",
+        "firstCapital": "first-time buyer, capital/regulated area",
+        "price": "based on home price"
+      },
+      "cap": "{type} product cap",
+      "dti": "DTI {cap}% (income-based)"
+    },
+    "checks": {
+      "income": {
+        "label": "Income",
+        "fraud": "No income cap for jeonse fraud victims",
+        "pass": "{income}/yr ≤ limit {limit}",
+        "fail": "{income}/yr — over the {limit} limit"
+      },
+      "price": {
+        "label": "Home price",
+        "pass": "{price} ≤ {limit}",
+        "fail": "{price} — homes over {limit} aren't eligible"
+      },
+      "credit": {
+        "label": "Credit score",
+        "low": "Only NICE scores of 271 or higher can apply",
+        "mid": "NICE 271–614 — LTV reduced by 10%p"
+      },
+      "owned": {
+        "label": "Homes owned",
+        "two": "Not available with 2+ homes (no home or 1 home only)",
+        "oneFirst": "First-time buyers: neither spouse may own a home now or have owned one before",
+        "one": "One-home owners must sell the existing home within 3 years of the loan date",
+        "noneFirst": "No home · never owned one (self-declared)",
+        "none": "No home"
+      },
+      "type": {
+        "label": "Type requirement",
+        "multichild": "The multi-child type requires 2+ minor children",
+        "newlywed": "Check that the marriage was registered within 7 years"
+      },
+      "maturity": {
+        "label": "{years}-year term",
+        "pass40": "Age {age} — under 40 (newlyweds under 50)",
+        "fail40": "Age {age} — must be under 40 (newlyweds under 50); choose a shorter term",
+        "pass50": "Age {age} — under 35 (newlyweds under 40)",
+        "fail50": "Age {age} — must be under 35 (newlyweds under 40); choose a shorter term"
+      },
+      "dti": {
+        "label": "Repayment capacity (DTI)",
+        "pass": "DTI {dti}% ≤ {cap}%",
+        "fail": "Existing loan payments alone exceed DTI {cap}%"
+      },
+      "moveIn": {
+        "label": "Move-in requirement",
+        "warn": "Capital/regulated-area homes: you must move in within 6 months of the loan"
+      }
+    },
     "heading": "Bogeumjari Loan Calculator",
     "rateBadge": "Rates as of {date}",
     "intro": "Check eligibility, loan limit, rate after discounts and monthly payment at once (base rate {min}–{max}%, discounts up to {cap}%p, lowest {minRate}%)",
@@ -3898,6 +3980,24 @@
       "wantCapped": "Calculated at the maximum limit {amount}"
     },
     "perks": {
+      "newborn": "Newborn household",
+      "newbornDesc": "Can't be combined with the newlywed discount",
+      "youth": "Low-income youth",
+      "youthDesc": "If age and income requirements are met",
+      "single": "Single-parent household",
+      "singleDesc": "Socially vulnerable group",
+      "disabled": "Household with a disabled member",
+      "disabledDesc": "Socially vulnerable group",
+      "multicultural": "Multicultural household",
+      "multiculturalDesc": "Socially vulnerable group",
+      "green": "Green-certified building",
+      "greenDesc": "When buying a certified home",
+      "unsold": "Unsold new home",
+      "unsoldDesc": "Unsold home in a designated unsold-housing area",
+      "fraud": "Jeonse fraud victim",
+      "fraudDesc": "With an official victim decision · no income limit · home ≤ ₩900M · LTV 80% · limit ₩400M",
+      "multichild3": "Multi-child (3+ children)",
+      "multichild2": "Multi-child (2 children)",
       "title": "Rate discounts",
       "sum": "Total {sum}%p",
       "capped": "→ capped at {cap}%p",
@@ -6825,29 +6925,11 @@
     },
     "guide": {
       "title": "Fuel Calculator Usage Guide",
-      "usageTitle": "How to Calculate",
-      "usage": {
-        "0": "Enter accurate distance traveled (include round-trip)",
-        "1": "Select vehicle type or enter custom fuel efficiency",
-        "2": "Fuel prices are automatically applied by fuel type",
-        "3": "Depreciation costs use average values by vehicle type"
-      },
-      "tipTitle": "Expense Reimbursement Tips",
       "tips": {
         "0": "Keep accurate mileage records for business vehicle use",
         "1": "Attach calculation sheet with receipts for easy reimbursement",
         "2": "Maintain vehicle regularly to preserve fuel efficiency",
         "3": "Check company policy for depreciation cost applicability"
-      },
-      "vehicleTypesTitle": "Fuel Efficiency by Vehicle Type",
-      "vehicleTypes": {
-        "0": "Light Car: 16.0km/L (80 KRW/km depreciation)",
-        "1": "Compact Car: 14.5km/L (100 KRW/km depreciation)",
-        "2": "Mid-size Car: 12.0km/L (130 KRW/km depreciation)",
-        "3": "Full-size Car: 10.5km/L (160 KRW/km depreciation)",
-        "4": "SUV: 9.5km/L (180 KRW/km depreciation)",
-        "5": "Van: 8.5km/L (200 KRW/km depreciation)",
-        "6": "Truck: 7.0km/L (250 KRW/km depreciation)"
       },
       "whatIs": {
         "title": "What is the Fuel Cost Calculator?",
@@ -11059,27 +11141,6 @@
           "Some universities (e.g., SNU) use the 4.3 scale",
           "Choose P or NP as the grade for Pass/Fail courses — they are left out of the GPA automatically (P still counts toward earned credits)"
         ]
-      },
-      "whatIs": {
-        "title": "What is the GPA Calculator?",
-        "description": "An academic management tool that calculates your grade point average (GPA) from the credit hours and grades (letter grade or score) for each course. Supports 4.5, 4.3, and 4.0 grading scales. Use it to check whether you've met scholarship GPA requirements, graduation requirements, or graduate school application criteria."
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "items": [
-          {
-            "q": "Which scale should I use — 4.5 or 4.0?",
-            "a": "It depends on your school. Most Korean universities use the 4.5 scale, but some use 4.3 or 4.0. Check your institution's academic regulations."
-          },
-          {
-            "q": "Are P/F (Pass/Fail) courses included in the GPA?",
-            "a": "Generally, P/F courses are not included in GPA calculations. Exclude them when entering your courses in this calculator."
-          },
-          {
-            "q": "What are the standard grade-to-GPA conversions?",
-            "a": "On a 4.5 scale, the typical mapping is: A+ = 4.5, A0 = 4.0, B+ = 3.5, B0 = 3.0, C+ = 2.5, C0 = 2.0, D+ = 1.5, D0 = 1.0, F = 0. This may vary by institution."
-          }
-        ]
       }
     },
     "copyLink": "Copy Link",
@@ -12808,27 +12869,6 @@
           "Based on KASI data, range 1900–2050",
           "The same lunar date maps to a different solar date depending on the leap month"
         ]
-      },
-      "whatIs": {
-        "title": "What is the Lunar-Solar Date Converter?",
-        "description": "A tool that converts between the Korean lunar calendar (lunisolar calendar) and the Gregorian solar calendar in both directions. Useful for finding the solar date of traditionally observed events like birthdays, memorial days, and Korean holidays (Seollal, Chuseok) that are tracked by the lunar calendar."
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "items": [
-          {
-            "q": "Why does the same lunar date fall on a different solar date each year?",
-            "a": "The lunar calendar is based on the moon's cycle (~29.5 days), giving it about 354 days per year — 11 days shorter than the solar year. A leap month (윤달) is added every few years to realign them, which is why the solar equivalent of a lunar date shifts annually."
-          },
-          {
-            "q": "How are dates in a leap month (윤달) handled?",
-            "a": "A checkbox is provided to indicate whether a date falls in a leap month. For example, '윤4월 15일' and '4월 15일' are different days. If your birthdate or anniversary falls in a leap month, be sure to select that option."
-          },
-          {
-            "q": "What year range does the converter support?",
-            "a": "Conversion uses KASI (Korea Astronomy and Space Science Institute) data from 1900 to 2050. Korean dates can differ by a day from the Chinese lunar calendar in some months because of the time zone, so Korean data is used."
-          }
-        ]
       }
     }
   },
@@ -13608,27 +13648,6 @@
           "Contract area: supply + other common (underground parking, management office). More common for officetels and retail units than apartments.",
           "Service area: space like balconies that is not counted in any of the above. Extending the balcony makes the usable area larger than the exclusive area.",
           "Exclusive 84 m² is 25.4 pyeong, but on a supply basis it is about a 33–35-pyeong type, hence '34 pyeong'. Don't compare the two bases with each other."
-        ]
-      },
-      "whatIs": {
-        "title": "What is the Pyeong Calculator?",
-        "description": "A tool for converting between pyeong (坪), the traditional Korean area unit, and square meters (m²). Indispensable when browsing Korean real estate listings, planning home renovations, or evaluating apartment sizes. Also explains the difference between supply area (공급면적) and exclusive-use area (전용면적) commonly used in Korean property listings."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Pyeong → m²: Enter the number of pyeong and the equivalent square meters appear instantly. Example: 33 pyeong → 109.09 m².",
-          "2. m² → Pyeong: Enter square meters to convert to pyeong. Example: 84 m² → 25.41 pyeong.",
-          "3. Adjust the decimal precision setting to get the level of detail you need.",
-          "4. Refer to the reference table for common size thresholds: national housing standard (≤85 m²), and small/medium/large categories."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "A '33-pyeong apartment' in listings refers to the supply area. The actual living space (전용면적) is typically 10–20% smaller. Always compare both figures when evaluating an apartment.",
-          "A quick mental shortcut: 1 pyeong ≈ 3.3 m². Multiply pyeong × 3.3 for a rough estimate, or use this calculator for precision.",
-          "For renovation material estimates, always measure the exclusive-use area (전용면적) and cross-check with physical measurements to minimize waste."
         ]
       },
       "faq": {
@@ -14700,33 +14719,8 @@
     "tier": "Tier",
     "tierInfo": "Progressive Rate Tiers",
     "quickUsage": "Quick Usage",
-    "averageUsage": "Average Usage by Household",
-    "avgInfo": {
-      "person1": "1 person: ~6m³/month",
-      "person2": "2 persons: ~10m³/month",
-      "person3": "3 persons: ~14m³/month",
-      "person4": "4 persons: ~18m³/month"
-    },
     "guide": {
       "title": "Water Bill Guide",
-      "structure": {
-        "title": "Bill Structure",
-        "items": [
-          "Basic fee: Fixed amount by pipe diameter (~1,080 KRW for residential 13mm)",
-          "Usage fee: Progressive rate based on consumption",
-          "Sewage fee: Based on water consumption",
-          "Water quality fee: Environmental improvement charge (~170 KRW/m³)"
-        ]
-      },
-      "saving": {
-        "title": "Water Saving Tips",
-        "items": [
-          "Install water-saving faucets and toilets to save 30%+",
-          "Batch laundry loads, use dishwashers",
-          "Reduce shower time (1 minute saves ~12 liters)",
-          "Regular leak checks (toilets, faucets)"
-        ]
-      },
       "whatIs": {
         "title": "What is the Water Bill Calculator?",
         "description": "Estimates your bill from household size and monthly usage (㎥): base fee, water usage, sewerage and the water use levy. Seoul and Busan use official 2026 tariffs; for other regions enter the rates from your bill. Water bills are VAT-exempt."
@@ -16148,17 +16142,6 @@
       "yearlyWage": "Yearly Wage",
       "won": "KRW"
     },
-    "minimumWage": {
-      "title": "2024 Minimum Wage Comparison",
-      "current": "Minimum Wage",
-      "currentValue": "₩9,860",
-      "monthlyMin": "Monthly Equivalent (209 hrs)",
-      "monthlyMinValue": "₩2,060,740",
-      "comparison": "Comparison",
-      "above": "Above minimum wage",
-      "below": "Below minimum wage",
-      "percent": "{percent}% of minimum wage"
-    },
     "guide": {
       "title": "Wage Calculation Guide",
       "conversion": {
@@ -16177,36 +16160,6 @@
           "Overtime (over 8 h/day or 40 h/week) earns a 50% premium — workplaces with 5+ employees",
           "Night work (22:00–06:00) earns a 50% premium, stacked with overtime (5+ employees)",
           "Holiday work earns 50% up to 8 h and 100% beyond (5+ employees, Labor Standards Act Art. 56)"
-        ]
-      },
-      "whatIs": {
-        "title": "What is the Hourly Wage Calculator?",
-        "description": "The hourly wage calculator quickly converts between hourly, daily, weekly, monthly, and annual pay. It is especially useful for part-time workers, freelancers, and contract employees who want to estimate take-home pay or compare their wages against the current minimum wage. Customize daily hours and weekly working days to get a personalized conversion that fits your schedule."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter the pay amount you already know — hourly rate, daily, monthly salary, or annual income.",
-          "2. Set your daily working hours (default 8 hours) and weekly working days (default 5 days).",
-          "3. All other pay units are instantly calculated and displayed in real time.",
-          "4. Compare your wage against the 2026 minimum wage (₩10,320/hr) to see how you measure up."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Is the weekly holiday allowance (주휴수당) included?",
-            "a": "Yes. For workers with 15+ hours per week, the effective hourly rate including the weekly holiday allowance (equivalent to one day's pay) is shown separately."
-          },
-          {
-            "q": "Can I see after-tax take-home pay?",
-            "a": "This tool focuses on pre-tax unit conversion. For a detailed net salary calculation including social insurance deductions, use the Salary Calculator."
-          },
-          {
-            "q": "Why is monthly salary divided by 209 hours?",
-            "a": "Under Korean labor law, the monthly average is calculated as (40 hours/week + 8 hours weekly holiday) × 52 weeks / 12 months ≈ 209 hours."
-          }
         ]
       }
     }
@@ -17023,12 +16976,6 @@
       "jeju": "Jeju"
     },
     "season": "Season",
-    "seasons": {
-      "spring": "Spring (Mar-May)",
-      "summer": "Summer (Apr-Sep)",
-      "autumn": "Autumn (Sep-Nov)",
-      "winter": "Winter (Oct-Mar)"
-    },
     "calculate": "Calculate",
     "reset": "Reset",
     "shareLink": "Share Link",
@@ -17044,14 +16991,6 @@
       "won": "KRW",
       "unitPrice": "Unit Price (KRW/MJ)"
     },
-    "averageUsage": {
-      "title": "Average Monthly Usage",
-      "spring": "Spring: approx. 100-180 MJ",
-      "summer": "Summer: approx. 15-30 MJ",
-      "autumn": "Autumn: approx. 90-250 MJ",
-      "winter": "Winter: approx. 80-150 MJ",
-      "description": "Including heating, hot water, cooking"
-    },
     "boilerSim": {
       "title": "Boiler Usage Simulation",
       "houseSize": "House Size",
@@ -17064,13 +17003,6 @@
       "hoursPerDay": "h",
       "estimatedUsage": "Estimated Monthly Usage",
       "apply": "Calculate with This Usage"
-    },
-    "tierBreakdown": {
-      "title": "Tiered Rate Breakdown",
-      "tier1": "Tier 1",
-      "tier2": "Tier 2",
-      "tier3": "Tier 3",
-      "tier4": "Tier 4"
     },
     "monthlyChart": {
       "title": "Estimated monthly gas bill",
@@ -17108,19 +17040,6 @@
           "Seal window gaps with insulation tape and draft stoppers",
           "Hot water is year-round base usage, so shorter showers save every month",
           "Enter the MJ from your bill to project next month's cost"
-        ]
-      },
-      "whatIs": {
-        "title": "What is the Gas Bill Calculator?",
-        "description": "This calculator applies the residential city gas tariff (base charge + price per MJ + 10% VAT) to estimate your monthly bill. Enter bill usage (MJ or ㎥) or estimate it from home size, insulation, boiler hours and set temperature, then see a 12-month chart and how much 1℃ lower saves. Seoul, Gyeonggi and Daegu use official 2026 tariffs; other regions use an estimate, or you can enter the unit price from your bill."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Pick your region and month.",
-          "2. With a bill, choose 'Enter bill usage' and type the usage (MJ or ㎥).",
-          "3. Without one, estimate from home size, insulation, daily boiler hours and set temperature.",
-          "4. Add last month's or last year's bill to see the change. Share the result as a link or image."
         ]
       },
       "faq": {
@@ -17770,36 +17689,6 @@
           "Longer terms = higher interest rates",
           "Early repayment may waive remaining fees"
         ]
-      },
-      "whatIs": {
-        "title": "What is the Card Installment Calculator?",
-        "description": "The card installment calculator shows the monthly payment, total installment fees and fees as a share of the principal before you commit to a purchase. Compare interest-free, partially interest-free and regular installments, or installments vs. paying in full."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter the purchase amount and the number of installment months.",
-          "2. Enter your issuer's installment fee rate (annual %) and choose standard, interest-free or partially interest-free.",
-          "3. View each payment, total fees and the total amount paid.",
-          "4. Use the term comparison table to compare interest-free and fee-bearing options."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Is interest-free installment truly free?",
-            "a": "For the consumer, yes. The card issuer or the merchant pays the installment fee. Promotions may have amount or term conditions, and partially interest-free plans waive only some installments."
-          },
-          {
-            "q": "How do I find my card's installment fee rate?",
-            "a": "Check the 'installment fee rate' menu in your issuer's website or app, or the Credit Finance Association disclosures. Disclosed ranges are generally about 5-19.9% per year (about 0.4-1.7% per month), higher for longer terms and lower credit scores."
-          },
-          {
-            "q": "What is the difference between installment and cash advance?",
-            "a": "Installment is for spreading a purchase payment over time, while a cash advance is a short-term loan with significantly higher interest rates. Installment is generally the better option."
-          }
-        ]
       }
     }
   },
@@ -18420,6 +18309,17 @@
     }
   },
   "shippingCalc": {
+    "weightSummary": "Weight & size",
+    "ratesTitle": {
+      "standard": "Rates by courier",
+      "cvs": "Convenience store rates"
+    },
+    "priceRange": {
+      "title": "Price range",
+      "detail": "Up to {diff} difference · {n} services available"
+    },
+    "save": "Save",
+    "historyLowest": "Lowest: {price}",
     "sizeHint": "Trim the box by {cut}cm (sum of sides) and {carrier} drops one tier — save {saving} KRW ({from} → {to} KRW)",
     "share": {
       "label": "Cheapest parcel for {kg}kg · {cm}cm ({dest})",
@@ -18492,6 +18392,9 @@
     "calculate": "Calculate",
     "reset": "Reset",
     "result": {
+      "cvsPickup": "Store pickup",
+      "delivery": "Delivery: {days}",
+      "copy": "Copy",
       "title": "Estimated Shipping Cost",
       "actualWeight": "Actual Weight",
       "volumeWeight": "Volume Weight",
@@ -26832,68 +26735,6 @@
           "Military service, childbirth, and unemployment credits add to your contribution period",
           "Higher income increases your B value, but the upper income limit applies"
         ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the National Pension Calculator?",
-          "description": "A tool that estimates your expected monthly National Pension (국민연금) benefit based on your contribution history and current income. Compare early withdrawal (reduced), normal-age, and deferred (increased) payout options, and view the income replacement rate relative to contributions. Use it to plan your retirement finances."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Enter your current age and enrollment start year (or total contribution period).",
-            "2. Enter your current monthly salary (standard monthly income).",
-            "3. Set your expected retirement age or end of contributions.",
-            "4. Compare projected monthly benefits for normal, early (reduced), and deferred (increased) payout options."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "Why is the pension age rising?",
-              "a": "Those born before 1953 receive benefits from age 60. Those born 1969 or later receive benefits from age 65, with gradual phase-in in between. This is a financial stability measure due to aging demographics."
-            },
-            {
-              "q": "How much is deducted for early pension?",
-              "a": "Each year you claim early, benefits are permanently reduced by 6%. Claiming 5 years early means a 30% reduction for life."
-            },
-            {
-              "q": "What happens if I stop paying?",
-              "a": "Your eventual benefit decreases. You must contribute for at least 10 years (120 months) to receive pension payments. Otherwise, a lump-sum refund is given."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the National Pension Calculator?",
-        "description": "A tool that estimates your expected monthly National Pension (국민연금) benefit based on your contribution history and current income. Compare early withdrawal (reduced), normal-age, and deferred (increased) payout options, and view the income replacement rate relative to contributions. Use it to plan your retirement finances."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter your current age and enrollment start year (or total contribution period).",
-          "2. Enter your current monthly salary (standard monthly income).",
-          "3. Set your expected retirement age or end of contributions.",
-          "4. Compare projected monthly benefits for normal, early (reduced), and deferred (increased) payout options."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Why is the pension age rising?",
-            "a": "Those born before 1953 receive benefits from age 60. Those born 1969 or later receive benefits from age 65, with gradual phase-in in between. This is a financial stability measure due to aging demographics."
-          },
-          {
-            "q": "How much is deducted for early pension?",
-            "a": "Each year you claim early, benefits are permanently reduced by 6%. Claiming 5 years early means a 30% reduction for life."
-          },
-          {
-            "q": "What happens if I stop paying?",
-            "a": "Your eventual benefit decreases. You must contribute for at least 10 years (120 months) to receive pension payments. Otherwise, a lump-sum refund is given."
-          }
-        ]
       }
     }
   },
@@ -29461,122 +29302,6 @@
       "over10": "10+ years",
       "ageUnder50": "Under 50",
       "ageOver50": "50+ / Disabled"
-    },
-    "guide": {
-      "title": "Unemployment Benefits Guide",
-      "eligibility": {
-        "title": "Eligibility Requirements",
-        "items": [
-          "At least 180 insured days within 18 months before separation",
-          "Involuntary separation (layoff, dismissal, contract expiration)",
-          "Willing and able to work but currently unemployed",
-          "Actively seeking reemployment"
-        ]
-      },
-      "howToApply": {
-        "title": "How to Apply",
-        "items": [
-          "Register as job seeker on WorkNet (work.go.kr)",
-          "Visit employment center or apply online",
-          "After qualification approval, attend unemployment certification every 1-4 weeks",
-          "Benefits paid at each certification visit"
-        ]
-      },
-      "extended": {
-        "title": "Extended Benefits",
-        "items": [
-          "Training extension: Up to 2 years while in vocational training",
-          "Individual extension: 60 additional days for financial hardship",
-          "Special extension: 60 additional days by government decree"
-        ]
-      },
-      "caution": {
-        "title": "Important Notes",
-        "items": [
-          "Voluntary resignation generally not eligible (exceptions for just cause)",
-          "Benefits stop when you become reemployed",
-          "Fraudulent claims: repayment + extra charge (up to 5x if colluding with the employer) + criminal penalties",
-          "This calculator is for reference only. Verify with your local employment center"
-        ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the Unemployment Benefit Calculator?",
-          "description": "A tool that automatically calculates expected unemployment benefit (구직급여) amounts and duration based on 2026 Employment Insurance regulations. Enter your average salary before leaving, insured period, and age to get daily benefit amount and total benefit duration. Use it during job transition planning to budget for living expenses."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Enter your average monthly salary for the last 3 months before leaving (pre-tax).",
-            "2. Enter the total Employment Insurance contribution period in months.",
-            "3. Select your current age and reason for leaving (layoff, contract expiry, voluntary resignation, etc.).",
-            "4. View the daily benefit amount, total benefit duration, and estimated total payout."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "Voluntary resignation is generally ineligible, but exceptions exist (workplace harassment, wage theft, etc.).",
-            "Applications must be filed within 12 months of leaving — delays may reduce total benefit days.",
-            "During the benefit period, proof of job-seeking activity is required — minimum 2 activities per 4-week cycle."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "How is the benefit duration determined?",
-              "a": "Based on age and insured period, benefits last 120–270 days. Those 50+ or with disabilities may qualify for up to 270 days."
-            },
-            {
-              "q": "Is there a daily benefit cap?",
-              "a": "As of 2026, the maximum daily benefit is 68,100 KRW (pre-tax). The minimum is 80% of the minimum wage. Even if your salary was high, you cannot exceed the cap."
-            },
-            {
-              "q": "What happens to remaining benefit days after reemployment?",
-              "a": "If you have 50% or more of your benefit days remaining upon reemployment, you may apply for the Early Reemployment Allowance. The faster you find a job, the more you receive."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the Unemployment Benefit Calculator?",
-        "description": "A tool that automatically calculates expected unemployment benefit (구직급여) amounts and duration based on 2026 Employment Insurance regulations. Enter your average salary before leaving, insured period, and age to get daily benefit amount and total benefit duration. Use it during job transition planning to budget for living expenses."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter your average monthly salary for the last 3 months before leaving (pre-tax).",
-          "2. Enter the total Employment Insurance contribution period in months.",
-          "3. Select your current age and reason for leaving (layoff, contract expiry, voluntary resignation, etc.).",
-          "4. View the daily benefit amount, total benefit duration, and estimated total payout."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "Voluntary resignation is generally ineligible, but exceptions exist (workplace harassment, wage theft, etc.).",
-          "Applications must be filed within 12 months of leaving — delays may reduce total benefit days.",
-          "During the benefit period, proof of job-seeking activity is required — minimum 2 activities per 4-week cycle."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "How is the benefit duration determined?",
-            "a": "Based on age and insured period, benefits last 120–270 days. Those 50+ or with disabilities may qualify for up to 270 days."
-          },
-          {
-            "q": "Is there a daily benefit cap?",
-            "a": "As of 2026, the maximum daily benefit is 68,100 KRW (pre-tax). The minimum is 80% of the minimum wage. Even if your salary was high, you cannot exceed the cap."
-          },
-          {
-            "q": "What happens to remaining benefit days after reemployment?",
-            "a": "If you have 50% or more of your benefit days remaining upon reemployment, you may apply for the Early Reemployment Allowance. The faster you find a job, the more you receive."
-          }
-        ]
-      }
     }
   },
   "weeklyHolidayPay": {
@@ -29788,105 +29513,7 @@
       ]
     },
     "guide": {
-      "title": "Weekly Holiday Pay Guide",
-      "calc": {
-        "title": "Calculation Method",
-        "items": [
-          "Total weekly hours = daily hours × working days",
-          "Holiday hours = (weekly hours ÷ 40) × 8, max 8 hours",
-          "Holiday pay = hourly wage × holiday hours",
-          "Monthly pay = (weekly base + holiday pay) × 4.345",
-          "Annual pay = monthly pay × 12"
-        ]
-      },
-      "notes": {
-        "title": "Important Notes",
-        "items": [
-          "Must have perfect attendance on scheduled workdays in the week",
-          "Ultra-short-time workers (avg. < 15 hrs/week over 4 weeks) are excluded",
-          "Freelancers and self-employed are not eligible (based on employment contract)",
-          "For 5 days × 8 hours (40 hrs), maximum holiday hours is 8",
-          "Holiday pay applies during probation period as well"
-        ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the Weekly Holiday Pay Calculator?",
-          "description": "A tool that automatically calculates the mandatory weekly holiday allowance (주휴수당) owed to workers who work 15 or more hours per week under the Labor Standards Act. Enter your hourly wage and weekly hours to get weekly holiday pay, total weekly pay including holiday pay, monthly salary, and annual salary. Useful for part-time and hourly workers checking they're paid correctly."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Enter your hourly wage (KRW).",
-            "2. Enter your actual weekly working hours (e.g., 5 hours/day × 5 days = 25 hours).",
-            "3. See the weekly holiday pay (equivalent to 1 day's pay) and effective hourly rate including holiday pay.",
-            "4. Monthly and annual salary are automatically calculated based on 4.345 weeks/month."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "Weekly holiday pay does not apply to workers under 15 hours/week — employers sometimes intentionally schedule below this threshold.",
-            "Weekly holiday pay must be paid separately — job ads claiming hourly wages 'including holiday pay' may actually be below legal minimum.",
-            "Always confirm weekly holiday pay is listed as a separate line item on your pay stub."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "Are part-time convenience store workers entitled to weekly holiday pay?",
-              "a": "Yes, any worker who works 15 or more hours per week is entitled to weekly holiday pay regardless of industry or employer size."
-            },
-            {
-              "q": "Does being late or leaving early affect holiday pay?",
-              "a": "Weekly holiday pay requires full attendance during the scheduled workweek. Unauthorized absences in the same week may result in forfeiture of that week's holiday pay."
-            },
-            {
-              "q": "How do I report unpaid weekly holiday pay?",
-              "a": "File a complaint with the Ministry of Employment and Labor or call 1350. Unpaid wages from the past 3 years are eligible for claims."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the Weekly Holiday Pay Calculator?",
-        "description": "A tool that automatically calculates the mandatory weekly holiday allowance (주휴수당) owed to workers who work 15 or more hours per week under the Labor Standards Act. Enter your hourly wage and weekly hours to get weekly holiday pay, total weekly pay including holiday pay, monthly salary, and annual salary. Useful for part-time and hourly workers checking they're paid correctly."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter your hourly wage (KRW).",
-          "2. Enter your actual weekly working hours (e.g., 5 hours/day × 5 days = 25 hours).",
-          "3. See the weekly holiday pay (equivalent to 1 day's pay) and effective hourly rate including holiday pay.",
-          "4. Monthly and annual salary are automatically calculated based on 4.345 weeks/month."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "Weekly holiday pay does not apply to workers under 15 hours/week — employers sometimes intentionally schedule below this threshold.",
-          "Weekly holiday pay must be paid separately — job ads claiming hourly wages 'including holiday pay' may actually be below legal minimum.",
-          "Always confirm weekly holiday pay is listed as a separate line item on your pay stub."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Are part-time convenience store workers entitled to weekly holiday pay?",
-            "a": "Yes, any worker who works 15 or more hours per week is entitled to weekly holiday pay regardless of industry or employer size."
-          },
-          {
-            "q": "Does being late or leaving early affect holiday pay?",
-            "a": "Weekly holiday pay requires full attendance during the scheduled workweek. Unauthorized absences in the same week may result in forfeiture of that week's holiday pay."
-          },
-          {
-            "q": "How do I report unpaid weekly holiday pay?",
-            "a": "File a complaint with the Ministry of Employment and Labor or call 1350. Unpaid wages from the past 3 years are eligible for claims."
-          }
-        ]
-      }
+      "title": "Weekly Holiday Pay Guide"
     },
     "copyLink": "Copy Link",
     "linkCopied": "Link Copied",
@@ -33207,6 +32834,7 @@
       "textNote": "Input tokens are estimated separately with each model's tokenizer."
     },
     "prices": {
+      "regular": "then {input}/{output}",
       "title": "Model prices (USD / 1M tokens)",
       "cached": "Cache read",
       "cacheWrite": "Cache write",
@@ -34418,11 +34046,13 @@
     "guideTaxRateRate": "Rate"
   },
   "averageCalc": {
+    "statSampleVariance": "Sample variance (÷(n−1))",
+    "statSampleStdDev": "Sample std dev (÷(n−1))",
     "title": "Average Calculator",
     "description": "Calculate 4 types of averages and basic statistics",
     "inputLabel": "Enter Numbers",
-    "inputPlaceholder": "Enter numbers separated by commas or newlines\ne.g. 85, 90, 78, 92",
-    "inputHelp": "Separate with commas or newlines",
+    "inputPlaceholder": "Enter numbers separated by commas, spaces/tabs or newlines\ne.g. 85, 90, 78, 92",
+    "inputHelp": "Separate with commas, spaces/tabs or newlines — a pasted spreadsheet row works too",
     "weightedMode": "Weighted Mode",
     "weightedValue": "Value",
     "weightedWeight": "Weight",
@@ -34446,8 +34076,8 @@
     "statMax": "Maximum",
     "statMin": "Minimum",
     "statRange": "Range",
-    "statVariance": "Variance",
-    "statStdDev": "Std Deviation",
+    "statVariance": "Population variance (÷n)",
+    "statStdDev": "Population std dev (÷n)",
     "statMedian": "Median",
     "resultLabel": "Result",
     "guide": {
@@ -34841,62 +34471,6 @@
       "gpa43": "4.3 Scale",
       "percent": "Percentile"
     },
-    "grades": [
-      {
-        "grade": "A+",
-        "gpa45": "4.5",
-        "gpa43": "4.3",
-        "percent": "95~100"
-      },
-      {
-        "grade": "A0",
-        "gpa45": "4.0",
-        "gpa43": "4.0",
-        "percent": "90~94"
-      },
-      {
-        "grade": "B+",
-        "gpa45": "3.5",
-        "gpa43": "3.5",
-        "percent": "85~89"
-      },
-      {
-        "grade": "B0",
-        "gpa45": "3.0",
-        "gpa43": "3.0",
-        "percent": "80~84"
-      },
-      {
-        "grade": "C+",
-        "gpa45": "2.5",
-        "gpa43": "2.5",
-        "percent": "75~79"
-      },
-      {
-        "grade": "C0",
-        "gpa45": "2.0",
-        "gpa43": "2.0",
-        "percent": "70~74"
-      },
-      {
-        "grade": "D+",
-        "gpa45": "1.5",
-        "gpa43": "1.5",
-        "percent": "65~69"
-      },
-      {
-        "grade": "D0",
-        "gpa45": "1.0",
-        "gpa43": "1.0",
-        "percent": "60~64"
-      },
-      {
-        "grade": "F",
-        "gpa45": "0.0",
-        "gpa43": "0.0",
-        "percent": "Below 60"
-      }
-    ],
     "guide": {
       "title": "GPA Conversion Guide",
       "sections": [
@@ -34917,69 +34491,6 @@
           ]
         }
       ],
-      "guide": {
-        "whatIs": {
-          "title": "What is the GPA Converter?",
-          "description": "The GPA Converter converts grades between 4.3 and 4.5 GPA scales and also converts them to a 100-point percentage scale. It is useful when applying to graduate schools, studying abroad, or applying for jobs that require a different grading scale. It supports both letter grades (A+, A0, B+) and numeric GPA input."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Select your current GPA scale (4.3 or 4.5 maximum).",
-            "2. Enter the GPA as a number (e.g., 3.8) or letter grade (e.g., A+).",
-            "3. View the converted GPA in the other scale and the equivalent 100-point score.",
-            "4. For batch conversion, enter multiple course grades to get an overall converted GPA."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "The 4.3 scale uses A+(4.3), A0(4.0), B+(3.3), while 4.5 uses A+(4.5), A0(4.0), B+(3.5). Differences appear at A0 and below.",
-            "Many US graduate programs use a 4.0 scale. A rough 4.5→4.0 conversion can be done by multiplying by 4.0/4.5.",
-            "Each institution has its own 100-point conversion table. Check the scale on your official transcript and disclose it to the receiving institution.",
-            "Highlighting strong grades in core major courses can strengthen your application even if your overall GPA is moderate."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "Is a 4.3-scale 3.5 the same level as a 4.5-scale 3.5?",
-              "a": "No. A 3.5 on a 4.3 scale is about 81.4%, while 3.5 on a 4.5 scale is about 77.8%. The same number means different things depending on the scale."
-            },
-            {
-              "q": "How are Pass/Fail courses handled?",
-              "a": "P/F courses are typically excluded from GPA calculation. They are recorded as completion only and do not affect the grade average."
-            },
-            {
-              "q": "Is there an internationally recognized conversion standard?",
-              "a": "There is no single universal standard. Services like WES (World Education Services) provide internationally recognized conversions. For important applications, using an official credential evaluation service is recommended."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the GPA Converter?",
-        "description": "The GPA Converter converts grades between 4.3 and 4.5 GPA scales and also converts them to a 100-point percentage scale. It is useful when applying to graduate schools, studying abroad, or applying for jobs that require a different grading scale. It supports both letter grades (A+, A0, B+) and numeric GPA input."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Select your current GPA scale (4.3 or 4.5 maximum).",
-          "2. Enter the GPA as a number (e.g., 3.8) or letter grade (e.g., A+).",
-          "3. View the converted GPA in the other scale and the equivalent 100-point score.",
-          "4. For batch conversion, enter multiple course grades to get an overall converted GPA."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "The 4.3 scale uses A+(4.3), A0(4.0), B+(3.3), while 4.5 uses A+(4.5), A0(4.0), B+(3.5). Differences appear at A0 and below.",
-          "Many US graduate programs use a 4.0 scale. A rough 4.5→4.0 conversion can be done by multiplying by 4.0/4.5.",
-          "Each institution has its own 100-point conversion table. Check the scale on your official transcript and disclose it to the receiving institution.",
-          "Highlighting strong grades in core major courses can strengthen your application even if your overall GPA is moderate."
-        ]
-      },
       "faq": {
         "title": "FAQ",
         "items": [
@@ -35163,86 +34674,6 @@
           "Use high-efficiency PSU (80 Plus Gold or above)",
           "Lower monitor brightness — saves 10~20% power",
           "Undervolting GPU reduces power consumption"
-        ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is the PC Electricity Cost Calculator?",
-          "description": "The PC Electricity Cost Calculator estimates monthly and annual electricity bills by inputting the power consumption (watts) of each PC component—CPU, GPU, memory, storage, and more. It applies Korean residential and commercial electricity rate tiers to produce estimates close to your actual bill. It is also useful for calculating savings when upgrading to more energy-efficient components."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Enter the power consumption (W) for each PC component: CPU, GPU, motherboard, etc.",
-            "2. Set the average daily usage hours and load profile (regular use, gaming, rendering, etc.).",
-            "3. Select residential or commercial electricity rate plan.",
-            "4. View the estimated monthly and annual electricity cost along with total kWh usage."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "The GPU is the largest power consumer in a gaming PC. A high-end GPU under full load can draw more power than all other components combined.",
-            "Real-world power draw is often lower than the TDP rating. Use monitoring tools like GPU-Z or HWiNFO64 to measure actual consumption for greater accuracy.",
-            "Korean electricity uses a tiered (progressive) rate. Exceeding 200 kWh/month significantly increases the per-unit rate, so be sure to check your billing tier.",
-            "Standby power consumption also adds up to thousands of won per year. Get into the habit of using sleep mode or full shutdown when not in use."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "Is the PSU wattage rating the same as power consumption?",
-              "a": "No. The PSU's rated wattage is the maximum it can supply. Actual consumption is the sum of what components are drawing at any given moment. Use the sum of component TDPs as your baseline."
-            },
-            {
-              "q": "Does the result include VAT?",
-              "a": "Yes. Results include the climate and fuel adjustment charges, 10% VAT and the 2.7% power industry fund."
-            },
-            {
-              "q": "Can I calculate electricity costs for a crypto mining rig?",
-              "a": "Yes. Set usage to 24 hours a day at full load to simulate mining conditions. Also check whether a commercial electricity plan applies to your situation."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is the PC Electricity Cost Calculator?",
-        "description": "The PC Electricity Cost Calculator estimates monthly and annual electricity bills by inputting the power consumption (watts) of each PC component—CPU, GPU, memory, storage, and more. It applies Korean residential and commercial electricity rate tiers to produce estimates close to your actual bill. It is also useful for calculating savings when upgrading to more energy-efficient components."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter the power consumption (W) for each PC component: CPU, GPU, motherboard, etc.",
-          "2. Set the average daily usage hours and load profile (regular use, gaming, rendering, etc.).",
-          "3. Select residential or commercial electricity rate plan.",
-          "4. View the estimated monthly and annual electricity cost along with total kWh usage."
-        ]
-      },
-      "tips": {
-        "title": "Pro Tips",
-        "items": [
-          "The GPU is the largest power consumer in a gaming PC. A high-end GPU under full load can draw more power than all other components combined.",
-          "Real-world power draw is often lower than the TDP rating. Use monitoring tools like GPU-Z or HWiNFO64 to measure actual consumption for greater accuracy.",
-          "Korean electricity uses a tiered (progressive) rate. Exceeding 200 kWh/month significantly increases the per-unit rate, so be sure to check your billing tier.",
-          "Standby power consumption also adds up to thousands of won per year. Get into the habit of using sleep mode or full shutdown when not in use."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Is the PSU wattage rating the same as power consumption?",
-            "a": "No. The PSU's rated wattage is the maximum it can supply. Actual consumption is the sum of what components are drawing at any given moment. Use the sum of component TDPs as your baseline."
-          },
-          {
-            "q": "Does the result include VAT?",
-            "a": "Yes. Results include the climate and fuel adjustment charges, 10% VAT and the 2.7% power industry fund."
-          },
-          {
-            "q": "Can I calculate electricity costs for a crypto mining rig?",
-            "a": "Yes. Set usage to 24 hours a day at full load to simulate mining conditions. Also check whether a commercial electricity plan applies to your situation."
-          }
         ]
       }
     }
@@ -36870,6 +36301,8 @@
       }
     },
     "field": {
+      "military": "Military service period (months)",
+      "militaryHint": "For SME/mid-size employees and young founders, the youth age cap (34) is extended by the service period, up to 39",
       "profileTitle": "Your situation",
       "deposit": "Jeonse deposit",
       "location": "Location",
@@ -36919,7 +36352,7 @@
       "fail": "Not eligible",
       "limit": "≤ {value}",
       "homeless": "Homeless head of household",
-      "age": "Age 19–34 (for SME/mid-size employees or young founders who completed military service, extended by the service period up to 39 — check yourself if 35+)",
+      "age": "Age 19–34 (SME/mid-size employees and young founders: extended by military service period, up to 39)",
       "married": "Newlywed (married ≤ 7 years)",
       "newborn": "Birth within 2 years",
       "income": "Combined annual income",
@@ -44143,77 +43576,6 @@
           "Self-employed/freelance income uses separate statistics",
           "Real purchasing power may differ from nominal salary due to inflation",
           "Same salary feels different depending on region (Seoul vs. rural areas)"
-        ]
-      },
-      "guide": {
-        "whatIs": {
-          "title": "What is 'My Salary Rank'?",
-          "description": "My Salary Rank shows where your annual salary stands among all Korean workers using official data from the National Tax Service (NTS) wage statistics and Statistics Korea salary survey. Filter by age group, gender, and industry to see your relative position within a specific peer group. Anonymous community-sourced real-world data is combined with official statistics for a more realistic comparison."
-        },
-        "howToUse": {
-          "title": "How to Use",
-          "items": [
-            "1. Enter your annual salary (pre-tax total compensation).",
-            "2. Optionally select your age group, gender, and industry for a more targeted comparison.",
-            "3. View your percentile rank among all workers and within your specific peer group.",
-            "4. Review the salary distribution chart to visualize your position."
-          ]
-        },
-        "tips": {
-          "title": "Pro Tips",
-          "items": [
-            "The 'salary' compared here is gross annual income including bonuses and performance pay—enter your total annual cash compensation.",
-            "The same salary can feel very different depending on region, occupation, and company size. Cost-of-living differences between the Seoul metro area and other regions also matter.",
-            "For salary negotiation: knowing your percentile rank versus the industry average for your age group gives you a concrete data point for negotiation.",
-            "Use the top 10% salary threshold as a long-term career target and work backward to set annual milestones."
-          ]
-        },
-        "faq": {
-          "title": "FAQ",
-          "items": [
-            {
-              "q": "What year is the data from?",
-              "a": "The NTS wage statistics reflect the most recently published year (2023 income year). New data is typically released each October–November and the tool is updated accordingly."
-            },
-            {
-              "q": "Can freelancers or self-employed individuals use this for comparison?",
-              "a": "This tool is based on employment income (salary). Business and freelance income is reported differently, making direct comparison difficult. You can use your gross annual earnings as an approximation for reference."
-            },
-            {
-              "q": "How much do you need to earn to be in the top 1%?",
-              "a": "Based on the latest NTS statistics, the top 1% cutoff is approximately 200 million KRW per year (2023 income year). Top 10% is roughly 80 million KRW and top 20% is roughly 55 million KRW."
-            }
-          ]
-        }
-      },
-      "whatIs": {
-        "title": "What is 'My Salary Rank'?",
-        "description": "My Salary Rank shows where your annual salary stands among all Korean workers using official data from the National Tax Service (NTS) wage statistics and Statistics Korea salary survey. Filter by age group, gender, and industry to see your relative position within a specific peer group. Anonymous community-sourced real-world data is combined with official statistics for a more realistic comparison."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Enter your annual salary (pre-tax total compensation).",
-          "2. Optionally select your age group, gender, and industry for a more targeted comparison.",
-          "3. View your percentile rank among all workers and within your specific peer group.",
-          "4. Review the salary distribution chart to visualize your position."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "What year is the data from?",
-            "a": "The NTS wage statistics reflect the most recently published year (2023 income year). New data is typically released each October–November and the tool is updated accordingly."
-          },
-          {
-            "q": "Can freelancers or self-employed individuals use this for comparison?",
-            "a": "This tool is based on employment income (salary). Business and freelance income is reported differently, making direct comparison difficult. You can use your gross annual earnings as an approximation for reference."
-          },
-          {
-            "q": "How much do you need to earn to be in the top 1%?",
-            "a": "Based on the latest NTS statistics, the top 1% cutoff is approximately 200 million KRW per year (2023 income year). Top 10% is roughly 80 million KRW and top 20% is roughly 55 million KRW."
-          }
         ]
       }
     },

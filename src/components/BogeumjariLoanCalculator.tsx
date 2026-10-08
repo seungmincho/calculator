@@ -11,8 +11,8 @@ import ShareResult from '@/components/ShareResult';
 import MobileResultLink from '@/components/MobileResultLink';
 import ToolIcon from '@/components/ToolIcon';
 import {
-  type LoanType, type Owned, type HouseKind, type Region, type Credit, type CheckStatus,
-  REGIONS, CREDITS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPE_INFO, DIDIMDOL, FRAUD, HOUSE_PRICE_LIMIT,
+  type LoanType, type Owned, type HouseKind, type Region, type Credit, type CheckStatus, type CheckItem,
+  REGIONS, CREDITS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPES, DIDIMDOL, FRAUD, HOUSE_PRICE_LIMIT,
   getIncomeLimit, calcBogeumjari, didimdolHint, annuity, fmtKRW, rateFor,
 } from '@/utils/bogeumjari';
 import { useTranslations } from '@/lib/i18n';
@@ -97,7 +97,7 @@ export default function BogeumjariLoanCalculator() {
   const applyInputs = useCallback((get: (k: string) => string | null) => {
     const num = (k: string, set: (v: string) => void) => { const v = get(k); if (v && /^\d+$/.test(v)) set(Number(v).toLocaleString()); };
     num('income', setIncome); num('price', setPrice); num('debt', setDebt); num('want', setWant);
-    const ty = get('type'); if (ty && ty in LOAN_TYPE_INFO) setLoanType(ty as LoanType);
+    const ty = get('type'); if (ty && (LOAN_TYPES as string[]).includes(ty)) setLoanType(ty as LoanType);
     const pd = get('period'); if (pd && pd in PERIOD_RATES) setPeriod(pd);
     const c = get('children'); if (c && ['0', '1', '2', '3plus'].includes(c)) setChildren(c);
     const a = get('age'); if (a && /^\d{1,3}$/.test(a)) setAge(a);
@@ -130,6 +130,13 @@ export default function BogeumjariLoanCalculator() {
   const won = (n: number) => t('won', { n: Math.round(n).toLocaleString() });
   const yearsLabel = (n: string | number) => t('years', { n });
   const fraud = perks.includes('fraud');
+  const typeLabel = t(`loanType.${loanType}.label`);
+  const checkLabel = (c: CheckItem) => t(`checks.${c.id}.label`, c.vars);
+  const checkDetail = (c: CheckItem) => t(`checks.${c.id}.${c.msg}`, c.vars);
+  const limitLabel = (key: 'ltv' | 'cap' | 'dti') => !result ? ''
+    : key === 'ltv' ? t('limits.ltv', { pct: Math.round(result.ltv * 100), note: t(`limits.ltvNote.${result.ltvNote}`) })
+    : key === 'cap' ? t('limits.cap', { type: fraud ? t('perks.fraud') : typeLabel })
+    : t('limits.dti', { cap: result.dtiCap });
 
   const flash = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
@@ -148,9 +155,9 @@ export default function BogeumjariLoanCalculator() {
     const fails = result.checks.filter((c) => c.status === 'fail');
     const lines = [
       t('copy.title'),
-      t('copy.type', { type: LOAN_TYPE_INFO[loanType].label, region: t(`region.${region}`), years: period, method: t(`method.${method}`) }),
-      result.eligible ? t('copy.eligible') : t('copy.notEligible', { reasons: fails.map((f) => f.detail).join(' / ') }),
-      t('copy.maxLoan', { amount: fmtKRW(result.maxLoan), basis: result.binding.label }),
+      t('copy.type', { type: typeLabel, region: t(`region.${region}`), years: period, method: t(`method.${method}`) }),
+      result.eligible ? t('copy.eligible') : t('copy.notEligible', { reasons: fails.map(checkDetail).join(' / ') }),
+      t('copy.maxLoan', { amount: fmtKRW(result.maxLoan), basis: limitLabel(result.binding.key) }),
       t('copy.loan', { amount: fmtKRW(result.loan) }),
       t('copy.rate', {
         rate: result.rate.toFixed(2), base: result.baseRate.toFixed(2), discount: result.totalDiscount.toFixed(1),
@@ -251,8 +258,7 @@ export default function BogeumjariLoanCalculator() {
             <div>
               <span className={label}>{t('form.type')}</span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {(Object.keys(LOAN_TYPE_INFO) as LoanType[]).map((type) => {
-                  const info = LOAN_TYPE_INFO[type];
+                {LOAN_TYPES.map((type) => {
                   const active = loanType === type;
                   return (
                     <button
@@ -262,9 +268,9 @@ export default function BogeumjariLoanCalculator() {
                       aria-pressed={active}
                       className={`p-3 rounded-xl border text-left transition-colors ${active ? 'border-primary bg-primary-soft' : 'border-line hover:bg-subtle'}`}
                     >
-                      <div className={`font-semibold text-sm ${active ? 'text-primary' : 'text-fg'}`}>{info.label}</div>
-                      <div className="text-xs text-muted">{info.sublabel}</div>
-                      <div className="text-xs text-sub mt-1">{info.benefit}</div>
+                      <div className={`font-semibold text-sm ${active ? 'text-primary' : 'text-fg'}`}>{t(`loanType.${type}.label`)}</div>
+                      <div className="text-xs text-muted">{t(`loanType.${type}.sublabel`)}</div>
+                      <div className="text-xs text-sub mt-1">{t(`loanType.${type}.benefit`)}</div>
                     </button>
                   );
                 })}
@@ -404,7 +410,7 @@ export default function BogeumjariLoanCalculator() {
                 return (
                   <label key={p.id} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border border-line text-sm ${disabled ? 'opacity-50' : 'cursor-pointer hover:bg-subtle'}`}>
                     <input type="checkbox" className="accent-blue-600 w-4 h-4" checked={perks.includes(p.id) && !disabled} disabled={disabled} onChange={() => togglePerk(p.id)} />
-                    <span className="flex-1 text-body">{p.label} <span className="text-xs text-muted">{p.desc}</span></span>
+                    <span className="flex-1 text-body">{t(`perks.${p.id}`)} <span className="text-xs text-muted">{t(`perks.${p.id}Desc`)}</span></span>
                     <span className="tabular-nums text-sub">{p.rate.toFixed(1)}%p</span>
                   </label>
                 );
@@ -440,7 +446,7 @@ export default function BogeumjariLoanCalculator() {
               {!result.eligible && (
                 <div className="bg-red-50 text-red-700 rounded-xl p-4 text-sm space-y-1">
                   {result.checks.filter((c) => c.status === 'fail').map((c) => (
-                    <div key={c.label}><span className="font-semibold">{c.label}</span> — {c.detail}</div>
+                    <div key={c.label}><span className="font-semibold">{checkLabel(c)}</span> — {checkDetail(c)}</div>
                   ))}
                   <div className="text-xs pt-1">{t('result.referenceOnly')}</div>
                 </div>
@@ -449,13 +455,13 @@ export default function BogeumjariLoanCalculator() {
               <div aria-live="polite">
                 <div className="text-sm text-muted">{t('result.maxLoan')}</div>
                 <div className="text-3xl font-bold text-fg tabular-nums">{fmtKRW(result.maxLoan)}</div>
-                <div className="text-xs text-muted mt-1">{t('result.bindingBy', { label: result.binding.label })}</div>
+                <div className="text-xs text-muted mt-1">{t('result.bindingBy', { label: limitLabel(result.binding.key) })}</div>
               </div>
 
               <div className="bg-subtle rounded-xl p-4 space-y-1.5 text-sm">
                 {result.limits.map((l) => (
                   <div key={l.key} className="flex justify-between gap-2">
-                    <span className={l.key === result.binding.key ? 'text-fg font-semibold' : 'text-sub'}>{l.label}</span>
+                    <span className={l.key === result.binding.key ? 'text-fg font-semibold' : 'text-sub'}>{limitLabel(l.key)}</span>
                     <span className={`tabular-nums ${l.key === result.binding.key ? 'text-fg font-semibold' : 'text-sub'}`}>{fmtKRW(l.amount)}</span>
                   </div>
                 ))}
@@ -486,7 +492,7 @@ export default function BogeumjariLoanCalculator() {
                 </div>
                 {result.discounts.map((d) => (
                   <div key={d.label} className="flex justify-between text-sub">
-                    <span>{d.label}</span>
+                    <span>{t(`perks.${d.id}`)}</span>
                     <span className="tabular-nums">−{d.rate.toFixed(1)}%p</span>
                   </div>
                 ))}
@@ -523,7 +529,7 @@ export default function BogeumjariLoanCalculator() {
                   {result.checks.map((c) => (
                     <li key={c.label} className="py-2 flex gap-3">
                       <span className={`w-16 flex-shrink-0 font-semibold ${STATUS_CLS[c.status]}`}>{t(`status.${c.status}`)}</span>
-                      <span className="text-body"><span className="text-fg font-medium">{c.label}</span> · {c.detail}</span>
+                      <span className="text-body"><span className="text-fg font-medium">{checkLabel(c)}</span> · {checkDetail(c)}</span>
                     </li>
                   ))}
                 </ul>
@@ -541,7 +547,7 @@ export default function BogeumjariLoanCalculator() {
                 fileName="bogeumjari-loan"
                 card={{
                   tool: t('title'),
-                  label: t('share.label', { type: LOAN_TYPE_INFO[loanType].label }),
+                  label: t('share.label', { type: typeLabel }),
                   headline: fmtKRW(result.maxLoan),
                   sub: t('share.sub', { loan: fmtKRW(result.loan), monthly: won(result.methods[method].first), method: t(`method.${method}`) }),
                   rows: [
@@ -552,7 +558,7 @@ export default function BogeumjariLoanCalculator() {
                     { label: t('share.eligibility'), value: t(result.eligible ? 'share.eligible' : 'share.notEligible') },
                   ],
                 }}
-                text={t('share.text', { type: LOAN_TYPE_INFO[loanType].label, limit: fmtKRW(result.maxLoan), rate: result.rate.toFixed(2), monthly: won(result.methods[method].first) })}
+                text={t('share.text', { type: typeLabel, limit: fmtKRW(result.maxLoan), rate: result.rate.toFixed(2), monthly: won(result.methods[method].first) })}
               />
               {showSaveButton && (
                 <button type="button" onClick={handleSave} className="ui-btn-soft w-full py-2.5 text-sm">
@@ -785,7 +791,7 @@ export default function BogeumjariLoanCalculator() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {SUMMARY_TYPES.map((type) => (
             <div key={type} className="bg-subtle rounded-xl p-4">
-              <div className="font-semibold text-sm text-fg mb-2">{LOAN_TYPE_INFO[type].label}</div>
+              <div className="font-semibold text-sm text-fg mb-2">{t(`loanType.${type}.label`)}</div>
               <ul className="space-y-1 text-xs text-sub list-disc pl-4">
                 {((t.raw(`summary.${type}`) as string[] | undefined) ?? []).map((item) => <li key={item}>{item}</li>)}
               </ul>

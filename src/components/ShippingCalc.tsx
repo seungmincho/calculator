@@ -24,9 +24,9 @@ const BOX_PRESETS: { id: string; w: number; h: number; d: number }[] = [
 
 const TABLE_WEIGHTS = [2, 5, 10, 20]
 
-function fmtPrice(v: number | null): string {
+function fmtPrice(v: number | null, unit: string): string {
   if (v === null) return '—'
-  return v.toLocaleString() + '원'
+  return v.toLocaleString() + unit
 }
 
 export default function ShippingCalc() {
@@ -332,7 +332,7 @@ export default function ShippingCalc() {
           {/* Weight Summary */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              무게 계산
+              {t('weightSummary')}
             </h2>
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 bg-subtle rounded-lg text-center">
@@ -357,7 +357,7 @@ export default function ShippingCalc() {
               {carrierCategory === 'standard'
                 ? <Truck className="w-5 h-5 text-blue-600" />
                 : <Store className="w-5 h-5 text-blue-600" />}
-              {carrierCategory === 'standard' ? '일반 택배사별 요금' : '편의점 택배 요금'}
+              {t(`ratesTitle.${carrierCategory}`)}
             </h2>
 
             <div className="space-y-2">
@@ -386,11 +386,11 @@ export default function ShippingCalc() {
                             <span className="px-1.5 py-0.5 text-xs bg-primary text-white rounded-full font-medium">{t('result.cheapest')}</span>
                           )}
                           {carrier.cvsPickupOnly && !isUnavailable && (
-                            <span className="px-1.5 py-0.5 text-xs bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 rounded-full">편의점 수령</span>
+                            <span className="px-1.5 py-0.5 text-xs bg-soft text-sub rounded-full">{t('result.cvsPickup')}</span>
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-faint">배송 {carrier.deliveryDays}</span>
+                          <span className="text-xs text-faint">{t('result.delivery', { days: carrier.deliveryDays })}</span>
                           {carrier.note && (
                             <span className="text-xs text-faint">· {carrier.note}</span>
                           )}
@@ -402,12 +402,12 @@ export default function ShippingCalc() {
                         ) : (
                           <>
                             <span className={`text-lg font-bold ${isCheapest ? 'text-sub' : 'text-fg'}`}>
-                              {price!.toLocaleString()}원
+                              {won(price!)}
                             </span>
                             <button
                               onClick={() => copyToClipboard(price!.toString(), carrier.id)}
                               className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-                              title="복사"
+                              title={t('result.copy')}
                             >
                               {copiedId === carrier.id
                                 ? <Check className="w-3.5 h-3.5 text-green-600" />
@@ -437,13 +437,15 @@ export default function ShippingCalc() {
             {/* Price Range Summary */}
             {availableResults.length > 1 && (
               <div className="mt-5 p-4 bg-subtle rounded-lg">
-                <div className="text-sm text-muted mb-1">가격 범위</div>
+                <div className="text-sm text-muted mb-1">{t('priceRange.title')}</div>
                 <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                  {availableResults[0].price!.toLocaleString()}원 ~ {availableResults[availableResults.length - 1].price!.toLocaleString()}원
+                  {won(availableResults[0].price!)} ~ {won(availableResults[availableResults.length - 1].price!)}
                 </div>
                 <div className="text-xs text-faint mt-1">
-                  최대 {(availableResults[availableResults.length - 1].price! - availableResults[0].price!).toLocaleString()}원 차이
-                  {' · '}{availableResults.length}개 서비스 이용 가능
+                  {t('priceRange.detail', {
+                    diff: won(availableResults[availableResults.length - 1].price! - availableResults[0].price!),
+                    n: availableResults.length,
+                  })}
                 </div>
               </div>
             )}
@@ -467,7 +469,7 @@ export default function ShippingCalc() {
                   className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
                 >
                   <Save className="w-4 h-4" />
-                  저장하기
+                  {t('save')}
                 </button>
               </div>
             )}
@@ -535,7 +537,7 @@ export default function ShippingCalc() {
                   <td className="px-3 py-2 text-muted whitespace-nowrap">{c.serviceLabel}</td>
                   {TABLE_WEIGHTS.map(w => (
                     <td key={w} className="px-3 py-2 text-right text-body tabular-nums">
-                      {fmtPrice(getCarrierPrice(c, w, 0, 'mainland'))}
+                      {fmtPrice(getCarrierPrice(c, w, 0, 'mainland'), t('result.won'))}
                     </td>
                   ))}
                   <td className="px-3 py-2 text-right text-faint whitespace-nowrap">{c.maxWeight}kg/{c.maxGirth}cm</td>
@@ -590,7 +592,7 @@ export default function ShippingCalc() {
         formatResult={(result) => {
           const rates = Object.values(result as Record<string, number>).filter(Boolean)
           if (rates.length === 0) return ''
-          return `최저: ${Math.min(...rates).toLocaleString()}원`
+          return t('historyLowest', { price: won(Math.min(...rates)) })
         }}
       />
     </div>

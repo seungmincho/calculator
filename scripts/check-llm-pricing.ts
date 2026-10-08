@@ -1,7 +1,7 @@
 // LLM 비용 계산 회귀 체크: node scripts/check-llm-pricing.ts
 import assert from 'node:assert/strict'
 import {
-  MODELS, VENDORS, textStats, estimateTokens, requestCost, scenarioCost, contextFit, compareModels, tierPrice, toMarkdown, fmtUSD, fmtKRW,
+  MODELS, VENDORS, textStats, estimateTokens, requestCost, scenarioCost, contextFit, compareModels, tierPrice, toMarkdown, fmtUSD, fmtKRW, modelsOn,
 } from '../src/utils/llmPricing.ts'
 
 const m = (id: string) => MODELS.find((x) => x.id === id)!
@@ -13,7 +13,16 @@ for (const x of MODELS) {
   assert.ok(VENDORS[x.vendor], x.id)
   assert.ok(x.price.cached < x.price.input && x.price.input <= x.price.output, `${x.id} 단가 순서`)
   if (x.long) assert.ok(x.long.input > x.price.input && x.long.over < x.ctx, `${x.id} 장문 단가`)
+  if (x.regular) assert.ok(x.promoUntil && x.regular.cached < x.regular.input && x.regular.input <= x.regular.output, `${x.id} 정가`)
 }
+
+// 프로모션: 종료일까지는 프로모션가, 다음 날부터 정가 + 표시 제거 (Gemini 3.8 Flash $0.75/$3.75 → $1.5/$7.5)
+const g38 = (d: string) => modelsOn(d).find((x) => x.id === 'gemini-3.8-flash')!
+assert.equal(g38('2026-12-31').price.input, 0.75)
+assert.equal(g38('2026-12-31').promoUntil, '2026-12-31')
+assert.deepEqual(g38('2027-01-01').price, { input: 1.5, output: 7.5, cached: 0.15 })
+assert.equal(g38('2027-01-01').promoUntil, undefined)
+assert.equal(modelsOn('2027-01-01').find((x) => x.id === 'claude-sonnet-5-5'), m('claude-sonnet-5-5'), '프로모션 없는 모델은 그대로')
 
 // 1M 입력 + 1M 출력, 캐시 없음 = 입력단가 + 출력단가
 const base = { rpd: 1, inTok: 1_000_000, outTok: 1_000_000, prefixPct: 0, hitPct: 0, batch: false }

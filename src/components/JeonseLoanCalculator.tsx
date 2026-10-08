@@ -21,7 +21,7 @@ import {
 
 const DEFAULTS = {
   dep: 200_000_000, inc: 45_000_000, asset: 200_000_000, age: 30, kids: 0,
-  mar: 0, nb: 0, dual: 0, sme: 0, home: 1, area: 1, ec: 0,
+  mar: 0, nb: 0, dual: 0, sme: 0, mil: 0, home: 1, area: 1, ec: 0,
   want: 0, br: 4.0, yrs: 2, conv: legalCapRate(BASE_RATE.rate), dr: 70,
 }
 type NumKey = keyof typeof DEFAULTS
@@ -89,7 +89,7 @@ export default function JeonseLoanCalculator() {
 
   const profile: Profile = {
     deposit: s.dep, location: s.loc, income: s.inc, netAsset: s.asset, age: s.age,
-    married: s.mar, kids: Math.min(3, Math.round(s.kids)), newborn: s.nb, dual: s.dual, sme: s.sme,
+    married: s.mar, kids: Math.min(3, Math.round(s.kids)), newborn: s.nb, dual: s.dual, sme: s.sme, military: s.mil,
     homeless: s.home, area: s.area, econtract: s.ec, want: s.want, bankRate: s.br,
   }
   const quotes = useMemo(() => PRODUCTS.map((p) => quote(p, profile)), [JSON.stringify(profile)]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -165,6 +165,15 @@ export default function JeonseLoanCalculator() {
                 </label>
               ))}
             </div>
+            {/* 중소·중견 재직(창업) 청년만 병역 복무 기간만큼 청년전용 나이 상한 연장 */}
+            {s.sme === 1 && (
+              <div>
+                <label htmlFor="jl-mil" className="block text-sm font-medium text-body mb-2">{t('field.military')}</label>
+                <input id="jl-mil" type="number" inputMode="numeric" min={0} max={120} value={s.mil}
+                  onChange={(e) => set('mil', Number(e.target.value))} className="ui-field px-4 py-3 tabular-nums" />
+                <p className="text-xs text-muted mt-1">{t('field.militaryHint')}</p>
+              </div>
+            )}
           </div>
 
           <div className="ui-card p-6 space-y-4">

@@ -21,6 +21,7 @@ export interface Profile {
   newborn: number      // 1 = 대출접수일 기준 2년 내 출산
   dual: number         // 1 = 맞벌이 (신생아 특례 소득 2억)
   sme: number          // 1 = 중소·중견기업 재직/청년창업 (청년 0.3%p)
+  military?: number    // 병역 복무 개월 수 (sme 청년만 나이 상한 연장)
   homeless: number     // 1 = 세대원 전원 무주택 세대주
   area: number         // 1 = 전용 85㎡ 이하
   econtract: number    // 1 = 부동산 전자계약 (0.1%p)
@@ -112,8 +113,10 @@ export interface Check { key: string; pass: boolean; value?: number }
 export function checks(p: Product, x: Profile): Check[] {
   const list: Check[] = []
   if (p !== 'bank') list.push({ key: 'homeless', pass: x.homeless === 1 })
-  // ponytail: 39세 연장은 중소·중견 재직(창업) + 병역이행 기간만큼(최대 5년) — 병역 입력이 없어 sme만으로 최대치 허용, 라벨(check.age)에 조건 명시. 정확히 하려면 복무 기간 입력 추가
-  if (p === 'youth') list.push({ key: 'age', pass: x.age >= 19 && x.age <= (x.sme === 1 ? 39 : 34) })
+  // 청년전용: 만 34세 이하. 단 중소·중견 재직(창업) 청년은 병역 복무 기간만큼 연장, 최대 만 39세 (FP05020301 대출대상 2항)
+  // 만 나이가 정수라 복무 개월/12를 그대로 더하면 12개월 단위는 정확, 그 사이는 보수적(예: 18개월 → 35세까지)
+  const youthMax = Math.min(39, 34 + (x.sme === 1 ? (x.military ?? 0) / 12 : 0))
+  if (p === 'youth') list.push({ key: 'age', pass: x.age >= 19 && x.age <= youthMax })
   if (p === 'newlywed') list.push({ key: 'married', pass: x.married === 1 })
   if (p === 'newborn') list.push({ key: 'newborn', pass: x.newborn === 1 })
   const ic = incomeCap(p, x)

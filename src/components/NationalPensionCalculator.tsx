@@ -313,7 +313,8 @@ export default function NationalPensionCalculator() {
                   <input type="range" min={70} max={100} value={life} aria-valuetext={t('u.ageOf', { a: life })} onChange={(e) => setLife(Number(e.target.value))} className="w-full accent-[var(--primary)]" />
                 </label>
               </div>
-              <div className="overflow-x-auto -mx-2">
+              {/* relative: 표 안 sr-only(absolute)가 스크롤 영역을 벗어나 모바일 페이지를 391px로 넓히지 않게 */}
+              <div className="relative overflow-x-auto -mx-2">
                 <table className="w-full text-sm min-w-[480px]">
                   <thead>
                     <tr className="text-muted border-b border-line text-left">
