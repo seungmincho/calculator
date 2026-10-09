@@ -38,22 +38,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   other: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  bug: '버그',
-  feature: '기능요청',
-  suggestion: '건의',
-  other: '기타',
-}
-
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string, t: (key: string, vars?: Record<string, unknown>) => string): string {
   const date = new Date(dateStr)
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
 
-  if (diffDays === 0) return '오늘'
-  if (diffDays === 1) return '어제'
-  if (diffDays < 30) return `${diffDays}일 전`
+  if (diffDays === 0) return t('date.today')
+  if (diffDays === 1) return t('date.yesterday')
+  if (diffDays < 30) return t('date.daysAgo', { days: diffDays })
 
   return date.toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -64,6 +57,9 @@ function formatDate(dateStr: string): string {
 
 export default function AdminFeedback() {
   const t = useTranslations('adminFeedback')
+  const tc = useTranslations('common')
+  // 알 수 없는 카테고리는 원래 값을 그대로 보여 준다
+  const categoryLabel = (c: string) => CATEGORY_COLORS[c] ? t(`category.${c}`) : c
 
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -76,7 +72,7 @@ export default function AdminFeedback() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  const [loadError, setLoadError] = useState('')
+  const [loadError, setLoadError] = useState(false)
   const [hasMore, setHasMore] = useState(false)
   const [offset, setOffset] = useState(0)
 
@@ -131,7 +127,7 @@ export default function AdminFeedback() {
   const fetchInquiries = useCallback(async (reset = false) => {
     if (!storedPassword) return
     setIsLoading(true)
-    setLoadError('')
+    setLoadError(false)
 
     const currentOffset = reset ? 0 : offset
 
@@ -170,7 +166,7 @@ export default function AdminFeedback() {
       setTotalCount(total)
       setHasMore(currentOffset + LIMIT < total)
     } catch {
-      setLoadError('데이터를 불러오는데 실패했습니다.')
+      setLoadError(true)
     } finally {
       setIsLoading(false)
     }
@@ -313,7 +309,7 @@ export default function AdminFeedback() {
           className="self-start sm:self-auto flex items-center gap-1 text-sm text-muted hover:text-gray-700 dark:hover:text-gray-200 px-3 py-1.5 border border-line-strong rounded-lg transition-colors"
         >
           <LogOut className="w-3.5 h-3.5" />
-          로그아웃
+          {t('logout')}
         </button>
       </div>
 
@@ -344,7 +340,7 @@ export default function AdminFeedback() {
           >
             <option value="all">{t('filter.all')}</option>
             {['bug', 'feature', 'suggestion', 'other'].map(cat => (
-              <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
+              <option key={cat} value={cat}>{categoryLabel(cat)}</option>
             ))}
           </select>
         </div>
@@ -353,7 +349,7 @@ export default function AdminFeedback() {
       {/* Error */}
       {loadError && (
         <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-xl p-4 text-red-700 dark:text-red-300 text-sm">
-          {loadError}
+          {t('loadError')}
         </div>
       )}
 
@@ -389,7 +385,7 @@ export default function AdminFeedback() {
                   >
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[inquiry.category] ?? CATEGORY_COLORS.other}`}>
-                        {CATEGORY_LABELS[inquiry.category] ?? inquiry.category}
+                        {categoryLabel(inquiry.category)}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -414,7 +410,7 @@ export default function AdminFeedback() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1 text-sm text-muted">
                         <Clock className="w-3 h-3 flex-shrink-0" />
-                        {formatDate(inquiry.created_at)}
+                        {formatDate(inquiry.created_at, t)}
                       </div>
                     </td>
                     <td className="px-4 py-3">
@@ -445,7 +441,7 @@ export default function AdminFeedback() {
                           <p className="text-sm text-sub whitespace-pre-wrap">{inquiry.message}</p>
                           {inquiry.page_url && (
                             <p className="text-xs text-gray-400">
-                              페이지: <span className="text-blue-500">{inquiry.page_url}</span>
+                              {t('pageUrl')}: <span className="text-blue-500">{inquiry.page_url}</span>
                             </p>
                           )}
                         </div>
@@ -473,7 +469,7 @@ export default function AdminFeedback() {
                 <div className="flex items-center gap-2 flex-wrap">
                   {!inquiry.is_read && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[inquiry.category] ?? CATEGORY_COLORS.other}`}>
-                    {CATEGORY_LABELS[inquiry.category] ?? inquiry.category}
+                    {categoryLabel(inquiry.category)}
                   </span>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
@@ -498,7 +494,7 @@ export default function AdminFeedback() {
 
               <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
                 <Clock className="w-3 h-3" />
-                <span>{formatDate(inquiry.created_at)}</span>
+                <span>{formatDate(inquiry.created_at, t)}</span>
                 {inquiry.contact && <><span>·</span><span>{inquiry.contact}</span></>}
               </div>
 
@@ -511,8 +507,8 @@ export default function AdminFeedback() {
                 </p>
                 <span className="inline-flex items-center gap-1 text-xs text-blue-500 mt-1">
                   {expandedId === inquiry.id
-                    ? <><ChevronUp className="w-3 h-3" />접기</>
-                    : <><ChevronDown className="w-3 h-3" />더보기</>
+                    ? <><ChevronUp className="w-3 h-3" />{t('collapse')}</>
+                    : <><ChevronDown className="w-3 h-3" />{t('expand')}</>
                   }
                 </span>
               </button>
@@ -560,7 +556,7 @@ export default function AdminFeedback() {
                 onClick={() => setConfirmDeleteId(null)}
                 className="flex-1 px-4 py-2 border border-line-strong rounded-lg text-body hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium"
               >
-                취소
+                {tc('cancel')}
               </button>
               <button
                 onClick={() => handleDelete(confirmDeleteId)}

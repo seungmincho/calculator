@@ -65,7 +65,7 @@ export default function InstallPrompt() {
     if (!deferredPrompt) {
       // For iOS or when prompt is not available, show instructions
       if (isIOS) {
-        alert('iOS 설치 방법:\n1. Safari 공유 버튼 탭\n2. "홈 화면에 추가" 선택\n3. "추가" 버튼 탭')
+        alert(t('pwa.ios.alert'))
       }
       return
     }
@@ -107,7 +107,7 @@ export default function InstallPrompt() {
           id="install-button"
           onClick={handleInstallClick}
           className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          aria-label="앱 설치"
+          aria-label={t('pwa.install.ariaLabel')}
         >
           <Download className="w-6 h-6" />
         </button>
@@ -167,12 +167,12 @@ export default function InstallPrompt() {
           {isIOS ? (
             <div className="space-y-3 mb-6">
               <p className="text-sm text-sub font-medium">
-                iOS 설치 방법:
+                {t('pwa.ios.title')}
               </p>
               <div className="bg-soft p-3 rounded-lg text-sm space-y-1">
-                <p>1. Safari 하단의 공유 버튼(□↗) 탭</p>
-                <p>2. "홈 화면에 추가" 선택</p>
-                <p>3. 우상단 "추가" 버튼 탭</p>
+                <p>{t('pwa.ios.step1')}</p>
+                <p>{t('pwa.ios.step2')}</p>
+                <p>{t('pwa.ios.step3')}</p>
               </div>
             </div>
           ) : null}

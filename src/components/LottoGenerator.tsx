@@ -722,7 +722,7 @@ export default function LottoGenerator() {
           onClearHistories={clearHistories}
           formatResult={(result: Record<string, unknown>) => {
             const sets = Number(result.totalSets) || 1
-            return `${sets}게임`
+            return t('history.setsOnly', { sets })
           }}
         />
       </div>
@@ -972,9 +972,9 @@ export default function LottoGenerator() {
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-sub">
               {searchResult ? (
-                <>{searchResult.round}회차 ({searchResult.drawDate})</>
+                <>{t('roundLabel', { round: searchResult.round })} ({searchResult.drawDate})</>
               ) : latestWinning ? (
-                <>{latestWinning.round}회차 ({latestWinning.drawDate})</>
+                <>{t('roundLabel', { round: latestWinning.round })} ({latestWinning.drawDate})</>
               ) : (
                 <>{t('winChecker.noWinningData')}</>
               )}
@@ -1050,7 +1050,7 @@ export default function LottoGenerator() {
               {checkResult.prizeRank > 0 ? `🎉 ${checkResult.prize}` : checkResult.prize}
             </div>
             <div className="text-sm opacity-90">
-              {t('winChecker.matched')}: {checkResult.matchedNumbers.length}개
+              {t('winChecker.matched')}: {t('winChecker.matchedCount', { count: checkResult.matchedNumbers.length })}
               {checkResult.matchedBonus && ` + ${t('winChecker.bonus')}`}
             </div>
             {checkResult.matchedNumbers.length > 0 && (
@@ -1148,7 +1148,7 @@ export default function LottoGenerator() {
                       <AlertCircle className="w-4 h-4 text-yellow-500" />
                     )}
                     <span className="text-sub">
-                      {dataStats.latestDraw}회차
+                      {t('roundLabel', { round: dataStats.latestDraw })}
                     </span>
                   </div>
                 )}
@@ -1203,7 +1203,7 @@ export default function LottoGenerator() {
               ) : (
                 <div className="text-center text-muted">
                   <AlertCircle className="w-6 h-6 mx-auto mb-2" />
-                  <div className="text-sm">최신 회차 정보를 불러올 수 없습니다</div>
+                  <div className="text-sm">{t('latestUnavailable')}</div>
                 </div>
               )}
             </div>
@@ -1270,21 +1270,21 @@ export default function LottoGenerator() {
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-soft rounded-lg p-3 text-center">
                 <div className="text-lg font-bold text-fg">
-                  {Math.max(...numberStats.map(s => s.frequency))}회
+                  {t('frequency.times', { count: Math.max(...numberStats.map(s => s.frequency)) })}
                 </div>
-                <div className="text-xs text-gray-500">최다 출현</div>
+                <div className="text-xs text-gray-500">{t('frequency.max')}</div>
               </div>
               <div className="bg-soft rounded-lg p-3 text-center">
                 <div className="text-lg font-bold text-fg">
-                  {Math.min(...numberStats.map(s => s.frequency))}회
+                  {t('frequency.times', { count: Math.min(...numberStats.map(s => s.frequency)) })}
                 </div>
-                <div className="text-xs text-gray-500">최소 출현</div>
+                <div className="text-xs text-gray-500">{t('frequency.min')}</div>
               </div>
               <div className="bg-soft rounded-lg p-3 text-center">
                 <div className="text-lg font-bold text-fg">
-                  {(numberStats.reduce((sum, s) => sum + s.frequency, 0) / 45).toFixed(0)}회
+                  {t('frequency.times', { count: (numberStats.reduce((sum, s) => sum + s.frequency, 0) / 45).toFixed(0) })}
                 </div>
-                <div className="text-xs text-gray-500">평균 출현</div>
+                <div className="text-xs text-gray-500">{t('frequency.avg')}</div>
               </div>
             </div>
           </div>
@@ -1335,9 +1335,9 @@ export default function LottoGenerator() {
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-body">{t('stats.title')}</span>
           <div className="flex gap-4 text-xs">
-            <span className="text-green-600">1등 1:8,145,060</span>
-            <span className="text-blue-600">2등 1:1,357,510</span>
-            <span className="text-purple-600">3등 1:35,724</span>
+            <span className="text-green-600">{t('stats.ranks.first')} 1:8,145,060</span>
+            <span className="text-blue-600">{t('stats.ranks.second')} 1:1,357,510</span>
+            <span className="text-purple-600">{t('stats.ranks.third')} 1:35,724</span>
           </div>
         </div>
       </div>
@@ -1351,7 +1351,7 @@ export default function LottoGenerator() {
             <PDFExport
               data={generatedSets.length > 0 ? generatedSets : { numbers: generatedNumbers, bonusNumber, generateMethod, excludedNumbers }}
               calculatorType="lotto"
-              title="로또번호 생성 결과"
+              title={t('pdfTitle')}
               className="w-full sm:w-auto"
             />
             <FeedbackWidget 

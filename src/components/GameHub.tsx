@@ -373,7 +373,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
         {([
           { key: 'all' as ModeFilter, label: t('filterAll') || '전체', count: ALL_GAMES.length, sub: '' },
-          { key: 'multiplayer' as ModeFilter, label: t('filterMultiplayer') || '보드게임', count: BOARD_GAMES.length, sub: 'AI · 온라인' },
+          { key: 'multiplayer' as ModeFilter, label: t('filterMultiplayer') || '보드게임', count: BOARD_GAMES.length, sub: t('modeAiOnline') },
           { key: 'solo' as ModeFilter, label: t('filterSolo') || '솔로게임', count: soloGames.length, sub: t('playNow') || '바로 플레이' },
         ]).map(({ key, label, count, sub }) => (
           <button
@@ -445,7 +445,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     )}
                     {game.modes?.includes('online') && (
                       <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-md font-medium">
-                        <Users className="w-2.5 h-2.5" />온라인
+                        <Users className="w-2.5 h-2.5" />{t('badgeOnline')}
                       </span>
                     )}
                     {game.modes?.includes('solo') && !game.modes?.includes('ai') && (
@@ -566,14 +566,18 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     <button
                       onClick={() => setIsPrivateRoom(false)}
                       className={`p-1.5 rounded-lg border transition-all ${!isPrivateRoom ? 'border-emerald-500 bg-subtle text-emerald-600' : 'border-line text-gray-400'}`}
-                      title="공개 방"
+                      title={t('publicRoom')}
+                      aria-label={t('publicRoom')}
+                      aria-pressed={!isPrivateRoom}
                     >
                       <Globe className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setIsPrivateRoom(true)}
                       className={`p-1.5 rounded-lg border transition-all ${isPrivateRoom ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-600' : 'border-line text-gray-400'}`}
-                      title="비공개 방"
+                      title={t('privateRoom')}
+                      aria-label={t('privateRoom')}
+                      aria-pressed={isPrivateRoom}
                     >
                       <Lock className="w-4 h-4" />
                     </button>
@@ -631,7 +635,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                 {allWaitingRooms.map(room => {
                   const gameInfo = BOARD_GAMES.find(g => hrefToGameId(g.href) === room.gameType)
                   const gameName = gameInfo ? getGameName(gameInfo) : room.gameType
-                  const displayTitle = room.room_title || `${room.host_name}의 ${gameName} 방`
+                  const displayTitle = room.room_title || t('roomOf', { host: room.host_name, game: gameName })
                   return (
                     <div key={room.id} className="p-2.5 rounded-lg border border-line hover:border-blue-300 transition-all flex items-center gap-2.5">
                       <div className={`w-8 h-8 ${gameInfo ? getGameColor(gameInfo, 0) : 'bg-gray-400'} rounded-lg flex items-center justify-center text-base flex-shrink-0`}>

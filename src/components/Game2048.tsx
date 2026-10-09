@@ -461,8 +461,8 @@ export default function Game2048() {
         {/* Mobile hint */}
         <p className="text-xs text-center text-muted mt-4">
           {typeof window !== 'undefined' && 'ontouchstart' in window
-            ? '스와이프로 타일을 움직이세요'
-            : '방향키로 타일을 움직이세요'}
+            ? t('swipeHint')
+            : t('keysHint')}
         </p>
       </div>
 

@@ -695,44 +695,44 @@ export default function HttpStatus() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 1xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-sub mb-2">1xx — 정보 응답</h3>
+            <h3 className="font-semibold text-sub mb-2">{t('guideCards.c1xx.title')}</h3>
             <p className="text-sm text-sub">
-              요청을 받았으며 작업을 계속 진행 중임을 알립니다. 주로 WebSocket 업그레이드(101)나 사전 확인(100)에 사용됩니다.
+              {t('guideCards.c1xx.desc')}
             </p>
           </div>
           {/* 2xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-sub mb-2">2xx — 성공</h3>
+            <h3 className="font-semibold text-sub mb-2">{t('guideCards.c2xx.title')}</h3>
             <p className="text-sm text-sub">
-              요청이 성공적으로 처리되었습니다. GET 성공은 200, 리소스 생성은 201, 삭제 성공은 204를 사용하세요.
+              {t('guideCards.c2xx.desc')}
             </p>
           </div>
           {/* 3xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-sub mb-2">3xx — 리다이렉트</h3>
+            <h3 className="font-semibold text-sub mb-2">{t('guideCards.c3xx.title')}</h3>
             <p className="text-sm text-sub">
-              요청 완료를 위해 추가 동작이 필요합니다. 영구 이동은 301, 임시 이동은 302, 캐시 검증은 304를 사용합니다.
+              {t('guideCards.c3xx.desc')}
             </p>
           </div>
           {/* 4xx */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-sub mb-2">4xx — 클라이언트 오류</h3>
+            <h3 className="font-semibold text-sub mb-2">{t('guideCards.c4xx.title')}</h3>
             <p className="text-sm text-sub">
-              클라이언트 요청에 문제가 있습니다. 인증 없음(401), 권한 없음(403), 리소스 없음(404), 잘못된 요청(400)을 구분하세요.
+              {t('guideCards.c4xx.desc')}
             </p>
           </div>
           {/* 5xx */}
           <div className="bg-red-50 dark:bg-red-950 rounded-xl p-4 border border-red-200 dark:border-red-800">
-            <h3 className="font-semibold text-red-700 dark:text-red-300 mb-2">5xx — 서버 오류</h3>
+            <h3 className="font-semibold text-red-700 dark:text-red-300 mb-2">{t('guideCards.c5xx.title')}</h3>
             <p className="text-sm text-sub">
-              서버가 요청을 처리하지 못했습니다. 서버 내부 오류(500), 게이트웨이 오류(502/504), 서비스 불가(503)를 빠르게 대응하세요.
+              {t('guideCards.c5xx.desc')}
             </p>
           </div>
           {/* Tips */}
           <div className="bg-subtle rounded-xl p-4 border border-line">
-            <h3 className="font-semibold text-sub mb-2">REST API 설계 팁</h3>
+            <h3 className="font-semibold text-sub mb-2">{t('guideCards.tips.title')}</h3>
             <p className="text-sm text-sub">
-              GET→200, POST→201, DELETE→204, 인증→401, 권한→403, 없음→404, 유효성→422, Rate Limit→429, 서버 오류→500을 정확히 구분하세요.
+              {t('guideCards.tips.desc')}
             </p>
           </div>
         </div>

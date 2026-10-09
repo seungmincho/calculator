@@ -1,5 +1,13 @@
 {
   "common": {
+    "calcHistory": {
+      "title": "History",
+      "count": "{count}",
+      "clearAll": "Clear all history",
+      "empty": "No saved calculations yet.",
+      "emptyHint": "Your calculations are saved here automatically when you finish one.",
+      "clearConfirm": "Delete all saved calculation history? This can't be undone."
+    },
     "seeResult": "See result",
     "addToCalendar": "Add to calendar",
     "addToCalendarFor": "Add {title} to calendar (.ics)",
@@ -79,7 +87,15 @@
     "error": "Failed to generate PDF. Please try again."
   },
   "pwa": {
+    "ios": {
+      "title": "How to install on iOS:",
+      "step1": "1. Tap the Share button (□↗) at the bottom of Safari",
+      "step2": "2. Choose \"Add to Home Screen\"",
+      "step3": "3. Tap \"Add\" in the top right",
+      "alert": "How to install on iOS:\n1. Tap the Safari Share button\n2. Choose \"Add to Home Screen\"\n3. Tap \"Add\""
+    },
     "install": {
+      "ariaLabel": "Install app",
       "title": "Install as App",
       "subtitle": "Get faster and more convenient access",
       "now": "Install Now",
@@ -2065,6 +2081,11 @@
     }
   },
   "jsonCsvConverter": {
+    "pagination": {
+      "rowsPerPage": "Rows per page",
+      "first": "First page",
+      "last": "Last page"
+    },
     "title": "JSON ↔ CSV Converter",
     "description": "High-performance bidirectional JSON and CSV conversion. Process large datasets quickly with developer-friendly options.",
     "tabs": {
@@ -2104,6 +2125,9 @@
       "korean": "Korean Optimized"
     },
     "result": {
+      "totalRows": "{count} rows total",
+      "truncatedSuffix": "... (Output truncated. Download the file to see everything.)",
+      "truncatedNotice": "Only the first 500KB is shown for performance. Download the file or use the table view to see everything.",
       "title": "Conversion Result",
       "preview": "Preview",
       "download": "Download",
@@ -2120,6 +2144,7 @@
       "noData": "No data to display"
     },
     "validation": {
+      "tableViewHint": "table view recommended",
       "validJson": "Valid JSON",
       "invalidJson": "Invalid JSON",
       "validCsv": "Valid CSV",
@@ -4351,6 +4376,86 @@
     }
   },
   "medianIncome": {
+    "won": "₩{n}",
+    "household": "{n}-person household",
+    "benefits": {
+      "livelihood": "Livelihood benefit",
+      "medical": "Medical benefit",
+      "housing": "Housing benefit",
+      "education": "Education benefit"
+    },
+    "checker": {
+      "title": "Eligibility Checker",
+      "desc": "Enter your income and assets for a quick check of basic livelihood security eligibility",
+      "basicInfo": "Basic info",
+      "householdSize": "Household size",
+      "region": "Region",
+      "regions": {
+        "seoul": "Seoul",
+        "gyeonggi": "Gyeonggi",
+        "metro": "Metro cities·Sejong·Changwon",
+        "other": "Other areas"
+      },
+      "incomeInfo": "Income (monthly)",
+      "monthlyIncome": "Total monthly income (pre-tax)",
+      "workIncome": "Of which earned income (30% deduction)",
+      "assetInfo": "Assets",
+      "generalProperty": "General property (housing, land, etc.)",
+      "financialProperty": "Financial assets (deposits, savings, etc.)",
+      "car": "Car (standard market value)",
+      "debt": "Debt (loans, etc.)",
+      "submit": "Check eligibility",
+      "result": "Result",
+      "incomeEvaluation": "Assessed income",
+      "workDeduction": "- Earned income deduction",
+      "propertyConversion": "Income-converted assets",
+      "incomeRecognition": "Recognized income",
+      "byBenefit": "Eligibility by benefit",
+      "threshold": "(threshold: {amount})",
+      "eligible": "Eligible",
+      "ineligible": "Not eligible",
+      "notesTitle": "Notes",
+      "noteSimple": "This is a simplified check and may differ from the actual decision.",
+      "noteReview": "Support-obligor rules and work capacity are reviewed separately.",
+      "noteCenter": "For an official decision, contact your local community center.",
+      "emptyLine1": "Enter your income and assets on the left,",
+      "emptyBefore": "then press ",
+      "emptyAfter": "",
+      "formulaToggle": "Show the recognized income formula",
+      "formula1": "Recognized income = assessed income + income-converted assets",
+      "formula2": "Assessed income = actual income - household-specific expenses - earned income deduction (30%)",
+      "formula3": "Income-converted assets = (assets - basic property allowance - debt) × conversion rate",
+      "rates": "Conversion rates: general property 4.17%/mo, financial assets 6.26%/mo, car 100%/mo"
+    },
+    "table": {
+      "headerDesc": "Check the standard median income by year and household size, plus welfare program eligibility",
+      "yearTab": "{year}",
+      "yearBase": "{year} standard median income (100%)",
+      "ratioCalc": "Median income percentage calculator",
+      "ratioLabel": "Median income",
+      "ratioPlaceholder": "e.g. 75",
+      "ratioHint": "Enter any percentage to calculate it automatically (max 500%)",
+      "byRatio": "{year} standard median income by percentage",
+      "ratioPrograms": "Percentage / programs",
+      "more": "+{n} more",
+      "morePrograms": "More programs",
+      "ratioRow": "{percentage}% of median income",
+      "programs": "Eligible programs",
+      "basicBenefits": "{year} basic livelihood security thresholds by benefit",
+      "benefitType": "Benefit",
+      "localBenefits": "{year} local government livelihood benefit thresholds",
+      "regionCol": "Region",
+      "localRegions": {
+        "incheonDaegu": "Incheon, Daegu",
+        "seoul": "Seoul",
+        "busanGwangju": "Busan, Gwangju"
+      },
+      "yearCompare": "Standard median income (100%) by year ({from}–{to})",
+      "householdCol": "Household",
+      "growthRange": "{from}→{to} growth",
+      "growth": "Growth",
+      "footnote": "※ The standard median income is announced every year by the Ministry of Health and Welfare and serves as the eligibility benchmark for many welfare programs."
+    },
     "source": "Source: Ministry of Health and Welfare notice on standard median income and livelihood/medical benefit thresholds — No. 2025-135 for 2026, No. 2026-157 for 2027 (issued 29 Jul 2026). Each year's values apply from 1 January.",
     "upcoming": "The {year} standard median income applies from 1 January {year}. Applications and reviews now use the {current} values.",
     "checkerYear": "Assessed with the {year} standard median income (applies from 1 January each year).",
@@ -5317,6 +5422,15 @@
     "placeholder": "Body fat calculation results will appear when you enter body information and measurements"
   },
   "workHours": {
+    "weekdays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
     "law": {
       "breakBefore": "From Dec 10, 2026: when working hours are 4, the break may be skipped if the worker explicitly asks not to take it (new proviso to Labor Standards Act Art. 54(1)).",
       "breakAfter": "When working hours are 4, the break may be skipped if the worker explicitly asks not to take it (LSA Art. 54(1) proviso, effective Dec 10, 2026). It requires the worker's request; the employer cannot drop it unilaterally. If you worked without a break, turn off auto-apply and enter 0 minutes.",
@@ -5362,6 +5476,7 @@
       "conversion": "Wage Converter"
     },
     "input": {
+      "minUnit": "m",
       "hourlyWageNoteCurrent": "{year} Minimum Wage: {wage} KRW",
       "minWageSource": "Source: MOEL minimum wage notice",
       "useMinWage": "Min. wage",
@@ -5427,6 +5542,10 @@
       "yearlyEstimate": "Yearly Estimate"
     },
     "conversion": {
+      "dayUnit": "d",
+      "holidayPayWeek": "weekly holiday pay {pay} KRW/week",
+      "notEligible": "Under 15 hrs/week — no weekly holiday pay",
+      "netNote": "(estimated, after social insurance)",
       "title": "Wage Converter",
       "description": "Enter hourly wage and weekly hours to see daily/weekly/monthly/yearly pay",
       "hourlyWage": "Hourly Wage (KRW)",
@@ -5574,6 +5693,9 @@
     "peerIdLabel": "Peer ID"
   },
   "gameHub": {
+    "modeAiOnline": "AI · Online",
+    "badgeOnline": "Online",
+    "roomOf": "{host}'s {game} room",
     "levelUp": "Level up",
     "title": "Game Center",
     "description": "Enjoy various 1v1 games! Play online multiplayer or against the computer.",
@@ -6180,6 +6302,15 @@
     "completedBox": "completed a box! Extra turn!"
   },
   "lotto": {
+    "roundLabel": "Draw {round}",
+    "latestUnavailable": "Couldn't load the latest draw",
+    "frequency": {
+      "times": "{count} times",
+      "max": "Most frequent",
+      "min": "Least frequent",
+      "avg": "Average"
+    },
+    "pdfTitle": "Lotto number results",
     "a11y": {
       "checkNumber": "My number {n}",
       "clearCheck": "Clear entered numbers",
@@ -6263,6 +6394,11 @@
       }
     },
     "stats": {
+      "ranks": {
+        "first": "1st",
+        "second": "2nd",
+        "third": "3rd"
+      },
       "title": "Winning Probability Information",
       "firstPrize": "1st Prize Probability",
       "secondPrize": "2nd Prize Probability",
@@ -6270,6 +6406,7 @@
       "disclaimer": "* All number combinations have equal winning probability, and past statistics do not guarantee future results."
     },
     "history": {
+      "setsOnly": "{sets} games",
       "title": "Generation History",
       "empty": "No saved generation history",
       "format": "{method} {sets} games"
@@ -6299,6 +6436,7 @@
     "patternAnalysis": "Pattern analysis feature is",
     "recentTrends": "Recent trends analysis feature is",
     "winChecker": {
+      "matchedCount": "{count}",
       "title": "Check Winning",
       "inputTitle": "Enter Your Numbers",
       "resultTitle": "Check Result",
@@ -6327,6 +6465,31 @@
     }
   },
   "ladder": {
+    "selection": {
+      "title": "Pick positions ({placed}/{total} placed)",
+      "random": "Random",
+      "inOrder": "In order",
+      "allPlaced": "Everyone is placed! Start the game.",
+      "clickColumn": "Click a column on the ladder to place them",
+      "assignFirst": "Place every participant before starting the game"
+    },
+    "mode": {
+      "title": "Game mode",
+      "blind": "Blind",
+      "oneByOne": "Reveal one by one"
+    },
+    "round": {
+      "current": "Round {round}",
+      "total": "{count} rounds recorded",
+      "history": "Round history ({count} rounds)"
+    },
+    "play": {
+      "clickNameHint": "Click a name below to play it individually",
+      "column": "#{n}",
+      "playOne": "Play {name}",
+      "done": "{name} done",
+      "moving": "{name} is moving..."
+    },
     "a11y": {
       "participantAnimal": "Participant {n} animal",
       "participantName": "Participant {n} name",
@@ -6335,6 +6498,8 @@
     "title": "Ladder Game",
     "description": "Enjoy online ladder game with friends! Make fair decisions for various situations like determining order, penalties, and team division",
     "settings": {
+      "participantCount": "{count}",
+      "participantPlaceholder": "Participant {n}",
       "title": "Game Settings",
       "participants": "Participants",
       "addParticipant": "Add Participant",
@@ -6361,6 +6526,12 @@
       "placeholder": "Please generate a ladder first"
     },
     "result": {
+      "clickToReveal": "Click to reveal",
+      "rematch": "Rematch",
+      "reshuffle": "New ladder only",
+      "nextRound": "Next round",
+      "saveImage": "Save image",
+      "imageFileName": "ladder",
       "title": "Game Results",
       "share": "Share Results"
     },
@@ -6425,6 +6596,7 @@
       }
     },
     "history": {
+      "emptyRecord": "Empty record",
       "title": "Game History",
       "empty": "No saved game history",
       "format": "{participants} participants, {results} results"
@@ -6982,10 +7154,26 @@
     "placeholder": "Enter content and your QR code appears instantly"
   },
   "fuelCalculator": {
+    "vehicleTypes": {
+      "light": "Light car",
+      "compact": "Compact car",
+      "midsize": "Mid-size car",
+      "fullsize": "Full-size car",
+      "suv": "SUV",
+      "van": "Van",
+      "truck": "Truck"
+    },
+    "fuelShort": {
+      "gasoline": "Regular",
+      "premium_gasoline": "Premium",
+      "diesel": "Diesel",
+      "lpg": "LPG"
+    },
     "a11y": {
       "period": "Period"
     },
     "share": {
+      "perKm": " KRW/km",
       "textMultiplier": "Fuel reimbursement for {km} km: {amount} KRW ({fuel} at {price} KRW/L × {multiplier} · {basis})",
       "logFile": "driving-log",
       "settlementFile": "fuel-reimbursement",
@@ -13203,6 +13391,12 @@
     }
   },
   "discountCalculator": {
+    "calcMode": "Calculation mode",
+    "multiDesc": "Apply several discounts in sequence to get the effective discount rate",
+    "removeDiscount": "Remove discount",
+    "stepLabel": "Step {n} ({rate}% off)",
+    "totalSavings": "Total savings",
+    "summaryChartLabel": "Savings summary bar chart",
     "title": "Discount Calculator",
     "description": "Calculate discount rates, discounted prices, and original prices easily.",
     "mode": {
@@ -13560,6 +13754,13 @@
     }
   },
   "qrScanner": {
+    "unsupported": {
+      "title": "Browser not supported",
+      "description": "This browser doesn't support QR code scanning. Please use a modern browser such as Chrome, Edge, or Safari."
+    },
+    "cameraHint": "Start the camera to scan",
+    "openEmail": "Open email",
+    "callPhone": "Call",
     "title": "QR Code Scanner",
     "description": "Scan QR codes using your camera or image files.",
     "scanCamera": "Scan with Camera",
@@ -18937,6 +19138,13 @@
     }
   },
   "bloodPressure": {
+    "linkCopied": "Copied",
+    "alerts": {
+      "missingBp": "Please enter both systolic and diastolic pressure.",
+      "invalidBp": "Please enter a valid blood pressure.",
+      "invalidPulse": "Please enter a valid pulse.",
+      "confirmClear": "Delete all records?"
+    },
     "title": "Blood Pressure Log",
     "description": "Record and classify your blood pressure. Records are stored in your browser.",
     "systolic": "Systolic (mmHg)",
@@ -19695,6 +19903,8 @@
     }
   },
   "game2048": {
+    "swipeHint": "Swipe to move the tiles",
+    "keysHint": "Use the arrow keys to move the tiles",
     "title": "2048",
     "description": "Merge same number tiles to make 2048!",
     "score": "Score",
@@ -24304,6 +24514,7 @@
     "savingsCalculator": "Savings Calculator"
   },
   "salaryComparison": {
+    "wonUnit": "₩",
     "title": "Salary Comparison Calculator",
     "description": "Compare two or more salaries side by side to see differences in social insurance, income tax, and take-home pay at a glance.",
     "scenario": "Scenario",
@@ -26974,6 +27185,9 @@
     }
   },
   "pomodoroTimer": {
+    "taskAdd": "Add task",
+    "taskDone": "Done: {task}",
+    "taskDelete": "Delete {task}",
     "title": "Pomodoro Timer",
     "description": "25-minute focus sessions followed by 5-minute breaks. Boost your productivity with the Pomodoro Technique.",
     "phaseWork": "Focus",
@@ -28119,6 +28333,13 @@
     ]
   },
   "investmentCalculator": {
+    "fmt": {
+      "eok": "{c} KRW",
+      "eokOnly": "{c} KRW",
+      "man": "{c} KRW",
+      "axisEok": "{c}",
+      "axisMan": "{c}"
+    },
     "mode": {
       "goal": "Goal solver"
     },
@@ -30733,6 +30954,17 @@
     }
   },
   "meetingMinutes": {
+    "headCount": "{n}",
+    "durationTag": "[{n} min]",
+    "export": {
+      "docTitle": "Meeting Minutes",
+      "basicInfo": "Basic info",
+      "field": "Item",
+      "value": "Details",
+      "task": "Task",
+      "owner": "Owner",
+      "htmlLang": "en"
+    },
     "title": "Meeting Minutes",
     "description": "Record meeting agenda, attendees, discussions, and action items systematically",
     "editTab": "Edit",
@@ -32511,6 +32743,8 @@
     }
   },
   "fifteenPuzzle": {
+    "tipLabel": "Tip:",
+    "tipText": "Use the arrow keys (↑↓←→) for faster moves. Green tiles are already in the right place.",
     "title": "15 Puzzle",
     "description": "Slide numbered tiles to arrange them in order.",
     "newGame": "New Game",
@@ -38258,7 +38492,8 @@
   },
   "parentalLeave": {
     "p": {
-      "won": "KRW",
+      "manFmt": "{mil}M",
+      "won": " KRW",
       "me": "You",
       "mom": "Mom",
       "dad": "Dad",
@@ -39191,6 +39426,7 @@
     }
   },
   "cagrCalculator": {
+    "linkCopied": "Copied",
     "title": "CAGR Calculator",
     "description": "Calculate Compound Annual Growth Rate, project future values, and compare investments",
     "mode": {
@@ -40860,6 +41096,32 @@
     }
   },
   "httpStatus": {
+    "guideCards": {
+      "c1xx": {
+        "title": "1xx — Informational",
+        "desc": "The request was received and processing continues. Mostly used for WebSocket upgrades (101) and pre-checks (100)."
+      },
+      "c2xx": {
+        "title": "2xx — Success",
+        "desc": "The request was processed successfully. Use 200 for a successful GET, 201 for a created resource and 204 for a successful delete."
+      },
+      "c3xx": {
+        "title": "3xx — Redirection",
+        "desc": "Further action is needed to complete the request. Use 301 for permanent moves, 302 for temporary moves and 304 for cache validation."
+      },
+      "c4xx": {
+        "title": "4xx — Client error",
+        "desc": "Something is wrong with the client request. Distinguish unauthenticated (401), forbidden (403), not found (404) and bad request (400)."
+      },
+      "c5xx": {
+        "title": "5xx — Server error",
+        "desc": "The server failed to handle the request. Respond quickly to internal errors (500), gateway errors (502/504) and unavailability (503)."
+      },
+      "tips": {
+        "title": "REST API design tips",
+        "desc": "Map responses precisely: GET→200, POST→201, DELETE→204, auth→401, permission→403, missing→404, validation→422, rate limit→429, server error→500."
+      }
+    },
     "title": "HTTP Status Code Reference",
     "description": "Search meanings, causes, and fixes for 39 common HTTP status codes",
     "searchPlaceholder": "Search by code number or description (e.g. 404, not found, redirect)",
@@ -51463,6 +51725,7 @@
     }
   },
   "devRoadmap": {
+    "completion": "You've learned all {count} skills. Try another track next!",
     "title": "Developer Roadmap",
     "description": "Explore 4 learning paths — Frontend, Backend, Fullstack, DevOps",
     "track": {
@@ -51565,6 +51828,22 @@
     "pageInfo": "This inquiry is sent from the current page."
   },
   "adminFeedback": {
+    "category": {
+      "bug": "Bug",
+      "feature": "Feature request",
+      "suggestion": "Suggestion",
+      "other": "Other"
+    },
+    "date": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{days} days ago"
+    },
+    "loadError": "Failed to load data.",
+    "logout": "Log out",
+    "pageUrl": "Page",
+    "collapse": "Show less",
+    "expand": "Show more",
     "title": "Inquiry Management",
     "login": {
       "title": "Admin Login",

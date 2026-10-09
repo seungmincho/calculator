@@ -236,7 +236,7 @@ export default function DiscountCalculator() {
             {/* Mode Tabs */}
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                계산 모드
+                {t('calcMode')}
               </label>
               <div className="flex flex-col gap-2">
                 <button
@@ -409,7 +409,7 @@ export default function DiscountCalculator() {
               {t('multiDiscount')}
             </h3>
             <p className="text-sm text-muted mb-4">
-              여러 할인을 순차적으로 적용하여 실질 할인율을 계산합니다
+              {t('multiDesc')}
             </p>
 
             <div className="space-y-3 mb-4">
@@ -432,7 +432,8 @@ export default function DiscountCalculator() {
                     <button
                       onClick={() => removeMultiDiscount(discount.id)}
                       className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                      title="할인 제거"
+                      title={t('removeDiscount')}
+                      aria-label={t('removeDiscount')}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -460,7 +461,7 @@ export default function DiscountCalculator() {
               {multiResult.steps.map((step, index) => (
                 <div key={index} className="flex justify-between text-sm">
                   <span className="text-sub">
-                    {index + 1}단계 ({formatPercent(step.rate)}% 할인)
+                    {t('stepLabel', { n: index + 1, rate: formatPercent(step.rate) })}
                   </span>
                   <span className="font-medium text-fg">₩{formatCurrency(step.price)}</span>
                 </div>
@@ -470,7 +471,7 @@ export default function DiscountCalculator() {
                 <span className="font-semibold text-green-600 dark:text-green-400">{formatPercent(multiResult.effectiveRate)}%</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-sub">총 {t('savings')}</span>
+                <span className="text-sub">{t('totalSavings')}</span>
                 <span className="font-semibold text-orange-600 dark:text-orange-400">₩{formatCurrency(multiResult.totalSavings)}</span>
               </div>
               <div className="flex justify-between">
@@ -571,7 +572,7 @@ export default function DiscountCalculator() {
               </h3>
 
               {/* Stacked bar */}
-              <div className="w-full h-10 rounded-lg overflow-hidden flex mb-4" role="img" aria-label="절약 요약 바 차트">
+              <div className="w-full h-10 rounded-lg overflow-hidden flex mb-4" role="img" aria-label={t('summaryChartLabel')}>
                 {/* Final price segment (purple) */}
                 {finalPct > 0 && (
                   <div

@@ -137,13 +137,17 @@ const LS_SLOTS_KEY = 'meetingMinutes_slots'
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function formatForExport(data: MeetingData, format: ExportFormat): string {
+function formatForExport(data: MeetingData, format: ExportFormat, t: ReturnType<typeof useTranslations>): string {
+  const title = data.title || t('export.docTitle')
+  const place = `${data.location} (${data.locationType === 'online' ? t('online') : t('offline')})`
+  const dur = (d: string) => (d ? ` ${t('durationTag', { n: d })}` : '')
+  const statusLabel = (st: string) => t(st === 'done' ? 'done' : st === 'in-progress' ? 'inProgress' : 'pending')
   const attendeeList = data.attendees
     .map(a => `${a.name}${a.role ? ` (${a.role})` : ''}`)
     .join(', ')
 
   const agendaText = data.agenda
-    .map((a, i) => `${i + 1}. ${a.title}${a.duration ? ` [${a.duration}분]` : ''}${a.notes ? `\n   ${a.notes}` : ''}`)
+    .map((a, i) => `${i + 1}. ${a.title}${dur(a.duration)}${a.notes ? `\n   ${a.notes}` : ''}`)
     .join('\n')
 
   const discussionText = data.discussions
@@ -151,50 +155,47 @@ function formatForExport(data: MeetingData, format: ExportFormat): string {
     .join('\n')
 
   const actionText = data.actions
-    .map((a, i) => {
-      const statusLabel = a.status === 'done' ? '완료' : a.status === 'in-progress' ? '진행 중' : '대기'
-      return `${i + 1}. ${a.task} — 담당: ${a.assignee || '-'}, 기한: ${a.dueDate || '-'} [${statusLabel}]`
-    })
+    .map((a, i) => `${i + 1}. ${a.task} — ${t('export.owner')}: ${a.assignee || '-'}, ${t('dueDate')}: ${a.dueDate || '-'} [${statusLabel(a.status)}]`)
     .join('\n')
 
   if (format === 'markdown') {
-    return `# ${data.title || '회의록'}
+    return `# ${title}
 
-## 기본 정보
-| 항목 | 내용 |
+## ${t('export.basicInfo')}
+| ${t('export.field')} | ${t('export.value')} |
 |------|------|
-| 날짜 | ${data.date} |
-| 시간 | ${data.time} |
-| 장소 | ${data.location} (${data.locationType === 'online' ? '온라인' : '오프라인'}) |
-| 주최자 | ${data.organizer} |
-| 참석자 | ${attendeeList} |
+| ${t('date')} | ${data.date} |
+| ${t('time')} | ${data.time} |
+| ${t('location')} | ${place} |
+| ${t('organizer')} | ${data.organizer} |
+| ${t('attendees')} | ${attendeeList} |
 
-## 안건
+## ${t('agenda')}
 ${agendaText}
 
-## 토의 내용
+## ${t('discussion')}
 ${discussionText}
 
-## 결정 사항
+## ${t('decisions')}
 ${data.decisions}
 
-## 액션 아이템
+## ${t('actionItems')}
 ${actionText}
 
-## 다음 회의
+## ${t('nextMeeting')}
 ${data.nextMeeting}
 
-## 기타 메모
+## ${t('extraNotes')}
 ${data.notes}
 `
   }
 
   if (format === 'html') {
     return `<!DOCTYPE html>
-<html lang="ko">
+<html lang="${t('export.htmlLang')}">
 <head>
 <meta charset="UTF-8">
-<title>${data.title || '회의록'}</title>
+<title>${title}</title>
 <style>
   body { font-family: 'Malgun Gothic', sans-serif; max-width: 800px; margin: 40px auto; color: #1a1a1a; line-height: 1.6; }
   h1 { border-bottom: 2px solid #3b82f6; padding-bottom: 8px; }
@@ -210,29 +211,28 @@ ${data.notes}
 </style>
 </head>
 <body>
-<h1>${data.title || '회의록'}</h1>
+<h1>${title}</h1>
 <table>
-<tr><th>날짜</th><td>${data.date}</td><th>시간</th><td>${data.time}</td></tr>
-<tr><th>장소</th><td>${data.location} (${data.locationType === 'online' ? '온라인' : '오프라인'})</td><th>주최자</th><td>${data.organizer}</td></tr>
-<tr><th>참석자</th><td colspan="3">${attendeeList}</td></tr>
+<tr><th>${t('date')}</th><td>${data.date}</td><th>${t('time')}</th><td>${data.time}</td></tr>
+<tr><th>${t('location')}</th><td>${place}</td><th>${t('organizer')}</th><td>${data.organizer}</td></tr>
+<tr><th>${t('attendees')}</th><td colspan="3">${attendeeList}</td></tr>
 </table>
-<h2>안건</h2>
-<ol>${data.agenda.map(a => `<li><strong>${a.title}</strong>${a.duration ? ` [${a.duration}분]` : ''}${a.notes ? `<br><small>${a.notes}</small>` : ''}</li>`).join('')}</ol>
-<h2>토의 내용</h2>
+<h2>${t('agenda')}</h2>
+<ol>${data.agenda.map(a => `<li><strong>${a.title}</strong>${dur(a.duration)}${a.notes ? `<br><small>${a.notes}</small>` : ''}</li>`).join('')}</ol>
+<h2>${t('discussion')}</h2>
 <ol>${data.discussions.map(d => `<li>${d.speaker ? `<strong>[${d.speaker}]</strong> ` : ''}${d.content}</li>`).join('')}</ol>
-<h2>결정 사항</h2>
+<h2>${t('decisions')}</h2>
 <p>${data.decisions.replace(/\n/g, '<br>')}</p>
-<h2>액션 아이템</h2>
-<table><tr><th>#</th><th>업무</th><th>담당자</th><th>기한</th><th>상태</th></tr>
+<h2>${t('actionItems')}</h2>
+<table><tr><th>#</th><th>${t('export.task')}</th><th>${t('assignee')}</th><th>${t('dueDate')}</th><th>${t('status')}</th></tr>
 ${data.actions.map((a, i) => {
   const cls = a.status === 'done' ? 'status-done' : a.status === 'in-progress' ? 'status-inprogress' : 'status-pending'
-  const label = a.status === 'done' ? '완료' : a.status === 'in-progress' ? '진행 중' : '대기'
-  return `<tr><td>${i + 1}</td><td>${a.task}</td><td>${a.assignee}</td><td>${a.dueDate}</td><td class="${cls}">${label}</td></tr>`
+  return `<tr><td>${i + 1}</td><td>${a.task}</td><td>${a.assignee}</td><td>${a.dueDate}</td><td class="${cls}">${statusLabel(a.status)}</td></tr>`
 }).join('')}
 </table>
-<h2>다음 회의</h2>
+<h2>${t('nextMeeting')}</h2>
 <p>${data.nextMeeting}</p>
-<h2>기타 메모</h2>
+<h2>${t('extraNotes')}</h2>
 <p>${data.notes.replace(/\n/g, '<br>')}</p>
 </body>
 </html>`
@@ -240,29 +240,29 @@ ${data.actions.map((a, i) => {
 
   // plain text
   return `=====================================
-${data.title || '회의록'}
+${title}
 =====================================
-날짜: ${data.date}  시간: ${data.time}
-장소: ${data.location} (${data.locationType === 'online' ? '온라인' : '오프라인'})
-주최자: ${data.organizer}
-참석자: ${attendeeList}
+${t('date')}: ${data.date}  ${t('time')}: ${data.time}
+${t('location')}: ${place}
+${t('organizer')}: ${data.organizer}
+${t('attendees')}: ${attendeeList}
 
-[ 안건 ]
+[ ${t('agenda')} ]
 ${agendaText}
 
-[ 토의 내용 ]
+[ ${t('discussion')} ]
 ${discussionText}
 
-[ 결정 사항 ]
+[ ${t('decisions')} ]
 ${data.decisions}
 
-[ 액션 아이템 ]
+[ ${t('actionItems')} ]
 ${actionText}
 
-[ 다음 회의 ]
+[ ${t('nextMeeting')} ]
 ${data.nextMeeting}
 
-[ 기타 메모 ]
+[ ${t('extraNotes')} ]
 ${data.notes}
 =====================================`
 }
@@ -384,7 +384,7 @@ export default function MeetingMinutes() {
   }, [])
 
   const exportFile = useCallback((format: ExportFormat) => {
-    const content = formatForExport(data, format)
+    const content = formatForExport(data, format, t)
     const ext = format === 'markdown' ? 'md' : format === 'html' ? 'html' : 'txt'
     const mime = format === 'html' ? 'text/html' : 'text/plain'
     const blob = new Blob([content], { type: `${mime};charset=utf-8` })
@@ -394,7 +394,7 @@ export default function MeetingMinutes() {
     a.download = `${data.title || 'meeting-minutes'}.${ext}`
     a.click()
     URL.revokeObjectURL(url)
-  }, [data])
+  }, [data, t])
 
   const handlePrint = useCallback(() => { window.print() }, [])
 
@@ -478,7 +478,7 @@ export default function MeetingMinutes() {
           <div className="flex-1" />
 
           {/* Export */}
-          <button onClick={() => copyToClipboard(formatForExport(data, 'text'), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
+          <button onClick={() => copyToClipboard(formatForExport(data, 'text', t), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             {copiedId === 'copy-text' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {t('copyText')}
           </button>
@@ -684,7 +684,7 @@ export default function MeetingMinutes() {
                 <div className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {data.date} {data.time}</div>
                 <div className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {data.location} ({data.locationType === 'online' ? t('online') : t('offline')})</div>
                 <div className="flex items-center gap-1"><User className="w-4 h-4" /> {t('organizer')}: {data.organizer}</div>
-                <div className="flex items-center gap-1"><Users className="w-4 h-4" /> {t('attendees')}: {data.attendees.filter(a => a.status === 'present' || a.status === 'remote').length}명</div>
+                <div className="flex items-center gap-1"><Users className="w-4 h-4" /> {t('attendees')}: {t('headCount', { n: data.attendees.filter(a => a.status === 'present' || a.status === 'remote').length })}</div>
               </div>
             </div>
 
@@ -708,7 +708,7 @@ export default function MeetingMinutes() {
                   {data.agenda.map((a, i) => (
                     <li key={a.id} className="text-sm text-body">
                       <span className="font-medium">{a.title}</span>
-                      {a.duration ? <span className="ml-1 text-xs text-gray-400">[{a.duration}분]</span> : null}
+                      {a.duration ? <span className="ml-1 text-xs text-gray-400">{t('durationTag', { n: a.duration })}</span> : null}
                       {a.notes && <p className="ml-4 mt-1 text-muted">{a.notes}</p>}
                     </li>
                   ))}

@@ -72,6 +72,7 @@ const COLORS = [
 
 export default function SalaryComparison() {
   const t = useTranslations('salaryComparison')
+  const tc = useTranslations('common')
   const searchParams = useSearchParams()
   const nextIdRef = useRef(3)
 
@@ -230,10 +231,10 @@ export default function SalaryComparison() {
           <button
             onClick={copyLink}
             className="flex items-center gap-1.5 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-            title="링크 복사"
+            title={tc('copyLink')}
           >
             {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-            <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+            <span className="hidden sm:inline">{copiedId === 'link' ? t('copied') : tc('copyLink')}</span>
           </button>
           <button
             onClick={resetAll}
@@ -301,7 +302,7 @@ export default function SalaryComparison() {
                       placeholder={scenario.salaryType === 'annual' ? t('annualPlaceholder') : t('monthlyPlaceholder')}
                       className={`${glassInput} px-3 py-2 pr-6 text-sm`}
                     />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">원</span>
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">{t('wonUnit')}</span>
                   </div>
                 </div>
               </div>

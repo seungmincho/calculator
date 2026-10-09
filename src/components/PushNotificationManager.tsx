@@ -137,23 +137,23 @@ export default function PushNotificationManager() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-fg">
-                {t('pushNotification.title', { defaultValue: '새 도구 알림 받기' })}
+                {t('pushNotification.title')}
               </p>
               <p className="text-xs text-muted mt-1">
-                {t('pushNotification.description', { defaultValue: '새로운 도구가 추가되면 알림으로 알려드려요' })}
+                {t('pushNotification.description')}
               </p>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={subscribe}
                   className="text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-1.5 font-medium transition-colors"
                 >
-                  {t('pushNotification.allow', { defaultValue: '알림 허용' })}
+                  {t('pushNotification.allow')}
                 </button>
                 <button
                   onClick={dismissBanner}
                   className="text-xs bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg px-3 py-1.5 transition-colors"
                 >
-                  {t('pushNotification.later', { defaultValue: '나중에' })}
+                  {t('pushNotification.later')}
                 </button>
               </div>
             </div>

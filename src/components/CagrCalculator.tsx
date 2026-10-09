@@ -63,6 +63,7 @@ function formatChartAxis(value: number): string {
 
 export default function CagrCalculator() {
   const t = useTranslations('cagrCalculator')
+  const tc = useTranslations('common')
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
   // Mode
@@ -552,10 +553,10 @@ export default function CagrCalculator() {
         <button
           onClick={copyLink}
           className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
-          title="링크 복사"
+          title={tc('copyLink')}
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
-          <span className="hidden sm:inline">{copiedId === 'link' ? '복사됨' : '링크 복사'}</span>
+          <span className="hidden sm:inline">{copiedId === 'link' ? t('linkCopied') : tc('copyLink')}</span>
         </button>
       </div>
 

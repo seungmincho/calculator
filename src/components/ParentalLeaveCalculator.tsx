@@ -29,8 +29,6 @@ const LINKS = [
   { key: 'korea', href: 'https://www.korea.kr/news/policyNewsView.do?newsId=148957375' },
 ]
 
-const won = (n: number) => `${Math.round(n).toLocaleString('ko-KR')}원`
-const man = (n: number) => `${(n / 10000).toLocaleString('ko-KR', { maximumFractionDigits: 1 })}만`
 const dot = (d: string) => d.replaceAll('-', '.')
 const pick = <T extends string>(v: string | null, list: readonly T[]) => (v && (list as readonly string[]).includes(v) ? (v as T) : null)
 /** 예전 링크의 YYYY-MM 도 받음 */
@@ -39,6 +37,9 @@ const num = (v: string | null) => Number(v) || 0
 
 export default function ParentalLeaveCalculator() {
   const t = useTranslations('parentalLeave')
+  const won = (n: number) => `${Math.round(n).toLocaleString('ko-KR')}${t('p.won')}`
+  // ko "250만" / en "2.5M"
+  const man = (n: number) => t('p.manFmt', { n: (n / 10000).toLocaleString('ko-KR', { maximumFractionDigits: 1 }), mil: (n / 1e6).toLocaleString('en-US', { maximumFractionDigits: 2 }) })
   const searchParams = useSearchParams()
 
   const [who, setWho] = useState<Who>('both')

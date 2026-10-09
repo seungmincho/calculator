@@ -772,6 +772,7 @@ export default function PomodoroTimer() {
               <button
                 onClick={addTask}
                 disabled={!newTaskText.trim()}
+                aria-label={t('taskAdd')}
                 className="px-3 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Plus size={18} />
@@ -795,6 +796,9 @@ export default function PomodoroTimer() {
                   >
                     <button
                       onClick={e => { e.stopPropagation(); toggleTask(task.id) }}
+                      role="checkbox"
+                      aria-checked={task.completed}
+                      aria-label={t('taskDone', { task: task.text })}
                       className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                         task.completed
                           ? 'bg-green-500 border-green-500 text-white'
@@ -827,6 +831,7 @@ export default function PomodoroTimer() {
                     </div>
                     <button
                       onClick={e => { e.stopPropagation(); deleteTask(task.id) }}
+                      aria-label={t('taskDelete', { task: task.text })}
                       className="flex-shrink-0 p-1 text-gray-400 hover:text-red-500"
                     >
                       <Trash2 size={14} />
@@ -999,6 +1004,7 @@ export default function PomodoroTimer() {
                         setTempSettings(s => ({ ...s, notificationsEnabled: e.target.checked }))
                       }}
                       disabled={notificationPermission === 'denied'}
+                      aria-label={t('settingsBrowserNotif')}
                       className="sr-only peer"
                     />
                     <div className="w-9 h-5 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-500 peer-disabled:opacity-50 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
@@ -1013,6 +1019,7 @@ export default function PomodoroTimer() {
                     type="checkbox"
                     checked={tempSettings.soundEnabled}
                     onChange={e => setTempSettings(s => ({ ...s, soundEnabled: e.target.checked }))}
+                    aria-label={t('settingsSound')}
                     className="sr-only peer"
                   />
                   <div className="w-9 h-5 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
@@ -1030,6 +1037,7 @@ export default function PomodoroTimer() {
                       type="range" min={0} max={100}
                       value={tempSettings.soundVolume}
                       onChange={e => setTempSettings(s => ({ ...s, soundVolume: Number(e.target.value) }))}
+                      aria-label={t('settingsVolume')}
                       className="w-full accent-blue-500"
                     />
                   </div>
@@ -1052,6 +1060,7 @@ export default function PomodoroTimer() {
                     type="checkbox"
                     checked={tempSettings.autoStart}
                     onChange={e => setTempSettings(s => ({ ...s, autoStart: e.target.checked }))}
+                    aria-label={t('autoStart')}
                     className="sr-only peer"
                   />
                   <div className="w-9 h-5 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />

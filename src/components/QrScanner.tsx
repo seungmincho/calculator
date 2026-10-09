@@ -328,10 +328,10 @@ export default function QrScanner() {
             <QrCode className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-100">
-                브라우저 미지원
+                {t('unsupported.title')}
               </h3>
               <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                이 브라우저는 QR코드 스캔 기능을 지원하지 않습니다. Chrome, Edge, Safari 등 최신 브라우저를 사용해주세요.
+                {t('unsupported.description')}
               </p>
             </div>
           </div>
@@ -405,7 +405,7 @@ export default function QrScanner() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <Camera className="w-16 h-16 text-gray-500 mx-auto mb-2" />
-                    <p className="text-gray-400">카메라를 시작하세요</p>
+                    <p className="text-gray-400">{t('cameraHint')}</p>
                   </div>
                 </div>
               )}
@@ -541,7 +541,7 @@ export default function QrScanner() {
                     className="ui-btn flex items-center rounded-lg px-4 py-2 font-medium transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
-                    <span>이메일 열기</span>
+                    <span>{t('openEmail')}</span>
                   </a>
                 )}
 
@@ -551,7 +551,7 @@ export default function QrScanner() {
                     className="ui-btn flex items-center rounded-lg px-4 py-2 font-medium transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
-                    <span>전화 걸기</span>
+                    <span>{t('callPhone')}</span>
                   </a>
                 )}
               </div>

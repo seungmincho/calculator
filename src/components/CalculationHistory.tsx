@@ -51,7 +51,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
         className="inline-flex shrink-0 whitespace-nowrap items-center space-x-2 bg-soft hover:bg-subtle px-4 py-2 rounded-lg text-body transition-colors"
       >
         <History className="w-4 h-4" />
-        <span>계산 이력</span>
+        <span>{tCommon('calcHistory.title')}</span>
         {histories.length > 0 && (
           <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
             {histories.length}
@@ -71,10 +71,10 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
         <div className="flex items-center justify-between p-6 border-b border-line">
           <div className="flex items-center space-x-2">
             <History className="w-5 h-5 text-blue-600" />
-            <h2 id="calc-history-title" className="text-xl font-semibold text-fg">계산 이력</h2>
+            <h2 id="calc-history-title" className="text-xl font-semibold text-fg">{tCommon('calcHistory.title')}</h2>
             {histories.length > 0 && (
               <span className="bg-soft text-sub text-sm px-2 py-1 rounded-full">
-                {histories.length}개
+                {tCommon('calcHistory.count', { count: histories.length })}
               </span>
             )}
           </div>
@@ -84,7 +84,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
               <button
                 onClick={() => setShowConfirmClear(true)}
                 className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                title="모든 이력 삭제"
+                title={tCommon('calcHistory.clearAll')}
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -104,14 +104,14 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
           {isLoading ? (
             <div className="flex items-center justify-center p-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-2 text-sub">로딩 중...</span>
+              <span className="ml-2 text-sub">{tCommon('loading')}</span>
             </div>
           ) : histories.length === 0 ? (
             <div className="text-center p-8">
               <Clock className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-muted">저장된 계산 이력이 없습니다.</p>
+              <p className="text-muted">{tCommon('calcHistory.empty')}</p>
               <p className="text-sm text-faint mt-1">
-                계산을 완료하면 자동으로 이력이 저장됩니다.
+                {tCommon('calcHistory.emptyHint')}
               </p>
             </div>
           ) : (
@@ -154,7 +154,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
                             className="inline-flex items-center space-x-1 bg-red-100 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 text-red-700 dark:text-red-300 px-3 py-1 rounded text-sm transition-colors"
                           >
                             <Trash2 className="w-3 h-3" />
-                            <span>삭제</span>
+                            <span>{tCommon('delete')}</span>
                           </button>
                         </div>
                       </div>
@@ -178,17 +178,17 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
               className="bg-surface rounded-lg p-6 max-w-sm w-full"
             >
               <h3 id="calc-history-clear-title" className="text-lg font-semibold text-fg mb-2">
-                모든 이력 삭제
+                {tCommon('calcHistory.clearAll')}
               </h3>
               <p id="calc-history-clear-desc" className="text-sub mb-4">
-                저장된 모든 계산 이력을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+                {tCommon('calcHistory.clearConfirm')}
               </p>
               <div className="flex space-x-3">
                 <button
                   onClick={() => setShowConfirmClear(false)}
                   className="flex-1 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body px-4 py-2 rounded-lg transition-colors"
                 >
-                  취소
+                  {tCommon('cancel')}
                 </button>
                 <button
                   onClick={() => {
@@ -197,7 +197,7 @@ const CalculationHistory: React.FC<CalculationHistoryProps> = ({
                   }}
                   className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
                 >
-                  삭제
+                  {tCommon('delete')}
                 </button>
               </div>
             </div>

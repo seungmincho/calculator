@@ -49,7 +49,6 @@ interface FuelCalculation {
 
 interface VehicleType {
   id: string
-  category: '경차' | '소형차' | '중형차' | '대형차' | 'SUV' | '승합차' | '화물차'
   efficiency: number // km/L
   depreciation: number // 원/km
 }
@@ -67,13 +66,13 @@ interface VehicleSettings {
 
 // 차종별 연비 및 감가상각비 데이터
 const VEHICLE_TYPES: Record<string, VehicleType> = {
-  light: { id: 'light', category: '경차', efficiency: 16.0, depreciation: 80 },
-  compact: { id: 'compact', category: '소형차', efficiency: 14.5, depreciation: 100 },
-  midsize: { id: 'midsize', category: '중형차', efficiency: 12.0, depreciation: 130 },
-  fullsize: { id: 'fullsize', category: '대형차', efficiency: 10.5, depreciation: 160 },
-  suv: { id: 'suv', category: 'SUV', efficiency: 9.5, depreciation: 180 },
-  van: { id: 'van', category: '승합차', efficiency: 8.5, depreciation: 200 },
-  truck: { id: 'truck', category: '화물차', efficiency: 7.0, depreciation: 250 }
+  light: { id: 'light', efficiency: 16.0, depreciation: 80 },
+  compact: { id: 'compact', efficiency: 14.5, depreciation: 100 },
+  midsize: { id: 'midsize', efficiency: 12.0, depreciation: 130 },
+  fullsize: { id: 'fullsize', efficiency: 10.5, depreciation: 160 },
+  suv: { id: 'suv', efficiency: 9.5, depreciation: 180 },
+  van: { id: 'van', efficiency: 8.5, depreciation: 200 },
+  truck: { id: 'truck', efficiency: 7.0, depreciation: 250 }
 }
 
 const FUEL_TYPES: FuelType[] = ['gasoline', 'premium_gasoline', 'diesel', 'lpg']
@@ -538,8 +537,8 @@ const FuelCalculator = () => {
   // Format history result for display
   const formatHistoryResult = useCallback((result: Record<string, unknown>) => {
     const amount = (result.settlement ?? result.totalCost) as number | undefined
-    return `${won(amount ?? 0)}원`
-  }, [])
+    return `${won(amount ?? 0)}${t('share.won')}`
+  }, [t])
 
   // Manual save calculation
   const handleSaveCalculation = useCallback(() => {
@@ -663,7 +662,7 @@ const FuelCalculator = () => {
 
   const filterLabel = t(`drivingLog.filter.${dateFilter}`)
   const conditionLine = t('settlement.condition', {
-    vehicle: VEHICLE_TYPES[vehicleType].category,
+    vehicle: t(`vehicleTypes.${vehicleType}`),
     fuel: t(`fuelTypes.${fuelType}`),
     efficiency: efficiency.toFixed(1),
     price: won(fuelPrices[fuelType]),
@@ -904,7 +903,7 @@ const FuelCalculator = () => {
                   >
                     {Object.entries(VEHICLE_TYPES).map(([key, vehicle]) => (
                       <option key={key} value={key}>
-                        {vehicle.category} ({vehicle.efficiency}km/L)
+                        {t(`vehicleTypes.${key}`)} ({vehicle.efficiency}km/L)
                       </option>
                     ))}
                   </select>
@@ -920,10 +919,10 @@ const FuelCalculator = () => {
                     onChange={(e) => setFuelType(e.target.value as FuelType)}
                     className="w-full ui-field px-3 py-2"
                   >
-                    <option value="gasoline">{t('fuelTypes.gasoline')} ({fuelPrices.gasoline.toLocaleString()}원/L)</option>
-                    <option value="premium_gasoline">{t('fuelTypes.premium_gasoline')} ({fuelPrices.premium_gasoline.toLocaleString()}원/L)</option>
-                    <option value="diesel">{t('fuelTypes.diesel')} ({fuelPrices.diesel.toLocaleString()}원/L)</option>
-                    <option value="lpg">{t('fuelTypes.lpg')} ({fuelPrices.lpg.toLocaleString()}원/L)</option>
+                    <option value="gasoline">{t('fuelTypes.gasoline')} ({fuelPrices.gasoline.toLocaleString()}{t('share.perLiter')})</option>
+                    <option value="premium_gasoline">{t('fuelTypes.premium_gasoline')} ({fuelPrices.premium_gasoline.toLocaleString()}{t('share.perLiter')})</option>
+                    <option value="diesel">{t('fuelTypes.diesel')} ({fuelPrices.diesel.toLocaleString()}{t('share.perLiter')})</option>
+                    <option value="lpg">{t('fuelTypes.lpg')} ({fuelPrices.lpg.toLocaleString()}{t('share.perLiter')})</option>
                   </select>
                 </div>
 
@@ -1104,7 +1103,7 @@ const FuelCalculator = () => {
                         min="0"
                       />
                     ) : (
-                      <span className={`tabular-nums ${ft === fuelType ? 'font-semibold text-fg' : 'font-medium text-body'}`}>{won(fuelPrices[ft])}원/L</span>
+                      <span className={`tabular-nums ${ft === fuelType ? 'font-semibold text-fg' : 'font-medium text-body'}`}>{won(fuelPrices[ft])}{t('share.perLiter')}</span>
                     )}
                   </div>
                 ))}
@@ -1204,7 +1203,7 @@ const FuelCalculator = () => {
                     {roundTrip ? t('result.settlementRoundTrip') : t('result.settlement')}
                   </p>
                   <p className="text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">
-                    {won(calculation.settlement)}<span className="text-2xl ml-0.5">원</span>
+                    {won(calculation.settlement)}<span className="text-2xl ml-0.5">{t('share.won')}</span>
                   </p>
                   <p className="text-sm text-sub mt-2 tabular-nums">
                     {t('result.summaryLine', {
@@ -1258,13 +1257,13 @@ const FuelCalculator = () => {
                     <div className="flex justify-between gap-3">
                       <span className="text-sub">{t('result.fuelPrice')}</span>
                       <span className="font-medium text-fg tabular-nums text-right">
-                        {won(fuelPrices[fuelType])}원/L
+                        {won(fuelPrices[fuelType])}{t('share.perLiter')}
                         <span className="block text-xs font-normal text-muted">{priceSourceLabel}</span>
                       </span>
                     </div>
                     <div className="flex justify-between gap-3">
                       <span className="text-sub">{t('result.fuelCost')}</span>
-                      <span className="font-medium text-fg tabular-nums">{won(calculation.fuelCost)}원</span>
+                      <span className="font-medium text-fg tabular-nums">{won(calculation.fuelCost)}{t('share.won')}</span>
                     </div>
                     {depreciationMultiplier !== 1 && (
                       <div className="flex justify-between gap-3">
@@ -1287,16 +1286,16 @@ const FuelCalculator = () => {
                   <div className="grid grid-cols-3 gap-3 mt-4 text-center">
                     <div className="rounded-xl border border-line p-3">
                       <p className="text-xs text-muted">{t('result.depreciationCost')}</p>
-                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.depreciationCost)}원</p>
-                      <p className="text-[11px] text-faint">{VEHICLE_TYPES[vehicleType].depreciation}원/km</p>
+                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.depreciationCost)}{t('share.won')}</p>
+                      <p className="text-[11px] text-faint">{VEHICLE_TYPES[vehicleType].depreciation}{t('share.perKm')}</p>
                     </div>
                     <div className="rounded-xl border border-line p-3">
                       <p className="text-xs text-muted">{t('result.totalCost')}</p>
-                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.totalCost)}원</p>
+                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.totalCost)}{t('share.won')}</p>
                     </div>
                     <div className="rounded-xl border border-line p-3">
                       <p className="text-xs text-muted">{t('result.costPerKm')}</p>
-                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.costPerKm)}원</p>
+                      <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.costPerKm)}{t('share.won')}</p>
                     </div>
                   </div>
                   <p className="text-xs text-faint mt-2">{t('result.referenceNote')}</p>
@@ -1307,7 +1306,7 @@ const FuelCalculator = () => {
                   fileName="fuel-cost"
                   card={{
                     tool: t('title'),
-                    label: t('share.label', { vehicle: VEHICLE_TYPES[vehicleType].category, fuel: t(`fuelTypes.${fuelType}`), km: tripKm.toLocaleString('ko-KR') }),
+                    label: t('share.label', { vehicle: t(`vehicleTypes.${vehicleType}`), fuel: t(`fuelTypes.${fuelType}`), km: tripKm.toLocaleString('ko-KR') }),
                     headline: `${won(calculation.settlement)}${t('share.won')}`,
                     sub: t('result.summaryLine', { km: tripKm.toLocaleString('ko-KR'), liters: calculation.fuelConsumption.toFixed(2), perKm: won(calculation.settlementPerKm) }),
                     rows: [
@@ -1328,13 +1327,12 @@ const FuelCalculator = () => {
                   tripKm={tripKm}
                   comparison={FUEL_TYPES.map(ft => {
                     const selectedVehicle = VEHICLE_TYPES[vehicleType]
-                    const fuelLabels = { gasoline: '일반', premium_gasoline: '고급', diesel: '경유', lpg: 'LPG' }
                     const fuelColors = { gasoline: '#3b82f6', premium_gasoline: '#8b5cf6', diesel: '#10b981', lpg: '#f59e0b' }
                     const eff = useCustomEfficiency && customEfficiency > 0
                       ? customEfficiency
                       : getAdjustedEfficiency(selectedVehicle.efficiency, ft)
                     const cost = (tripKm / eff) * fuelPrices[ft]
-                    return { name: fuelLabels[ft], cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
+                    return { name: t(`fuelShort.${ft}`), cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
                   })}
                 />
               </>
@@ -1493,7 +1491,7 @@ const FuelCalculator = () => {
             {filteredLogs.length > 0 && (
               <div className="bg-subtle rounded-2xl p-5 mb-4">
                 <p className="text-sm text-muted">{t('drivingLog.periodTotal', { period: filterLabel })}</p>
-                <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(logSummary.grandTotal)}원</p>
+                <p className="text-3xl font-bold text-fg tabular-nums mt-1">{won(logSummary.grandTotal)}{t('share.won')}</p>
                 <p className="text-sm text-sub mt-2 tabular-nums">
                   {t('settlement.logSummary', {
                     count: filteredLogs.length,
@@ -1558,10 +1556,10 @@ const FuelCalculator = () => {
                             {km.toLocaleString('ko-KR')}km
                             {log.roundTrip && <span className="block text-xs text-muted">{t('trip.roundTrip')}</span>}
                           </td>
-                          <td className="py-3 px-2 text-right">{won(fuelCost)}원</td>
-                          <td className="py-3 px-2 text-right">{won(log.tollFee)}원</td>
-                          <td className="py-3 px-2 text-right">{won(log.parkingFee)}원</td>
-                          <td className="py-3 px-2 text-right font-medium text-fg">{won(total)}원</td>
+                          <td className="py-3 px-2 text-right">{won(fuelCost)}{t('share.won')}</td>
+                          <td className="py-3 px-2 text-right">{won(log.tollFee)}{t('share.won')}</td>
+                          <td className="py-3 px-2 text-right">{won(log.parkingFee)}{t('share.won')}</td>
+                          <td className="py-3 px-2 text-right font-medium text-fg">{won(total)}{t('share.won')}</td>
                           <td className="py-3 px-2">
                             <button
                               onClick={() => removeDrivingLogEntry(log.id)}
@@ -1579,10 +1577,10 @@ const FuelCalculator = () => {
                     <tr className="bg-subtle font-medium">
                       <td className="py-3 px-2" colSpan={2}>{t('drivingLog.summary.title')}</td>
                       <td className="py-3 px-2 text-right">{logSummary.totalDistance.toLocaleString('ko-KR')}km</td>
-                      <td className="py-3 px-2 text-right">{won(logSummary.totalFuelCost)}원</td>
-                      <td className="py-3 px-2 text-right">{won(logSummary.totalTollFee)}원</td>
-                      <td className="py-3 px-2 text-right">{won(logSummary.totalParkingFee)}원</td>
-                      <td className="py-3 px-2 text-right font-bold text-fg">{won(logSummary.grandTotal)}원</td>
+                      <td className="py-3 px-2 text-right">{won(logSummary.totalFuelCost)}{t('share.won')}</td>
+                      <td className="py-3 px-2 text-right">{won(logSummary.totalTollFee)}{t('share.won')}</td>
+                      <td className="py-3 px-2 text-right">{won(logSummary.totalParkingFee)}{t('share.won')}</td>
+                      <td className="py-3 px-2 text-right font-bold text-fg">{won(logSummary.grandTotal)}{t('share.won')}</td>
                       <td></td>
                     </tr>
                   </tfoot>

@@ -719,7 +719,7 @@ export default function LadderGame() {
         const startY = (img.naturalHeight || svgHeight) + 16
         ctx.font = 'bold 16px sans-serif'
         ctx.fillStyle = '#1F2937'
-        ctx.fillText('🎯 결과', 16, startY)
+        ctx.fillText(`🎯 ${t('settings.outcomes')}`, 16, startY)
 
         let y = startY + 24
         Object.entries(results).forEach(([name, outcome]) => {
@@ -743,14 +743,14 @@ export default function LadderGame() {
         if (!blob) return
         const a = document.createElement('a')
         a.href = URL.createObjectURL(blob)
-        a.download = `사다리-${Date.now()}.png`
+        a.download = `${t('result.imageFileName')}-${Date.now()}.png`
         a.click()
         URL.revokeObjectURL(a.href)
       })
       URL.revokeObjectURL(url)
     }
     img.src = url
-  }, [results, participants, svgWidth, svgHeight])
+  }, [results, participants, svgWidth, svgHeight, t])
 
   // ── URL init (공유 링크 복원, 마운트 1회) ─────────────────────────
   // 사다리는 state가 아니라 여기서 파싱한 인원·복잡도로 바로 만든다(같은 커밋의 state는 아직 기본값 3/3).
@@ -907,8 +907,8 @@ export default function LadderGame() {
           onClearHistories={clearHistories}
           formatResult={(result: { participantCount?: number; results?: Record<string, unknown> }) => {
             // CalculationHistory는 이력의 result만 넘김
-            if (!result.results) return '빈 기록'
-            return `참가자 ${result.participantCount ?? 0}명, 결과 ${Object.keys(result.results).length}개`
+            if (!result.results) return t('history.emptyRecord')
+            return t('history.format', { participants: result.participantCount ?? 0, results: Object.keys(result.results).length })
           }}
         />
         </div>
@@ -958,14 +958,14 @@ export default function LadderGame() {
               <div className="bg-emerald-100/55 dark:bg-emerald-500/[0.08] rounded-xl p-4 border border-line">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-semibold text-sub">
-                    📍 위치 선택 ({colAssignments.filter(v => v !== null).length}/{participants.length} 배치)
+                    📍 {t('selection.title', { placed: colAssignments.filter(v => v !== null).length, total: participants.length })}
                   </h3>
                   <div className="flex gap-2">
                     <button onClick={autoAssign} className="text-xs px-2 py-1 bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800/40 transition-colors">
-                      🎲 랜덤 배치
+                      🎲 {t('selection.random')}
                     </button>
                     <button onClick={assignInOrder} className="text-xs px-2 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                      📋 순서대로
+                      📋 {t('selection.inOrder')}
                     </button>
                   </div>
                 </div>
@@ -999,14 +999,14 @@ export default function LadderGame() {
                   })}
                   {colAssignments.every(v => v !== null) && (
                     <div className="w-full text-center text-sm text-green-600 dark:text-green-400 font-medium mt-1">
-                      ✅ 모두 배치 완료! 게임을 시작하세요.
+                      ✅ {t('selection.allPlaced')}
                     </div>
                   )}
                 </div>
 
                 {selectedParticipant !== null && (
                   <p className="mt-2 text-xs text-muted">
-                    👆 오른쪽 사다리에서 원하는 열을 클릭하세요
+                    👆 {t('selection.clickColumn')}
                   </p>
                 )}
               </div>
@@ -1016,7 +1016,7 @@ export default function LadderGame() {
             <div>
               <div className="flex justify-between items-center mb-3">
                 <label className="text-sm font-medium text-body">
-                  {t('settings.participants')} ({participants.length}명)
+                  {t('settings.participants')} ({t('settings.participantCount', { count: participants.length })})
                 </label>
                 <button
                   onClick={addParticipant}
@@ -1047,7 +1047,7 @@ export default function LadderGame() {
                       onChange={e => updateParticipant(i, e.target.value)}
                       aria-label={t('a11y.participantName', { n: i + 1 })}
                       className="flex-1 min-w-0 px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                      placeholder={`참가자 ${i + 1}`}
+                      placeholder={t('settings.participantPlaceholder', { n: i + 1 })}
                     />
                     {participants.length > 2 && (
                       <button
@@ -1076,7 +1076,7 @@ export default function LadderGame() {
                     onChange={e => updateOutcome(i, e.target.value)}
                     aria-label={t('a11y.outcome', { n: i + 1 })}
                     className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                    placeholder={`결과 ${i + 1}`}
+                    placeholder={t('a11y.outcome', { n: i + 1 })}
                   />
                 ))}
               </div>
@@ -1120,7 +1120,7 @@ export default function LadderGame() {
             {/* Feature 4 & 5: Mode toggles */}
             <div>
               <label id="ladder-mode" className="block text-sm font-medium text-body mb-2">
-                게임 모드
+                {t('mode.title')}
               </label>
               <div className="grid grid-cols-2 gap-3" role="group" aria-labelledby="ladder-mode">
                 <button
@@ -1134,7 +1134,7 @@ export default function LadderGame() {
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <span>🙈</span>
-                  <span>블라인드</span>
+                  <span>{t('mode.blind')}</span>
                 </button>
                 <button
                   onClick={() => setRevealOneByOne(prev => !prev)}
@@ -1147,7 +1147,7 @@ export default function LadderGame() {
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <span>🎭</span>
-                  <span>한명씩 공개</span>
+                  <span>{t('mode.oneByOne')}</span>
                 </button>
               </div>
             </div>
@@ -1156,10 +1156,10 @@ export default function LadderGame() {
             {rounds.length > 0 && (
               <div className="flex items-center justify-center gap-2 py-2 px-4 bg-subtle rounded-xl">
                 <span className="text-sm font-bold text-sub">
-                  {currentRound}라운드
+                  {t('round.current', { round: currentRound })}
                 </span>
                 <span className="text-xs text-blue-500 dark:text-blue-400">
-                  (총 {rounds.length}라운드 기록)
+                  ({t('round.total', { count: rounds.length })})
                 </span>
               </div>
             )}
@@ -1174,7 +1174,7 @@ export default function LadderGame() {
                 {t('ladder.title')}
                 {currentRound > 1 && (
                   <span className="ml-2 text-sm font-normal text-blue-500 dark:text-blue-400">
-                    ({currentRound}라운드)
+                    ({t('round.current', { round: currentRound })})
                   </span>
                 )}
               </h3>
@@ -1203,7 +1203,7 @@ export default function LadderGame() {
                     </button>
                     {isSelectionPhase && !allAssigned && (
                       <div className="w-full text-center text-xs text-amber-600 dark:text-amber-400 mt-1">
-                        ⚠️ 모든 참가자를 배치한 후 게임을 시작할 수 있습니다
+                        ⚠️ {t('selection.assignFirst')}
                       </div>
                     )}
                   </div>
@@ -1215,7 +1215,7 @@ export default function LadderGame() {
             {ladderReady && !isPlaying && !allCompleted && !isSelectionPhase && (
               <div className="text-center mb-2">
                 <span className={`text-xs text-sub px-3 py-1 rounded-full ${glass.pill}`}>
-                  🖱️ 아래 이름을 클릭하면 개별 확인 가능
+                  🖱️ {t('play.clickNameHint')}
                 </span>
               </div>
             )}
@@ -1270,12 +1270,12 @@ export default function LadderGame() {
                           <>
                             <span className="text-base">{p.animal}</span>
                             <span className="truncate max-w-full">{p.name}</span>
-                            <span className="text-[10px] opacity-60">✕ 취소</span>
+                            <span className="text-[10px] opacity-60">✕ {tCommon('cancel')}</span>
                           </>
                         ) : (
                           <>
                             <span className="text-lg text-gray-400">{isSelectedSlot ? '📍' : '+'}</span>
-                            <span className="text-gray-400">{col + 1}번</span>
+                            <span className="text-gray-400">{t('play.column', { n: col + 1 })}</span>
                           </>
                         )}
                       </button>
@@ -1289,7 +1289,7 @@ export default function LadderGame() {
                     const participantIdx = colAssignments[col]
                     if (participantIdx === null || participantIdx === undefined) return (
                       <div key={col} className="flex-1 flex flex-col items-center gap-0.5 py-1 px-1 rounded-lg text-xs font-medium bg-surface border border-line">
-                        <span className="text-gray-400">{col + 1}번</span>
+                        <span className="text-gray-400">{t('play.column', { n: col + 1 })}</span>
                       </div>
                     )
                     const p = participants[participantIdx]
@@ -1300,7 +1300,7 @@ export default function LadderGame() {
                         key={col}
                         onClick={() => canClick && playSingle(participantIdx)}
                         disabled={isPlaying || !ladderReady || isCompleted}
-                        title={canClick ? `${p.name} 개별 실행` : isCompleted ? `${p.name} 완료` : '먼저 사다리를 생성하세요'}
+                        title={canClick ? t('play.playOne', { name: p.name }) : isCompleted ? t('play.done', { name: p.name }) : t('ladder.placeholder')}
                         className={`flex-1 flex flex-col items-center gap-0.5 py-1 px-1 rounded-lg text-xs font-medium transition-all ${
                           canClick
                             ? 'hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-offset-1 dark:ring-offset-gray-800'
@@ -1523,7 +1523,7 @@ export default function LadderGame() {
               return (
                 <div className="mt-3 flex items-center justify-center gap-2 text-sm font-medium" style={{ color }}>
                   <span className="inline-block w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: color }} />
-                  <span>{p?.animal ?? '?'} {p?.name ?? '?'} 이동 중...</span>
+                  <span>{p?.animal ?? '?'} {t('play.moving', { name: p?.name ?? '?' })}</span>
                 </div>
               )
             })()}
@@ -1577,7 +1577,7 @@ export default function LadderGame() {
                             transformStyle: 'preserve-3d',
                           }}
                         >
-                          ❓ 클릭하여 공개
+                          ❓ {t('result.clickToReveal')}
                         </span>
                       ) : (
                         <span
@@ -1604,21 +1604,21 @@ export default function LadderGame() {
                     disabled={isPlaying}
                     className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-amber-100/70 dark:bg-amber-500/[0.10] hover:bg-amber-100 dark:hover:bg-amber-500/[0.14] px-3 py-2 rounded-xl text-amber-700 dark:text-amber-300 transition-colors text-sm font-medium border border-amber-200/70 dark:border-amber-300/15 disabled:opacity-50"
                   >
-                    🔄 리매치
+                    🔄 {t('result.rematch')}
                   </button>
                   <button
                     onClick={handleReshuffleLadder}
                     disabled={isPlaying}
                     className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-teal-100/70 dark:bg-teal-500/[0.10] hover:bg-teal-100 dark:hover:bg-teal-500/[0.14] px-3 py-2 rounded-xl text-sub transition-colors text-sm font-medium border border-teal-200/70 dark:border-teal-300/15 disabled:opacity-50"
                   >
-                    🔀 사다리만 다시
+                    🔀 {t('result.reshuffle')}
                   </button>
                   <button
                     onClick={handleNextRound}
                     disabled={isPlaying}
                     className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-blue-100/70 dark:bg-blue-500/[0.10] hover:bg-blue-100 dark:hover:bg-blue-500/[0.14] px-3 py-2 rounded-xl text-sub transition-colors text-sm font-medium border border-blue-200/70 dark:border-blue-300/15 disabled:opacity-50"
                   >
-                    ➡️ 다음 라운드
+                    ➡️ {t('result.nextRound')}
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -1627,7 +1627,7 @@ export default function LadderGame() {
                     className="flex-1 inline-flex items-center justify-center gap-1.5 bg-surface hover:bg-soft px-3 py-2 rounded-xl text-body transition-colors text-sm font-medium border border-line"
                   >
                     <Camera className="w-4 h-4" />
-                    <span>이미지 저장</span>
+                    <span>{t('result.saveImage')}</span>
                   </button>
                   <button
                     onClick={handleShare}
@@ -1658,7 +1658,7 @@ export default function LadderGame() {
                 className="w-full flex items-center justify-between p-4 hover:bg-soft transition-colors"
               >
                 <span className="text-sm font-bold text-fg flex items-center gap-2">
-                  📊 라운드 기록 ({rounds.length}라운드)
+                  📊 {t('round.history', { count: rounds.length })}
                 </span>
                 {showRoundHistory ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
               </button>
@@ -1667,7 +1667,7 @@ export default function LadderGame() {
                   <table className="w-full text-sm border-collapse">
                     <thead>
                       <tr className="border-b border-line">
-                        <th className="py-2 px-3 text-left text-muted font-medium">참가자</th>
+                        <th className="py-2 px-3 text-left text-muted font-medium">{t('settings.participants')}</th>
                         {rounds.map((r) => (
                           <th key={r.round} className="py-2 px-3 text-center text-muted font-medium">
                             {r.round}R

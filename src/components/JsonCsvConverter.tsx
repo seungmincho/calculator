@@ -724,7 +724,7 @@ const JsonCsvConverter = () => {
                     {tableData.length > rowsPerPage && (
                       <div className="px-4 py-3 bg-subtle border-b border-line flex justify-between items-center">
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm text-body">페이지당 행 수:</span>
+                          <span className="text-sm text-body">{t('pagination.rowsPerPage')}:</span>
                           <select
                             value={rowsPerPage}
                             onChange={(e) => {
@@ -745,7 +745,7 @@ const JsonCsvConverter = () => {
                             onClick={() => setCurrentPage(1)}
                             disabled={currentPage === 1}
                             className="px-2 py-1 text-sm bg-surface border border-line-strong rounded disabled:opacity-50"
-                            title="첫 페이지"
+                            title={t('pagination.first')}
                           >
                             &#171;
                           </button>
@@ -754,7 +754,7 @@ const JsonCsvConverter = () => {
                             disabled={currentPage === 1}
                             className="px-3 py-1 text-sm bg-surface border border-line-strong rounded disabled:opacity-50"
                           >
-                            이전
+                            {tc('previous')}
                           </button>
                           <span className="text-sm text-body min-w-[80px] text-center">
                             {currentPage} / {totalPages}
@@ -764,13 +764,13 @@ const JsonCsvConverter = () => {
                             disabled={currentPage >= totalPages}
                             className="px-3 py-1 text-sm bg-surface border border-line-strong rounded disabled:opacity-50"
                           >
-                            다음
+                            {tc('next')}
                           </button>
                           <button
                             onClick={() => setCurrentPage(totalPages)}
                             disabled={currentPage >= totalPages}
                             className="px-2 py-1 text-sm bg-surface border border-line-strong rounded disabled:opacity-50"
-                            title="마지막 페이지"
+                            title={t('pagination.last')}
                           >
                             &#187;
                           </button>
@@ -833,8 +833,8 @@ const JsonCsvConverter = () => {
                     <div className="px-4 py-2 bg-subtle border-t border-line text-sm text-fg flex justify-between items-center">
                       <span>
                         {tableData.length > rowsPerPage ? 
-                          `${(currentPage - 1) * rowsPerPage + 1}-${Math.min(currentPage * rowsPerPage, tableData.length)} / ${tableData.length} 행 표시` :
-                          `총 ${tableData.length}개 행`
+                          t('result.showingRows', { start: (currentPage - 1) * rowsPerPage + 1, end: Math.min(currentPage * rowsPerPage, tableData.length), total: tableData.length }) :
+                          t('result.totalRows', { count: tableData.length })
                         }
                       </span>
                       <div className="flex space-x-2">
@@ -863,7 +863,7 @@ const JsonCsvConverter = () => {
                         <div className="flex items-center">
                           <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mr-2" />
                           <span className="text-amber-800 dark:text-amber-200 text-sm">
-                            {t('validation.largeFile', { size: Math.round(result.length / 1024) })} - 테이블 보기를 권장합니다
+                            {t('validation.largeFile', { size: (result.length / 1048576).toFixed(1) })} - {t('validation.tableViewHint')}
                           </span>
                         </div>
                       </div>
@@ -871,7 +871,7 @@ const JsonCsvConverter = () => {
                     
                     {/* 텍스트 영역 최적화 */}
                     <textarea
-                      value={result.length > 500000 ? result.substring(0, 500000) + '\n\n... (내용이 잘렸습니다. 다운로드하여 전체 내용을 확인하세요)' : result}
+                      value={result.length > 500000 ? result.substring(0, 500000) + '\n\n' + t('result.truncatedSuffix') : result}
                       readOnly
                       className="w-full h-96 px-4 py-3 bg-subtle border border-line-strong rounded-lg text-fg font-mono text-sm"
                       style={{
@@ -884,7 +884,7 @@ const JsonCsvConverter = () => {
                     {/* 잘린 내용 알림 */}
                     {result.length > 500000 && (
                       <div className="mt-2 p-2 bg-subtle border border-line rounded text-sm text-fg">
-                        성능을 위해 처음 500KB만 표시됩니다. 전체 내용은 다운로드하거나 테이블 보기를 사용하세요.
+                        {t('result.truncatedNotice')}
                       </div>
                     )}
                   </div>

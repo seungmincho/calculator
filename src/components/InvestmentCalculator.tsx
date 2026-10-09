@@ -16,6 +16,8 @@ import {
 type Mode = 'dca' | 'lump' | 'goal'
 const MODES: Mode[] = ['dca', 'lump', 'goal']
 const SPREAD = 3 // 보수/공격 = 입력 수익률 ∓ 3%p
+// 큰 금액: ko 는 fmt.* 키의 {e}억 {n}만, en 은 {c}(323.45M·1.2B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
 
 // 금액 입력은 만원 단위
 const DEFAULTS = {
@@ -67,8 +69,9 @@ export default function InvestmentCalculator() {
     const a = Math.abs(Math.round(v))
     const sign = v < 0 && a ? '-' : '' // −0.3원 → "-0원" 방지
     const eok = Math.floor(a / 1e8), man = Math.floor((a % 1e8) / 1e4)
-    if (eok) return `${sign}${eok}${t('eok')}${man ? ` ${man.toLocaleString('ko-KR')}${t('man')}` : ''}${t('won')}`
-    if (man) return `${sign}${man.toLocaleString('ko-KR')}${t('man')}${t('won')}`
+    const vars = { e: eok, n: man.toLocaleString('ko-KR'), c: compact.format(a) }
+    if (eok) return sign + t(man ? 'fmt.eok' : 'fmt.eokOnly', vars)
+    if (man) return sign + t('fmt.man', vars)
     return `${sign}${won(a)}`
   }
   const pct = (v: number) => `${v.toFixed(1)}%`
@@ -283,7 +286,7 @@ export default function InvestmentCalculator() {
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
                     <XAxis dataKey="year" tick={{ fontSize: 11, fill: 'var(--muted)' }} tickFormatter={(y: number) => t('hero.yearsOnly', { y })} />
                     <YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} width={64}
-                      tickFormatter={(v: number) => v >= 1e8 ? `${(v / 1e8).toFixed(1)}${t('eok')}` : `${Math.round(v / 1e4).toLocaleString('ko-KR')}${t('man')}`} />
+                      tickFormatter={(v: number) => v >= 1e8 ? t('fmt.axisEok', { e: (v / 1e8).toFixed(1), c: compact.format(v) }) : t('fmt.axisMan', { n: Math.round(v / 1e4).toLocaleString('ko-KR'), c: compact.format(v) })} />
                     <Tooltip
                       labelFormatter={(y) => t('hero.yearsOnly', { y: Number(y ?? 0) })}
                       formatter={(v, name) => [short(Number(v ?? 0)), String(name ?? '')]}

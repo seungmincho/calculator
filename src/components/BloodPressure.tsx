@@ -21,6 +21,7 @@ type Classification = 'normal' | 'elevated' | 'high1' | 'high2' | 'crisis'
 
 export default function BloodPressure() {
   const t = useTranslations('bloodPressure')
+  const tc = useTranslations('common')
   const searchParams = useSearchParams()
   const [systolic, setSystolic] = useState(() => searchParams.get('sys') || '')
   const [diastolic, setDiastolic] = useState(() => searchParams.get('dia') || '')
@@ -89,17 +90,17 @@ export default function BloodPressure() {
     const pulseValue = parseFloat(pulse)
 
     if (!systolic || !diastolic || isNaN(sysValue) || isNaN(diaValue)) {
-      alert('수축기 혈압과 이완기 혈압을 입력해주세요.')
+      alert(t('alerts.missingBp'))
       return
     }
 
     if (sysValue <= 0 || diaValue <= 0 || sysValue > 300 || diaValue > 200) {
-      alert('올바른 혈압 값을 입력해주세요.')
+      alert(t('alerts.invalidBp'))
       return
     }
 
     if (pulse && (isNaN(pulseValue) || pulseValue <= 0 || pulseValue > 300)) {
-      alert('올바른 맥박 값을 입력해주세요.')
+      alert(t('alerts.invalidPulse'))
       return
     }
 
@@ -123,7 +124,7 @@ export default function BloodPressure() {
     setDiastolic('')
     setPulse('')
     setMemo('')
-  }, [systolic, diastolic, pulse, memo, records, classifyBloodPressure])
+  }, [systolic, diastolic, pulse, memo, records, classifyBloodPressure, t])
 
   // Reset form
   const handleReset = useCallback(() => {
@@ -142,11 +143,11 @@ export default function BloodPressure() {
 
   // Clear all records
   const handleClearAll = useCallback(() => {
-    if (confirm('모든 기록을 삭제하시겠습니까?')) {
+    if (confirm(t('alerts.confirmClear'))) {
       setRecords([])
       localStorage.removeItem('bloodPressureRecords')
     }
-  }, [])
+  }, [t])
 
   // Format date
   const formatDate = useCallback((dateString: string) => {
@@ -172,7 +173,7 @@ export default function BloodPressure() {
           <p className="text-sm text-muted mt-1">{t('description')}</p>
         </div>
         <button onClick={copyLink} className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body transition-colors whitespace-nowrap">
-          {linkCopied ? <><Check className="w-4 h-4" />복사됨</> : <><Link className="w-4 h-4" />링크 복사</>}
+          {linkCopied ? <><Check className="w-4 h-4" />{t('linkCopied')}</> : <><Link className="w-4 h-4" />{tc('copyLink')}</>}
         </button>
       </div>
 

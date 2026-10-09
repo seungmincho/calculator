@@ -1,5 +1,13 @@
 {
   "common": {
+    "calcHistory": {
+      "title": "계산 이력",
+      "count": "{count}개",
+      "clearAll": "모든 이력 삭제",
+      "empty": "저장된 계산 이력이 없습니다.",
+      "emptyHint": "계산을 완료하면 자동으로 이력이 저장됩니다.",
+      "clearConfirm": "저장된 모든 계산 이력을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+    },
     "seeResult": "결과 보기",
     "addToCalendar": "캘린더에 추가",
     "addToCalendarFor": "{title} 캘린더에 추가 (.ics)",
@@ -79,7 +87,15 @@
     "error": "PDF 생성에 실패했습니다. 다시 시도해주세요."
   },
   "pwa": {
+    "ios": {
+      "title": "iOS 설치 방법:",
+      "step1": "1. Safari 하단의 공유 버튼(□↗) 탭",
+      "step2": "2. \"홈 화면에 추가\" 선택",
+      "step3": "3. 우상단 \"추가\" 버튼 탭",
+      "alert": "iOS 설치 방법:\n1. Safari 공유 버튼 탭\n2. \"홈 화면에 추가\" 선택\n3. \"추가\" 버튼 탭"
+    },
     "install": {
+      "ariaLabel": "앱 설치",
       "title": "앱으로 설치하기",
       "subtitle": "더 빠르고 편리하게 이용하세요",
       "now": "지금 설치",
@@ -2852,6 +2868,86 @@
     }
   },
   "medianIncome": {
+    "won": "{n}원",
+    "household": "{n}인 가구",
+    "benefits": {
+      "livelihood": "생계급여",
+      "medical": "의료급여",
+      "housing": "주거급여",
+      "education": "교육급여"
+    },
+    "checker": {
+      "title": "수급자격 판정기",
+      "desc": "소득과 재산을 입력하면 기초생활수급자 자격을 간이 판정합니다",
+      "basicInfo": "기본 정보",
+      "householdSize": "가구원 수",
+      "region": "거주 지역",
+      "regions": {
+        "seoul": "서울",
+        "gyeonggi": "경기",
+        "metro": "광역·세종·창원",
+        "other": "그 외"
+      },
+      "incomeInfo": "소득 정보 (월)",
+      "monthlyIncome": "월 총소득 (세전)",
+      "workIncome": "그 중 근로소득 (30% 공제 적용)",
+      "assetInfo": "재산 정보",
+      "generalProperty": "일반재산 (주택, 토지 등)",
+      "financialProperty": "금융재산 (예금, 적금 등)",
+      "car": "자동차 (시가표준액)",
+      "debt": "부채 (대출금 등)",
+      "submit": "수급자격 판정하기",
+      "result": "판정 결과",
+      "incomeEvaluation": "소득평가액",
+      "workDeduction": "- 근로소득 공제",
+      "propertyConversion": "재산 소득환산액",
+      "incomeRecognition": "소득인정액",
+      "byBenefit": "급여별 수급 가능 여부",
+      "threshold": "(기준: {amount})",
+      "eligible": "가능",
+      "ineligible": "불가",
+      "notesTitle": "참고사항",
+      "noteSimple": "이 결과는 간이 판정으로, 실제 수급 여부와 다를 수 있습니다.",
+      "noteReview": "부양의무자 기준, 근로능력 유무 등은 별도 심사합니다.",
+      "noteCenter": "정확한 판정은 주민센터에 문의하세요.",
+      "emptyLine1": "좌측에 소득과 재산 정보를 입력하고",
+      "emptyBefore": "",
+      "emptyAfter": " 버튼을 눌러주세요",
+      "formulaToggle": "소득인정액 계산식 보기",
+      "formula1": "소득인정액 = 소득평가액 + 소득환산액",
+      "formula2": "소득평가액 = 실제소득 - 가구특성 지출비용 - 근로소득공제(30%)",
+      "formula3": "소득환산액 = (재산 - 기본재산액 - 부채) × 소득환산율",
+      "rates": "환산율: 일반재산 4.17%/월, 금융재산 6.26%/월, 자동차 100%/월"
+    },
+    "table": {
+      "headerDesc": "연도별, 가구원수별 기준 중위소득과 정부 복지사업 자격요건을 확인하세요",
+      "yearTab": "{year}년",
+      "yearBase": "{year}년 기준 중위소득 100%",
+      "ratioCalc": "중위소득 비율 계산기",
+      "ratioLabel": "중위소득",
+      "ratioPlaceholder": "예: 75",
+      "ratioHint": "원하는 비율을 입력하면 자동으로 계산됩니다 (최대 500%)",
+      "byRatio": "{year}년 비율별 기준 중위소득",
+      "ratioPrograms": "비율 / 지원사업",
+      "more": "+{n}개",
+      "morePrograms": "추가 지원사업",
+      "ratioRow": "중위소득 {percentage}%",
+      "programs": "해당 지원사업",
+      "basicBenefits": "{year}년 기초생활수급자 급여종류별 기준",
+      "benefitType": "급여 종류",
+      "localBenefits": "{year}년 지자체형 생계급여 기준",
+      "regionCol": "지역",
+      "localRegions": {
+        "incheonDaegu": "인천형, 대구형",
+        "seoul": "서울형",
+        "busanGwangju": "부산형, 광주형"
+      },
+      "yearCompare": "연도별 기준 중위소득 100% 비교 ({from}~{to})",
+      "householdCol": "가구",
+      "growthRange": "{from}→{to} 증가율",
+      "growth": "증가율",
+      "footnote": "※ 기준 중위소득은 매년 보건복지부에서 고시하며, 각종 복지사업의 수급자 선정기준으로 활용됩니다."
+    },
     "source": "출처: 보건복지부 고시 「기준 중위소득, 생계급여ㆍ의료급여의 수급자 선정기준 및 최저보장수준」 — 2026년 제2025-135호, 2027년 제2026-157호(2026.7.29 발령). 기준 중위소득은 매년 1월 1일부터 적용됩니다.",
     "upcoming": "{year}년 기준 중위소득은 {year}년 1월 1일부터 적용됩니다. 지금 신청·심사에는 {current}년 기준이 쓰입니다.",
     "checkerYear": "{year}년 기준 중위소득으로 판정했습니다 (매년 1월 1일 적용).",
@@ -3108,6 +3204,11 @@
     }
   },
   "jsonCsvConverter": {
+    "pagination": {
+      "rowsPerPage": "페이지당 행 수",
+      "first": "첫 페이지",
+      "last": "마지막 페이지"
+    },
     "title": "JSON ↔ CSV 변환기",
     "description": "고성능 JSON과 CSV 간 양방향 변환. 대용량 데이터도 빠르게 처리하고 개발자 친화적인 옵션을 제공합니다.",
     "tabs": {
@@ -3147,6 +3248,9 @@
       "korean": "한국어 최적화"
     },
     "result": {
+      "totalRows": "총 {count}개 행",
+      "truncatedSuffix": "... (내용이 잘렸습니다. 다운로드하여 전체 내용을 확인하세요)",
+      "truncatedNotice": "성능을 위해 처음 500KB만 표시됩니다. 전체 내용은 다운로드하거나 테이블 보기를 사용하세요.",
       "title": "변환 결과",
       "preview": "미리보기",
       "download": "다운로드",
@@ -3163,6 +3267,7 @@
       "noData": "표시할 데이터가 없습니다"
     },
     "validation": {
+      "tableViewHint": "테이블 보기를 권장합니다",
       "validJson": "유효한 JSON",
       "invalidJson": "잘못된 JSON",
       "validCsv": "유효한 CSV",
@@ -5316,6 +5421,15 @@
     "placeholder": "신체 정보와 둘레를 입력하면 체지방률 계산 결과가 표시됩니다"
   },
   "workHours": {
+    "weekdays": [
+      "월",
+      "화",
+      "수",
+      "목",
+      "금",
+      "토",
+      "일"
+    ],
     "law": {
       "breakBefore": "2026년 12월 10일부터: 근로시간이 4시간이면 근로자가 휴게를 쓰지 않겠다고 명시적으로 요청할 때 휴게 없이 일할 수 있습니다 (근로기준법 제54조① 단서 신설).",
       "breakAfter": "근로시간이 4시간이면 근로자가 휴게를 쓰지 않겠다고 명시적으로 요청한 경우 휴게를 생략할 수 있습니다 (근로기준법 제54조① 단서, 2026.12.10 시행). 근로자의 요청이 있어야 하며, 회사가 일방적으로 없앨 수는 없습니다. 휴게 없이 일했다면 자동 적용을 끄고 휴게 0분으로 입력하세요.",
@@ -5361,6 +5475,7 @@
       "conversion": "시급 환산"
     },
     "input": {
+      "minUnit": "분",
       "hourlyWageNoteCurrent": "{year}년 최저임금: {wage}원",
       "minWageSource": "출처: 고용노동부 최저임금 고시",
       "useMinWage": "최저시급",
@@ -5426,6 +5541,10 @@
       "yearlyEstimate": "연 예상 급여"
     },
     "conversion": {
+      "dayUnit": "일",
+      "holidayPayWeek": "주휴수당 {pay}원/주",
+      "notEligible": "주 15시간 미만 — 주휴수당 미발생",
+      "netNote": "(4대보험 공제 후 예상액)",
       "title": "시급 환산 계산기",
       "description": "시급과 주 근무시간을 입력하면 일급/주급/월급/연봉을 자동 계산합니다",
       "hourlyWage": "시급 (원)",
@@ -5573,6 +5692,9 @@
     "peerIdLabel": "Peer ID"
   },
   "gameHub": {
+    "modeAiOnline": "AI · 온라인",
+    "badgeOnline": "온라인",
+    "roomOf": "{host}의 {game} 방",
     "levelUp": "난이도 올리기",
     "title": "게임 센터",
     "description": "다양한 1:1 대전 게임을 즐겨보세요! 온라인 멀티플레이어 또는 컴퓨터와 대전할 수 있습니다.",
@@ -6179,6 +6301,15 @@
     "completedBox": "박스 완성! 추가 턴!"
   },
   "lotto": {
+    "roundLabel": "{round}회차",
+    "latestUnavailable": "최신 회차 정보를 불러올 수 없습니다",
+    "frequency": {
+      "times": "{count}회",
+      "max": "최다 출현",
+      "min": "최소 출현",
+      "avg": "평균 출현"
+    },
+    "pdfTitle": "로또번호 생성 결과",
     "a11y": {
       "checkNumber": "내 번호 {n}번째",
       "clearCheck": "입력한 번호 지우기",
@@ -6262,6 +6393,11 @@
       }
     },
     "stats": {
+      "ranks": {
+        "first": "1등",
+        "second": "2등",
+        "third": "3등"
+      },
       "title": "당첨 확률 정보",
       "firstPrize": "1등 당첨확률",
       "secondPrize": "2등 당첨확률",
@@ -6269,6 +6405,7 @@
       "disclaimer": "* 모든 번호 조합은 동일한 당첨 확률을 가지며, 과거 통계가 미래 결과를 보장하지 않습니다."
     },
     "history": {
+      "setsOnly": "{sets}게임",
       "title": "생성 이력",
       "empty": "저장된 생성 이력이 없습니다",
       "format": "{method} {sets}게임"
@@ -6298,6 +6435,7 @@
     "patternAnalysis": "패턴 분석 기능은",
     "recentTrends": "최근 동향 분석 기능은",
     "winChecker": {
+      "matchedCount": "{count}개",
       "title": "당첨 확인",
       "inputTitle": "내 번호 입력",
       "resultTitle": "확인 결과",
@@ -6326,6 +6464,31 @@
     }
   },
   "ladder": {
+    "selection": {
+      "title": "위치 선택 ({placed}/{total} 배치)",
+      "random": "랜덤 배치",
+      "inOrder": "순서대로",
+      "allPlaced": "모두 배치 완료! 게임을 시작하세요.",
+      "clickColumn": "오른쪽 사다리에서 원하는 열을 클릭하세요",
+      "assignFirst": "모든 참가자를 배치한 후 게임을 시작할 수 있습니다"
+    },
+    "mode": {
+      "title": "게임 모드",
+      "blind": "블라인드",
+      "oneByOne": "한명씩 공개"
+    },
+    "round": {
+      "current": "{round}라운드",
+      "total": "총 {count}라운드 기록",
+      "history": "라운드 기록 ({count}라운드)"
+    },
+    "play": {
+      "clickNameHint": "아래 이름을 클릭하면 개별 확인 가능",
+      "column": "{n}번",
+      "playOne": "{name} 개별 실행",
+      "done": "{name} 완료",
+      "moving": "{name} 이동 중..."
+    },
     "a11y": {
       "participantAnimal": "참가자 {n} 동물",
       "participantName": "참가자 {n} 이름",
@@ -6334,6 +6497,8 @@
     "title": "사다리 타기 게임",
     "description": "친구들과 함께 즐기는 온라인 사다리 타기 게임! 순서 정하기, 벌칙 정하기, 팀 나누기 등 다양한 상황에서 공정하게 결정하세요",
     "settings": {
+      "participantCount": "{count}명",
+      "participantPlaceholder": "참가자 {n}",
       "title": "게임 설정",
       "participants": "참가자",
       "addParticipant": "참가자 추가",
@@ -6360,6 +6525,12 @@
       "placeholder": "먼저 사다리를 생성해주세요"
     },
     "result": {
+      "clickToReveal": "클릭하여 공개",
+      "rematch": "리매치",
+      "reshuffle": "사다리만 다시",
+      "nextRound": "다음 라운드",
+      "saveImage": "이미지 저장",
+      "imageFileName": "사다리",
       "title": "게임 결과",
       "share": "결과 공유하기"
     },
@@ -6424,6 +6595,7 @@
       }
     },
     "history": {
+      "emptyRecord": "빈 기록",
       "title": "게임 이력",
       "empty": "저장된 게임 이력이 없습니다",
       "format": "{participants}명 참가, {results}개 결과"
@@ -6981,10 +7153,26 @@
     "placeholder": "내용을 입력하면 바로 QR 코드가 만들어져요"
   },
   "fuelCalculator": {
+    "vehicleTypes": {
+      "light": "경차",
+      "compact": "소형차",
+      "midsize": "중형차",
+      "fullsize": "대형차",
+      "suv": "SUV",
+      "van": "승합차",
+      "truck": "화물차"
+    },
+    "fuelShort": {
+      "gasoline": "일반",
+      "premium_gasoline": "고급",
+      "diesel": "경유",
+      "lpg": "LPG"
+    },
     "a11y": {
       "period": "조회 기간"
     },
     "share": {
+      "perKm": "원/km",
       "textMultiplier": "{km}km 정산 유류비 {amount}원 ({fuel} {price}원/L × 계수 {multiplier} · {basis})",
       "logFile": "주행일지",
       "settlementFile": "유류비정산",
@@ -13204,6 +13392,12 @@
     }
   },
   "discountCalculator": {
+    "calcMode": "계산 모드",
+    "multiDesc": "여러 할인을 순차적으로 적용하여 실질 할인율을 계산합니다",
+    "removeDiscount": "할인 제거",
+    "stepLabel": "{n}단계 ({rate}% 할인)",
+    "totalSavings": "총 절약 금액",
+    "summaryChartLabel": "절약 요약 바 차트",
     "title": "할인 계산기",
     "description": "할인율, 할인 금액, 원래 가격을 간편하게 계산하세요.",
     "mode": {
@@ -13561,6 +13755,13 @@
     }
   },
   "qrScanner": {
+    "unsupported": {
+      "title": "브라우저 미지원",
+      "description": "이 브라우저는 QR코드 스캔 기능을 지원하지 않습니다. Chrome, Edge, Safari 등 최신 브라우저를 사용해주세요."
+    },
+    "cameraHint": "카메라를 시작하세요",
+    "openEmail": "이메일 열기",
+    "callPhone": "전화 걸기",
     "title": "QR코드 스캔",
     "description": "카메라 또는 이미지 파일로 QR코드를 스캔하세요.",
     "scanCamera": "카메라로 스캔",
@@ -18938,6 +19139,13 @@
     }
   },
   "bloodPressure": {
+    "linkCopied": "복사됨",
+    "alerts": {
+      "missingBp": "수축기 혈압과 이완기 혈압을 입력해주세요.",
+      "invalidBp": "올바른 혈압 값을 입력해주세요.",
+      "invalidPulse": "올바른 맥박 값을 입력해주세요.",
+      "confirmClear": "모든 기록을 삭제하시겠습니까?"
+    },
     "title": "혈압 기록기",
     "description": "혈압을 기록하고 분류를 확인합니다. 기록은 브라우저에 저장됩니다.",
     "systolic": "수축기 혈압 (mmHg)",
@@ -19696,6 +19904,8 @@
     }
   },
   "game2048": {
+    "swipeHint": "스와이프로 타일을 움직이세요",
+    "keysHint": "방향키로 타일을 움직이세요",
     "title": "2048",
     "description": "같은 숫자 타일을 합쳐 2048을 만들어보세요!",
     "score": "점수",
@@ -24305,6 +24515,7 @@
     "savingsCalculator": "적금 계산기"
   },
   "salaryComparison": {
+    "wonUnit": "원",
     "title": "연봉 실수령액 비교기",
     "description": "두 개 이상의 연봉을 나란히 비교하여 4대보험, 소득세, 실수령액 차이를 한눈에 확인하세요.",
     "scenario": "시나리오",
@@ -26975,6 +27186,9 @@
     }
   },
   "pomodoroTimer": {
+    "taskAdd": "작업 추가",
+    "taskDone": "완료: {task}",
+    "taskDelete": "{task} 삭제",
     "title": "포모도로 타이머",
     "description": "25분 집중 후 5분 휴식. 포모도로 기법으로 생산성을 높이세요.",
     "phaseWork": "집중",
@@ -28120,6 +28334,13 @@
     ]
   },
   "investmentCalculator": {
+    "fmt": {
+      "eok": "{e}억 {n}만원",
+      "eokOnly": "{e}억원",
+      "man": "{n}만원",
+      "axisEok": "{e}억",
+      "axisMan": "{n}만"
+    },
     "mode": {
       "goal": "목표 역산"
     },
@@ -30836,6 +31057,17 @@
     }
   },
   "meetingMinutes": {
+    "headCount": "{n}명",
+    "durationTag": "[{n}분]",
+    "export": {
+      "docTitle": "회의록",
+      "basicInfo": "기본 정보",
+      "field": "항목",
+      "value": "내용",
+      "task": "업무",
+      "owner": "담당",
+      "htmlLang": "ko"
+    },
     "title": "회의록 작성기",
     "description": "회의 안건, 참석자, 토의 내용, 액션 아이템을 체계적으로 기록하세요",
     "editTab": "편집",
@@ -32655,6 +32887,8 @@
     }
   },
   "fifteenPuzzle": {
+    "tipLabel": "팁:",
+    "tipText": "방향키(↑↓←→)를 사용하면 더 빠르게 조작할 수 있습니다. 초록색 타일은 정확한 위치에 있는 것입니다.",
     "title": "15퍼즐",
     "description": "숫자 타일을 슬라이드하여 순서대로 정렬하세요.",
     "newGame": "새 게임",
@@ -38402,6 +38636,7 @@
   },
   "parentalLeave": {
     "p": {
+      "manFmt": "{n}만",
       "won": "원",
       "me": "본인",
       "mom": "엄마",
@@ -39335,6 +39570,7 @@
     }
   },
   "cagrCalculator": {
+    "linkCopied": "복사됨",
     "title": "CAGR 계산기",
     "description": "연평균성장률(CAGR) 계산, 미래가치 예측, 투자 비교 분석을 한 곳에서",
     "mode": {
@@ -41004,6 +41240,32 @@
     }
   },
   "httpStatus": {
+    "guideCards": {
+      "c1xx": {
+        "title": "1xx — 정보 응답",
+        "desc": "요청을 받았으며 작업을 계속 진행 중임을 알립니다. 주로 WebSocket 업그레이드(101)나 사전 확인(100)에 사용됩니다."
+      },
+      "c2xx": {
+        "title": "2xx — 성공",
+        "desc": "요청이 성공적으로 처리되었습니다. GET 성공은 200, 리소스 생성은 201, 삭제 성공은 204를 사용하세요."
+      },
+      "c3xx": {
+        "title": "3xx — 리다이렉트",
+        "desc": "요청 완료를 위해 추가 동작이 필요합니다. 영구 이동은 301, 임시 이동은 302, 캐시 검증은 304를 사용합니다."
+      },
+      "c4xx": {
+        "title": "4xx — 클라이언트 오류",
+        "desc": "클라이언트 요청에 문제가 있습니다. 인증 없음(401), 권한 없음(403), 리소스 없음(404), 잘못된 요청(400)을 구분하세요."
+      },
+      "c5xx": {
+        "title": "5xx — 서버 오류",
+        "desc": "서버가 요청을 처리하지 못했습니다. 서버 내부 오류(500), 게이트웨이 오류(502/504), 서비스 불가(503)를 빠르게 대응하세요."
+      },
+      "tips": {
+        "title": "REST API 설계 팁",
+        "desc": "GET→200, POST→201, DELETE→204, 인증→401, 권한→403, 없음→404, 유효성→422, Rate Limit→429, 서버 오류→500을 정확히 구분하세요."
+      }
+    },
     "title": "HTTP 상태코드 레퍼런스",
     "description": "주요 HTTP 상태코드 39개의 의미, 원인, 해결 방법을 검색하세요",
     "searchPlaceholder": "코드 번호 또는 설명으로 검색 (예: 404, not found, 리다이렉트)",
@@ -51607,6 +51869,7 @@
     }
   },
   "devRoadmap": {
+    "completion": "{count}개 스킬을 모두 학습했습니다. 다른 트랙도 도전해 보세요!",
     "title": "개발자 로드맵",
     "description": "프론트엔드, 백엔드, 풀스택, DevOps — 4가지 학습 경로를 탐색하세요",
     "track": {
@@ -51709,6 +51972,22 @@
     "pageInfo": "현재 페이지에서 보내는 문의입니다."
   },
   "adminFeedback": {
+    "category": {
+      "bug": "버그",
+      "feature": "기능요청",
+      "suggestion": "건의",
+      "other": "기타"
+    },
+    "date": {
+      "today": "오늘",
+      "yesterday": "어제",
+      "daysAgo": "{days}일 전"
+    },
+    "loadError": "데이터를 불러오는데 실패했습니다.",
+    "logout": "로그아웃",
+    "pageUrl": "페이지",
+    "collapse": "접기",
+    "expand": "더보기",
     "title": "문의/건의 관리",
     "login": {
       "title": "관리자 로그인",

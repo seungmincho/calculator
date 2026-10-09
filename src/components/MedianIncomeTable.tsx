@@ -106,19 +106,16 @@ const welfareProgramsByPercentage: Record<number, WelfareProgram[]> = {
 // 표시할 비율 목록
 const percentages = [32, 40, 48, 50, 60, 65, 70, 72, 75, 80, 85, 100, 120, 150, 180, 190, 200, 300];
 
-// 가구원수 라벨
-const householdLabels = ['1인 가구', '2인 가구', '3인 가구', '4인 가구', '5인 가구', '6인 가구'];
-
 // 사용 가능한 연도 목록
 const availableYears = MEDIAN_YEARS;
 type YearType = string;
 
 // 기본재산액 (보건복지부 고시 제2025-204호 별표3, 2026.1.1 시행)
 const basicPropertyAmount: Record<string, number> = {
-  '서울': 99000000,
-  '경기': 80000000,
-  '광역·세종·창원': 77000000,
-  '그 외': 53000000,
+  seoul: 99000000,
+  gyeonggi: 80000000,
+  metro: 77000000,
+  other: 53000000,
 };
 
 // 소득환산율 (월 기준)
@@ -137,7 +134,7 @@ interface IncomeEligibilityCheckerProps {
 const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEligibilityCheckerProps) => {
   const t = useTranslations('medianIncome');
   const [householdSize, setHouseholdSize] = useState<number>(1);
-  const [region, setRegion] = useState<string>('서울');
+  const [region, setRegion] = useState<string>('seoul');
   const [monthlyIncome, setMonthlyIncome] = useState<string>('');
   const [workIncome, setWorkIncome] = useState<string>('');
   const [generalProperty, setGeneralProperty] = useState<string>('');
@@ -172,7 +169,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
     const incomeEvaluation = Math.max(0, income - workIncomeDeduction);
 
     // 재산 소득환산액
-    const basicProperty = basicPropertyAmount[region] || basicPropertyAmount['그 외'];
+    const basicProperty = basicPropertyAmount[region] || basicPropertyAmount.other;
     const totalProperty = general + financial + car;
     const netProperty = Math.max(0, totalProperty - basicProperty - debtAmount);
 
@@ -202,17 +199,17 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
     const baseIncome = medianIncomeData[year][householdSize - 1];
 
     const eligibility = {
-      생계급여: result.totalIncomeRecognition <= baseIncome * 0.32,
-      의료급여: result.totalIncomeRecognition <= baseIncome * 0.40,
-      주거급여: result.totalIncomeRecognition <= baseIncome * 0.48,
-      교육급여: result.totalIncomeRecognition <= baseIncome * 0.50,
+      livelihood: result.totalIncomeRecognition <= baseIncome * 0.32,
+      medical: result.totalIncomeRecognition <= baseIncome * 0.40,
+      housing: result.totalIncomeRecognition <= baseIncome * 0.48,
+      education: result.totalIncomeRecognition <= baseIncome * 0.50,
     };
 
     const thresholds = {
-      생계급여: baseIncome * 0.32,
-      의료급여: baseIncome * 0.40,
-      주거급여: baseIncome * 0.48,
-      교육급여: baseIncome * 0.50,
+      livelihood: baseIncome * 0.32,
+      medical: baseIncome * 0.40,
+      housing: baseIncome * 0.48,
+      education: baseIncome * 0.50,
     };
 
     return { ...result, eligibility, thresholds, baseIncome, year };
@@ -229,10 +226,10 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           </div>
           <div>
             <h2 className="text-xl font-bold text-fg">
-              수급자격 판정기
+              {t('checker.title')}
             </h2>
             <p className="text-sm text-muted">
-              소득과 재산을 입력하면 기초생활수급자 자격을 간이 판정합니다
+              {t('checker.desc')}
             </p>
           </div>
         </div>
@@ -243,13 +240,13 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           {/* 입력 섹션 */}
           <div className="space-y-4">
             <h3 className="font-semibold text-fg flex items-center gap-2">
-              기본 정보
+              {t('checker.basicInfo')}
             </h3>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  가구원 수
+                  {t('checker.householdSize')}
                 </label>
                 <select
                   value={householdSize}
@@ -257,13 +254,13 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   className={`${glassInput} px-3 py-2`}
                 >
                   {[1, 2, 3, 4, 5, 6].map((n) => (
-                    <option key={n} value={n}>{n}인 가구</option>
+                    <option key={n} value={n}>{t('household', { n })}</option>
                   ))}
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  거주 지역
+                  {t('checker.region')}
                 </label>
                 <select
                   value={region}
@@ -271,20 +268,20 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   className={`${glassInput} px-3 py-2`}
                 >
                   {Object.keys(basicPropertyAmount).map((r) => (
-                    <option key={r} value={r}>{r}</option>
+                    <option key={r} value={r}>{t(`checker.regions.${r}`)}</option>
                   ))}
                 </select>
               </div>
             </div>
 
             <h3 className="font-semibold text-fg flex items-center gap-2 pt-2">
-              소득 정보 (월)
+              {t('checker.incomeInfo')}
             </h3>
 
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  월 총소득 (세전)
+                  {t('checker.monthlyIncome')}
                 </label>
                 <input
                   type="text"
@@ -296,7 +293,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               </div>
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  그 중 근로소득 (30% 공제 적용)
+                  {t('checker.workIncome')}
                 </label>
                 <input
                   type="text"
@@ -309,13 +306,13 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
             </div>
 
             <h3 className="font-semibold text-fg flex items-center gap-2 pt-2">
-              재산 정보
+              {t('checker.assetInfo')}
             </h3>
 
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  일반재산 (주택, 토지 등)
+                  {t('checker.generalProperty')}
                 </label>
                 <input
                   type="text"
@@ -327,7 +324,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               </div>
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  금융재산 (예금, 적금 등)
+                  {t('checker.financialProperty')}
                 </label>
                 <input
                   type="text"
@@ -339,7 +336,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               </div>
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  자동차 (시가표준액)
+                  {t('checker.car')}
                 </label>
                 <input
                   type="text"
@@ -351,7 +348,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               </div>
               <div>
                 <label className="block text-sm font-medium text-body mb-1">
-                  부채 (대출금 등)
+                  {t('checker.debt')}
                 </label>
                 <input
                   type="text"
@@ -370,7 +367,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               }}
               className="w-full py-3 bg-primary hover:bg-blue-700 text-white font-semibold rounded-lg transition-all"
             >
-              수급자격 판정하기
+              {t('checker.submit')}
             </button>
           </div>
 
@@ -378,26 +375,26 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
           <div id="median-income-result" className="space-y-4 scroll-mt-20" aria-live="polite">
             {result ? (
               <>
-                <h3 className="font-semibold text-fg">판정 결과</h3>
+                <h3 className="font-semibold text-fg">{t('checker.result')}</h3>
                 <p className="text-xs text-muted">{t('checkerYear', { year: result.year })}</p>
 
                 {/* 소득인정액 계산 결과 */}
                 <div className="bg-subtle rounded-lg p-4 space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sub">소득평가액</span>
+                    <span className="text-sub">{t('checker.incomeEvaluation')}</span>
                     <span className="font-medium text-fg">{formatCurrency(result.incomeEvaluation)}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted pl-4">- 근로소득 공제</span>
+                    <span className="text-muted pl-4">{t('checker.workDeduction')}</span>
                     <span className="text-green-600 dark:text-green-400">{result.workIncomeDeduction >= 1 ? '-' : ''}{formatCurrency(result.workIncomeDeduction)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sub">재산 소득환산액</span>
+                    <span className="text-sub">{t('checker.propertyConversion')}</span>
                     <span className="font-medium text-fg">{formatCurrency(result.propertyConversion)}</span>
                   </div>
                   <div className="border-t border-line pt-3">
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold text-fg">소득인정액</span>
+                      <span className="font-semibold text-fg">{t('checker.incomeRecognition')}</span>
                       <span className="font-bold text-xl text-primary">{formatCurrency(result.totalIncomeRecognition)}</span>
                     </div>
                   </div>
@@ -405,7 +402,7 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
 
                 {/* 급여별 판정 결과 */}
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-body">급여별 수급 가능 여부</h4>
+                  <h4 className="text-sm font-medium text-body">{t('checker.byBenefit')}</h4>
                   {Object.entries(result.eligibility).map(([benefit, eligible]) => (
                     <div
                       key={benefit}
@@ -417,14 +414,14 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                     >
                       <div>
                         <span className={`font-medium ${eligible ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'}`}>
-                          {benefit}
+                          {t(`benefits.${benefit}`)}
                         </span>
                         <span className="text-xs text-muted ml-2">
-                          (기준: {formatCurrency(result.thresholds[benefit as keyof typeof result.thresholds])})
+                          {t('checker.threshold', { amount: formatCurrency(result.thresholds[benefit as keyof typeof result.thresholds]) })}
                         </span>
                       </div>
                       <span className={`font-semibold ${eligible ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                        {eligible ? '가능' : '불가'}
+                        {eligible ? t('checker.eligible') : t('checker.ineligible')}
                       </span>
                     </div>
                   ))}
@@ -435,12 +432,12 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
                   <div className="flex items-start gap-2">
                     <Info className="w-5 h-5 text-muted shrink-0 mt-0.5" />
                     <div className="text-sm text-body">
-                      <p className="font-medium mb-1">참고사항</p>
+                      <p className="font-medium mb-1">{t('checker.notesTitle')}</p>
                       <ul className="list-disc list-inside space-y-1 text-sub">
-                        <li>이 결과는 간이 판정으로, 실제 수급 여부와 다를 수 있습니다.</li>
-                        <li>부양의무자 기준, 근로능력 유무 등은 별도 심사합니다.</li>
+                        <li>{t('checker.noteSimple')}</li>
+                        <li>{t('checker.noteReview')}</li>
                         {(t.raw('checkerNotes') as string[]).map((note) => <li key={note}>{note}</li>)}
-                        <li>정확한 판정은 주민센터에 문의하세요.</li>
+                        <li>{t('checker.noteCenter')}</li>
                       </ul>
                     </div>
                   </div>
@@ -450,8 +447,8 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
               <div className="h-full flex flex-col items-center justify-center text-muted py-12">
                 <Calculator className="w-16 h-16 mb-4 opacity-30" />
                 <p className="text-center">
-                  좌측에 소득과 재산 정보를 입력하고<br />
-                  <strong>수급자격 판정하기</strong> 버튼을 눌러주세요
+                  {t('checker.emptyLine1')}<br />
+                  {t('checker.emptyBefore')}<strong>{t('checker.submit')}</strong>{t('checker.emptyAfter')}
                 </p>
               </div>
             )}
@@ -461,25 +458,25 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
         {/* 계산식 안내 (접힌 상태) */}
         <details className="mt-6">
           <summary className="cursor-pointer text-sm font-medium text-sub hover:text-fg">
-            소득인정액 계산식 보기
+            {t('checker.formulaToggle')}
           </summary>
           <div className="mt-4 space-y-3 text-sm">
             <div className="bg-subtle rounded-lg p-3">
               <p className="font-semibold text-sub">
-                소득인정액 = 소득평가액 + 소득환산액
+                {t('checker.formula1')}
               </p>
             </div>
             <div className="bg-subtle rounded-lg p-3">
               <p className="font-semibold text-sub">
-                소득평가액 = 실제소득 - 가구특성 지출비용 - 근로소득공제(30%)
+                {t('checker.formula2')}
               </p>
             </div>
             <div className="bg-subtle rounded-lg p-3">
               <p className="font-semibold text-sub">
-                소득환산액 = (재산 - 기본재산액 - 부채) × 소득환산율
+                {t('checker.formula3')}
               </p>
               <p className="text-xs text-primary mt-1">
-                환산율: 일반재산 4.17%/월, 금융재산 6.26%/월, 자동차 100%/월
+                {t('checker.rates')}
               </p>
             </div>
           </div>
@@ -497,8 +494,9 @@ const MedianIncomeTable = () => {
   const [customPercentage, setCustomPercentage] = useState<string>('');
 
   const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('ko-KR').format(Math.floor(amount)) + '원';
+    return t('won', { n: new Intl.NumberFormat('ko-KR').format(Math.floor(amount)) });
   };
+  const householdLabels = [1, 2, 3, 4, 5, 6].map((n) => t('household', { n }));
 
   const calculateAmount = (baseAmount: number, percentage: number): number => {
     return baseAmount * (percentage / 100);
@@ -518,10 +516,10 @@ const MedianIncomeTable = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-fg">
-              기준 중위소득 조회
+              {t('title')}
             </h1>
             <p className="text-sm text-muted mt-1">
-              연도별, 가구원수별 기준 중위소득과 정부 복지사업 자격요건을 확인하세요
+              {t('table.headerDesc')}
             </p>
           </div>
         </div>
@@ -540,7 +538,7 @@ const MedianIncomeTable = () => {
                     : 'text-sub hover:text-fg hover:bg-soft'
                 }`}
               >
-                {year}년
+                {t('table.yearTab', { year })}
               </button>
             ))}
           </div>
@@ -553,7 +551,7 @@ const MedianIncomeTable = () => {
               <Calculator className="w-5 h-5 text-body" />
             </div>
             <h2 className="text-xl font-bold text-fg">
-              {selectedYear}년 기준 중위소득 100%
+              {t('table.yearBase', { year: selectedYear })}
             </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -582,23 +580,23 @@ const MedianIncomeTable = () => {
               <Calculator className="w-5 h-5 text-body" />
             </div>
             <h2 className="text-xl font-bold text-fg">
-              중위소득 비율 계산기
+              {t('table.ratioCalc')}
             </h2>
           </div>
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-sub">중위소득</span>
+              <span className="text-sub">{t('table.ratioLabel')}</span>
               <input
                 type="number"
                 value={customPercentage}
                 onChange={(e) => setCustomPercentage(e.target.value)}
-                placeholder="예: 75"
+                placeholder={t('table.ratioPlaceholder')}
                 className="w-24 px-3 py-2 border border-line-strong rounded-lg text-center font-semibold bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <span className="text-sub">%</span>
             </div>
             <p className="text-sm text-muted">
-              원하는 비율을 입력하면 자동으로 계산됩니다 (최대 500%)
+              {t('table.ratioHint')}
             </p>
           </div>
           {showCustomRow && (
@@ -626,7 +624,7 @@ const MedianIncomeTable = () => {
                 <Users className="w-5 h-5 text-body" />
               </div>
               <h2 className="text-xl font-bold text-fg">
-                {selectedYear}년 비율별 기준 중위소득
+                {t('table.byRatio', { year: selectedYear })}
               </h2>
             </div>
           </div>
@@ -637,7 +635,7 @@ const MedianIncomeTable = () => {
               <thead className="bg-subtle">
                 <tr>
                   <th className="px-4 py-4 text-left text-sm font-semibold text-fg sticky left-0 bg-subtle z-10 min-w-[180px]">
-                    비율 / 지원사업
+                    {t('table.ratioPrograms')}
                   </th>
                   {householdLabels.map((label) => (
                     <th key={label} className="px-4 py-4 text-right text-sm font-semibold text-fg whitespace-nowrap">
@@ -684,10 +682,10 @@ const MedianIncomeTable = () => {
                                 className="relative group text-xs text-muted cursor-help"
                               >
                                 <span className="hover:text-primary underline decoration-dotted">
-                                  +{programs.length - 3}개
+                                  {t('table.more', { n: programs.length - 3 })}
                                 </span>
                                 <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-64 p-3 bg-surface rounded-lg shadow-xl border border-line">
-                                  <div className="text-xs font-semibold text-body mb-2">추가 지원사업</div>
+                                  <div className="text-xs font-semibold text-body mb-2">{t('table.morePrograms')}</div>
                                   <div className="space-y-1.5">
                                     {programs.slice(3).map((program, idx) => (
                                       <div key={idx} className={`flex items-start gap-2 ${categoryColors[program.category]}`}>
@@ -741,7 +739,7 @@ const MedianIncomeTable = () => {
                         percentage <= 50 ? 'text-red-600 dark:text-red-400' :
                         'text-fg'
                       }`}>
-                        중위소득 {percentage}%
+                        {t('table.ratioRow', { percentage })}
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {programs.slice(0, 2).map((program, idx) => (
@@ -759,7 +757,7 @@ const MedianIncomeTable = () => {
                             className="text-xs text-primary underline decoration-dotted"
                             title={programs.slice(2).map(p => p.name).join(', ')}
                           >
-                            +{programs.length - 2}개
+                            {t('table.more', { n: programs.length - 2 })}
                           </span>
                         )}
                       </div>
@@ -786,7 +784,7 @@ const MedianIncomeTable = () => {
                       {programs.length > 0 && (
                         <div className="pt-2 border-t border-line">
                           <div className="text-sm font-medium text-body mb-2">
-                            해당 지원사업
+                            {t('table.programs')}
                           </div>
                           <div className="space-y-2">
                             {programs.map((program, idx) => (
@@ -820,7 +818,7 @@ const MedianIncomeTable = () => {
                 <Heart className="w-5 h-5 text-body" />
               </div>
               <h2 className="text-xl font-bold text-fg">
-                {selectedYear}년 기초생활수급자 급여종류별 기준
+                {t('table.basicBenefits', { year: selectedYear })}
               </h2>
             </div>
           </div>
@@ -829,7 +827,7 @@ const MedianIncomeTable = () => {
             <table className="w-full">
               <thead className="bg-subtle">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-fg">급여 종류</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-fg">{t('table.benefitType')}</th>
                   {householdLabels.map((label) => (
                     <th key={label} className="px-4 py-3 text-right text-sm font-semibold text-fg whitespace-nowrap">
                       {label}
@@ -839,15 +837,15 @@ const MedianIncomeTable = () => {
               </thead>
               <tbody className="divide-y divide-line">
                 {[
-                  { name: '교육급여', percentage: 50, color: 'text-green-600', bg: 'bg-subtle' },
-                  { name: '주거급여', percentage: 48, color: 'text-orange-600', bg: 'bg-subtle' },
-                  { name: '의료급여', percentage: 40, color: 'text-pink-600', bg: 'bg-subtle' },
-                  { name: '생계급여', percentage: 32, color: 'text-red-600', bg: 'bg-subtle' },
+                  { name: 'education', percentage: 50, color: 'text-green-600', bg: 'bg-subtle' },
+                  { name: 'housing', percentage: 48, color: 'text-orange-600', bg: 'bg-subtle' },
+                  { name: 'medical', percentage: 40, color: 'text-pink-600', bg: 'bg-subtle' },
+                  { name: 'livelihood', percentage: 32, color: 'text-red-600', bg: 'bg-subtle' },
                 ].map((benefit) => (
                   <tr key={benefit.name} className={benefit.bg}>
                     <td className="px-4 py-3">
                       <span className={`font-semibold ${benefit.color}`}>
-                        {benefit.name} ({benefit.percentage}%)
+                        {t(`benefits.${benefit.name}`)} ({benefit.percentage}%)
                       </span>
                     </td>
                     {baseData.map((amount, index) => (
@@ -872,7 +870,7 @@ const MedianIncomeTable = () => {
                 <Building2 className="w-5 h-5 text-body" />
               </div>
               <h2 className="text-xl font-bold text-fg">
-                {selectedYear}년 지자체형 생계급여 기준
+                {t('table.localBenefits', { year: selectedYear })}
               </h2>
             </div>
           </div>
@@ -881,7 +879,7 @@ const MedianIncomeTable = () => {
             <table className="w-full">
               <thead className="bg-subtle">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-fg">지역</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-fg">{t('table.regionCol')}</th>
                   {householdLabels.map((label) => (
                     <th key={label} className="px-4 py-3 text-right text-sm font-semibold text-fg whitespace-nowrap">
                       {label}
@@ -891,14 +889,14 @@ const MedianIncomeTable = () => {
               </thead>
               <tbody className="divide-y divide-line">
                 {[
-                  { name: '인천형, 대구형', percentage: 50, color: 'text-teal-600' },
-                  { name: '서울형', percentage: 48, color: 'text-blue-600' },
-                  { name: '부산형, 광주형', percentage: 45, color: 'text-indigo-600' },
+                  { name: 'incheonDaegu', percentage: 50, color: 'text-teal-600' },
+                  { name: 'seoul', percentage: 48, color: 'text-blue-600' },
+                  { name: 'busanGwangju', percentage: 45, color: 'text-indigo-600' },
                 ].map((region) => (
                   <tr key={region.name} className="hover:bg-subtle">
                     <td className="px-4 py-3">
                       <div>
-                        <span className={`font-semibold ${region.color}`}>{region.name}</span>
+                        <span className={`font-semibold ${region.color}`}>{t(`table.localRegions.${region.name}`)}</span>
                         <span className="text-sm text-muted ml-2">({region.percentage}%)</span>
                       </div>
                     </td>
@@ -929,7 +927,7 @@ const MedianIncomeTable = () => {
               <TrendingUp className="w-5 h-5 text-body" />
             </div>
             <h2 className="text-xl font-bold text-fg">
-              연도별 기준 중위소득 100% 비교 ({cmpYears[0]}~{cmpYears[cmpYears.length - 1]})
+              {t('table.yearCompare', { from: cmpYears[0], to: cmpYears[cmpYears.length - 1] })}
             </h2>
           </div>
 
@@ -937,13 +935,13 @@ const MedianIncomeTable = () => {
             <table className="w-full">
               <thead className="bg-subtle">
                 <tr>
-                  <th className="px-3 py-3 text-left text-sm font-semibold text-fg">가구</th>
+                  <th className="px-3 py-3 text-left text-sm font-semibold text-fg">{t('table.householdCol')}</th>
                   {cmpYears.map((y) => (
-                    <th key={y} className="px-3 py-3 text-right text-sm font-semibold text-fg">{y}년</th>
+                    <th key={y} className="px-3 py-3 text-right text-sm font-semibold text-fg">{t('table.yearTab', { year: y })}</th>
                   ))}
                   <th className="px-3 py-3 text-right text-sm font-semibold text-fg">
-                    <span className="hidden sm:inline">{cmpYears[0]}→{cmpYears[cmpYears.length - 1]} 증가율</span>
-                    <span className="sm:hidden">증가율</span>
+                    <span className="hidden sm:inline">{t('table.growthRange', { from: cmpYears[0], to: cmpYears[cmpYears.length - 1] })}</span>
+                    <span className="sm:hidden">{t('table.growth')}</span>
                   </th>
                 </tr>
               </thead>
@@ -974,7 +972,7 @@ const MedianIncomeTable = () => {
           </div>
 
           <div className="mt-4 text-xs text-muted">
-            ※ 기준 중위소득은 매년 보건복지부에서 고시하며, 각종 복지사업의 수급자 선정기준으로 활용됩니다.
+            {t('table.footnote')}
           </div>
         </div>
 

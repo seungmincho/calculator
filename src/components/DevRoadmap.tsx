@@ -84,6 +84,7 @@ const LEVEL_CONFIG: Record<SkillLevel, { dot: string; label: string }> = {
 
 export default function DevRoadmap() {
   const t = useTranslations('devRoadmap')
+  const tc = useTranslations('common')
 
   const [selectedTrack, setSelectedTrack] = useState<RoadmapTrack>('frontend')
   const [filter, setFilter] = useState<SkillFilter>('all')
@@ -252,7 +253,7 @@ export default function DevRoadmap() {
                 className="flex items-center gap-1 text-xs text-faint hover:text-red-500 transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
-                초기화
+                {tc('reset')}
               </button>
             )}
           </div>
@@ -469,7 +470,7 @@ export default function DevRoadmap() {
             {currentTrack.title} {t('stats.total')} {t('stats.studied')}!
           </h3>
           <p className="text-sm text-muted">
-            {totalSkills}개 스킬을 모두 학습했습니다. 다른 트랙도 도전해 보세요!
+            {t('completion', { count: totalSkills })}
           </p>
         </div>
       )}
