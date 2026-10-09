@@ -14,6 +14,7 @@ import { INSURANCE, PENSION_ANNUAL_CAP } from '@/utils/insuranceRates'
 import { calc as yearEndCalc, DEFAULT_INPUT as YEAR_END_DEFAULT } from '@/utils/yearEndTax'
 import { calcCgt, ymd } from '@/utils/capitalGainsTax'
 import '@/lib/i18n/ns/tax'
+import { useTranslations } from '@/lib/i18n'
 
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -37,6 +38,7 @@ interface TaxResult {
 }
 
 const TaxCalculatorContent = () => {
+  const t = useTranslations('tax');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<TaxType>('income');
@@ -69,22 +71,22 @@ const TaxCalculatorContent = () => {
 
     if (result.type === 'income') {
       items = [
-        { name: '소득세', value: result.breakdown.incomeTax || 0, color: '#3B82F6' },
-        { name: '지방소득세', value: result.breakdown.localIncomeTax || 0, color: '#6366F1' },
-        { name: '국민연금', value: result.breakdown.nationalPension || 0, color: '#10B981' },
-        { name: '건강보험', value: result.breakdown.healthInsurance || 0, color: '#F59E0B' },
-        { name: '장기요양보험', value: result.breakdown.longTermCare || 0, color: '#F97316' },
-        { name: '고용보험', value: result.breakdown.employmentInsurance || 0, color: '#EF4444' },
+        { name: t('labels.incomeTax'), value: result.breakdown.incomeTax || 0, color: '#3B82F6' },
+        { name: t('labels.localIncomeTax'), value: result.breakdown.localIncomeTax || 0, color: '#6366F1' },
+        { name: t('labels.nationalPension'), value: result.breakdown.nationalPension || 0, color: '#10B981' },
+        { name: t('labels.healthInsurance'), value: result.breakdown.healthInsurance || 0, color: '#F59E0B' },
+        { name: t('labels.longTermCare'), value: result.breakdown.longTermCare || 0, color: '#F97316' },
+        { name: t('labels.employmentInsurance'), value: result.breakdown.employmentInsurance || 0, color: '#EF4444' },
       ]
     } else if (result.type === 'vat') {
       items = [
-        { name: '공급가액', value: result.netAmount || 0, color: '#3B82F6' },
-        { name: '부가가치세', value: result.breakdown.vatAmount || 0, color: '#F59E0B' },
+        { name: t('labels.supplyValue'), value: result.netAmount || 0, color: '#3B82F6' },
+        { name: t('labels.vat'), value: result.breakdown.vatAmount || 0, color: '#F59E0B' },
       ]
     } else if (result.type === 'capital-gains') {
       items = [
-        { name: '양도소득세', value: result.breakdown.capitalGainsTax || 0, color: '#F97316' },
-        { name: '지방소득세', value: result.breakdown.localTax || 0, color: '#6366F1' },
+        { name: t('labels.capitalGainsTax'), value: result.breakdown.capitalGainsTax || 0, color: '#F97316' },
+        { name: t('labels.localIncomeTax'), value: result.breakdown.localTax || 0, color: '#6366F1' },
       ]
     }
 
@@ -95,7 +97,7 @@ const TaxCalculatorContent = () => {
       tooltip: {
         trigger: 'item' as const,
         formatter: (params: { name: string; value: number; percent: number; marker: string }) =>
-          `${params.marker} ${params.name}: ${Math.round(params.value).toLocaleString('ko-KR')}원 (${Math.round(params.percent ?? 0)}%)`
+          `${params.marker} ${params.name}: ${Math.round(params.value).toLocaleString('ko-KR')}${t('won')} (${Math.round(params.percent ?? 0)}%)`
       },
       legend: {
         bottom: 0,
@@ -127,9 +129,9 @@ const TaxCalculatorContent = () => {
   } = useCalculationHistory('tax');
 
   const taxTypes = {
-    'income': '소득세',
-    'vat': '부가가치세',
-    'capital-gains': '양도소득세'
+    'income': t('labels.incomeTax'),
+    'vat': t('labels.vat'),
+    'capital-gains': t('labels.capitalGainsTax')
   };
 
   // 근로소득세 (2026년 귀속 연말정산 방식: 근로소득공제·인적공제·4대보험 공제 → 6~45% → 근로소득세액공제,
@@ -275,15 +277,13 @@ const TaxCalculatorContent = () => {
     if (!result) return '';
     const r = result as unknown as TaxResult;
 
-    if (r.type === 'income') {
-      return `실수령액 ${formatNumber(r.netAmount)}원 (세금 ${formatNumber(r.totalTax)}원)`;
+    if (r.type === 'income' || r.type === 'capital-gains') {
+      return t('history.net', { net: formatNumber(r.netAmount), tax: formatNumber(r.totalTax) });
     } else if (r.type === 'vat') {
-      return `부가세 포함 ${formatNumber(r.netAmount + r.totalTax)}원 (부가세 ${formatNumber(r.totalTax)}원)`;
-    } else if (r.type === 'capital-gains') {
-      return `실수령액 ${formatNumber(r.netAmount)}원 (세금 ${formatNumber(r.totalTax)}원)`;
+      return t('history.vat', { total: formatNumber(r.netAmount + r.totalTax), vat: formatNumber(r.totalTax) });
     }
 
-    return `세금 ${formatNumber(r.totalTax)}원`;
+    return t('history.tax', { tax: formatNumber(r.totalTax) });
   };
 
   const handleShare = async () => {
@@ -309,7 +309,7 @@ const TaxCalculatorContent = () => {
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy URL:', err);
-      alert('URL 복사에 실패했습니다. 수동으로 복사해주세요: ' + window.location.href);
+      alert(t('share.copyFailed', { url: window.location.href }));
     }
   };
 
@@ -434,7 +434,7 @@ const TaxCalculatorContent = () => {
           <div className="space-y-6">
             <div>
               <label htmlFor="tc-income" className="block text-sm font-medium text-body mb-2">
-                연간 총급여 (근로소득, 비과세 제외)
+                {t('input.annualIncome')}
               </label>
               <div className="relative">
                 <input
@@ -443,16 +443,16 @@ const TaxCalculatorContent = () => {
                   inputMode="numeric"
                   value={annualIncome}
                   onChange={(e) => handleNumberInput(e.target.value, setAnnualIncome, 'income')}
-                  placeholder="예: 50,000,000"
+                  placeholder={t('input.example', { n: '50,000,000' })}
                   className={`${glassInput} px-4 py-3`}
                 />
-                <span className="absolute right-3 top-3 text-muted">원</span>
+                <span className="absolute right-3 top-3 text-muted">{t('won')}</span>
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                부양가족 수
+                {t('input.dependents')}
               </label>
               <select
                 value={dependents}
@@ -463,7 +463,7 @@ const TaxCalculatorContent = () => {
                 className={`${glassInput} px-4 py-3`}
               >
                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                  <option key={num} value={num}>{num}명</option>
+                  <option key={num} value={num}>{t('input.people', { n: num })}</option>
                 ))}
               </select>
             </div>
@@ -471,7 +471,7 @@ const TaxCalculatorContent = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  의료비
+                  {t('input.medical')}
                 </label>
                 <div className="relative">
                   <input
@@ -481,13 +481,13 @@ const TaxCalculatorContent = () => {
                     placeholder="0"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
+                  <span className="absolute right-3 top-3 text-muted">{t('won')}</span>
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  교육비
+                  {t('input.education')}
                 </label>
                 <div className="relative">
                   <input
@@ -497,7 +497,7 @@ const TaxCalculatorContent = () => {
                     placeholder="0"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
+                  <span className="absolute right-3 top-3 text-muted">{t('won')}</span>
                 </div>
               </div>
             </div>
@@ -509,23 +509,23 @@ const TaxCalculatorContent = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                공급가액
+                {t('labels.supplyValue')}
               </label>
               <div className="relative">
                 <input
                   type="text"
                   value={saleAmount}
                   onChange={(e) => handleNumberInput(e.target.value, setSaleAmount, 'sale')}
-                  placeholder="예: 10,000,000"
+                  placeholder={t('input.example', { n: '10,000,000' })}
                   className={`${glassInput} px-4 py-3`}
                 />
-                <span className="absolute right-3 top-3 text-muted">원</span>
+                <span className="absolute right-3 top-3 text-muted">{t('won')}</span>
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-body mb-2">
-                부가세율
+                {t('input.vatRate')}
               </label>
               <select
                 value={vatRate}
@@ -535,8 +535,8 @@ const TaxCalculatorContent = () => {
                 }}
                 className={`${glassInput} px-4 py-3`}
               >
-                <option value="10">10% (일반세율)</option>
-                <option value="0">0% (영세율·면세)</option>
+                <option value="10">{t('input.vatStandard')}</option>
+                <option value="0">{t('input.vatZero')}</option>
               </select>
             </div>
           </div>
@@ -548,33 +548,33 @@ const TaxCalculatorContent = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  양도가액
+                  {t('input.salePrice')}
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     value={salePrice}
                     onChange={(e) => handleNumberInput(e.target.value, setSalePrice, 'sellPrice')}
-                    placeholder="예: 800,000,000"
+                    placeholder={t('input.example', { n: '800,000,000' })}
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
+                  <span className="absolute right-3 top-3 text-muted">{t('won')}</span>
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  취득가액
+                  {t('input.purchasePrice')}
                 </label>
                 <div className="relative">
                   <input
                     type="text"
                     value={purchasePrice}
                     onChange={(e) => handleNumberInput(e.target.value, setPurchasePrice, 'buyPrice')}
-                    placeholder="예: 500,000,000"
+                    placeholder={t('input.example', { n: '500,000,000' })}
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-muted">원</span>
+                  <span className="absolute right-3 top-3 text-muted">{t('won')}</span>
                 </div>
               </div>
             </div>
@@ -582,7 +582,7 @@ const TaxCalculatorContent = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  보유기간
+                  {t('input.holdingPeriod')}
                 </label>
                 <div className="relative">
                   <input
@@ -598,13 +598,13 @@ const TaxCalculatorContent = () => {
                     placeholder="5"
                     className={`${glassInput} px-4 py-3`}
                   />
-                  <span className="absolute right-3 top-3 text-muted">년</span>
+                  <span className="absolute right-3 top-3 text-muted">{t('input.years')}</span>
                 </div>
               </div>
               
               <div>
                 <label htmlFor="tc-property" className="block text-sm font-medium text-body mb-2">
-                  주택 보유 상황
+                  {t('input.propertyType')}
                 </label>
                 <select
                   id="tc-property"
@@ -616,9 +616,9 @@ const TaxCalculatorContent = () => {
                   }}
                   className={`${glassInput} px-4 py-3`}
                 >
-                  <option value="general">1세대 1주택 (실거주)</option>
-                  <option value="luxury">1세대 1주택 (거주 안 함)</option>
-                  <option value="multiple">2주택 이상 (비조정지역)</option>
+                  <option value="general">{t('input.propertyGeneral')}</option>
+                  <option value="luxury">{t('input.propertyLuxury')}</option>
+                  <option value="multiple">{t('input.propertyMultiple')}</option>
                 </select>
               </div>
             </div>
@@ -630,16 +630,17 @@ const TaxCalculatorContent = () => {
     }
   };
 
-  const heroLabel = activeTab === 'vat' ? '부가세 포함 금액' : '세후 금액'
-  const heroValue = result ? `${formatNumber(activeTab === 'vat' ? result.netAmount + result.totalTax : result.netAmount)}원` : ''
+  const heroLabel = activeTab === 'vat' ? t('result.withVat') : t('result.afterTax')
+  const tabKey = activeTab === 'capital-gains' ? 'capitalGains' : activeTab
+  const heroValue = result ? `${formatNumber(activeTab === 'vat' ? result.netAmount + result.totalTax : result.netAmount)}${t('won')}` : ''
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-fg">세금 계산기</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">
-            소득세, 부가가치세, 양도소득세를 정확하게 계산하세요
+            {t('description')}
           </p>
         </div>
         <CalculationHistory
@@ -677,44 +678,26 @@ const TaxCalculatorContent = () => {
         <div className={`${glassCard} ${glassInset} p-8`}>
           {result && <MobileResultLink href="#tax-calculator-result" label={heroLabel} value={heroValue} className="mb-6" />}
           <h2 className="text-2xl font-semibold mb-6 text-fg">
-            {taxTypes[activeTab]} 정보 입력
+            {t('input.title', { type: taxTypes[activeTab] })}
           </h2>
           
           {renderInputSection()}
 
           <div className="bg-subtle p-4 rounded-lg mt-6">
             <h3 className="text-sm font-medium text-fg mb-2">
-              계산 기준
+              {t('basis.title')}
             </h3>
             <ul className="text-sm text-sub space-y-1">
-              {activeTab === 'income' && (
-                <>
-                  <li>• 2026년 귀속 근로소득 연말정산 기준 (소득세법 §47·§55·§59)</li>
-                  <li>• 근로소득공제 → 기본공제(본인+부양가족×150만원)·4대보험 → 세율 6~45% → 근로소득세액공제</li>
-                  <li>• 의료비(총급여 3% 초과분)·교육비 15% 세액공제 vs 표준세액공제 13만원 중 유리한 쪽</li>
-                </>
-              )}
-              {activeTab === 'vat' && (
-                <>
-                  <li>• 일반과세자 기준</li>
-                  <li>• 부가세 = 공급가액 × 세율</li>
-                  <li>• 총 금액 = 공급가액 + 부가세</li>
-                </>
-              )}
-              {activeTab === 'capital-gains' && (
-                <>
-                  <li>• 2026년 소득세법 기준 주택 양도 (오늘 양도·비조정지역 가정)</li>
-                  <li>• 1세대 1주택 2년 보유 비과세, 양도가 12억 초과분만 과세 · 장기보유특별공제 · 기본공제 250만원</li>
-                  <li>• 세율 6~45% (2년 미만 보유 60~70%). 조정지역 중과·일시적 2주택은 양도소득세 계산기에서</li>
-                </>
-              )}
+              {(t.raw(`basis.${tabKey}`) as string[]).map(item => (
+                <li key={item}>{`• ${item}`}</li>
+              ))}
             </ul>
           </div>
         </div>
 
         {/* 결과 섹션 */}
         <div id="tax-calculator-result" className={`${glassCard} ${glassInset} p-8 scroll-mt-20`}>
-          <h2 className="text-2xl font-semibold mb-6 text-fg">계산 결과</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-fg">{t('result.title')}</h2>
           
           {result ? (
             <div className="space-y-6" aria-live="polite">
@@ -733,12 +716,12 @@ const TaxCalculatorContent = () => {
                     {isCopied ? (
                       <>
                         <Check className="w-4 h-4" />
-                        <span>복사됨!</span>
+                        <span>{t('share.copied')}</span>
                       </>
                     ) : (
                       <>
                         <Share2 className="w-4 h-4" />
-                        <span>결과 공유</span>
+                        <span>{t('share.button')}</span>
                       </>
                     )}
                   </button>
@@ -749,7 +732,7 @@ const TaxCalculatorContent = () => {
                       className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white transition-colors"
                     >
                       <Save className="w-4 h-4" />
-                      <span>저장</span>
+                      <span>{t('share.save')}</span>
                     </button>
                   )}
                 </div>
@@ -758,14 +741,14 @@ const TaxCalculatorContent = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center py-2 border-b border-line">
                   <span className="text-sub">
-                    {activeTab === 'vat' ? '공급가액' : '총 소득/양도가액'}
+                    {activeTab === 'vat' ? t('labels.supplyValue') : t('result.grossAmount')}
                   </span>
                   <span className="font-semibold text-fg">
                     {activeTab === 'vat' 
                       ? formatNumber(result.netAmount)
                       : activeTab === 'income'
                       ? formatNumber(parseInt(annualIncome.replace(/,/g, '') || '0'))
-                      : formatNumber(parseInt(salePrice.replace(/,/g, '') || '0'))}원
+                      : formatNumber(parseInt(salePrice.replace(/,/g, '') || '0'))}{t('won')}
                   </span>
                 </div>
                 
@@ -773,27 +756,27 @@ const TaxCalculatorContent = () => {
                   {activeTab === 'income' && result.breakdown && (
                     <>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-sub">소득세</span>
+                        <span className="text-sub">{t('labels.incomeTax')}</span>
                         <span className="text-red-600 dark:text-red-400">
-                          {minus(result.breakdown.incomeTax)}원
+                          {minus(result.breakdown.incomeTax)}{t('won')}
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-sub">지방소득세</span>
+                        <span className="text-sub">{t('labels.localIncomeTax')}</span>
                         <span className="text-red-600 dark:text-red-400">
-                          {minus(result.breakdown.localIncomeTax)}원
+                          {minus(result.breakdown.localIncomeTax)}{t('won')}
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-sub">국민연금</span>
+                        <span className="text-sub">{t('labels.nationalPension')}</span>
                         <span className="text-red-600 dark:text-red-400">
-                          {minus(result.breakdown.nationalPension)}원
+                          {minus(result.breakdown.nationalPension)}{t('won')}
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-sub">건강보험</span>
+                        <span className="text-sub">{t('labels.healthInsurance')}</span>
                         <span className="text-red-600 dark:text-red-400">
-                          {minus(result.breakdown.healthInsurance)}원
+                          {minus(result.breakdown.healthInsurance)}{t('won')}
                         </span>
                       </div>
                     </>
@@ -801,9 +784,9 @@ const TaxCalculatorContent = () => {
                   
                   {activeTab === 'vat' && result.breakdown && (
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-sub">부가가치세</span>
+                      <span className="text-sub">{t('labels.vat')}</span>
                       <span className="text-blue-600 dark:text-blue-400">
-                        +{formatNumber(result.breakdown.vatAmount || 0)}원
+                        +{formatNumber(result.breakdown.vatAmount || 0)}{t('won')}
                       </span>
                     </div>
                   )}
@@ -811,15 +794,15 @@ const TaxCalculatorContent = () => {
                   {activeTab === 'capital-gains' && result.breakdown && (
                     <>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-sub">양도소득세</span>
+                        <span className="text-sub">{t('labels.capitalGainsTax')}</span>
                         <span className="text-red-600 dark:text-red-400">
-                          {minus(result.breakdown.capitalGainsTax)}원
+                          {minus(result.breakdown.capitalGainsTax)}{t('won')}
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-sub">지방소득세</span>
+                        <span className="text-sub">{t('labels.localIncomeTax')}</span>
                         <span className="text-red-600 dark:text-red-400">
-                          {minus(result.breakdown.localTax)}원
+                          {minus(result.breakdown.localTax)}{t('won')}
                         </span>
                       </div>
                     </>
@@ -827,36 +810,21 @@ const TaxCalculatorContent = () => {
                 </div>
                 
                 <div className="flex justify-between items-center py-2 border-t border-line font-semibold">
-                  <span className="text-fg">총 세금</span>
+                  <span className="text-fg">{t('result.totalTax')}</span>
                   <span className="text-red-600 dark:text-red-400">
-                    {formatNumber(result.totalTax)}원
+                    {formatNumber(result.totalTax)}{t('won')}
                   </span>
                 </div>
               </div>
 
               <div className="bg-subtle p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-fg mb-2">
-                  참고사항
+                  {t('notes.title')}
                 </h3>
                 <ul className="text-sm text-sub space-y-1">
-                  {activeTab === 'income' && (
-                    <>
-                      <li>• 실제 세액은 다른 소득공제, 세액공제에 따라 달라질 수 있습니다</li>
-                      <li>• 연말정산시 추가 공제항목을 확인하세요</li>
-                    </>
-                  )}
-                  {activeTab === 'vat' && (
-                    <>
-                      <li>• 간이과세자는 별도 세율이 적용됩니다</li>
-                      <li>• 면세사업자는 부가세를 부과하지 않습니다</li>
-                    </>
-                  )}
-                  {activeTab === 'capital-gains' && (
-                    <>
-                      <li>• 1세대 1주택 비과세 요건을 확인하세요</li>
-                      <li>• 실제 계산시 필요경비 등이 추가로 공제됩니다</li>
-                    </>
-                  )}
+                  {(t.raw(`notes.${tabKey}`) as string[]).map(item => (
+                    <li key={item}>{`• ${item}`}</li>
+                  ))}
                 </ul>
               </div>
 
@@ -864,7 +832,7 @@ const TaxCalculatorContent = () => {
               {Object.keys(taxChartOption).length > 0 && (
                 <div className="bg-subtle rounded-xl p-4">
                   <h3 className="text-sm font-medium text-fg mb-2">
-                    {activeTab === 'income' ? '공제 항목별 비중' : activeTab === 'vat' ? '공급가액 vs 부가세' : '양도세 구성'}
+                    {t(`chart.${tabKey}`)}
                   </h3>
                   <ReactECharts option={taxChartOption} style={{ height: '280px' }} />
                 </div>
@@ -874,8 +842,8 @@ const TaxCalculatorContent = () => {
             <div className="text-center py-12">
               <Building2 className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-muted">
-                필요한 정보를 입력하면<br />
-                세금을 계산해드립니다.
+                {t('result.empty1')}<br />
+                {t('result.empty2')}
               </p>
             </div>
           )}

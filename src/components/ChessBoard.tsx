@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/chess'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 import {
   ChessState,
   ChessMove,
@@ -70,6 +71,62 @@ export default function ChessBoard({
     if (flipped) return { vr: 7 - row, vc: 7 - col }
     return { vr: row, vc: col }
   }, [flipped])
+
+  // 클릭·터치·Enter 공통: 선택한 말이 있으면 이동 시도, 아니면 내 말 선택
+  const activate = useCallback((row: number, col: number) => {
+    if (disabled || !isMyTurn) return
+
+    const piece = gameState.board[row][col]
+
+    // If we have a selected piece, try to move
+    if (selectedSquare) {
+      const move = legalMoves.find(m => m.toRow === row && m.toCol === col)
+      if (move) {
+        // If promotion, default to queen (could add UI later)
+        if (move.promotion) {
+          const queenPromo = legalMoves.find(m =>
+            m.toRow === row && m.toCol === col && m.promotion === 'Q'
+          )
+          if (queenPromo) {
+            onMove(queenPromo)
+          }
+        } else {
+          onMove(move)
+        }
+        setSelectedSquare(null)
+        setLegalMoves([])
+        return
+      }
+
+      // Clicked on own piece - reselect
+      if (piece && piece[0] === playerColor) {
+        const moves = getLegalMovesForPiece(gameState, row, col)
+        setSelectedSquare({ row, col })
+        setLegalMoves(moves)
+        return
+      }
+
+      // Clicked elsewhere - deselect
+      setSelectedSquare(null)
+      setLegalMoves([])
+      return
+    }
+
+    // No piece selected - select own piece
+    if (piece && piece[0] === playerColor) {
+      const moves = getLegalMovesForPiece(gameState, row, col)
+      if (moves.length > 0) {
+        setSelectedSquare({ row, col })
+        setLegalMoves(moves)
+      }
+    }
+  }, [disabled, isMyTurn, gameState, selectedSquare, legalMoves, playerColor, onMove])
+
+  // 키보드 커서는 화면 좌표(보드를 뒤집어도 위쪽 화살표는 위로). 시작은 내 폰 줄 가운데.
+  const kb = useBoardKeyboard(8, 8, (vr, vc) => {
+    const { row, col } = toBoardCoord(vr, vc)
+    activate(row, col)
+  }, { row: 6, col: 4 })
 
   // Get last move
   const lastMove = gameState.moveHistory.length > 0
@@ -214,7 +271,14 @@ export default function ChessBoard({
       ctx.strokeRect(vc * cs + 1, vr * cs + 1, cs - 2, cs - 2)
     }
 
-  }, [gameState, boardSize, cellSize, selectedSquare, legalMoves, lastMove, kingInCheck, flipped, toBoardCoord, toViewCoord, hoverSquare, isMyTurn, disabled])
+    // Keyboard cursor
+    if (kb.active) {
+      ctx.strokeStyle = '#3182F6'
+      ctx.lineWidth = 3
+      ctx.strokeRect(kb.cursor.col * cs + 2, kb.cursor.row * cs + 2, cs - 4, cs - 4)
+    }
+
+  }, [gameState, boardSize, cellSize, selectedSquare, legalMoves, lastMove, kingInCheck, flipped, toBoardCoord, toViewCoord, hoverSquare, isMyTurn, disabled, kb.active, kb.cursor])
 
   // Get board coords from pixel position
   const getSquareFromPixel = useCallback((clientX: number, clientY: number) => {
@@ -232,56 +296,9 @@ export default function ChessBoard({
   // Handle click
   const handleClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (disabled || !isMyTurn) return
-
     const sq = getSquareFromPixel(e.clientX, e.clientY)
-    if (!sq) return
-
-    const { row, col } = sq
-    const piece = gameState.board[row][col]
-
-    // If we have a selected piece, try to move
-    if (selectedSquare) {
-      const move = legalMoves.find(m => m.toRow === row && m.toCol === col)
-      if (move) {
-        // If promotion, default to queen (could add UI later)
-        if (move.promotion) {
-          const queenPromo = legalMoves.find(m =>
-            m.toRow === row && m.toCol === col && m.promotion === 'Q'
-          )
-          if (queenPromo) {
-            onMove(queenPromo)
-          }
-        } else {
-          onMove(move)
-        }
-        setSelectedSquare(null)
-        setLegalMoves([])
-        return
-      }
-
-      // Clicked on own piece - reselect
-      if (piece && piece[0] === playerColor) {
-        const moves = getLegalMovesForPiece(gameState, row, col)
-        setSelectedSquare({ row, col })
-        setLegalMoves(moves)
-        return
-      }
-
-      // Clicked elsewhere - deselect
-      setSelectedSquare(null)
-      setLegalMoves([])
-      return
-    }
-
-    // No piece selected - select own piece
-    if (piece && piece[0] === playerColor) {
-      const moves = getLegalMovesForPiece(gameState, row, col)
-      if (moves.length > 0) {
-        setSelectedSquare({ row, col })
-        setLegalMoves(moves)
-      }
-    }
-  }, [disabled, isMyTurn, gameState, selectedSquare, legalMoves, playerColor, onMove, getSquareFromPixel])
+    if (sq) activate(sq.row, sq.col)
+  }, [disabled, isMyTurn, getSquareFromPixel, activate])
 
   // Handle mouse move for hover
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -305,47 +322,8 @@ export default function ChessBoard({
     if (!touch) return
 
     const sq = getSquareFromPixel(touch.clientX, touch.clientY)
-    if (!sq) return
-
-    const { row, col } = sq
-    const piece = gameState.board[row][col]
-
-    if (selectedSquare) {
-      const move = legalMoves.find(m => m.toRow === row && m.toCol === col)
-      if (move) {
-        if (move.promotion) {
-          const queenPromo = legalMoves.find(m =>
-            m.toRow === row && m.toCol === col && m.promotion === 'Q'
-          )
-          if (queenPromo) onMove(queenPromo)
-        } else {
-          onMove(move)
-        }
-        setSelectedSquare(null)
-        setLegalMoves([])
-        return
-      }
-
-      if (piece && piece[0] === playerColor) {
-        const moves = getLegalMovesForPiece(gameState, row, col)
-        setSelectedSquare({ row, col })
-        setLegalMoves(moves)
-        return
-      }
-
-      setSelectedSquare(null)
-      setLegalMoves([])
-      return
-    }
-
-    if (piece && piece[0] === playerColor) {
-      const moves = getLegalMovesForPiece(gameState, row, col)
-      if (moves.length > 0) {
-        setSelectedSquare({ row, col })
-        setLegalMoves(moves)
-      }
-    }
-  }, [disabled, isMyTurn, gameState, selectedSquare, legalMoves, playerColor, onMove, getSquareFromPixel])
+    if (sq) activate(sq.row, sq.col)
+  }, [disabled, isMyTurn, getSquareFromPixel, activate])
 
   // Clear selection when turn changes
   useEffect(() => {
@@ -387,6 +365,28 @@ export default function ChessBoard({
     return notations
   }
 
+  const notations = getMoveNotation()
+
+  // 스크린리더 안내: 마지막 수·체크·결과 + (키보드 사용 중) 커서 칸
+  const colorName = (c: Color) => (c === 'w' ? t('white') : t('black'))
+  const lastNotation = notations[notations.length - 1]
+  let moveText = ''
+  if (lastNotation) {
+    const byWhite = !lastNotation.black
+    moveText = t('keyboard.moved', { color: colorName(byWhite ? 'w' : 'b'), move: byWhite ? lastNotation.white : lastNotation.black })
+  }
+  if (gameState.winner) moveText += ` ${gameState.winner === 'draw' ? t('draw') : gameState.winner === playerColor ? t('youWin') : t('youLose')}`
+  else if (gameState.inCheck) moveText += ` ${t('check')}`
+  let cursorText = ''
+  if (kb.active) {
+    const { row, col } = toBoardCoord(kb.cursor.row, kb.cursor.col)
+    const piece = gameState.board[row][col]
+    const parts = ['abcdefgh'[col] + (8 - row), piece ? `${colorName(piece[0] as Color)} ${t(`keyboard.pieces.${piece[1]}`)}` : t('keyboard.empty')]
+    if (selectedSquare?.row === row && selectedSquare.col === col) parts.push(t('keyboard.selected'))
+    if (legalMoves.some(m => m.toRow === row && m.toCol === col)) parts.push(t('keyboard.canMove'))
+    cursorText = parts.join(', ')
+  }
+
   return (
     <div className="space-y-3">
       {/* Top captured pieces (opponent's captured = player's advantage) */}
@@ -399,8 +399,11 @@ export default function ChessBoard({
 
       {/* Canvas board */}
       <div ref={containerRef} className="flex justify-center">
+        <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{cursorText}</span></p>
         <canvas
           ref={canvasRef}
+          {...kb.boardProps}
+          aria-label={t('keyboard.board')}
           onClick={handleClick}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
@@ -428,7 +431,7 @@ export default function ChessBoard({
         <div className="bg-subtle rounded-lg p-3 max-h-40 overflow-y-auto">
           <p className="text-xs font-medium text-sub mb-2">{t('moveHistory')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-1 text-xs font-mono text-body">
-            {getMoveNotation().map((entry) => (
+            {notations.map((entry) => (
               <div key={entry.num} className="flex gap-1">
                 <span className="text-gray-400 w-6 text-right">{entry.num}.</span>
                 <span className="w-12">{entry.white}</span>

@@ -1423,6 +1423,97 @@
     }
   },
   "tax": {
+    "description": "소득세, 부가가치세, 양도소득세를 정확하게 계산하세요",
+    "won": "원",
+    "labels": {
+      "incomeTax": "소득세",
+      "localIncomeTax": "지방소득세",
+      "nationalPension": "국민연금",
+      "healthInsurance": "건강보험",
+      "longTermCare": "장기요양보험",
+      "employmentInsurance": "고용보험",
+      "supplyValue": "공급가액",
+      "vat": "부가가치세",
+      "capitalGainsTax": "양도소득세"
+    },
+    "input": {
+      "title": "{type} 정보 입력",
+      "example": "예: {n}",
+      "annualIncome": "연간 총급여 (근로소득, 비과세 제외)",
+      "dependents": "부양가족 수",
+      "people": "{n}명",
+      "medical": "의료비",
+      "education": "교육비",
+      "vatRate": "부가세율",
+      "vatStandard": "10% (일반세율)",
+      "vatZero": "0% (영세율·면세)",
+      "salePrice": "양도가액",
+      "purchasePrice": "취득가액",
+      "holdingPeriod": "보유기간",
+      "years": "년",
+      "propertyType": "주택 보유 상황",
+      "propertyGeneral": "1세대 1주택 (실거주)",
+      "propertyLuxury": "1세대 1주택 (거주 안 함)",
+      "propertyMultiple": "2주택 이상 (비조정지역)"
+    },
+    "basis": {
+      "title": "계산 기준",
+      "income": [
+        "2026년 귀속 근로소득 연말정산 기준 (소득세법 §47·§55·§59)",
+        "근로소득공제 → 기본공제(본인+부양가족×150만원)·4대보험 → 세율 6~45% → 근로소득세액공제",
+        "의료비(총급여 3% 초과분)·교육비 15% 세액공제 vs 표준세액공제 13만원 중 유리한 쪽"
+      ],
+      "vat": [
+        "일반과세자 기준",
+        "부가세 = 공급가액 × 세율",
+        "총 금액 = 공급가액 + 부가세"
+      ],
+      "capitalGains": [
+        "2026년 소득세법 기준 주택 양도 (오늘 양도·비조정지역 가정)",
+        "1세대 1주택 2년 보유 비과세, 양도가 12억 초과분만 과세 · 장기보유특별공제 · 기본공제 250만원",
+        "세율 6~45% (2년 미만 보유 60~70%). 조정지역 중과·일시적 2주택은 양도소득세 계산기에서"
+      ]
+    },
+    "result": {
+      "title": "계산 결과",
+      "withVat": "부가세 포함 금액",
+      "afterTax": "세후 금액",
+      "grossAmount": "총 소득/양도가액",
+      "totalTax": "총 세금",
+      "empty1": "필요한 정보를 입력하면",
+      "empty2": "세금을 계산해드립니다."
+    },
+    "notes": {
+      "title": "참고사항",
+      "income": [
+        "실제 세액은 다른 소득공제, 세액공제에 따라 달라질 수 있습니다",
+        "연말정산시 추가 공제항목을 확인하세요"
+      ],
+      "vat": [
+        "간이과세자는 별도 세율이 적용됩니다",
+        "면세사업자는 부가세를 부과하지 않습니다"
+      ],
+      "capitalGains": [
+        "1세대 1주택 비과세 요건을 확인하세요",
+        "실제 계산시 필요경비 등이 추가로 공제됩니다"
+      ]
+    },
+    "chart": {
+      "income": "공제 항목별 비중",
+      "vat": "공급가액 vs 부가세",
+      "capitalGains": "양도세 구성"
+    },
+    "share": {
+      "button": "결과 공유",
+      "copied": "복사됨!",
+      "save": "저장",
+      "copyFailed": "URL 복사에 실패했습니다. 수동으로 복사해주세요: {url}"
+    },
+    "history": {
+      "net": "실수령액 {net}원 (세금 {tax}원)",
+      "vat": "부가세 포함 {total}원 (부가세 {vat}원)",
+      "tax": "세금 {tax}원"
+    },
     "title": "세금 계산기",
     "guide": {
       "title": "세금 계산 가이드",
@@ -3114,6 +3205,58 @@
     "placeholder": "변환할 데이터를 입력하거나 파일을 업로드하세요"
   },
   "sqlFormatter": {
+    "title": "SQL 포맷터",
+    "description": "SQL 쿼리를 예쁘게 포맷팅하고 압축하세요.",
+    "mode": {
+      "label": "모드:",
+      "format": "포맷팅",
+      "minify": "압축",
+      "analyze": "분석"
+    },
+    "actions": {
+      "settings": "설정",
+      "example": "예제",
+      "upload": "업로드",
+      "copy": "복사",
+      "copied": "복사됨!",
+      "download": "다운로드"
+    },
+    "settings": {
+      "indentSize": "들여쓰기 크기",
+      "spaces": "{n} 스페이스",
+      "dialect": "SQL 방언",
+      "standardSql": "표준 SQL",
+      "uppercaseKeywords": "키워드 대문자"
+    },
+    "input": {
+      "title": "SQL 입력",
+      "placeholder": "SQL 쿼리를 입력하세요..."
+    },
+    "error": {
+      "title": "SQL 처리 오류",
+      "message": "SQL 처리 중 오류가 발생했습니다"
+    },
+    "output": {
+      "format": "포맷팅 결과",
+      "minify": "압축 결과",
+      "analyze": "분석 결과",
+      "formattedQuery": "포맷팅된 쿼리",
+      "placeholder": "포맷팅된 SQL이 여기에 표시됩니다..."
+    },
+    "analysis": {
+      "tables": "테이블",
+      "functions": "함수",
+      "joins": "JOIN 타입",
+      "complexity": "복잡도",
+      "none": "없음",
+      "suggestionsTitle": "최적화 제안",
+      "suggestions": {
+        "selectStar": "SELECT * 대신 필요한 컬럼만 명시하세요",
+        "noWhere": "WHERE 절을 추가하여 데이터를 필터링하세요",
+        "manyJoins": "많은 JOIN이 있습니다. 쿼리를 분할하는 것을 고려하세요",
+        "orCondition": "OR 조건은 성능에 영향을 줄 수 있습니다. UNION 사용을 고려하세요"
+      }
+    },
     "fullscreen": "전체화면",
     "exitFullscreen": "창모드",
     "guide": {
@@ -5530,6 +5673,16 @@
     "loss": "패배!"
   },
   "checkers": {
+    "keyboard": {
+      "board": "체커 보드. 방향키로 칸을 옮기고 Enter로 말을 고른 뒤, 갈 칸에서 다시 Enter를 누릅니다",
+      "moved": "{color} {from}에서 {to} 이동",
+      "captured": "{count}개 잡음",
+      "piece": "{color} 말",
+      "king": "{color} 킹",
+      "empty": "빈 칸",
+      "selected": "선택됨",
+      "canMove": "이동 가능"
+    },
     "title": "체커",
     "description": "친구와 실시간으로 체커 대전을 즐기세요. 상대방의 말을 모두 잡거나 움직이지 못하게 하면 승리!",
     "waitingForOpponent": "상대방을 기다리는 중...",
@@ -5576,6 +5729,11 @@
     "draw": "무승부!"
   },
   "mancala": {
+    "keyboard": {
+      "board": "만칼라 보드. 좌우 방향키로 내 구멍을 고르고 Enter로 돌을 뿌립니다",
+      "moved": "{who}: 왼쪽에서 {n}번째 구멍. 스토어 나 {mine}, 상대 {theirs}",
+      "pit": "왼쪽에서 {n}번째 구멍, 돌 {count}개"
+    },
     "shareLinkDesc": "초대 링크를 상대에게 공유하세요!",
     "title": "만칼라",
     "description": "고대부터 전해지는 전략 보드게임! 돌을 뿌려 상대보다 더 많은 돌을 모으세요.",
@@ -5642,6 +5800,22 @@
     "stones": "개의 돌"
   },
   "battleship": {
+    "keyboard": {
+      "placed": "{ship} 배치함.",
+      "attackBoard": "적 해역. 방향키로 칸을 옮기고 Enter로 공격합니다",
+      "placementBoard": "함선 배치판. 방향키로 칸을 옮기고 Enter로 배치합니다. 방향은 가로·세로 버튼으로 바꿉니다",
+      "yourShot": "내 공격 {cell}: {result}",
+      "enemyShot": "상대 공격 {cell}: {result}",
+      "canPlace": "{cell}, {ship} {direction} 배치 가능",
+      "cannotPlace": "{cell}, {ship} {direction} 배치 불가",
+      "cell": {
+        "empty": "빈 칸",
+        "ship": "내 함선",
+        "hit": "명중",
+        "miss": "빗나감",
+        "sunk": "격침"
+      }
+    },
     "shipNames": {
       "carrier": "항공모함",
       "battleship": "전함",
@@ -5720,6 +5894,17 @@
     "loss": "패배!"
   },
   "dotsandboxes": {
+    "keyboard": {
+      "board": "도트앤박스 보드. 방향키로 선을 옮기고 Enter로 긋습니다",
+      "moved": "{who}: {line}",
+      "hLine": "가로선 {row}행 {col}번째",
+      "vLine": "세로선 {row}행 {col}번째",
+      "box": "박스 {row}행 {col}열",
+      "drawnBy": "그은 사람: {who}",
+      "ownedBy": "차지: {who}",
+      "open": "비어 있음",
+      "score": "점수 나 {mine}, 상대 {theirs}"
+    },
     "title": "도트앤박스",
     "description": "점을 연결해 사각형을 완성하세요! 더 많은 박스를 차지하면 승리.",
     "waitingForOpponent": "상대방을 기다리는 중...",
@@ -33691,6 +33876,21 @@
     }
   },
   "chess": {
+    "keyboard": {
+      "board": "체스 보드. 방향키로 칸을 옮기고 Enter로 말을 고른 뒤, 갈 칸에서 다시 Enter를 누릅니다",
+      "moved": "{color} {move}",
+      "empty": "빈 칸",
+      "selected": "선택됨",
+      "canMove": "이동 가능",
+      "pieces": {
+        "K": "킹",
+        "Q": "퀸",
+        "R": "룩",
+        "B": "비숍",
+        "N": "나이트",
+        "P": "폰"
+      }
+    },
     "pageTitle": "체스 (Chess)",
     "title": "체스",
     "description": "AI와 대전하는 클래식 체스 게임",

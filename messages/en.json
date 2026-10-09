@@ -1423,6 +1423,97 @@
     }
   },
   "tax": {
+    "description": "Calculate income tax, VAT, and capital gains tax accurately",
+    "won": " KRW",
+    "labels": {
+      "incomeTax": "Income tax",
+      "localIncomeTax": "Local income tax",
+      "nationalPension": "National pension",
+      "healthInsurance": "Health insurance",
+      "longTermCare": "Long-term care insurance",
+      "employmentInsurance": "Employment insurance",
+      "supplyValue": "Supply value",
+      "vat": "VAT",
+      "capitalGainsTax": "Capital gains tax"
+    },
+    "input": {
+      "title": "{type} details",
+      "example": "e.g. {n}",
+      "annualIncome": "Annual gross salary (earned income, excl. non-taxable)",
+      "dependents": "Dependents",
+      "people": "{n}",
+      "medical": "Medical expenses",
+      "education": "Education expenses",
+      "vatRate": "VAT rate",
+      "vatStandard": "10% (standard rate)",
+      "vatZero": "0% (zero-rated / exempt)",
+      "salePrice": "Sale price",
+      "purchasePrice": "Purchase price",
+      "holdingPeriod": "Holding period",
+      "years": "yrs",
+      "propertyType": "Home ownership",
+      "propertyGeneral": "One home per household (owner-occupied)",
+      "propertyLuxury": "One home per household (not occupied)",
+      "propertyMultiple": "Two or more homes (non-regulated area)"
+    },
+    "basis": {
+      "title": "Calculation basis",
+      "income": [
+        "2026 year-end tax settlement for earned income (Income Tax Act §47, §55, §59)",
+        "Earned income deduction → basic deduction (self + dependents × 1.5M KRW) and social insurance → 6–45% rates → earned income tax credit",
+        "Applies the better of a 15% credit on medical (above 3% of gross salary) and education expenses or the 130K KRW standard tax credit"
+      ],
+      "vat": [
+        "For general taxpayers",
+        "VAT = supply value × rate",
+        "Total = supply value + VAT"
+      ],
+      "capitalGains": [
+        "Home sale under the 2026 Income Tax Act (assumes a sale today in a non-regulated area)",
+        "One home per household held 2+ years is exempt; only the sale price above 1.2B KRW is taxed · long-term holding deduction · 2.5M KRW basic deduction",
+        "Rates 6–45% (60–70% if held under 2 years). For regulated-area surcharges or temporary two-home cases, use the Capital Gains Tax Calculator"
+      ]
+    },
+    "result": {
+      "title": "Result",
+      "withVat": "Total incl. VAT",
+      "afterTax": "After-tax amount",
+      "grossAmount": "Gross income / sale price",
+      "totalTax": "Total tax",
+      "empty1": "Enter the required details",
+      "empty2": "to calculate your tax."
+    },
+    "notes": {
+      "title": "Notes",
+      "income": [
+        "Actual tax may vary with other income deductions and tax credits",
+        "Check for additional deductions at year-end tax settlement"
+      ],
+      "vat": [
+        "Simplified taxpayers are subject to separate rates",
+        "Tax-exempt businesses do not charge VAT"
+      ],
+      "capitalGains": [
+        "Check the one-home-per-household exemption requirements",
+        "Actual calculations also deduct necessary expenses and similar costs"
+      ]
+    },
+    "chart": {
+      "income": "Share by deduction item",
+      "vat": "Supply value vs VAT",
+      "capitalGains": "Capital gains tax breakdown"
+    },
+    "share": {
+      "button": "Share result",
+      "copied": "Copied!",
+      "save": "Save",
+      "copyFailed": "Couldn't copy the URL. Please copy it manually: {url}"
+    },
+    "history": {
+      "net": "Take-home {net} KRW (tax {tax} KRW)",
+      "vat": "{total} KRW incl. VAT (VAT {vat} KRW)",
+      "tax": "Tax {tax} KRW"
+    },
     "title": "Tax Calculator",
     "guide": {
       "title": "Tax Calculator Guide",
@@ -2060,6 +2151,58 @@
     "placeholder": "Enter data to convert or upload a file"
   },
   "sqlFormatter": {
+    "title": "SQL Formatter",
+    "description": "Beautify and minify your SQL queries.",
+    "mode": {
+      "label": "Mode:",
+      "format": "Format",
+      "minify": "Minify",
+      "analyze": "Analyze"
+    },
+    "actions": {
+      "settings": "Settings",
+      "example": "Example",
+      "upload": "Upload",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "download": "Download"
+    },
+    "settings": {
+      "indentSize": "Indent size",
+      "spaces": "{n} spaces",
+      "dialect": "SQL dialect",
+      "standardSql": "Standard SQL",
+      "uppercaseKeywords": "Uppercase keywords"
+    },
+    "input": {
+      "title": "SQL input",
+      "placeholder": "Enter your SQL query..."
+    },
+    "error": {
+      "title": "SQL processing error",
+      "message": "An error occurred while processing the SQL"
+    },
+    "output": {
+      "format": "Formatted result",
+      "minify": "Minified result",
+      "analyze": "Analysis result",
+      "formattedQuery": "Formatted query",
+      "placeholder": "Formatted SQL will appear here..."
+    },
+    "analysis": {
+      "tables": "Tables",
+      "functions": "Functions",
+      "joins": "JOIN types",
+      "complexity": "Complexity",
+      "none": "None",
+      "suggestionsTitle": "Optimization tips",
+      "suggestions": {
+        "selectStar": "List only the columns you need instead of SELECT *",
+        "noWhere": "Add a WHERE clause to filter the data",
+        "manyJoins": "There are many JOINs. Consider splitting the query",
+        "orCondition": "OR conditions can hurt performance. Consider using UNION"
+      }
+    },
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit Fullscreen",
     "guide": {
@@ -5531,6 +5674,16 @@
     "loss": "You Lose!"
   },
   "checkers": {
+    "keyboard": {
+      "board": "Checkers board. Arrow keys move, Enter picks a piece, then Enter again on the square to move to",
+      "moved": "{color} {from} to {to}",
+      "captured": "captured {count}",
+      "piece": "{color} piece",
+      "king": "{color} king",
+      "empty": "empty",
+      "selected": "selected",
+      "canMove": "can move here"
+    },
     "title": "Checkers",
     "description": "Play real-time Checkers with friends. Capture all opponent pieces or block them to win!",
     "waitingForOpponent": "Waiting for opponent...",
@@ -5577,6 +5730,11 @@
     "draw": "Draw!"
   },
   "mancala": {
+    "keyboard": {
+      "board": "Mancala board. Left and right arrows pick one of your pits, Enter sows its stones",
+      "moved": "{who}: pit {n} from the left. Stores: you {mine}, opponent {theirs}",
+      "pit": "Pit {n} from the left, {count} stones"
+    },
     "shareLinkDesc": "Share the invite link with your opponent!",
     "title": "Mancala",
     "description": "Ancient strategy board game! Sow stones and collect more than your opponent.",
@@ -5643,6 +5801,22 @@
     "stones": "stones"
   },
   "battleship": {
+    "keyboard": {
+      "placed": "{ship} placed.",
+      "attackBoard": "Enemy waters. Arrow keys move, Enter fires",
+      "placementBoard": "Ship placement board. Arrow keys move, Enter places the ship. Change direction with the horizontal/vertical button",
+      "yourShot": "Your shot at {cell}: {result}",
+      "enemyShot": "Enemy shot at {cell}: {result}",
+      "canPlace": "{cell}, {ship} fits ({direction})",
+      "cannotPlace": "{cell}, {ship} does not fit ({direction})",
+      "cell": {
+        "empty": "empty",
+        "ship": "your ship",
+        "hit": "hit",
+        "miss": "miss",
+        "sunk": "sunk"
+      }
+    },
     "shipNames": {
       "carrier": "Carrier",
       "battleship": "Battleship",
@@ -5721,6 +5895,17 @@
     "loss": "You Lose!"
   },
   "dotsandboxes": {
+    "keyboard": {
+      "board": "Dots and Boxes board. Arrow keys move between lines, Enter draws a line",
+      "moved": "{who}: {line}",
+      "hLine": "horizontal line, row {row}, position {col}",
+      "vLine": "vertical line, row {row}, position {col}",
+      "box": "box, row {row}, column {col}",
+      "drawnBy": "drawn by {who}",
+      "ownedBy": "owned by {who}",
+      "open": "open",
+      "score": "Score: you {mine}, opponent {theirs}"
+    },
     "title": "Dots and Boxes",
     "description": "Connect dots to complete boxes! Claim more boxes to win.",
     "waitingForOpponent": "Waiting for opponent...",
@@ -33547,6 +33732,21 @@
     }
   },
   "chess": {
+    "keyboard": {
+      "board": "Chess board. Arrow keys move, Enter picks a piece, then Enter again on the square to move to",
+      "moved": "{color} {move}",
+      "empty": "empty",
+      "selected": "selected",
+      "canMove": "can move here",
+      "pieces": {
+        "K": "king",
+        "Q": "queen",
+        "R": "rook",
+        "B": "bishop",
+        "N": "knight",
+        "P": "pawn"
+      }
+    },
     "pageTitle": "Chess",
     "title": "Chess",
     "description": "Classic chess game with AI opponent",

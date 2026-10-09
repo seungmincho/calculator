@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/mancala'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 
 // 만칼라 보드: 플레이어1(아래) 6개 피트 + 스토어, 플레이어2(위) 6개 피트 + 스토어
 // 인덱스: [0-5] = 플레이어1 피트, [6] = 플레이어1 스토어
@@ -198,6 +201,15 @@ export default function MancalaBoard({
   disabled = false
 }: MancalaBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const t = useTranslations('mancala')
+
+  // 클릭·Enter 공통. i = 화면 왼쪽부터 0~5번째 구멍(내 줄)
+  const activate = (i: number) => {
+    if (disabled || !isMyTurn || !myRole) return
+    const pitIndex = myRole === 'player1' ? i : (12 - i)
+    if (gameState.board[pitIndex] > 0) onMove(pitIndex)
+  }
+  const kb = useBoardKeyboard(1, 6, (_row, col) => activate(col), { row: 0, col: 0 })
 
   // 보드 그리기
   useEffect(() => {
@@ -352,7 +364,18 @@ export default function MancalaBoard({
       drawPit(pitIndex, x, y, gameState.board[pitIndex], isClickable, isLastMove)
     }
 
-  }, [gameState, myRole, isMyTurn, disabled])
+    // 키보드 커서 (내 줄: player2 는 위, 그 외는 아래)
+    if (kb.active) {
+      const x = storeWidth + pitWidth * kb.cursor.col + pitWidth / 2
+      const y = myRole === 'player2' ? pitHeight / 2 + 20 : height - pitHeight / 2 - 20
+      ctx.strokeStyle = '#3182F6'
+      ctx.lineWidth = 4
+      ctx.beginPath()
+      ctx.arc(x, y, pitRadius + 5, 0, Math.PI * 2)
+      ctx.stroke()
+    }
+
+  }, [gameState, myRole, isMyTurn, disabled, kb.active, kb.cursor])
 
   // 클릭 처리
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -372,10 +395,7 @@ export default function MancalaBoard({
     const pitHeight = canvas.height / 2 - 20
 
     // 어느 피트를 클릭했는지 확인
-    const playerPits = getPlayerPits(myRole)
-
     for (let i = 0; i < 6; i++) {
-      const pitIndex = myRole === 'player1' ? i : (12 - i)
       const pitX = storeWidth + pitWidth * i + pitWidth / 2
       const pitY = myRole === 'player1'
         ? canvas.height - pitHeight / 2 - 20
@@ -384,21 +404,42 @@ export default function MancalaBoard({
       const pitRadius = Math.min(pitWidth, pitHeight) / 2 - 10
       const distance = Math.sqrt((x - pitX) ** 2 + (y - pitY) ** 2)
 
-      if (distance <= pitRadius && playerPits.includes(pitIndex) && gameState.board[pitIndex] > 0) {
-        onMove(pitIndex)
+      if (distance <= pitRadius) {
+        activate(i)
         return
       }
     }
   }
 
+  // 스크린리더 안내: 마지막 수·획득·결과 + (키보드 사용 중) 커서 구멍. 구멍 번호는 화면 왼쪽부터.
+  const pitNumber = (pitIndex: number) => (pitIndex <= 5 ? pitIndex : 12 - pitIndex) + 1
+  const { lastMove, capturedStones, winner, board } = gameState
+  const myStore = myRole === 'player2' ? 13 : 6
+  const theirStore = myRole === 'player2' ? 6 : 13
+  const mover = (p: MancalaPlayer) => (p === myRole ? t('you') : t('opponent'))
+  let moveText = ''
+  if (lastMove) {
+    moveText = t('keyboard.moved', { who: mover(lastMove.player), n: pitNumber(lastMove.pitIndex), mine: board[myStore], theirs: board[theirStore] })
+    if (capturedStones) moveText += ` ${t(capturedStones.player === myRole ? 'youCaptured' : 'opponentCaptured', { count: capturedStones.count })}`
+    if (gameState.extraTurn) moveText += ` ${t('extraTurnLabel')}`
+  }
+  if (winner && myRole) moveText += ` ${winner === 'draw' ? t('draw') : winner === myRole ? t('youWin') : t('youLose')}`
+  const cursorPit = myRole === 'player2' ? 12 - kb.cursor.col : kb.cursor.col
+  const cursorText = kb.active ? t('keyboard.pit', { n: kb.cursor.col + 1, count: board[cursorPit] }) : ''
+
   return (
+    <>
+    <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{cursorText}</span></p>
     <canvas
       ref={canvasRef}
       width={600}
       height={300}
+      {...kb.boardProps}
+      aria-label={t('keyboard.board')}
       onClick={handleClick}
       className="w-full max-w-[600px] mx-auto cursor-pointer rounded-xl shadow-lg"
       style={{ aspectRatio: '2/1' }}
     />
+    </>
   )
 }

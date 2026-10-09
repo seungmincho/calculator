@@ -1,12 +1,16 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/checkers'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 
 const BOARD_SIZE = 8
 const CELL_SIZE = 60
 const PADDING = 20
 const PIECE_RADIUS = 22
 const BOARD_PIXEL_SIZE = CELL_SIZE * BOARD_SIZE + PADDING * 2
+const cellName = (row: number, col: number) => 'ABCDEFGH'[col] + (BOARD_SIZE - row)
 
 export type CheckersPiece = { color: 'red' | 'black'; isKing: boolean } | null
 export type CheckersBoard = CheckersPiece[][]
@@ -53,6 +57,19 @@ export default function CheckersBoardComponent({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverPos, setHoverPos] = useState<{ row: number; col: number } | null>(null)
+  const t = useTranslations('checkers')
+
+  // 클릭·Enter 공통: 유효한 이동 칸이면 이동, 내 말이면 선택
+  const activate = (row: number, col: number) => {
+    if (disabled || !isMyTurn || !myColor || gameState.winner) return
+    if (gameState.validMoves.some(m => m.row === row && m.col === col)) {
+      onMove(row, col)
+      return
+    }
+    const piece = gameState.board[row][col]
+    if (piece && piece.color === myColor) onSelectPiece(row, col)
+  }
+  const kb = useBoardKeyboard(BOARD_SIZE, BOARD_SIZE, activate)
 
   // 반응형 스케일 계산
   useEffect(() => {
@@ -186,8 +203,15 @@ export default function CheckersBoardComponent({
           ctx.strokeRect(px + 2, py + 2, CELL_SIZE - 4, CELL_SIZE - 4)
         }
       }
+
+      // 키보드 커서
+      if (kb.active) {
+        ctx.strokeStyle = '#3182F6'
+        ctx.lineWidth = 4
+        ctx.strokeRect(PADDING + kb.cursor.col * CELL_SIZE + 2, PADDING + kb.cursor.row * CELL_SIZE + 2, CELL_SIZE - 4, CELL_SIZE - 4)
+      }
     },
-    [gameState, hoverPos, isMyTurn, myColor, disabled]
+    [gameState, hoverPos, isMyTurn, myColor, disabled, kb.active, kb.cursor]
   )
 
   // 캔버스 렌더링
@@ -222,24 +246,8 @@ export default function CheckersBoardComponent({
 
   // 클릭 처리
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
     const pos = getPosition(e)
-    if (!pos) return
-
-    const { row, col } = pos
-    const piece = gameState.board[row][col]
-
-    // 유효한 이동 위치를 클릭한 경우
-    if (gameState.validMoves.some(m => m.row === row && m.col === col)) {
-      onMove(row, col)
-      return
-    }
-
-    // 내 말을 클릭한 경우
-    if (piece && piece.color === myColor) {
-      onSelectPiece(row, col)
-    }
+    if (pos) activate(pos.row, pos.col)
   }
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -250,12 +258,33 @@ export default function CheckersBoardComponent({
     setHoverPos(null)
   }
 
+  // 스크린리더 안내: 마지막 수·결과 + (키보드 사용 중) 커서 칸
+  const { lastMove, winner, selectedPiece, validMoves } = gameState
+  let moveText = ''
+  if (lastMove) {
+    moveText = t('keyboard.moved', { color: t(lastMove.player), from: cellName(lastMove.from.row, lastMove.from.col), to: cellName(lastMove.to.row, lastMove.to.col) })
+    if (lastMove.captured?.length) moveText += ` ${t('keyboard.captured', { count: lastMove.captured.length })}`
+  }
+  if (winner && myColor) moveText += ` ${winner === 'draw' ? t('draw') : winner === myColor ? t('youWin') : t('youLose')}`
+  let cursorText = ''
+  if (kb.active) {
+    const { row, col } = kb.cursor
+    const piece = gameState.board[row][col]
+    const parts = [cellName(row, col), piece ? t(piece.isKing ? 'keyboard.king' : 'keyboard.piece', { color: t(piece.color) }) : t('keyboard.empty')]
+    if (selectedPiece?.row === row && selectedPiece.col === col) parts.push(t('keyboard.selected'))
+    if (validMoves.some(m => m.row === row && m.col === col)) parts.push(t('keyboard.canMove'))
+    cursorText = parts.join(', ')
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
+      <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{cursorText}</span></p>
       <canvas
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
+        {...kb.boardProps}
+        aria-label={t('keyboard.board')}
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,

@@ -1,6 +1,11 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/battleship'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
+
+const cellName = (row: number, col: number) => String.fromCharCode(65 + col) + (row + 1)
 
 // 배틀십 10x10 보드
 export type CellState = 'empty' | 'ship' | 'hit' | 'miss' | 'sunk'
@@ -290,6 +295,14 @@ export default function BattleshipBoardComponent({
   showShips = true
 }: BattleshipBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const t = useTranslations('battleship')
+
+  // 클릭·Enter 공통: 아직 쏘지 않은 칸만 공격
+  const activate = (row: number, col: number) => {
+    if (!isClickable || !onCellClick) return
+    if (board[row][col] === 'empty') onCellClick(row, col)
+  }
+  const kb = useBoardKeyboard(10, 10, activate)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -387,7 +400,14 @@ export default function BattleshipBoardComponent({
       ctx.strokeRect(cellSize, cellSize, cellSize * 10, cellSize * 10)
     }
 
-  }, [board, isOwnBoard, isClickable, lastMove, showShips])
+    // 키보드 커서
+    if (kb.active) {
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 3
+      ctx.strokeRect(cellSize * (kb.cursor.col + 1) + 2, cellSize * (kb.cursor.row + 1) + 2, cellSize - 4, cellSize - 4)
+    }
+
+  }, [board, isOwnBoard, isClickable, lastMove, showShips, kb.active, kb.cursor])
 
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isClickable || !onCellClick) return
@@ -406,22 +426,29 @@ export default function BattleshipBoardComponent({
     const col = Math.floor(x / cellSize) - 1
     const row = Math.floor(y / cellSize) - 1
 
-    if (row >= 0 && row < 10 && col >= 0 && col < 10) {
-      if (board[row][col] === 'empty') {
-        onCellClick(row, col)
-      }
-    }
+    if (row >= 0 && row < 10 && col >= 0 && col < 10) activate(row, col)
   }
 
+  // 스크린리더 안내: 이 보드에 떨어진 마지막 공격 + (키보드 사용 중) 커서 칸.
+  // 공격 보드(onCellClick 있음)만 포커스를 받는다 — 내 차례가 아닐 때도 포커스는 유지하고 Enter 만 무시.
+  const moveText = lastMove
+    ? t(isOwnBoard ? 'keyboard.enemyShot' : 'keyboard.yourShot', { cell: cellName(lastMove.row, lastMove.col), result: t(`keyboard.cell.${lastMove.result}`) })
+    : ''
+  const cursorText = kb.active ? `${cellName(kb.cursor.row, kb.cursor.col)}, ${t(`keyboard.cell.${board[kb.cursor.row][kb.cursor.col]}`)}` : ''
+
   return (
+    <>
+    <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{cursorText}</span></p>
     <canvas
       ref={canvasRef}
       width={330}
       height={330}
+      {...(onCellClick ? { ...kb.boardProps, 'aria-label': t('keyboard.attackBoard') } : {})}
       onClick={handleClick}
       className={`w-full max-w-[330px] mx-auto rounded-lg shadow-lg ${isClickable ? 'cursor-crosshair' : ''}`}
       style={{ aspectRatio: '1/1' }}
     />
+    </>
   )
 }
 
@@ -443,6 +470,19 @@ export function ShipPlacementBoard({
 }: ShipPlacementBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [hoverPos, setHoverPos] = useState<{ row: number; col: number } | null>(null)
+  const t = useTranslations('battleship')
+
+  // 클릭·Enter 공통. 놓은 직후엔 다음 함선의 '배치 불가'보다 '배치함'을 먼저 읽게 한다(다음 키 입력 때 지움).
+  const [placed, setPlaced] = useState('')
+  const activate = (row: number, col: number) => {
+    if (!currentShip) return
+    const ok = canPlaceShip(board, ships, row, col, currentShip.size, horizontal)
+    setPlaced(ok ? t('keyboard.placed', { ship: t(`shipNames.${currentShip.id}`) }) : '')
+    onPlaceShip(row, col)
+  }
+  const kb = useBoardKeyboard(10, 10, activate, { row: 0, col: 0 })
+  // 키보드 사용 중엔 커서 칸이 미리보기 위치
+  const previewPos = kb.active ? kb.cursor : hoverPos
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -493,12 +533,12 @@ export function ShipPlacementBoard({
     }
 
     // 호버 미리보기
-    if (currentShip && hoverPos) {
-      const canPlace = canPlaceShip(board, ships, hoverPos.row, hoverPos.col, currentShip.size, horizontal)
+    if (currentShip && previewPos) {
+      const canPlace = canPlaceShip(board, ships, previewPos.row, previewPos.col, currentShip.size, horizontal)
 
       for (let i = 0; i < currentShip.size; i++) {
-        const previewRow = horizontal ? hoverPos.row : hoverPos.row + i
-        const previewCol = horizontal ? hoverPos.col + i : hoverPos.col
+        const previewRow = horizontal ? previewPos.row : previewPos.row + i
+        const previewCol = horizontal ? previewPos.col + i : previewPos.col
 
         if (previewRow < 10 && previewCol < 10) {
           const x = cellSize * (previewCol + 1)
@@ -510,7 +550,14 @@ export function ShipPlacementBoard({
       }
     }
 
-  }, [board, ships, currentShip, horizontal, hoverPos])
+    // 키보드 커서 (배치할 함선이 없을 때도 위치는 보이게)
+    if (kb.active) {
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 3
+      ctx.strokeRect(cellSize * (kb.cursor.col + 1) + 2, cellSize * (kb.cursor.row + 1) + 2, cellSize - 4, cellSize - 4)
+    }
+
+  }, [board, ships, currentShip, horizontal, previewPos, kb.active, kb.cursor])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!currentShip) return
@@ -551,23 +598,38 @@ export function ShipPlacementBoard({
     const col = Math.floor(x / cellSize) - 1
     const row = Math.floor(y / cellSize) - 1
 
-    if (row >= 0 && row < 10 && col >= 0 && col < 10) {
-      onPlaceShip(row, col)
-    }
+    if (row >= 0 && row < 10 && col >= 0 && col < 10) activate(row, col)
+  }
+
+  // 스크린리더 안내: 커서 칸 + 지금 배치할 함선과 배치 가능 여부
+  let cursorText = ''
+  if (kb.active) {
+    const { row, col } = kb.cursor
+    cursorText = currentShip
+      ? t(canPlaceShip(board, ships, row, col, currentShip.size, horizontal) ? 'keyboard.canPlace' : 'keyboard.cannotPlace', {
+          cell: cellName(row, col),
+          ship: t(`shipNames.${currentShip.id}`),
+          direction: horizontal ? t('horizontal') : t('vertical'),
+        })
+      : `${cellName(row, col)}, ${t(`keyboard.cell.${board[row][col]}`)}`
   }
 
   return (
+    <>
+    <p className="sr-only" aria-live="polite">{placed} {cursorText}</p>
     <canvas
       ref={canvasRef}
       width={330}
       height={330}
+      {...kb.boardProps}
+      onKeyDown={(e) => { setPlaced(''); kb.boardProps.onKeyDown(e) }}
+      aria-label={t('keyboard.placementBoard')}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setHoverPos(null)}
       onClick={handleClick}
       className="w-full max-w-[330px] mx-auto cursor-pointer rounded-lg shadow-lg"
       style={{ aspectRatio: '1/1' }}
     />
+    </>
   )
 }
-
-import { useState } from 'react'

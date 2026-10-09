@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/dotsandboxes'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 
 // 도트앤박스: 점을 연결해서 사각형 만들기
 // 5x5 점 그리드 = 4x4 박스
@@ -33,6 +36,16 @@ export interface DotsAndBoxesGameState {
 }
 
 const GRID_SIZE = 5 // 5x5 점 = 4x4 박스
+
+// 키보드 커서는 (2·GRID_SIZE-1)² 격자 위를 다닌다: 짝수행·홀수열 = 가로선, 홀수행·짝수열 = 세로선,
+// 홀수·홀수 = 박스, 짝수·짝수 = 점(건너뜀)
+const LATTICE = GRID_SIZE * 2 - 1
+const isDot = (r: number, c: number) => r % 2 === 0 && c % 2 === 0
+function lineAt(r: number, c: number): { type: 'horizontal' | 'vertical'; row: number; col: number } | null {
+  if (r % 2 === 0 && c % 2 === 1) return { type: 'horizontal', row: r / 2, col: (c - 1) / 2 }
+  if (r % 2 === 1 && c % 2 === 0) return { type: 'vertical', row: (r - 1) / 2, col: c / 2 }
+  return null
+}
 
 // 초기 게임 상태
 export function createInitialDotsState(): DotsAndBoxesGameState {
@@ -189,6 +202,17 @@ export default function DotsAndBoxesBoard({
   disabled = false
 }: DotsAndBoxesBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const t = useTranslations('dotsandboxes')
+
+  // 클릭·Enter 공통 (격자 좌표). 아직 안 그은 선만 긋는다.
+  const activate = (r: number, c: number) => {
+    if (disabled || !isMyTurn || !myRole) return
+    const line = lineAt(r, c)
+    if (!line) return
+    const lines = line.type === 'horizontal' ? gameState.horizontalLines : gameState.verticalLines
+    if (lines[line.row][line.col] === null) onMove(line.type, line.row, line.col)
+  }
+  const kb = useBoardKeyboard(LATTICE, LATTICE, activate, { row: 0, col: 1 }, isDot)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -310,6 +334,27 @@ export default function DotsAndBoxesBoard({
       }
     }
 
+    // 키보드 커서
+    if (kb.active) {
+      const { row: r, col: c } = kb.cursor
+      const x = padding + (c / 2) * cellSize
+      const y = padding + (r / 2) * cellSize
+      ctx.strokeStyle = '#3182F6'
+      if (r % 2 === 1 && c % 2 === 1) {
+        ctx.lineWidth = 3
+        ctx.strokeRect(x - cellSize / 2 + 10, y - cellSize / 2 + 10, cellSize - 20, cellSize - 20)
+      } else {
+        ctx.lineWidth = lineWidth + 6
+        ctx.lineCap = 'round'
+        ctx.globalAlpha = 0.6
+        ctx.beginPath()
+        if (r % 2 === 0) { ctx.moveTo(x - cellSize / 2, y); ctx.lineTo(x + cellSize / 2, y) }
+        else { ctx.moveTo(x, y - cellSize / 2); ctx.lineTo(x, y + cellSize / 2) }
+        ctx.stroke()
+        ctx.globalAlpha = 1
+      }
+    }
+
     // 점 그리기
     for (let row = 0; row < GRID_SIZE; row++) {
       for (let col = 0; col < GRID_SIZE; col++) {
@@ -323,7 +368,7 @@ export default function DotsAndBoxesBoard({
       }
     }
 
-  }, [gameState, isMyTurn, disabled])
+  }, [gameState, isMyTurn, disabled, kb.active, kb.cursor])
 
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (disabled || !isMyTurn || !myRole) return
@@ -353,7 +398,7 @@ export default function DotsAndBoxesBoard({
         // 선의 중심점과의 거리
         const centerX = (lineX1 + lineX2) / 2
         if (Math.abs(x - centerX) < cellSize / 2 && Math.abs(y - lineY) < hitDistance) {
-          onMove('horizontal', row, col)
+          activate(row * 2, col * 2 + 1)
           return
         }
       }
@@ -370,21 +415,52 @@ export default function DotsAndBoxesBoard({
 
         const centerY = (lineY1 + lineY2) / 2
         if (Math.abs(x - lineX) < hitDistance && Math.abs(y - centerY) < cellSize / 2) {
-          onMove('vertical', row, col)
+          activate(row * 2 + 1, col * 2)
           return
         }
       }
     }
   }
 
+  // 스크린리더 안내: 마지막 선·완성한 박스·점수·결과 + (키보드 사용 중) 커서 위치
+  const { lastMove, winner, scores } = gameState
+  const who = (p: DotsPlayer) => (p === myRole ? t('you') : t('opponent'))
+  const lineName = (type: 'horizontal' | 'vertical', row: number, col: number) =>
+    t(type === 'horizontal' ? 'keyboard.hLine' : 'keyboard.vLine', { row: row + 1, col: col + 1 })
+  let moveText = ''
+  if (lastMove) {
+    moveText = t('keyboard.moved', { who: who(lastMove.player), line: lineName(lastMove.type, lastMove.row, lastMove.col) })
+    if (lastMove.boxesCompleted > 0) moveText += ` ${t(lastMove.player === myRole ? 'youCompletedBox' : 'opponentCompletedBox', { count: lastMove.boxesCompleted })}`
+    const me = myRole ?? 'player1'
+    moveText += ` ${t('keyboard.score', { mine: scores[me], theirs: scores[me === 'player1' ? 'player2' : 'player1'] })}`
+  }
+  if (winner && myRole) moveText += ` ${winner === 'draw' ? t('draw') : winner === myRole ? t('youWin') : t('youLose')}`
+  let cursorText = ''
+  if (kb.active) {
+    const { row: r, col: c } = kb.cursor
+    const line = lineAt(r, c)
+    if (line) {
+      const state = (line.type === 'horizontal' ? gameState.horizontalLines : gameState.verticalLines)[line.row][line.col]
+      cursorText = `${lineName(line.type, line.row, line.col)}, ${state ? t('keyboard.drawnBy', { who: who(state) }) : t('keyboard.open')}`
+    } else {
+      const owner = gameState.boxes[(r - 1) / 2][(c - 1) / 2]
+      cursorText = `${t('keyboard.box', { row: (r + 1) / 2, col: (c + 1) / 2 })}, ${owner ? t('keyboard.ownedBy', { who: who(owner) }) : t('keyboard.open')}`
+    }
+  }
+
   return (
+    <>
+    <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{cursorText}</span></p>
     <canvas
       ref={canvasRef}
       width={400}
       height={400}
+      {...kb.boardProps}
+      aria-label={t('keyboard.board')}
       onClick={handleClick}
       className={`w-full max-w-[400px] mx-auto rounded-xl shadow-lg ${!disabled && isMyTurn ? 'cursor-pointer' : ''}`}
       style={{ aspectRatio: '1/1' }}
     />
+    </>
   )
 }

@@ -25,7 +25,7 @@ const SqlFormatter = () => {
   const t = useTranslations('sqlFormatter');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [mode, setMode] = useState<'format' | 'minify' | 'analyze'>('format');
   const [indentSize, setIndentSize] = useState(2);
@@ -337,16 +337,16 @@ const SqlFormatter = () => {
 
     // 최적화 제안
     if (sql.includes('SELECT *')) {
-      analysis.suggestions.push('SELECT * 대신 필요한 컬럼만 명시하세요');
+      analysis.suggestions.push('selectStar');
     }
     if (!sql.includes('WHERE') && sql.includes('SELECT')) {
-      analysis.suggestions.push('WHERE 절을 추가하여 데이터를 필터링하세요');
+      analysis.suggestions.push('noWhere');
     }
     if (analysis.joins.length > 3) {
-      analysis.suggestions.push('많은 JOIN이 있습니다. 쿼리를 분할하는 것을 고려하세요');
+      analysis.suggestions.push('manyJoins');
     }
     if (sql.includes('OR')) {
-      analysis.suggestions.push('OR 조건은 성능에 영향을 줄 수 있습니다. UNION 사용을 고려하세요');
+      analysis.suggestions.push('orCondition');
     }
 
     return analysis;
@@ -356,7 +356,7 @@ const SqlFormatter = () => {
   const processSql = useCallback((sqlString: string) => {
     if (!sqlString.trim()) {
       setOutput('');
-      setError('');
+      setError(false);
       setAnalysis(null);
       return;
     }
@@ -381,9 +381,9 @@ const SqlFormatter = () => {
       }
       
       setOutput(result);
-      setError('');
+      setError(false);
     } catch (err) {
-      setError('SQL 처리 중 오류가 발생했습니다');
+      setError(true);
     }
   }, [mode, formatSql, minifySql, analyzeSql]);
 
@@ -464,9 +464,9 @@ const SqlFormatter = () => {
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-fg">SQL 포맷터</h1>
+          <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">
-            SQL 쿼리를 예쁘게 포맷팅하고 압축하세요.
+            {t('description')}
           </p>
         </div>
       </div>
@@ -476,12 +476,12 @@ const SqlFormatter = () => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* 모드 선택 */}
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-body">모드:</span>
+            <span className="text-sm font-medium text-body">{t('mode.label')}</span>
             <div className="flex bg-soft rounded-lg p-1">
               {[
-                { key: 'format', label: '포맷팅', icon: Code },
-                { key: 'minify', label: '압축', icon: Zap },
-                { key: 'analyze', label: '분석', icon: Layers }
+                { key: 'format', label: t('mode.format'), icon: Code },
+                { key: 'minify', label: t('mode.minify'), icon: Zap },
+                { key: 'analyze', label: t('mode.analyze'), icon: Layers }
               ].map(({ key, label, icon: Icon }) => (
                 <button
                   key={key}
@@ -515,7 +515,7 @@ const SqlFormatter = () => {
               className="flex items-center space-x-1 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
             >
               <Settings className="w-4 h-4" />
-              <span>설정</span>
+              <span>{t('actions.settings')}</span>
             </button>
 
             <button
@@ -523,7 +523,7 @@ const SqlFormatter = () => {
               className="flex items-center space-x-1 px-3 py-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-sub rounded-lg text-sm transition-colors"
             >
               <Eye className="w-4 h-4" />
-              <span>예제</span>
+              <span>{t('actions.example')}</span>
             </button>
 
             <input
@@ -538,7 +538,7 @@ const SqlFormatter = () => {
               className="flex items-center space-x-1 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
             >
               <Upload className="w-4 h-4" />
-              <span>업로드</span>
+              <span>{t('actions.upload')}</span>
             </button>
 
             {output && (
@@ -548,7 +548,7 @@ const SqlFormatter = () => {
                   className="flex items-center space-x-1 px-3 py-2 bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-sub rounded-lg text-sm transition-colors"
                 >
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  <span>{copied ? '복사됨!' : '복사'}</span>
+                  <span>{copied ? t('actions.copied') : t('actions.copy')}</span>
                 </button>
 
                 <button
@@ -556,7 +556,7 @@ const SqlFormatter = () => {
                   className="flex items-center space-x-1 px-3 py-2 bg-purple-100 dark:bg-purple-900 hover:bg-purple-200 dark:hover:bg-purple-800 text-sub rounded-lg text-sm transition-colors"
                 >
                   <Download className="w-4 h-4" />
-                  <span>다운로드</span>
+                  <span>{t('actions.download')}</span>
                 </button>
               </>
             )}
@@ -569,29 +569,29 @@ const SqlFormatter = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  들여쓰기 크기
+                  {t('settings.indentSize')}
                 </label>
                 <select
                   value={indentSize}
                   onChange={(e) => setIndentSize(Number(e.target.value))}
                   className={`${glassInput} px-3 py-2`}
                 >
-                  <option value={2}>2 스페이스</option>
-                  <option value={4}>4 스페이스</option>
-                  <option value={8}>8 스페이스</option>
+                  <option value={2}>{t('settings.spaces', { n: 2 })}</option>
+                  <option value={4}>{t('settings.spaces', { n: 4 })}</option>
+                  <option value={8}>{t('settings.spaces', { n: 8 })}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-body mb-2">
-                  SQL 방언
+                  {t('settings.dialect')}
                 </label>
                 <select
                   value={sqlDialect}
                   onChange={(e) => setSqlDialect(e.target.value as 'standard' | 'mysql' | 'postgresql' | 'mssql' | 'oracle')}
                   className={`${glassInput} px-3 py-2`}
                 >
-                  <option value="standard">표준 SQL</option>
+                  <option value="standard">{t('settings.standardSql')}</option>
                   <option value="mysql">MySQL</option>
                   <option value="postgresql">PostgreSQL</option>
                   <option value="mssql">SQL Server</option>
@@ -607,7 +607,7 @@ const SqlFormatter = () => {
                     onChange={(e) => setUppercaseKeywords(e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <span className="text-sm text-body">키워드 대문자</span>
+                  <span className="text-sm text-body">{t('settings.uppercaseKeywords')}</span>
                 </label>
               </div>
             </div>
@@ -619,14 +619,14 @@ const SqlFormatter = () => {
         {/* 입력 영역 */}
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="bg-subtle px-6 py-4 border-b border-line">
-            <h2 className="text-lg font-semibold text-fg">SQL 입력</h2>
+            <h2 className="text-lg font-semibold text-fg">{t('input.title')}</h2>
           </div>
           
           <div className="p-6">
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="SQL 쿼리를 입력하세요..."
+              placeholder={t('input.placeholder')}
               className={`${glassInput} w-full ${isFullscreen ? 'h-[calc(100vh-300px)]' : 'h-96'} p-4 resize-none font-mono text-sm`}
               spellCheck={false}
             />
@@ -636,8 +636,8 @@ const SqlFormatter = () => {
                 <div className="flex items-start space-x-2">
                   <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-medium text-red-800 dark:text-red-200">SQL 처리 오류</h4>
-                    <p className="mt-1 text-sm text-red-700 dark:text-red-300">{error}</p>
+                    <h4 className="font-medium text-red-800 dark:text-red-200">{t('error.title')}</h4>
+                    <p className="mt-1 text-sm text-red-700 dark:text-red-300">{t('error.message')}</p>
                   </div>
                 </div>
               </div>
@@ -649,7 +649,7 @@ const SqlFormatter = () => {
         <div className={`${glassCard} ${glassInset} overflow-hidden`}>
           <div className="bg-subtle px-6 py-4 border-b border-line">
             <h2 className="text-lg font-semibold text-fg">
-              {mode === 'format' ? '포맷팅 결과' : mode === 'minify' ? '압축 결과' : '분석 결과'}
+              {t(`output.${mode}`)}
             </h2>
           </div>
           
@@ -658,7 +658,7 @@ const SqlFormatter = () => {
               <div className="space-y-6">
                 {/* SQL 출력 */}
                 <div>
-                  <h3 className="text-sm font-medium text-body mb-2">포맷팅된 쿼리</h3>
+                  <h3 className="text-sm font-medium text-body mb-2">{t('output.formattedQuery')}</h3>
                   <textarea
                     ref={outputRef}
                     value={output}
@@ -670,28 +670,28 @@ const SqlFormatter = () => {
                 {/* 분석 결과 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-fg mb-2">테이블</h4>
+                    <h4 className="font-medium text-fg mb-2">{t('analysis.tables')}</h4>
                     <div className="text-sm text-sub">
-                      {analysis.tables.length > 0 ? analysis.tables.join(', ') : '없음'}
+                      {analysis.tables.length > 0 ? analysis.tables.join(', ') : t('analysis.none')}
                     </div>
                   </div>
 
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-fg mb-2">함수</h4>
+                    <h4 className="font-medium text-fg mb-2">{t('analysis.functions')}</h4>
                     <div className="text-sm text-sub">
-                      {analysis.functions.length > 0 ? analysis.functions.join(', ') : '없음'}
+                      {analysis.functions.length > 0 ? analysis.functions.join(', ') : t('analysis.none')}
                     </div>
                   </div>
 
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-fg mb-2">JOIN 타입</h4>
+                    <h4 className="font-medium text-fg mb-2">{t('analysis.joins')}</h4>
                     <div className="text-sm text-sub">
-                      {analysis.joins.length > 0 ? analysis.joins.join(', ') : '없음'}
+                      {analysis.joins.length > 0 ? analysis.joins.join(', ') : t('analysis.none')}
                     </div>
                   </div>
 
                   <div className="bg-subtle p-4 rounded-lg">
-                    <h4 className="font-medium text-fg mb-2">복잡도</h4>
+                    <h4 className="font-medium text-fg mb-2">{t('analysis.complexity')}</h4>
                     <div className="text-sm text-sub">
                       {analysis.complexity}
                     </div>
@@ -700,10 +700,10 @@ const SqlFormatter = () => {
 
                 {analysis.suggestions.length > 0 && (
                   <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg">
-                    <h4 className="font-medium text-amber-900 dark:text-amber-200 mb-2">최적화 제안</h4>
+                    <h4 className="font-medium text-amber-900 dark:text-amber-200 mb-2">{t('analysis.suggestionsTitle')}</h4>
                     <ul className="text-sm text-amber-800 dark:text-amber-300 space-y-1">
                       {analysis.suggestions.map((suggestion: string, index: number) => (
-                        <li key={index}>• {suggestion}</li>
+                        <li key={index}>• {t(`analysis.suggestions.${suggestion}`)}</li>
                       ))}
                     </ul>
                   </div>
@@ -714,7 +714,7 @@ const SqlFormatter = () => {
                 ref={outputRef}
                 value={output}
                 readOnly
-                placeholder="포맷팅된 SQL이 여기에 표시됩니다..."
+                placeholder={t('output.placeholder')}
                 className={`${glassInput} w-full ${isFullscreen ? 'h-[calc(100vh-300px)]' : 'h-96'} p-4 resize-none font-mono text-sm`}
               />
             )}
