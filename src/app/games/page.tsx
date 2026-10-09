@@ -9,7 +9,7 @@ import { menuConfig } from '@/config/menuConfig'
 const GAME_COUNT = menuConfig.games.items.filter(i => i.href !== '/games').length
 
 export const metadata: Metadata = {
-  title: '게임센터 - 오목·체커·2048 등 20+ 게임 | 툴허브',
+  title: `게임센터 - 오목·체커·2048 등 ${GAME_COUNT}가지 게임 | 툴허브`,
   description: `오목, 오셀로, 사목, 체커, 만칼라, 배틀쉽, 2048, 지뢰찾기, 스도쿠, 테트리스 등 ${GAME_COUNT}가지 무료 브라우저 게임을 즐겨보세요. AI 대전과 온라인 대전을 지원합니다.`,
   keywords: '온라인게임, 오목, 오셀로, 체커, 사목, 만칼라, 배틀쉽, 2048, 지뢰찾기, 스도쿠, 테트리스, 스네이크, 무료게임, 브라우저게임',
   openGraph: {

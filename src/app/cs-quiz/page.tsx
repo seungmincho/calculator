@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CS 기초 퀴즈 - 자료구조·알고리즘·네트워크·OS·DB 125문제',
-    description: '컴퓨터 과학 5대 핵심 분야를 문제 풀이로 학습하세요.',
+    title: 'CS 기초 퀴즈 - 10개 분야 250문제',
+    description: '컴퓨터 과학 10개 핵심 분야를 문제 풀이로 학습하세요.',
     images: ['https://toolhub.ai.kr/og/cs-quiz.png'],
   },
   alternates: {

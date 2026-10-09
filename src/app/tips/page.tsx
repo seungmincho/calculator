@@ -3,7 +3,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import TipsContent from '@/components/TipsContent'
 
 export const metadata: Metadata = {
-  title: '금융 꿀팁 모음 - 300개 재테크 팁 | 툴허브',
+  title: '금융 꿀팁 모음 - 400개 재테크 팁 | 툴허브',
   description: '가계 관리, 저축/투자, 신용/대출, 세금/절세, 보험, 부동산, 은퇴/연금 등 14개 카테고리의 실생활 금융 팁 400개를 만나보세요.',
   keywords: '금융팁, 재테크, 저축방법, 투자전략, 절세방법, 대출팁, 보험팁, 부동산팁, 연금, 가계관리',
   openGraph: {

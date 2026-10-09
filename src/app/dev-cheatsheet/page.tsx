@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Git, Linux, Docker, SQL, Vim, HTTP, CSS, 정규표현식 등 개발 필수 명령어 218개를 한눈에 정리. 검색, 복사, 북마크 지원.',
   keywords: '개발자 치트시트, git 명령어, linux 명령어, docker 명령어, sql 명령어, vim 단축키, http 상태코드, css flexbox, 정규표현식, developer cheatsheet',
   openGraph: {
-    title: '개발자 치트시트 - 220개 필수 명령어 | 툴허브',
+    title: '개발자 치트시트 - 218개 필수 명령어 | 툴허브',
     description: 'Git, Linux, Docker, SQL 등 8개 분야 218개 개발 필수 명령어를 검색하고 복사하세요.',
     url: 'https://toolhub.ai.kr/dev-cheatsheet/',
     siteName: '툴허브',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '개발자 치트시트 - 220개 필수 명령어',
+    title: '개발자 치트시트 - 218개 필수 명령어',
     description: 'Git, Linux, Docker, SQL 등 8개 분야 개발 필수 명령어 모음',
     images: ['https://toolhub.ai.kr/og/dev-cheatsheet.png'],
   },
