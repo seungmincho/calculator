@@ -8,6 +8,7 @@ import AABBCanvas2D from './AABBCanvas2D'
 import VisualizerControls from '../VisualizerControls'
 import StepNavigator from '../StepNavigator'
 import CodeViewer from '../CodeViewer'
+import GuideSection from '@/components/GuideSection'
 
 const DEFAULT_BOX_A: AABB = { x: 200, y: 220, width: 120, height: 80 }
 const DEFAULT_BOX_B: AABB = { x: 400, y: 220, width: 100, height: 100 }
@@ -35,7 +36,7 @@ interface AABB {
 
 const TOTAL_STEPS = 2
 
-type TabKey = 'steps' | 'code'
+type TabKey = 'steps' | 'code' | 'guide'
 
 export default function AABBVisualizer() {
   const t = useTranslations('aabbVisualizer')
@@ -136,6 +137,7 @@ export default function AABBVisualizer() {
   const tabs: { key: TabKey; icon: string; label: string }[] = [
     { key: 'steps', icon: '🔍', label: t('tabs.steps') },
     { key: 'code', icon: '💻', label: t('tabs.code') },
+    { key: 'guide', icon: '📖', label: t('tabs.guide') },
   ]
 
   // Format number for display
@@ -395,6 +397,10 @@ export default function AABBVisualizer() {
                     highlightLines={codeHighlightLines}
                     title="aabb.ts"
                   />
+                )}
+
+                {activeTab === 'guide' && (
+                  <GuideSection namespace="aabbVisualizer" defaultOpen />
                 )}
               </div>
             </div>

@@ -21,16 +21,19 @@ const LINKS = ['acquisition-tax', 'rent-converter', 'jeonse-loan', 'lease-contra
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 const pct = (v: number) => `${(v * 100).toFixed(3).replace(/\.?0+$/, '')}%`
 const parseNum = (s: string) => Number(s.replace(/[^\d]/g, '')) || 0
-function eokMan(v: number): string {
-  const eok = Math.floor(v / EOK)
-  const man = Math.floor((v % EOK) / MAN)
-  return [eok > 0 ? `${eok}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
-}
-const short = (v: number) => (v >= EOK ? `${v / EOK}억` : `${v / 10_000_000}천만`)
+// 억·만 읽기: ko 는 fmt.* 키의 {e}억 {n}만, en 은 {c}(600M·1.2B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
 const pick = <T extends string>(v: string | null, list: readonly T[], def: T): T => (list.includes(v as T) ? (v as T) : def)
 
 export default function BrokerageFeeCalculator() {
   const t = useTranslations('brokerageFee')
+  const eokMan = (v: number) => {
+    const eok = Math.floor(v / EOK)
+    const man = Math.floor((v % EOK) / MAN)
+    return t(`fmt.${eok > 0 ? (man > 0 ? 'eok' : 'eokOnly') : man > 0 ? 'man' : 'zero'}`, { e: eok, n: man.toLocaleString('ko-KR'), c: compact.format(v) })
+  }
+  const axisEok = (e: unknown, v: number) => t('fmt.axisEok', { e, c: compact.format(v) }) // e = 억 단위 표기 그대로
+  const short = (v: number) => (v >= EOK ? axisEok(v / EOK, v) : t('fmt.cheonman', { n: v / 10_000_000, c: compact.format(v) }))
   const sp = useSearchParams()
 
   const [deal, setDeal] = useState<Deal>(() => pick(sp.get('d'), DEALS, 'sale'))
@@ -331,11 +334,11 @@ export default function BrokerageFeeCalculator() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chart} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
-                  <XAxis dataKey="p" type="number" domain={[0, 'dataMax']} tickFormatter={(v: number) => `${v}억`} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
-                  <YAxis tickFormatter={(v: number) => `${v.toLocaleString()}만`} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={56} stroke="var(--line)" />
+                  <XAxis dataKey="p" type="number" domain={[0, 'dataMax']} tickFormatter={(v: number) => axisEok(v, v * EOK)} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
+                  <YAxis tickFormatter={(v: number) => t('fmt.axisMan', { n: v.toLocaleString(), c: compact.format(v * MAN) })} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={56} stroke="var(--line)" />
                   <Tooltip
-                    labelFormatter={(v) => `${t('chart.x')} ${v}억`}
-                    formatter={(v) => [`${Number(v ?? 0).toLocaleString()}만${t('units.won')}`, t('chart.fee')]}
+                    labelFormatter={(v) => `${t('chart.x')} ${axisEok(v, Number(v) * EOK)}`}
+                    formatter={(v) => [`${t('fmt.axisMan', { n: Number(v ?? 0).toLocaleString(), c: compact.format(Number(v ?? 0) * MAN) })}${t('units.won')}`, t('chart.fee')]}
                   />
                   <ReferenceLine x={r.amount / EOK} stroke="var(--fg)" strokeDasharray="2 3" label={{ value: t('chart.now'), position: 'insideTopRight', fontSize: 10, fill: 'var(--fg)' }} />
                   <Line type="linear" dataKey="fee" stroke="var(--primary)" strokeWidth={2.5} dot={false} />

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/mbtiCompatibility'
 import { ArrowLeft, Share2, Check, Star, ChevronDown } from 'lucide-react'
@@ -62,6 +62,7 @@ export default function MbtiCompatibility() {
   const [perspective, setPerspective] = useState<Perspective>('male')
   const [hoveredCell, setHoveredCell] = useState<{ r: MbtiType; c: MbtiType } | null>(null)
   const [copied, setCopied] = useState(false)
+  const [gridFocus, setGridFocus] = useState<[number, number] | null>(null)
 
   // Read URL params on mount
   useEffect(() => {
@@ -90,9 +91,45 @@ export default function MbtiCompatibility() {
   const handleCellClick = useCallback((row: MbtiType, col: MbtiType) => {
     setType1(row)
     setType2(col)
+    setGridFocus(null)
     updateURL(row, col)
     setView('detail')
   }, [updateURL])
+
+  // 16×16 궁합표 키보드 조작(로빙 tabindex): Tab 으로는 칸 하나만 들어오고, 방향키·Home/End(Ctrl+ = 맨 위/아래 행)로
+  // 움직이며, Enter/Space 는 클릭과 같다. 아직 움직이지 않았으면 선택된 조합 칸이 진입점이다.
+  const sel: [number, number] = [MBTI_TYPES.indexOf(type1), MBTI_TYPES.indexOf(type2)]
+  const [focusR, focusC] = gridFocus ?? sel
+  const onGridKey = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    const cell = (e.target as HTMLElement).closest<HTMLElement>('[data-cell]')
+    if (!cell) return
+    const [r, c] = cell.dataset.cell!.split('-').map(Number)
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleCellClick(MBTI_TYPES[r], MBTI_TYPES[c])
+      return
+    }
+    const last = MBTI_TYPES.length - 1
+    const next = ({
+      ArrowUp: [Math.max(0, r - 1), c],
+      ArrowDown: [Math.min(last, r + 1), c],
+      ArrowLeft: [r, Math.max(0, c - 1)],
+      ArrowRight: [r, Math.min(last, c + 1)],
+      Home: [e.ctrlKey ? 0 : r, 0],
+      End: [e.ctrlKey ? last : r, last],
+    } as Record<string, [number, number]>)[e.key]
+    if (!next) return
+    e.preventDefault()
+    setGridFocus(next)
+    e.currentTarget.querySelector<HTMLElement>(`[data-cell="${next[0]}-${next[1]}"]`)?.focus()
+  }
+  const cellA11y = (r: number, c: number) => ({
+    role: 'gridcell',
+    'data-cell': `${r}-${c}`,
+    tabIndex: r === focusR && c === focusC ? 0 : -1,
+    'aria-selected': r === sel[0] && c === sel[1],
+    'aria-label': t('cellLabel', { typeA: MBTI_TYPES[r], typeB: MBTI_TYPES[c], score: compatibilityMatrix[MBTI_TYPES[r]][MBTI_TYPES[c]] }),
+  })
 
   const handleBack = useCallback(() => {
     setView('selection')
@@ -269,14 +306,14 @@ export default function MbtiCompatibility() {
 
             {/* Scrollable matrix */}
             <div className="overflow-x-auto -mx-2 px-2">
-              <div className="inline-block min-w-max">
+              <div className="inline-block min-w-max" role="grid" aria-label={t('matrix')} onKeyDown={onGridKey}>
                 {/* Column headers */}
-                <div className="flex">
-                  <div className="w-16 flex-shrink-0" />
+                <div className="flex" role="row">
+                  <div className="w-16 flex-shrink-0" aria-hidden="true" />
                   {MBTI_TYPES.map(col => {
                     const p = mbtiProfiles[col]
                     return (
-                      <div key={col} className="w-10 flex-shrink-0 flex flex-col items-center pb-1">
+                      <div key={col} role="columnheader" className="w-10 flex-shrink-0 flex flex-col items-center pb-1">
                         <span className="text-xs">{p.emoji}</span>
                         <span className="text-[10px] font-semibold text-body leading-tight">{col}</span>
                       </div>
@@ -285,23 +322,24 @@ export default function MbtiCompatibility() {
                 </div>
 
                 {/* Rows */}
-                {MBTI_TYPES.map(row => {
+                {MBTI_TYPES.map((row, ri) => {
                   const rp = mbtiProfiles[row]
                   return (
-                    <div key={row} className="flex items-center">
+                    <div key={row} role="row" className="flex items-center">
                       {/* Row header */}
-                      <div className="w-16 flex-shrink-0 flex items-center gap-1 pr-1">
+                      <div role="rowheader" className="w-16 flex-shrink-0 flex items-center gap-1 pr-1">
                         <span className="text-xs">{rp.emoji}</span>
                         <span className="text-[10px] font-semibold text-body">{row}</span>
                       </div>
                       {/* Cells */}
-                      {MBTI_TYPES.map(col => {
+                      {MBTI_TYPES.map((col, ci) => {
                         const cellRating = compatibilityMatrix[row][col]
                         const isHovered = hoveredCell?.r === row && hoveredCell?.c === col
                         const isSelected = row === type1 && col === type2
                         return (
                           <div
                             key={col}
+                            {...cellA11y(ri, ci)}
                             className="relative w-10 h-10 flex-shrink-0 flex items-center justify-center m-px cursor-pointer rounded-md transition-all"
                             style={{
                               backgroundColor: getCompatibilityRatingColor(cellRating),
@@ -517,33 +555,34 @@ export default function MbtiCompatibility() {
 
             {/* Compact scrollable matrix */}
             <div className="overflow-x-auto -mx-2 px-2">
-              <div className="inline-block min-w-max">
-                <div className="flex">
-                  <div className="w-16 flex-shrink-0" />
+              <div className="inline-block min-w-max" role="grid" aria-label={t('matrix')} onKeyDown={onGridKey}>
+                <div className="flex" role="row">
+                  <div className="w-16 flex-shrink-0" aria-hidden="true" />
                   {MBTI_TYPES.map(col => {
                     const p = mbtiProfiles[col]
                     return (
-                      <div key={col} className="w-10 flex-shrink-0 flex flex-col items-center pb-1">
+                      <div key={col} role="columnheader" className="w-10 flex-shrink-0 flex flex-col items-center pb-1">
                         <span className="text-xs">{p.emoji}</span>
                         <span className="text-[10px] font-semibold text-body leading-tight">{col}</span>
                       </div>
                     )
                   })}
                 </div>
-                {MBTI_TYPES.map(row => {
+                {MBTI_TYPES.map((row, ri) => {
                   const rp = mbtiProfiles[row]
                   return (
-                    <div key={row} className="flex items-center">
-                      <div className="w-16 flex-shrink-0 flex items-center gap-1 pr-1">
+                    <div key={row} role="row" className="flex items-center">
+                      <div role="rowheader" className="w-16 flex-shrink-0 flex items-center gap-1 pr-1">
                         <span className="text-xs">{rp.emoji}</span>
                         <span className="text-[10px] font-semibold text-body">{row}</span>
                       </div>
-                      {MBTI_TYPES.map(col => {
+                      {MBTI_TYPES.map((col, ci) => {
                         const cellRating = compatibilityMatrix[row][col]
                         const isSelected = row === type1 && col === type2
                         return (
                           <div
                             key={col}
+                            {...cellA11y(ri, ci)}
                             className="relative w-10 h-10 flex-shrink-0 flex items-center justify-center m-px cursor-pointer rounded-md transition-all hover:scale-110"
                             style={{
                               backgroundColor: getCompatibilityRatingColor(cellRating),

@@ -271,85 +271,8 @@
     },
     "title": "시간 변환기",
     "description": "Unix 타임스탬프 ⇄ 날짜(초·밀리초·나노초 자동 감지), 서머타임까지 정확한 시간대 변환, 날짜 더하기·차이·영업일 계산",
-    "realTimeWorldClock": "실시간 세계시계",
-    "timezoneConversion": "타임존 변환",
-    "unixTimestamp": "Unix 타임스탬프",
-    "relativeTime": "상대시간",
-    "convertDateTime": "변환할 날짜/시간",
-    "sourceTimezone": "원본 타임존",
-    "targetTimezone": "변환할 타임존",
-    "convertedTime": "변환된 시간",
-    "unixTimestampSeconds": "Unix 타임스탬프 (초)",
-    "setCurrentTime": "현재 시간으로 설정",
-    "koreanTime": "한국시간 (KST)",
-    "utcTime": "협정세계시 (UTC)",
-    "compareDateTime": "비교할 날짜/시간",
-    "timeDifference": "현재 시간과의 차이",
-    "quickConversion": "빠른 변환",
-    "currentUnixTimestamp": "현재 Unix 타임스탬프",
-    "tomorrowSameTime": "내일 이 시간",
-    "smartPaste": "스마트 붙여넣기",
-    "smartPasteDescriptionSupported": "시간, 날짜, Unix 타임스탬프를 복사해서 붙여넣으면 자동으로 파싱해드립니다!",
-    "smartPasteDescriptionFallback": "시간, 날짜, Unix 타임스탬프를 입력하면 자동으로 파싱해드립니다!",
-    "httpsClipboardTip": "HTTPS 환경에서 클립보드 자동 붙여넣기를 사용할 수 있습니다.",
     "pasteFromClipboard": "클립보드에서 붙여넣기",
-    "manualInput": "수동 입력",
-    "manualInputMode": "수동 입력 모드 (클립보드 미지원)",
-    "pasteTimeInfoPlaceholder": "여기에 시간 정보를 입력하거나 붙여넣으세요\n예: 2024-01-01T12:00:00Z, 1640995200, 2024/01/01 12:00:00",
-    "supportedFormats": "지원 형식:",
-    "iso8601Format": "ISO 8601: 2024-01-01T12:00:00Z",
-    "unixTimestampFormat": "Unix 타임스탬프: 1640995200",
-    "generalDateFormat": "일반 날짜: 2024-01-01 12:00:00",
-    "usDateFormat": "미국식: 01/01/2024 12:00 PM",
-    "relativeTimeFormat": "상대 시간: now, today, tomorrow",
-    "developerTools": "개발자 도구",
-    "currentUnixSeconds": "현재 Unix (초)",
-    "currentUnixMilliseconds": "현재 Unix (밀리초)",
-    "iso8601UTC": "ISO 8601 (UTC)",
-    "iso8601KST": "ISO 8601 (KST)",
     "rfc2822": "RFC 2822",
-    "commonTimestamps": "자주 사용하는 시점",
-    "oneHourLater": "1시간 후",
-    "oneDayLater": "24시간 후",
-    "oneWeekLater": "7일 후",
-    "ticketingTools": "티케팅 도구",
-    "concertTicketing": "콘서트 티켓팅 시간",
-    "concertTicketingDesc": "인기 공연의 티켓팅 시간을 미리 확인하고 알람을 설정해보세요.",
-    "overseasEvents": "해외 이벤트 시간",
-    "overseasEventsDesc": "Apple 이벤트, 게임 출시 등 해외 이벤트를 한국 시간으로 확인하세요.",
-    "timeConversionTips": "시간 변환 팁",
-    "daylightSavingTip": "서머타임 주의: 미국, 유럽 등은 서머타임이 적용되어 시간 차이가 변경됩니다.",
-    "unixTimestampTip": "Unix 타임스탬프: 1970년 1월 1일 00:00:00 UTC부터의 초 단위 시간입니다.",
-    "ticketingPrep": "티켓팅 준비: 시간을 미리 확인하고 브라우저 시간을 정확히 맞춰두세요.",
-    "internationalMeeting": "국제 회의: 참가자들의 시간대를 고려해 적절한 시간을 선택하세요.",
-    "commonTimeConversions": "자주 사용하는 시간 변환",
-    "koreaToUSEast": "한국 → 미국 동부",
-    "koreaToUK": "한국 → 영국",
-    "koreaToAustralia": "한국 → 호주 시드니",
-    "interpark": "인터파크",
-    "yes24": "예스24",
-    "weekdaysOpen": "평일 14:00 오픈",
-    "appleEvent": "Apple Event (캘리포니아)",
-    "appleEventTime": "보통 오전 10시 → 한국 새벽 2시",
-    "steamGameRelease": "Steam 게임 출시 (PST)",
-    "steamReleaseTime": "오전 10시 → 한국 새벽 3시",
-    "timeDifferenceNote": "-14시간 (서머타임 -13시간)",
-    "timeDifferenceUK": "-9시간 (서머타임 -8시간)",
-    "timeDifferenceAustralia": "+1~2시간 (계절 변화)",
-    "timezones": {
-      "korea": "한국 (KST)",
-      "utc": "협정세계시 (UTC)",
-      "newYork": "뉴욕 (EST/EDT)",
-      "losAngeles": "로스앤젤레스 (PST/PDT)",
-      "london": "런던 (GMT/BST)",
-      "paris": "파리 (CET/CEST)",
-      "tokyo": "도쿄 (JST)",
-      "shanghai": "상하이 (CST)",
-      "singapore": "싱가포르 (SGT)",
-      "sydney": "시드니 (AEDT/AEST)",
-      "chicago": "시카고 (CST/CDT)",
-      "denver": "덴버 (MST/MDT)"
-    },
     "guide": {
       "howItWorks": {
         "title": "계산 원리",
@@ -1182,23 +1105,6 @@
     },
     "title": "적금 계산기",
     "description": "적금·예금 만기 수령액과 세전·세후 이자를 은행과 같은 방식으로 계산합니다. 일반과세 15.4%·세금우대·비과세, 실질 연수익률, 상품 3개 비교, 목표 금액 역산까지 한 번에.",
-    "input": {
-      "savingsType": "적금 종류",
-      "regularSavings": "정기적금",
-      "freeSavings": "자유적금",
-      "targetSavings": "목표적금",
-      "compoundSavings": "복리적금",
-      "monthlyDeposit": "월 납입액",
-      "interestRate": "연 이자율",
-      "savingsPeriod": "적금 기간",
-      "targetAmount": "목표 금액"
-    },
-    "result": {
-      "maturityAmount": "만기 수령액",
-      "totalDeposit": "총 납입액",
-      "totalInterest": "총 이자",
-      "effectiveRate": "실 수익률"
-    },
     "guide": {
       "howItWorks": {
         "title": "계산 방식",
@@ -1424,21 +1330,6 @@
       "disclaimer": "이 계산은 법정 퇴직금 기준의 추정치입니다. 회사 퇴직금 규정, 퇴직연금(DB·DC) 가입 여부, 중간정산 이력, 임원 퇴직금 한도 등에 따라 실제 금액은 달라질 수 있으니 회사 인사팀이나 국세청 홈택스 퇴직소득 세액계산으로 최종 확인하세요."
     },
     "title": "퇴직금 계산기",
-    "description": "근로기준법·근로자퇴직급여 보장법에 따른 퇴직금과 2023년 이후 퇴직소득세, 세후 실수령액을 계산합니다.",
-    "input": {
-      "averageWage": "평균 월급여",
-      "workPeriod": "근무 기간",
-      "retirementReason": "퇴직 사유",
-      "voluntary": "자진 퇴사",
-      "involuntary": "권고 사직",
-      "years": "년",
-      "months": "개월"
-    },
-    "result": {
-      "retirementPay": "퇴직금",
-      "retirementTax": "퇴직소득세",
-      "netRetirementPay": "실수령 퇴직금"
-    },
     "guide": {
       "howItWorks": {
         "title": "계산 방법",
@@ -1533,21 +1424,6 @@
   },
   "tax": {
     "title": "세금 계산기",
-    "description": "소득세, 부가가치세, 양도소득세 등 한국 세법 기준 세금을 계산해보세요.",
-    "input": {
-      "taxType": "세금 종류",
-      "incomeTax": "소득세",
-      "vat": "부가가치세",
-      "capitalGains": "양도소득세",
-      "income": "소득",
-      "expenses": "경비",
-      "taxableIncome": "과세소득"
-    },
-    "result": {
-      "tax": "세액",
-      "netIncome": "세후소득",
-      "taxRate": "세율"
-    },
     "guide": {
       "title": "세금 계산 가이드",
       "whatIs": {
@@ -1820,68 +1696,7 @@
         "asOf": "2026년 10월 기준. 취득세·중개보수·채권·인지세는 이 사이트의 취득세·중개보수 계산기와 같은 계산식을 씁니다. 조정대상지역은 2026.7.1 지정분까지 반영."
       }
     },
-    "title": "부동산 계산기",
-    "description": "부동산 투자 수익률과 취득세를 계산해보세요.",
-    "input": {
-      "propertyPrice": "부동산 가격",
-      "downPayment": "계약금",
-      "loanAmount": "대출 금액",
-      "acquisitionTax": "취득세",
-      "propertyTax": "재산세"
-    },
-    "result": {
-      "totalCost": "총 비용",
-      "monthlyPayment": "월 상환금",
-      "roi": "투자 수익률"
-    },
-    "guide": {
-      "title": "부동산 계산 가이드",
-      "whatIs": {
-        "title": "부동산 계산기란?",
-        "description": "전세자금대출, 주택담보대출, 취득세를 하나의 도구로 계산할 수 있는 종합 부동산 계산기입니다. 2026년 세법 기준으로 정확한 취득세를 산출하고, LTV·DTI·DSR 대출 규제를 반영한 현실적인 대출 계획을 세울 수 있습니다."
-      },
-      "howToUse": {
-        "title": "사용 방법",
-        "items": [
-          "1. 상단 탭에서 계산 유형을 선택하세요: 전세자금대출, 주택담보대출, 취득세.",
-          "2. 전세자금대출: 전세 보증금과 희망 대출 금액, 금리, 대출 기간을 입력합니다.",
-          "3. 주택담보대출: 주택 가격, 자기자금, 금리, 상환 방식을 입력합니다.",
-          "4. 취득세: 매매 가격과 주택 유형, 특례 조건을 선택하면 세금이 자동 계산됩니다.",
-          "5. 계산 결과는 URL에 자동 저장되어 링크로 공유할 수 있습니다."
-        ]
-      },
-      "tips": {
-        "title": "절약 팁",
-        "items": [
-          "생애최초 주택 구입자는 취득세 50% 감면(3억원 한도) 혜택을 받을 수 있습니다.",
-          "신혼부부(혼인신고 7년 이내)는 취득세 최대 1억원까지 50% 감면 혜택이 적용됩니다.",
-          "LTV는 지역과 주택 가격에 따라 다르며, 조정대상지역은 70%, 비조정지역은 80%가 기본 한도입니다.",
-          "DSR 40% 규제에 따라 모든 대출의 연간 원리금 합계가 연소득의 40%를 초과할 수 없습니다.",
-          "대출 이자부터 취득세, 중개수수료까지 총 비용을 계산해 여유 자금을 충분히 확보하세요."
-        ]
-      },
-      "faq": {
-        "title": "자주 묻는 질문",
-        "items": [
-          {
-            "q": "전세자금대출과 주택담보대출의 차이는?",
-            "a": "전세자금대출은 전세 보증금 마련용(만기 2년), 주택담보대출은 주택 구입용(최대 30~40년)입니다."
-          },
-          {
-            "q": "취득세는 언제 납부해야 하나요?",
-            "a": "부동산 취득일로부터 60일 이내에 납부해야 합니다. 납부 기한을 넘기면 가산세가 부과됩니다."
-          },
-          {
-            "q": "다주택자 취득세 중과세 기준은?",
-            "a": "조정대상지역 내 2주택 이상 보유자가 추가 취득하는 경우 중과세(8~12%)가 적용될 수 있습니다."
-          },
-          {
-            "q": "원리금균등상환과 원금균등상환 중 어느 것이 유리한가요?",
-            "a": "원리금균등은 매월 동일 금액으로 계획적 관리 가능, 원금균등은 초기 부담이 높지만 총 이자가 적습니다."
-          }
-        ]
-      }
-    }
+    "title": "부동산 계산기"
   },
   "carLoan": {
     "u": {
@@ -2062,27 +1877,6 @@
       }
     },
     "title": "자동차 할부 계산기",
-    "description": "자동차 할부 시 월 납입금과 총 이자를 계산해보세요",
-    "input": {
-      "carPrice": "차량 가격 (원)",
-      "downPayment": "선수금 (원)",
-      "loanTerm": "할부 기간 (개월)",
-      "interestRate": "연 금리 (%)",
-      "term12": "12개월 (1년)",
-      "term24": "24개월 (2년)",
-      "term36": "36개월 (3년)",
-      "term48": "48개월 (4년)",
-      "term60": "60개월 (5년)",
-      "term72": "72개월 (6년)",
-      "term84": "84개월 (7년)"
-    },
-    "result": {
-      "monthlyPayment": "월 납입금",
-      "totalPayment": "총 납입금",
-      "totalInterest": "총 이자",
-      "loanAmount": "할부 원금",
-      "loanPeriod": "할부 기간"
-    },
     "guide": {
       "title": "자동차 할부 가이드",
       "whatIs": {
@@ -2325,38 +2119,6 @@
     "basis": "2026년 10월 현행 지방세법 제12조·지방세특례제한법(경차·전기차·다자녀·장애인 감면) 기준. 도시철도채권은 대략값입니다.",
     "title": "자동차 취등록세 계산기",
     "description": "자동차 구매 시 납부해야 할 각종 세금을 정확하게 계산해보세요",
-    "input": {
-      "carPrice": "차량 가격 (원)",
-      "carType": "차종",
-      "fuelType": "연료 타입",
-      "displacement": "배기량 (cc)",
-      "carStatus": "차량 상태",
-      "region": "등록 지역",
-      "passenger": "승용차",
-      "truck": "화물차",
-      "van": "승합차",
-      "motorcycle": "이륜차",
-      "gasoline": "휘발유",
-      "diesel": "경유",
-      "lpg": "LPG",
-      "electric": "전기",
-      "hybrid": "하이브리드",
-      "newCar": "신차",
-      "usedCar": "중고차",
-      "seoul": "서울특별시",
-      "busan": "부산광역시",
-      "incheon": "인천광역시",
-      "gyeonggi": "경기도",
-      "other": "기타 지역"
-    },
-    "result": {
-      "acquisitionTax": "취득세",
-      "registrationTax": "등록세",
-      "bondPurchase": "공채매수",
-      "stampDuty": "인지세",
-      "totalTax": "총 세금",
-      "totalCostWithTax": "차량가격 + 세금"
-    },
     "guide": {
       "title": "취등록세 안내",
       "taxTypesTitle": "주요 세금 종류",
@@ -2801,7 +2563,6 @@
       "schedule": "{loan} · {years}년 회차별 상환표"
     },
     "title": "보금자리론 계산기",
-    "description": "보금자리론 자격 조건 확인 및 예상 월 상환액을 계산해보세요",
     "guide": {
       "title": "보금자리론 가이드",
       "whatIs": {
@@ -2945,7 +2706,6 @@
       "자동차는 월 100%로 환산했습니다. 배기량 2,000cc 미만 승용차로 10년 이상 됐거나 차량가액이 500만원 미만이면 일반재산 환산율(월 4.17%)이 적용됩니다(보건복지부 고시 제2025-204호 별표 2)."
     ],
     "title": "기준 중위소득 조회",
-    "description": "가구원수별 기준 중위소득과 비율별 정부 복지사업 자격 기준을 확인하세요",
     "guide": {
       "title": "중위소득표 가이드",
       "whatIs": {
@@ -2999,12 +2759,6 @@
       "jsonInput": "JSON 입력",
       "pasteJson": "JSON을 여기에 붙여넣으세요...",
       "output": "결과"
-    },
-    "actions": {
-      "format": "포맷팅",
-      "minify": "압축",
-      "validate": "검증",
-      "clear": "지우기"
     },
     "result": {
       "formatted": "포맷팅된 JSON",
@@ -3360,20 +3114,8 @@
     "placeholder": "변환할 데이터를 입력하거나 파일을 업로드하세요"
   },
   "sqlFormatter": {
-    "title": "SQL 포맷터",
-    "description": "SQL 쿼리를 예쁘게 포맷팅하고 문법 하이라이팅을 적용하세요.",
-    "input": {
-      "sqlInput": "SQL 입력",
-      "pasteSql": "SQL을 여기에 붙여넣으세요..."
-    },
-    "actions": {
-      "format": "포맷팅",
-      "minify": "압축",
-      "clear": "지우기"
-    },
-    "result": {
-      "formatted": "포맷팅된 SQL"
-    },
+    "fullscreen": "전체화면",
+    "exitFullscreen": "창모드",
     "guide": {
       "title": "SQL 포맷터 가이드",
       "whatIs": {
@@ -3530,17 +3272,6 @@
     "errDecode": "이미지를 열 수 없어요. 파일이 손상됐거나 지원하지 않는 형식이에요.",
     "title": "이미지 크기 조절",
     "description": "사진 픽셀 변경·용량 줄이기·증명사진 크기 맞추기를 여러 장 한 번에. 서버에 올리지 않고 브라우저 안에서 처리해요.",
-    "input": {
-      "selectImage": "이미지 선택",
-      "width": "너비",
-      "height": "높이",
-      "maintainRatio": "비율 유지"
-    },
-    "actions": {
-      "resize": "크기 조정",
-      "download": "다운로드",
-      "reset": "초기화"
-    },
     "guide": {
       "principle": {
         "title": "용량이 줄어드는 원리",
@@ -3620,17 +3351,8 @@
     }
   },
   "imageEditor": {
-    "title": "이미지 편집기",
-    "description": "필터, 자르기, 효과를 사용해서 온라인으로 이미지를 편집하세요.",
-    "input": {
-      "selectImage": "이미지 선택"
-    },
-    "actions": {
-      "crop": "자르기",
-      "rotate": "회전",
-      "filter": "필터",
-      "download": "다운로드"
-    },
+    "fullscreen": "전체화면",
+    "exitFullscreen": "전체화면 종료",
     "guide": {
       "title": "이미지 편집기 가이드",
       "whatIs": {
@@ -4276,10 +3998,6 @@
     },
     "title": "글자수 세기",
     "description": "자소서·리포트·SNS 글의 공백 포함/제외 글자수, 잡코리아·사람인 방식 바이트, 원고지 매수를 실시간으로 셉니다. 문항별 목표 글자수와 자동 저장을 지원합니다.",
-    "meta": {
-      "title": "글자수 세기 - 글자수, 단어수, 문장수 카운터",
-      "description": "텍스트의 글자수, 공백제외, 단어수, 문장수, 단락수를 실시간으로 계산합니다. SNS 글자수 제한 확인에 유용합니다."
-    },
     "input": {
       "aria": "글자수를 셀 텍스트",
       "placeholder": "텍스트를 입력하거나 붙여넣으세요..."
@@ -4603,29 +4321,6 @@
       "agePlaceholder": "30",
       "ageNote": "만 19세 미만이면 소아청소년 안내, 65세 이상이면 노인 참고 사항을 보여줍니다"
     },
-    "result": {
-      "title": "BMI 계산 결과",
-      "bmi": "BMI",
-      "category": "분류",
-      "idealWeightRange": "이상 체중 범위",
-      "weightDifference": "현재 체중과의 차이",
-      "healthRisk": "건강 위험도",
-      "shareResult": "결과 공유"
-    },
-    "categories": {
-      "underweight": "저체중",
-      "normal": "정상",
-      "overweight": "과체중",
-      "obese1": "비만 1단계",
-      "obese2": "비만 2단계 이상"
-    },
-    "healthRisks": {
-      "malnutrition": "영양부족 위험",
-      "healthy": "건강",
-      "slightRisk": "약간 위험",
-      "risk": "위험",
-      "highRisk": "고위험"
-    },
     "guide": {
       "howItWorks": {
         "title": "계산 방법",
@@ -4709,93 +4404,6 @@
           }
         ]
       }
-    },
-    "usage": {
-      "title": "BMI 계산기 활용법",
-      "steps": {
-        "1": {
-          "title": "정확한 측정",
-          "content": "아침 공복 상태에서 측정하면 가장 정확한 결과를 얻을 수 있습니다."
-        },
-        "2": {
-          "title": "정기적 체크",
-          "content": "월 1-2회 정기적으로 측정하여 변화 추이를 관찰해보세요."
-        },
-        "3": {
-          "title": "목표 설정",
-          "content": "건강한 BMI 범위를 목표로 단계적인 계획을 세워보세요."
-        }
-      }
-    },
-    "healthTips": {
-      "title": "건강한 체중 관리 팁",
-      "diet": {
-        "title": "균형잡힌 식단",
-        "content": "단백질, 탄수화물, 지방을 적절히 배분하여 섭취하세요."
-      },
-      "exercise": {
-        "title": "규칙적인 운동",
-        "content": "주 3-5회, 30분 이상의 유산소 운동을 권장합니다."
-      },
-      "sleep": {
-        "title": "충분한 수면",
-        "content": "하루 7-8시간의 양질의 수면이 체중 관리에 도움됩니다."
-      },
-      "water": {
-        "title": "충분한 수분",
-        "content": "하루 8잔 이상의 물을 마셔 신진대사를 활발하게 하세요."
-      }
-    },
-    "riskTable": {
-      "title": "BMI와 건강 위험도",
-      "headers": {
-        "range": "BMI 범위",
-        "category": "분류",
-        "risk": "질병 위험도",
-        "concerns": "주요 관심사"
-      },
-      "rows": {
-        "underweight": {
-          "range": "18.5 미만",
-          "category": "저체중",
-          "risk": "증가",
-          "concerns": "영양실조, 골다공증, 면역력 저하"
-        },
-        "normal": {
-          "range": "18.5 - 22.9",
-          "category": "정상",
-          "risk": "최저",
-          "concerns": "건강한 상태 유지"
-        },
-        "overweight": {
-          "range": "23.0 - 24.9",
-          "category": "과체중",
-          "risk": "약간 증가",
-          "concerns": "생활습관 개선 필요"
-        },
-        "obese1": {
-          "range": "25.0 - 29.9",
-          "category": "비만 1단계",
-          "risk": "증가",
-          "concerns": "당뇨, 고혈압, 심혈관 질환"
-        },
-        "obese2": {
-          "range": "30.0 이상",
-          "category": "비만 2단계",
-          "risk": "고위험",
-          "concerns": "대사증후군, 관절질환, 수면무호흡증"
-        }
-      },
-      "note": "* 개인차가 있을 수 있으며, 정확한 진단은 의료진과 상담하시기 바랍니다."
-    },
-    "classification": {
-      "title": "BMI 분류 기준",
-      "note": "* 아시아인 기준 적용, 65세 이상은 별도 기준"
-    },
-    "history": {
-      "title": "BMI 계산 기록",
-      "empty": "저장된 계산 이력이 없습니다",
-      "format": "키 {height}cm, 몸무게 {weight}kg, BMI {bmi}"
     },
     "placeholder": "키와 몸무게를 입력하시면 BMI 계산 결과가 나타납니다",
     "common": {
@@ -5048,48 +4656,11 @@
         ]
       }
     },
-    "foodCalories": {
-      "title": "음식 칼로리 참고표",
-      "staples": "주식류",
-      "proteins": "단백질",
-      "snacks": "간식류",
-      "items": {
-        "rice": "밥 (1공기, 210g)",
-        "ramen": "라면 (1개)",
-        "kimbap": "김밥 (1줄)",
-        "bread": "빵 (식빵 1장)",
-        "chicken": "닭가슴살 (100g)",
-        "egg": "계란 (1개)",
-        "tofu": "두부 (1/2모)",
-        "milk": "우유 (1컵, 200ml)",
-        "apple": "사과 (1개)",
-        "banana": "바나나 (1개)",
-        "almond": "아몬드 (10개)",
-        "chocolate": "초콜릿 (1조각)"
-      }
-    },
-    "exerciseCalories": {
-      "title": "운동별 칼로리 소모량 (30분 기준)",
-      "cardio": "유산소 운동",
-      "strength": "근력 및 기타 운동",
-      "items": {
-        "walking": "걷기 (30분)",
-        "jogging": "조깅 (30분)",
-        "cycling": "자전거 (30분)",
-        "swimming": "수영 (30분)",
-        "weight": "웨이트 트레이닝 (30분)",
-        "yoga": "요가 (30분)",
-        "stairs": "계단 오르기 (30분)",
-        "jumprope": "줄넘기 (30분)"
-      },
-      "note": "* 70kg 성인 남성 기준이며, 개인차가 있을 수 있습니다."
-    },
     "history": {
       "title": "칼로리 계산 기록",
       "empty": "저장된 계산 이력이 없습니다",
       "format": "목표 칼로리 {goalCalories}kcal ({goal})"
-    },
-    "placeholder": "신체 정보를 입력하면 칼로리 계산 결과가 표시됩니다"
+    }
   },
   "bodyFat": {
     "u": {
@@ -5248,15 +4819,6 @@
       "hipPlaceholder": "90",
       "hipNote": "엉덩이의 가장 넓은 부분에서 측정"
     },
-    "result": {
-      "title": "체지방률 분석 결과",
-      "fatMass": "체지방량",
-      "leanMass": "근육량",
-      "idealRange": "이상적인 체지방률 범위",
-      "visceralFat": "내장지방 레벨",
-      "visceralFatUnit": "레벨",
-      "shareResult": "결과 공유"
-    },
     "categories": {
       "essential": "필수지방",
       "athletic": "운동선수",
@@ -5264,26 +4826,6 @@
       "average": "평균",
       "overweight": "과체중",
       "obese": "비만"
-    },
-    "categoryLabels": {
-      "essential": "필수지방",
-      "athletic": "운동선수",
-      "fitness": "건강",
-      "average": "평균",
-      "overweight": "과체중",
-      "obese": "비만"
-    },
-    "healthRisks": {
-      "essential": "필수지방 부족 위험",
-      "athletic": "운동선수 수준",
-      "fitness": "건강한 상태",
-      "average": "평균 수준",
-      "overweight": "과체중",
-      "obese": "비만"
-    },
-    "classification": {
-      "title": "체지방률 분류표",
-      "note": "연령대별로 이상적인 체지방률 범위가 다를 수 있습니다. 정확한 진단은 전문가와 상담하세요."
     },
     "guide": {
       "howItWorks": {
@@ -5388,13 +4930,7 @@
       },
       "measurementTip": "측정 팁:",
       "measurementTipText": "아침에 일어나서 화장실을 다녀온 후, 식사 전에 측정하면 가장 정확한 결과를 얻을 수 있습니다."
-    },
-    "history": {
-      "title": "체지방률 계산 기록",
-      "empty": "저장된 계산 이력이 없습니다",
-      "format": "체지방률 {bodyFatPercentage}% ({category})"
-    },
-    "placeholder": "신체 정보와 둘레를 입력하면 체지방률 계산 결과가 표시됩니다"
+    }
   },
   "workHours": {
     "weekdays": [
@@ -5625,9 +5161,7 @@
     "linkCopied": "링크가 복사되었습니다! 상대에게 공유하세요.",
     "shareButton": "공유하기",
     "shareText": "대전하자! 이 링크를 클릭하면 바로 접속할 수 있어.",
-    "defaultTitle": "게임 대전 초대",
-    "directConnect": "직접 연결",
-    "peerIdLabel": "Peer ID"
+    "defaultTitle": "게임 대전 초대"
   },
   "gameHub": {
     "modeAiOnline": "AI · 온라인",
@@ -6363,19 +5897,9 @@
     "statisticsRecommendation": "통계 기반 추천",
     "hotNumbers": "핫 번호",
     "coldNumbers": "콜드 번호",
-    "generateBasedOnHot": "핫 번호 기반 생성",
-    "generateBasedOnCold": "콜드 번호 기반 생성",
     "generateBalanced": "균형 잡힌 생성",
-    "statisticsTabs": {
-      "frequency": "출현 빈도",
-      "recent": "최근 동향",
-      "patterns": "패턴 분석"
-    },
     "noData": "해당 회차의 당첨번호가 없습니다",
     "loading": "불러오는 중...",
-    "comingSoon": "준비 중입니다",
-    "patternAnalysis": "패턴 분석 기능은",
-    "recentTrends": "최근 동향 분석 기능은",
     "winChecker": {
       "matchedCount": "{count}개",
       "title": "당첨 확인",
@@ -6722,12 +6246,6 @@
         ]
       }
     },
-    "history": {
-      "title": "처리 기록",
-      "empty": "저장된 처리 기록이 없습니다",
-      "format": "{operation} 작업, {matches}개 매치"
-    },
-    "placeholder": "정규식 패턴을 입력하고 텍스트를 처리해보세요",
     "smartMode": {
       "title": "스마트 모드 (초보자용)",
       "description": "정규식을 몰라도 괜찮습니다! 원하는 작업을 선택하면 자동으로 패턴을 만들어드립니다.",
@@ -6958,12 +6476,6 @@
         "high": "높음",
         "highest": "최고"
       }
-    },
-    "sizes": {
-      "small": "소형 (200px)",
-      "medium": "중형 (300px)",
-      "large": "대형 (400px)",
-      "xlarge": "특대 (500px)"
     },
     "result": {
       "pngSize": "PNG 크기",
@@ -9272,9 +8784,7 @@
     "from": "입력 단위",
     "to": "결과 단위",
     "swap": "단위 교환",
-    "copyResult": "결과 복사",
     "copied": "복사됨!",
-    "quickConversions": "전체 단위 변환 결과",
     "categories": {
       "speed": "속도",
       "time": "시간",
@@ -9459,33 +8969,6 @@
     },
     "title": "텍스트 변환기",
     "description": "붙여넣으면 대소문자·camelCase·snake_case 등 12가지 케이스를 한 번에 보여주고, 줄 정렬·중복 제거·찾아 바꾸기·SQL IN 목록 만들기를 단계별로 적용합니다.",
-    "categories": {
-      "case": "대소문자",
-      "coding": "코딩 규칙",
-      "formatting": "포맷팅",
-      "lines": "줄 처리"
-    },
-    "conversions": {
-      "uppercase": "대문자",
-      "lowercase": "소문자",
-      "capitalize": "첫글자 대문자",
-      "titleCase": "제목 스타일",
-      "camelCase": "camelCase",
-      "pascalCase": "PascalCase",
-      "snakeCase": "snake_case",
-      "kebabCase": "kebab-case",
-      "constantCase": "CONSTANT_CASE",
-      "dotCase": "dot.case",
-      "reverse": "역순",
-      "removeSpaces": "공백 제거",
-      "removeLineBreaks": "줄바꿈 제거",
-      "singleSpaces": "연속 공백 제거",
-      "trim": "앞뒤 공백 제거",
-      "sortLines": "줄 정렬",
-      "reverseLines": "줄 역순",
-      "uniqueLines": "중복 줄 제거",
-      "numberLines": "줄 번호 추가"
-    },
     "input": {
       "sample": "예시 넣기",
       "label": "입력",
@@ -9493,9 +8976,6 @@
     },
     "output": {
       "label": "결과"
-    },
-    "preview": {
-      "title": "빠른 미리보기"
     },
     "actions": {
       "copy": "복사",
@@ -9725,12 +9205,6 @@
       "MSI": "MSI (재고관리)",
       "pharmacode": "Pharmacode (의약품)"
     },
-    "result": {
-      "title": "생성된 바코드",
-      "download": "바코드 다운로드",
-      "copy": "이미지 복사",
-      "preview": "미리보기"
-    },
     "guide": {
       "howItWorks": {
         "title": "체크디지트 계산 원리",
@@ -9923,23 +9397,6 @@
         "description": "REST API 응답 데이터 형식"
       }
     },
-    "result": {
-      "title": "변환 결과",
-      "preview": "미리보기",
-      "download": "다운로드",
-      "copy": "복사",
-      "stats": "통계",
-      "elements": "엘리먼트",
-      "attributes": "속성",
-      "textNodes": "텍스트 노드",
-      "size": "크기",
-      "processingTime": "처리 시간",
-      "viewMode": "보기 모드",
-      "textView": "텍스트 보기",
-      "treeView": "트리 보기",
-      "showingData": "데이터 표시 중",
-      "noData": "표시할 데이터가 없습니다"
-    },
     "validation": {
       "valid": "유효",
       "validJson": "유효한 JSON",
@@ -10006,62 +9463,7 @@
           }
         ]
       }
-    },
-    "features": {
-      "title": "주요 기능",
-      "bidirectional": {
-        "title": "양방향 변환",
-        "description": "JSON과 XML 간의 완벽한 상호 변환",
-        "details": {
-          "0": "중첩된 객체와 배열 완벽 지원",
-          "1": "속성과 텍스트 노드 정확한 처리",
-          "2": "데이터 타입 보존 및 복원"
-        }
-      },
-      "developer": {
-        "title": "개발자 친화적",
-        "description": "개발 워크플로우에 최적화된 기능들",
-        "details": {
-          "0": "다양한 프리셋과 커스터마이징 옵션",
-          "1": "실시간 검증과 오류 표시",
-          "2": "압축/보기좋게 포맷팅 지원"
-        }
-      },
-      "performance": {
-        "title": "고성능 처리",
-        "description": "대용량 파일도 빠르게 처리",
-        "details": {
-          "0": "Web Worker를 활용한 백그라운드 처리",
-          "1": "메모리 효율적인 스트리밍 처리",
-          "2": "실시간 진행률 표시"
-        }
-      }
-    },
-    "examples": {
-      "title": "변환 예제",
-      "jsonExample": {
-        "title": "JSON 예제",
-        "simple": "간단한 객체",
-        "complex": "복잡한 구조",
-        "array": "배열 데이터"
-      },
-      "xmlExample": {
-        "title": "XML 예제",
-        "simple": "기본 엘리먼트",
-        "attributes": "속성 포함",
-        "nested": "중첩 구조"
-      }
-    },
-    "errors": {
-      "invalidJson": "유효하지 않은 JSON 형식입니다",
-      "invalidXml": "유효하지 않은 XML 형식입니다",
-      "parseError": "파싱 오류: {error}",
-      "fileTooLarge": "파일이 너무 큽니다 (최대 {size}MB)",
-      "unsupportedFormat": "지원하지 않는 파일 형식입니다",
-      "conversionFailed": "변환에 실패했습니다",
-      "networkError": "네트워크 오류가 발생했습니다"
-    },
-    "placeholder": "변환할 데이터를 입력하거나 파일을 업로드하세요"
+    }
   },
   "viewer3d": {
     "title": "3D 변환기",
@@ -10372,13 +9774,6 @@
       "veryStrong": "매우 강함",
       "entropy": "엔트로피",
       "bits": "비트"
-    },
-    "history": {
-      "title": "히스토리",
-      "show": "히스토리 보기",
-      "hide": "히스토리 숨기기",
-      "empty": "생성된 비밀번호가 없습니다",
-      "clear": "히스토리 지우기"
     },
     "errors": {
       "symbolEmpty": "허용할 특수문자를 1개 이상 입력하세요. 영문·숫자·공백은 특수문자로 쓰이지 않아요.",
@@ -10777,13 +10172,6 @@
       "link": "원 단위 처리·역산은 부가세 계산기에서"
     },
     "title": "퍼센트 계산기",
-    "description": "다양한 퍼센트 계산을 한 곳에서 간편하게",
-    "modes": {
-      "basicPercent": "기본 퍼센트",
-      "whatPercent": "몇 퍼센트?",
-      "change": "증감률",
-      "addSubtract": "추가/차감"
-    },
     "basicPercent": {
       "title": "X의 Y%는?",
       "description": "특정 값의 퍼센트를 계산합니다",
@@ -11078,33 +10466,8 @@
     "title": "나이 계산기",
     "description": "생년월일(양력·음력)로 만 나이·연 나이·세는 나이, 다음 생일 D-Day, 나이 기준 이정표를 한눈에 확인하세요",
     "birthDate": "생년월일",
-    "year": "년",
-    "month": "월",
-    "day": "일",
-    "calculate": "계산하기",
-    "reset": "초기화",
     "baseDate": "기준 날짜",
     "today": "오늘",
-    "result": {
-      "title": "계산 결과",
-      "internationalAge": "만 나이",
-      "koreanAge": "한국 나이 (세는 나이)",
-      "yearAge": "연 나이",
-      "years": "세",
-      "months": "개월",
-      "days": "일",
-      "totalDays": "살아온 날",
-      "totalWeeks": "살아온 주",
-      "totalMonths": "살아온 개월",
-      "nextBirthday": "다음 생일까지",
-      "daysUntilBirthday": "일 남음",
-      "birthdayToday": "오늘이 생일입니다!",
-      "zodiacAnimal": "띠",
-      "zodiacSign": "별자리",
-      "birthDay": "태어난 요일",
-      "generation": "세대",
-      "earlySchoolYear": "빠른년생 여부"
-    },
     "zodiacAnimals": {
       "rat": "쥐띠",
       "ox": "소띠",
@@ -11151,17 +10514,6 @@
       "silent": "침묵 세대 (~1945)"
     },
     "placeholder": "생년월일을 입력하면 결과가 표시됩니다",
-    "earlySchool": {
-      "yes": "빠른년생 (1~2월생)",
-      "no": "해당 없음"
-    },
-    "birthday": {
-      "title": "다음 생일 D-Day",
-      "daysLeft": "남은 일수",
-      "nextAge": "다음 생일 나이",
-      "turningAge": "만 {age}세가 되었습니다!",
-      "willTurn": "만 {age}세"
-    },
     "school": {
       "title": "학년 정보",
       "entryYear": "초등학교 입학 연도",
@@ -11178,42 +10530,6 @@
         "highGrade": "고등학교 {grade}학년",
         "universityGrade": "대학교 {grade}학년",
         "graduated": "졸업"
-      }
-    },
-    "milestone": {
-      "title": "인생 타임라인",
-      "showTimeline": "타임라인 보기",
-      "hideTimeline": "타임라인 접기",
-      "copyAll": "타임라인 복사",
-      "clickToShow": "위 버튼을 눌러 타임라인을 확인하세요",
-      "intAgeLabel": "만 {age}세",
-      "current": "현재",
-      "elementary": "초등학교 입학",
-      "middle": "중학교 입학",
-      "high": "고등학교 입학",
-      "driving": "운전면허 취득 가능 (만 18세)",
-      "voting": "선거권 부여 (만 18세)",
-      "adult": "성인 (만 19세)",
-      "drinking": "주류 구매 가능 (만 19세)",
-      "universityGrad": "대학교 졸업 (일반, 4년제 기준)",
-      "avgMarriageMale": "평균 결혼 연령 - 남성 (33.7세, 2024 통계)",
-      "avgMarriageFemale": "평균 결혼 연령 - 여성 (31.3세, 2024 통계)",
-      "seniorDiscount": "경로 우대 (만 65세)",
-      "pension": "국민연금 수급 개시 (만 65세)"
-    },
-    "ageExplanation": {
-      "title": "나이 계산 방식 안내",
-      "international": {
-        "title": "만 나이 (국제 표준)",
-        "description": "생일이 지나야 한 살이 추가되는 국제 표준 나이 계산법입니다. 2023년 6월부터 한국 법적 나이로 통일되었습니다."
-      },
-      "korean": {
-        "title": "한국 나이 (세는 나이)",
-        "description": "태어나면 1살, 매년 1월 1일에 한 살이 추가되는 전통적인 한국 나이 계산법입니다."
-      },
-      "year": {
-        "title": "연 나이",
-        "description": "현재 연도에서 출생 연도를 뺀 나이입니다. 생일 여부와 관계없이 같은 해에 태어난 사람은 같은 나이입니다."
       }
     },
     "guide": {
@@ -11331,32 +10647,6 @@
       "average": "평균",
       "courses": "과목"
     },
-    "grades45": {
-      "Aplus": "A+ (4.5)",
-      "A": "A (4.0)",
-      "Bplus": "B+ (3.5)",
-      "B": "B (3.0)",
-      "Cplus": "C+ (2.5)",
-      "C": "C (2.0)",
-      "Dplus": "D+ (1.5)",
-      "D": "D (1.0)",
-      "F": "F (0.0)"
-    },
-    "grades43": {
-      "Aplus": "A+ (4.3)",
-      "A": "A (4.0)",
-      "Aminus": "A- (3.7)",
-      "Bplus": "B+ (3.3)",
-      "B": "B (3.0)",
-      "Bminus": "B- (2.7)",
-      "Cplus": "C+ (2.3)",
-      "C": "C (2.0)",
-      "Cminus": "C- (1.7)",
-      "Dplus": "D+ (1.3)",
-      "D": "D (1.0)",
-      "Dminus": "D- (0.7)",
-      "F": "F (0.0)"
-    },
     "guide": {
       "title": "사용 가이드",
       "howToUse": {
@@ -11463,11 +10753,6 @@
     },
     "title": "랜덤 뽑기 · 경품 추첨기",
     "description": "명단을 붙여넣고 당첨자를 중복 없이 뽑으세요. 검증 링크로 누구나 결과를 확인할 수 있습니다.",
-    "modes": {
-      "number": "숫자 뽑기",
-      "list": "목록 뽑기",
-      "team": "팀 나누기"
-    },
     "number": {
       "title": "랜덤 숫자 생성",
       "min": "최솟값",
@@ -11476,29 +10761,6 @@
       "allowDuplicates": "중복 허용",
       "generate": "뽑기!",
       "result": "결과"
-    },
-    "list": {
-      "title": "목록에서 뽑기",
-      "inputLabel": "항목 입력 (줄바꿈으로 구분)",
-      "placeholder": "김철수\n이영희\n박민수\n...",
-      "count": "뽑을 개수",
-      "pick": "뽑기!",
-      "result": "당첨!"
-    },
-    "team": {
-      "title": "팀 나누기",
-      "inputLabel": "참가자 입력 (줄바꿈으로 구분)",
-      "placeholder": "김철수\n이영희\n박민수\n최지우\n...",
-      "teamCount": "팀 수",
-      "divide": "나누기!",
-      "teamLabel": "팀"
-    },
-    "common": {
-      "copy": "복사",
-      "copied": "복사됨!",
-      "reset": "초기화",
-      "result": "결과",
-      "animation": "애니메이션"
     },
     "guide": {
       "howItWorks": {
@@ -11685,22 +10947,6 @@
       "preset15min": "15분",
       "preset30min": "30분"
     },
-    "pomodoro": {
-      "title": "뽀모도로 타이머",
-      "work": "집중",
-      "shortBreak": "짧은 휴식",
-      "longBreak": "긴 휴식",
-      "start": "시작",
-      "pause": "일시정지",
-      "reset": "초기화",
-      "skip": "건너뛰기",
-      "session": "세션",
-      "workDuration": "집중 시간 (분)",
-      "shortBreakDuration": "짧은 휴식 (분)",
-      "longBreakDuration": "긴 휴식 (분)",
-      "sessionsBeforeLong": "긴 휴식까지 세션 수",
-      "completed": "완료된 세션"
-    },
     "guide": {
       "title": "사용 가이드",
       "stopwatch": {
@@ -11880,15 +11126,9 @@
     "binary": "2진수 (Binary)",
     "octal": "8진수 (Octal)",
     "hex": "16진수 (Hex)",
-    "input": "변환할 값을 입력하세요",
     "copy": "복사",
     "copied": "복사됨!",
     "reset": "초기화",
-    "swap": "교환",
-    "bitVisualization": "비트 시각화",
-    "bit": "비트",
-    "signed": "부호 있는 정수 (signed)",
-    "unsigned": "부호 없는 정수 (unsigned)",
     "commonValues": "자주 쓰는 값",
     "guide": {
       "howItWorks": {
@@ -12010,7 +11250,6 @@
     "noNotes": "메모가 없습니다",
     "createFirstNote": "새 메모 버튼을 눌러 시작하세요",
     "export": ".txt 저장",
-    "autoSaved": "자동 저장됨",
     "stats": {
       "charsNoSpace": "공백 제외",
       "manuscript": "원고지",
@@ -12256,39 +11495,16 @@
     "description": "목돈(거치식)·매월 적립식 복리를 세후 금액으로 계산하고, 목표 금액 역산·72의 법칙·단리 비교·물가 반영 실질 수익률까지 한 번에 확인하세요.",
     "principal": "원금 (원)",
     "rate": "연이율 (%)",
-    "period": "투자 기간",
     "periodUnit": {
       "years": "년",
       "months": "개월"
     },
-    "compoundFrequency": "복리 주기",
     "frequency": {
       "yearly": "연 복리",
       "semiannually": "반기 복리",
       "quarterly": "분기 복리",
       "monthly": "월 복리",
       "daily": "일 복리"
-    },
-    "monthlyDeposit": "월 적립금 (원)",
-    "monthlyDepositDesc": "매월 추가 적립 (선택사항)",
-    "result": {
-      "title": "계산 결과",
-      "totalAmount": "최종 금액",
-      "totalInterest": "총 이자",
-      "totalDeposit": "총 투자 원금",
-      "effectiveRate": "실질 수익률",
-      "growthChart": "자산 성장 그래프",
-      "yearlyBreakdown": "연도별 상세",
-      "year": "년차",
-      "balance": "잔액",
-      "interest": "이자",
-      "deposit": "원금"
-    },
-    "comparison": {
-      "title": "단리 vs 복리 비교",
-      "simple": "단리",
-      "compound": "복리",
-      "difference": "차이"
     },
     "common": {
       "calculate": "계산하기",
@@ -12487,13 +11703,6 @@
     "title": "전기요금 계산기",
     "description": "월 사용량이나 가전 사용 시간으로 이번 달 전기요금을 계산합니다. 한전 주택용 누진제(2026년 4분기 요금) 기준, 구간별 내역·에어컨 추가 요금·지난달 비교까지.",
     "usage": "월 사용량 (kWh)",
-    "usagePlaceholder": "사용량을 입력하세요",
-    "season": "계절",
-    "seasons": {
-      "normal": "일반 (봄/가을)",
-      "summer": "여름 (7~8월)",
-      "winter": "겨울 (12~2월)"
-    },
     "contractType": "계약 종별",
     "contracts": {
       "lowVoltage": "주택용 저압",
@@ -12666,18 +11875,6 @@
       }
     },
     "copyLink": "링크 복사",
-    "simulator": {
-      "title": "가전제품 시뮬레이터",
-      "description": "사용 중인 가전제품의 하루 사용 시간을 입력하면 월 예상 전기 사용량을 계산합니다.",
-      "appliance": "가전제품",
-      "watt": "소비전력",
-      "hoursPerDay": "하루 사용 시간",
-      "monthlyKwh": "월 사용량",
-      "total": "합계",
-      "estimated": "예상 사용량",
-      "note": "* 실제 사용량은 제품 효율 및 사용 환경에 따라 다를 수 있습니다.",
-      "apply": "계산기에 적용"
-    },
     "appliances": {
       "blanket": "전기장판",
       "heater": "전기히터",
@@ -12972,7 +12169,6 @@
     "clickToCopy": "목록에서 누른 문자의 유니코드·HTML 코드를 보여 줍니다",
     "recentlyUsed": "최근 사용",
     "noResults": "검색 결과가 없습니다",
-    "totalEmojis": "개의 이모지",
     "guide": {
       "title": "사용 가이드",
       "howToUse": {
@@ -13066,8 +12262,6 @@
     "month": "월",
     "day": "일",
     "leapMonth": "윤달",
-    "isLeapMonth": "윤달 여부",
-    "convert": "변환",
     "reset": "초기화",
     "result": {
       "dayGanzi": "일진",
@@ -13222,20 +12416,14 @@
     "copied": "복사됨!",
     "copyAll": "전체 복사",
     "refresh": "새로고침",
-    "ipv4": "IPv4 주소",
-    "ipv6": "IPv6 주소",
     "location": "위치 정보",
     "city": "도시",
     "region": "지역",
     "country": "국가",
     "timezone": "시간대",
     "isp": "인터넷 서비스 제공자",
-    "org": "조직",
     "asn": "AS 번호",
     "network": "네트워크 정보",
-    "connectionType": "연결 유형",
-    "vpnDetected": "VPN 감지",
-    "proxyDetected": "프록시 감지",
     "yes": "예",
     "no": "아니오",
     "guide": {
@@ -13316,12 +12504,9 @@
     "discountRate": "할인율 (%)",
     "discountAmount": "할인 금액",
     "finalPrice": "최종 가격",
-    "calculate": "계산하기",
     "reset": "초기화",
-    "result": "계산 결과",
     "savings": "절약 금액",
     "effectiveRate": "실질 할인율",
-    "won": "원",
     "copyLink": "결과 링크 복사",
     "copyFailed": "복사하지 못했습니다. 브라우저의 클립보드 권한을 확인해 주세요.",
     "savingsSummary": "할인 결과 요약",
@@ -13329,16 +12514,9 @@
     "finalPriceAboveOriginal": "최종 가격이 원래 가격보다 높습니다. 할인율을 계산하려면 최종 가격을 원래 가격 이하로 입력하세요.",
     "copy": "복사",
     "copied": "복사됨!",
-    "enterPrice": "금액을 입력하세요",
-    "enterRate": "할인율을 입력하세요",
     "quickRates": "빠른 할인율",
     "multiDiscount": "중복 할인",
     "addDiscount": "할인 추가",
-    "totalDiscount": "총 할인율",
-    "multiResult": "중복 할인 결과",
-    "discount1": "첫 번째 할인",
-    "discount2": "두 번째 할인",
-    "discount3": "세 번째 할인",
     "guide": {
       "title": "할인 계산 가이드",
       "basic": {
@@ -13442,22 +12620,7 @@
       "korean": "한글",
       "english": "영어"
     },
-    "difficulty": {
-      "title": "난이도",
-      "easy": "쉬움",
-      "medium": "보통",
-      "hard": "어려움"
-    },
-    "duration": {
-      "title": "시간",
-      "sec30": "30초",
-      "min1": "1분",
-      "min2": "2분",
-      "min5": "5분"
-    },
-    "start": "시작하기",
     "restart": "다시 시작",
-    "stop": "중지",
     "result": {
       "sub": "정확도 {acc}% · {grade}",
       "faster": "평균보다 {n}% 빠름",
@@ -13476,20 +12639,6 @@
       "copied": "복사됨",
       "retry": "다시 도전"
     },
-    "timeLeft": "남은 시간",
-    "wpm": "타/분 (WPM)",
-    "cpm": "타/분 (CPM)",
-    "accuracy": "정확도",
-    "totalChars": "총 입력 수",
-    "correctChars": "정확 입력",
-    "wrongChars": "오류 입력",
-    "typingSpeed": "타이핑 속도",
-    "excellent": "매우 빠름",
-    "fast": "빠름",
-    "average": "보통",
-    "slow": "느림",
-    "beginTyping": "위 텍스트를 보고 타이핑을 시작하세요",
-    "timeUp": "시간 종료!",
     "history": "기록",
     "bestRecord": "최고 기록",
     "averageSpeed": "평균 속도",
@@ -13575,31 +12724,17 @@
     "description": "숫자를 한글 금액 표기로 변환합니다. 수표, 계약서, 영수증 작성 시 유용합니다.",
     "inputNumber": "숫자 입력",
     "placeholder": "변환할 숫자를 입력하세요",
-    "result": "변환 결과",
     "koreanFormal": "한글 금액 (공식)",
     "koreanInformal": "한글 읽기",
     "chineseNum": "한자 금액",
-    "currency": "통화 표기",
     "copy": "복사",
     "copied": "복사됨!",
     "reset": "초기화",
-    "won": "원정",
-    "examples": "예시",
     "maxNumber": "최대 20자리(경 단위)까지 입력 가능",
     "englishNum": "영문 표기",
     "spacing": "띄어쓰기",
-    "numberDisplay": "숫자 표기",
     "inputPrompt": "숫자를 입력하세요",
     "invalidNumber": "올바른 숫자를 입력하세요",
-    "units": {
-      "il": "일",
-      "ship": "십",
-      "baek": "백",
-      "cheon": "천",
-      "man": "만",
-      "eok": "억",
-      "jo": "조"
-    },
     "quickAmounts": "빠른 금액",
     "guide": {
       "title": "숫자 한글 변환 가이드",
@@ -13677,15 +12812,11 @@
     "stopCamera": "카메라 중지",
     "uploadImage": "이미지 업로드",
     "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
-    "scanning": "스캔 중...",
     "noQrFound": "QR코드를 찾을 수 없습니다",
     "result": "스캔 결과",
-    "type": "유형",
-    "content": "내용",
     "copy": "복사",
     "copied": "복사됨!",
     "openLink": "링크 열기",
-    "scanAnother": "다시 스캔",
     "history": "스캔 기록",
     "clearHistory": "기록 삭제",
     "cameraPermission": "카메라 접근 권한이 필요합니다",
@@ -13802,7 +12933,6 @@
     "pyeongType": "평형",
     "formulaTitle": "변환 공식",
     "copyLink": "링크 복사",
-    "linkCopied": "링크 복사됨",
     "heroSupply": "흔히 부르는 평형(공급면적 기준)으로는 약 {pyeong}평형, 공급면적 약 {m2}㎡ (전용률 {ratio}% 가정)",
     "heroExclusive": "실제 생활 공간인 전용면적은 약 {pyeong}평, 약 {m2}㎡ (전용률 {ratio}% 가정)",
     "ratio": {
@@ -13848,11 +12978,6 @@
     },
     "title": "평수 계산기",
     "description": "평(坪)과 제곱미터(㎡)를 양방향으로 바꾸고, 전용·공급·계약·서비스면적과 평형, 평당가까지 한 번에 계산합니다.",
-    "pyeongToSqm": "평 → m²",
-    "sqmToPyeong": "m² → 평",
-    "inputPyeong": "평수 입력",
-    "inputSqm": "제곱미터 입력",
-    "result": "변환 결과",
     "pyeong": "평",
     "sqm": "m²",
     "sqft": "ft²",
@@ -13860,7 +12985,6 @@
     "copied": "복사됨!",
     "reset": "초기화",
     "quickValues": "평수로 빠른 입력",
-    "areaComparison": "면적 비교",
     "roomSize": "방 크기 참고",
     "sizes": {
       "studio": "원룸 (5~8평)",
@@ -14076,26 +13200,16 @@
       "nts": "국세청"
     },
     "title": "부가세 계산기",
-    "description": "공급가액에서 부가가치세(VAT 10%)를 계산하거나, 합계금액에서 부가세를 역산합니다.",
     "mode": {
       "fromSupply": "공급가액 → 합계",
       "fromTotal": "합계 → 공급가액 (역산)",
       "fromVat": "세액 → 공급가액"
     },
-    "supplyAmount": "공급가액",
-    "vatAmount": "부가가치세 (10%)",
-    "totalAmount": "합계금액 (공급가액 + 부가세)",
-    "calculate": "계산",
     "reset": "초기화",
-    "result": "계산 결과",
     "copy": "복사",
     "copied": "복사됨!",
-    "copyAll": "전체 복사",
-    "enterAmount": "금액을 입력하세요",
     "won": "원",
-    "vatRate": "부가세율",
     "receipt": "세금계산서 양식",
-    "quickAmounts": "빠른 금액",
     "guide": {
       "howItWorks": {
         "title": "계산 원리",
@@ -14173,17 +13287,8 @@
     },
     "copyLink": "링크 복사",
     "linkCopied": "복사됨!",
-    "singleMode": "단일 계산",
-    "batchMode": "일괄 계산",
     "calcMode": "계산 모드",
-    "amountLabel": "금액 입력",
-    "pieChartTitle": "비율 분석",
-    "batchAdd": "항목 추가",
-    "batchItemName": "항목명",
-    "batchSupply": "공급가액",
-    "batchVat": "부가세",
-    "batchTotal": "합계",
-    "batchTotalLabel": "합계"
+    "batchAdd": "항목 추가"
   },
   "alcoholCalculator": {
     "u": {
@@ -14284,54 +13389,11 @@
     "female": "여성",
     "weight": "체중 (kg)",
     "drinks": "음주량",
-    "addDrink": "주류 추가",
     "removeDrink": "삭제",
-    "drinkType": "주류 종류",
-    "amount": "양 (ml)",
-    "alcoholPercent": "도수 (%)",
-    "drinkingDuration": "음주 시간 (시간)",
-    "timeSinceDrinking": "음주 후 경과 시간 (시간)",
-    "calculate": "계산하기",
     "reset": "초기화",
-    "result": "추정 결과",
-    "bac": "혈중알코올 농도",
-    "bacUnit": "%",
     "status": "상태",
-    "legal": "법적 기준",
-    "driveLimit": "운전면허 정지: 0.03% 이상",
-    "driveRevoke": "운전면허 취소: 0.08% 이상",
-    "penalty": "형사처벌: 0.08% 이상",
-    "sober": "정상",
-    "buzzed": "미세 음주",
-    "drunk": "면허정지 수준",
-    "veryDrunk": "면허취소 수준",
-    "dangerous": "위험 수준",
-    "soberTime": "예상 정상 복귀 시간",
-    "hours": "시간",
-    "drinkTypes": {
-      "soju": "소주 (16.5%)",
-      "beer": "맥주 (4.5%)",
-      "wine": "와인 (13%)",
-      "makgeolli": "막걸리 (6%)",
-      "whiskey": "위스키 (40%)",
-      "custom": "직접 입력"
-    },
-    "drinkUnits": {
-      "sojuGlass": "소주잔 (50ml)",
-      "sojuBottle": "소주 1병 (360ml)",
-      "beerGlass": "맥주잔 (355ml)",
-      "beerBottle": "맥주 1병 (500ml)",
-      "wineGlass": "와인잔 (150ml)",
-      "makgeolliGlass": "막걸리잔 (300ml)"
-    },
-    "linkCopied": "복사됨",
     "copyLink": "링크 복사",
     "addDrinksPrompt": "주류를 추가해주세요",
-    "quickAdd": "빠른 추가",
-    "addAndCalculate": "주류를 추가하고 계산해주세요",
-    "exceeded": "초과",
-    "within": "이내",
-    "peakBac": "최고 BAC: {value}%",
     "warning": "이 결과는 위드마크 공식의 통계적 추정치입니다. 체질·공복·간 기능·약물·수면에 따라 실제 수치는 크게 달라질 수 있고, 음주측정이나 법적 판단의 근거가 될 수 없습니다. 술을 마셨다면 운전하지 마세요.",
     "guide": {
       "title": "혈중알코올 계산 가이드",
@@ -14452,32 +13514,24 @@
     "title": "글꼴 미리보기",
     "description": "상업용 무료 한글 폰트 38종을 내 문구로 미리보고, 최대 4개를 나란히 비교한 뒤 CSS를 바로 복사하세요.",
     "sampleText": "미리보기 텍스트",
-    "defaultText": "다람쥐 헌 쳇바퀴에 타고파 The quick brown fox jumps over the lazy dog 0123456789",
     "fontSize": "글자 크기",
     "fontWeight": "굵기",
     "lineHeight": "줄 간격",
     "letterSpacing": "자간",
-    "textColor": "글자 색상",
-    "bgColor": "배경 색상",
     "textAlign": "정렬",
     "alignLeft": "왼쪽",
     "alignCenter": "가운데",
     "alignRight": "오른쪽",
-    "category": "카테고리",
     "all": "전체",
-    "sansSerif": "고딕 (Sans-serif)",
     "serif": "명조 (Serif)",
     "monospace": "고정폭 (Monospace)",
     "handwriting": "손글씨",
     "display": "디스플레이",
     "search": "폰트 이름·한글 이름·제작사 검색 (예: 나눔, 배민, Noto)",
-    "addToCompare": "비교에 추가",
-    "compare": "비교 모드",
     "clearCompare": "비교 초기화",
     "copyCSS": "CSS 복사",
     "copiedCSS": "CSS 복사됨!",
     "fonts": "폰트 목록",
-    "preview": "미리보기",
     "guide": {
       "license": {
         "title": "라이선스 — 상업적으로 써도 되나요?",
@@ -14576,22 +13630,12 @@
     },
     "title": "세계 시계",
     "description": "전 세계 주요 도시의 현재 시간을 한눈에 확인하세요.",
-    "currentTime": "현재 시간",
     "addCity": "도시 추가",
     "removeCity": "삭제",
     "search": "도시 검색",
-    "timeDifference": "시차",
-    "hours": "시간",
-    "ahead": "앞서",
-    "behind": "뒤져",
-    "same": "동일",
-    "myTime": "내 시간",
     "format24h": "24시간제",
     "format12h": "12시간제",
-    "am": "오전",
-    "pm": "오후",
     "date": "날짜",
-    "dayOfWeek": "요일",
     "days": {
       "sun": "일",
       "mon": "월",
@@ -14675,8 +13719,6 @@
         ]
       }
     },
-    "selectCity": "도시를 선택하세요",
-    "add": "추가",
     "copyLink": "링크 복사",
     "copied": "복사됨",
     "dst": "서머타임 적용",
@@ -14799,21 +13841,9 @@
     "wolseDeposit": "월세 보증금",
     "monthlyRent": "월세",
     "conversionRate": "전환율 (%)",
-    "result": "전환 결과",
-    "estimatedMonthlyRent": "예상 월세",
-    "estimatedJeonse": "예상 전세금",
-    "won": "원",
-    "monthlyWon": "원/월",
     "copy": "복사",
     "copied": "복사됨!",
     "reset": "초기화",
-    "currentRate": "현재 전환율 참고",
-    "rateInfo": "한국은행 기준금리 기반, 통상 4~6% 적용",
-    "quickRates": "빠른 전환율",
-    "quickDeposits": "빠른 보증금",
-    "formula": "월세 = (전세금 - 월세보증금) × 전환율 ÷ 12",
-    "yearlyRent": "연간 월세 합계",
-    "comparison": "전세 vs 월세 비교",
     "guide": {
       "title": "전세/월세 전환 가이드",
       "what": {
@@ -14949,25 +13979,11 @@
     "description": "서울·부산 2026년 요금표로 우리 집 월 수도요금을 계산하고, 같은 인원 평균 가구와 비교해 보세요.",
     "usage": "월 사용량 (㎥)",
     "householdSize": "가구원 수",
-    "persons": "인",
-    "waterType": "수도 종류",
-    "residential": "가정용",
-    "calculate": "계산하기",
-    "result": "계산 결과",
-    "basicFee": "기본요금",
-    "usageFee": "사용요금",
-    "sewageFee": "하수도요금",
-    "waterQualityFee": "물이용부담금",
-    "totalBeforeVat": "소계",
-    "vat": "부가가치세 (10%)",
     "totalAmount": "총 수도요금",
     "won": "원",
     "copy": "복사",
     "copied": "복사됨!",
     "reset": "초기화",
-    "tier": "구간",
-    "tierInfo": "누진 구간 정보",
-    "quickUsage": "빠른 사용량",
     "guide": {
       "title": "수도요금 계산 가이드",
       "whatIs": {
@@ -15031,7 +14047,6 @@
     "posRight": "오른쪽",
     "colors": "색상",
     "addColor": "색상 추가",
-    "removeColor": "삭제",
     "position": "위치",
     "preview": "미리보기",
     "cssCode": "CSS 코드",
@@ -15166,29 +14181,13 @@
     "description": "초성 추출, 자음·모음 분리, 자모 합치기, 로마자 표기, 조사 자동 선택까지 입력하는 즉시 변환합니다.",
     "input": "텍스트 입력",
     "placeholder": "한글 텍스트를 입력하세요",
-    "mode": {
-      "chosung": "초성 추출",
-      "decompose": "자모 분리",
-      "compose": "자모 합치기"
-    },
-    "result": "결과",
-    "original": "원본",
     "chosung": "초성",
     "jungsung": "중성",
     "jongsung": "종성",
-    "decomposed": "분리 결과",
-    "composed": "합치기 결과",
     "copy": "복사",
     "copied": "복사됨!",
     "reset": "초기화",
-    "charCount": "글자 수",
-    "syllableCount": "한글 음절 수",
     "examples": "예시",
-    "exampleList": {
-      "ex1": "대한민국 → ㄷㅎㅁㄱ",
-      "ex2": "안녕하세요 → ㅇㄴㅎㅅㅇ",
-      "ex3": "프로그래밍 → ㅍㄹㄱㄹㅁ"
-    },
     "guide": {
       "howItWorks": {
         "title": "동작 원리",
@@ -15334,32 +14333,14 @@
     },
     "title": "로마 숫자 변환기",
     "description": "숫자 ↔ 로마 숫자를 바로 바꾸고, 자릿수별 풀이·표준 표기 검사·날짜 변환·Ⅰ~Ⅻ 특수문자 복사까지 한 번에.",
-    "mode": {
-      "toRoman": "숫자 → 로마",
-      "toArabic": "로마 → 숫자"
-    },
-    "inputNumber": "숫자 입력",
-    "inputRoman": "로마 숫자 입력",
-    "result": "변환 결과",
     "arabicNumber": "아라비아 숫자",
     "romanNumeral": "로마 숫자",
     "copy": "복사",
     "copied": "복사됨!",
     "reset": "초기화",
     "maxNumber": "표준 표기는 1~3,999, 그 이상은 위 줄(×1,000)을 긋는 확장 표기로 3,999,999까지 바꿔요.",
-    "invalidRoman": "올바른 로마 숫자를 입력하세요",
-    "invalidNumber": "1~3999 사이의 숫자를 입력하세요",
     "quickNumbers": "빠른 입력",
     "referenceTable": "기본 기호",
-    "symbols": {
-      "I": "1",
-      "V": "5",
-      "X": "10",
-      "L": "50",
-      "C": "100",
-      "D": "500",
-      "M": "1000"
-    },
     "guide": {
       "title": "로마 숫자 가이드",
       "rules": {
@@ -15526,18 +14507,14 @@
     "description": "사업자등록번호 10자리를 입력하는 즉시 검증번호로 유효성을 확인하고, 개인·법인 구분 해석과 휴·폐업 상태조회, 여러 번호 일괄 검증까지 할 수 있습니다.",
     "inputLabel": "사업자등록번호",
     "inputPlaceholder": "000-00-00000 또는 숫자만 입력",
-    "verify": "검증하기",
     "reset": "초기화",
     "valid": "유효한 사업자등록번호",
     "invalid": "유효하지 않은 사업자등록번호",
     "validMessage": "검증 알고리즘을 통과한 올바른 형식의 사업자등록번호입니다.",
-    "invalidMessage": "검증 알고리즘을 통과하지 못했습니다. 번호를 다시 확인해주세요.",
     "formatted": "형식화된 번호",
     "digitCount": "자릿수",
-    "checkDigit": "검증 숫자",
     "recentVerifications": "최근 검증 이력",
     "clearHistory": "이력 삭제",
-    "noHistory": "검증 이력이 없습니다",
     "copy": "복사",
     "copied": "복사됨!",
     "guide": {
@@ -15862,38 +14839,6 @@
     "title": "출산 예정일 계산기",
     "description": "마지막 생리일·수정일·초음파·시험관 이식일로 출산 예정일과 임신 주수, 검사 일정을 계산합니다.",
     "calcMethod": "계산 기준",
-    "lmpMethod": "마지막 생리 시작일 (LMP)",
-    "ovulationMethod": "배란일 / 수정일",
-    "lmpDate": "마지막 생리 시작일",
-    "ovulationDate": "배란일 / 수정일",
-    "calculate": "계산하기",
-    "reset": "초기화",
-    "result": {
-      "title": "계산 결과",
-      "dueDate": "출산 예정일",
-      "currentWeek": "현재 임신 주수",
-      "weeksAndDays": "{weeks}주 {days}일",
-      "trimester": "현재 삼분기",
-      "trimester1": "1삼분기 (1~12주)",
-      "trimester2": "2삼분기 (13~27주)",
-      "trimester3": "3삼분기 (28~40주)",
-      "daysRemaining": "남은 일수",
-      "daysElapsed": "경과 일수",
-      "progress": "진행률",
-      "conceptionDate": "추정 수정일",
-      "alreadyPassed": "이미 예정일이 지났습니다"
-    },
-    "milestones": {
-      "title": "주요 일정",
-      "heartbeat": "심장박동 확인 (6~7주)",
-      "firstTrimesterScreen": "1차 기형아 검사 (11~13주)",
-      "genderReveal": "성별 확인 가능 (16~20주)",
-      "secondTrimesterScreen": "2차 기형아 검사 (15~20주)",
-      "viability": "생존 가능 시기 (24주)",
-      "glucoseTest": "임신성 당뇨 검사 (24~28주)",
-      "fullTerm": "만삭 (37주)",
-      "dueDate": "출산 예정일 (40주)"
-    },
     "guide": {
       "title": "출산 예정일 가이드",
       "calculation": {
@@ -15944,17 +14889,6 @@
           }
         ]
       }
-    },
-    "weeklyProgress": {
-      "title": "임신 주수 진행률",
-      "weekLabel": "{week}주",
-      "dayLabel": "{day}일",
-      "outOf40": "/ 40주",
-      "trimester1Label": "1분기 (1~12주)",
-      "trimester2Label": "2분기 (13~27주)",
-      "trimester3Label": "3분기 (28~40주)",
-      "currentWeekBadge": "현재 {week}주",
-      "babyThisWeek": "이번 주 아기는"
     },
     "babySize": {
       "title": "주차별 아기 크기",
@@ -16184,41 +15118,6 @@
         "weight": "3.5kg"
       }
     },
-    "prenatalSchedule": {
-      "title": "산전검사 일정",
-      "subtitle": "임신 주수별 권장 산전검사 일정입니다",
-      "completedLabel": "완료",
-      "upcomingLabel": "예정",
-      "currentLabel": "현재",
-      "week8": {
-        "title": "8주",
-        "desc": "첫 산전검사, 초음파 (태아 심박 확인)"
-      },
-      "week12": {
-        "title": "12주",
-        "desc": "기형아 선별검사 1차 (NT 측정, 혈액검사)"
-      },
-      "week16": {
-        "title": "16주",
-        "desc": "기형아 선별검사 2차, 양수검사 (필요 시)"
-      },
-      "week20": {
-        "title": "20주",
-        "desc": "정밀초음파 (태아 구조 이상 선별)"
-      },
-      "week24": {
-        "title": "24~28주",
-        "desc": "임신성 당뇨 선별검사 (OGTT)"
-      },
-      "week28": {
-        "title": "28~32주",
-        "desc": "태동검사 (NST), 빈혈검사"
-      },
-      "week36": {
-        "title": "36주~",
-        "desc": "매주 산전검진, NST, 출산 준비"
-      }
-    },
     "weightGain": {
       "title": "임신 중 체중 증가 가이드",
       "subtitle": "임신 전 BMI 기준 권장 체중 증가량입니다 (선택 사항)",
@@ -16376,12 +15275,9 @@
     "yearly": "연봉",
     "amount": "금액 (원)",
     "amountPlaceholder": "금액을 입력하세요",
-    "workHoursPerDay": "1일 근무시간",
     "workDaysPerWeek": "주 근무일수",
-    "workDaysPerMonth": "월 근무일수",
     "hours": "시간",
     "days": "일",
-    "calculate": "계산하기",
     "reset": "초기화",
     "result": {
       "title": "환산 결과",
@@ -16431,17 +15327,13 @@
     "tints": "틴트",
     "tones": "톤",
     "copy": "복사",
-    "copied": "복사됨!",
     "export": "팔레트 내보내기",
     "exportCSS": "CSS 변수로 복사",
     "exportJSON": "JSON으로 복사",
     "exportTailwind": "Tailwind 설정으로 복사",
-    "presets": "프리셋 팔레트",
     "random": "랜덤 색상",
     "savedPalettes": "저장된 팔레트",
     "savePalette": "팔레트 저장",
-    "noPalettes": "저장된 팔레트가 없습니다",
-    "deletePalette": "삭제",
     "colorInfo": {
       "title": "색상 정보",
       "hex": "HEX",
@@ -16583,7 +15475,6 @@
     "widthPlaceholder": "가로 입력",
     "heightPlaceholder": "세로 입력",
     "ratio": "비율",
-    "calculate": "계산하기",
     "swap": "가로↔세로 전환",
     "lockRatio": "비율 고정",
     "unlockRatio": "비율 해제",
@@ -16675,49 +15566,6 @@
             "a": "요즘 브라우저는 aspect-ratio: 16 / 9; 한 줄이면 됩니다. 구형 브라우저용 padding-top 트릭은 세로/가로×100%(16:9 = 56.25%)입니다."
           }
         ]
-      }
-    },
-    "businessNumber": {
-      "title": "사업자등록번호 검증",
-      "description": "한국 사업자등록번호의 유효성을 체크섬 알고리즘으로 검증합니다",
-      "inputLabel": "사업자등록번호",
-      "inputPlaceholder": "예: 123-45-67890",
-      "verify": "검증하기",
-      "reset": "초기화",
-      "valid": "유효",
-      "invalid": "무효",
-      "validMessage": "올바른 사업자등록번호입니다",
-      "invalidMessage": "잘못된 사업자등록번호입니다",
-      "formatted": "형식화된 번호",
-      "digitCount": "자릿수",
-      "checkDigit": "검증 숫자",
-      "recentVerifications": "최근 검증 내역",
-      "clearHistory": "내역 지우기",
-      "noHistory": "검증 내역이 없습니다",
-      "copy": "복사",
-      "copied": "복사됨",
-      "guide": {
-        "title": "사용 가이드",
-        "structure": {
-          "title": "사업자등록번호 구조",
-          "items": [
-            "총 10자리 숫자로 구성 (XXX-XX-XXXXX 형식)",
-            "첫 3자리: 세무서 코드",
-            "중간 2자리: 개인/법인 구분 코드",
-            "다음 4자리: 일련번호",
-            "마지막 1자리: 검증 숫자 (체크섬)"
-          ]
-        },
-        "validation": {
-          "title": "검증 알고리즘",
-          "items": [
-            "가중치 배열 [1, 3, 7, 1, 3, 7, 1, 3, 5] 사용",
-            "첫 9자리 숫자에 각 가중치를 곱하여 합산",
-            "9번째 자리는 (숫자 × 5 ÷ 10)의 몫도 추가",
-            "합계를 10으로 나눈 나머지를 10에서 빼고 다시 10으로 나눈 나머지",
-            "결과가 마지막(10번째) 자리 숫자와 일치하면 유효"
-          ]
-        }
       }
     }
   },
@@ -16811,31 +15659,16 @@
     "title": "연차 계산기",
     "description": "입사일만 넣으면 근로기준법 기준 연차 일수, 남은 연차, 연차수당, 입사일·회계연도 기준 차이까지 계산합니다.",
     "joinDate": "입사일",
-    "usedLeaves": "사용한 연차 (일)",
-    "usedLeavesPlaceholder": "0",
     "calculationBasis": "우리 회사 연차 기준",
     "joinDateBasis": "입사일 기준",
     "fiscalYearBasis": "회계연도 기준",
     "joinDateBasisDesc": "입사기념일마다 연차가 생깁니다 (근로기준법 원칙)",
     "fiscalYearBasisDesc": "매년 1월 1일에 모든 직원에게 한꺼번에 줍니다. 입사 다음 해는 비례 연차",
-    "dailyWage": "통상 일급 (원)",
-    "dailyWagePlaceholder": "미입력 시 수당 미계산",
-    "dailyWageDesc": "연차수당 계산에 사용됩니다. 통상임금 ÷ 소정근로일수",
     "won": "원",
     "copyLink": "링크 복사",
     "copied": "복사됨",
     "share": "공유",
-    "calculate": "계산하기",
     "reset": "초기화",
-    "leavePay": {
-      "title": "미사용 연차수당 (예상)",
-      "formula": "잔여 {remaining}일 × 일급 {wage}원 = {total}원"
-    },
-    "timeline": {
-      "title": "연차 발생 타임라인",
-      "current": "현재",
-      "desc": "근속연수에 따른 연차 발생 마일스톤입니다. 3년차부터 2년마다 1일 가산 (최대 25일)"
-    },
     "promotion": {
       "title": "연차 사용 촉진제도 (미사용 수당이 없어지는 경우)",
       "description": "회사가 근로기준법 제61조의 절차를 서면으로 정확히 지키면, 근로자가 그래도 쓰지 않은 연차는 소멸하고 미사용 연차수당을 주지 않아도 됩니다.",
@@ -16859,15 +15692,6 @@
       "days": "일",
       "nextEarned": "다음 연차 발생",
       "currentYearEarned": "올해 발생 연차"
-    },
-    "breakdown": {
-      "title": "연차 발생 내역",
-      "year": "년차",
-      "earned": "발생",
-      "type": "유형",
-      "monthly": "월차 (1년 미만)",
-      "annual": "연차",
-      "additional": "가산 연차"
     },
     "guide": {
       "hourlyLeave": {
@@ -17075,12 +15899,8 @@
       "gyeongnam": "경남",
       "jeju": "제주"
     },
-    "season": "계절",
-    "calculate": "계산하기",
     "reset": "초기화",
-    "shareLink": "링크 공유",
     "copied": "복사됨",
-    "copyResult": "결과 복사",
     "result": {
       "title": "가스 요금 계산 결과",
       "basicCharge": "기본 요금",
@@ -17109,17 +15929,6 @@
       "description": "같은 조건으로 추정한 12개월 요금이에요. 고지서 사용량을 입력하면 그 달에 맞춰 비례 조정해요.",
       "monthSuffix": "월",
       "monthLabel": "월"
-    },
-    "utility": {
-      "title": "공과금 합산",
-      "description": "가스 요금과 함께 다른 공과금을 입력하여 월 총 공과금을 확인하세요.",
-      "gas": "가스",
-      "gasAuto": "위 계산 결과 자동 반영",
-      "electricity": "전기",
-      "water": "수도",
-      "internet": "인터넷",
-      "enterAmount": "금액 입력",
-      "totalLabel": "월 총 공과금"
     },
     "guide": {
       "title": "가스 요금 가이드",
@@ -17274,28 +16083,12 @@
     },
     "title": "이미지 변환기",
     "description": "아이폰 HEIC, PNG, WebP 등 이미지를 JPG·PNG·WebP로 한 번에 변환합니다. 사진은 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.",
-    "uploadLabel": "이미지 업로드",
-    "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
-    "supportedFormats": "지원 형식: JPEG, PNG, WebP, GIF, BMP",
     "outputFormat": "출력 형식",
     "quality": "품질",
     "qualityPercent": "{value}%",
-    "convert": "변환하기",
     "download": "다운로드",
-    "downloadAll": "모두 다운로드",
     "reset": "초기화",
-    "preview": "미리보기",
     "original": "원본",
-    "converted": "변환 결과",
-    "fileInfo": {
-      "name": "파일명",
-      "format": "형식",
-      "size": "크기",
-      "dimensions": "크기 (px)",
-      "reduction": "용량 변화"
-    },
-    "batchMode": "일괄 변환",
-    "singleMode": "단일 변환",
     "guide": {
       "title": "이미지 변환 가이드",
       "formats": {
@@ -17458,17 +16251,10 @@
     "noVoices": "사용 가능한 음성이 없습니다",
     "charCount": "글자 수",
     "estimatedTime": "예상 소요 시간",
-    "seconds": "초",
     "speaking": "재생 중",
     "paused": "일시정지됨",
     "stopped": "정지됨",
     "notSupported": "이 브라우저는 TTS를 지원하지 않습니다",
-    "presets": {
-      "title": "예제 텍스트",
-      "greeting": "안녕하세요, 툴허브입니다.",
-      "news": "오늘의 날씨는 맑고 기온은 20도입니다.",
-      "story": "옛날 옛적에 한 마을에 착한 소녀가 살았습니다."
-    },
     "guide": {
       "title": "TTS 가이드",
       "usage": {
@@ -17608,7 +16394,6 @@
       "desc": "행정구역 경계를 벗어나면 {rate}% 시외할증이 붙고, 심야 시간대와 겹치면 합산됩니다.",
       "short": "시외"
     },
-    "calculate": "계산하기",
     "reset": "초기화",
     "copyLink": "링크 복사",
     "copyLinkDone": "복사됨!",
@@ -17744,8 +16529,6 @@
     "months": "개월",
     "interestRate": "할부 수수료율 (%)",
     "interestRatePlaceholder": "연 수수료율",
-    "freeInstallment": "무이자 할부",
-    "calculate": "계산하기",
     "reset": "초기화",
     "result": {
       "firstPayment": "월 납부금 (1회차)",
@@ -17769,7 +16552,6 @@
       "interest": "수수료",
       "balance": "잔여 원금"
     },
-    "quickMonths": "빠른 선택",
     "guide": {
       "title": "할부 수수료 가이드",
       "rates": {
@@ -17852,14 +16634,8 @@
     "drawHere": "여기에 서명하세요",
     "penColor": "펜 색상",
     "penSize": "펜 굵기",
-    "backgroundColor": "배경색",
-    "transparent": "투명",
-    "white": "흰색",
     "clear": "지우기",
     "undo": "되돌리기",
-    "download": "다운로드",
-    "downloadPNG": "PNG 다운로드",
-    "downloadSVG": "SVG 다운로드",
     "copy": "복사",
     "copied": "복사됨",
     "guide": {
@@ -18026,10 +16802,6 @@
     "clear": "지우기",
     "play": "재생",
     "stop": "정지",
-    "speed": "재생 속도",
-    "slow": "느리게",
-    "normal": "보통",
-    "fast": "빠르게",
     "referenceTable": "모스부호 표",
     "letters": "알파벳",
     "numbers": "숫자",
@@ -18163,33 +16935,15 @@
     "tooEarly": "너무 빨라요!",
     "tooEarlySubtext": "신호가 뜨기 전에 눌렀어요. 이 라운드는 기록하지 않고 다시 합니다",
     "ms": "ms",
-    "percentileText": "상위 {percentile}%보다 빠릅니다",
     "clickForNext": "눌러서 {next}라운드 시작",
-    "clickForResult": "클릭하여 최종 결과 보기",
-    "sessionComplete": "측정 완료!",
     "newSession": "다시 측정하기",
     "average": "평균",
     "best": "최고 기록",
     "yourRanking": "온라인 테스트 기준 내 위치 (참고)",
     "topPercent": "상위 {percent}%",
-    "comparison": "다른 사람들과 비교",
-    "compProGamer": "프로 게이머",
-    "compAboveAvg": "평균 이상",
-    "compAvgAdult": "일반 성인 평균",
-    "compYou": "나",
     "roundProgress": "{current}/{total} 라운드",
-    "currentBest": "최고",
-    "currentRound": "현재 라운드",
     "totalAttempts": "총 시도",
-    "sessionAvg": "이번 세션 평균",
     "allTimeBest": "개인 최고 평균",
-    "rating": {
-      "excellent": "매우 빠름",
-      "good": "빠름",
-      "average": "보통",
-      "slow": "느림",
-      "verySlow": "매우 느림"
-    },
     "history": "내 기록",
     "clearHistory": "기록 삭제",
     "guide": {
@@ -18270,12 +17024,8 @@
     "description": "주민등록번호 13자리의 유효성을 검증합니다. 형식 검증만 수행하며, 개인정보는 저장되지 않습니다.",
     "inputLabel": "주민등록번호",
     "inputPlaceholder": "000000-0000000",
-    "verify": "검증하기",
     "reset": "초기화",
     "valid": "유효한 주민등록번호",
-    "invalid": "유효하지 않은 주민등록번호",
-    "validMessage": "검증 알고리즘을 통과한 올바른 형식입니다.",
-    "invalidMessage": "형식이 올바르지 않습니다. 번호를 확인해주세요.",
     "info": {
       "number": "입력 번호",
       "age": "만 나이",
@@ -18294,9 +17044,6 @@
       "female": "여성",
       "region": "등록 지역 코드"
     },
-    "privacy": "입력한 번호는 브라우저에서만 처리되며 서버에 전송되지 않습니다.",
-    "copy": "복사",
-    "copied": "복사됨!",
     "guide": {
       "codes": {
         "title": "7번째 자리 코드",
@@ -18480,26 +17227,9 @@
       "text": "{kg}kg·{cm}cm 택배, {carrier} {price}이 제일 싸요"
     },
     "sizeRule": "요금은 무게 단계와 크기(세 변 합) 단계 중 높은 단계로 정해집니다 (우정사업본부 소포요금표·CJ대한통운 기준). 크기 단계가 공개되지 않은 업체는 무게만 반영합니다.",
-    "faq": {
-      "items": [
-        {
-          "q": "무게와 크기 중 무엇으로 요금이 정해지나요?",
-          "a": "국내 택배·소포는 무게 단계와 크기(가로+세로+높이) 단계 중 높은 단계의 요금을 받습니다. 예를 들어 우체국 등기소포는 2kg이라도 세 변 합이 110cm면 100~120cm 단계 요금(6,000원)이 적용됩니다. 항공화물처럼 부피무게(÷6000)를 쓰지는 않습니다."
-        },
-        {
-          "q": "제주도 추가 요금은 얼마인가요?",
-          "a": "택배사마다 다릅니다. 이 계산기 기준 개인 발송 제주 추가요금은 약 2,000~3,000원, 도서산간은 4,000~5,000원 안팎입니다. 우체국은 육지→제주·도서 모두 추가요금이 없고 배달기간만 길어집니다(제주→육지 익일배달만 할증)."
-        },
-        {
-          "q": "편의점 택배와 일반 택배의 차이는 무엇인가요?",
-          "a": "편의점 택배는 CU, GS25 등 편의점에서 접수하는 방식으로, 방문 수거가 없는 대신 일반 택배보다 소형 소포에 유리한 요금이 적용되는 경우가 많습니다."
-        }
-      ]
-    },
     "boxSize": "상자 크기",
     "boxPreset": "우체국 {n}호",
     "girth": "세 변 합",
-    "volumeWeightWarning": "부피무게가 실중량보다 큽니다 — 부피무게 기준으로 요금이 적용됩니다",
     "rateBasis": "요금 기준일: {date}",
     "bestOverall": {
       "title": "전체 최저가 (일반 + 편의점)",
@@ -18523,26 +17253,16 @@
     "width": "가로 (cm)",
     "height": "세로 (cm)",
     "depth": "높이 (cm)",
-    "dimensionPlaceholder": "cm",
-    "carrier": "택배사",
     "carrierType": "택배 유형",
     "carrierStandard": "일반 택배",
     "carrierCvs": "편의점 택배",
     "jumpToResult": "업체별 비교",
-    "carriers": {
-      "cj": "CJ대한통운",
-      "hanjin": "한진택배",
-      "lotte": "롯데택배",
-      "post": "우체국택배",
-      "logen": "로젠택배"
-    },
     "destination": "배송 지역",
     "destinations": {
       "mainland": "내륙",
       "jeju": "제주도",
       "island": "도서산간"
     },
-    "calculate": "계산하기",
     "reset": "초기화",
     "result": {
       "cvsPickup": "편의점 수령",
@@ -18561,7 +17281,6 @@
       "unavailable": "배송 불가",
       "cheapest": "최저가"
     },
-    "volumeWeightInfo": "부피 무게 = 가로 × 세로 × 높이 ÷ 6000",
     "guide": {
       "title": "배송비 가이드",
       "calculation": {
@@ -18667,18 +17386,11 @@
     },
     "title": "주차 요금 계산기",
     "description": "입·출차 시각이나 주차 시간만 넣으면 기본·추가 요금, 일 최대, 회차, 영수증 무료 주차, 경차 할인까지 반영해 주차비를 계산하고 주차장끼리 비교해요.",
-    "parkingType": "주차장 유형",
-    "types": {
-      "public": "공영 주차장",
-      "private": "민영 주차장",
-      "apartment": "아파트 주차장"
-    },
     "startTime": "입차 시각",
     "endTime": "출차 시각",
     "duration": "주차 시간",
     "hours": "시간",
     "minutes": "분",
-    "calculate": "계산하기",
     "reset": "처음 값으로",
     "result": {
       "grace": "회차 시간 이내라 무료",
@@ -18970,16 +17682,6 @@
     },
     "title": "색약 테스트",
     "description": "이시하라식 가성동색표 14판으로 적색약·녹색약 가능성을 확인하는 자가 검사입니다.",
-    "instruction": "원 안에 보이는 숫자를 입력하세요",
-    "plate": "검사판",
-    "of": "/",
-    "yourAnswer": "답변",
-    "answerPlaceholder": "보이는 숫자 입력",
-    "next": "다음",
-    "previous": "이전",
-    "submit": "결과 확인",
-    "restart": "다시 하기",
-    "skip": "모르겠음",
     "result": {
       "summary": "{total}판 중 {correct}판 정상 응답",
       "rgPlates": "적록 검사판",
@@ -19777,17 +18479,8 @@
     },
     "title": "더치페이 계산기",
     "description": "회식·모임·여행비를 N빵으로 나누고 누가 누구에게 얼마 보낼지 정리해 단톡방 공지까지 만들어 드려요. 원 단위 올림·술 안 마신 사람 제외·선배 1.5배도 됩니다.",
-    "totalAmount": "총 금액",
-    "numberOfPeople": "인원 수",
-    "perPerson": "1인당 금액",
-    "equalSplit": "균등 분배",
-    "customSplit": "커스텀 정산",
     "addPerson": "참가자 추가",
     "removePerson": "참가자 삭제",
-    "name": "참가자",
-    "paid": "낸 금액",
-    "consumed": "소비 금액",
-    "result": "정산 결과",
     "transfers": "송금 목록",
     "copy": "복사",
     "copied": "복사됨!",
@@ -19859,7 +18552,6 @@
     "pickedColor": "선택한 색상",
     "palette": "자동 팔레트",
     "history": "추출 기록",
-    "export": "내보내기",
     "hex": "HEX",
     "rgb": "RGB",
     "hsl": "HSL",
@@ -20061,12 +18753,10 @@
     "rotateRight": "오른쪽으로 90° 회전",
     "recognize": "텍스트 인식",
     "recognizing": "인식 중...",
-    "progress": "진행률",
     "result": "인식 결과",
     "resultPlaceholder": "인식된 텍스트가 여기에 표시됩니다",
     "copy": "복사",
     "copied": "복사됨!",
-    "download": "다운로드",
     "downloadTxt": "TXT 다운로드",
     "showConfidence": "낮은 신뢰도 표시",
     "confidence": "신뢰도",
@@ -20240,13 +18930,10 @@
     "changeImage": "다른 이미지",
     "title": "사진 모자이크/블러",
     "description": "얼굴·번호판·이름·주소를 모자이크, 블러, 단색 박스로 가리세요. 스크린샷은 Ctrl+V로 바로 붙여넣고, 이미지는 서버로 전송되지 않아요.",
-    "upload": "이미지 업로드",
-    "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
     "mosaic": "모자이크",
     "blur": "블러",
     "rectangle": "사각형",
     "brush": "브러시",
-    "intensity": "강도",
     "brushSize": "브러시 크기",
     "undo": "되돌리기",
     "reset": "모두 지우기",
@@ -20254,11 +18941,7 @@
     "png": "PNG",
     "jpeg": "JPEG",
     "quality": "품질",
-    "noImage": "이미지를 업로드하세요",
-    "selectArea": "모자이크/블러를 적용할 영역을 선택하세요",
-    "mode": "모드",
     "effectType": "효과 유형",
-    "format": "저장 형식",
     "guide": {
       "safety": {
         "title": "확실하게 가리려면",
@@ -20785,37 +19468,19 @@
     },
     "title": "숫자야구",
     "description": "스트라이크·볼 판정으로 숨은 숫자를 추리하세요. 매일 같은 문제가 나오는 오늘의 숫자야구와 연습 모드를 지원합니다.",
-    "difficulty": "난이도",
-    "difficultyLabel": "난이도 선택",
     "easy": "쉬움",
     "normal": "보통",
     "hard": "어려움",
     "digitCount": "자릿수",
-    "digits": "자리",
-    "guess": "추측",
     "submit": "확인",
-    "strike": "스트라이크",
-    "ball": "볼",
-    "out": "아웃",
-    "strikeDesc": "숫자와 위치 모두 맞음",
-    "ballDesc": "숫자는 맞지만 위치가 다름",
-    "outDesc": "해당 숫자가 없음",
-    "attempt": "시도",
     "currentAttempts": "시도",
-    "times": "회",
     "history": "추측 기록",
     "hint": "힌트",
-    "hintUsed": "힌트 사용됨",
     "hintAvailableAfter": "{n}번 더 시도하면 힌트를 쓸 수 있어요",
-    "hintReveal": "{pos}번째 자리 숫자는 {digit}입니다",
     "newGame": "새 게임",
-    "gameWon": "정답입니다!",
     "gameWonMessage": "{attempts}번 만에 숫자를 맞췄습니다!",
-    "gameInfo": "게임 정보",
-    "legend": "판정 기준",
     "errorDuplicate": "중복된 숫자가 있습니다",
     "errorIncomplete": "모든 칸을 입력하세요",
-    "errorLeadingZero": "첫 자리는 0이 될 수 없습니다",
     "stats": {
       "played": "플레이",
       "winRate": "승률",
@@ -20959,8 +19624,6 @@
     "delete": "삭제",
     "notInList": "단어 목록에 없습니다",
     "notEnoughLetters": "글자를 모두 입력하세요",
-    "youWin": "정답입니다! 🎉",
-    "youLose": "아쉽습니다! 정답: ",
     "correct": "정확한 위치",
     "present": "다른 위치에 존재",
     "absent": "없는 글자",
@@ -20971,10 +19634,8 @@
     "helpAbsent": "이 색은 그 자모가 단어에 (더는) 없다는 뜻이에요.",
     "helpJamo": "글자마다 누른 키 순서대로 자모가 나뉘어요. 과 = ㄱ·ㅗ·ㅏ, 닭 = ㄷ·ㅏ·ㄹ·ㄱ. 같은 자모가 여러 번 나오면 정답에 있는 개수만큼만 색이 칠해져요.",
     "close": "닫기",
-    "attempt": "번째 시도",
     "hardMode": "하드 모드",
     "hardModeAfterStart": "게임 시작 후에는 하드 모드를 변경할 수 없습니다",
-    "invalidChars": "한글만 입력할 수 있습니다",
     "needVowelHint": "모음을 입력해 글자를 완성하세요",
     "shareTitle": "툴허브 한글 워들",
     "copyFailed": "복사에 실패했습니다",
@@ -20982,15 +19643,10 @@
     "resultLost": "아쉽네요...",
     "answerWas": "정답은:",
     "streakContinued": "{count}일 연속 성공!",
-    "streakLost": "{count}일 연속 기록이 끊겼습니다...",
     "copyResult": "복사",
-    "shareNative": "공유",
-    "shareTwitter": "X 공유",
-    "shareKakao": "카카오톡",
     "helpExampleTitle": "예시",
     "helpInputTitle": "입력 방법",
     "helpInputDesc": "화면 키보드나 PC 키보드(한/영 상관없이 두벌식)로 자음과 모음을 차례로 입력하세요. 백스페이스는 마지막 자모 하나를 지워요.",
-    "helpInputExample": "자음 + 모음 → 글자 완성",
     "helpJamoTitle": "자모 분석",
     "helpKeyboard": "키보드 색은 지금까지 알아낸 자모 상태예요. 하드 모드에서는 찾은 힌트를 다음 추측에 꼭 써야 해요.",
     "hardModeCorrect": "{jamo}은(는) 정확한 위치에 있어야 합니다",
@@ -21071,7 +19727,6 @@
     "bgColor": "배경색",
     "elementColor": "요소 색상",
     "borderRadius": "모서리 둥글기",
-    "elementSize": "요소 크기",
     "elementWidth": "요소 너비",
     "elementHeight": "요소 높이",
     "tools": "도구",
@@ -21161,12 +19816,9 @@
     "settings": "설정",
     "theme": "테마",
     "language": "언어",
-    "langAuto": "자동 감지",
     "background": "배경",
     "bgGradient": "그라디언트",
     "bgSolid": "단색",
-    "bgTransparent": "투명",
-    "bgColor": "배경색",
     "padding": "패딩",
     "fontSize": "글꼴 크기",
     "lineHeight": "줄 간격",
@@ -21180,7 +19832,6 @@
     "exportSvg": "SVG 저장",
     "copyImage": "이미지 복사",
     "copied": "복사됨!",
-    "copy": "복사",
     "borderRadius": "모서리 둥글기",
     "detected": "감지됨",
     "retina": "Retina (2x)",
@@ -21237,34 +19888,20 @@
     "container": "컨테이너 속성",
     "children": "자식 요소",
     "addChild": "자식 추가",
-    "removeChild": "삭제",
     "maxChildren": "최대 8개까지 추가 가능",
     "childLabel": "자식 #{n}",
     "cssCode": "CSS 코드",
     "copy": "복사",
     "copied": "복사됨!",
     "preview": "미리보기",
-    "previewSize": "미리보기 크기",
     "desktop": "데스크탑",
     "tablet": "태블릿",
     "mobile": "모바일",
-    "direction": "방향",
-    "justifyContent": "주축 정렬",
-    "alignItems": "교차축 정렬",
-    "flexWrap": "줄바꿈",
-    "gap": "간격",
     "flexGrow": "확장",
     "flexShrink": "축소",
     "flexBasis": "기본 크기",
     "alignSelf": "개별 정렬",
     "order": "순서",
-    "columns": "열 수",
-    "rows": "행 수",
-    "columnSize": "열 크기",
-    "rowSize": "행 크기",
-    "justifyItems": "아이템 정렬",
-    "gridColumn": "열 범위",
-    "gridRow": "행 범위",
     "resetBtn": "초기화",
     "addColumn": "열 추가",
     "addRow": "행 추가",
@@ -21659,8 +20296,6 @@
     },
     "title": "생활비 계산기",
     "description": "월급을 어디에 얼마 쓸지 정하고, 저축률 판정과 이번 달 남은 하루 예산을 확인하세요",
-    "currency": "원",
-    "manWon": "만",
     "income": {
       "modeNet": "월 실수령액",
       "modeAnnual": "연봉으로",
@@ -21672,10 +20307,6 @@
       "salary": "월급 (세후)",
       "sideIncome": "부수입",
       "otherIncome": "기타 수입"
-    },
-    "expenses": {
-      "title": "지출 카테고리",
-      "average": "한국 평균"
     },
     "categories": {
       "emergency": "비상금",
@@ -21692,11 +20323,6 @@
       "savings": "저축/투자",
       "other": "기타"
     },
-    "budgetType": {
-      "need": "필수",
-      "want": "선택",
-      "saving": "저축"
-    },
     "summary": {
       "title": "수입 vs 지출",
       "totalIncome": "총 수입",
@@ -21706,12 +20332,6 @@
       "deficit": "적자",
       "usageRate": "소비율",
       "savingsRate": "저축률"
-    },
-    "chart": {
-      "title": "지출 비율",
-      "total": "총 지출",
-      "categoryBars": "카테고리별 지출",
-      "noData": "지출 데이터를 입력하세요"
     },
     "rule": {
       "title": "50/30/20 규칙 분석",
@@ -21933,14 +20553,11 @@
     "typeBullet": "만기일시상환",
     "gracePeriod": "거치 기간",
     "startDate": "시작 날짜",
-    "unitWon": "원",
     "unitManwon": "만원",
-    "unitEokwon": "억원",
     "wonUnit": "원",
     "unitYears": "년",
     "unitMonths": "개월",
     "monthsLabel": "개월",
-    "extraMonthly": "추가 월 납입금",
     "period": "회차",
     "periodSuffix": "회",
     "date": "날짜",
@@ -21951,29 +20568,11 @@
     "totalPayment": "총 납입금",
     "totalInterest": "총 이자",
     "interestRatio": "이자 비율",
-    "avgMonthly": "월 평균 납입금",
-    "totalPeriods": "총 상환 기간",
-    "earlyRepaymentSavings": "조기상환 절감 효과",
-    "interestSaved": "이자 절감액",
-    "termReduced": "기간 단축",
-    "scheduleTab": "상환 계획표",
-    "chartTab": "차트",
     "scheduleTitle": "상세 상환 스케줄",
-    "copyText": "복사",
     "copied": "복사됨!",
-    "loadMore": "더보기",
-    "rowsRemaining": "건 남음",
-    "compare": "비교",
     "reset": "초기화",
     "loanA": "대출 A",
     "loanB": "대출 B",
-    "compareDiff": "A - B 차이",
-    "totalInterestDiff": "총 이자 차이",
-    "totalPaymentDiff": "총 납입금 차이",
-    "avgMonthlyDiff": "월 평균 차이",
-    "compareDiffNote": "양수는 대출 A가 더 많은 금액, 음수는 대출 B가 더 많은 금액을 의미합니다.",
-    "chartPrincipalInterest": "회차별 원금/이자 비율",
-    "chartBalance": "잔여 원금 추이",
     "graceLabel": "거치",
     "guide": {
       "title": "사용 가이드",
@@ -22155,8 +20754,6 @@
     "currentFloor": "출발지 (지금 집)",
     "newFloor": "도착지 (새 집)",
     "floor": "층",
-    "hasElevator": "엘리베이터 있음",
-    "ladderTruck": "사다리차 필요",
     "extrasLabel": "부대비용",
     "extras": {
       "waste": "대형폐기물 (개)",
@@ -22172,17 +20769,9 @@
       "cleaning": "청소 서비스"
     },
     "dateLabel": "이사 날짜",
-    "peakSeason": "성수기 (3월, 9월)",
     "weekend": "주말/공휴일",
-    "auspiciousDay": "손없는 날",
-    "normalDay": "비수기 평일",
-    "peakSeasonNote": "3월, 9월은 이사 성수기로 20~30% 할증이 적용됩니다.",
-    "weekendNote": "주말/공휴일은 10~20% 할증이 적용됩니다.",
     "reset": "초기화",
-    "manwon": "만원",
-    "won": "원",
     "copied": "복사됨!",
-    "copyResult": "결과 복사",
     "disclaimer": "※ 이사 요금은 정부 고시 요금이 없는 업체 자율 요금입니다. 금액은 2025~2026년 시장 견적 범위를 참고한 추정이며 공식 요금이 아닙니다. 정확한 금액은 방문 견적으로 확인하세요.",
     "result": {
       "title": "예상 비용",
@@ -22492,7 +21081,6 @@
     "timesPerMonth": "회/월",
     "carWashCost": "1회 세차비",
     "monthlyToll": "월 통행료 (하이패스)",
-    "calculate": "계산하기",
     "reset": "초기화",
     "annualTotal": "연간 총비용",
     "monthlyAverage": "월평균 비용",
@@ -22511,21 +21099,13 @@
     },
     "monthly": "월",
     "total": "합계",
-    "monthlyBreakdown": "월별 상세 내역",
-    "category": "항목",
-    "monthlyAmount": "월 비용",
-    "annualAmount": "연 비용",
-    "percentage": "비율",
     "transitComparison": "대중교통 비교",
     "carAnnualCost": "자동차 연간 비용",
     "transitAnnualCost": "대중교통 연간 비용",
     "transitComparisonResult": "자동차 유지비는 대중교통 대비 약 {ratio}배입니다 (서울 기준 교통카드 월 65,000원 기준)",
     "maintenanceSchedule": "정비 스케줄",
     "scheduleItem": "정비 항목",
-    "scheduleInterval": "교환 주기",
-    "scheduleUnitCost": "1회 비용",
     "scheduleAnnualCost": "연간 비용",
-    "months": "개월",
     "maintenanceItems": {
       "tireRotation": "타이어 위치교환",
       "engineOil": "엔진 오일",
@@ -22541,8 +21121,6 @@
       "wiperBlades": "와이퍼 블레이드",
       "brakeFluid": "브레이크 오일"
     },
-    "placeholderTitle": "차량 정보를 입력하세요",
-    "placeholderDescription": "왼쪽 패널에서 차량 정보와 비용 항목을 입력하고 계산하기 버튼을 누르면 연간 유지비를 확인할 수 있습니다.",
     "guide": {
       "title": "자동차 유지비·정비 가이드",
       "taxSection": {
@@ -23191,7 +21769,6 @@
     "copyResult": "결과 복사",
     "copied": "복사됨",
     "item": "항목",
-    "difference": "차이",
     "grossAnnual": "연봉 (세전)",
     "socialInsurance": "4대보험",
     "nationalPension": "국민연금",
@@ -24003,42 +22580,28 @@
     "v6SplitHint": "LAN 하나는 보통 /64 (SLAAC 필수), 사이트는 /48, 가정용 회선은 /56을 받습니다.",
     "title": "IP 서브넷 계산기",
     "description": "IPv4·IPv6 서브넷을 계산합니다. CIDR·마스크·와일드카드 입력, VLSM 분할, 경로 요약, 범위→CIDR 변환까지 한 곳에서.",
-    "inputTitle": "IP 정보 입력",
-    "ipAddress": "IP 주소",
     "subnetMask": "서브넷 마스크",
     "prefix": "프리픽스",
     "invalidIp": "올바른 IPv4 주소를 입력하세요 (예: 192.168.1.1)",
-    "invalidMask": "올바른 서브넷 마스크를 입력하세요 (예: 255.255.255.0)",
-    "cidrReference": "CIDR 참고표",
     "mask": "마스크",
     "hosts": "호스트",
-    "result": "계산 결과",
-    "showBinary": "바이너리 보기",
-    "hideBinary": "바이너리 숨기기",
     "copy": "복사",
     "copied": "복사됨",
     "usableHosts": "사용 가능 호스트",
-    "class": "클래스",
     "classLabel": "Class {cls}",
     "type": "유형",
     "private": "사설",
     "public": "공인",
     "networkAddress": "네트워크 주소",
     "broadcastAddress": "브로드캐스트 주소",
-    "hostRange": "호스트 범위",
     "wildcardMask": "와일드카드 마스크",
     "totalAddresses": "전체 주소 수",
     "binaryRepresentation": "바이너리 표현",
-    "inputPrompt": "좌측에 IP 주소와 CIDR을 입력하면 계산 결과가 표시됩니다.",
     "note": "모든 계산은 브라우저에서만 이루어지며 입력한 주소는 서버로 전송되지 않습니다. /31(RFC 3021)·/32 규칙과 RFC 1918·6598·5737 특수 대역 기준을 반영합니다.",
     "tabCalculator": "서브넷 계산",
-    "tabOverlap": "대역 겹침 확인",
     "tabLookup": "IP 소속 확인",
-    "addCidr": "대역 추가",
     "overlapTitle": "CIDR 대역 목록",
-    "overlapDesc": "여러 CIDR 대역을 입력하면 서로 겹치는 대역이 있는지 확인합니다.",
     "overlapResult": "겹침 분석 결과",
-    "parsedRanges": "유효한 대역",
     "overlapFound": "{count}건의 겹침 발견",
     "noOverlap": "겹치는 대역이 없습니다.",
     "overlapPrompt": "2개 이상의 CIDR 대역을 입력하세요.",
@@ -24473,9 +23036,7 @@
     "description": "체중과 운동 시간으로 소모 칼로리를 계산합니다. 2024 Compendium MET 기준 70여 가지 운동, 음식 역산, 걸음 수, 주간 계획까지.",
     "linkCopied": "복사됨",
     "copyLink": "링크 복사",
-    "inputTitle": "기본 정보",
     "weight": "체중",
-    "exercises": "운동 목록",
     "addExercise": "운동 추가",
     "removeExercise": "삭제",
     "duration": "운동 시간",
@@ -24491,58 +23052,9 @@
       "outdoor": "아웃도어",
       "daily": "일상 활동"
     },
-    "activities": {
-      "walkSlow": "느린 걷기 (4km/h)",
-      "walkNormal": "보통 걷기 (5.5km/h)",
-      "walkFast": "빠른 걷기 (7km/h)",
-      "walkUphill": "오르막 걷기",
-      "jogging": "조깅 (8km/h)",
-      "runSlow": "달리기 (9.5km/h)",
-      "runMedium": "달리기 (11km/h)",
-      "runFast": "달리기 (13km/h)",
-      "runSprint": "전력 질주 (16km/h)",
-      "bikeSlow": "자전거 (16km/h 이하)",
-      "bikeNormal": "자전거 (19~22km/h)",
-      "bikeFast": "자전거 (25km/h 이상)",
-      "bikeStationary": "실내자전거 (보통)",
-      "swimSlow": "수영 (느리게)",
-      "swimMedium": "수영 (보통)",
-      "swimFast": "수영 (빠르게)",
-      "basketball": "농구",
-      "soccer": "축구",
-      "tennis": "테니스",
-      "badminton": "배드민턴",
-      "tableTennis": "탁구",
-      "volleyball": "배구",
-      "golf": "골프 (걷기)",
-      "weightLight": "웨이트 (가벼운)",
-      "weightModerate": "웨이트 (보통)",
-      "weightHeavy": "웨이트 (강한)",
-      "yoga": "요가",
-      "pilates": "필라테스",
-      "aerobics": "에어로빅",
-      "jumpRope": "줄넘기",
-      "stairClimber": "계단 오르기",
-      "elliptical": "일립티컬",
-      "hiking": "등산 (보통)",
-      "mountainClimbing": "등산 (험한 산)",
-      "skiing": "스키",
-      "cleaning": "집안 청소",
-      "gardening": "정원 가꾸기",
-      "dancing": "댄스"
-    },
-    "result": "계산 결과",
     "copy": "복사",
     "copied": "복사됨",
-    "totalCalories": "총 소모 칼로리",
-    "totalTime": "총 운동 시간",
-    "riceBowls": "밥공기 환산",
-    "bowls": "공기",
     "fatBurn": "체지방 환산",
-    "breakdown": "운동별 상세",
-    "metInfo": "MET (대사당량) 이란?",
-    "metDescription": "MET는 운동 강도를 나타내는 단위로, 안정시 에너지 소비를 1 MET로 정의합니다. 소모 칼로리 = MET × 체중(kg) × 시간(h)으로 계산됩니다. 출처: Compendium of Physical Activities.",
-    "inputPrompt": "좌측에 체중과 운동을 입력하면 소모 칼로리가 계산됩니다.",
     "guide": {
       "howItWorks": {
         "title": "계산 원리",
@@ -24772,19 +23284,12 @@
     },
     "title": "소음 측정기",
     "description": "스마트폰·PC 마이크로 주변 소음을 dB(A)로 측정합니다. 평균(Leq)·최대·최소, 최근 60초 그래프, 층간소음 기준 비교와 초과 기록(CSV·녹음)까지. 소리는 저장·전송되지 않습니다.",
-    "mobileFriendly": "모바일 최적화",
     "start": "측정 시작",
     "stop": "측정 정지",
     "reset": "초기화",
-    "micPermissionDenied": "마이크 접근 권한이 거부되었습니다. 브라우저 설정에서 마이크 권한을 허용해주세요.",
-    "micError": "마이크에 접근할 수 없습니다. 마이크가 연결되어 있는지 확인해주세요.",
     "maxDb": "최대",
     "avgDb": "평균(Leq)",
     "minDb": "최소",
-    "historyGraph": "측정 히스토리",
-    "historyOld": "이전",
-    "historyNew": "최근",
-    "referenceTable": "소음 수준 참고표",
     "levels": {
       "veryQuiet": "매우 조용함",
       "quiet": "조용함",
@@ -25049,11 +23554,9 @@
     "shareText": "메트로놈 {bpm} BPM · {ts} 설정으로 연습해 보세요",
     "title": "메트로놈",
     "description": "피아노·기타·드럼·합창 연습용 정확한 메트로놈. 박자표, 세분, 박별 강박, 탭 템포, 스피드 트레이너, 랜덤 음소거를 지원합니다.",
-    "vibrationSupport": "진동 지원",
     "tapTempo": "탭 템포",
     "settings": "설정",
     "timeSignature": "박자표",
-    "accentFirst": "첫 박 강조",
     "vibration": "진동 피드백",
     "presets": "템포 프리셋",
     "tempos": {
@@ -25254,10 +23757,8 @@
     "monthlyIncome": "월 소득 (세전)",
     "startAge": "가입 시작 나이",
     "retirementAge": "예상 은퇴 나이",
-    "calculate": "계산하기",
     "reset": "초기화",
     "resultTitle": "예상 국민연금 수령액",
-    "monthlyPension": "예상 월 수령액",
     "totalContribution": "총 납부액 (본인 부담)",
     "pensionRatio": "연금/납부 비율",
     "replacementRate": "소득대체율",
@@ -25267,8 +23768,6 @@
     "totalMonthlyContribution": "월 총 납부액",
     "annualPension": "연간 수령액",
     "yearsLabel": "년",
-    "monthsLabel": "개월",
-    "wonUnit": "원",
     "manwonUnit": "만원",
     "noticeTitle": "참고 사항",
     "notice": "현재 소득이 가입기간 내내 같다고 보고, 가입연도별 계수(2026년 이후 소득대체율 43%)와 보험료율 인상(2033년 13%)을 반영한 현재가치 추정치입니다. 60세 이후 납부는 임의계속가입(최대 65세)으로 가정합니다. 실제 수령액은 소득 재평가·납부 이력·크레딧에 따라 달라지니 국민연금공단 '내 연금 알아보기'에서 확인하세요.",
@@ -25549,22 +24048,11 @@
     },
     "title": "인터넷 속도 측정",
     "description": "Cloudflare 서버 기준으로 다운로드·업로드 속도, 핑, 지터를 측정합니다.",
-    "startTest": "속도 측정 시작",
-    "quickTest": "빠른 테스트 (1MB)",
-    "fullTest": "전체 테스트 (10MB)",
-    "testing": "측정 중...",
-    "downloadSpeed": "다운로드 속도",
     "ping": "핑 (지연 시간)",
     "status": "상태",
-    "progress": "진행률",
-    "result": "측정 결과",
     "history": "측정 기록",
     "historyEmpty": "아직 측정 기록이 없습니다. 측정하면 이 브라우저에 최근 30회까지 저장돼요.",
-    "testTime": "측정 시각",
-    "mbps": "Mbps",
     "ms": "ms",
-    "unit": "단위",
-    "classification": "속도 등급",
     "slow": "느림",
     "moderate": "보통",
     "fast": "빠름",
@@ -25573,7 +24061,6 @@
     "moderateDesc": "25~100Mbps — HD 영상, 일반 작업",
     "fastDesc": "100~500Mbps — 4K 영상, 대용량 파일",
     "veryFastDesc": "500Mbps 이상 — 기가비트 인터넷",
-    "corsNote": "외부 서버와의 CORS 정책으로 인해 근사값이 표시될 수 있습니다.",
     "disclaimer": "측정 결과는 네트워크 상태, 서버 위치, 기기 성능에 따라 달라질 수 있으며 참고용입니다. 한 번 측정에 다운로드·업로드 합쳐 최대 수백 MB의 데이터를 쓰니 모바일 데이터 환경에서는 주의하세요.",
     "guideTitle": "인터넷 속도 측정 가이드",
     "guideSection1Title": "측정 지표 설명",
@@ -25656,7 +24143,6 @@
     "parentFontSize": "부모 요소 폰트 크기 (em 기준)",
     "viewportWidth": "뷰포트 너비",
     "viewportHeight": "뷰포트 높이",
-    "resultsTitle": "변환 결과",
     "copySuccess": "복사됨",
     "copy": "복사",
     "quickRefTitle": "자주 쓰는 변환 공식",
@@ -25782,12 +24268,8 @@
     "legalNote": "생성된 도장 이미지는 주민센터(법인은 등기소)에 신고한 인감이 아니므로 인감증명서가 필요한 계약·등기에는 쓸 수 없습니다. 그런 곳에는 신고한 실물 인감을 사용하고, 그 밖의 문서는 받는 쪽이 도장 이미지를 인정하는지 먼저 확인하세요.",
     "title": "인감 도장 생성기",
     "description": "이름 도장·사각 직인·법인인감을 전통 배치로 만들고 투명 PNG·SVG로 저장하세요.",
-    "labelText": "도장 텍스트 (1~4글자)",
     "placeholderText": "예: 홍길동",
     "labelShape": "도장 모양",
-    "shapeCircle": "원형",
-    "shapeSquare": "사각형",
-    "shapeOval": "타원형",
     "labelStyle": "스타일 색상",
     "styleTraditional": "전통 인감",
     "styleModernblue": "모던 블루",
@@ -25797,7 +24279,6 @@
     "fontSerif": "명조체",
     "fontSansserif": "고딕체",
     "fontBrush": "붓글씨",
-    "labelSize": "도장 크기",
     "labelBorderWidth": "테두리 굵기",
     "labelOpacity": "불투명도",
     "labelDoubleBorder": "이중 테두리",
@@ -25806,7 +24287,6 @@
     "canvasAriaLabel": "도장 미리보기 캔버스",
     "emptyTextHint": "텍스트를 입력하면 도장이 생성됩니다",
     "infoShape": "모양",
-    "infoSize": "크기",
     "infoColor": "색상",
     "buttonDownload": "투명 PNG 다운로드",
     "buttonCopy": "클립보드 복사",
@@ -25992,9 +24472,7 @@
     "title": "혈당 기록기",
     "description": "측정 시점별 기준으로 내 혈당이 정상인지 바로 판정하고, 기록을 쌓아 추이와 평균을 확인하세요. mg/dL·mmol/L 변환과 당화혈색소 환산도 됩니다.",
     "disclaimer": "이 도구는 참고용이며 진단을 대신하지 않습니다. 판정은 측정 시점별 일반 기준이고, 당뇨병 진단과 치료 목표는 반드시 의료진과 상담해 정하세요.",
-    "addRecord": "기록 추가",
     "value": "혈당 수치 (mg/dL)",
-    "valuePlaceholder": "예: 95",
     "timing": "측정 시점",
     "timingFasting": "공복",
     "timingBeforeMeal": "식전",
@@ -26005,7 +24483,6 @@
     "note": "메모 (선택)",
     "notePlaceholder": "특이사항 입력...",
     "submit": "기록하기",
-    "reset": "초기화",
     "history": "기록 내역",
     "historyEmpty": "아직 기록이 없습니다. 위에서 혈당을 기록해 보세요.",
     "deleteRecord": "삭제",
@@ -26013,50 +24490,16 @@
     "clearConfirm": "모든 기록을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
     "exportCsv": "CSV 내보내기",
     "statistics": "통계",
-    "statsPeriod7": "최근 7일",
-    "statsPeriod30": "최근 30일",
     "statsAvg": "평균",
     "statsMin": "최솟값",
     "statsMax": "최댓값",
     "statsCount": "기록 수",
     "statsNoData": "해당 기간에 기록이 없습니다.",
-    "classLow": "저혈당",
-    "classNormalFasting": "정상 (공복)",
-    "classPreDiabetesFasting": "당뇨전단계 (공복)",
-    "classDiabetesFasting": "당뇨 (공복)",
-    "classNormalAfterMeal": "정상 (식후)",
-    "classPreDiabetesAfterMeal": "당뇨전단계 (식후)",
-    "classDiabetesAfterMeal": "당뇨 (식후)",
-    "classNormal": "정상",
-    "classPreDiabetes": "당뇨전단계",
-    "classDiabetes": "당뇨",
     "colDate": "날짜·시간",
     "colValue": "혈당 (mg/dL)",
     "colTiming": "측정 시점",
     "colStatus": "분류",
-    "colNote": "메모",
-    "guideTitle": "혈당 수치 가이드",
-    "guideFastingTitle": "공복 혈당 기준 (American Diabetes Association)",
-    "guideFastingItems": [
-      "정상: 70~99 mg/dL",
-      "당뇨전단계 (공복혈당장애): 100~125 mg/dL",
-      "당뇨: 126 mg/dL 이상 (2회 이상 확인 시)",
-      "저혈당: 70 mg/dL 미만 (즉시 조치 필요)"
-    ],
-    "guideAfterMealTitle": "식후 2시간 혈당 기준",
-    "guideAfterMealItems": [
-      "정상: 140 mg/dL 미만",
-      "당뇨전단계: 140~199 mg/dL",
-      "당뇨: 200 mg/dL 이상"
-    ],
-    "guideTipsTitle": "혈당 관리 팁",
-    "guideTipsItems": [
-      "공복 혈당은 최소 8시간 금식 후 측정합니다.",
-      "식후 혈당은 식사 시작 후 2시간 후에 측정합니다.",
-      "규칙적인 운동과 균형 잡힌 식사가 혈당 조절에 도움이 됩니다.",
-      "혈당 수치가 비정상적으로 높거나 낮다면 즉시 의사와 상담하세요.",
-      "이 도구는 참고용이며 의료 진단을 대체하지 않습니다."
-    ]
+    "colNote": "메모"
   },
   "fancyText": {
     "sample": "Lucky day 럭키",
@@ -26103,16 +24546,10 @@
     "description": "입력하면 영문 글꼴 23종·한글 꾸미기·닉네임 테두리가 바로 보여요. 누르면 복사돼요.",
     "inputPlaceholder": "꾸밀 닉네임이나 문구를 입력하세요 (한글·영문 모두 가능)",
     "inputLabel": "텍스트 입력",
-    "outputLabel": "변환 결과",
     "copyAll": "보이는 스타일 모두 복사",
     "copied": "복사됨!",
     "copy": "복사",
-    "copyAllSuccess": "모든 스타일이 복사되었습니다",
     "noInput": "글자를 입력하면 꾸민 결과가 바로 보여요",
-    "asciiNote": "영문 알파벳(a-z, A-Z)만 변환됩니다. 숫자와 기호는 유지됩니다.",
-    "decorTitle": "특수문자 꾸미기 (한글 지원)",
-    "decorDesc": "한글·영문·이모지 모두 감싸서 꾸며요. 인스타·게임 닉네임·프로필에 딱!",
-    "fontTitle": "영문 유니코드 폰트",
     "styles": {
       "smallCaps": "스몰캡",
       "tiny": "작은 글씨 (위첨자)",
@@ -26381,37 +24818,17 @@
     "paintCoats": "도장 횟수",
     "paintPrice": "리터당 가격 (원)",
     "wallpaperCalc": "벽지 계산",
-    "rollWidth": "롤 너비 (m)",
-    "rollLength": "롤 길이 (m)",
     "patternRepeat": "패턴 반복 (m)",
-    "tileCalc": "타일 계산",
-    "tileWidth": "타일 가로 (cm)",
-    "tileHeight": "타일 세로 (cm)",
-    "gapWidth": "줄눈 간격 (mm)",
-    "tilePrice": "타일 1장 가격 (원)",
-    "results": "계산 결과",
-    "totalFloorArea": "바닥 면적",
-    "totalWallArea": "벽 면적",
-    "totalCeilingArea": "천장 면적",
     "deductionArea": "공제 면적",
     "netWallArea": "순 벽 면적",
     "paintNeeded": "페인트 필요량",
     "paintCost": "페인트 비용",
     "wallpaperRolls": "벽지 롤 수",
     "wallpaperCost": "벽지 비용",
-    "tilesNeeded": "타일 필요 장수",
-    "tileCost": "타일 비용",
     "wastage": "여유분 10% 포함",
     "liters": "리터",
-    "rolls": "롤",
-    "tiles": "장",
     "won": "원",
     "sqm": "㎡",
-    "coats1": "1회",
-    "coats2": "2회",
-    "coats3": "3회",
-    "totalRooms": "전체 방",
-    "grandTotal": "전체 합계",
     "room": "방",
     "summaryTitle": "전체 요약",
     "noRooms": "방을 추가하세요",
@@ -26533,8 +24950,6 @@
     "description": "적립식·거치식 투자의 미래 가치, 목표 금액 역산, 보수·중립·공격 시나리오, 일반·ISA·연금 계좌 세후 비교를 한 번에 계산하세요",
     "lumpSum": "거치식",
     "dca": "적립식",
-    "comparison": "비교",
-    "investmentType": "투자 설정",
     "initialAmount": "초기 투자금",
     "monthlyContribution": "월 추가 투자금",
     "annualReturn": "연 예상 수익률",
@@ -26542,37 +24957,14 @@
     "inflationRate": "인플레이션율",
     "won": "원",
     "years": "년",
-    "calculate": "계산하기",
     "reset": "초기화",
     "totalInvested": "총 투자원금",
-    "finalAmount": "예상 최종 금액",
     "profit": "투자 수익",
     "totalReturn": "총 수익률",
-    "cagr": "CAGR (연평균)",
-    "realReturn": "실질 수익률",
-    "inflationAdjusted": "인플레이션 보정 실질 가치",
-    "chartTitle": "자산 성장 추이",
-    "yearLabel": "년",
-    "investedAmount": "투자원금",
-    "assetValue": "자산가치",
-    "realValueLabel": "실질가치",
     "tableTitle": "연도별 상세",
-    "showTable": "테이블 보기",
-    "hideTable": "테이블 숨기기",
     "year": "년차",
     "cumInvested": "투자원금 누적",
-    "yearProfit": "연간 수익",
     "totalAsset": "총 자산",
-    "realAssetValue": "실질 가치",
-    "noResult": "좌측에서 투자 조건을 설정하고 계산하기를 눌러주세요",
-    "eok": "억",
-    "man": "만",
-    "vs": {
-      "title": "동일 금액 기준 거치식 vs 적립식 비교 결과입니다",
-      "lumpSumResult": "거치식 결과",
-      "dcaResult": "적립식 결과",
-      "difference": "차이 비교"
-    },
     "guide": {
       "title": "투자 수익률 가이드",
       "concepts": {
@@ -26693,30 +25085,16 @@
     "dropzone": "사진을 끌어다 놓거나 눌러서 선택",
     "dropzoneHint": "JPG·PNG·WebP·HEIC(사파리) · 여러 장 가능 · Ctrl+V 붙여넣기",
     "maxFileSize": "최대 50MB",
-    "settings": "압축 설정",
     "quality": "화질",
     "qualityLow": "낮음 (작은 용량)",
     "qualityHigh": "높음 (좋은 화질)",
     "format": "출력 형식",
     "formatOriginal": "원본 유지",
-    "maxWidth": "최대 너비 (px)",
-    "maxHeight": "최대 높이 (px)",
-    "compress": "압축",
-    "compressAll": "전체 압축",
     "download": "다운로드",
-    "downloadAll": "전체 다운로드",
     "remove": "삭제",
     "removeAll": "전체 삭제",
-    "reset": "초기화",
     "processing": "압축 중...",
     "noImages": "아직 사진이 없습니다",
-    "formatLabel": "포맷",
-    "summary": "요약",
-    "totalImages": "총 이미지",
-    "originalSize": "원본 크기",
-    "compressedSize": "압축 크기",
-    "compressionRatio": "압축률",
-    "savings": "절약",
     "guide": {
       "uses": {
         "title": "용도별 권장 설정",
@@ -26975,21 +25353,15 @@
     "description": "기상 시각에 맞춘 취침 시각, 지금 자면 몇 시에 깨야 할지, 낮잠 알람까지 수면 주기로 계산합니다",
     "linkCopied": "복사됨",
     "copyLink": "링크 복사",
-    "currentTime": "현재 시각",
     "modeNow": "지금 잠들면",
-    "modeWakeAt": "일어나야 할 시간",
     "fallAsleepTime": "잠드는 데 걸리는 시간",
     "minutes": "분",
     "wakeUpAt": "기상 시간",
-    "calculate": "계산하기",
     "resultTitleWakeUp": "추천 기상 시간",
     "resultTitleBedTime": "추천 취침 시간",
-    "cycleLabel": "사이클",
     "recommended": "추천",
     "totalSleep": "총 수면 시간",
     "cycleExplanation": "90분 주기는 평균치입니다. 실제 주기는 약 70~120분으로 사람마다, 같은 밤에도 주기마다 다르고 잠드는 시간도 매일 달라요. 결과는 '이쯤 깨면 덜 몽롱할 가능성이 높다'는 참고값이며, 개운함은 주기 맞추기보다 총 수면 시간과 일정한 기상 시각이 더 크게 좌우합니다.",
-    "hourUnit": "시간",
-    "minuteUnit": "분",
     "hoursLabel": "시간",
     "ageGroupTitle": "연령별 권장 수면 시간",
     "ageGroupLabel": "연령대",
@@ -27036,8 +25408,6 @@
     "stop": "중지",
     "pause": "일시정지",
     "resume": "다시 시작",
-    "duration": "길이",
-    "fileSize": "파일 크기",
     "noRecordings": "녹음된 파일이 없습니다",
     "play": "재생",
     "download": "다운로드",
@@ -27151,7 +25521,6 @@
     },
     "title": "영양소 계산기",
     "description": "한국 음식 46종과 영양성분표 직접 입력으로 한 끼 칼로리·탄단지·나트륨을 계산하고, 식약처 1일 영양성분 기준치 대비 %를 확인하세요.",
-    "linkCopied": "복사됨",
     "copyLink": "링크 복사",
     "searchPlaceholder": "음식 이름 검색 (예: 김치찌개, 닭가슴살)",
     "clearSearch": "검색어 지우기",
@@ -27162,7 +25531,6 @@
     "mealList": "내 식단",
     "mealEmpty": "음식을 클릭해서 식단에 추가하세요",
     "clearAll": "전체 삭제",
-    "portion": "수량",
     "removeItem": "항목 삭제",
     "copy": "복사",
     "copied": "복사됨!",
@@ -27344,22 +25712,14 @@
     "shareTextResult": "발표 {dur} · 목표 대비 {delta}",
     "title": "프레젠테이션 타이머",
     "description": "발표·회의·강의용 카운트다운 타이머. 발표자 모드, 구간 타이머, 초과 시간 표시, 설정 링크 공유",
-    "settings": "설정",
-    "totalTime": "전체 시간",
     "warningTime": "경고 시점 (종료 몇 분 전)",
-    "dangerTime": "위험 시간",
     "minutes": "분",
     "start": "시작",
     "pause": "일시정지",
     "reset": "초기화",
     "addMinute": "+1분",
     "subtractMinute": "-1분",
-    "fullscreen": "전체화면",
-    "exitFullscreen": "전체화면 종료",
-    "soundOn": "소리 끄기",
-    "soundOff": "소리 켜기",
     "overtime": "초과 시간",
-    "timeUp": "시간 종료!",
     "presets": "빠른 설정",
     "preset3": "3분",
     "preset5": "5분",
@@ -27641,68 +26001,8 @@
     },
     "title": "실업급여 계산기",
     "description": "2026년 기준 실업급여(구직급여) 1일 금액·받는 날수·총액과 수급 자격, 지급 일정, 조기재취업수당까지 한 번에 계산합니다",
-    "voluntaryWarning": "자발적 이직(개인 사유 퇴사)의 경우 원칙적으로 실업급여 수급이 어렵습니다. 단, 정당한 사유(임금체불, 근로조건 위반 등)가 인정되면 수급 가능합니다.",
-    "voluntaryBlocked": "자발적 이직은 원칙적으로 실업급여 대상이 아닙니다. 이직사유를 변경해주세요.",
-    "placeholder": "왼쪽의 정보를 입력하고 계산하기를 눌러주세요",
     "copy": "복사",
-    "copied": "복사됨",
-    "form": {
-      "title": "수급 정보 입력",
-      "separationReason": "이직 사유",
-      "reason": {
-        "involuntary": "비자발적 (해고/권고사직)",
-        "voluntary": "자발적 (개인 사유)"
-      },
-      "ageGroup": "이직 시 나이",
-      "age": {
-        "under50": "50세 미만",
-        "over50": "50세 이상 / 장애인"
-      },
-      "insurancePeriod": "고용보험 가입기간",
-      "period": {
-        "under1": "1년 미만",
-        "1to3": "1년 이상 ~ 3년 미만",
-        "3to5": "3년 이상 ~ 5년 미만",
-        "5to10": "5년 이상 ~ 10년 미만",
-        "over10": "10년 이상"
-      },
-      "avgDailyWage": "퇴직 전 3개월 평균 일급",
-      "avgDailyWageHint": "퇴직 전 3개월 총 급여 ÷ 총 일수 (보통 90일)",
-      "wagePlaceholder": "예: 150,000",
-      "wonUnit": "원",
-      "calculate": "계산하기",
-      "reset": "초기화"
-    },
-    "result": {
-      "title": "실업급여 산정 결과",
-      "dailyBenefit": "1일 구직급여",
-      "perDay": "1일 기준",
-      "benefitDays": "수급 기간",
-      "days": "일",
-      "aboutMonths": "약 {months}개월",
-      "monthlyEstimate": "월 예상 수급액",
-      "per30days": "30일 기준",
-      "totalBenefit": "총 수급 예상액",
-      "totalLabel": "전체 수급 기간 합계",
-      "capNotice": "평균임금의 60%가 상한액(68,100원)을 초과하여 상한액이 적용되었습니다.",
-      "floorNotice": "평균임금의 60%가 하한액(66,048원) 미만이므로 하한액이 적용되었습니다."
-    },
-    "chart": {
-      "title": "월별 수급 예상액",
-      "month": "개월차",
-      "remaining": "잔여 일수분"
-    },
-    "table": {
-      "title": "구직급여 수급 기간표",
-      "ageGroup": "연령 / 가입기간",
-      "under1": "1년 미만",
-      "1to3": "1~3년",
-      "3to5": "3~5년",
-      "5to10": "5~10년",
-      "over10": "10년 이상",
-      "ageUnder50": "50세 미만",
-      "ageOver50": "50세 이상 / 장애인"
-    }
+    "copied": "복사됨"
   },
   "weeklyHolidayPay": {
     "u": {
@@ -27872,7 +26172,6 @@
     "notEligible": "주휴수당 미발생",
     "copy": "복사",
     "copied": "복사됨",
-    "copyResult": "결과 복사",
     "input": {
       "hourlyWageHintCurrent": "{year}년 최저시급: {wage}원",
       "title": "근무 정보 입력",
@@ -27903,25 +26202,10 @@
       "holidayRatio": "주휴수당 비율",
       "monthlyBarTitle": "월 급여 구성"
     },
-    "warning": {
-      "title": "주휴수당 미발생",
-      "message": "주 15시간 미만 근무 시 주휴수당이 발생하지 않습니다. 주 15시간 이상 근무해야 주휴수당을 받을 수 있습니다."
-    },
-    "info": {
-      "title": "주휴수당이란?",
-      "items": [
-        "1주일에 15시간 이상 근무하면 유급 휴일 1일이 발생합니다 (근로기준법 제55조)",
-        "주휴시간 = (주간 총 근무시간 ÷ 40) × 8시간 (최대 8시간)",
-        "주휴수당 = 시급 × 주휴시간",
-        "4대보험 가입과 관계없이 주 15시간 이상이면 무조건 발생",
-        "주휴수당 미지급 시 임금체불에 해당"
-      ]
-    },
     "guide": {
       "title": "주휴수당 가이드"
     },
     "copyLink": "링크 복사",
-    "linkCopied": "링크 복사됨",
     "scenario": {
       "title": "주간 근무시간별 비교",
       "description": "같은 시급 기준으로 주간 근무시간에 따른 예상 급여를 비교합니다.",
@@ -28582,21 +26866,9 @@
     },
     "title": "견적서·거래명세서·청구서 만들기",
     "description": "한국 양식 그대로 작성하고, 한글이 깨지지 않는 A4 PDF로 내려받으세요",
-    "save": "저장",
-    "load": "불러오기",
-    "reset": "초기화",
-    "previewMode": "미리보기",
-    "previewSubtitle": "공급받는자 보관용",
-    "editMode": "편집 모드",
     "print": "인쇄",
     "exportPDF": "PDF 다운로드",
-    "savedFeedback": "저장됨!",
-    "loadedFeedback": "불러옴!",
-    "invoiceNumber": "견적서 번호",
-    "invoiceDate": "발행일",
     "dueDate": "유효기간",
-    "sender": "공급자 (발신)",
-    "recipient": "공급받는자 (수신)",
     "notes": "비고",
     "notesPlaceholder": "예: 부가세 별도 견적입니다. 디자인 시안 2회 수정 포함.",
     "section": {
@@ -28731,7 +27003,6 @@
   },
   "kanbanBoard": {
     "title": "칸반 보드",
-    "description": "드래그 앤 드롭으로 프로젝트 태스크를 관리하는 칸반 보드",
     "subtitle": "총 {count}개 카드 · {cols}개 컬럼",
     "addCard": "카드 추가",
     "editCard": "카드 편집",
@@ -29538,11 +27809,8 @@
     "highScore": "최고 점수",
     "youWin": "승리!",
     "congratulations": "축하합니다! 모든 카드를 정리했습니다!",
-    "noMoreMoves": "더 이상 이동할 수 없습니다",
     "soundOn": "소리 켜짐",
     "soundOff": "소리 꺼짐",
-    "draw1": "1장 뽑기",
-    "draw3": "3장 뽑기",
     "stock": "스톡",
     "waste": "버림 더미",
     "foundation": "파운데이션",
@@ -29700,7 +27968,6 @@
     "value": "값",
     "comment": "주석",
     "addVariable": "변수 추가",
-    "deleteVariable": "삭제",
     "duplicate": "중복 키",
     "invalidKey": "잘못된 키 형식",
     "emptyValue": "빈 값",
@@ -29718,7 +27985,6 @@
     "yamlFormat": "YAML",
     "jsonFormat": "JSON",
     "shellFormat": "Shell",
-    "rawPlaceholder": "# .env 파일 내용을 붙여넣으세요\nDB_HOST=localhost\nDB_PORT=5432\nDB_NAME=myapp",
     "guide": {
       "title": ".env 파일 사용 가이드",
       "format": {
@@ -29935,12 +28201,9 @@
     "loop": "반복",
     "infinite": "무한",
     "once": "1회",
-    "quality": "품질",
     "processing": "생성 중...",
     "noImages": "이미지를 추가해주세요",
     "dragDrop": "이미지를 드래그하거나 클릭하여 업로드",
-    "copy": "복사",
-    "copied": "복사됨",
     "guide": {
       "title": "GIF 메이커 사용 가이드",
       "howTo": {
@@ -30049,18 +28312,12 @@
     "title": "이미지 배경 제거",
     "description": "흰 배경·증명사진·로고·그린스크린처럼 단색 배경을 지워 투명 PNG로 만들거나 배경색을 바꿔요. 사진은 서버로 전송되지 않아요.",
     "uploadImage": "이미지 업로드",
-    "pickColor": "배경 색상 선택",
     "tolerance": "허용 오차",
     "edgeSoftening": "경계 부드럽게",
-    "preview": "배경 제거 후 미리보기가 여기에 표시됩니다",
     "original": "원본",
     "result": "결과",
     "download": "투명 PNG 다운로드",
-    "reset": "초기화",
-    "clickToSelect": "배경 영역 클릭 중...",
-    "selectedColor": "선택된 색상",
     "processing": "원본 해상도로 저장 중...",
-    "noImage": "이미지를 업로드해주세요",
     "dragDrop": "여기로 끌어다 놓거나 Ctrl+V로 붙여넣기 (PNG, JPG, WEBP)",
     "guide": {
       "howItWorks": {
@@ -30211,7 +28468,6 @@
     },
     "title": "사진 콜라주",
     "description": "사진을 올리면 장수에 맞는 레이아웃이 자동으로 골라져요. 칸 안에서 위치·확대를 조정하고 고화질로 저장하거나 바로 공유하세요.",
-    "uploadImages": "사진 업로드",
     "addImages": "사진 추가",
     "layout": "레이아웃",
     "spacing": "간격·테두리",
@@ -30219,16 +28475,8 @@
     "backgroundColor": "배경색",
     "download": "다운로드",
     "reset": "초기화",
-    "noImages": "사진을 추가해주세요",
     "dragDrop": "사진을 끌어다 놓거나 눌러서 선택하세요",
-    "layoutGrid2": "2분할",
-    "layoutGrid3": "3분할",
-    "layoutGrid4": "4분할",
-    "layoutGrid6": "6분할",
-    "layoutGrid9": "9분할",
-    "layoutFreeform": "자유 배치",
     "remove": "삭제",
-    "outputSize": "출력 크기",
     "preview": "미리보기",
     "generating": "생성 중...",
     "guide": {
@@ -30454,12 +28702,10 @@
     "description": "매일 하나, 모두에게 같은 한글 단어를 자음·모음으로 맞혀보세요.",
     "newGame": "새 게임",
     "category": "카테고리",
-    "hint": "힌트",
     "won": "정답!",
     "lost": "실패!",
     "answer": "정답",
     "remainingTries": "남은 기회",
-    "usedLetters": "사용한 글자",
     "categories": {
       "all": "전체",
       "jobs": "직업",
@@ -30473,14 +28719,6 @@
     "svgLabel": "행맨 그림: 틀린 횟수 {wrong}/{max}",
     "wordDisplay": "단어 표시",
     "unrevealed": "미공개",
-    "consonants": "자음",
-    "vowels": "모음",
-    "consonantLabel": "자음 {letter}",
-    "consonantUsed": "자음 {letter} (사용됨)",
-    "vowelLabel": "모음 {letter}",
-    "vowelUsed": "모음 {letter} (사용됨)",
-    "gameWon": "게임 승리",
-    "gameLost": "게임 패배",
     "guide": {
       "title": "단어 맞추기 가이드",
       "rules": {
@@ -30538,7 +28776,6 @@
     "start": "게임 시작",
     "gameOver": "게임 오버",
     "score": "점수",
-    "lives": "목숨",
     "level": "레벨",
     "best": "최고 점수",
     "retry": "다시 하기",
@@ -30732,34 +28969,18 @@
     "fileUploadDesc": ".txt, .md, .json, .csv 등 텍스트 파일을 드래그하거나 클릭하세요",
     "selectedModel": "선택 모델",
     "allModels": "전체 모델",
-    "tokenCount": "토큰 수 (추정)",
     "charCount": "글자 수",
     "wordCount": "단어 수",
     "lineCount": "줄 수",
-    "estimatedCost": "예상 비용",
-    "inputTokens": "입력 토큰",
-    "outputTokens": "출력 토큰",
-    "inputCost": "입력 비용",
-    "outputCost": "출력 비용",
-    "totalCost": "총 비용",
     "outputTokensLabel": "예상 출력 토큰 수",
-    "outputTokensPlaceholder": "예: 1000",
-    "perMillionTokens": "/ 1M 토큰",
-    "modelComparison": "모델별 비교",
     "modelName": "모델명",
-    "provider": "제공사",
     "contextWindow": "컨텍스트",
     "inputPrice": "입력 단가",
     "outputPrice": "출력 단가",
-    "estCost": "예상 비용",
     "clear": "초기화",
     "copy": "복사",
     "copied": "복사됨",
-    "noText": "텍스트를 입력하면 토큰 수가 표시됩니다.",
-    "koreanNote": "한국어는 영어 대비 약 1.5~3배 더 많은 토큰을 사용합니다.",
     "exchangeRate": "환율",
-    "krw": "원",
-    "usd": "달러",
     "guide": {
       "title": "사용 가이드",
       "whatIsToken": {
@@ -30817,8 +29038,6 @@
     "enableCache": "정적 파일 캐싱",
     "cacheDuration": "캐시 기간",
     "cacheDurationPlaceholder": "예: 30d",
-    "sslCertPath": "SSL 인증서 경로",
-    "sslKeyPath": "SSL 키 경로",
     "customDirective": "커스텀 설정 추가",
     "customDirectivePlaceholder": "추가 설정을 직접 입력...",
     "tabGenerate": "설정 생성",
@@ -30860,7 +29079,6 @@
     "download": "다운로드",
     "reset": "초기화",
     "presetLabel": "베스트 프리셋",
-    "applyPreset": "적용",
     "scenarios": {
       "reverseProxy": "리버스 프록시",
       "reverseProxyDesc": "Node.js, Python 등 백엔드 앱 앞단에 배치",
@@ -31163,7 +29381,6 @@
       }
     },
     "title": "청약가점 계산기",
-    "description": "무주택기간·부양가족·청약통장 가입기간으로 청약가점을 계산합니다",
     "reset": "초기화",
     "sectionA": "무주택기간",
     "sectionB": "부양가족수",
@@ -31171,69 +29388,9 @@
     "maxA": "최대 32점",
     "maxB": "최대 35점",
     "maxC": "최대 17점",
-    "dateMode": "날짜 입력",
-    "directMode": "직접 입력",
-    "homelessStartLabel": "무주택 시작일",
-    "homelessStartTooltip": "현재 무주택 상태가 된 날짜를 입력하세요. 이전에 주택을 소유했다면 처분한 날짜를 입력하세요.",
-    "homelessYearsLabel": "무주택 기간",
-    "homelessYearsTooltip": "무주택 기간을 연수(년)로 직접 입력하세요. 소수점 입력 가능 (예: 2.5)",
     "birthDateLabel": "생년월일",
-    "birthDateTooltip": "만 30세 미만 미혼자는 무주택기간 점수가 0점입니다. 생년월일을 입력하면 자동으로 판단합니다.",
-    "marriedLabel": "기혼 (배우자 있음)",
-    "marriedTooltip": "기혼자는 나이와 관계없이 무주택기간 가점이 산정됩니다.",
-    "under30Notice": "만 30세 미만 미혼자는 무주택기간 가점이 0점으로 산정됩니다.",
-    "dependentLabel": "부양가족 수 (본인 제외)",
-    "dependentTooltip": "배우자, 직계존속(부모·조부모), 직계비속(자녀·손자녀) 중 3년 이상 같은 세대에 등재된 구성원 수입니다. 본인은 제외합니다.",
-    "dependentNote": "본인 제외. 배우자, 직계존비속 중 3년 이상 동일 세대원 한정. 6명 이상은 모두 35점.",
-    "expectedScore": "예상 가점",
-    "personUnit": "명",
     "subStartLabel": "청약통장 가입일",
-    "subStartTooltip": "청약저축·주택청약종합저축·청약예금·청약부금 중 최초 가입일을 입력하세요.",
-    "subMonthsLabel": "가입 기간 (개월)",
-    "subMonthsTooltip": "가입 기간을 개월 수로 직접 입력하세요. (예: 24 = 2년)",
-    "monthsUnit": "개월",
-    "yearsUnit": "년",
-    "resultTitle": "청약가점 결과",
-    "outOf84": "/ 84점",
-    "totalLabel": "총 가점",
-    "percentileTitle": "예상 경쟁력",
-    "percentileDesc": "총 {score}점은 청약 신청자 중 상위 약 {pct}% 수준으로 추정됩니다.",
-    "percentileNote": "지역·단지·경쟁률에 따라 실제 당첨 가능성은 달라질 수 있습니다.",
-    "detailTableTitle": "가점 항목별 상세",
-    "tableCategory": "항목",
-    "tableMyValue": "내 값",
-    "tableMyScore": "내 점수",
-    "tableMaxScore": "만점",
-    "notApplicable": "해당없음",
-    "guideTitle": "청약가점 산정 기준 안내",
-    "guideATitle": "A. 무주택기간 (최대 32점)",
-    "guideAItems": [
-      "만 30세 이상부터 무주택기간 가점 산정",
-      "만 30세 미만 미혼자는 무주택기간 0점",
-      "기혼자는 나이와 관계없이 혼인신고일 또는 무주택 개시일부터 산정",
-      "1년 미만 2점, 1년마다 2점씩 증가, 15년 이상 최대 32점"
-    ],
-    "guideBTitle": "B. 부양가족수 (최대 35점)",
-    "guideBItems": [
-      "본인 제외, 배우자·직계존속·직계비속 포함",
-      "직계존속: 부모, 조부모 (3년 이상 동일 세대 등재 필요)",
-      "직계비속: 자녀, 손자녀 (미혼 자녀는 세대 기간 무관)",
-      "0명 5점, 1명당 5점 추가, 6명 이상 최대 35점"
-    ],
-    "guideCTitle": "C. 청약통장 가입기간 (최대 17점)",
-    "guideCItems": [
-      "청약저축·주택청약종합저축·청약예금·청약부금 모두 인정",
-      "6개월 미만 1점, 6개월~1년 2점, 이후 1년마다 1점 추가",
-      "15년 이상 최대 17점",
-      "전환·이전 통장도 합산 기간 인정"
-    ],
-    "guideCautionTitle": "주의사항",
-    "guideCautionItems": [
-      "이 계산기는 참고용이며 실제 청약 결과와 다를 수 있습니다",
-      "가점 산정 기준은 공고문을 반드시 확인하세요",
-      "투기과열지구·청약과열지역은 가점제 비율이 높습니다",
-      "허위 서류 제출 시 청약 당첨이 취소될 수 있습니다"
-    ]
+    "outOf84": "/ 84점"
   },
   "militaryDischarge": {
     "name": "이름 (선택)",
@@ -31368,59 +29525,12 @@
     "navy": "해군",
     "airForce": "공군",
     "socialService": "사회복무요원 (보충역)",
-    "conscriptedPolice": "의경/해경 (전환복무)",
-    "industrialTechnician": "산업기능요원",
     "researchAgent": "전문연구요원",
     "katusa": "카투사 (KATUSA)",
-    "earlyDays": "단축일수 (일)",
-    "earlyDaysPlaceholder": "조기전역 등 단축일수 입력",
-    "calculate": "계산하기",
-    "reset": "초기화",
     "dischargeDate": "전역일",
-    "dday": "D-Day",
-    "ddayLabel": "전역까지",
-    "alreadyDischarged": "전역 완료",
-    "daysSince": "전역 후",
     "daysUnit": "일",
-    "totalDays": "총 복무일",
-    "servedDays": "복무한 일",
-    "remainingDays": "남은 일",
-    "progress": "복무 진행률",
-    "progressBar": "복무 진행률",
-    "milestones": "진급 일정",
-    "milestonesNote": "육군·해병대 기준",
-    "private": "이등병",
-    "corporal": "일병",
-    "sergeant": "상병",
-    "staffSergeant": "병장",
-    "completed": "완료",
-    "current": "현재",
-    "upcoming": "예정",
-    "funFacts": "복무 통계",
-    "meals": "지금까지 밥을 약 {count}끼 먹었습니다",
-    "pxVisits": "PX를 약 {count}번 방문했습니다",
-    "sleeps": "군 생활 {count}번의 취침을 했습니다",
-    "copyResult": "결과 복사",
     "copied": "복사됨!",
-    "celebrationMessage": "전역을 진심으로 축하합니다! 🎉",
-    "nearDischargeMessage": "거의 다 왔습니다! 조금만 더 힘내세요!",
-    "shareText": "전역일: {date}\nD-Day: D-{dday}\n복무 진행률: {progress}%",
-    "sunday": "일요일",
-    "monday": "월요일",
-    "tuesday": "화요일",
-    "wednesday": "수요일",
-    "thursday": "목요일",
-    "friday": "금요일",
-    "saturday": "토요일",
     "guideTitle": "복무기간 안내",
-    "guideItems": [
-      "육군·해병대·카투사: 18개월",
-      "해군: 20개월",
-      "공군·사회복무요원: 21개월",
-      "의경·해경(전환복무): 18개월",
-      "산업기능요원: 23개월",
-      "전문연구요원: 36개월"
-    ],
     "guideCautionTitle": "주의사항",
     "guideCautionItems": [
       "복무기간은 2026년 기준이며 법령 개정 시 달라질 수 있어요. 현재 입대자에게 적용되는 복무 단축은 없어요.",
@@ -31430,6 +29540,12 @@
     ]
   },
   "capitalGainsTax": {
+    "fmt": {
+      "eok": "{e}억 {n}만",
+      "eokOnly": "{e}억",
+      "man": "{n}만",
+      "zero": "0"
+    },
     "tempRule": {
       "adjusted2": "종전·새 집 모두 조정대상지역, 새 집 2026.8.4 이후 취득 → 처분 기한 2년 (2026.10.1 시행령 개정)",
       "contract3": "2026.8.3까지 계약·계약금 지급 → 경과조치로 종전 규정 3년 적용",
@@ -31671,52 +29787,28 @@
     },
     "title": "양도소득세 계산기",
     "description": "2026년 10월 현행 기준 — 1세대 1주택 비과세·12억 고가주택, 장기보유특별공제, 단기·다주택 중과세율(2026.5.10~), 일시적 2주택 기한까지 반영",
-    "inputTitle": "양도 정보 입력",
     "salePrice": "양도가액",
-    "salePricePlaceholder": "500,000,000",
     "acqPrice": "취득가액",
-    "acqPricePlaceholder": "300,000,000",
     "expenses": "필요경비",
-    "expensesPlaceholder": "취득세, 중개수수료 등",
-    "expensesHint": "취득세·중개수수료·인테리어 비용 등 합계",
     "acqDate": "취득일",
     "saleDate": "양도일",
     "holdingPeriod": "보유기간",
     "yearsUnit": "년",
     "wonUnit": "원",
     "propertyType": "부동산 유형",
-    "propertyGeneral": "토지/건물",
-    "propertyHouse": "주택",
     "houseCount": "보유 주택 수",
-    "houseCount1": "1주택",
-    "houseCount2": "2주택",
-    "houseCount3plus": "3주택 이상",
-    "isAdjusted": "조정대상지역 소재",
     "residenceYears": "실거주 기간",
-    "surchargeNote": "2026년 5월 10일부터 다주택 중과 유예가 종료되어 조정대상지역 2주택 +20%p, 3주택 이상 +30%p가 적용됩니다. 2026.5.9 이전 매매계약 후 4개월(2025.10.16 신규 조정지역은 6개월) 이내 양도분은 유예가 유지되므로 해당 시 체크를 해제하세요.",
-    "applySurcharge": "다주택 중과세율 적용 (2026.5.10~ 원칙 적용)",
-    "exemptBadge": "1세대1주택 비과세 대상",
-    "exemptDesc": "보유·거주 요건 충족 및 양도가액 12억 이하 — 양도소득세 없음",
-    "partialExemptBadge": "1세대1주택 부분 비과세",
-    "partialExemptDesc": "양도가액 12억 초과 — 초과분에 해당하는 비율만 과세",
-    "taxableRatioLabel": "과세 적용",
     "totalTaxLabel": "총 납부세액",
     "calculatedTaxLabel": "산출세액",
     "localTaxLabel": "지방소득세",
-    "effectiveRateLabel": "실효세율",
     "breakdownTitle": "단계별 계산 내역",
     "transferProfitLabel": "양도차익",
-    "exemptAmountLabel": "비과세 공제액",
     "lthdLabel": "장기보유특별공제",
     "transferIncomeLabel": "양도소득금액",
     "basicDeductionLabel": "기본공제",
     "taxBaseLabel": "과세표준",
     "taxRateLabel": "세율",
-    "surchargeLabel": "중과",
     "progressiveDeductionLabel": "누진공제",
-    "lthdVisualTitle": "장기보유특별공제율",
-    "lthdVisualDesc": "공제액:",
-    "lthdVisualDeducted": "공제됨",
     "emptyState": "양도가액과 취득가액을 입력하면 양도소득세가 계산됩니다",
     "cautionTitle": "주의사항",
     "cautionItems": [
@@ -31747,7 +29839,6 @@
     "guideLthdTitle": "장기보유특별공제율",
     "guideLthdPeriod": "보유기간",
     "guideLthdGeneral": "일반",
-    "guideLthdOneHouse": "1세대1주택",
     "guideTaxRateTitle": "양도소득세 기본세율 (2026)",
     "guideTaxRateBase": "과세표준",
     "guideTaxRateRate": "세율"
@@ -31766,7 +29857,6 @@
     "addPair": "추가",
     "removePair": "삭제",
     "clearAll": "초기화",
-    "calculate": "계산",
     "arithmetic": "산술평균",
     "arithmeticDesc": "모든 값의 합 ÷ 개수",
     "weighted": "가중평균",
@@ -31786,7 +29876,6 @@
     "statVariance": "모분산 (÷n)",
     "statStdDev": "모표준편차 (÷n)",
     "statMedian": "중앙값",
-    "resultLabel": "결과",
     "guide": {
       "title": "평균 계산 가이드",
       "arithmetic": {
@@ -31946,17 +30035,6 @@
       "title": "나의 위치",
       "topLabel": "상위 {percent}%"
     },
-    "grades": [
-      "1등급",
-      "2등급",
-      "3등급",
-      "4등급",
-      "5등급",
-      "6등급",
-      "7등급",
-      "8등급",
-      "9등급"
-    ],
     "guide": {
       "title": "등급 계산 가이드",
       "gradeSystem": {
@@ -32055,13 +30133,6 @@
         "label": "내신 등급 계산기",
         "desc": "석차·총원으로 고교 내신 등급(5등급제·9등급제) 계산"
       }
-    },
-    "mode": {
-      "label": "변환 모드",
-      "45to43": "4.5 → 4.3",
-      "43to45": "4.3 → 4.5",
-      "percentToGpa": "백분위 → 학점",
-      "gpaToPercent": "학점 → 백분위"
     },
     "input": {
       "label": "입력값",
@@ -32638,6 +30709,14 @@
     }
   },
   "acquisitionTaxCalc": {
+    "fmt": {
+      "eok": "{e}억 {n}만",
+      "eokOnly": "{e}억",
+      "man": "{n}만",
+      "zero": "0",
+      "axisEok": "{e}억",
+      "axisMan": "{n}만"
+    },
     "u": {
       "subtitle": "2026년 지방세법 기준. 매매·상속·증여, 다주택 중과, 생애최초·출산 감면, 중개보수까지 넣은 집 살 때 총비용을 한 번에 계산합니다.",
       "mode": {
@@ -33024,6 +31103,13 @@
     }
   },
   "dsrCalc": {
+    "fmt": {
+      "eok": "{e}억 {n}만",
+      "eokOnly": "{e}억",
+      "man": "{n}만",
+      "zero": "0",
+      "axisEok": "{e}억"
+    },
     "a11y": {
       "addAmount": "{label}에 {amount}원 더하기",
       "kind": "신규 대출 종류",
@@ -33221,22 +31307,6 @@
       "salary-calculator": "연봉 실수령액 계산기"
     },
     "title": "DSR 계산기",
-    "result": {
-      "title": "계산 결과",
-      "currentDsr": "현재 DSR",
-      "safe": "안전",
-      "caution": "주의",
-      "danger": "위험",
-      "safeDesc": "DSR 40% 이하 — 은행 대출 가능",
-      "cautionDesc": "DSR 40~50% — 은행 대출 어려움, 2금융권 가능",
-      "dangerDesc": "DSR 50% 초과 — 추가 대출 매우 어려움",
-      "annualRepayment": "연간 원리금",
-      "annualRepaymentTitle": "연간 원리금 내역",
-      "newLoanLabel": "신규 대출",
-      "existingLoanLabel": "기존 대출",
-      "totalAnnual": "연간 총 원리금",
-      "annualIncome": "연소득"
-    },
     "stress": {
       "title": "스트레스 DSR",
       "description": "3단계 (2025.7 시행, 2026년 하반기 유지): 금리 상승 위험 반영",
@@ -33624,78 +31694,12 @@
     },
     "title": "전세대출 계산기",
     "description": "2026년 기준 전세자금대출 금리·한도·월이자를 자동 계산합니다",
-    "loanType": {
-      "title": "대출 유형",
-      "general": {
-        "label": "일반 버팀목",
-        "sub": "무주택 세대주",
-        "rate": "연 2.5~3.5%"
-      },
-      "youth": {
-        "label": "청년 버팀목",
-        "sub": "만 19~34세",
-        "rate": "연 1.3~4.3%"
-      },
-      "newlywed": {
-        "label": "신혼 버팀목",
-        "sub": "혼인 7년 이내",
-        "rate": "연 1.0~4.3%"
-      },
-      "bank": {
-        "label": "시중은행",
-        "sub": "일반 전세대출",
-        "rate": "연 3.5~5.0%"
-      }
-    },
-    "input": {
-      "deposit": "전세보증금",
-      "depositPlaceholder": "전세보증금을 입력하세요",
-      "loanAmount": "희망 대출금액",
-      "loanAmountPlaceholder": "희망 대출금액을 입력하세요",
-      "location": "소재지",
-      "locationCapital": "수도권 (서울·인천·경기)",
-      "locationLocal": "지방",
-      "income": "연소득 (부부합산)",
-      "incomePlaceholder": "부부합산 연소득",
-      "smeWorker": "중소기업 재직자 (우대금리 -0.3%p)",
-      "children": "자녀 수",
-      "children0": "없음",
-      "children1": "1명 (-0.3%p)",
-      "children2": "2명 (-0.5%p)",
-      "children3plus": "3명 이상 (-0.7%p)",
-      "bankRate": "금리 (연 %)",
-      "bankRatePlaceholder": "시중은행 금리 입력"
-    },
     "repayment": {
       "title": "상환 방식",
       "bullet": "만기일시상환",
       "equalPrincipalInterest": "원리금균등상환",
       "period": "대출 기간",
       "years": "년"
-    },
-    "result": {
-      "title": "계산 결과",
-      "appliedRate": "적용 금리",
-      "baseRate": "기본 금리",
-      "discount": "우대 할인",
-      "monthlyPayment": "월 상환액",
-      "monthlyInterest": "월 이자",
-      "loanLimit": "대출 한도",
-      "maxLoanByLTV": "LTV 기준 최대",
-      "maxLoanByType": "상품 한도",
-      "ltvRatio": "LTV 비율",
-      "totalInterest": "총 이자 비용",
-      "guaranteeFee": "보증료 예상",
-      "guaranteeFeeDesc": "대출금 × 0.15% × 기간(년) 기준 추정",
-      "eligibility": "자격 요건 체크",
-      "eligible": "충족",
-      "notEligible": "미충족",
-      "incomeCheck": "소득 기준",
-      "depositCheck": "보증금 한도",
-      "loanLimitCheck": "대출 한도",
-      "ltvWarning": "희망 대출금액이 LTV 한도를 초과합니다",
-      "noResult": "좌측 정보를 입력하면 결과가 표시됩니다",
-      "calculate": "계산하기"
     },
     "unit": {
       "wonShort": "원",
@@ -34276,11 +32280,6 @@
     "pensionSavings": "연금저축 납입액",
     "irp": "IRP(개인형퇴직연금) 납입액",
     "donation": "기부금",
-    "result": {
-      "refund": "환급 예상",
-      "additionalPayment": "추가 납부",
-      "breakeven": "납부세액 일치"
-    },
     "guide": {
       "title": "연말정산 가이드",
       "tips": {
@@ -35531,6 +33530,14 @@
     }
   },
   "cagrCalculator": {
+    "fmt": {
+      "eok": "{e}억 {n}만원",
+      "eokOnly": "{e}억원",
+      "man": "{n}만{r}원",
+      "won": "{n}원",
+      "axisEok": "{e}억",
+      "axisMan": "{n}만"
+    },
     "linkCopied": "복사됨",
     "title": "CAGR 계산기",
     "description": "연평균성장률(CAGR) 계산, 미래가치 예측, 투자 비교 분석을 한 곳에서",
@@ -35888,22 +33895,15 @@
     },
     "title": "바이오리듬 계산기",
     "description": "생년월일 기반 신체·감성·지성 리듬 차트와 호환성 분석",
-    "inputTitle": "기본 정보",
     "birthDate": "생년월일",
     "targetDate": "기준일",
-    "periodLabel": "표시 기간",
-    "periodDays": "{days}일",
     "daysLived": "태어난 지 {days}일째",
     "emptyState": "생년월일을 입력하면 바이오리듬을 확인할 수 있습니다.",
-    "todayTitle": "오늘의 바이오리듬",
-    "overallCondition": "종합 컨디션",
     "physical": "신체",
     "emotional": "감성",
     "intellectual": "지성",
     "today": "오늘",
-    "criticalDay": "위험일",
     "chartTitle": "바이오리듬 차트",
-    "calendarTitle": "캘린더 뷰",
     "status": {
       "high": "좋은 상태입니다. 활력이 넘치는 시기예요.",
       "medium": "보통 상태입니다. 안정적인 시기예요.",
@@ -36522,32 +34522,19 @@
     "title": "MBTI 성격유형 검사",
     "description": "48문항, 약 5분. 5단계로 답하는 무료 16유형 성격 테스트 (비공식)",
     "startTest": "검사 시작하기",
-    "question": "질문",
-    "of": "/",
-    "progress": "진행률",
     "prev": "이전",
-    "next": "다음",
     "seeResult": "결과 보기",
     "result": "검사 결과",
     "yourType": "당신의 유형",
     "typeDistribution": "지표별 분포",
-    "personality": "성격 특성",
     "strengths": "강점",
     "weaknesses": "약점",
-    "communicationStyle": "소통 스타일",
-    "loveStyle": "연애 스타일",
     "careers": "어울리는 일 (참고용)",
-    "famousPeople": "같은 유형 유명인",
-    "koreanPopulation": "한국 인구 비율",
     "retake": "다시 검사하기",
     "shareResult": "결과 공유하기",
-    "shareTitle": "나의 MBTI 검사 결과",
     "shareText": "나의 MBTI는 {type} ({nickname})! 나도 검사해보기 →",
     "copied": "링크가 복사되었습니다",
     "copyLink": "링크 복사",
-    "shareKakao": "카카오톡",
-    "shareX": "X (트위터)",
-    "downloadCard": "결과 카드 저장",
     "checkCompatibility": "궁합 보러가기",
     "disclaimer": "재미와 자기 이해를 위한 비공식 테스트예요. MBTI®는 The Myers-Briggs Company의 등록상표이며, 이 검사는 공식 MBTI 검사가 아닙니다.",
     "guide": {
@@ -36648,12 +34635,12 @@
     "allOptions": "전체 옵션 레퍼런스"
   },
   "mbtiCompatibility": {
+    "cellLabel": "{typeA} × {typeB}: 5점 중 {score}점",
     "loveStyle": "연애 스타일",
     "title": "MBTI 궁합 분석",
     "description": "두 MBTI 유형의 궁합을 상세히 분석합니다",
     "myType": "내 유형",
     "partnerType": "상대 유형",
-    "selectType": "유형 선택",
     "analyze": "궁합 분석하기",
     "matrix": "궁합 매트릭스",
     "matrixDesc": "유형을 클릭하면 상세 분석을 볼 수 있습니다",
@@ -36672,7 +34659,6 @@
     "datingStrengths": "연애 중 장점",
     "conflictPoints": "갈등 포인트",
     "advice": "극복 방법 / 조언",
-    "summary": "한 줄 요약",
     "typeProfile": "유형 프로필",
     "backToMatrix": "매트릭스로 돌아가기",
     "legend": "범례",
@@ -37005,7 +34991,6 @@
     "statsMaxStreak": "최장 연속",
     "title": "네모로직",
     "description": "숫자 힌트로 칸을 칠해 그림을 완성하는 논리 퍼즐 게임",
-    "dailyBadge": "오늘의 퍼즐",
     "easy": "쉬움",
     "medium": "보통",
     "hard": "어려움",
@@ -37016,11 +35001,8 @@
     "helpClick": "탭하거나 드래그해서 여러 칸을 한 번에 칠하기/X 표시",
     "helpRightClick": "PC: 우클릭 = X 표시",
     "cell": "셀",
-    "winTitle": "축하합니다!",
-    "winMessage": "{size} 퍼즐을 {time}에 완료했습니다!",
     "share": "결과 공유",
     "copied": "복사됨!",
-    "playAgain": "다시 하기",
     "shareTitle": "네모로직",
     "statsTitle": "통계",
     "statsPlayed": "플레이 횟수",
@@ -37336,74 +35318,16 @@
     },
     "title": "색맹 시뮬레이터",
     "description": "색맹·색약인 사람에게 이미지와 색이 어떻게 보이는지 확인하세요. 차트·UI 색이 구분되는지도 바로 점검해 드려요.",
-    "uploadPrompt": "이미지를 드래그하거나 클릭하여 업로드",
-    "uploadSubPrompt": "JPG, PNG, WebP, GIF 지원 · 최대 10MB",
     "cameraButton": "카메라로 촬영",
     "sampleImages": "샘플 이미지",
     "sampleColorWheel": "색상환",
     "sampleIshihara": "이시하라 패턴",
     "sampleTrafficLight": "신호등",
-    "typeSelector": "색각이상 유형",
     "original": "원본",
     "simulated": "시뮬레이션",
     "sliderHint": "슬라이더를 드래그하여 원본·시뮬레이션을 비교하세요",
     "download": "필터 이미지 다운로드",
     "processing": "처리 중...",
-    "noImage": "이미지를 업로드하거나 샘플을 선택하세요",
-    "prevalence": "유병률",
-    "types": {
-      "normal": {
-        "name": "정상 시력",
-        "description": "색각 이상 없음"
-      },
-      "protanopia": {
-        "name": "적색맹 (Protanopia)",
-        "description": "L-원뿔세포 부재 — 빨간색을 인식하지 못함",
-        "prevalence": "남성 1%"
-      },
-      "deuteranopia": {
-        "name": "녹색맹 (Deuteranopia)",
-        "description": "M-원뿔세포 부재 — 초록색을 인식하지 못함",
-        "prevalence": "남성 1%"
-      },
-      "tritanopia": {
-        "name": "청황색맹 (Tritanopia)",
-        "description": "S-원뿔세포 부재 — 파란색을 인식하지 못함",
-        "prevalence": "0.002%"
-      },
-      "protanomaly": {
-        "name": "적색약 (Protanomaly)",
-        "description": "L-원뿔세포 기능 저하 — 빨간색 감도 약함",
-        "prevalence": "남성 1%"
-      },
-      "deuteranomaly": {
-        "name": "녹색약 (Deuteranomaly)",
-        "description": "M-원뿔세포 기능 저하 — 가장 흔한 유형",
-        "prevalence": "남성 5~6%"
-      },
-      "tritanomaly": {
-        "name": "청황색약 (Tritanomaly)",
-        "description": "S-원뿔세포 기능 저하 — 파란색 감도 약함",
-        "prevalence": "0.01%"
-      },
-      "achromatopsia": {
-        "name": "전색맹 (Achromatopsia)",
-        "description": "원뿔세포 기능 없음 — 세상이 흑백으로 보임",
-        "prevalence": "0.003%"
-      }
-    },
-    "infoPanel": {
-      "title": "색각이상 이해하기",
-      "whatIs": "색각이상이란?",
-      "whatIsText": "색각이상(色覺異常)은 눈의 원뿔세포(광수용체)가 선천적으로 없거나 기능이 저하되어 특정 색을 정상적으로 구분하지 못하는 상태입니다. X염색체 연관 유전이 많아 남성에게 더 흔하며(~8%), 여성은 약 0.5%에서 나타납니다.",
-      "designTip": "디자인 접근성 팁",
-      "designTipItems": [
-        "색상만으로 정보를 전달하지 말고 아이콘·패턴·텍스트를 함께 사용하세요",
-        "명도 대비를 충분히 확보하면 색각이상자도 정보를 인식하기 쉽습니다",
-        "적록색약을 고려해 빨강·초록 대신 파랑·주황을 주요 대비 색으로 사용하세요",
-        "데이터 시각화 시 다색맹 친화 팔레트(예: Okabe-Ito)를 사용하세요"
-      ]
-    },
     "guide": {
       "howItWorks": {
         "title": "동작 원리",
@@ -37583,36 +35507,20 @@
     },
     "title": "화면 크기 비교",
     "description": "모니터·TV·노트북·폰 화면을 인치와 해상도로 비교하세요. 실제 가로·세로(cm), 면적 차이, PPI, 배율 적용 작업공간, 권장 시청거리까지 한 번에 보여줘요.",
-    "category": {
-      "all": "전체",
-      "phone": "스마트폰",
-      "tablet": "태블릿",
-      "monitor": "모니터",
-      "laptop": "노트북"
-    },
-    "deviceN": "기기 {n}",
     "selectDevice": "기기 선택",
-    "customSize": "+ 직접 입력",
-    "customTitle": "직접 입력",
-    "customName": "기기 이름",
     "customDiagonal": "화면 크기 (인치)",
     "customWidth": "가로 픽셀",
     "customHeight": "세로 픽셀",
-    "add": "추가",
-    "cancel": "취소",
     "remove": "제거",
     "addDevice": "기기 추가",
     "visualTitle": "같은 축척으로 겹쳐 보기",
-    "scaleNote": "※ 화면 크기 비율을 유지해 표시합니다 (실제 크기와 다를 수 있음)",
     "specsTitle": "상세 비교",
     "spec": "항목",
-    "specCategory": "카테고리",
     "specDiagonal": "화면 크기",
     "specResolution": "해상도",
     "specAspect": "화면 비율",
     "specArea": "화면 면적",
     "specTotalPixels": "총 픽셀 수",
-    "empty": "없음",
     "ppiGuide": {
       "title": "PPI 가이드",
       "retina": "레티나 급 초고해상도",
@@ -37732,13 +35640,10 @@
     "down": "세로 힌트",
     "acrossShort": "가로",
     "downShort": "세로",
-    "check": "검사",
     "revealWord": "단어 공개",
     "reset": "모두 지우기",
     "daily": "오늘의 퍼즐",
     "puzzle": "퍼즐",
-    "congratulations": "축하합니다! 퍼즐을 완성했습니다!",
-    "completedIn": "{time}에 완성했습니다",
     "hint": "칸을 누르고 한글로 입력하세요. 같은 칸을 다시 누르거나 Space로 가로/세로 전환, Tab으로 다음 단어, 화살표로 이동합니다.",
     "guide": {
       "title": "풀이 가이드",
@@ -37769,7 +35674,6 @@
     "calculating": "궁합 계산 중...",
     "resultTitle": "궁합 결과",
     "score": "점",
-    "compatibility": "궁합 점수",
     "inputError": "두 사람의 이름을 모두 입력해주세요",
     "nameError": "한글 이름만 입력 가능합니다",
     "and": "♥",
@@ -37781,7 +35685,6 @@
       "belowAverage": "조금 아쉬운 궁합이에요. 하지만 사랑은 노력! 💪",
       "low": "궁합이 조금 낮아요. 그래도 사랑에는 장애물이 없죠! ❤️"
     },
-    "process": "계산 과정",
     "step1": "ㅇ/ㅎ 변환",
     "step2": "획수 계산",
     "step3": "인접 합산",
@@ -37855,7 +35758,6 @@
     "worstColors": "피해야 할 컬러",
     "celebrities": "같은 퍼스널컬러 연예인",
     "fashionTips": "패션 & 메이크업 팁",
-    "colorPalette": "추천 컬러 팔레트",
     "types": {
       "springWarm": {
         "name": "봄 웜톤",
@@ -38197,26 +36099,13 @@
     "cycleLength": "생리 주기",
     "periodLength": "생리 기간",
     "days": "일",
-    "calculate": "계산하기",
-    "reset": "초기화",
-    "result": "예측 결과",
     "ovulationDate": "배란 예정일",
     "fertileWindow": "가임기",
     "nextPeriod": "다음 생리 예정일",
-    "safeEarly": "안전기 (초기)",
-    "safeLate": "안전기 (후기)",
-    "to": "~",
     "calendar": "6개월 달력",
     "legend": "범례",
-    "legendPeriod": "생리 기간",
-    "legendFertile": "가임기",
-    "legendOvulation": "배란일",
-    "legendSafe": "안전기",
     "dueDateLink": "출산 예정일 계산기",
     "disclaimer": "이 계산기는 평균적인 주기를 가정한 추정치이며 의학적 진단이나 피임 수단이 아닙니다. 주기가 21일보다 짧거나 45일보다 길거나, 3개월 이상 생리가 없거나, 1년(35세 이상은 6개월) 이상 임신을 시도해도 되지 않으면 산부인과 전문의와 상담하세요.",
-    "shareButton": "결과 공유",
-    "copyLinkButton": "링크 복사",
-    "linkCopied": "링크가 복사되었습니다!",
     "months": [
       "1월",
       "2월",
@@ -38380,19 +36269,9 @@
     },
     "title": "수능 등급컷 계산기",
     "description": "국어·수학·영어·한국사·탐구 원점수로 예상 등급, 등급 평균, 수능최저 충족 여부를 한 번에 확인하세요",
-    "year": "수능 연도",
     "subject": "과목 선택",
-    "rawScore": "원점수",
-    "standardScore": "표준점수",
-    "percentile": "백분위",
     "grade": "등급",
-    "calculate": "등급 확인",
-    "reset": "초기화",
-    "result": "등급 판정 결과",
-    "gradeResult": "등급",
-    "yourScore": "내 점수",
     "cutoff": "등급컷",
-    "maxScore": "만점",
     "subjects": {
       "korean": "국어",
       "math": "수학",
@@ -38401,23 +36280,9 @@
       "socialStudies": "사회탐구",
       "science": "과학탐구"
     },
-    "subjectDetail": {
-      "korean": "국어 (화법과 작문, 언어와 매체 선택)",
-      "mathCalc": "수학 (미적분/기하 선택)",
-      "mathProb": "수학 (확률과 통계 선택)",
-      "english": "영어 (절대평가)",
-      "koreanHistory": "한국사 (절대평가)",
-      "socialStudies": "사회탐구 (과목 평균 추정)",
-      "science": "과학탐구 (과목 평균 추정)"
-    },
     "absoluteGrade": "절대평가",
-    "relativeGrade": "상대평가",
     "gradeTable": "등급컷 표",
-    "allGrades": "전체 등급컷 보기",
     "gradeRange": "점수 구간",
-    "shareButton": "결과 공유",
-    "copyLinkButton": "링크 복사",
-    "linkCopied": "링크가 복사되었습니다!",
     "disclaimer": "등급컷은 2026학년도 수능(2025년 11월 시행) 확정 등급컷 기준이며, 올해 수능의 실제 등급컷은 난이도에 따라 달라집니다. 공식 성적은 한국교육과정평가원 성적통지표로 확인하세요.",
     "guide": {
       "title": "수능 등급 가이드",
@@ -38488,16 +36353,7 @@
     "description": "로또·복권 당첨금에 부과되는 세금을 계산하고 실수령액을 확인하세요",
     "prizeAmount": "당첨금액",
     "prizeAmountPlaceholder": "당첨 금액을 입력하세요",
-    "prizeType": "당첨 유형",
-    "prizeTypes": {
-      "lotto": "로또 6/45",
-      "pension": "연금복권 520+",
-      "speetto": "스피또",
-      "scratch": "즉석복권",
-      "custom": "기타 복권"
-    },
     "calculate": "계산하기",
-    "reset": "초기화",
     "linkCopied": "복사됨",
     "copyLink": "링크 복사",
     "result": "세금 계산 결과",
@@ -38511,11 +36367,9 @@
     "localTax": "지방소득세",
     "taxRate22": "22% (소득세 20% + 지방소득세 2%)",
     "taxRate33": "33% (소득세 30% + 지방소득세 3%)",
-    "threshold": "3억원",
     "belowThreshold": "3억 이하 구간",
     "aboveThreshold": "3억 초과 구간",
     "noTax": "비과세 (건별 200만원 이하)",
-    "taxFree": "비과세",
     "quickAmounts": "빠른 입력",
     "rankPresets": "로또 등수별 평균 당첨금",
     "rank1": "1등",
@@ -38523,15 +36377,12 @@
     "rank3": "3등",
     "rank4": "4등",
     "rank5": "5등",
-    "avgPrize": "평균 당첨금",
     "comparisonTitle": "당첨금별 세금 비교",
     "comparisonDesc": "다양한 당첨금 금액에 대한 세금과 실수령액을 비교합니다",
     "chartTitle": "당첨금 구성",
     "chartNetPrize": "실수령액",
     "chartTax": "세금",
     "won": "원",
-    "man": "만",
-    "eok": "억",
     "guide": {
       "title": "복권 당첨금 세금 가이드",
       "taxStructure": {
@@ -38811,7 +36662,6 @@
     "protein": "단백질",
     "fat": "지방",
     "carbs": "탄수화물",
-    "recommended": "권장량",
     "breakfast": "아침",
     "lunch": "점심",
     "dinner": "저녁",
@@ -38820,11 +36670,7 @@
     "addFood": "추가",
     "addManual": "직접 입력",
     "customFood": "음식 이름",
-    "portion": "인분",
-    "delete": "삭제",
     "cal": "kcal",
-    "gram": "g",
-    "note": "메모",
     "notePlaceholder": "오늘의 식단 메모...",
     "noMeals": "등록된 식사가 없습니다",
     "addFirst": "위에서 음식을 검색하여 추가하세요",
@@ -38950,9 +36796,7 @@
     "salaryPlaceholder": "연봉을 입력하세요",
     "salaryHint": "세전 연봉 기준 (4대보험·세금 공제 전)",
     "won": "원",
-    "calculate": "순위 확인",
     "reset": "초기화",
-    "linkCopied": "복사됨",
     "copyLink": "링크 복사",
     "enterSalary": "연봉을 입력하고 순위를 확인하세요",
     "ageGroup": "연령대 (선택)",
@@ -38985,9 +36829,6 @@
       "legal": "법률/회계"
     },
     "dataSource": "데이터 출처",
-    "dataSourceDesc": "국세청 근로소득 백분위(천분위) 자료 (2024년 귀속), 통계청 경제활동인구조사, 고용노동부 고용형태별근로실태조사",
-    "yourSalary": "내 연봉",
-    "overallRank": "한국 전체 근로소득자 중",
     "top": "상위",
     "beatsPercent": "전체 근로소득자의 {percent}%보다 많이 벌어요",
     "share": "공유하기",
@@ -38996,9 +36837,6 @@
     "industryComparison": "같은 직업군 비교",
     "median": "중위연봉",
     "average": "평균연봉",
-    "distributionChart": "한국 근로소득 분포",
-    "workerPercent": "근로자 비율",
-    "chartNote": "파란 막대 = 내 위치 · 출처: 국세청 근로소득 백분위(2024년 귀속)",
     "contributeTitle": "익명 데이터 기여하기",
     "contributeDesc": "내가 입력한 연봉을 익명으로 보내면 커뮤니티 통계가 더 정확해져요",
     "contributeBtn": "기여하기",
@@ -39463,7 +37301,6 @@
     "childrenUnder20": "8~20세 자녀 수 (가족 수에 포함)",
     "nonTaxable": "비과세 금액 (월)",
     "nonTaxablePlaceholder": "식대 등 (기본 200,000)",
-    "calculate": "계산하기",
     "reset": "초기화",
     "result": {
       "nowNet": "이번 달 입금액 (원천징수 기준)",
@@ -40067,6 +37904,7 @@
     "title": "AABB 충돌감지 시각화",
     "description": "Axis-Aligned Bounding Box — 축 정렬 바운딩 박스로 두 사각형의 충돌을 판정합니다",
     "tabs": {
+      "guide": "가이드",
       "steps": "단계별",
       "code": "코드"
     },
@@ -44186,9 +42024,7 @@
     "title": "펜윅 트리 (BIT) 시각화",
     "description": "바이너리 인덱스 트리의 누적합 업데이트와 구간 쿼리를 O(log n)으로 처리하는 과정을 학습하세요",
     "array": "원본 배열",
-    "bitArray": "BIT 배열",
     "update": "값 변경",
-    "query": "누적합 쿼리",
     "prefixSum": "누적합",
     "rangeSum": "구간합",
     "index": "인덱스",
@@ -44289,13 +42125,8 @@
     "check": "검색",
     "insertValue": "삽입할 값",
     "checkValue": "검색할 값",
-    "clear": "초기화",
-    "bitArray": "비트 배열",
     "hashFunctions": "해시 함수 수",
     "bitSize": "비트 배열 크기",
-    "insertedCount": "삽입된 원소",
-    "fillRate": "채움률",
-    "fpRate": "이론적 거짓 양성률",
     "definitelyNot": "확실히 없음",
     "probablyIn": "있을 수 있음 (거짓 양성 가능)",
     "definitelyIn": "삽입됨",
@@ -44398,17 +42229,6 @@
     "title": "프림 MST 시각화",
     "description": "정점 기반으로 최소 신장 트리를 구성하는 프림 알고리즘을 단계별로 학습하세요",
     "startNode": "시작 정점",
-    "run": "실행",
-    "reset": "초기화",
-    "randomGraph": "랜덤 그래프",
-    "nodeCount": "정점 수",
-    "totalWeight": "총 가중치",
-    "edgesAdded": "추가된 간선",
-    "currentStep": "현재 단계",
-    "mstComplete": "MST 완성",
-    "visited": "방문됨",
-    "candidate": "후보 간선",
-    "selected": "선택됨",
     "tabs": {
       "steps": "단계별",
       "code": "코드",
@@ -44504,19 +42324,13 @@
   "floydWarshallVisualizer": {
     "title": "플로이드-워셜 시각화",
     "description": "모든 정점 쌍 간 최단 경로를 동적 프로그래밍으로 구하는 과정을 거리 행렬로 학습하세요",
-    "run": "실행",
-    "reset": "초기화",
     "randomGraph": "랜덤 그래프",
-    "nodeCount": "정점 수",
     "allowNegative": "음수 가중치 허용",
     "distanceMatrix": "거리 행렬",
     "intermediateNode": "경유 정점 k",
-    "iteration": "반복",
     "updated": "갱신됨",
-    "infinity": "∞",
     "negativeCycle": "음수 사이클 감지",
     "path": "경로",
-    "selectPair": "시작/끝 정점 선택",
     "guide": {
       "title": "플로이드-워셜 가이드",
       "whatIs": {
@@ -44612,10 +42426,7 @@
   "tarjanSccVisualizer": {
     "title": "타잔 SCC 시각화",
     "description": "DFS 기반으로 방향 그래프의 강연결 요소(Strongly Connected Components)를 찾는 과정을 학습하세요",
-    "run": "실행",
-    "reset": "초기화",
     "randomGraph": "랜덤 그래프",
-    "nodeCount": "정점 수",
     "sccCount": "SCC 수",
     "currentStep": "현재 단계",
     "discoveryTime": "발견 시간",
@@ -44716,8 +42527,6 @@
   "eulerPathVisualizer": {
     "title": "오일러 경로 시각화",
     "description": "그래프의 모든 간선을 정확히 한 번씩 지나는 오일러 경로와 회로를 찾는 과정을 학습하세요",
-    "run": "실행",
-    "reset": "초기화",
     "randomGraph": "랜덤 그래프",
     "nodeCount": "정점 수",
     "edgeCount": "간선 수",
@@ -44730,7 +42539,6 @@
     "visited": "방문된 간선",
     "remaining": "남은 간선",
     "directed": "방향 그래프",
-    "undirected": "무방향 그래프",
     "tabs": {
       "steps": "단계별",
       "code": "코드",
@@ -44814,17 +42622,13 @@
     "description": "두 문자열 간 최소 편집 연산(삽입·삭제·치환)을 DP 테이블로 단계별 학습하세요",
     "string1": "문자열 A",
     "string2": "문자열 B",
-    "run": "계산",
-    "reset": "초기화",
     "result": "편집 거리",
     "operations": "연산 목록",
     "insert": "삽입",
     "delete": "삭제",
     "replace": "치환",
     "match": "일치",
-    "dpTable": "DP 테이블",
     "currentCell": "현재 셀",
-    "backtrack": "역추적 경로",
     "tabs": {
       "steps": "단계별",
       "code": "코드",
@@ -44910,14 +42714,9 @@
     "coins": "동전 종류",
     "amount": "목표 금액",
     "run": "계산",
-    "reset": "초기화",
     "result": "최소 동전 수",
     "impossible": "불가능",
-    "dpArray": "DP 배열",
     "selectedCoins": "선택된 동전",
-    "currentAmount": "현재 금액",
-    "addCoin": "동전 추가",
-    "removeCoin": "동전 제거",
     "tabs": {
       "steps": "단계",
       "code": "코드",
@@ -45014,16 +42813,12 @@
     "description": "수열에서 가장 긴 증가하는 부분수열을 찾는 DP와 이진탐색 기법을 학습하세요",
     "sequence": "수열",
     "run": "실행",
-    "reset": "초기화",
     "random": "랜덤 생성",
     "length": "LIS 길이",
     "subsequence": "LIS",
     "method": "방법",
     "dpMethod": "DP O(n²)",
     "binarySearchMethod": "이진탐색 O(n log n)",
-    "dpArray": "DP 배열",
-    "tailsArray": "Tails 배열",
-    "currentElement": "현재 원소",
     "tabs": {
       "steps": "단계",
       "code": "코드",
@@ -45118,15 +42913,9 @@
     "text": "텍스트",
     "pattern": "패턴",
     "run": "검색",
-    "reset": "초기화",
     "base": "해시 베이스",
     "modulo": "모듈러",
-    "textHash": "텍스트 해시",
-    "patternHash": "패턴 해시",
-    "match": "일치",
-    "hashCollision": "해시 충돌 (거짓 양성)",
     "found": "패턴 발견",
-    "notFound": "패턴 없음",
     "comparisons": "비교 횟수",
     "tabs": {
       "steps": "단계",
@@ -45216,12 +43005,6 @@
     "build": "빌드",
     "search": "패턴 검색",
     "pattern": "패턴",
-    "reset": "초기화",
-    "suffixes": "접미사 목록",
-    "sortedOrder": "정렬 순서",
-    "lcpArray": "LCP 배열",
-    "found": "패턴 발견",
-    "notFound": "패턴 없음",
     "position": "위치",
     "tabs": {
       "steps": "단계",
@@ -45312,18 +43095,10 @@
     "description": "빈도 기반 최적 접두사 코드를 생성하는 탐욕 알고리즘으로 데이터 압축 원리를 학습하세요",
     "text": "입력 텍스트",
     "encode": "인코딩",
-    "decode": "디코딩",
-    "reset": "초기화",
-    "frequency": "빈도",
-    "codeTable": "코드 테이블",
-    "character": "문자",
     "code": "허프만 코드",
-    "bits": "비트 수",
     "originalSize": "원본 크기",
     "compressedSize": "압축 크기",
     "ratio": "압축률",
-    "tree": "허프만 트리",
-    "encoded": "인코딩 결과",
     "tabs": {
       "steps": "단계",
       "code": "코드",
@@ -45461,7 +43236,6 @@
     "windowSize": "윈도우 크기",
     "target": "목표값",
     "run": "실행",
-    "reset": "초기화",
     "random": "랜덤 생성",
     "mode": "모드",
     "fixedWindow": "고정 크기",
@@ -45472,7 +43246,6 @@
     "currentSum": "현재 합",
     "bestResult": "최적 결과",
     "left": "왼쪽 포인터",
-    "right": "오른쪽 포인터",
     "tabs": {
       "steps": "단계",
       "code": "코드",
@@ -45795,24 +43568,8 @@
     "title": "국가사업 청년월세지원 계산기",
     "description": "2026년 국가사업 기준으로 간이 요건과 기수혜 회차를 반영한 예상 지원금을 확인하세요.",
     "age": "만 나이",
-    "ageUnit": "세",
-    "birthYear": "출생연도",
-    "birthMonth": "출생월",
-    "independentHousehold": "독립 거주 여부",
-    "independentDesc": "부모와 별도 주소지에서 거주 중",
-    "homeOwnership": "주택 소유 여부",
-    "noHome": "무주택",
     "hasHome": "주택 소유",
-    "monthlyIncome": "본인 월 소득",
-    "monthlyIncomeDesc": "세전 근로소득 + 사업소득 합계",
-    "householdIncome": "원가구(부모) 월 소득",
-    "householdIncomeDesc": "부모님 가구의 월 소득 합계",
     "householdSize": "원가구 가구원 수",
-    "householdSizeUnit": "명",
-    "personalAssets": "본인 총 재산",
-    "personalAssetsDesc": "부동산 + 금융자산 + 자동차 시가 합계",
-    "currentRent": "현재 월세",
-    "currentDeposit": "현재 보증금",
     "housingType": "주거 유형",
     "housingTypes": {
       "officetel": "오피스텔",
@@ -45823,35 +43580,15 @@
     },
     "yes": "예",
     "no": "아니오",
-    "check": "자격 확인하기",
-    "reset": "초기화",
-    "resultTitle": "청년월세 지원 자격 확인 결과",
     "eligible": "간이 요건 충족",
-    "notEligible": "간이 요건 미충족",
     "borderline": "경계 (추가 확인 필요)",
-    "estimatedMonthly": "예상 월 지원금",
-    "estimatedTotal": "예상 잔여 지원 총액",
-    "maxSupport": "최대 월 20만원",
-    "supportPeriod": "생애 누적 최대 24회 (기수혜 회차 차감)",
     "checklistTitle": "자격 요건 체크리스트",
-    "conditions": {
-      "ageRange": "만 19~34세",
-      "independent": "독립 거주 (부모와 별도 주소지)",
-      "noHomeOwner": "무주택자",
-      "incomeBelow": "본인 소득 중위소득 60% 이하",
-      "householdIncomeBelow": "원가구 소득 중위소득 100% 이하",
-      "assetBelow": "본인 재산 1.22억원 이하",
-      "rentRange": "실제 납부하는 월세 있음"
-    },
     "pass": "충족",
     "fail": "미충족",
-    "applicationInfo": "신청 안내",
-    "howToApply": "신청 방법",
     "applyMethods": [
       "복지로 온라인 신청 (2026년 신규 접수 종료)",
       "주소지 관할 주민센터 방문 신청 (공식 접수기간 확인)"
     ],
-    "requiredDocs": "필요 서류",
     "docsList": [
       "신분증 (주민등록증 또는 운전면허증)",
       "임대차계약서 사본",
@@ -45861,7 +43598,6 @@
       "가족관계증명서"
     ],
     "disclaimer": "간이 요건과 예상액만 확인합니다. 소득공제·부채·원가구 재산·가구 구성·중복지원·주거급여 차감·출생연도별 자격 등은 모두 반영하지 않으며, 실제 선정 및 지급은 공식 심사로 결정됩니다. 접수 종료 안내와 계산 결과는 별개입니다.",
-    "medianIncomeRef": "2026년 기준 중위소득",
     "guide": {
       "title": "가이드",
       "whatIs": {
@@ -46168,71 +43904,6 @@
       }
     },
     "title": "전기차 보조금 계산기",
-    "description": "전기차 구매 시 받을 수 있는 국비·지방비 보조금을 차종과 지역별로 계산합니다.",
-    "vehicleInfo": "차량 정보 입력",
-    "vehicleType": "차량 유형",
-    "typePassenger": "승용차",
-    "typeSuv": "SUV",
-    "typeTruck": "소형 화물차",
-    "typeVan": "승합차",
-    "vehiclePrice": "차량 가격",
-    "unitMwan": "만원",
-    "priceUnder55": "5,500만원 미만",
-    "price5585": "5,500~8,500만원",
-    "priceOver85": "8,500만원 이상",
-    "gateFullLabel": "(보조금 100%)",
-    "gate50Label": "(보조금 50%)",
-    "gate0Label": "(보조금 없음)",
-    "drivingRange": "1회 충전 주행거리",
-    "batteryCapacity": "배터리 용량",
-    "region": "등록 지역",
-    "regionSeoul": "서울",
-    "regionBusan": "부산",
-    "regionDaegu": "대구",
-    "regionIncheon": "인천",
-    "regionGwangju": "광주",
-    "regionDaejeon": "대전",
-    "regionUlsan": "울산",
-    "regionSejong": "세종",
-    "regionGyeonggi": "경기",
-    "regionGangwon": "강원",
-    "regionChungbuk": "충북",
-    "regionChungnam": "충남",
-    "regionJeonbuk": "전북",
-    "regionJeonnam": "전남",
-    "regionGyeongbuk": "경북",
-    "regionGyeongnam": "경남",
-    "regionJeju": "제주",
-    "calculate": "보조금 계산하기",
-    "reset": "초기화",
-    "popularModels": "인기 차종 빠른 입력",
-    "model_ioniq5": "현대 아이오닉5",
-    "model_ioniq6": "현대 아이오닉6",
-    "model_ev6": "기아 EV6",
-    "model_ev9": "기아 EV9",
-    "model_rayEv": "기아 레이 EV",
-    "model_model3": "테슬라 모델3",
-    "model_modelY": "테슬라 모델Y",
-    "model_gv60": "제네시스 GV60",
-    "subsidySummary": "보조금 계산 결과",
-    "nationalSubsidy": "국비 보조금",
-    "localSubsidy": "지방비 보조금",
-    "totalSubsidy": "총 보조금",
-    "finalPrice": "실 구매가격",
-    "performanceBreakdown": "성능 평가 상세",
-    "priceGate": "가격 기준 지급률",
-    "rangeScore": "주행거리 점수",
-    "efficiencyScore": "에너지 효율 점수",
-    "batteryScore": "배터리 용량 점수",
-    "overallPerformance": "종합 성능 비율",
-    "resultPlaceholder": "차량 정보를 입력하고 계산하기 버튼을 눌러주세요",
-    "regionComparisonTitle": "지역별 보조금 비교",
-    "selected": "선택됨",
-    "enterInfoFirst": "차량 정보를 먼저 입력해 주세요",
-    "modelsComparisonTitle": "인기 차종별 보조금 비교",
-    "regionLabel": "지역",
-    "model": "차종",
-    "price": "차량 가격",
     "guide": {
       "title": "가이드",
       "whatIs": {
@@ -46400,7 +44071,6 @@
     "stateChecked": "확인 완료",
     "stateUnchecked": "미확인",
     "stateNa": "해당 없음",
-    "checklistTitle": "체크리스트",
     "categories": {
       "registry": "등기부등본 확인",
       "landlord": "임대인 확인",
@@ -46455,13 +44125,6 @@
     "riskDangerDesc": "심각한 위험 요소가 있습니다. 계약을 재고하세요",
     "checked": "확인 완료",
     "unchecked": "미확인",
-    "notApplicable": "해당 없음",
-    "totalItems": "전체 항목",
-    "saveResult": "결과 저장",
-    "shareResult": "결과 공유",
-    "printResult": "인쇄하기",
-    "reset": "초기화",
-    "emergencyContacts": "긴급 연락처",
     "contacts": {
       "hug": "주택도시보증공사(HUG)",
       "hugDesc": "전세보증보험 상담 및 가입",
@@ -46547,19 +44210,6 @@
       "web": "웹 기초",
       "webDesc": "HTML/CSS/JS, 브라우저 렌더링, REST API 등"
     },
-    "categoryDescriptions": {
-      "dataStructures": "배열, 스택, 큐, 트리, 해시테이블 등",
-      "algorithms": "정렬, 탐색, 시간복잡도, 재귀 등",
-      "network": "TCP/UDP, HTTP, DNS, OSI 7계층 등",
-      "networking": "TCP/UDP, HTTP, DNS, OSI 7계층 등",
-      "os": "프로세스, 스레드, 메모리, 스케줄링 등",
-      "database": "SQL, 정규화, 인덱스, 트랜잭션 등",
-      "architecture": "CPU, 메모리 계층, 캐시, 파이프라인 등",
-      "softwareEngineering": "디자인패턴, SOLID, 애자일, 테스트 등",
-      "security": "암호화, 인증, OWASP, XSS/SQL인젝션 등",
-      "linux": "명령어, 권한, 쉘스크립트, 프로세스 관리 등",
-      "web": "HTML/CSS/JS, 브라우저 렌더링, REST API 등"
-    },
     "difficulties": {
       "beginner": "입문",
       "beginnerDesc": "CS 입문자를 위한 기본 개념",
@@ -46568,24 +44218,11 @@
       "advanced": "심화",
       "advancedDesc": "심화 개념과 응용 문제"
     },
-    "difficultyDescriptions": {
-      "beginner": "CS 입문자를 위한 기본 개념",
-      "intermediate": "면접 대비 수준의 문제",
-      "advanced": "심화 개념과 응용 문제"
-    },
     "startQuiz": "퀴즈 시작",
-    "questionCount": "문제",
-    "questionOf": "{current} / {total}",
     "nextQuestion": "다음 문제",
     "prevQuestion": "이전 문제",
-    "submitQuiz": "결과 확인",
     "correct": "정답!",
     "incorrect": "오답",
-    "explanation": "해설",
-    "score": "점수",
-    "scoreResult": "{score} / {total}",
-    "percentage": "{percent}%",
-    "grade": "등급",
     "grades": {
       "A": "A (90점 이상)",
       "B": "B (80점 이상)",
@@ -46593,32 +44230,10 @@
       "D": "D (60점 이상)",
       "F": "F (60점 미만)"
     },
-    "gradeMessages": {
-      "A": "훌륭합니다! CS 기초가 탄탄하네요!",
-      "B": "잘했습니다! 조금만 더 공부하면 완벽해요.",
-      "C": "괜찮아요! 틀린 문제를 복습하면 금방 늘어요.",
-      "D": "기초부터 다시 정리해보세요.",
-      "F": "아직 갈 길이 멀어요. 꾸준히 공부해봅시다!"
-    },
-    "resultTitle": "퀴즈 결과",
-    "wrongAnswers": "오답 노트",
-    "wrongAnswersDesc": "틀린 문제를 다시 확인하세요",
-    "noWrongAnswers": "모든 문제를 맞혔습니다!",
     "yourAnswer": "내 답",
     "correctAnswer": "정답",
-    "retryQuiz": "다시 풀기",
     "retryWrong": "오답만 다시 풀기",
-    "changeCategory": "다른 카테고리",
-    "shareResult": "결과 공유",
     "copied": "복사됨!",
-    "timeSpent": "소요 시간",
-    "minutes": "분",
-    "seconds": "초",
-    "progressLabel": "진행률",
-    "allCategories": "전체",
-    "questionCountLabel": "{count}문제",
-    "answered": "답변 완료",
-    "unanswered": "미답변",
     "questionsUnit": "문제",
     "questionLabel": "문제",
     "showResult": "결과 보기",
@@ -46681,32 +44296,22 @@
     "downloadZip": "ZIP 다운로드",
     "downloadMerged": "세로 이미지로 합치기",
     "downloading": "다운로드 중...",
-    "merging": "이미지 합치는 중...",
     "filterMinSize": "최소 크기 (px)",
-    "filterType": "파일 형식",
     "allTypes": "전체",
     "copyUrl": "URL 복사",
     "openOriginal": "원본 보기",
     "downloadSingle": "다운로드",
-    "imageSize": "{width} × {height}",
     "unknownSize": "크기 미확인",
     "loadError": "로딩 실패",
     "fetchError": "페이지를 가져올 수 없습니다. URL을 확인해주세요.",
-    "corsError": "CORS 제한으로 접근할 수 없는 페이지입니다.",
     "mergedFilename": "merged-images.png",
     "zipFilename": "images.zip",
     "recentUrls": "최근 URL",
     "clearHistory": "기록 삭제",
-    "imageCount": "이미지",
-    "fileSize": "파일 크기",
-    "dimensions": "크기",
     "mergeGap": "이미지 간격",
     "mergeBackground": "배경색",
     "mergeWidth": "출력 너비",
-    "previewMerge": "합치기 미리보기",
     "viewDeduped": "중복 제거",
-    "viewGrouped": "그룹별",
-    "viewAll": "전체",
     "dedupRemoved": "중복 {count}개 제거",
     "quickSelect": "빠른 선택",
     "sizeXL": "800px+",
@@ -47392,13 +44997,10 @@
     "draw": "무승부",
     "yourChoice": "내 선택",
     "cpuChoice": "상대 선택",
-    "result": "결과",
     "round": "라운드",
-    "score": "점수",
     "history": "히스토리",
     "reset": "초기화",
     "play": "대결",
-    "nextRound": "다음 라운드",
     "bestOf3": "3판 2선승",
     "bestOf5": "5판 3선승",
     "bestOf7": "7판 4선승",
@@ -47406,8 +45008,6 @@
     "addPlayer": "추가",
     "startTournament": "토너먼트 시작",
     "winner": "우승",
-    "bracket": "대진표",
-    "semifinals": "준결승",
     "finals": "결승",
     "stats": "전적",
     "winRate": "승률",
@@ -47454,17 +45054,8 @@
     "category": "카테고리",
     "custom": "직접 입력",
     "addItem": "항목을 추가하세요",
-    "removeItem": "삭제",
-    "catCompany": "회식",
-    "catMt": "MT/여행",
-    "catCouple": "커플",
-    "catLight": "가벼운",
     "reroll": "다시 돌리기",
     "reset": "초기화",
-    "intensity": "강도",
-    "easy": "가벼운",
-    "medium": "보통",
-    "hard": "강력",
     "penaltyIs": "벌칙 당첨!",
     "ready": "룰렛을 돌려보세요!",
     "history": "최근 결과",
@@ -47531,11 +45122,7 @@
     "timeUp": "시간 종료!",
     "fullscreen": "전체화면",
     "exitFullscreen": "전체화면 종료",
-    "players": "플레이어",
-    "turnTime": "턴 시간",
     "currentPlayer": "현재 플레이어",
-    "nextPlayer": "다음 플레이어",
-    "playerName": "플레이어 이름",
     "addPlayer": "추가",
     "perTurn": "턴당",
     "guide": {
@@ -49175,6 +46762,15 @@
     }
   },
   "brokerageFee": {
+    "fmt": {
+      "eok": "{e}억 {n}만",
+      "eokOnly": "{e}억",
+      "man": "{n}만",
+      "zero": "0",
+      "axisEok": "{e}억",
+      "axisMan": "{n}만",
+      "cheonman": "{n}천만"
+    },
     "title": "중개수수료 계산기",
     "subtitle": "부동산 복비(중개보수) 상한을 2026년 요율로 계산해요. 매매·전세·월세, 오피스텔·상가까지 부가세와 협의 요율을 반영합니다.",
     "units": {
@@ -52269,6 +49865,11 @@
     }
   },
   "rentalYield": {
+    "fmt": {
+      "eok": "{e}억 {n}만",
+      "eokOnly": "{e}억",
+      "man": "{n}만"
+    },
     "title": "임대수익률 계산기",
     "subtitle": "오피스텔·상가·주택 월세 수익률을 표면·순·실투자 기준으로 나눠 계산하고, 월 현금흐름과 손익분기 월세, 목표 수익률 역산까지 한 번에 확인하세요.",
     "won": "원",

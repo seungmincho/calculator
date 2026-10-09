@@ -18,8 +18,11 @@ import {
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import '@/lib/i18n/ns/sqlFormatter'
+import { useTranslations } from '@/lib/i18n'
+import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
 
 const SqlFormatter = () => {
+  const t = useTranslations('sqlFormatter');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
@@ -34,6 +37,8 @@ const SqlFormatter = () => {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLTextAreaElement>(null);
+  const fullscreenBtnRef = useRef<HTMLButtonElement>(null);
+  useFullscreenEscape(isFullscreen, () => setIsFullscreen(false), fullscreenBtnRef);
 
   // SQL 키워드 정의
   const SQL_KEYWORDS = [
@@ -497,11 +502,12 @@ const SqlFormatter = () => {
           {/* 도구 버튼들 */}
           <div className="flex items-center space-x-2">
             <button
+              ref={fullscreenBtnRef}
               onClick={() => setIsFullscreen(!isFullscreen)}
               className="flex items-center space-x-1 px-3 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm transition-colors"
             >
               {isFullscreen ? <Shrink className="w-4 h-4" /> : <Expand className="w-4 h-4" />}
-              <span>{isFullscreen ? '창모드' : '전체화면'}</span>
+              <span>{isFullscreen ? t('exitFullscreen') : t('fullscreen')}</span>
             </button>
 
             <button

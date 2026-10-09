@@ -139,7 +139,7 @@ export default function YearEndTaxCalculator() {
   const headline = kind === 'zero' ? t('yt.hero.zero') : t(`yt.hero.${kind}`, { amount: won(Math.abs(r.refund)) })
   const absRefund = Math.abs(r.refund)
   const shareHeadline = kind === 'zero' ? headline
-    : t(`yt.share.${kind}`, { amount: absRefund >= 10_000 ? `${man(absRefund)}만` : won(absRefund), amountWon: won(absRefund) })
+    : t(`yt.share.${kind}`, { amountWon: won(absRefund) })
   const effRate = r.salary ? (r.totalTax / r.salary) * 100 : 0
 
   // 12월 31일까지 할 일

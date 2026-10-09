@@ -34,11 +34,8 @@ const num = (v: string | null, def: number, min: number, max: number) => {
   const n = parseFloat(v ?? '')
   return Number.isFinite(n) && n >= min && n <= max ? n : def
 }
-function eokMan(v: number): string {
-  const eok = Math.floor(v / EOK)
-  const man = Math.floor((v % EOK) / MAN)
-  return [eok > 0 ? `${eok}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
-}
+// 억·만 읽기: ko 는 fmt.* 키의 {e}억 {n}만, en 은 {c}(60M·1.2B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
 const pct = (v: number) => (Number.isFinite(v) ? `${v.toFixed(1)}%` : '-') // 소득 0원 → DSR 무한대
 const rateStr = (v: number) => `${+v.toFixed(2)}`
 
@@ -63,6 +60,11 @@ function decodeEx(s: string | null): Loan[] | null {
 
 export default function DsrCalculator() {
   const t = useTranslations('dsrCalc')
+  const eokMan = (v: number) => {
+    const eok = Math.floor(v / EOK)
+    const man = Math.floor((v % EOK) / MAN)
+    return t(`fmt.${eok > 0 ? (man > 0 ? 'eok' : 'eokOnly') : man > 0 ? 'man' : 'zero'}`, { e: eok, n: man.toLocaleString('ko-KR'), c: compact.format(v) })
+  }
   const sp = useSearchParams()
 
   const [income, setIncome] = useState(() => Math.min(parseNum(sp.get('inc') ?? '') || 60_000_000, 10 * EOK))
@@ -429,7 +431,7 @@ export default function DsrCalculator() {
                 <LineChart data={chart} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
                   <XAxis dataKey="inc" type="number" domain={[2000, 20000]} tickFormatter={(v: number) => eokMan(v * MAN)} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
-                  <YAxis tickFormatter={(v: number) => `${+v.toFixed(1)}억`} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={48} stroke="var(--line)" />
+                  <YAxis tickFormatter={(v: number) => t('fmt.axisEok', { e: +v.toFixed(1), c: compact.format(v * EOK) })} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={48} stroke="var(--line)" />
                   <Tooltip
                     labelFormatter={(v) => `${t('form.income')} ${eokMan(Number(v ?? 0) * MAN)}${won}`}
                     formatter={(v, name) => [`${eokMan(Number(v ?? 0) * EOK)}${won}`, name === 'stress' ? t('cmp.stress') : t('cmp.plain')]}

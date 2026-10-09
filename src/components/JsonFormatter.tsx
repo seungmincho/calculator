@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/jsonFormatter'
+import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
 import dynamic from 'next/dynamic'
 import { glassCard, glassInset } from '@/lib/glass'
 import {
@@ -387,6 +388,7 @@ const JsonFormatter = () => {
   const [jsonPathError, setJsonPathError] = useState('')
 
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const fullscreenBtnRef = useRef<HTMLButtonElement>(null)
 
   // ── Debounced parsing ──
   useEffect(() => {
@@ -647,13 +649,11 @@ const JsonFormatter = () => {
             break
         }
       }
-      if (e.key === 'Escape' && isFullscreen) {
-        setIsFullscreen(false)
-      }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isFullscreen, handleCopy])
+  }, [handleCopy])
+  useFullscreenEscape(isFullscreen, () => setIsFullscreen(false), fullscreenBtnRef)
 
   // ── Mode config ──
   const modes: { key: Mode; icon: React.ReactNode; label: string }[] = [
@@ -701,9 +701,11 @@ const JsonFormatter = () => {
               <Settings className="w-4 h-4" />
             </button>
             <button
+              ref={fullscreenBtnRef}
               onClick={() => setIsFullscreen(!isFullscreen)}
               className="p-2 rounded-lg text-muted hover:bg-soft transition-colors"
               title={isFullscreen ? t('controls.exitFullscreen') : t('controls.fullscreen')}
+              aria-label={isFullscreen ? t('controls.exitFullscreen') : t('controls.fullscreen')}
             >
               {isFullscreen ? <Shrink className="w-4 h-4" /> : <Expand className="w-4 h-4" />}
             </button>

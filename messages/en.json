@@ -271,85 +271,8 @@
     },
     "title": "Time Converter",
     "description": "Unix timestamp ⇄ date (seconds, ms, ns auto-detected), DST-correct time zone conversion, date math and business days",
-    "realTimeWorldClock": "Real-Time World Clock",
-    "timezoneConversion": "Timezone Conversion",
-    "unixTimestamp": "Unix Timestamp",
-    "relativeTime": "Relative Time",
-    "convertDateTime": "Date/Time to Convert",
-    "sourceTimezone": "Source Timezone",
-    "targetTimezone": "Target Timezone",
-    "convertedTime": "Converted Time",
-    "unixTimestampSeconds": "Unix Timestamp (seconds)",
-    "setCurrentTime": "Set to Current Time",
-    "koreanTime": "Korean Time (KST)",
-    "utcTime": "Coordinated Universal Time (UTC)",
-    "compareDateTime": "Date/Time to Compare",
-    "timeDifference": "Difference from Current Time",
-    "quickConversion": "Quick Conversion",
-    "currentUnixTimestamp": "Current Unix Timestamp",
-    "tomorrowSameTime": "Tomorrow Same Time",
-    "smartPaste": "Smart Paste",
-    "smartPasteDescriptionSupported": "Copy and paste time, date, or Unix timestamps and they'll be automatically parsed!",
-    "smartPasteDescriptionFallback": "Enter time, date, or Unix timestamps and they'll be automatically parsed!",
-    "httpsClipboardTip": "Clipboard auto-paste is available in HTTPS environments.",
     "pasteFromClipboard": "Paste from Clipboard",
-    "manualInput": "Manual Input",
-    "manualInputMode": "Manual input mode (clipboard not supported)",
-    "pasteTimeInfoPlaceholder": "Enter or paste time information here\nExamples: 2024-01-01T12:00:00Z, 1640995200, 2024/01/01 12:00:00",
-    "supportedFormats": "Supported Formats:",
-    "iso8601Format": "ISO 8601: 2024-01-01T12:00:00Z",
-    "unixTimestampFormat": "Unix Timestamp: 1640995200",
-    "generalDateFormat": "General Date: 2024-01-01 12:00:00",
-    "usDateFormat": "US Format: 01/01/2024 12:00 PM",
-    "relativeTimeFormat": "Relative Time: now, today, tomorrow",
-    "developerTools": "Developer Tools",
-    "currentUnixSeconds": "Current Unix (seconds)",
-    "currentUnixMilliseconds": "Current Unix (milliseconds)",
-    "iso8601UTC": "ISO 8601 (UTC)",
-    "iso8601KST": "ISO 8601 (KST)",
     "rfc2822": "RFC 2822",
-    "commonTimestamps": "Common Timestamps",
-    "oneHourLater": "1 Hour Later",
-    "oneDayLater": "24 Hours Later",
-    "oneWeekLater": "7 Days Later",
-    "ticketingTools": "Ticketing Tools",
-    "concertTicketing": "Concert Ticketing Time",
-    "concertTicketingDesc": "Check concert ticketing times in advance and set alarms for popular shows.",
-    "overseasEvents": "Overseas Event Times",
-    "overseasEventsDesc": "Check Apple events, game releases, and other overseas events in Korean time.",
-    "timeConversionTips": "Time Conversion Tips",
-    "daylightSavingTip": "Daylight Saving Time: Be aware that countries like the US and Europe observe DST, changing time differences.",
-    "unixTimestampTip": "Unix Timestamp: Time in seconds since January 1, 1970, 00:00:00 UTC.",
-    "ticketingPrep": "Ticketing Prep: Check times in advance and ensure your browser time is accurate.",
-    "internationalMeeting": "International Meetings: Consider participants' time zones when scheduling meetings.",
-    "commonTimeConversions": "Common Time Conversions",
-    "koreaToUSEast": "Korea → US East",
-    "koreaToUK": "Korea → UK",
-    "koreaToAustralia": "Korea → Australia Sydney",
-    "interpark": "Interpark",
-    "yes24": "Yes24",
-    "weekdaysOpen": "Opens 14:00 on weekdays",
-    "appleEvent": "Apple Event (California)",
-    "appleEventTime": "Usually 10 AM → 2 AM Korean time",
-    "steamGameRelease": "Steam Game Release (PST)",
-    "steamReleaseTime": "10 AM → 3 AM Korean time",
-    "timeDifferenceNote": "-14 hours (DST -13 hours)",
-    "timeDifferenceUK": "-9 hours (DST -8 hours)",
-    "timeDifferenceAustralia": "+1~2 hours (seasonal change)",
-    "timezones": {
-      "korea": "Korea (KST)",
-      "utc": "Coordinated Universal Time (UTC)",
-      "newYork": "New York (EST/EDT)",
-      "losAngeles": "Los Angeles (PST/PDT)",
-      "london": "London (GMT/BST)",
-      "paris": "Paris (CET/CEST)",
-      "tokyo": "Tokyo (JST)",
-      "shanghai": "Shanghai (CST)",
-      "singapore": "Singapore (SGT)",
-      "sydney": "Sydney (AEDT/AEST)",
-      "chicago": "Chicago (CST/CDT)",
-      "denver": "Denver (MST/MDT)"
-    },
     "guide": {
       "howItWorks": {
         "title": "How it works",
@@ -1182,23 +1105,6 @@
     },
     "title": "Savings Calculator",
     "description": "Calculate maturity amounts and pre/after-tax interest for installment savings and fixed deposits, the same way banks do. Standard 15.4%, preferential and tax-free, effective yield, 3-product comparison and goal reverse calculation.",
-    "input": {
-      "savingsType": "Savings Type",
-      "regularSavings": "Regular Savings",
-      "freeSavings": "Free Savings",
-      "targetSavings": "Target Savings",
-      "compoundSavings": "Compound Savings",
-      "monthlyDeposit": "Monthly Deposit",
-      "interestRate": "Annual Interest Rate",
-      "savingsPeriod": "Savings Period",
-      "targetAmount": "Target Amount"
-    },
-    "result": {
-      "maturityAmount": "Maturity Amount",
-      "totalDeposit": "Total Deposit",
-      "totalInterest": "Total Interest",
-      "effectiveRate": "Effective Interest Rate"
-    },
     "guide": {
       "howItWorks": {
         "title": "How it is calculated",
@@ -1424,21 +1330,6 @@
       "disclaimer": "This is an estimate based on statutory severance. Actual amounts vary with company rules, DB/DC pension plans, prior interim settlements and executive severance limits. Confirm with your HR team or the Hometax retirement income tax calculator."
     },
     "title": "Retirement Pay Calculator",
-    "description": "Calculate statutory severance pay, retirement income tax under the 2023+ rules and your take-home amount.",
-    "input": {
-      "averageWage": "Average Monthly Wage",
-      "workPeriod": "Work Period",
-      "retirementReason": "Retirement Reason",
-      "voluntary": "Voluntary Retirement",
-      "involuntary": "Involuntary Termination",
-      "years": "years",
-      "months": "months"
-    },
-    "result": {
-      "retirementPay": "Retirement Pay",
-      "retirementTax": "Retirement Income Tax",
-      "netRetirementPay": "Net Retirement Pay"
-    },
     "guide": {
       "howItWorks": {
         "title": "How it is calculated",
@@ -1533,21 +1424,6 @@
   },
   "tax": {
     "title": "Tax Calculator",
-    "description": "Calculate income tax, VAT, and capital gains tax based on Korean tax law.",
-    "input": {
-      "taxType": "Tax Type",
-      "incomeTax": "Income Tax",
-      "vat": "Value Added Tax",
-      "capitalGains": "Capital Gains Tax",
-      "income": "Income",
-      "expenses": "Expenses",
-      "taxableIncome": "Taxable Income"
-    },
-    "result": {
-      "tax": "Tax Amount",
-      "netIncome": "Net Income",
-      "taxRate": "Tax Rate"
-    },
     "guide": {
       "title": "Tax Calculator Guide",
       "whatIs": {
@@ -1820,68 +1696,7 @@
         "asOf": "As of October 2026. Tax, brokerage, bond and stamp duty use the same formulas as this site's acquisition tax and brokerage fee calculators. Adjusted areas as designated through 2026-07-01."
       }
     },
-    "title": "Real Estate Calculator",
-    "description": "Calculate real estate investment returns and acquisition tax.",
-    "input": {
-      "propertyPrice": "Property Price",
-      "downPayment": "Down Payment",
-      "loanAmount": "Loan Amount",
-      "acquisitionTax": "Acquisition Tax",
-      "propertyTax": "Property Tax"
-    },
-    "result": {
-      "totalCost": "Total Cost",
-      "monthlyPayment": "Monthly Payment",
-      "roi": "Return on Investment"
-    },
-    "guide": {
-      "title": "Real Estate Calculator Guide",
-      "whatIs": {
-        "title": "What is the Real Estate Calculator?",
-        "description": "A comprehensive real estate calculator handling jeonse loans, mortgage loans, and acquisition tax in one tool. Based on 2025 tax laws with LTV, DTI, and DSR regulations reflected for realistic financing plans."
-      },
-      "howToUse": {
-        "title": "How to Use",
-        "items": [
-          "1. Select the calculation type: Jeonse Loan, Mortgage Loan, or Acquisition Tax.",
-          "2. Jeonse Loan: Enter the deposit amount, loan amount, interest rate, and term.",
-          "3. Mortgage Loan: Enter property price, down payment, interest rate, and repayment method.",
-          "4. Acquisition Tax: Select purchase price, property type, and special conditions for automatic tax calculation.",
-          "5. Results are saved in the URL for sharing or future reference."
-        ]
-      },
-      "tips": {
-        "title": "Money-Saving Tips",
-        "items": [
-          "First-time home buyers can receive a 50% acquisition tax reduction (up to ₩300M).",
-          "Newlyweds (within 7 years of marriage) get 50% tax reduction on up to ₩100M in acquisition tax.",
-          "LTV limits vary by region: 70% in regulated areas, 80% in non-regulated areas.",
-          "Under DSR 40% rule, total annual loan payments cannot exceed 40% of annual income.",
-          "Calculate total costs including interest, tax, and agent fees before committing."
-        ]
-      },
-      "faq": {
-        "title": "FAQ",
-        "items": [
-          {
-            "q": "Jeonse loan vs mortgage?",
-            "a": "Jeonse loan finances the key money deposit (2-year term). Mortgage is for purchasing a home (up to 30–40 years)."
-          },
-          {
-            "q": "When must acquisition tax be paid?",
-            "a": "Within 60 days of the acquisition date. Late payment incurs penalties."
-          },
-          {
-            "q": "Heavy tax rules for multi-homeowners?",
-            "a": "Those with 2+ homes in regulated areas purchasing additional property may face 8–12% heavy taxation."
-          },
-          {
-            "q": "Equal installment vs equal principal?",
-            "a": "Equal installment offers predictable payments. Equal principal has higher initial payments but lower total interest."
-          }
-        ]
-      }
-    }
+    "title": "Real Estate Calculator"
   },
   "jsonFormatter": {
     "title": "JSON Formatter Pro",
@@ -1890,12 +1705,6 @@
       "jsonInput": "JSON Input",
       "pasteJson": "Paste your JSON here...",
       "output": "Output"
-    },
-    "actions": {
-      "format": "Format",
-      "minify": "Minify",
-      "validate": "Validate",
-      "clear": "Clear"
     },
     "result": {
       "formatted": "Formatted JSON",
@@ -2251,20 +2060,8 @@
     "placeholder": "Enter data to convert or upload a file"
   },
   "sqlFormatter": {
-    "title": "SQL Formatter",
-    "description": "Format and beautify SQL queries with syntax highlighting.",
-    "input": {
-      "sqlInput": "SQL Input",
-      "pasteSql": "Paste your SQL here..."
-    },
-    "actions": {
-      "format": "Format",
-      "minify": "Minify",
-      "clear": "Clear"
-    },
-    "result": {
-      "formatted": "Formatted SQL"
-    },
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
     "guide": {
       "title": "SQL Formatter Guide",
       "whatIs": {
@@ -2421,17 +2218,6 @@
     "errDecode": "Couldn't open this image. The file may be damaged or unsupported.",
     "title": "Image Resizer",
     "description": "Change pixel size, shrink file size and fit ID-photo dimensions for many photos at once. Everything runs in your browser and nothing is uploaded.",
-    "input": {
-      "selectImage": "Select Image",
-      "width": "Width",
-      "height": "Height",
-      "maintainRatio": "Maintain Aspect Ratio"
-    },
-    "actions": {
-      "resize": "Resize",
-      "download": "Download",
-      "reset": "Reset"
-    },
     "guide": {
       "principle": {
         "title": "Why the file gets smaller",
@@ -2511,17 +2297,8 @@
     }
   },
   "imageEditor": {
-    "title": "Image Editor",
-    "description": "Edit images online with filters, cropping, and effects.",
-    "input": {
-      "selectImage": "Select Image"
-    },
-    "actions": {
-      "crop": "Crop",
-      "rotate": "Rotate",
-      "filter": "Filter",
-      "download": "Download"
-    },
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
     "guide": {
       "title": "Image Editor Guide",
       "whatIs": {
@@ -2939,10 +2716,6 @@
     },
     "title": "Character Counter",
     "description": "Counts characters with/without spaces, JobKorea/Saramin-style bytes and manuscript sheets for essays, reports and social posts in real time. Per-question targets and auto-save included.",
-    "meta": {
-      "title": "Character Counter - Characters, Words, Sentences Counter",
-      "description": "Real-time calculation of character count, without spaces, word count, sentence count, and paragraph count. Useful for checking SNS character limits."
-    },
     "input": {
       "aria": "Text to count",
       "placeholder": "Enter or paste your text here..."
@@ -3557,27 +3330,6 @@
       }
     },
     "title": "Car Loan Calculator",
-    "description": "Calculate monthly payments and total interest for car installment purchases",
-    "input": {
-      "carPrice": "Car Price (KRW)",
-      "downPayment": "Down Payment (KRW)",
-      "loanTerm": "Loan Term (Months)",
-      "interestRate": "Annual Interest Rate (%)",
-      "term12": "12 months (1 year)",
-      "term24": "24 months (2 years)",
-      "term36": "36 months (3 years)",
-      "term48": "48 months (4 years)",
-      "term60": "60 months (5 years)",
-      "term72": "72 months (6 years)",
-      "term84": "84 months (7 years)"
-    },
-    "result": {
-      "monthlyPayment": "Monthly Payment",
-      "totalPayment": "Total Payment",
-      "totalInterest": "Total Interest",
-      "loanAmount": "Loan Principal",
-      "loanPeriod": "Loan Period"
-    },
     "guide": {
       "title": "Car installment guide",
       "whatIs": {
@@ -3820,38 +3572,6 @@
     "basis": "Based on the Local Tax Act Art. 12 and the Special Local Taxation Act (compact, EV, multi-child, disability reliefs) as of October 2026. Bond cost is an estimate.",
     "title": "Car Acquisition & Registration Tax Calculator",
     "description": "Calculate various taxes accurately when purchasing a car",
-    "input": {
-      "carPrice": "Car Price (KRW)",
-      "carType": "Car Type",
-      "fuelType": "Fuel Type",
-      "displacement": "Engine Displacement (cc)",
-      "carStatus": "Car Status",
-      "region": "Registration Region",
-      "passenger": "Passenger Car",
-      "truck": "Truck",
-      "van": "Van",
-      "motorcycle": "Motorcycle",
-      "gasoline": "Gasoline",
-      "diesel": "Diesel",
-      "lpg": "LPG",
-      "electric": "Electric",
-      "hybrid": "Hybrid",
-      "newCar": "New Car",
-      "usedCar": "Used Car",
-      "seoul": "Seoul",
-      "busan": "Busan",
-      "incheon": "Incheon",
-      "gyeonggi": "Gyeonggi-do",
-      "other": "Other Regions"
-    },
-    "result": {
-      "acquisitionTax": "Acquisition Tax",
-      "registrationTax": "Registration Tax",
-      "bondPurchase": "Bond Purchase",
-      "stampDuty": "Stamp Duty",
-      "totalTax": "Total Tax",
-      "totalCostWithTax": "Car Price + Tax"
-    },
     "guide": {
       "title": "Acquisition & Registration Tax Guide",
       "taxTypesTitle": "Main Tax Types",
@@ -4296,7 +4016,6 @@
       "schedule": "{loan} · {years}-year repayment schedule"
     },
     "title": "Bogeumjari Loan Calculator",
-    "description": "Check eligibility and estimate monthly payments for the government-backed Bogeumjari housing loan",
     "guide": {
       "title": "Bogeumjari Loan Guide",
       "whatIs": {
@@ -4440,7 +4159,6 @@
       "Cars are converted at 100% a month here. Passenger cars under 2,000cc that are 10+ years old or worth under KRW 5M use the general-asset rate (4.17% a month) instead (MOHW notice No. 2025-204, Annex 2)."
     ],
     "title": "Median Income Reference",
-    "description": "Check standard median income by household size and government welfare program eligibility thresholds",
     "guide": {
       "title": "Median Income Guide",
       "whatIs": {
@@ -4604,29 +4322,6 @@
       "agePlaceholder": "30",
       "ageNote": "Under 19 shows a note for children and teens; 65+ shows a note for older adults"
     },
-    "result": {
-      "title": "BMI Calculation Result",
-      "bmi": "BMI",
-      "category": "Category",
-      "idealWeightRange": "Ideal Weight Range",
-      "weightDifference": "Weight Difference",
-      "healthRisk": "Health Risk",
-      "shareResult": "Share Result"
-    },
-    "categories": {
-      "underweight": "Underweight",
-      "normal": "Normal",
-      "overweight": "Overweight",
-      "obese1": "Obese Class I",
-      "obese2": "Obese Class II+"
-    },
-    "healthRisks": {
-      "malnutrition": "Risk of malnutrition",
-      "healthy": "Healthy",
-      "slightRisk": "Slight risk",
-      "risk": "Risk",
-      "highRisk": "High risk"
-    },
     "guide": {
       "howItWorks": {
         "title": "How it's calculated",
@@ -4710,93 +4405,6 @@
           }
         ]
       }
-    },
-    "usage": {
-      "title": "BMI Calculator Usage Guide",
-      "steps": {
-        "1": {
-          "title": "Accurate Measurement",
-          "content": "Measure in the morning on an empty stomach for the most accurate results."
-        },
-        "2": {
-          "title": "Regular Check",
-          "content": "Measure regularly 1-2 times per month to observe change trends."
-        },
-        "3": {
-          "title": "Goal Setting",
-          "content": "Set a step-by-step plan targeting a healthy BMI range."
-        }
-      }
-    },
-    "healthTips": {
-      "title": "Healthy Weight Management Tips",
-      "diet": {
-        "title": "Balanced Diet",
-        "content": "Properly distribute protein, carbohydrates, and fats in your intake."
-      },
-      "exercise": {
-        "title": "Regular Exercise",
-        "content": "Recommended 3-5 times per week, 30+ minutes of aerobic exercise."
-      },
-      "sleep": {
-        "title": "Adequate Sleep",
-        "content": "7-8 hours of quality sleep daily helps with weight management."
-      },
-      "water": {
-        "title": "Sufficient Hydration",
-        "content": "Drink 8+ glasses of water daily to boost metabolism."
-      }
-    },
-    "riskTable": {
-      "title": "BMI and Health Risk",
-      "headers": {
-        "range": "BMI Range",
-        "category": "Category",
-        "risk": "Disease Risk",
-        "concerns": "Main Concerns"
-      },
-      "rows": {
-        "underweight": {
-          "range": "Below 18.5",
-          "category": "Underweight",
-          "risk": "Increased",
-          "concerns": "Malnutrition, osteoporosis, low immunity"
-        },
-        "normal": {
-          "range": "18.5 - 22.9",
-          "category": "Normal",
-          "risk": "Lowest",
-          "concerns": "Maintain healthy condition"
-        },
-        "overweight": {
-          "range": "23.0 - 24.9",
-          "category": "Overweight",
-          "risk": "Slightly increased",
-          "concerns": "Lifestyle improvement needed"
-        },
-        "obese1": {
-          "range": "25.0 - 29.9",
-          "category": "Obesity Class I",
-          "risk": "Increased",
-          "concerns": "Diabetes, hypertension, cardiovascular disease"
-        },
-        "obese2": {
-          "range": "30.0 and above",
-          "category": "Obesity Class II",
-          "risk": "High risk",
-          "concerns": "Metabolic syndrome, joint disease, sleep apnea"
-        }
-      },
-      "note": "* Individual differences may apply. Consult medical professionals for accurate diagnosis."
-    },
-    "classification": {
-      "title": "BMI Classification Standards",
-      "note": "* Asian standards applied, separate criteria for 65+ years"
-    },
-    "history": {
-      "title": "BMI Calculation History",
-      "empty": "No saved calculation history",
-      "format": "Height {height}cm, Weight {weight}kg, BMI {bmi}"
     },
     "placeholder": "BMI calculation results will appear when you enter height and weight",
     "common": {
@@ -5049,48 +4657,11 @@
         ]
       }
     },
-    "foodCalories": {
-      "title": "Food Calorie Reference Table",
-      "staples": "Staples",
-      "proteins": "Proteins",
-      "snacks": "Snacks",
-      "items": {
-        "rice": "Rice (1 bowl, 210g)",
-        "ramen": "Ramen (1 pack)",
-        "kimbap": "Kimbap (1 roll)",
-        "bread": "Bread (1 slice)",
-        "chicken": "Chicken breast (100g)",
-        "egg": "Egg (1 piece)",
-        "tofu": "Tofu (1/2 block)",
-        "milk": "Milk (1 cup, 200ml)",
-        "apple": "Apple (1 piece)",
-        "banana": "Banana (1 piece)",
-        "almond": "Almonds (10 pieces)",
-        "chocolate": "Chocolate (1 piece)"
-      }
-    },
-    "exerciseCalories": {
-      "title": "Exercise Calorie Burn (30 minutes)",
-      "cardio": "Cardio Exercise",
-      "strength": "Strength & Other Exercise",
-      "items": {
-        "walking": "Walking (30 min)",
-        "jogging": "Jogging (30 min)",
-        "cycling": "Cycling (30 min)",
-        "swimming": "Swimming (30 min)",
-        "weight": "Weight training (30 min)",
-        "yoga": "Yoga (30 min)",
-        "stairs": "Stair climbing (30 min)",
-        "jumprope": "Jump rope (30 min)"
-      },
-      "note": "* Based on 70kg adult male, individual differences may apply."
-    },
     "history": {
       "title": "Calorie Calculation History",
       "empty": "No saved calculation history",
       "format": "Goal Calories {goalCalories}kcal ({goal})"
-    },
-    "placeholder": "Calorie calculation results will appear when you enter body information"
+    }
   },
   "bodyFat": {
     "u": {
@@ -5249,15 +4820,6 @@
       "hipPlaceholder": "90",
       "hipNote": "Measure at the widest part of the hips"
     },
-    "result": {
-      "title": "Body Fat Analysis Results",
-      "fatMass": "Fat Mass",
-      "leanMass": "Lean Mass",
-      "idealRange": "Ideal Body Fat Range",
-      "visceralFat": "Visceral Fat Level",
-      "visceralFatUnit": "Level",
-      "shareResult": "Share Result"
-    },
     "categories": {
       "essential": "Essential Fat",
       "athletic": "Athletic",
@@ -5265,26 +4827,6 @@
       "average": "Average",
       "overweight": "Overweight",
       "obese": "Obese"
-    },
-    "categoryLabels": {
-      "essential": "Essential Fat",
-      "athletic": "Athletic",
-      "fitness": "Fitness",
-      "average": "Average",
-      "overweight": "Overweight",
-      "obese": "Obese"
-    },
-    "healthRisks": {
-      "essential": "Risk of Essential Fat Deficiency",
-      "athletic": "Athletic Level",
-      "fitness": "Healthy Condition",
-      "average": "Average Level",
-      "overweight": "Overweight",
-      "obese": "Obese"
-    },
-    "classification": {
-      "title": "Body Fat Classification Chart",
-      "note": "Ideal body fat ranges may vary by age group. Consult with a professional for accurate diagnosis."
     },
     "guide": {
       "howItWorks": {
@@ -5389,13 +4931,7 @@
       },
       "measurementTip": "Measurement Tip:",
       "measurementTipText": "Morning measurements after using the bathroom and before eating provide the most accurate results."
-    },
-    "history": {
-      "title": "Body Fat Calculation History",
-      "empty": "No saved calculation history",
-      "format": "Body Fat {bodyFatPercentage}% ({category})"
-    },
-    "placeholder": "Body fat calculation results will appear when you enter body information and measurements"
+    }
   },
   "workHours": {
     "weekdays": [
@@ -5626,9 +5162,7 @@
     "linkCopied": "Link copied! Share it with your opponent.",
     "shareButton": "Share",
     "shareText": "Let's play! Click this link to join.",
-    "defaultTitle": "Game Invite",
-    "directConnect": "Direct Connect",
-    "peerIdLabel": "Peer ID"
+    "defaultTitle": "Game Invite"
   },
   "gameHub": {
     "modeAiOnline": "AI · Online",
@@ -6364,19 +5898,9 @@
     "statisticsRecommendation": "Statistics-Based Recommendation",
     "hotNumbers": "Hot Numbers",
     "coldNumbers": "Cold Numbers",
-    "generateBasedOnHot": "Generate Based on Hot Numbers",
-    "generateBasedOnCold": "Generate Based on Cold Numbers",
     "generateBalanced": "Generate Balanced",
-    "statisticsTabs": {
-      "frequency": "Frequency",
-      "recent": "Recent Trends",
-      "patterns": "Pattern Analysis"
-    },
     "noData": "No winning numbers found for this round",
     "loading": "Loading...",
-    "comingSoon": "coming soon",
-    "patternAnalysis": "Pattern analysis feature is",
-    "recentTrends": "Recent trends analysis feature is",
     "winChecker": {
       "matchedCount": "{count}",
       "title": "Check Winning",
@@ -6723,12 +6247,6 @@
         ]
       }
     },
-    "history": {
-      "title": "Processing History",
-      "empty": "No saved processing history",
-      "format": "{operation} operation, {matches} matches"
-    },
-    "placeholder": "Enter a regex pattern and process your text",
     "smartMode": {
       "title": "Smart Mode (Beginner-Friendly)",
       "description": "Don't know regex? No problem! Choose what you want to do and we'll create the pattern automatically.",
@@ -6959,12 +6477,6 @@
         "high": "High",
         "highest": "Highest"
       }
-    },
-    "sizes": {
-      "small": "Small (200px)",
-      "medium": "Medium (300px)",
-      "large": "Large (400px)",
-      "xlarge": "X-Large (500px)"
     },
     "result": {
       "pngSize": "PNG size",
@@ -9273,9 +8785,7 @@
     "from": "From unit",
     "to": "To unit",
     "swap": "Swap Units",
-    "copyResult": "Copy Result",
     "copied": "Copied!",
-    "quickConversions": "All Unit Conversions",
     "categories": {
       "speed": "Speed",
       "time": "Time",
@@ -9460,33 +8970,6 @@
     },
     "title": "Text Converter",
     "description": "Paste once to see 12 case styles side by side (UPPER, Title Case, camelCase, snake_case and more), then chain line tools: sort, dedupe, find & replace, and an SQL IN list builder.",
-    "categories": {
-      "case": "Case",
-      "coding": "Coding Conventions",
-      "formatting": "Formatting",
-      "lines": "Line Operations"
-    },
-    "conversions": {
-      "uppercase": "UPPERCASE",
-      "lowercase": "lowercase",
-      "capitalize": "Capitalize",
-      "titleCase": "Title Case",
-      "camelCase": "camelCase",
-      "pascalCase": "PascalCase",
-      "snakeCase": "snake_case",
-      "kebabCase": "kebab-case",
-      "constantCase": "CONSTANT_CASE",
-      "dotCase": "dot.case",
-      "reverse": "Reverse",
-      "removeSpaces": "Remove Spaces",
-      "removeLineBreaks": "Remove Line Breaks",
-      "singleSpaces": "Single Spaces",
-      "trim": "Trim",
-      "sortLines": "Sort Lines",
-      "reverseLines": "Reverse Lines",
-      "uniqueLines": "Unique Lines",
-      "numberLines": "Number Lines"
-    },
     "input": {
       "sample": "Load sample",
       "label": "Input",
@@ -9494,9 +8977,6 @@
     },
     "output": {
       "label": "Result"
-    },
-    "preview": {
-      "title": "Quick Preview"
     },
     "actions": {
       "copy": "Copy",
@@ -9726,12 +9206,6 @@
       "MSI": "MSI (Inventory)",
       "pharmacode": "Pharmacode (Pharmaceutical)"
     },
-    "result": {
-      "title": "Generated Barcode",
-      "download": "Download Barcode",
-      "copy": "Copy Image",
-      "preview": "Preview"
-    },
     "guide": {
       "howItWorks": {
         "title": "How the Check Digit Works",
@@ -9924,23 +9398,6 @@
         "description": "REST API response data format"
       }
     },
-    "result": {
-      "title": "Conversion Result",
-      "preview": "Preview",
-      "download": "Download",
-      "copy": "Copy",
-      "stats": "Statistics",
-      "elements": "elements",
-      "attributes": "attributes",
-      "textNodes": "text nodes",
-      "size": "size",
-      "processingTime": "Processing Time",
-      "viewMode": "View Mode",
-      "textView": "Text View",
-      "treeView": "Tree View",
-      "showingData": "Showing data",
-      "noData": "No data to display"
-    },
     "validation": {
       "valid": "Valid",
       "validJson": "Valid JSON",
@@ -10007,62 +9464,7 @@
           }
         ]
       }
-    },
-    "features": {
-      "title": "Key Features",
-      "bidirectional": {
-        "title": "Bidirectional Conversion",
-        "description": "Perfect conversion between JSON and XML",
-        "details": {
-          "0": "Full support for nested objects and arrays",
-          "1": "Accurate handling of attributes and text nodes",
-          "2": "Data type preservation and restoration"
-        }
-      },
-      "developer": {
-        "title": "Developer Friendly",
-        "description": "Features optimized for development workflow",
-        "details": {
-          "0": "Various presets and customization options",
-          "1": "Real-time validation and error display",
-          "2": "Compact/pretty formatting support"
-        }
-      },
-      "performance": {
-        "title": "High Performance",
-        "description": "Fast processing even for large files",
-        "details": {
-          "0": "Background processing with Web Workers",
-          "1": "Memory-efficient streaming processing",
-          "2": "Real-time progress tracking"
-        }
-      }
-    },
-    "examples": {
-      "title": "Conversion Examples",
-      "jsonExample": {
-        "title": "JSON Examples",
-        "simple": "Simple Object",
-        "complex": "Complex Structure",
-        "array": "Array Data"
-      },
-      "xmlExample": {
-        "title": "XML Examples",
-        "simple": "Basic Element",
-        "attributes": "With Attributes",
-        "nested": "Nested Structure"
-      }
-    },
-    "errors": {
-      "invalidJson": "Invalid JSON format",
-      "invalidXml": "Invalid XML format",
-      "parseError": "Parse error: {error}",
-      "fileTooLarge": "File too large (max {size}MB)",
-      "unsupportedFormat": "Unsupported file format",
-      "conversionFailed": "Conversion failed",
-      "networkError": "Network error occurred"
-    },
-    "placeholder": "Enter data to convert or upload a file"
+    }
   },
   "viewer3d": {
     "title": "3D Converter",
@@ -10373,13 +9775,6 @@
       "veryStrong": "Very Strong",
       "entropy": "Entropy",
       "bits": "bits"
-    },
-    "history": {
-      "title": "History",
-      "show": "Show History",
-      "hide": "Hide History",
-      "empty": "No passwords generated yet",
-      "clear": "Clear History"
     },
     "errors": {
       "symbolEmpty": "Enter at least one allowed symbol. Letters, digits and spaces are not used as symbols.",
@@ -10778,13 +10173,6 @@
       "link": "Rounding and more in the VAT calculator"
     },
     "title": "Percentage Calculator",
-    "description": "Various percentage calculations in one place",
-    "modes": {
-      "basicPercent": "Basic Percent",
-      "whatPercent": "What Percent?",
-      "change": "% Change",
-      "addSubtract": "Add/Subtract"
-    },
     "basicPercent": {
       "title": "What is Y% of X?",
       "description": "Calculate a percentage of a given value",
@@ -11079,33 +10467,8 @@
     "title": "Age Calculator",
     "description": "Enter a solar or lunar birth date to see international, calendar-year and counting age, next birthday and age milestones",
     "birthDate": "Date of Birth",
-    "year": "Year",
-    "month": "Month",
-    "day": "Day",
-    "calculate": "Calculate",
-    "reset": "Reset",
     "baseDate": "Reference Date",
     "today": "Today",
-    "result": {
-      "title": "Results",
-      "internationalAge": "International Age",
-      "koreanAge": "Korean Age (Counting)",
-      "yearAge": "Year Age",
-      "years": "years old",
-      "months": "months",
-      "days": "days",
-      "totalDays": "Days lived",
-      "totalWeeks": "Weeks lived",
-      "totalMonths": "Months lived",
-      "nextBirthday": "Next birthday",
-      "daysUntilBirthday": "days left",
-      "birthdayToday": "Today is your birthday!",
-      "zodiacAnimal": "Chinese Zodiac",
-      "zodiacSign": "Zodiac Sign",
-      "birthDay": "Born on",
-      "generation": "Generation",
-      "earlySchoolYear": "Early school year"
-    },
     "zodiacAnimals": {
       "rat": "Rat",
       "ox": "Ox",
@@ -11152,17 +10515,6 @@
       "silent": "Silent Generation (~1945)"
     },
     "placeholder": "Enter your birthdate to see results",
-    "earlySchool": {
-      "yes": "Early school year (born Jan-Feb)",
-      "no": "N/A"
-    },
-    "birthday": {
-      "title": "Next Birthday D-Day",
-      "daysLeft": "Days remaining",
-      "nextAge": "Next birthday age",
-      "turningAge": "You turned {age} years old!",
-      "willTurn": "Age {age}"
-    },
     "school": {
       "title": "School Grade Info",
       "entryYear": "Elementary entry year",
@@ -11179,42 +10531,6 @@
         "highGrade": "High school grade {grade}",
         "universityGrade": "University year {grade}",
         "graduated": "Graduated"
-      }
-    },
-    "milestone": {
-      "title": "Life Timeline",
-      "showTimeline": "Show timeline",
-      "hideTimeline": "Hide timeline",
-      "copyAll": "Copy timeline",
-      "clickToShow": "Click the button above to view the timeline",
-      "intAgeLabel": "Age {age}",
-      "current": "Current",
-      "elementary": "Elementary school entry",
-      "middle": "Middle school entry",
-      "high": "High school entry",
-      "driving": "Eligible for driver's license (age 18)",
-      "voting": "Voting rights (age 18)",
-      "adult": "Legal adult (age 19)",
-      "drinking": "Legal drinking age (age 19)",
-      "universityGrad": "University graduation (typical, 4-year program)",
-      "avgMarriageMale": "Average marriage age - Male (33.7, 2024 stats)",
-      "avgMarriageFemale": "Average marriage age - Female (31.3, 2024 stats)",
-      "seniorDiscount": "Senior discount eligibility (age 65)",
-      "pension": "National pension benefits start (age 65)"
-    },
-    "ageExplanation": {
-      "title": "Age Calculation Methods",
-      "international": {
-        "title": "International Age",
-        "description": "The international standard where age increases on your birthday. This became the unified legal age in Korea since June 2023."
-      },
-      "korean": {
-        "title": "Korean Age (Counting Age)",
-        "description": "Traditional Korean age where you start at 1 year old at birth and gain a year every January 1st."
-      },
-      "year": {
-        "title": "Year Age",
-        "description": "Simply current year minus birth year. Everyone born in the same year has the same age regardless of birthday."
       }
     },
     "guide": {
@@ -11332,32 +10648,6 @@
       "average": "Average",
       "courses": "courses"
     },
-    "grades45": {
-      "Aplus": "A+ (4.5)",
-      "A": "A (4.0)",
-      "Bplus": "B+ (3.5)",
-      "B": "B (3.0)",
-      "Cplus": "C+ (2.5)",
-      "C": "C (2.0)",
-      "Dplus": "D+ (1.5)",
-      "D": "D (1.0)",
-      "F": "F (0.0)"
-    },
-    "grades43": {
-      "Aplus": "A+ (4.3)",
-      "A": "A (4.0)",
-      "Aminus": "A- (3.7)",
-      "Bplus": "B+ (3.3)",
-      "B": "B (3.0)",
-      "Bminus": "B- (2.7)",
-      "Cplus": "C+ (2.3)",
-      "C": "C (2.0)",
-      "Cminus": "C- (1.7)",
-      "Dplus": "D+ (1.3)",
-      "D": "D (1.0)",
-      "Dminus": "D- (0.7)",
-      "F": "F (0.0)"
-    },
     "guide": {
       "title": "User Guide",
       "howToUse": {
@@ -11464,11 +10754,6 @@
     },
     "title": "Random Picker · Giveaway Draw",
     "description": "Paste a list and draw winners without duplicates. Anyone can verify the result with a link.",
-    "modes": {
-      "number": "Number",
-      "list": "List Picker",
-      "team": "Team Divider"
-    },
     "number": {
       "title": "Random Number Generator",
       "min": "Minimum",
@@ -11477,29 +10762,6 @@
       "allowDuplicates": "Allow duplicates",
       "generate": "Pick!",
       "result": "Result"
-    },
-    "list": {
-      "title": "Pick from List",
-      "inputLabel": "Enter items (one per line)",
-      "placeholder": "Alice\nBob\nCharlie\n...",
-      "count": "Number to pick",
-      "pick": "Pick!",
-      "result": "Winner!"
-    },
-    "team": {
-      "title": "Team Divider",
-      "inputLabel": "Enter participants (one per line)",
-      "placeholder": "Alice\nBob\nCharlie\nDiana\n...",
-      "teamCount": "Number of teams",
-      "divide": "Divide!",
-      "teamLabel": "Team"
-    },
-    "common": {
-      "copy": "Copy",
-      "copied": "Copied!",
-      "reset": "Reset",
-      "result": "Result",
-      "animation": "Animation"
     },
     "guide": {
       "howItWorks": {
@@ -11686,22 +10948,6 @@
       "preset15min": "15 min",
       "preset30min": "30 min"
     },
-    "pomodoro": {
-      "title": "Pomodoro Timer",
-      "work": "Focus",
-      "shortBreak": "Short Break",
-      "longBreak": "Long Break",
-      "start": "Start",
-      "pause": "Pause",
-      "reset": "Reset",
-      "skip": "Skip",
-      "session": "Session",
-      "workDuration": "Focus time (min)",
-      "shortBreakDuration": "Short break (min)",
-      "longBreakDuration": "Long break (min)",
-      "sessionsBeforeLong": "Sessions before long break",
-      "completed": "Completed sessions"
-    },
     "guide": {
       "title": "User Guide",
       "stopwatch": {
@@ -11881,15 +11127,9 @@
     "binary": "Binary (Base 2)",
     "octal": "Octal (Base 8)",
     "hex": "Hexadecimal (Base 16)",
-    "input": "Enter a value to convert",
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "swap": "Swap",
-    "bitVisualization": "Bit Visualization",
-    "bit": "bit",
-    "signed": "Signed integer",
-    "unsigned": "Unsigned integer",
     "commonValues": "Common Values",
     "guide": {
       "howItWorks": {
@@ -12011,7 +11251,6 @@
     "noNotes": "No notes yet",
     "createFirstNote": "Click New Note to get started",
     "export": "Save .txt",
-    "autoSaved": "Auto-saved",
     "stats": {
       "charsNoSpace": "No spaces",
       "manuscript": "Manuscript",
@@ -12257,39 +11496,16 @@
     "description": "Calculate lump-sum and monthly compound interest after tax, solve for a savings goal, and see the Rule of 72, simple vs compound and inflation-adjusted real returns in one place.",
     "principal": "Principal ($)",
     "rate": "Annual Rate (%)",
-    "period": "Investment Period",
     "periodUnit": {
       "years": "years",
       "months": "months"
     },
-    "compoundFrequency": "Compound Frequency",
     "frequency": {
       "yearly": "Annually",
       "semiannually": "Semi-annually",
       "quarterly": "Quarterly",
       "monthly": "Monthly",
       "daily": "Daily"
-    },
-    "monthlyDeposit": "Monthly Deposit ($)",
-    "monthlyDepositDesc": "Additional monthly deposit (optional)",
-    "result": {
-      "title": "Results",
-      "totalAmount": "Total Amount",
-      "totalInterest": "Total Interest",
-      "totalDeposit": "Total Deposited",
-      "effectiveRate": "Effective Return",
-      "growthChart": "Growth Chart",
-      "yearlyBreakdown": "Yearly Breakdown",
-      "year": "Year",
-      "balance": "Balance",
-      "interest": "Interest",
-      "deposit": "Principal"
-    },
-    "comparison": {
-      "title": "Simple vs Compound Interest",
-      "simple": "Simple",
-      "compound": "Compound",
-      "difference": "Difference"
     },
     "common": {
       "calculate": "Calculate",
@@ -12488,13 +11704,6 @@
     "title": "Electricity Bill Calculator",
     "description": "Estimate this month's electricity bill from your kWh usage or appliance hours. Based on KEPCO residential progressive rates (Q4 2026), with tier breakdown, extra A/C cost and month-over-month comparison.",
     "usage": "Monthly Usage (kWh)",
-    "usagePlaceholder": "Enter usage amount",
-    "season": "Season",
-    "seasons": {
-      "normal": "Normal (Spring/Fall)",
-      "summer": "Summer (Jul-Aug)",
-      "winter": "Winter (Dec-Feb)"
-    },
     "contractType": "Contract Type",
     "contracts": {
       "lowVoltage": "Residential Low Voltage",
@@ -12667,18 +11876,6 @@
       }
     },
     "copyLink": "Copy Link",
-    "simulator": {
-      "title": "Appliance Simulator",
-      "description": "Enter daily usage hours for your appliances to estimate monthly electricity consumption.",
-      "appliance": "Appliance",
-      "watt": "Power",
-      "hoursPerDay": "Hours/Day",
-      "monthlyKwh": "Monthly kWh",
-      "total": "Total",
-      "estimated": "Estimated",
-      "note": "* Actual usage may vary by product efficiency and environment.",
-      "apply": "Apply to Calculator"
-    },
     "appliances": {
       "blanket": "Electric blanket",
       "heater": "Electric heater",
@@ -12973,7 +12170,6 @@
     "clickToCopy": "Shows the Unicode and HTML code of the character you tapped",
     "recentlyUsed": "Recently Used",
     "noResults": "No results found",
-    "totalEmojis": "emojis",
     "guide": {
       "title": "User Guide",
       "howToUse": {
@@ -13066,8 +12262,6 @@
     "month": "Month",
     "day": "Day",
     "leapMonth": "Leap month",
-    "isLeapMonth": "Leap month",
-    "convert": "Convert",
     "reset": "Reset",
     "result": {
       "dayGanzi": "Day stem-branch",
@@ -13221,20 +12415,14 @@
     "copied": "Copied!",
     "copyAll": "Copy All",
     "refresh": "Refresh",
-    "ipv4": "IPv4 Address",
-    "ipv6": "IPv6 Address",
     "location": "Location",
     "city": "City",
     "region": "Region",
     "country": "Country",
     "timezone": "Timezone",
     "isp": "Internet Service Provider",
-    "org": "Organization",
     "asn": "AS Number",
     "network": "Network Information",
-    "connectionType": "Connection Type",
-    "vpnDetected": "VPN Detected",
-    "proxyDetected": "Proxy Detected",
     "yes": "Yes",
     "no": "No",
     "guide": {
@@ -13315,12 +12503,9 @@
     "discountRate": "Discount Rate (%)",
     "discountAmount": "Discount Amount",
     "finalPrice": "Final Price",
-    "calculate": "Calculate",
     "reset": "Reset",
-    "result": "Result",
     "savings": "You Save",
     "effectiveRate": "Effective Discount Rate",
-    "won": "KRW",
     "copyLink": "Copy result link",
     "copyFailed": "Could not copy. Check your browser clipboard permission.",
     "savingsSummary": "Discount summary",
@@ -13328,16 +12513,9 @@
     "finalPriceAboveOriginal": "The final price is above the original price. Enter a final price no greater than the original price to calculate a discount.",
     "copy": "Copy",
     "copied": "Copied!",
-    "enterPrice": "Enter price",
-    "enterRate": "Enter discount rate",
     "quickRates": "Quick Rates",
     "multiDiscount": "Stacked Discounts",
     "addDiscount": "Add Discount",
-    "totalDiscount": "Total Discount Rate",
-    "multiResult": "Stacked Discount Result",
-    "discount1": "First Discount",
-    "discount2": "Second Discount",
-    "discount3": "Third Discount",
     "guide": {
       "title": "Discount Calculator Guide",
       "basic": {
@@ -13441,22 +12619,7 @@
       "korean": "Korean",
       "english": "English"
     },
-    "difficulty": {
-      "title": "Difficulty",
-      "easy": "Easy",
-      "medium": "Medium",
-      "hard": "Hard"
-    },
-    "duration": {
-      "title": "Duration",
-      "sec30": "30s",
-      "min1": "1min",
-      "min2": "2min",
-      "min5": "5min"
-    },
-    "start": "Start",
     "restart": "Restart",
-    "stop": "Stop",
     "result": {
       "sub": "{acc}% accuracy · {grade}",
       "faster": "{n}% faster than average",
@@ -13475,20 +12638,6 @@
       "copied": "Copied",
       "retry": "Try again"
     },
-    "timeLeft": "Time Left",
-    "wpm": "WPM",
-    "cpm": "CPM",
-    "accuracy": "Accuracy",
-    "totalChars": "Total Characters",
-    "correctChars": "Correct",
-    "wrongChars": "Errors",
-    "typingSpeed": "Typing Speed",
-    "excellent": "Excellent",
-    "fast": "Fast",
-    "average": "Average",
-    "slow": "Slow",
-    "beginTyping": "Look at the text above and start typing",
-    "timeUp": "Time's Up!",
     "history": "History",
     "bestRecord": "Best Record",
     "averageSpeed": "Average Speed",
@@ -13574,31 +12723,17 @@
     "description": "Convert numbers to Korean currency text format. Useful for checks, contracts, and receipts.",
     "inputNumber": "Enter Number",
     "placeholder": "Enter a number to convert",
-    "result": "Conversion Result",
     "koreanFormal": "Korean Amount (Formal)",
     "koreanInformal": "Korean Reading",
     "chineseNum": "Chinese Character Amount",
-    "currency": "Currency Format",
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "won": "Won",
-    "examples": "Examples",
     "maxNumber": "Up to 20 digits supported",
     "englishNum": "English Words",
     "spacing": "Add spaces",
-    "numberDisplay": "Number",
     "inputPrompt": "Enter a number",
     "invalidNumber": "Please enter a valid number",
-    "units": {
-      "il": "il",
-      "ship": "ship",
-      "baek": "baek",
-      "cheon": "cheon",
-      "man": "man",
-      "eok": "eok",
-      "jo": "jo"
-    },
     "quickAmounts": "Quick Amounts",
     "guide": {
       "title": "Number to Korean Guide",
@@ -13676,15 +12811,11 @@
     "stopCamera": "Stop Camera",
     "uploadImage": "Upload Image",
     "dragDrop": "Drag or click to upload an image",
-    "scanning": "Scanning...",
     "noQrFound": "No QR code found",
     "result": "Scan Result",
-    "type": "Type",
-    "content": "Content",
     "copy": "Copy",
     "copied": "Copied!",
     "openLink": "Open Link",
-    "scanAnother": "Scan Another",
     "history": "Scan History",
     "clearHistory": "Clear History",
     "cameraPermission": "Camera access permission required",
@@ -13801,7 +12932,6 @@
     "pyeongType": " pyeong type",
     "formulaTitle": "Formula",
     "copyLink": "Copy link",
-    "linkCopied": "Link copied",
     "heroSupply": "Customary size (supply area basis): about {pyeong}-pyeong type, supply area about {m2} m² (assuming {ratio}% efficiency)",
     "heroExclusive": "Actual living space (exclusive area): about {pyeong} pyeong, about {m2} m² (assuming {ratio}% efficiency)",
     "ratio": {
@@ -13847,11 +12977,6 @@
     },
     "title": "Pyeong Calculator",
     "description": "Convert pyeong and square meters both ways, and see exclusive, supply, contract and service areas, the customary pyeong type and price per pyeong at once.",
-    "pyeongToSqm": "Pyeong → m²",
-    "sqmToPyeong": "m² → Pyeong",
-    "inputPyeong": "Enter Pyeong",
-    "inputSqm": "Enter Square Meters",
-    "result": "Conversion Result",
     "pyeong": "Pyeong",
     "sqm": "m²",
     "sqft": "ft²",
@@ -13859,7 +12984,6 @@
     "copied": "Copied!",
     "reset": "Reset",
     "quickValues": "Quick input in pyeong",
-    "areaComparison": "Area Comparison",
     "roomSize": "Room Size Reference",
     "sizes": {
       "studio": "Studio (5-8 pyeong)",
@@ -14075,26 +13199,16 @@
       "nts": "National Tax Service"
     },
     "title": "VAT Calculator",
-    "description": "Calculate VAT (10%) from supply amount, or reverse-calculate from total amount.",
     "mode": {
       "fromSupply": "Supply → total",
       "fromTotal": "Total → supply (reverse)",
       "fromVat": "VAT → supply"
     },
-    "supplyAmount": "Supply Amount",
-    "vatAmount": "VAT (10%)",
-    "totalAmount": "Total (Supply + VAT)",
-    "calculate": "Calculate",
     "reset": "Reset",
-    "result": "Result",
     "copy": "Copy",
     "copied": "Copied!",
-    "copyAll": "Copy All",
-    "enterAmount": "Enter amount",
     "won": "KRW",
-    "vatRate": "VAT Rate",
     "receipt": "Tax Invoice Format",
-    "quickAmounts": "Quick Amounts",
     "guide": {
       "howItWorks": {
         "title": "How it works",
@@ -14172,17 +13286,8 @@
     },
     "copyLink": "Copy Link",
     "linkCopied": "Copied!",
-    "singleMode": "Single",
-    "batchMode": "Batch",
     "calcMode": "Calculation Mode",
-    "amountLabel": "Enter Amount",
-    "pieChartTitle": "Breakdown",
-    "batchAdd": "Add Item",
-    "batchItemName": "Item Name",
-    "batchSupply": "Supply",
-    "batchVat": "VAT",
-    "batchTotal": "Total",
-    "batchTotalLabel": "Total"
+    "batchAdd": "Add Item"
   },
   "alcoholCalculator": {
     "u": {
@@ -14283,54 +13388,11 @@
     "female": "Female",
     "weight": "Weight (kg)",
     "drinks": "Drinks",
-    "addDrink": "Add Drink",
     "removeDrink": "Remove",
-    "drinkType": "Drink Type",
-    "amount": "Amount (ml)",
-    "alcoholPercent": "ABV (%)",
-    "drinkingDuration": "Drinking Duration (hours)",
-    "timeSinceDrinking": "Time Since Drinking (hours)",
-    "calculate": "Calculate",
     "reset": "Reset",
-    "result": "Estimated Result",
-    "bac": "Blood Alcohol Concentration",
-    "bacUnit": "%",
     "status": "Status",
-    "legal": "Legal Limits",
-    "driveLimit": "License suspension: 0.03% or above",
-    "driveRevoke": "License revocation: 0.08% or above",
-    "penalty": "Criminal penalty: 0.08% or above",
-    "sober": "Sober",
-    "buzzed": "Slightly Impaired",
-    "drunk": "License Suspension Level",
-    "veryDrunk": "License Revocation Level",
-    "dangerous": "Dangerous Level",
-    "soberTime": "Estimated Sober Time",
-    "hours": "hours",
-    "drinkTypes": {
-      "soju": "Soju (16.5%)",
-      "beer": "Beer (4.5%)",
-      "wine": "Wine (13%)",
-      "makgeolli": "Makgeolli (6%)",
-      "whiskey": "Whiskey (40%)",
-      "custom": "Custom"
-    },
-    "drinkUnits": {
-      "sojuGlass": "Soju glass (50ml)",
-      "sojuBottle": "Soju bottle (360ml)",
-      "beerGlass": "Beer glass (355ml)",
-      "beerBottle": "Beer bottle (500ml)",
-      "wineGlass": "Wine glass (150ml)",
-      "makgeolliGlass": "Makgeolli glass (300ml)"
-    },
-    "linkCopied": "Copied",
     "copyLink": "Copy Link",
     "addDrinksPrompt": "Please add drinks",
-    "quickAdd": "Quick Add",
-    "addAndCalculate": "Add drinks and calculate",
-    "exceeded": "Exceeded",
-    "within": "Within",
-    "peakBac": "Peak BAC: {value}%",
     "warning": "This is a statistical Widmark estimate. Body type, food, liver function, medication and sleep can change the real value a lot, and it cannot be used as evidence for a breath test or legal judgment. If you drank, do not drive.",
     "guide": {
       "title": "Blood Alcohol Calculator Guide",
@@ -14451,32 +13513,24 @@
     "title": "Font Preview",
     "description": "Preview 38 commercially free Korean fonts with your own copy, compare up to 4 side by side, and copy the CSS.",
     "sampleText": "Preview Text",
-    "defaultText": "The quick brown fox jumps over the lazy dog 0123456789 다람쥐 헌 쳇바퀴에 타고파",
     "fontSize": "Font Size",
     "fontWeight": "Weight",
     "lineHeight": "Line Height",
     "letterSpacing": "Letter Spacing",
-    "textColor": "Text Color",
-    "bgColor": "Background Color",
     "textAlign": "Alignment",
     "alignLeft": "Left",
     "alignCenter": "Center",
     "alignRight": "Right",
-    "category": "Category",
     "all": "All",
-    "sansSerif": "Sans-serif",
     "serif": "Serif",
     "monospace": "Monospace",
     "handwriting": "Handwriting",
     "display": "Display",
     "search": "Search by name, Korean name or foundry (e.g. Nanum, Noto)",
-    "addToCompare": "Add to Compare",
-    "compare": "Compare Mode",
     "clearCompare": "Clear Compare",
     "copyCSS": "Copy CSS",
     "copiedCSS": "CSS Copied!",
     "fonts": "Font List",
-    "preview": "Preview",
     "guide": {
       "license": {
         "title": "License — can I use these commercially?",
@@ -14575,22 +13629,12 @@
     },
     "title": "World Clock",
     "description": "View current time in major cities around the world at a glance.",
-    "currentTime": "Current Time",
     "addCity": "Add City",
     "removeCity": "Remove",
     "search": "Search Cities",
-    "timeDifference": "Time Difference",
-    "hours": "hours",
-    "ahead": "ahead",
-    "behind": "behind",
-    "same": "same",
-    "myTime": "My Time",
     "format24h": "24-hour",
     "format12h": "12-hour",
-    "am": "AM",
-    "pm": "PM",
     "date": "Date",
-    "dayOfWeek": "Day",
     "days": {
       "sun": "Sun",
       "mon": "Mon",
@@ -14674,8 +13718,6 @@
         ]
       }
     },
-    "selectCity": "Select a city",
-    "add": "Add",
     "copyLink": "Copy link",
     "copied": "Copied",
     "dst": "DST active",
@@ -14798,21 +13840,9 @@
     "wolseDeposit": "Monthly Rent Deposit",
     "monthlyRent": "Monthly Rent",
     "conversionRate": "Conversion Rate (%)",
-    "result": "Conversion Result",
-    "estimatedMonthlyRent": "Estimated Monthly Rent",
-    "estimatedJeonse": "Estimated Jeonse",
-    "won": "KRW",
-    "monthlyWon": "KRW/month",
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "currentRate": "Current Rate Reference",
-    "rateInfo": "Based on Bank of Korea base rate, typically 4-6%",
-    "quickRates": "Quick Rates",
-    "quickDeposits": "Quick Deposits",
-    "formula": "Monthly Rent = (Jeonse - Deposit) × Rate ÷ 12",
-    "yearlyRent": "Annual Rent Total",
-    "comparison": "Jeonse vs Monthly Comparison",
     "guide": {
       "title": "Rent Conversion Guide",
       "what": {
@@ -14948,25 +13978,11 @@
     "description": "Calculate your monthly water bill with official 2026 Seoul/Busan tariffs and compare it with similar households.",
     "usage": "Monthly usage (㎥)",
     "householdSize": "Household Size",
-    "persons": "persons",
-    "waterType": "Water Type",
-    "residential": "Residential",
-    "calculate": "Calculate",
-    "result": "Result",
-    "basicFee": "Basic Fee",
-    "usageFee": "Usage Fee",
-    "sewageFee": "Sewage Fee",
-    "waterQualityFee": "Water Quality Fee",
-    "totalBeforeVat": "Subtotal",
-    "vat": "VAT (10%)",
     "totalAmount": "Total Water Bill",
     "won": "KRW",
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "tier": "Tier",
-    "tierInfo": "Progressive Rate Tiers",
-    "quickUsage": "Quick Usage",
     "guide": {
       "title": "Water Bill Guide",
       "whatIs": {
@@ -15030,7 +14046,6 @@
     "posRight": "Right",
     "colors": "Colors",
     "addColor": "Add Color",
-    "removeColor": "Remove",
     "position": "Position",
     "preview": "Preview",
     "cssCode": "CSS Code",
@@ -15165,29 +14180,13 @@
     "description": "Extract initial consonants, split and compose jamo, romanize, and pick particles, all live as you type.",
     "input": "Text Input",
     "placeholder": "Enter Korean text",
-    "mode": {
-      "chosung": "Extract Initials",
-      "decompose": "Decompose",
-      "compose": "Compose"
-    },
-    "result": "Result",
-    "original": "Original",
     "chosung": "Initial",
     "jungsung": "Medial",
     "jongsung": "Final",
-    "decomposed": "Decomposed",
-    "composed": "Composed",
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
-    "charCount": "Character Count",
-    "syllableCount": "Korean Syllable Count",
     "examples": "Examples",
-    "exampleList": {
-      "ex1": "대한민국 → ㄷㅎㅁㄱ",
-      "ex2": "안녕하세요 → ㅇㄴㅎㅅㅇ",
-      "ex3": "프로그래밍 → ㅍㄹㄱㄹㅁ"
-    },
     "guide": {
       "howItWorks": {
         "title": "How it works",
@@ -15333,32 +14332,14 @@
     },
     "title": "Roman Numeral Converter",
     "description": "Convert numbers and Roman numerals both ways, with a place-value breakdown, standard-form checks, date conversion and Ⅰ–Ⅻ characters to copy.",
-    "mode": {
-      "toRoman": "Number → Roman",
-      "toArabic": "Roman → Number"
-    },
-    "inputNumber": "Enter Number",
-    "inputRoman": "Enter Roman Numeral",
-    "result": "Conversion Result",
     "arabicNumber": "Arabic Number",
     "romanNumeral": "Roman Numeral",
     "copy": "Copy",
     "copied": "Copied!",
     "reset": "Reset",
     "maxNumber": "Standard notation covers 1–3,999; above that, the extended overline notation (×1,000) goes up to 3,999,999.",
-    "invalidRoman": "Please enter a valid Roman numeral",
-    "invalidNumber": "Enter a number between 1 and 3999",
     "quickNumbers": "Quick Input",
     "referenceTable": "Basic symbols",
-    "symbols": {
-      "I": "1",
-      "V": "5",
-      "X": "10",
-      "L": "50",
-      "C": "100",
-      "D": "500",
-      "M": "1000"
-    },
     "guide": {
       "title": "Roman Numeral Guide",
       "rules": {
@@ -15525,18 +14506,14 @@
     "description": "Validate a 10-digit Korean business registration number as you type, see the individual/corporate breakdown, check active/closed status, and validate many numbers at once.",
     "inputLabel": "Business Registration Number",
     "inputPlaceholder": "000-00-00000 or digits only",
-    "verify": "Verify",
     "reset": "Reset",
     "valid": "Valid Business Number",
     "invalid": "Invalid Business Number",
     "validMessage": "This business registration number passes the checksum validation algorithm.",
-    "invalidMessage": "This number failed the validation algorithm. Please double-check the number.",
     "formatted": "Formatted Number",
     "digitCount": "Digit Count",
-    "checkDigit": "Check Digit",
     "recentVerifications": "Recent Verifications",
     "clearHistory": "Clear History",
-    "noHistory": "No verification history",
     "copy": "Copy",
     "copied": "Copied!",
     "guide": {
@@ -15861,38 +14838,6 @@
     "title": "Due Date Calculator",
     "description": "Calculate your due date, gestational age and test schedule from your last period, conception, ultrasound or IVF transfer date.",
     "calcMethod": "Calculation Basis",
-    "lmpMethod": "Last Menstrual Period (LMP)",
-    "ovulationMethod": "Ovulation / Conception Date",
-    "lmpDate": "Last Menstrual Period Date",
-    "ovulationDate": "Ovulation / Conception Date",
-    "calculate": "Calculate",
-    "reset": "Reset",
-    "result": {
-      "title": "Results",
-      "dueDate": "Estimated Due Date",
-      "currentWeek": "Current Week",
-      "weeksAndDays": "{weeks} weeks {days} days",
-      "trimester": "Current Trimester",
-      "trimester1": "1st Trimester (Weeks 1-12)",
-      "trimester2": "2nd Trimester (Weeks 13-27)",
-      "trimester3": "3rd Trimester (Weeks 28-40)",
-      "daysRemaining": "Days Remaining",
-      "daysElapsed": "Days Elapsed",
-      "progress": "Progress",
-      "conceptionDate": "Estimated Conception Date",
-      "alreadyPassed": "Due date has already passed"
-    },
-    "milestones": {
-      "title": "Key Milestones",
-      "heartbeat": "Heartbeat Detection (Weeks 6-7)",
-      "firstTrimesterScreen": "1st Trimester Screening (Weeks 11-13)",
-      "genderReveal": "Gender Reveal Possible (Weeks 16-20)",
-      "secondTrimesterScreen": "2nd Trimester Screening (Weeks 15-20)",
-      "viability": "Viability (Week 24)",
-      "glucoseTest": "Glucose Tolerance Test (Weeks 24-28)",
-      "fullTerm": "Full Term (Week 37)",
-      "dueDate": "Due Date (Week 40)"
-    },
     "guide": {
       "title": "Due Date Guide",
       "calculation": {
@@ -15943,17 +14888,6 @@
           }
         ]
       }
-    },
-    "weeklyProgress": {
-      "title": "Pregnancy Week Progress",
-      "weekLabel": "Week {week}",
-      "dayLabel": "Day {day}",
-      "outOf40": "/ 40 weeks",
-      "trimester1Label": "1st Trimester (Wks 1-12)",
-      "trimester2Label": "2nd Trimester (Wks 13-27)",
-      "trimester3Label": "3rd Trimester (Wks 28-40)",
-      "currentWeekBadge": "Week {week} now",
-      "babyThisWeek": "This week baby is"
     },
     "babySize": {
       "title": "Baby Size by Week",
@@ -16183,41 +15117,6 @@
         "weight": "3.5kg"
       }
     },
-    "prenatalSchedule": {
-      "title": "Prenatal Checkup Schedule",
-      "subtitle": "Recommended prenatal checkup schedule by pregnancy week",
-      "completedLabel": "Done",
-      "upcomingLabel": "Upcoming",
-      "currentLabel": "Now",
-      "week8": {
-        "title": "Week 8",
-        "desc": "First prenatal visit, ultrasound (heartbeat check)"
-      },
-      "week12": {
-        "title": "Week 12",
-        "desc": "1st trimester screening (NT scan, blood test)"
-      },
-      "week16": {
-        "title": "Week 16",
-        "desc": "2nd trimester screening, amniocentesis (if needed)"
-      },
-      "week20": {
-        "title": "Week 20",
-        "desc": "Anatomy scan (detailed fetal structure check)"
-      },
-      "week24": {
-        "title": "Weeks 24-28",
-        "desc": "Gestational diabetes screening (OGTT)"
-      },
-      "week28": {
-        "title": "Weeks 28-32",
-        "desc": "Fetal movement test (NST), anemia screening"
-      },
-      "week36": {
-        "title": "Week 36+",
-        "desc": "Weekly prenatal visits, NST, birth preparation"
-      }
-    },
     "weightGain": {
       "title": "Pregnancy Weight Gain Guide",
       "subtitle": "Recommended weight gain based on pre-pregnancy BMI (optional)",
@@ -16375,12 +15274,9 @@
     "yearly": "Yearly",
     "amount": "Amount (KRW)",
     "amountPlaceholder": "Enter amount",
-    "workHoursPerDay": "Hours per Day",
     "workDaysPerWeek": "Days per Week",
-    "workDaysPerMonth": "Days per Month",
     "hours": "hours",
     "days": "days",
-    "calculate": "Calculate",
     "reset": "Reset",
     "result": {
       "title": "Conversion Results",
@@ -16430,17 +15326,13 @@
     "tints": "Tints",
     "tones": "Tones",
     "copy": "Copy",
-    "copied": "Copied!",
     "export": "Export Palette",
     "exportCSS": "Copy as CSS Variables",
     "exportJSON": "Copy as JSON",
     "exportTailwind": "Copy as Tailwind Config",
-    "presets": "Preset Palettes",
     "random": "Random Color",
     "savedPalettes": "Saved Palettes",
     "savePalette": "Save Palette",
-    "noPalettes": "No saved palettes",
-    "deletePalette": "Delete",
     "colorInfo": {
       "title": "Color Info",
       "hex": "HEX",
@@ -16582,7 +15474,6 @@
     "widthPlaceholder": "Enter width",
     "heightPlaceholder": "Enter height",
     "ratio": "Ratio",
-    "calculate": "Calculate",
     "swap": "Swap Width↔Height",
     "lockRatio": "Lock Ratio",
     "unlockRatio": "Unlock Ratio",
@@ -16674,49 +15565,6 @@
             "a": "Modern browsers: aspect-ratio: 16 / 9;. The legacy padding-top trick uses height/width × 100% (16:9 = 56.25%)."
           }
         ]
-      }
-    },
-    "businessNumber": {
-      "title": "Business Registration Number Validator",
-      "description": "Validate Korean business registration numbers using checksum algorithm",
-      "inputLabel": "Business Registration Number",
-      "inputPlaceholder": "e.g., 123-45-67890",
-      "verify": "Verify",
-      "reset": "Reset",
-      "valid": "Valid",
-      "invalid": "Invalid",
-      "validMessage": "This is a valid business registration number",
-      "invalidMessage": "This is an invalid business registration number",
-      "formatted": "Formatted Number",
-      "digitCount": "Digit Count",
-      "checkDigit": "Check Digit",
-      "recentVerifications": "Recent Verifications",
-      "clearHistory": "Clear History",
-      "noHistory": "No verification history",
-      "copy": "Copy",
-      "copied": "Copied",
-      "guide": {
-        "title": "User Guide",
-        "structure": {
-          "title": "Business Number Structure",
-          "items": [
-            "10 digits total (XXX-XX-XXXXX format)",
-            "First 3 digits: Tax office code",
-            "Middle 2 digits: Individual/Corporate classification",
-            "Next 4 digits: Serial number",
-            "Last 1 digit: Check digit (checksum)"
-          ]
-        },
-        "validation": {
-          "title": "Validation Algorithm",
-          "items": [
-            "Uses weight array [1, 3, 7, 1, 3, 7, 1, 3, 5]",
-            "Multiply first 9 digits by respective weights and sum",
-            "For 9th position, also add Math.floor(digit × 5 / 10)",
-            "Subtract (sum mod 10) from 10, then take mod 10",
-            "Result should match the last (10th) digit"
-          ]
-        }
       }
     }
   },
@@ -16810,31 +15658,16 @@
     "title": "Annual Leave Calculator",
     "description": "Enter your hire date to see statutory annual leave days, remaining leave, unused leave allowance and the hire-date vs fiscal-year difference.",
     "joinDate": "Join Date",
-    "usedLeaves": "Used Leave Days",
-    "usedLeavesPlaceholder": "0",
     "calculationBasis": "Your company's leave basis",
     "joinDateBasis": "Join Date Basis",
     "fiscalYearBasis": "Fiscal Year Basis",
     "joinDateBasisDesc": "Leave is granted on each work anniversary (the legal rule)",
     "fiscalYearBasisDesc": "Leave is granted to everyone each January 1, prorated in the year after hire",
-    "dailyWage": "Daily Wage (KRW)",
-    "dailyWagePlaceholder": "Leave empty to skip pay calculation",
-    "dailyWageDesc": "Used for leave pay calculation. Regular wage ÷ prescribed work days",
     "won": "KRW",
     "copyLink": "Copy Link",
     "copied": "Copied",
     "share": "Share",
-    "calculate": "Calculate",
     "reset": "Reset",
-    "leavePay": {
-      "title": "Unused Leave Pay (Estimated)",
-      "formula": "{remaining} days × {wage} KRW/day = {total} KRW"
-    },
-    "timeline": {
-      "title": "Leave Accrual Timeline",
-      "current": "Current",
-      "desc": "Leave milestones by years of service. +1 day every 2 years from year 3 (max 25 days)"
-    },
     "promotion": {
       "title": "Leave-usage promotion (when unused leave is not paid)",
       "description": "If the employer follows the written procedure of LSA Article 61 exactly, leave the employee still does not use expires without an allowance.",
@@ -16858,15 +15691,6 @@
       "days": "days",
       "nextEarned": "Next Leave Earned",
       "currentYearEarned": "This Year's Leave"
-    },
-    "breakdown": {
-      "title": "Leave Breakdown",
-      "year": "Year",
-      "earned": "Earned",
-      "type": "Type",
-      "monthly": "Monthly (Under 1 year)",
-      "annual": "Annual",
-      "additional": "Additional"
     },
     "guide": {
       "hourlyLeave": {
@@ -17074,12 +15898,8 @@
       "gyeongnam": "Gyeongnam",
       "jeju": "Jeju"
     },
-    "season": "Season",
-    "calculate": "Calculate",
     "reset": "Reset",
-    "shareLink": "Share Link",
     "copied": "Copied",
-    "copyResult": "Copy Result",
     "result": {
       "title": "Gas Bill Result",
       "basicCharge": "Basic Charge",
@@ -17108,17 +15928,6 @@
       "description": "12-month estimate under the same conditions. If you enter bill usage, the curve is scaled to that month.",
       "monthSuffix": "Month",
       "monthLabel": "M"
-    },
-    "utility": {
-      "title": "Utility Bill Total",
-      "description": "Enter other utility bills alongside gas to see your total monthly utilities.",
-      "gas": "Gas",
-      "gasAuto": "Auto-filled from calculation above",
-      "electricity": "Electricity",
-      "water": "Water",
-      "internet": "Internet",
-      "enterAmount": "Enter amount",
-      "totalLabel": "Total Monthly Utilities"
     },
     "guide": {
       "title": "Gas Bill Guide",
@@ -17273,28 +16082,12 @@
     },
     "title": "Image Converter",
     "description": "Convert iPhone HEIC, PNG, WebP and more to JPG, PNG or WebP in bulk. Photos stay in your browser and are never uploaded.",
-    "uploadLabel": "Upload Image",
-    "dragDrop": "Drag and drop or click to upload",
-    "supportedFormats": "Supported: JPEG, PNG, WebP, GIF, BMP",
     "outputFormat": "Output Format",
     "quality": "Quality",
     "qualityPercent": "{value}%",
-    "convert": "Convert",
     "download": "Download",
-    "downloadAll": "Download All",
     "reset": "Reset",
-    "preview": "Preview",
     "original": "Original",
-    "converted": "Converted",
-    "fileInfo": {
-      "name": "File Name",
-      "format": "Format",
-      "size": "Size",
-      "dimensions": "Dimensions",
-      "reduction": "Size Change"
-    },
-    "batchMode": "Batch Convert",
-    "singleMode": "Single Convert",
     "guide": {
       "title": "Image Conversion Guide",
       "formats": {
@@ -17457,17 +16250,10 @@
     "noVoices": "No voices available",
     "charCount": "Character Count",
     "estimatedTime": "Estimated Duration",
-    "seconds": "seconds",
     "speaking": "Playing",
     "paused": "Paused",
     "stopped": "Stopped",
     "notSupported": "This browser does not support TTS",
-    "presets": {
-      "title": "Sample Text",
-      "greeting": "Hello, welcome to ToolHub.",
-      "news": "Today's weather is sunny with a temperature of 20°C.",
-      "story": "Once upon a time, there was a kind girl living in a village."
-    },
     "guide": {
       "title": "TTS Guide",
       "usage": {
@@ -17607,7 +16393,6 @@
       "desc": "{rate}% surcharge outside the city boundary; stacks with the night surcharge.",
       "short": "Out-of-city"
     },
-    "calculate": "Calculate",
     "reset": "Reset",
     "copyLink": "Copy Link",
     "copyLinkDone": "Copied!",
@@ -17743,8 +16528,6 @@
     "months": "months",
     "interestRate": "Interest Rate (%)",
     "interestRatePlaceholder": "Annual rate",
-    "freeInstallment": "Interest-free",
-    "calculate": "Calculate",
     "reset": "Reset",
     "result": {
       "firstPayment": "Monthly payment (1st)",
@@ -17768,7 +16551,6 @@
       "interest": "Interest",
       "balance": "Balance"
     },
-    "quickMonths": "Quick Select",
     "guide": {
       "title": "Installment Guide",
       "rates": {
@@ -17851,14 +16633,8 @@
     "drawHere": "Sign here",
     "penColor": "Pen Color",
     "penSize": "Pen Size",
-    "backgroundColor": "Background",
-    "transparent": "Transparent",
-    "white": "White",
     "clear": "Clear",
     "undo": "Undo",
-    "download": "Download",
-    "downloadPNG": "Download PNG",
-    "downloadSVG": "Download SVG",
     "copy": "Copy",
     "copied": "Copied",
     "guide": {
@@ -18025,10 +16801,6 @@
     "clear": "Clear",
     "play": "Play",
     "stop": "Stop",
-    "speed": "Speed",
-    "slow": "Slow",
-    "normal": "Normal",
-    "fast": "Fast",
     "referenceTable": "Morse Code Table",
     "letters": "Letters",
     "numbers": "Numbers",
@@ -18162,33 +16934,15 @@
     "tooEarly": "Too soon!",
     "tooEarlySubtext": "You pressed before the signal. This round won't count and will be repeated",
     "ms": "ms",
-    "percentileText": "Faster than {percentile}% of people",
     "clickForNext": "Tap to start round {next}",
-    "clickForResult": "Click to see final results",
-    "sessionComplete": "Test Complete!",
     "newSession": "Test Again",
     "average": "Average",
     "best": "Best",
     "yourRanking": "Your position vs. online tests (reference)",
     "topPercent": "Top {percent}%",
-    "comparison": "Compare with Others",
-    "compProGamer": "Pro Gamer",
-    "compAboveAvg": "Above Average",
-    "compAvgAdult": "Average Adult",
-    "compYou": "You",
     "roundProgress": "Round {current}/{total}",
-    "currentBest": "Best",
-    "currentRound": "Current Round",
     "totalAttempts": "Total Attempts",
-    "sessionAvg": "Session Average",
     "allTimeBest": "Best average",
-    "rating": {
-      "excellent": "Excellent",
-      "good": "Good",
-      "average": "Average",
-      "slow": "Slow",
-      "verySlow": "Very Slow"
-    },
     "history": "My records",
     "clearHistory": "Clear History",
     "guide": {
@@ -18269,12 +17023,8 @@
     "description": "Validate Korean resident registration numbers (13 digits). Format validation only, no data is stored.",
     "inputLabel": "Resident Registration Number",
     "inputPlaceholder": "000000-0000000",
-    "verify": "Verify",
     "reset": "Reset",
     "valid": "Valid Number",
-    "invalid": "Invalid Number",
-    "validMessage": "This number passes the checksum validation.",
-    "invalidMessage": "Invalid format. Please check the number.",
     "info": {
       "number": "Number",
       "age": "Age",
@@ -18293,9 +17043,6 @@
       "female": "Female",
       "region": "Region Code"
     },
-    "privacy": "Numbers are processed locally and never sent to any server.",
-    "copy": "Copy",
-    "copied": "Copied!",
     "guide": {
       "codes": {
         "title": "7th digit codes",
@@ -18479,26 +17226,9 @@
       "text": "{kg}kg·{cm}cm parcel: {carrier} is cheapest at {price}"
     },
     "sizeRule": "The fare is set by the higher of the weight step and the size step (sum of three sides), per Korea Post and CJ Logistics rate tables. Carriers that don't publish size steps are priced by weight only.",
-    "faq": {
-      "items": [
-        {
-          "q": "Is the fare based on weight or size?",
-          "a": "Domestic Korean parcels are charged at the higher of the weight step and the size step (L+W+H). For example, a 2 kg Korea Post registered parcel with a 110 cm size sum pays the 100–120 cm step (6,000 KRW). Volumetric weight (÷6000), as used for air freight, is not applied."
-        },
-        {
-          "q": "How much is the Jeju Island surcharge?",
-          "a": "It varies by carrier. In this calculator, personal shipments to Jeju cost about 2,000–3,000 KRW extra and remote islands about 4,000–5,000 KRW. Korea Post charges no surcharge from the mainland to Jeju or islands; delivery just takes longer (only next-day delivery from Jeju to the mainland costs more)."
-        },
-        {
-          "q": "What's the difference between convenience store and standard courier?",
-          "a": "Convenience store delivery (at CU, GS25, etc.) requires you to drop off the package yourself but can offer lower rates for small parcels compared to standard door-to-door pickup."
-        }
-      ]
-    },
     "boxSize": "Box size",
     "boxPreset": "Post box #{n}",
     "girth": "Sum of 3 sides",
-    "volumeWeightWarning": "Volumetric weight exceeds actual weight — rates are based on volumetric weight",
     "rateBasis": "Rates as of: {date}",
     "bestOverall": {
       "title": "Cheapest overall (standard + convenience store)",
@@ -18522,26 +17252,16 @@
     "width": "Width (cm)",
     "height": "Height (cm)",
     "depth": "Depth (cm)",
-    "dimensionPlaceholder": "cm",
-    "carrier": "Carrier",
     "carrierType": "Service type",
     "carrierStandard": "Courier",
     "carrierCvs": "Convenience store",
     "jumpToResult": "Compare carriers",
-    "carriers": {
-      "cj": "CJ Logistics",
-      "hanjin": "Hanjin",
-      "lotte": "Lotte",
-      "post": "Korea Post",
-      "logen": "Logen"
-    },
     "destination": "Destination",
     "destinations": {
       "mainland": "Mainland",
       "jeju": "Jeju Island",
       "island": "Remote Islands"
     },
-    "calculate": "Calculate",
     "reset": "Reset",
     "result": {
       "cvsPickup": "Store pickup",
@@ -18560,7 +17280,6 @@
       "unavailable": "Not available",
       "cheapest": "Cheapest"
     },
-    "volumeWeightInfo": "Volume Weight = W × H × D ÷ 6000",
     "guide": {
       "title": "Shipping Guide",
       "calculation": {
@@ -18666,18 +17385,11 @@
     },
     "title": "Parking Fee Calculator",
     "description": "Enter entry/exit times or a duration to get the parking fee with base and extra units, daily max, grace period, purchase-based free time and discounts — and compare lots side by side.",
-    "parkingType": "Parking Type",
-    "types": {
-      "public": "Public Parking",
-      "private": "Private Parking",
-      "apartment": "Apartment Parking"
-    },
     "startTime": "Entry time",
     "endTime": "Exit time",
     "duration": "Duration",
     "hours": "hours",
     "minutes": "minutes",
-    "calculate": "Calculate",
     "reset": "Reset to defaults",
     "result": {
       "grace": "Free (within grace period)",
@@ -18969,16 +17681,6 @@
     },
     "title": "Color Blind Test",
     "description": "A self-check with 14 Ishihara-style pseudo-isochromatic plates for red-green color vision deficiency.",
-    "instruction": "Enter the number you see in the circle",
-    "plate": "Plate",
-    "of": "/",
-    "yourAnswer": "Answer",
-    "answerPlaceholder": "Enter visible number",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "See Results",
-    "restart": "Restart",
-    "skip": "Not sure",
     "result": {
       "summary": "{correct} of {total} plates answered as normal",
       "rgPlates": "Red-green plates",
@@ -19776,17 +18478,8 @@
     },
     "title": "Dutch Pay Calculator",
     "description": "Split group dinners and trips, see who sends how much to whom, and get a ready-to-paste group chat notice. Supports rounding to 100/1,000 KRW, excluding non-drinkers and weighted shares.",
-    "totalAmount": "Total Amount",
-    "numberOfPeople": "Number of People",
-    "perPerson": "Per Person",
-    "equalSplit": "Equal Split",
-    "customSplit": "Custom Split",
     "addPerson": "Add Person",
     "removePerson": "Remove Person",
-    "name": "Person",
-    "paid": "Paid",
-    "consumed": "Consumed",
-    "result": "Settlement Result",
     "transfers": "Transfers",
     "copy": "Copy",
     "copied": "Copied!",
@@ -19858,7 +18551,6 @@
     "pickedColor": "Picked Color",
     "palette": "Auto Palette",
     "history": "Extraction History",
-    "export": "Export",
     "hex": "HEX",
     "rgb": "RGB",
     "hsl": "HSL",
@@ -20060,12 +18752,10 @@
     "rotateRight": "Rotate 90° right",
     "recognize": "Recognize Text",
     "recognizing": "Recognizing...",
-    "progress": "Progress",
     "result": "Result",
     "resultPlaceholder": "Recognized text will appear here",
     "copy": "Copy",
     "copied": "Copied!",
-    "download": "Download",
     "downloadTxt": "Download TXT",
     "showConfidence": "Highlight low confidence",
     "confidence": "Confidence",
@@ -20239,13 +18929,10 @@
     "changeImage": "Another image",
     "title": "Image Mosaic/Blur",
     "description": "Hide faces, license plates, names and addresses with mosaic, blur or a solid box. Paste screenshots with Ctrl+V. Nothing is uploaded.",
-    "upload": "Upload Image",
-    "dragDrop": "Drag & drop or click to upload",
     "mosaic": "Mosaic",
     "blur": "Blur",
     "rectangle": "Rectangle",
     "brush": "Brush",
-    "intensity": "Intensity",
     "brushSize": "Brush Size",
     "undo": "Undo",
     "reset": "Clear all",
@@ -20253,11 +18940,7 @@
     "png": "PNG",
     "jpeg": "JPEG",
     "quality": "Quality",
-    "noImage": "Please upload an image",
-    "selectArea": "Select an area to apply mosaic/blur",
-    "mode": "Mode",
     "effectType": "Effect Type",
-    "format": "Format",
     "guide": {
       "safety": {
         "title": "Hiding things for real",
@@ -20784,37 +19467,19 @@
     },
     "title": "Number Baseball",
     "description": "Deduce the hidden number from strikes and balls. Play the daily puzzle everyone shares, or practice with custom rules.",
-    "difficulty": "Difficulty",
-    "difficultyLabel": "Select Difficulty",
     "easy": "Easy",
     "normal": "Normal",
     "hard": "Hard",
     "digitCount": "Digits",
-    "digits": "digits",
-    "guess": "Guess",
     "submit": "Submit",
-    "strike": "Strike",
-    "ball": "Ball",
-    "out": "Out",
-    "strikeDesc": "Correct digit in correct position",
-    "ballDesc": "Correct digit in wrong position",
-    "outDesc": "Digit not in the number",
-    "attempt": "Attempt",
     "currentAttempts": "Tries",
-    "times": "times",
     "history": "Guess History",
     "hint": "Hints",
-    "hintUsed": "Hint Used",
     "hintAvailableAfter": "{n} more guesses to unlock hints",
-    "hintReveal": "Digit #{pos} is {digit}",
     "newGame": "New Game",
-    "gameWon": "Correct!",
     "gameWonMessage": "You cracked the number in {attempts} attempts!",
-    "gameInfo": "Game Info",
-    "legend": "Judgment Rules",
     "errorDuplicate": "Duplicate digits found",
     "errorIncomplete": "Fill in all digits",
-    "errorLeadingZero": "First digit cannot be 0",
     "stats": {
       "played": "Played",
       "winRate": "Win %",
@@ -20958,8 +19623,6 @@
     "delete": "Delete",
     "notInList": "Not in word list",
     "notEnoughLetters": "Not enough letters",
-    "youWin": "Correct! 🎉",
-    "youLose": "The answer was: ",
     "correct": "Correct position",
     "present": "Wrong position",
     "absent": "Not in word",
@@ -20970,10 +19633,8 @@
     "helpAbsent": "This color means the jamo is not in the word (or no more copies).",
     "helpJamo": "Each syllable is split into jamo in typing order: 과 = ㄱ·ㅗ·ㅏ, 닭 = ㄷ·ㅏ·ㄹ·ㄱ. Repeated jamo are colored only as many times as they appear in the answer.",
     "close": "Close",
-    "attempt": "attempt",
     "hardMode": "Hard Mode",
     "hardModeAfterStart": "Hard mode cannot be changed after game starts",
-    "invalidChars": "Only Korean characters are allowed",
     "needVowelHint": "Add a vowel to complete the syllable",
     "shareTitle": "ToolHub Korean Wordle",
     "copyFailed": "Failed to copy",
@@ -20981,15 +19642,10 @@
     "resultLost": "Game over",
     "answerWas": "The answer was:",
     "streakContinued": "{count} day streak!",
-    "streakLost": "{count} day streak ended...",
     "copyResult": "Copy",
-    "shareNative": "Share",
-    "shareTwitter": "Share on X",
-    "shareKakao": "KakaoTalk",
     "helpExampleTitle": "Example",
     "helpInputTitle": "How to Input",
     "helpInputDesc": "Type consonants and vowels with the on-screen keyboard or your PC keyboard (Dubeolsik layout, Korean IME on or off). Backspace removes the last jamo.",
-    "helpInputExample": "consonant + vowel → complete character",
     "helpJamoTitle": "Jamo Analysis",
     "helpKeyboard": "Keyboard colors show what you have learned so far. In hard mode, revealed hints must be used in later guesses.",
     "hardModeCorrect": "{jamo} must be in the correct position",
@@ -21070,7 +19726,6 @@
     "bgColor": "Background Color",
     "elementColor": "Element Color",
     "borderRadius": "Border Radius",
-    "elementSize": "Element Size",
     "elementWidth": "Element Width",
     "elementHeight": "Element Height",
     "tools": "Tools",
@@ -21160,12 +19815,9 @@
     "settings": "Settings",
     "theme": "Theme",
     "language": "Language",
-    "langAuto": "Auto Detect",
     "background": "Background",
     "bgGradient": "Gradient",
     "bgSolid": "Solid",
-    "bgTransparent": "Transparent",
-    "bgColor": "Background Color",
     "padding": "Padding",
     "fontSize": "Font Size",
     "lineHeight": "Line Height",
@@ -21179,7 +19831,6 @@
     "exportSvg": "Export SVG",
     "copyImage": "Copy Image",
     "copied": "Copied!",
-    "copy": "Copy",
     "borderRadius": "Border Radius",
     "detected": "detected",
     "retina": "Retina (2x)",
@@ -21236,34 +19887,20 @@
     "container": "Container Properties",
     "children": "Children",
     "addChild": "Add Child",
-    "removeChild": "Remove",
     "maxChildren": "Maximum 8 children allowed",
     "childLabel": "Child #{n}",
     "cssCode": "CSS Code",
     "copy": "Copy",
     "copied": "Copied!",
     "preview": "Preview",
-    "previewSize": "Preview Size",
     "desktop": "Desktop",
     "tablet": "Tablet",
     "mobile": "Mobile",
-    "direction": "Direction",
-    "justifyContent": "Justify Content",
-    "alignItems": "Align Items",
-    "flexWrap": "Flex Wrap",
-    "gap": "Gap",
     "flexGrow": "Grow",
     "flexShrink": "Shrink",
     "flexBasis": "Basis",
     "alignSelf": "Align Self",
     "order": "Order",
-    "columns": "Columns",
-    "rows": "Rows",
-    "columnSize": "Column Size",
-    "rowSize": "Row Size",
-    "justifyItems": "Justify Items",
-    "gridColumn": "Column Span",
-    "gridRow": "Row Span",
     "resetBtn": "Reset",
     "addColumn": "Add Column",
     "addRow": "Add Row",
@@ -21658,8 +20295,6 @@
     },
     "title": "Budget Calculator",
     "description": "Decide where your paycheck goes, get a savings-rate verdict and see your daily allowance left this month",
-    "currency": " KRW",
-    "manWon": "0K",
     "income": {
       "modeNet": "Monthly take-home",
       "modeAnnual": "From salary",
@@ -21671,10 +20306,6 @@
       "salary": "Salary (After Tax)",
       "sideIncome": "Side Income",
       "otherIncome": "Other Income"
-    },
-    "expenses": {
-      "title": "Expense Categories",
-      "average": "Korean Avg"
     },
     "categories": {
       "emergency": "Emergency fund",
@@ -21691,11 +20322,6 @@
       "savings": "Savings/Investment",
       "other": "Other"
     },
-    "budgetType": {
-      "need": "Need",
-      "want": "Want",
-      "saving": "Save"
-    },
     "summary": {
       "title": "Income vs Expenses",
       "totalIncome": "Total Income",
@@ -21705,12 +20331,6 @@
       "deficit": "Deficit",
       "usageRate": "Usage Rate",
       "savingsRate": "Savings Rate"
-    },
-    "chart": {
-      "title": "Expense Ratio",
-      "total": "Total",
-      "categoryBars": "Expenses by Category",
-      "noData": "Enter expense data to see the chart"
     },
     "rule": {
       "title": "50/30/20 Rule Analysis",
@@ -21932,14 +20552,11 @@
     "typeBullet": "Bullet (Interest-Only)",
     "gracePeriod": "Grace Period",
     "startDate": "Start Date",
-    "unitWon": "KRW",
     "unitManwon": "x10,000",
-    "unitEokwon": "x100M",
     "wonUnit": " KRW",
     "unitYears": "Years",
     "unitMonths": "Months",
     "monthsLabel": " months",
-    "extraMonthly": "Extra Monthly Payment",
     "period": "Period",
     "periodSuffix": "",
     "date": "Date",
@@ -21950,29 +20567,11 @@
     "totalPayment": "Total Payment",
     "totalInterest": "Total Interest",
     "interestRatio": "Interest Ratio",
-    "avgMonthly": "Avg Monthly",
-    "totalPeriods": "Total Periods",
-    "earlyRepaymentSavings": "Early Repayment Savings",
-    "interestSaved": "Interest Saved",
-    "termReduced": "Term Reduced",
-    "scheduleTab": "Schedule",
-    "chartTab": "Chart",
     "scheduleTitle": "Detailed Repayment Schedule",
-    "copyText": "Copy",
     "copied": "Copied!",
-    "loadMore": "Load More",
-    "rowsRemaining": " rows remaining",
-    "compare": "Compare",
     "reset": "Reset",
     "loanA": "Loan A",
     "loanB": "Loan B",
-    "compareDiff": "A - B Difference",
-    "totalInterestDiff": "Total Interest Diff",
-    "totalPaymentDiff": "Total Payment Diff",
-    "avgMonthlyDiff": "Avg Monthly Diff",
-    "compareDiffNote": "Positive means Loan A pays more; negative means Loan B pays more.",
-    "chartPrincipalInterest": "Principal/Interest Ratio by Period",
-    "chartBalance": "Remaining Balance Trend",
     "graceLabel": "Grace",
     "guide": {
       "title": "User Guide",
@@ -22154,8 +20753,6 @@
     "currentFloor": "Origin (current home)",
     "newFloor": "Destination (new home)",
     "floor": "F",
-    "hasElevator": "Has Elevator",
-    "ladderTruck": "Ladder Truck Needed",
     "extrasLabel": "Extras",
     "extras": {
       "waste": "Bulky waste (items)",
@@ -22171,17 +20768,9 @@
       "cleaning": "Cleaning Service"
     },
     "dateLabel": "Moving Date",
-    "peakSeason": "Peak Season (Mar, Sep)",
     "weekend": "Weekend/Holiday",
-    "auspiciousDay": "Auspicious Day",
-    "normalDay": "Off-season Weekday",
-    "peakSeasonNote": "March and September are peak moving season with 20-30% surcharge.",
-    "weekendNote": "Weekend/holiday moves have a 10-20% surcharge.",
     "reset": "Reset",
-    "manwon": "0,000 KRW",
-    "won": " KRW",
     "copied": "Copied!",
-    "copyResult": "Copy Result",
     "disclaimer": "* Moving prices are set freely by companies; there is no government tariff. Figures are estimates based on 2025-2026 market quote ranges, not official rates. Get an on-site quote for the exact price.",
     "result": {
       "title": "Estimated Cost",
@@ -22491,7 +21080,6 @@
     "timesPerMonth": "/mo",
     "carWashCost": "Cost per Wash",
     "monthlyToll": "Monthly Toll (Hi-Pass)",
-    "calculate": "Calculate",
     "reset": "Reset",
     "annualTotal": "Annual Total",
     "monthlyAverage": "Monthly Average",
@@ -22510,21 +21098,13 @@
     },
     "monthly": "Mo.",
     "total": "Total",
-    "monthlyBreakdown": "Monthly Breakdown",
-    "category": "Category",
-    "monthlyAmount": "Monthly",
-    "annualAmount": "Annual",
-    "percentage": "Ratio",
     "transitComparison": "Public Transit Comparison",
     "carAnnualCost": "Car Annual Cost",
     "transitAnnualCost": "Transit Annual Cost",
     "transitComparisonResult": "Car maintenance costs approximately {ratio}x of public transit (based on Seoul transit card at 65,000 KRW/month)",
     "maintenanceSchedule": "Maintenance Schedule",
     "scheduleItem": "Item",
-    "scheduleInterval": "Interval",
-    "scheduleUnitCost": "Unit Cost",
     "scheduleAnnualCost": "Annual Cost",
-    "months": " months",
     "maintenanceItems": {
       "tireRotation": "Tire rotation",
       "engineOil": "Engine Oil",
@@ -22540,8 +21120,6 @@
       "wiperBlades": "Wiper Blades",
       "brakeFluid": "Brake Fluid"
     },
-    "placeholderTitle": "Enter your vehicle info",
-    "placeholderDescription": "Enter vehicle details and cost items in the left panel, then click Calculate to see your annual maintenance costs.",
     "guide": {
       "title": "Car cost & maintenance guide",
       "taxSection": {
@@ -23190,7 +21768,6 @@
     "copyResult": "Copy Result",
     "copied": "Copied",
     "item": "Item",
-    "difference": "Difference",
     "grossAnnual": "Gross Annual",
     "socialInsurance": "Social Insurance",
     "nationalPension": "National Pension",
@@ -24002,42 +22579,28 @@
     "v6SplitHint": "A LAN is normally a /64 (required for SLAAC); sites typically get a /48, home connections a /56.",
     "title": "IP Subnet Calculator",
     "description": "Calculate IPv4 and IPv6 subnets. CIDR, mask and wildcard input, VLSM subnetting, route summarization and range-to-CIDR in one place.",
-    "inputTitle": "IP Information",
-    "ipAddress": "IP Address",
     "subnetMask": "Subnet Mask",
     "prefix": "Prefix",
     "invalidIp": "Enter a valid IPv4 address (e.g., 192.168.1.1)",
-    "invalidMask": "Enter a valid subnet mask (e.g., 255.255.255.0)",
-    "cidrReference": "CIDR Reference",
     "mask": "Mask",
     "hosts": "Hosts",
-    "result": "Result",
-    "showBinary": "Show Binary",
-    "hideBinary": "Hide Binary",
     "copy": "Copy",
     "copied": "Copied",
     "usableHosts": "Usable Hosts",
-    "class": "Class",
     "classLabel": "Class {cls}",
     "type": "Type",
     "private": "Private",
     "public": "Public",
     "networkAddress": "Network Address",
     "broadcastAddress": "Broadcast Address",
-    "hostRange": "Host Range",
     "wildcardMask": "Wildcard Mask",
     "totalAddresses": "Total Addresses",
     "binaryRepresentation": "Binary Representation",
-    "inputPrompt": "Enter an IP address and CIDR prefix to see the subnet details.",
     "note": "Everything runs in your browser; addresses are never sent to a server. Follows /31 (RFC 3021) and /32 rules and the RFC 1918, 6598 and 5737 special ranges.",
     "tabCalculator": "Subnet Calc",
-    "tabOverlap": "Overlap Check",
     "tabLookup": "IP Lookup",
-    "addCidr": "Add Range",
     "overlapTitle": "CIDR Ranges",
-    "overlapDesc": "Enter multiple CIDR ranges to check if any overlap with each other.",
     "overlapResult": "Overlap Analysis",
-    "parsedRanges": "Valid Ranges",
     "overlapFound": "{count} overlap(s) found",
     "noOverlap": "No overlapping ranges found.",
     "overlapPrompt": "Enter 2 or more CIDR ranges.",
@@ -24472,9 +23035,7 @@
     "description": "Calculate calories burned from weight and duration — 70+ activities with 2024 Compendium METs, food burn-off, steps and a weekly plan.",
     "linkCopied": "Copied",
     "copyLink": "Copy Link",
-    "inputTitle": "Basic Info",
     "weight": "Weight",
-    "exercises": "Exercise List",
     "addExercise": "Add Exercise",
     "removeExercise": "Remove",
     "duration": "Duration",
@@ -24490,58 +23051,9 @@
       "outdoor": "Outdoor",
       "daily": "Daily Activities"
     },
-    "activities": {
-      "walkSlow": "Slow walk (4km/h)",
-      "walkNormal": "Normal walk (5.5km/h)",
-      "walkFast": "Fast walk (7km/h)",
-      "walkUphill": "Uphill walk",
-      "jogging": "Jogging (8km/h)",
-      "runSlow": "Running (9.5km/h)",
-      "runMedium": "Running (11km/h)",
-      "runFast": "Running (13km/h)",
-      "runSprint": "Sprinting (16km/h)",
-      "bikeSlow": "Cycling (<16km/h)",
-      "bikeNormal": "Cycling (19-22km/h)",
-      "bikeFast": "Cycling (>25km/h)",
-      "bikeStationary": "Stationary bike",
-      "swimSlow": "Swimming (slow)",
-      "swimMedium": "Swimming (moderate)",
-      "swimFast": "Swimming (fast)",
-      "basketball": "Basketball",
-      "soccer": "Soccer",
-      "tennis": "Tennis",
-      "badminton": "Badminton",
-      "tableTennis": "Table Tennis",
-      "volleyball": "Volleyball",
-      "golf": "Golf (walking)",
-      "weightLight": "Weight training (light)",
-      "weightModerate": "Weight training (moderate)",
-      "weightHeavy": "Weight training (heavy)",
-      "yoga": "Yoga",
-      "pilates": "Pilates",
-      "aerobics": "Aerobics",
-      "jumpRope": "Jump rope",
-      "stairClimber": "Stair climbing",
-      "elliptical": "Elliptical",
-      "hiking": "Hiking (moderate)",
-      "mountainClimbing": "Mountain climbing",
-      "skiing": "Skiing",
-      "cleaning": "House cleaning",
-      "gardening": "Gardening",
-      "dancing": "Dancing"
-    },
-    "result": "Result",
     "copy": "Copy",
     "copied": "Copied",
-    "totalCalories": "Total Calories",
-    "totalTime": "Total Time",
-    "riceBowls": "Rice Bowl Equiv.",
-    "bowls": "bowls",
     "fatBurn": "Fat Burn",
-    "breakdown": "Exercise Breakdown",
-    "metInfo": "What is MET?",
-    "metDescription": "MET (Metabolic Equivalent of Task) measures exercise intensity. Resting energy expenditure = 1 MET. Calories = MET × weight(kg) × time(h). Source: Compendium of Physical Activities.",
-    "inputPrompt": "Enter your weight and add exercises to calculate calories burned.",
     "guide": {
       "howItWorks": {
         "title": "How it works",
@@ -24771,19 +23283,12 @@
     },
     "title": "Noise Meter",
     "description": "Measure ambient noise in dB(A) with your phone or PC microphone. Leq average, max/min, a 60-second chart, Korean floor-noise limit comparison and an exceedance log (CSV and clips). Audio is never saved or sent.",
-    "mobileFriendly": "Mobile Optimized",
     "start": "Start Measuring",
     "stop": "Stop",
     "reset": "Reset",
-    "micPermissionDenied": "Microphone access was denied. Please allow microphone permission in your browser settings.",
-    "micError": "Cannot access the microphone. Please check if a microphone is connected.",
     "maxDb": "Max",
     "avgDb": "Avg (Leq)",
     "minDb": "Min",
-    "historyGraph": "Measurement History",
-    "historyOld": "Older",
-    "historyNew": "Recent",
-    "referenceTable": "Noise Level Reference",
     "levels": {
       "veryQuiet": "Very Quiet",
       "quiet": "Quiet",
@@ -25048,11 +23553,9 @@
     "shareText": "Practice with this metronome preset: {bpm} BPM · {ts}",
     "title": "Metronome",
     "description": "An accurate metronome for piano, guitar, drums and choir. Time signatures, subdivisions, per-beat accents, tap tempo, speed trainer and random mute.",
-    "vibrationSupport": "Vibration",
     "tapTempo": "Tap Tempo",
     "settings": "Settings",
     "timeSignature": "Time Signature",
-    "accentFirst": "Accent first beat",
     "vibration": "Vibration feedback",
     "presets": "Tempo Presets",
     "tempos": {
@@ -25253,10 +23756,8 @@
     "monthlyIncome": "Monthly income (pre-tax)",
     "startAge": "Contribution Start Age",
     "retirementAge": "Expected Retirement Age",
-    "calculate": "Calculate",
     "reset": "Reset",
     "resultTitle": "Estimated National Pension Benefit",
-    "monthlyPension": "Estimated Monthly Benefit",
     "totalContribution": "Total Contributions (Employee Share)",
     "pensionRatio": "Pension / Contribution Ratio",
     "replacementRate": "Income Replacement Rate",
@@ -25266,8 +23767,6 @@
     "totalMonthlyContribution": "Total Monthly Contribution",
     "annualPension": "Annual Benefit",
     "yearsLabel": "yr",
-    "monthsLabel": "mo",
-    "wonUnit": "KRW",
     "manwonUnit": "10K KRW",
     "noticeTitle": "Disclaimer",
     "notice": "Present-value estimate assuming your current income stays the same, applying contribution-year coefficients (43% replacement rate from 2026) and the scheduled rate increase (13% by 2033). Contributions after 60 are assumed as voluntary continued coverage (up to 65). Actual benefits depend on income revaluation, contribution history and credits — check NPS for your exact amount.",
@@ -25548,22 +24047,11 @@
     },
     "title": "Internet Speed Test",
     "description": "Measure download and upload speed, ping and jitter against Cloudflare servers.",
-    "startTest": "Start Speed Test",
-    "quickTest": "Quick Test (1MB)",
-    "fullTest": "Full Test (10MB)",
-    "testing": "Testing...",
-    "downloadSpeed": "Download Speed",
     "ping": "Ping (Latency)",
     "status": "Status",
-    "progress": "Progress",
-    "result": "Test Result",
     "history": "Test History",
     "historyEmpty": "No tests yet. Up to 30 recent results are saved in this browser.",
-    "testTime": "Test Time",
-    "mbps": "Mbps",
     "ms": "ms",
-    "unit": "Unit",
-    "classification": "Speed Rating",
     "slow": "Slow",
     "moderate": "Moderate",
     "fast": "Fast",
@@ -25572,7 +24060,6 @@
     "moderateDesc": "25–100 Mbps — HD video, general use",
     "fastDesc": "100–500 Mbps — 4K video, large files",
     "veryFastDesc": "500+ Mbps — gigabit internet",
-    "corsNote": "Results may be approximate due to CORS policies with external servers.",
     "disclaimer": "Results vary with network conditions, server location and device performance, and are for reference only. One test can use up to a few hundred MB of data in total, so be careful on mobile data.",
     "guideTitle": "Speed Test Guide",
     "guideSection1Title": "Understanding Metrics",
@@ -25655,7 +24142,6 @@
     "parentFontSize": "Parent element font size (for em)",
     "viewportWidth": "Viewport width",
     "viewportHeight": "Viewport height",
-    "resultsTitle": "Conversion Results",
     "copySuccess": "Copied",
     "copy": "Copy",
     "quickRefTitle": "Common Conversion Formulas",
@@ -25781,12 +24267,8 @@
     "legalNote": "Generated stamp images are not seals registered at a community service center (or, for companies, the registry office), so they cannot be used for contracts or registrations that require a seal certificate (인감증명서). Use your registered physical seal there, and for other documents check first whether the recipient accepts a stamp image.",
     "title": "Stamp Generator",
     "description": "Create Korean name seals, square company seals and corporate seals, then save as transparent PNG or SVG.",
-    "labelText": "Stamp Text (1–4 characters)",
     "placeholderText": "e.g. 홍길동",
     "labelShape": "Stamp Shape",
-    "shapeCircle": "Circle",
-    "shapeSquare": "Square",
-    "shapeOval": "Oval",
     "labelStyle": "Color Style",
     "styleTraditional": "Traditional Red",
     "styleModernblue": "Modern Blue",
@@ -25796,7 +24278,6 @@
     "fontSerif": "Serif",
     "fontSansserif": "Sans-serif",
     "fontBrush": "Brush",
-    "labelSize": "Stamp Size",
     "labelBorderWidth": "Border Width",
     "labelOpacity": "Opacity",
     "labelDoubleBorder": "Double Border",
@@ -25805,7 +24286,6 @@
     "canvasAriaLabel": "Stamp preview canvas",
     "emptyTextHint": "Enter text above to generate a stamp",
     "infoShape": "Shape",
-    "infoSize": "Size",
     "infoColor": "Color",
     "buttonDownload": "Download transparent PNG",
     "buttonCopy": "Copy to Clipboard",
@@ -25991,9 +24471,7 @@
     "title": "Blood Sugar Tracker",
     "description": "Check whether your blood sugar is normal for when you measured it, then log readings to see trends and averages. Includes mg/dL ⇄ mmol/L and HbA1c conversion.",
     "disclaimer": "This tool is for reference only and does not replace a diagnosis. Results use general cutoffs for each measurement timing; always set diagnosis and treatment goals with a clinician.",
-    "addRecord": "Add Record",
     "value": "Blood Sugar (mg/dL)",
-    "valuePlaceholder": "e.g. 95",
     "timing": "Measurement Timing",
     "timingFasting": "Fasting",
     "timingBeforeMeal": "Before Meal",
@@ -26004,7 +24482,6 @@
     "note": "Note (optional)",
     "notePlaceholder": "Enter any notes...",
     "submit": "Save Record",
-    "reset": "Reset",
     "history": "History",
     "historyEmpty": "No records yet. Start tracking your blood sugar above.",
     "deleteRecord": "Delete",
@@ -26012,50 +24489,16 @@
     "clearConfirm": "Delete all records? This action cannot be undone.",
     "exportCsv": "Export CSV",
     "statistics": "Statistics",
-    "statsPeriod7": "Last 7 Days",
-    "statsPeriod30": "Last 30 Days",
     "statsAvg": "Average",
     "statsMin": "Min",
     "statsMax": "Max",
     "statsCount": "Records",
     "statsNoData": "No records in this period.",
-    "classLow": "Low",
-    "classNormalFasting": "Normal (Fasting)",
-    "classPreDiabetesFasting": "Pre-diabetes (Fasting)",
-    "classDiabetesFasting": "Diabetes (Fasting)",
-    "classNormalAfterMeal": "Normal (After Meal)",
-    "classPreDiabetesAfterMeal": "Pre-diabetes (After Meal)",
-    "classDiabetesAfterMeal": "Diabetes (After Meal)",
-    "classNormal": "Normal",
-    "classPreDiabetes": "Pre-diabetes",
-    "classDiabetes": "Diabetes",
     "colDate": "Date & Time",
     "colValue": "Blood Sugar (mg/dL)",
     "colTiming": "Timing",
     "colStatus": "Status",
-    "colNote": "Note",
-    "guideTitle": "Blood Sugar Reference Guide",
-    "guideFastingTitle": "Fasting Blood Sugar Standards (ADA)",
-    "guideFastingItems": [
-      "Normal: 70–99 mg/dL",
-      "Pre-diabetes (IFG): 100–125 mg/dL",
-      "Diabetes: 126 mg/dL or higher (confirmed on 2+ occasions)",
-      "Hypoglycemia (Low): below 70 mg/dL (requires immediate action)"
-    ],
-    "guideAfterMealTitle": "2-Hour Post-Meal Blood Sugar Standards",
-    "guideAfterMealItems": [
-      "Normal: below 140 mg/dL",
-      "Pre-diabetes: 140–199 mg/dL",
-      "Diabetes: 200 mg/dL or higher"
-    ],
-    "guideTipsTitle": "Blood Sugar Management Tips",
-    "guideTipsItems": [
-      "Fasting blood sugar should be measured after at least 8 hours without food.",
-      "Post-meal blood sugar is typically measured 2 hours after starting a meal.",
-      "Regular exercise and a balanced diet help maintain healthy blood sugar levels.",
-      "Consult a doctor immediately if your blood sugar is consistently abnormal.",
-      "This tool is for reference only and does not replace medical diagnosis."
-    ]
+    "colNote": "Note"
   },
   "fancyText": {
     "sample": "Lucky day",
@@ -26102,16 +24545,10 @@
     "description": "Type once and see 23 Unicode fonts, Korean styles and nickname frames. Tap to copy.",
     "inputPlaceholder": "Type a nickname or phrase",
     "inputLabel": "Text Input",
-    "outputLabel": "Converted Results",
     "copyAll": "Copy all visible",
     "copied": "Copied!",
     "copy": "Copy",
-    "copyAllSuccess": "All styles copied to clipboard",
     "noInput": "Type something to see styled results",
-    "asciiNote": "Only ASCII letters (a-z, A-Z) are converted. Numbers and symbols stay unchanged.",
-    "decorTitle": "Decorative Frames (works on any text)",
-    "decorDesc": "Wraps Korean, English, or emoji. Great for Instagram, game names, and profiles!",
-    "fontTitle": "Latin Unicode Fonts",
     "styles": {
       "smallCaps": "Small caps",
       "tiny": "Tiny (superscript)",
@@ -26380,37 +24817,17 @@
     "paintCoats": "Number of Coats",
     "paintPrice": "Price per Liter (₩)",
     "wallpaperCalc": "Wallpaper Calculator",
-    "rollWidth": "Roll Width (m)",
-    "rollLength": "Roll Length (m)",
     "patternRepeat": "Pattern Repeat (m)",
-    "tileCalc": "Tile Calculator",
-    "tileWidth": "Tile Width (cm)",
-    "tileHeight": "Tile Height (cm)",
-    "gapWidth": "Grout Gap (mm)",
-    "tilePrice": "Price per Tile (₩)",
-    "results": "Results",
-    "totalFloorArea": "Floor Area",
-    "totalWallArea": "Wall Area",
-    "totalCeilingArea": "Ceiling Area",
     "deductionArea": "Deduction Area",
     "netWallArea": "Net Wall Area",
     "paintNeeded": "Paint Required",
     "paintCost": "Paint Cost",
     "wallpaperRolls": "Wallpaper Rolls",
     "wallpaperCost": "Wallpaper Cost",
-    "tilesNeeded": "Tiles Required",
-    "tileCost": "Tile Cost",
     "wastage": "Includes 10% wastage",
     "liters": "L",
-    "rolls": "rolls",
-    "tiles": "tiles",
     "won": "₩",
     "sqm": "㎡",
-    "coats1": "1 coat",
-    "coats2": "2 coats",
-    "coats3": "3 coats",
-    "totalRooms": "Total Rooms",
-    "grandTotal": "Grand Total",
     "room": "Room",
     "summaryTitle": "Overall Summary",
     "noRooms": "Add a room to get started",
@@ -26532,8 +24949,6 @@
     "description": "Future value of monthly or lump-sum investing, goal solver, conservative/base/aggressive scenarios, and after-tax comparison of regular, ISA and pension accounts",
     "lumpSum": "Lump Sum",
     "dca": "DCA (Monthly)",
-    "comparison": "Compare",
-    "investmentType": "Investment Settings",
     "initialAmount": "Initial Investment",
     "monthlyContribution": "Monthly Contribution",
     "annualReturn": "Annual Return Rate",
@@ -26541,37 +24956,14 @@
     "inflationRate": "Inflation Rate",
     "won": " KRW",
     "years": " years",
-    "calculate": "Calculate",
     "reset": "Reset",
     "totalInvested": "Total Invested",
-    "finalAmount": "Final Amount",
     "profit": "Profit",
     "totalReturn": "Total Return",
-    "cagr": "CAGR (Annual)",
-    "realReturn": "Real Return",
-    "inflationAdjusted": "Inflation-adjusted real value",
-    "chartTitle": "Asset Growth Chart",
-    "yearLabel": "Y",
-    "investedAmount": "Invested",
-    "assetValue": "Asset Value",
-    "realValueLabel": "Real Value",
     "tableTitle": "Yearly Details",
-    "showTable": "Show Table",
-    "hideTable": "Hide Table",
     "year": "Year",
     "cumInvested": "Cumulative Invested",
-    "yearProfit": "Annual Profit",
     "totalAsset": "Total Asset",
-    "realAssetValue": "Real Value",
-    "noResult": "Set investment conditions and click Calculate",
-    "eok": "B",
-    "man": "M",
-    "vs": {
-      "title": "Comparing lump sum vs DCA with the same total amount",
-      "lumpSumResult": "Lump Sum Result",
-      "dcaResult": "DCA Result",
-      "difference": "Difference"
-    },
     "guide": {
       "title": "Investment Return Guide",
       "concepts": {
@@ -26692,30 +25084,16 @@
     "dropzone": "Drop photos here or click to choose",
     "dropzoneHint": "JPG·PNG·WebP·HEIC (Safari) · multiple files · paste with Ctrl+V",
     "maxFileSize": "Max 50MB per file",
-    "settings": "Compression Settings",
     "quality": "Quality",
     "qualityLow": "Low (smaller size)",
     "qualityHigh": "High (better quality)",
     "format": "Output format",
     "formatOriginal": "Keep Original",
-    "maxWidth": "Max Width (px)",
-    "maxHeight": "Max Height (px)",
-    "compress": "Compress",
-    "compressAll": "Compress All",
     "download": "Download",
-    "downloadAll": "Download All",
     "remove": "Remove",
     "removeAll": "Remove All",
-    "reset": "Reset",
     "processing": "Compressing...",
     "noImages": "No photos yet",
-    "formatLabel": "Format",
-    "summary": "Summary",
-    "totalImages": "Total Images",
-    "originalSize": "Original Size",
-    "compressedSize": "Compressed Size",
-    "compressionRatio": "Ratio",
-    "savings": "Savings",
     "guide": {
       "uses": {
         "title": "Recommended settings",
@@ -26974,21 +25352,15 @@
     "description": "Find bedtimes for your wake-up time, when to wake if you sleep now, and nap alarms, based on sleep cycles",
     "linkCopied": "Copied",
     "copyLink": "Copy Link",
-    "currentTime": "Current Time",
     "modeNow": "If I sleep now",
-    "modeWakeAt": "I need to wake at",
     "fallAsleepTime": "Time to fall asleep",
     "minutes": "min",
     "wakeUpAt": "Wake-up time",
-    "calculate": "Calculate",
     "resultTitleWakeUp": "Recommended Wake Times",
     "resultTitleBedTime": "Recommended Bed Times",
-    "cycleLabel": "cycles",
     "recommended": "Recommended",
     "totalSleep": "Total sleep",
     "cycleExplanation": "The 90-minute cycle is an average. Real cycles run roughly 70-120 minutes and vary by person and even between cycles in the same night, and time to fall asleep changes daily. Treat results as times you are more likely to wake less groggy; total sleep and a consistent wake time matter more than matching cycles.",
-    "hourUnit": "h ",
-    "minuteUnit": "m",
     "hoursLabel": "hours",
     "ageGroupTitle": "Recommended Sleep by Age",
     "ageGroupLabel": "Age Group",
@@ -27035,8 +25407,6 @@
     "stop": "Stop",
     "pause": "Pause",
     "resume": "Resume",
-    "duration": "Duration",
-    "fileSize": "File Size",
     "noRecordings": "No recordings yet",
     "play": "Play",
     "download": "Download",
@@ -27150,7 +25520,6 @@
     },
     "title": "Nutrition Calculator",
     "description": "Calculate calories, macros and sodium for a meal from 46 Korean foods or your own nutrition label, with % of Korean Daily Values.",
-    "linkCopied": "Copied",
     "copyLink": "Copy Link",
     "searchPlaceholder": "Search foods (e.g. kimchi stew, chicken breast)",
     "clearSearch": "Clear search",
@@ -27161,7 +25530,6 @@
     "mealList": "My Meal",
     "mealEmpty": "Click a food item to add it to your meal",
     "clearAll": "Clear all",
-    "portion": "Portion",
     "removeItem": "Remove item",
     "copy": "Copy",
     "copied": "Copied!",
@@ -27343,22 +25711,14 @@
     "shareTextResult": "Talk {dur} · {delta} vs target",
     "title": "Presentation Timer",
     "description": "Countdown timer for talks, meetings and classes — speaker mode, section timer, overtime count and shareable setup links",
-    "settings": "Settings",
-    "totalTime": "Total Time",
     "warningTime": "Warning (minutes before end)",
-    "dangerTime": "Danger Time",
     "minutes": "min",
     "start": "Start",
     "pause": "Pause",
     "reset": "Reset",
     "addMinute": "+1 min",
     "subtractMinute": "-1 min",
-    "fullscreen": "Fullscreen",
-    "exitFullscreen": "Exit Fullscreen",
-    "soundOn": "Mute",
-    "soundOff": "Unmute",
     "overtime": "Overtime",
-    "timeUp": "Time's Up!",
     "presets": "Quick Presets",
     "preset3": "3 min",
     "preset5": "5 min",
@@ -27640,68 +26000,8 @@
     },
     "title": "Unemployment Benefits Calculator",
     "description": "Calculate 2026 unemployment benefits: daily amount, benefit days, total, eligibility, payment schedule and early re-employment allowance",
-    "voluntaryWarning": "Voluntary resignation generally does not qualify for unemployment benefits. However, if you had justifiable cause (unpaid wages, labor law violations, etc.), you may still be eligible.",
-    "voluntaryBlocked": "Voluntary resignation is not eligible for benefits. Please change the separation reason.",
-    "placeholder": "Enter your information on the left and click Calculate",
     "copy": "Copy",
-    "copied": "Copied",
-    "form": {
-      "title": "Benefit Information",
-      "separationReason": "Separation Reason",
-      "reason": {
-        "involuntary": "Involuntary (Layoff/Dismissal)",
-        "voluntary": "Voluntary (Personal)"
-      },
-      "ageGroup": "Age at Separation",
-      "age": {
-        "under50": "Under 50",
-        "over50": "50 or older / Disabled"
-      },
-      "insurancePeriod": "Employment Insurance Period",
-      "period": {
-        "under1": "Less than 1 year",
-        "1to3": "1 to 3 years",
-        "3to5": "3 to 5 years",
-        "5to10": "5 to 10 years",
-        "over10": "10 years or more"
-      },
-      "avgDailyWage": "Average Daily Wage (last 3 months)",
-      "avgDailyWageHint": "Total salary for last 3 months ÷ total days (usually 90)",
-      "wagePlaceholder": "e.g. 150,000",
-      "wonUnit": "KRW",
-      "calculate": "Calculate",
-      "reset": "Reset"
-    },
-    "result": {
-      "title": "Benefit Calculation Result",
-      "dailyBenefit": "Daily Benefit",
-      "perDay": "Per day",
-      "benefitDays": "Benefit Period",
-      "days": " days",
-      "aboutMonths": "About {months} months",
-      "monthlyEstimate": "Monthly Estimate",
-      "per30days": "Per 30 days",
-      "totalBenefit": "Total Benefits",
-      "totalLabel": "Total for entire period",
-      "capNotice": "60% of average wage exceeds the daily cap (₩68,100). The cap amount has been applied.",
-      "floorNotice": "60% of average wage is below the daily floor (₩66,048). The floor amount has been applied."
-    },
-    "chart": {
-      "title": "Monthly Benefit Breakdown",
-      "month": "Month ",
-      "remaining": "Remaining days"
-    },
-    "table": {
-      "title": "Benefit Duration Table",
-      "ageGroup": "Age / Insurance Period",
-      "under1": "< 1 year",
-      "1to3": "1-3 years",
-      "3to5": "3-5 years",
-      "5to10": "5-10 years",
-      "over10": "10+ years",
-      "ageUnder50": "Under 50",
-      "ageOver50": "50+ / Disabled"
-    }
+    "copied": "Copied"
   },
   "weeklyHolidayPay": {
     "u": {
@@ -27871,7 +26171,6 @@
     "notEligible": "Not eligible",
     "copy": "Copy",
     "copied": "Copied",
-    "copyResult": "Copy result",
     "input": {
       "hourlyWageHintCurrent": "{year} minimum wage: ₩{wage}",
       "title": "Work Information",
@@ -27902,25 +26201,10 @@
       "holidayRatio": "Holiday ratio",
       "monthlyBarTitle": "Monthly Pay Breakdown"
     },
-    "warning": {
-      "title": "Not Eligible for Holiday Pay",
-      "message": "Workers with less than 15 hours per week are not eligible for weekly holiday pay. You must work 15 or more hours per week."
-    },
-    "info": {
-      "title": "What is Weekly Holiday Pay?",
-      "items": [
-        "Workers who work 15+ hours per week are entitled to 1 paid day off (Labor Standards Act Art. 55)",
-        "Holiday hours = (total weekly hours ÷ 40) × 8 hours (max 8 hours)",
-        "Holiday pay = hourly wage × holiday hours",
-        "Applies regardless of social insurance enrollment if 15+ hours per week",
-        "Failure to pay holiday pay constitutes wage theft"
-      ]
-    },
     "guide": {
       "title": "Weekly Holiday Pay Guide"
     },
     "copyLink": "Copy Link",
-    "linkCopied": "Link Copied",
     "scenario": {
       "title": "Compare by Weekly Hours",
       "description": "Compare estimated pay across different weekly work hour scenarios at the same hourly wage.",
@@ -28581,21 +26865,9 @@
     },
     "title": "Quotation, Statement & Bill Maker",
     "description": "Fill in a Korean-style business form and download a clean A4 PDF with Hangul intact",
-    "save": "Save",
-    "load": "Load",
-    "reset": "Reset",
-    "previewMode": "Preview",
-    "previewSubtitle": "Copy for Buyer",
-    "editMode": "Edit Mode",
     "print": "Print",
     "exportPDF": "Download PDF",
-    "savedFeedback": "Saved!",
-    "loadedFeedback": "Loaded!",
-    "invoiceNumber": "Invoice Number",
-    "invoiceDate": "Invoice Date",
     "dueDate": "Due Date",
-    "sender": "Seller (From)",
-    "recipient": "Buyer (To)",
     "notes": "Remarks",
     "notesPlaceholder": "e.g. VAT excluded. Includes two rounds of design revisions.",
     "section": {
@@ -28885,7 +27157,6 @@
   },
   "kanbanBoard": {
     "title": "Kanban Board",
-    "description": "Drag-and-drop Kanban board for managing project tasks",
     "subtitle": "{count} cards total · {cols} columns",
     "addCard": "Add Card",
     "editCard": "Edit Card",
@@ -29394,11 +27665,8 @@
     "highScore": "High Score",
     "youWin": "You Win!",
     "congratulations": "Congratulations! You sorted all the cards!",
-    "noMoreMoves": "No more moves available",
     "soundOn": "Sound On",
     "soundOff": "Sound Off",
-    "draw1": "Draw 1",
-    "draw3": "Draw 3",
     "stock": "Stock",
     "waste": "Waste",
     "foundation": "Foundation",
@@ -29556,7 +27824,6 @@
     "value": "Value",
     "comment": "Comment",
     "addVariable": "Add Variable",
-    "deleteVariable": "Delete",
     "duplicate": "Duplicate Key",
     "invalidKey": "Invalid Key Format",
     "emptyValue": "Empty Value",
@@ -29574,7 +27841,6 @@
     "yamlFormat": "YAML",
     "jsonFormat": "JSON",
     "shellFormat": "Shell",
-    "rawPlaceholder": "# Paste your .env file contents here\nDB_HOST=localhost\nDB_PORT=5432\nDB_NAME=myapp",
     "guide": {
       "title": ".env File Guide",
       "format": {
@@ -29791,12 +28057,9 @@
     "loop": "Loop",
     "infinite": "Infinite",
     "once": "Once",
-    "quality": "Quality",
     "processing": "Processing...",
     "noImages": "Please add images",
     "dragDrop": "Drag or click to upload images",
-    "copy": "Copy",
-    "copied": "Copied",
     "guide": {
       "title": "GIF Maker Guide",
       "howTo": {
@@ -29905,18 +28168,12 @@
     "title": "Background Remover",
     "description": "Remove solid backgrounds — white product shots, ID photos, logos, green screens — to a transparent PNG or a new color. Nothing is uploaded.",
     "uploadImage": "Upload Image",
-    "pickColor": "Pick Background Color",
     "tolerance": "Tolerance",
     "edgeSoftening": "Edge Softening",
-    "preview": "Background removed preview will appear here",
     "original": "Original",
     "result": "Result",
     "download": "Download Transparent PNG",
-    "reset": "Reset",
-    "clickToSelect": "Picking color — click on background area...",
-    "selectedColor": "Selected Color",
     "processing": "Saving at full resolution...",
-    "noImage": "Please upload an image",
     "dragDrop": "Drop a file here or paste with Ctrl+V (PNG, JPG, WEBP)",
     "guide": {
       "howItWorks": {
@@ -30067,7 +28324,6 @@
     },
     "title": "Photo Collage",
     "description": "Add photos and a layout is picked for your photo count. Adjust position and zoom in each cell, then save in high resolution or share.",
-    "uploadImages": "Upload Photos",
     "addImages": "Add photos",
     "layout": "Layout",
     "spacing": "Gap & border",
@@ -30075,16 +28331,8 @@
     "backgroundColor": "Background Color",
     "download": "Download",
     "reset": "Reset",
-    "noImages": "Please add photos",
     "dragDrop": "Drop photos here or tap to choose",
-    "layoutGrid2": "2 Grid",
-    "layoutGrid3": "3 Grid",
-    "layoutGrid4": "4 Grid",
-    "layoutGrid6": "6 Grid",
-    "layoutGrid9": "9 Grid",
-    "layoutFreeform": "Freeform",
     "remove": "Remove",
-    "outputSize": "Output Size",
     "preview": "Preview",
     "generating": "Generating...",
     "guide": {
@@ -30310,12 +28558,10 @@
     "description": "One Korean word a day, the same for everyone — guess it jamo by jamo.",
     "newGame": "New Game",
     "category": "Category",
-    "hint": "Hint",
     "won": "You Win!",
     "lost": "You Lose!",
     "answer": "Answer",
     "remainingTries": "Remaining Tries",
-    "usedLetters": "Used Letters",
     "categories": {
       "all": "All",
       "jobs": "Jobs",
@@ -30329,14 +28575,6 @@
     "svgLabel": "Hangman figure: {wrong}/{max} wrong",
     "wordDisplay": "Word display",
     "unrevealed": "Hidden",
-    "consonants": "Consonants",
-    "vowels": "Vowels",
-    "consonantLabel": "Consonant {letter}",
-    "consonantUsed": "Consonant {letter} (used)",
-    "vowelLabel": "Vowel {letter}",
-    "vowelUsed": "Vowel {letter} (used)",
-    "gameWon": "You Win",
-    "gameLost": "You Lose",
     "guide": {
       "title": "Hangman Guide",
       "rules": {
@@ -30394,7 +28632,6 @@
     "start": "Start Game",
     "gameOver": "Game Over",
     "score": "Score",
-    "lives": "Lives",
     "level": "Level",
     "best": "Best",
     "retry": "Retry",
@@ -30588,34 +28825,18 @@
     "fileUploadDesc": "Drag or click to upload .txt, .md, .json, .csv files",
     "selectedModel": "Selected Model",
     "allModels": "All Models",
-    "tokenCount": "Token Count (Est.)",
     "charCount": "Characters",
     "wordCount": "Words",
     "lineCount": "Lines",
-    "estimatedCost": "Estimated Cost",
-    "inputTokens": "Input Tokens",
-    "outputTokens": "Output Tokens",
-    "inputCost": "Input Cost",
-    "outputCost": "Output Cost",
-    "totalCost": "Total Cost",
     "outputTokensLabel": "Expected Output Tokens",
-    "outputTokensPlaceholder": "e.g., 1000",
-    "perMillionTokens": "/ 1M tokens",
-    "modelComparison": "Model Comparison",
     "modelName": "Model",
-    "provider": "Provider",
     "contextWindow": "Context",
     "inputPrice": "Input Price",
     "outputPrice": "Output Price",
-    "estCost": "Est. Cost",
     "clear": "Clear",
     "copy": "Copy",
     "copied": "Copied",
-    "noText": "Enter text to see token count.",
-    "koreanNote": "Korean text uses ~1.5-3x more tokens than English.",
     "exchangeRate": "Exchange Rate",
-    "krw": "KRW",
-    "usd": "USD",
     "guide": {
       "title": "User Guide",
       "whatIsToken": {
@@ -30673,8 +28894,6 @@
     "enableCache": "Static File Caching",
     "cacheDuration": "Cache Duration",
     "cacheDurationPlaceholder": "e.g., 30d",
-    "sslCertPath": "SSL Certificate Path",
-    "sslKeyPath": "SSL Key Path",
     "customDirective": "Custom Directives",
     "customDirectivePlaceholder": "Add custom config...",
     "tabGenerate": "Generate",
@@ -30716,7 +28935,6 @@
     "download": "Download",
     "reset": "Reset",
     "presetLabel": "Best Presets",
-    "applyPreset": "Apply",
     "scenarios": {
       "reverseProxy": "Reverse Proxy",
       "reverseProxyDesc": "Place in front of Node.js, Python, etc.",
@@ -31019,7 +29237,6 @@
       }
     },
     "title": "Housing Subscription Score Calculator",
-    "description": "Calculate your housing subscription score (max 84) based on homelessness period, dependents, and account duration",
     "reset": "Reset",
     "sectionA": "Homeless Period",
     "sectionB": "Number of Dependents",
@@ -31027,69 +29244,9 @@
     "maxA": "Max 32 pts",
     "maxB": "Max 35 pts",
     "maxC": "Max 17 pts",
-    "dateMode": "Date Input",
-    "directMode": "Direct Input",
-    "homelessStartLabel": "Homeless Start Date",
-    "homelessStartTooltip": "Enter the date you became homeless. If you previously owned a home, enter the date you disposed of it.",
-    "homelessYearsLabel": "Homeless Period",
-    "homelessYearsTooltip": "Enter the homeless period directly in years. Decimal values accepted (e.g., 2.5)",
     "birthDateLabel": "Date of Birth",
-    "birthDateTooltip": "Unmarried individuals under 30 receive 0 points for homeless period. Your birth date is used to determine this automatically.",
-    "marriedLabel": "Married (with spouse)",
-    "marriedTooltip": "Married applicants can earn homeless period points regardless of age.",
-    "under30Notice": "Unmarried applicants under 30 receive 0 points for the homeless period.",
-    "dependentLabel": "Number of Dependents (excluding self)",
-    "dependentTooltip": "Includes spouse, lineal ascendants (parents, grandparents), and lineal descendants (children, grandchildren) who have been registered in the same household for 3+ years. Self is excluded.",
-    "dependentNote": "Excluding self. Only spouse and lineal relatives registered in same household for 3+ years. 6 or more all score 35 pts.",
-    "expectedScore": "Expected Score",
-    "personUnit": " person(s)",
     "subStartLabel": "Account Open Date",
-    "subStartTooltip": "Enter the date you first opened a housing subscription savings account.",
-    "subMonthsLabel": "Duration (months)",
-    "subMonthsTooltip": "Enter the account duration directly in months. (e.g., 24 = 2 years)",
-    "monthsUnit": " months",
-    "yearsUnit": " years",
-    "resultTitle": "Housing Subscription Score",
-    "outOf84": "/ 84",
-    "totalLabel": "Total Score",
-    "percentileTitle": "Estimated Competitiveness",
-    "percentileDesc": "A total score of {score} pts is estimated to be in the top ~{pct}% of applicants.",
-    "percentileNote": "Actual winning chances may vary depending on region, complex, and competition rate.",
-    "detailTableTitle": "Score Breakdown",
-    "tableCategory": "Category",
-    "tableMyValue": "My Value",
-    "tableMyScore": "My Score",
-    "tableMaxScore": "Max",
-    "notApplicable": "N/A",
-    "guideTitle": "Scoring Criteria Guide",
-    "guideATitle": "A. Homeless Period (Max 32 pts)",
-    "guideAItems": [
-      "Homeless period points apply from age 30 and above",
-      "Unmarried applicants under 30 receive 0 points",
-      "Married applicants count from marriage registration date or homeless start date",
-      "Under 1 year = 2 pts; increases by 2 pts per year; max 32 pts at 15+ years"
-    ],
-    "guideBTitle": "B. Number of Dependents (Max 35 pts)",
-    "guideBItems": [
-      "Excludes self; includes spouse, lineal ascendants, and lineal descendants",
-      "Lineal ascendants: parents, grandparents (must be on same household register for 3+ years)",
-      "Lineal descendants: children, grandchildren (unmarried children have no time requirement)",
-      "0 persons = 5 pts; +5 pts per person; max 35 pts at 6+ persons"
-    ],
-    "guideCTitle": "C. Subscription Account Duration (Max 17 pts)",
-    "guideCItems": [
-      "All types accepted: savings, comprehensive savings, deposit, installment",
-      "Under 6 months = 1 pt; 6 mo–1 yr = 2 pts; +1 pt per year thereafter",
-      "Maximum 17 pts at 15+ years",
-      "Converted or transferred accounts count the combined duration"
-    ],
-    "guideCautionTitle": "Cautions",
-    "guideCautionItems": [
-      "This calculator is for reference only; actual results may differ",
-      "Always confirm scoring criteria in the official public notice",
-      "Speculative overheated areas tend to have higher point-based allocation ratios",
-      "False documentation may result in cancellation of winning selection"
-    ]
+    "outOf84": "/ 84"
   },
   "militaryDischarge": {
     "name": "Name (optional)",
@@ -31224,59 +29381,12 @@
     "navy": "Navy",
     "airForce": "Air Force",
     "socialService": "Social Service Worker",
-    "conscriptedPolice": "Conscripted Police/Coast Guard",
-    "industrialTechnician": "Industrial Technician",
     "researchAgent": "Research Agent",
     "katusa": "KATUSA",
-    "earlyDays": "Early Discharge Days",
-    "earlyDaysPlaceholder": "Enter days for early discharge",
-    "calculate": "Calculate",
-    "reset": "Reset",
     "dischargeDate": "Discharge Date",
-    "dday": "D-Day",
-    "ddayLabel": "Until Discharge",
-    "alreadyDischarged": "Already Discharged",
-    "daysSince": "Days Since Discharge",
     "daysUnit": "days",
-    "totalDays": "Total Service Days",
-    "servedDays": "Days Served",
-    "remainingDays": "Days Remaining",
-    "progress": "Service Progress",
-    "progressBar": "Service Progress",
-    "milestones": "Promotion Schedule",
-    "milestonesNote": "Army/Marines reference",
-    "private": "Private",
-    "corporal": "Private First Class",
-    "sergeant": "Corporal",
-    "staffSergeant": "Sergeant",
-    "completed": "Done",
-    "current": "Current",
-    "upcoming": "Upcoming",
-    "funFacts": "Service Stats",
-    "meals": "You have eaten approximately {count} meals",
-    "pxVisits": "You have visited the PX approximately {count} times",
-    "sleeps": "You have had {count} nights of military sleep",
-    "copyResult": "Copy Result",
     "copied": "Copied!",
-    "celebrationMessage": "Congratulations on your discharge! 🎉",
-    "nearDischargeMessage": "Almost there! Keep going!",
-    "shareText": "Discharge Date: {date}\nD-Day: D-{dday}\nService Progress: {progress}%",
-    "sunday": "Sunday",
-    "monday": "Monday",
-    "tuesday": "Tuesday",
-    "wednesday": "Wednesday",
-    "thursday": "Thursday",
-    "friday": "Friday",
-    "saturday": "Saturday",
     "guideTitle": "Service Duration Guide",
-    "guideItems": [
-      "Army / Marines / KATUSA: 18 months",
-      "Navy: 20 months",
-      "Air Force / Social Service: 21 months",
-      "Conscripted Police/Coast Guard: 18 months",
-      "Industrial Technician: 23 months",
-      "Research Agent: 36 months"
-    ],
     "guideCautionTitle": "Notes",
     "guideCautionItems": [
       "Periods are as of 2026 and may change with law revisions. No service reduction applies to current enlistees.",
@@ -31286,6 +29396,12 @@
     ]
   },
   "capitalGainsTax": {
+    "fmt": {
+      "eok": "{c}",
+      "eokOnly": "{c}",
+      "man": "{c}",
+      "zero": "{c}"
+    },
     "tempRule": {
       "adjusted2": "Both homes in adjusted areas, new home acquired on/after 2026-08-04 → 2-year deadline (decree amended 2026-10-01)",
       "contract3": "Contract signed and deposit paid by 2026-08-03 → transitional rule keeps the 3-year deadline",
@@ -31527,52 +29643,28 @@
     },
     "title": "Capital Gains Tax Calculator",
     "description": "As of Oct 2026 — 1-house exemption and ₩1.2B rule, long-term deduction, short-term and multi-home surcharge rates (from 2026-05-10), temporary 2-house deadline",
-    "inputTitle": "Transaction Details",
     "salePrice": "Sale Price",
-    "salePricePlaceholder": "500,000,000",
     "acqPrice": "Acquisition Price",
-    "acqPricePlaceholder": "300,000,000",
     "expenses": "Necessary Expenses",
-    "expensesPlaceholder": "Acquisition tax, brokerage fees, etc.",
-    "expensesHint": "Sum of acquisition tax, brokerage commissions, renovation costs, etc.",
     "acqDate": "Acquisition Date",
     "saleDate": "Sale Date",
     "holdingPeriod": "Holding Period",
     "yearsUnit": " yrs",
     "wonUnit": " KRW",
     "propertyType": "Property Type",
-    "propertyGeneral": "Land/Building",
-    "propertyHouse": "House",
     "houseCount": "Number of Homes Owned",
-    "houseCount1": "1 Home",
-    "houseCount2": "2 Homes",
-    "houseCount3plus": "3+ Homes",
-    "isAdjusted": "Located in Regulated Area",
     "residenceYears": "Actual Residence Period",
-    "surchargeNote": "The multi-home surcharge suspension ended on May 10, 2026: +20%p for 2 homes and +30%p for 3+ homes in regulated areas. Sales contracted by May 9, 2026 and transferred within 4 months (6 months in areas newly designated on Oct 16, 2025) keep the suspension — uncheck if that applies.",
-    "applySurcharge": "Apply multi-home surcharge (default since May 10, 2026)",
-    "exemptBadge": "Exempt — 1-Home Tax Exemption",
-    "exemptDesc": "Meets holding/residence requirements and sale price ≤ 1.2 billion KRW — No capital gains tax",
-    "partialExemptBadge": "Partial 1-Home Exemption",
-    "partialExemptDesc": "Sale price exceeds 1.2 billion KRW — only the excess portion is taxed",
-    "taxableRatioLabel": "taxable",
     "totalTaxLabel": "Total Tax Payable",
     "calculatedTaxLabel": "Calculated Tax",
     "localTaxLabel": "Local Income Tax",
-    "effectiveRateLabel": "Effective Rate",
     "breakdownTitle": "Step-by-Step Calculation",
     "transferProfitLabel": "Capital Gain",
-    "exemptAmountLabel": "Tax-Exempt Amount",
     "lthdLabel": "Long-Term Holding Deduction",
     "transferIncomeLabel": "Taxable Capital Gain",
     "basicDeductionLabel": "Basic Deduction",
     "taxBaseLabel": "Tax Base",
     "taxRateLabel": "Tax Rate",
-    "surchargeLabel": "surcharge",
     "progressiveDeductionLabel": "Progressive Deduction",
-    "lthdVisualTitle": "Long-Term Holding Deduction Rate",
-    "lthdVisualDesc": "Deducted:",
-    "lthdVisualDeducted": "deducted",
     "emptyState": "Enter sale price and acquisition price to calculate capital gains tax",
     "cautionTitle": "Disclaimer",
     "cautionItems": [
@@ -31603,7 +29695,6 @@
     "guideLthdTitle": "Long-Term Holding Deduction Rates",
     "guideLthdPeriod": "Holding Period",
     "guideLthdGeneral": "General",
-    "guideLthdOneHouse": "1-Home (max)",
     "guideTaxRateTitle": "Basic capital gains tax rates (2026)",
     "guideTaxRateBase": "Tax Base",
     "guideTaxRateRate": "Rate"
@@ -31622,7 +29713,6 @@
     "addPair": "Add",
     "removePair": "Remove",
     "clearAll": "Clear",
-    "calculate": "Calculate",
     "arithmetic": "Arithmetic Mean",
     "arithmeticDesc": "Sum of all values ÷ count",
     "weighted": "Weighted Mean",
@@ -31642,7 +29732,6 @@
     "statVariance": "Population variance (÷n)",
     "statStdDev": "Population std dev (÷n)",
     "statMedian": "Median",
-    "resultLabel": "Result",
     "guide": {
       "title": "Average Guide",
       "arithmetic": {
@@ -31802,17 +29891,6 @@
       "title": "Your Position",
       "topLabel": "Top {percent}%"
     },
-    "grades": [
-      "Grade 1",
-      "Grade 2",
-      "Grade 3",
-      "Grade 4",
-      "Grade 5",
-      "Grade 6",
-      "Grade 7",
-      "Grade 8",
-      "Grade 9"
-    ],
     "guide": {
       "title": "Grade Calculation Guide",
       "gradeSystem": {
@@ -31911,13 +29989,6 @@
         "label": "School Rank Grade Calculator",
         "desc": "Compute Korean high-school grades (5- or 9-level system) from rank & class size"
       }
-    },
-    "mode": {
-      "label": "Conversion Mode",
-      "45to43": "4.5 → 4.3",
-      "43to45": "4.3 → 4.5",
-      "percentToGpa": "Percent → GPA",
-      "gpaToPercent": "GPA → Percent"
     },
     "input": {
       "label": "Input Value",
@@ -32494,6 +30565,14 @@
     }
   },
   "acquisitionTaxCalc": {
+    "fmt": {
+      "eok": "{c}",
+      "eokOnly": "{c}",
+      "man": "{c}",
+      "zero": "{c}",
+      "axisEok": "{c}",
+      "axisMan": "{c}"
+    },
     "u": {
       "subtitle": "Based on 2026 Korean Local Tax Act. Purchase, inheritance and gift, multi-home surcharge, first-home and childbirth relief, plus total buying cost including brokerage.",
       "mode": {
@@ -32871,7 +30950,7 @@
       "heavyWarning": "Heavy tax rate applied. Multi-home owners in speculative areas may face significantly higher acquisition tax."
     },
     "units": {
-      "won": "KRW",
+      "won": " KRW",
       "percent": "%",
       "sqm": "㎡"
     },
@@ -32880,6 +30959,13 @@
     }
   },
   "dsrCalc": {
+    "fmt": {
+      "eok": "{c}",
+      "eokOnly": "{c}",
+      "man": "{c}",
+      "zero": "{c}",
+      "axisEok": "{c}"
+    },
     "a11y": {
       "addAmount": "Add {amount} KRW to {label}",
       "kind": "New loan type",
@@ -33077,22 +31163,6 @@
       "salary-calculator": "Take-home pay calculator"
     },
     "title": "DSR Calculator",
-    "result": {
-      "title": "Results",
-      "currentDsr": "Current DSR",
-      "safe": "Safe",
-      "caution": "Caution",
-      "danger": "Danger",
-      "safeDesc": "DSR ≤40% — Bank loan eligible",
-      "cautionDesc": "DSR 40~50% — Bank loan difficult, non-bank possible",
-      "dangerDesc": "DSR >50% — Additional loan very difficult",
-      "annualRepayment": "Annual Repayment",
-      "annualRepaymentTitle": "Annual Repayment Breakdown",
-      "newLoanLabel": "New Loan",
-      "existingLoanLabel": "Existing Loan",
-      "totalAnnual": "Total Annual Repayment",
-      "annualIncome": "Annual Income"
-    },
     "stress": {
       "title": "Stress DSR",
       "description": "2025 Phase 3: Reflecting rate increase risk",
@@ -33480,78 +31550,12 @@
     },
     "title": "Jeonse Loan Calculator",
     "description": "Auto-calculate jeonse loan rates, limits, and monthly payments (2026)",
-    "loanType": {
-      "title": "Loan Type",
-      "general": {
-        "label": "General Beotimok",
-        "sub": "Houseless householder",
-        "rate": "2.5~3.5%/yr"
-      },
-      "youth": {
-        "label": "Youth Beotimok",
-        "sub": "Age 19~34",
-        "rate": "1.3~4.3%/yr"
-      },
-      "newlywed": {
-        "label": "Newlywed Beotimok",
-        "sub": "Within 7 years of marriage",
-        "rate": "1.0~4.3%/yr"
-      },
-      "bank": {
-        "label": "Commercial Bank",
-        "sub": "General jeonse loan",
-        "rate": "3.5~5.0%/yr"
-      }
-    },
-    "input": {
-      "deposit": "Jeonse Deposit",
-      "depositPlaceholder": "Enter jeonse deposit amount",
-      "loanAmount": "Desired Loan Amount",
-      "loanAmountPlaceholder": "Enter desired loan amount",
-      "location": "Location",
-      "locationCapital": "Capital Area (Seoul/Incheon/Gyeonggi)",
-      "locationLocal": "Other Regions",
-      "income": "Annual Income (Combined)",
-      "incomePlaceholder": "Combined household income",
-      "smeWorker": "SME Employee (Discount -0.3%p)",
-      "children": "Number of Children",
-      "children0": "None",
-      "children1": "1 (-0.3%p)",
-      "children2": "2 (-0.5%p)",
-      "children3plus": "3+ (-0.7%p)",
-      "bankRate": "Interest Rate (Annual %)",
-      "bankRatePlaceholder": "Enter bank interest rate"
-    },
     "repayment": {
       "title": "Repayment Method",
       "bullet": "Bullet Repayment",
       "equalPrincipalInterest": "Equal Principal & Interest",
       "period": "Loan Period",
       "years": "years"
-    },
-    "result": {
-      "title": "Calculation Results",
-      "appliedRate": "Applied Rate",
-      "baseRate": "Base Rate",
-      "discount": "Discount",
-      "monthlyPayment": "Monthly Payment",
-      "monthlyInterest": "Monthly Interest",
-      "loanLimit": "Loan Limit",
-      "maxLoanByLTV": "Max by LTV",
-      "maxLoanByType": "Product Limit",
-      "ltvRatio": "LTV Ratio",
-      "totalInterest": "Total Interest Cost",
-      "guaranteeFee": "Estimated Guarantee Fee",
-      "guaranteeFeeDesc": "Estimated at loan × 0.15% × period (years)",
-      "eligibility": "Eligibility Check",
-      "eligible": "Eligible",
-      "notEligible": "Not Eligible",
-      "incomeCheck": "Income Requirement",
-      "depositCheck": "Deposit Limit",
-      "loanLimitCheck": "Loan Limit",
-      "ltvWarning": "Desired loan amount exceeds LTV limit",
-      "noResult": "Enter information on the left to see results",
-      "calculate": "Calculate"
     },
     "unit": {
       "wonShort": " KRW",
@@ -34132,11 +32136,6 @@
     "pensionSavings": "Pension Savings Contributions",
     "irp": "IRP (Individual Retirement Pension)",
     "donation": "Donations",
-    "result": {
-      "refund": "Refund Expected",
-      "additionalPayment": "Additional Payment",
-      "breakeven": "Tax Balanced"
-    },
     "guide": {
       "title": "Year-End Tax Guide",
       "tips": {
@@ -35387,6 +33386,14 @@
     }
   },
   "cagrCalculator": {
+    "fmt": {
+      "eok": "{c} KRW",
+      "eokOnly": "{c} KRW",
+      "man": "{c} KRW",
+      "won": "{n} KRW",
+      "axisEok": "{c}",
+      "axisMan": "{c}"
+    },
     "linkCopied": "Copied",
     "title": "CAGR Calculator",
     "description": "Calculate Compound Annual Growth Rate, project future values, and compare investments",
@@ -35744,22 +33751,15 @@
     },
     "title": "Biorhythm Calculator",
     "description": "Physical, emotional, and intellectual rhythm charts with compatibility analysis",
-    "inputTitle": "Basic Info",
     "birthDate": "Date of Birth",
     "targetDate": "Target Date",
-    "periodLabel": "Display Period",
-    "periodDays": "{days} days",
     "daysLived": "{days} days since birth",
     "emptyState": "Enter your date of birth to see your biorhythm.",
-    "todayTitle": "Today's Biorhythm",
-    "overallCondition": "Overall Condition",
     "physical": "Physical",
     "emotional": "Emotional",
     "intellectual": "Intellectual",
     "today": "Today",
-    "criticalDay": "Critical",
     "chartTitle": "Biorhythm Chart",
-    "calendarTitle": "Calendar View",
     "status": {
       "high": "Great condition. You're full of energy!",
       "medium": "Normal condition. A stable period.",
@@ -36378,32 +34378,19 @@
     "title": "MBTI Personality Test",
     "description": "48 questions, about 5 minutes. A free, unofficial 16-type personality test with 5-point answers",
     "startTest": "Start Test",
-    "question": "Question",
-    "of": "/",
-    "progress": "Progress",
     "prev": "Previous",
-    "next": "Next",
     "seeResult": "See Result",
     "result": "Test Result",
     "yourType": "Your Type",
     "typeDistribution": "Type Distribution",
-    "personality": "Personality Traits",
     "strengths": "Strengths",
     "weaknesses": "Weaknesses",
-    "communicationStyle": "Communication Style",
-    "loveStyle": "Relationship Style",
     "careers": "Career fit (for reference)",
-    "famousPeople": "Famous People",
-    "koreanPopulation": "Korean Population %",
     "retake": "Retake Test",
     "shareResult": "Share Result",
-    "shareTitle": "My MBTI Test Result",
     "shareText": "My MBTI is {type} ({nickname})! Take the test →",
     "copied": "Link copied!",
     "copyLink": "Copy Link",
-    "shareKakao": "KakaoTalk",
-    "shareX": "X (Twitter)",
-    "downloadCard": "Save Result Card",
     "checkCompatibility": "Check Compatibility",
     "disclaimer": "An unofficial test for fun and self-reflection. MBTI® is a registered trademark of The Myers-Briggs Company; this is not the official MBTI assessment.",
     "guide": {
@@ -36504,12 +34491,12 @@
     "allOptions": "Full Option Reference"
   },
   "mbtiCompatibility": {
+    "cellLabel": "{typeA} × {typeB}: {score} of 5",
     "loveStyle": "Love style",
     "title": "MBTI Compatibility",
     "description": "Detailed compatibility analysis between two MBTI types",
     "myType": "My Type",
     "partnerType": "Partner Type",
-    "selectType": "Select Type",
     "analyze": "Analyze Compatibility",
     "matrix": "Compatibility Matrix",
     "matrixDesc": "Click a cell to see detailed analysis",
@@ -36528,7 +34515,6 @@
     "datingStrengths": "Dating Strengths",
     "conflictPoints": "Conflict Points",
     "advice": "Advice",
-    "summary": "Summary",
     "typeProfile": "Type Profile",
     "backToMatrix": "Back to Matrix",
     "legend": "Legend",
@@ -36861,7 +34847,6 @@
     "statsMaxStreak": "Best streak",
     "title": "Picross",
     "description": "Logic puzzle game - fill cells using number clues to reveal a picture",
-    "dailyBadge": "Daily Puzzle",
     "easy": "Easy",
     "medium": "Medium",
     "hard": "Hard",
@@ -36872,11 +34857,8 @@
     "helpClick": "Tap or drag to fill/mark several cells at once",
     "helpRightClick": "PC: right-click = mark X",
     "cell": "Cell",
-    "winTitle": "Congratulations!",
-    "winMessage": "Completed {size} puzzle in {time}!",
     "share": "Share Result",
     "copied": "Copied!",
-    "playAgain": "Play Again",
     "shareTitle": "Picross",
     "statsTitle": "Statistics",
     "statsPlayed": "Games Played",
@@ -37192,74 +35174,16 @@
     },
     "title": "Color Blindness Simulator",
     "description": "See how images and colors look to people with color blindness or color weakness, and check whether your chart/UI colors stay distinguishable.",
-    "uploadPrompt": "Drag & drop an image or click to upload",
-    "uploadSubPrompt": "Supports JPG, PNG, WebP, GIF · Max 10MB",
     "cameraButton": "Take a Photo",
     "sampleImages": "Sample Images",
     "sampleColorWheel": "Color Wheel",
     "sampleIshihara": "Ishihara Pattern",
     "sampleTrafficLight": "Traffic light",
-    "typeSelector": "Color Vision Deficiency Type",
     "original": "Original",
     "simulated": "Simulated",
     "sliderHint": "Drag the slider to compare original vs simulated view",
     "download": "Download Filtered Image",
     "processing": "Processing...",
-    "noImage": "Upload an image or select a sample",
-    "prevalence": "Prevalence",
-    "types": {
-      "normal": {
-        "name": "Normal Vision",
-        "description": "No color vision deficiency"
-      },
-      "protanopia": {
-        "name": "Protanopia (Red-blind)",
-        "description": "No L-cones — cannot perceive red",
-        "prevalence": "1% of males"
-      },
-      "deuteranopia": {
-        "name": "Deuteranopia (Green-blind)",
-        "description": "No M-cones — cannot perceive green",
-        "prevalence": "1% of males"
-      },
-      "tritanopia": {
-        "name": "Tritanopia (Blue-blind)",
-        "description": "No S-cones — cannot perceive blue",
-        "prevalence": "0.002%"
-      },
-      "protanomaly": {
-        "name": "Protanomaly (Red-weak)",
-        "description": "Reduced L-cone sensitivity — weak red perception",
-        "prevalence": "1% of males"
-      },
-      "deuteranomaly": {
-        "name": "Deuteranomaly (Green-weak)",
-        "description": "Reduced M-cone sensitivity — most common type",
-        "prevalence": "5–6% of males"
-      },
-      "tritanomaly": {
-        "name": "Tritanomaly (Blue-weak)",
-        "description": "Reduced S-cone sensitivity — weak blue perception",
-        "prevalence": "0.01%"
-      },
-      "achromatopsia": {
-        "name": "Achromatopsia (Total color blind)",
-        "description": "No cone function — sees the world in grayscale",
-        "prevalence": "0.003%"
-      }
-    },
-    "infoPanel": {
-      "title": "Understanding Color Vision Deficiency",
-      "whatIs": "What is Color Vision Deficiency?",
-      "whatIsText": "Color vision deficiency (CVD) occurs when one or more types of cone cells in the eye are absent or have reduced function, making it difficult to distinguish certain colors. It is often X-linked and therefore more common in males (~8%) than females (~0.5%).",
-      "designTip": "Accessibility Design Tips",
-      "designTipItems": [
-        "Don't rely on color alone — use icons, patterns, and text labels to convey information",
-        "Ensure sufficient luminance contrast so color-blind users can still perceive content",
-        "For red-green CVD, prefer blue and orange as your primary contrast pair",
-        "Use CVD-friendly palettes (e.g., Okabe-Ito) for data visualizations"
-      ]
-    },
     "guide": {
       "howItWorks": {
         "title": "How It Works",
@@ -37439,36 +35363,20 @@
     },
     "title": "Screen Size Comparison",
     "description": "Compare monitors, TVs, laptops and phones by size and resolution: real width and height (cm), area difference, PPI, scaled workspace and recommended viewing distance.",
-    "category": {
-      "all": "All",
-      "phone": "Phone",
-      "tablet": "Tablet",
-      "monitor": "Monitor",
-      "laptop": "Laptop"
-    },
-    "deviceN": "Device {n}",
     "selectDevice": "Select a device",
-    "customSize": "+ Custom size",
-    "customTitle": "Custom device",
-    "customName": "Device name",
     "customDiagonal": "Screen size (inches)",
     "customWidth": "Width (px)",
     "customHeight": "Height (px)",
-    "add": "Add",
-    "cancel": "Cancel",
     "remove": "Remove",
     "addDevice": "Add device",
     "visualTitle": "Overlay at the same scale",
-    "scaleNote": "* Displayed at proportional scale — not actual size",
     "specsTitle": "Detailed comparison",
     "spec": "Spec",
-    "specCategory": "Category",
     "specDiagonal": "Screen size",
     "specResolution": "Resolution",
     "specAspect": "Aspect ratio",
     "specArea": "Screen area",
     "specTotalPixels": "Total pixels",
-    "empty": "None",
     "ppiGuide": {
       "title": "PPI Guide",
       "retina": "Retina-class ultra-high resolution",
@@ -37588,13 +35496,10 @@
     "down": "Down",
     "acrossShort": "A",
     "downShort": "D",
-    "check": "Check",
     "revealWord": "Reveal Word",
     "reset": "Clear all",
     "daily": "Daily Puzzle",
     "puzzle": "Puzzle",
-    "congratulations": "Congratulations! You completed the puzzle!",
-    "completedIn": "Completed in {time}",
     "hint": "Tap a cell and type in Korean. Tap the same cell again or press Space to switch direction, Tab for the next word, arrows to move.",
     "guide": {
       "title": "How to Play",
@@ -37625,7 +35530,6 @@
     "calculating": "Calculating compatibility...",
     "resultTitle": "Compatibility Result",
     "score": "points",
-    "compatibility": "Compatibility Score",
     "inputError": "Please enter both names",
     "nameError": "Only Korean names are supported",
     "and": "♥",
@@ -37637,7 +35541,6 @@
       "belowAverage": "Could be better. But love conquers all! 💪",
       "low": "Low compatibility. But love knows no bounds! ❤️"
     },
-    "process": "Calculation Process",
     "step1": "ㅇ/ㅎ Conversion",
     "step2": "Stroke Count",
     "step3": "Adjacent Sum",
@@ -37711,7 +35614,6 @@
     "worstColors": "Colors to Avoid",
     "celebrities": "Celebrities with Same Color",
     "fashionTips": "Fashion & Makeup Tips",
-    "colorPalette": "Recommended Color Palette",
     "types": {
       "springWarm": {
         "name": "Spring Warm",
@@ -38053,26 +35955,13 @@
     "cycleLength": "Cycle Length",
     "periodLength": "Period Length",
     "days": "days",
-    "calculate": "Calculate",
-    "reset": "Reset",
-    "result": "Prediction Results",
     "ovulationDate": "Estimated Ovulation Date",
     "fertileWindow": "Fertile Window",
     "nextPeriod": "Next Period Expected",
-    "safeEarly": "Safe Period (Early)",
-    "safeLate": "Safe Period (Late)",
-    "to": "~",
     "calendar": "6-month calendar",
     "legend": "Legend",
-    "legendPeriod": "Period",
-    "legendFertile": "Fertile Window",
-    "legendOvulation": "Ovulation Day",
-    "legendSafe": "Safe Period",
     "dueDateLink": "Due Date Calculator",
     "disclaimer": "This calculator gives estimates based on an average cycle. It is not a medical diagnosis or a method of birth control. See a gynecologist if your cycles are shorter than 21 or longer than 45 days, you have had no period for 3+ months, or you have been trying to conceive for a year (6 months if 35 or older).",
-    "shareButton": "Share Result",
-    "copyLinkButton": "Copy Link",
-    "linkCopied": "Link copied!",
     "months": [
       "Jan",
       "Feb",
@@ -38236,19 +36125,9 @@
     },
     "title": "CSAT Grade Calculator",
     "description": "Enter raw scores for Korean, Math, English, Korean History and Inquiry to see estimated grades, your average grade and whether you meet minimum CSAT requirements",
-    "year": "CSAT Year",
     "subject": "Select Subject",
-    "rawScore": "Raw Score",
-    "standardScore": "Standard Score",
-    "percentile": "Percentile",
     "grade": "Grade",
-    "calculate": "Check Grade",
-    "reset": "Reset",
-    "result": "Grade Result",
-    "gradeResult": "Grade",
-    "yourScore": "Your Score",
     "cutoff": "Cutoff",
-    "maxScore": "Max Score",
     "subjects": {
       "korean": "Korean",
       "math": "Math",
@@ -38257,23 +36136,9 @@
       "socialStudies": "Social Studies",
       "science": "Science"
     },
-    "subjectDetail": {
-      "korean": "Korean (Speech & Writing / Language & Media)",
-      "mathCalc": "Math (Calculus / Geometry)",
-      "mathProb": "Math (Probability & Statistics)",
-      "english": "English (Absolute Grading)",
-      "koreanHistory": "Korean History (Absolute Grading)",
-      "socialStudies": "Social Studies (subject-average estimate)",
-      "science": "Science (subject-average estimate)"
-    },
     "absoluteGrade": "Absolute Grading",
-    "relativeGrade": "Relative Grading",
     "gradeTable": "Grade Cutoff Table",
-    "allGrades": "View All Grade Cutoffs",
     "gradeRange": "Score Range",
-    "shareButton": "Share Result",
-    "copyLinkButton": "Copy Link",
-    "linkCopied": "Link copied!",
     "disclaimer": "Cutoffs are the confirmed 2026 CSAT (held Nov 2025) cutoffs; this year's real cutoffs depend on difficulty. Check the official KICE score report for your results.",
     "guide": {
       "title": "CSAT Grade Guide",
@@ -38344,16 +36209,7 @@
     "description": "Calculate taxes on lottery winnings and see your actual take-home amount",
     "prizeAmount": "Prize Amount",
     "prizeAmountPlaceholder": "Enter prize amount",
-    "prizeType": "Lottery Type",
-    "prizeTypes": {
-      "lotto": "Lotto 6/45",
-      "pension": "Pension Lottery 520+",
-      "speetto": "Speetto",
-      "scratch": "Scratch Card",
-      "custom": "Other Lottery"
-    },
     "calculate": "Calculate",
-    "reset": "Reset",
     "linkCopied": "Copied",
     "copyLink": "Copy Link",
     "result": "Tax Calculation Result",
@@ -38367,11 +36223,9 @@
     "localTax": "Local Income Tax",
     "taxRate22": "22% (Income 20% + Local 2%)",
     "taxRate33": "33% (Income 30% + Local 3%)",
-    "threshold": "300M KRW",
     "belowThreshold": "≤300M bracket",
     "aboveThreshold": ">300M bracket",
     "noTax": "Tax-free (≤ ₩2M per ticket)",
-    "taxFree": "Tax-free",
     "quickAmounts": "Quick Input",
     "rankPresets": "Average Prize by Lotto Rank",
     "rank1": "1st",
@@ -38379,15 +36233,12 @@
     "rank3": "3rd",
     "rank4": "4th",
     "rank5": "5th",
-    "avgPrize": "Avg. Prize",
     "comparisonTitle": "Tax Comparison by Prize Amount",
     "comparisonDesc": "Compare taxes and take-home amounts for various prize amounts",
     "chartTitle": "Prize Breakdown",
     "chartNetPrize": "Take-home",
     "chartTax": "Tax",
     "won": "KRW",
-    "man": "万",
-    "eok": "억",
     "guide": {
       "title": "Lottery Prize Tax Guide",
       "taxStructure": {
@@ -38667,7 +36518,6 @@
     "protein": "Protein",
     "fat": "Fat",
     "carbs": "Carbs",
-    "recommended": "Recommended",
     "breakfast": "Breakfast",
     "lunch": "Lunch",
     "dinner": "Dinner",
@@ -38676,11 +36526,7 @@
     "addFood": "Add",
     "addManual": "Manual Entry",
     "customFood": "Food name",
-    "portion": "servings",
-    "delete": "Delete",
     "cal": "kcal",
-    "gram": "g",
-    "note": "Note",
     "notePlaceholder": "Today's meal notes...",
     "noMeals": "No meals recorded",
     "addFirst": "Search and add foods above",
@@ -38806,9 +36652,7 @@
     "salaryPlaceholder": "Enter your annual salary",
     "salaryHint": "Pre-tax gross salary (before deductions)",
     "won": "KRW",
-    "calculate": "Check Rank",
     "reset": "Reset",
-    "linkCopied": "Copied",
     "copyLink": "Copy Link",
     "enterSalary": "Enter your salary to check your rank",
     "ageGroup": "Age Group (optional)",
@@ -38841,9 +36685,6 @@
       "legal": "Legal/Accounting"
     },
     "dataSource": "Data Source",
-    "dataSourceDesc": "NTS wage income percentile data (2024 income year), Statistics Korea Economically Active Population Survey, MOEL Employment Survey",
-    "yourSalary": "Your Salary",
-    "overallRank": "Among all Korean workers",
     "top": "Top",
     "beatsPercent": "You earn more than {percent}% of all wage earners",
     "share": "Share",
@@ -38852,9 +36693,6 @@
     "industryComparison": "Same Industry",
     "median": "Median",
     "average": "Average",
-    "distributionChart": "Korean Income Distribution",
-    "workerPercent": "Worker %",
-    "chartNote": "Blue bar = Your position · Source: NTS wage income percentiles (2024 income year)",
     "contributeTitle": "Contribute Anonymous Data",
     "contributeDesc": "Send the salary you entered anonymously to make community stats more accurate",
     "contributeBtn": "Contribute",
@@ -39319,7 +37157,6 @@
     "childrenUnder20": "Children aged 8-20 (included in family count)",
     "nonTaxable": "Non-taxable Amount (Monthly)",
     "nonTaxablePlaceholder": "Meal allowance, etc. (default 200,000)",
-    "calculate": "Calculate",
     "reset": "Reset",
     "result": {
       "nowNet": "Deposited this month (withholding)",
@@ -39923,6 +37760,7 @@
     "title": "AABB Collision Detection Visualizer",
     "description": "Axis-Aligned Bounding Box — Detect collision between two rectangles aligned to axes",
     "tabs": {
+      "guide": "Guide",
       "steps": "Step by Step",
       "code": "Code"
     },
@@ -44042,9 +41880,7 @@
     "title": "Fenwick Tree (BIT) Visualizer",
     "description": "Learn O(log n) prefix sum updates and range queries using a Binary Indexed Tree",
     "array": "Original Array",
-    "bitArray": "BIT Array",
     "update": "Update Value",
-    "query": "Prefix Sum Query",
     "prefixSum": "Prefix Sum",
     "rangeSum": "Range Sum",
     "index": "Index",
@@ -44145,13 +41981,8 @@
     "check": "Check",
     "insertValue": "Value to insert",
     "checkValue": "Value to check",
-    "clear": "Clear",
-    "bitArray": "Bit Array",
     "hashFunctions": "Hash Functions",
     "bitSize": "Bit Array Size",
-    "insertedCount": "Inserted Elements",
-    "fillRate": "Fill Rate",
-    "fpRate": "Theoretical FP Rate",
     "definitelyNot": "Definitely not in set",
     "probablyIn": "Possibly in set (may be false positive)",
     "definitelyIn": "Inserted",
@@ -44254,17 +42085,6 @@
     "title": "Prim's MST Visualizer",
     "description": "Learn Prim's algorithm building minimum spanning trees by expanding from vertices step by step",
     "startNode": "Start Vertex",
-    "run": "Run",
-    "reset": "Reset",
-    "randomGraph": "Random Graph",
-    "nodeCount": "Vertices",
-    "totalWeight": "Total Weight",
-    "edgesAdded": "Edges Added",
-    "currentStep": "Current Step",
-    "mstComplete": "MST Complete",
-    "visited": "Visited",
-    "candidate": "Candidate Edge",
-    "selected": "Selected",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -44360,19 +42180,13 @@
   "floydWarshallVisualizer": {
     "title": "Floyd-Warshall Visualizer",
     "description": "Learn all-pairs shortest paths using dynamic programming with an interactive distance matrix",
-    "run": "Run",
-    "reset": "Reset",
     "randomGraph": "Random Graph",
-    "nodeCount": "Vertices",
     "allowNegative": "Allow Negative Weights",
     "distanceMatrix": "Distance Matrix",
     "intermediateNode": "Intermediate Node k",
-    "iteration": "Iteration",
     "updated": "Updated",
-    "infinity": "∞",
     "negativeCycle": "Negative Cycle Detected",
     "path": "Path",
-    "selectPair": "Select Start/End Vertices",
     "guide": {
       "title": "Floyd-Warshall Guide",
       "whatIs": {
@@ -44468,10 +42282,7 @@
   "tarjanSccVisualizer": {
     "title": "Tarjan's SCC Visualizer",
     "description": "Learn how to find Strongly Connected Components in directed graphs using DFS-based Tarjan's algorithm",
-    "run": "Run",
-    "reset": "Reset",
     "randomGraph": "Random Graph",
-    "nodeCount": "Vertices",
     "sccCount": "SCC Count",
     "currentStep": "Current Step",
     "discoveryTime": "Discovery Time",
@@ -44572,8 +42383,6 @@
   "eulerPathVisualizer": {
     "title": "Euler Path Visualizer",
     "description": "Learn how to find paths and circuits that visit every edge exactly once in a graph",
-    "run": "Run",
-    "reset": "Reset",
     "randomGraph": "Random Graph",
     "nodeCount": "Vertices",
     "edgeCount": "Edges",
@@ -44586,7 +42395,6 @@
     "visited": "Visited Edges",
     "remaining": "Remaining Edges",
     "directed": "Directed",
-    "undirected": "Undirected",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -44670,17 +42478,13 @@
     "description": "Learn minimum edit operations (insert, delete, replace) between two strings using a DP table",
     "string1": "String A",
     "string2": "String B",
-    "run": "Calculate",
-    "reset": "Reset",
     "result": "Edit Distance",
     "operations": "Operations",
     "insert": "Insert",
     "delete": "Delete",
     "replace": "Replace",
     "match": "Match",
-    "dpTable": "DP Table",
     "currentCell": "Current Cell",
-    "backtrack": "Backtrack Path",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -44766,14 +42570,9 @@
     "coins": "Coin Types",
     "amount": "Target Amount",
     "run": "Calculate",
-    "reset": "Reset",
     "result": "Minimum Coins",
     "impossible": "Impossible",
-    "dpArray": "DP Array",
     "selectedCoins": "Selected Coins",
-    "currentAmount": "Current Amount",
-    "addCoin": "Add Coin",
-    "removeCoin": "Remove Coin",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -44870,16 +42669,12 @@
     "description": "Learn how to find the longest increasing subsequence using DP and binary search",
     "sequence": "Sequence",
     "run": "Run",
-    "reset": "Reset",
     "random": "Random Generate",
     "length": "LIS Length",
     "subsequence": "LIS",
     "method": "Method",
     "dpMethod": "DP O(n²)",
     "binarySearchMethod": "Binary Search O(n log n)",
-    "dpArray": "DP Array",
-    "tailsArray": "Tails Array",
-    "currentElement": "Current Element",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -44974,15 +42769,9 @@
     "text": "Text",
     "pattern": "Pattern",
     "run": "Search",
-    "reset": "Reset",
     "base": "Hash Base",
     "modulo": "Modular",
-    "textHash": "Text Hash",
-    "patternHash": "Pattern Hash",
-    "match": "Match",
-    "hashCollision": "Hash Collision (False Positive)",
     "found": "Pattern Found",
-    "notFound": "Pattern Not Found",
     "comparisons": "Comparisons",
     "tabs": {
       "steps": "Steps",
@@ -45072,12 +42861,6 @@
     "build": "Build",
     "search": "Pattern Search",
     "pattern": "Pattern",
-    "reset": "Reset",
-    "suffixes": "Suffix List",
-    "sortedOrder": "Sorted Order",
-    "lcpArray": "LCP Array",
-    "found": "Pattern Found",
-    "notFound": "Pattern Not Found",
     "position": "Position",
     "tabs": {
       "steps": "Steps",
@@ -45168,18 +42951,10 @@
     "description": "Learn the greedy algorithm for optimal prefix codes — the basis of data compression",
     "text": "Input Text",
     "encode": "Encode",
-    "decode": "Decode",
-    "reset": "Reset",
-    "frequency": "Frequency",
-    "codeTable": "Code Table",
-    "character": "Character",
     "code": "Huffman Code",
-    "bits": "Bits",
     "originalSize": "Original Size",
     "compressedSize": "Compressed Size",
     "ratio": "Compression Ratio",
-    "tree": "Huffman Tree",
-    "encoded": "Encoded Result",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -45317,7 +43092,6 @@
     "windowSize": "Window Size",
     "target": "Target",
     "run": "Run",
-    "reset": "Reset",
     "random": "Random Generate",
     "mode": "Mode",
     "fixedWindow": "Fixed Size",
@@ -45328,7 +43102,6 @@
     "currentSum": "Current Sum",
     "bestResult": "Best Result",
     "left": "Left Pointer",
-    "right": "Right Pointer",
     "tabs": {
       "steps": "Steps",
       "code": "Code",
@@ -45651,24 +43424,8 @@
     "title": "National Youth Rent Support Calculator",
     "description": "Estimate support under the 2026 national program, accounting for previous payments.",
     "age": "Age",
-    "ageUnit": "years",
-    "birthYear": "Birth Year",
-    "birthMonth": "Birth Month",
-    "independentHousehold": "Independent Living",
-    "independentDesc": "Living at a separate address from parents",
-    "homeOwnership": "Home Ownership",
-    "noHome": "No home",
     "hasHome": "Owns home",
-    "monthlyIncome": "Personal Monthly Income",
-    "monthlyIncomeDesc": "Total pre-tax earned + business income",
-    "householdIncome": "Parent Household Monthly Income",
-    "householdIncomeDesc": "Total monthly income of parent household",
     "householdSize": "Parent Household Size",
-    "householdSizeUnit": "persons",
-    "personalAssets": "Personal Total Assets",
-    "personalAssetsDesc": "Real estate + financial assets + vehicle value",
-    "currentRent": "Current Monthly Rent",
-    "currentDeposit": "Current Deposit",
     "housingType": "Housing Type",
     "housingTypes": {
       "officetel": "Officetel",
@@ -45679,35 +43436,15 @@
     },
     "yes": "Yes",
     "no": "No",
-    "check": "Check Eligibility",
-    "reset": "Reset",
-    "resultTitle": "Youth Rent Subsidy Eligibility Result",
     "eligible": "Basic checks passed",
-    "notEligible": "Basic checks not met",
     "borderline": "Borderline (Verify Required)",
-    "estimatedMonthly": "Estimated Monthly Support",
-    "estimatedTotal": "Estimated remaining total",
-    "maxSupport": "Max ₩200K/month",
-    "supportPeriod": "Up to 24 lifetime payments, less prior payments",
     "checklistTitle": "Eligibility Checklist",
-    "conditions": {
-      "ageRange": "Age 19-34",
-      "independent": "Independent living (separate address from parents)",
-      "noHomeOwner": "No home ownership",
-      "incomeBelow": "Personal income below 60% of median",
-      "householdIncomeBelow": "Parent household income below 100% of median",
-      "assetBelow": "Personal assets below ₩122M",
-      "rentRange": "Actual rent is paid"
-    },
     "pass": "Met",
     "fail": "Not Met",
-    "applicationInfo": "Application Info",
-    "howToApply": "How to Apply",
     "applyMethods": [
       "Apply online through Bokjiro (2026 applications closed)",
       "Apply at the local community center during an official application period"
     ],
-    "requiredDocs": "Required Documents",
     "docsList": [
       "ID (resident registration card or driver's license)",
       "Copy of lease agreement",
@@ -45717,7 +43454,6 @@
       "Family relations certificate"
     ],
     "disclaimer": "An estimate of basic checks and amounts only. Income deductions, debts, original-household assets, household composition, overlapping benefits, housing-benefit offsets and birth-year eligibility are not fully assessed. Official review determines selection and payments; a calculation does not reopen applications.",
-    "medianIncomeRef": "2026 Standard Median Income",
     "guide": {
       "title": "Guide",
       "whatIs": {
@@ -46024,71 +43760,6 @@
       }
     },
     "title": "EV Subsidy Calculator",
-    "description": "Calculate national and local government subsidies for electric vehicle purchases by model and region.",
-    "vehicleInfo": "Vehicle Information",
-    "vehicleType": "Vehicle Type",
-    "typePassenger": "Sedan",
-    "typeSuv": "SUV",
-    "typeTruck": "Light Truck",
-    "typeVan": "Van",
-    "vehiclePrice": "Vehicle Price",
-    "unitMwan": "10k KRW",
-    "priceUnder55": "Under ₩55M",
-    "price5585": "₩55M~₩85M",
-    "priceOver85": "Over ₩85M",
-    "gateFullLabel": "(100% subsidy)",
-    "gate50Label": "(50% subsidy)",
-    "gate0Label": "(no subsidy)",
-    "drivingRange": "Driving Range per Charge",
-    "batteryCapacity": "Battery Capacity",
-    "region": "Registration Region",
-    "regionSeoul": "Seoul",
-    "regionBusan": "Busan",
-    "regionDaegu": "Daegu",
-    "regionIncheon": "Incheon",
-    "regionGwangju": "Gwangju",
-    "regionDaejeon": "Daejeon",
-    "regionUlsan": "Ulsan",
-    "regionSejong": "Sejong",
-    "regionGyeonggi": "Gyeonggi",
-    "regionGangwon": "Gangwon",
-    "regionChungbuk": "Chungbuk",
-    "regionChungnam": "Chungnam",
-    "regionJeonbuk": "Jeonbuk",
-    "regionJeonnam": "Jeonnam",
-    "regionGyeongbuk": "Gyeongbuk",
-    "regionGyeongnam": "Gyeongnam",
-    "regionJeju": "Jeju",
-    "calculate": "Calculate Subsidy",
-    "reset": "Reset",
-    "popularModels": "Quick Fill Popular Models",
-    "model_ioniq5": "Hyundai IONIQ 5",
-    "model_ioniq6": "Hyundai IONIQ 6",
-    "model_ev6": "Kia EV6",
-    "model_ev9": "Kia EV9",
-    "model_rayEv": "Kia Ray EV",
-    "model_model3": "Tesla Model 3",
-    "model_modelY": "Tesla Model Y",
-    "model_gv60": "Genesis GV60",
-    "subsidySummary": "Subsidy Calculation Result",
-    "nationalSubsidy": "National Subsidy",
-    "localSubsidy": "Local Subsidy",
-    "totalSubsidy": "Total Subsidy",
-    "finalPrice": "Final Purchase Price",
-    "performanceBreakdown": "Performance Score Breakdown",
-    "priceGate": "Price-based Subsidy Rate",
-    "rangeScore": "Driving Range Score",
-    "efficiencyScore": "Energy Efficiency Score",
-    "batteryScore": "Battery Capacity Score",
-    "overallPerformance": "Overall Performance Ratio",
-    "resultPlaceholder": "Enter vehicle info and click Calculate",
-    "regionComparisonTitle": "Regional Subsidy Comparison",
-    "selected": "selected",
-    "enterInfoFirst": "Please enter vehicle info first",
-    "modelsComparisonTitle": "Popular Model Subsidy Comparison",
-    "regionLabel": "Region",
-    "model": "Model",
-    "price": "Price",
     "guide": {
       "title": "Guide",
       "whatIs": {
@@ -46256,7 +43927,6 @@
     "stateChecked": "Checked",
     "stateUnchecked": "Unchecked",
     "stateNa": "N/A",
-    "checklistTitle": "Checklist",
     "categories": {
       "registry": "Registry Check",
       "landlord": "Landlord Verification",
@@ -46311,13 +43981,6 @@
     "riskDangerDesc": "Serious risk factors present. Reconsider the contract",
     "checked": "Checked",
     "unchecked": "Unchecked",
-    "notApplicable": "N/A",
-    "totalItems": "Total Items",
-    "saveResult": "Save Result",
-    "shareResult": "Share Result",
-    "printResult": "Print",
-    "reset": "Reset",
-    "emergencyContacts": "Emergency Contacts",
     "contacts": {
       "hug": "HUG (Housing Guarantee)",
       "hugDesc": "Deposit insurance consultation and enrollment",
@@ -46403,19 +44066,6 @@
       "web": "Web Basics",
       "webDesc": "HTML/CSS/JS, Browser Rendering, REST API, etc."
     },
-    "categoryDescriptions": {
-      "dataStructures": "Arrays, Stacks, Queues, Trees, Hash Tables, etc.",
-      "algorithms": "Sorting, Searching, Time Complexity, Recursion, etc.",
-      "network": "TCP/UDP, HTTP, DNS, OSI 7 Layers, etc.",
-      "networking": "TCP/UDP, HTTP, DNS, OSI 7 Layers, etc.",
-      "os": "Processes, Threads, Memory, Scheduling, etc.",
-      "database": "SQL, Normalization, Indexing, Transactions, etc.",
-      "architecture": "CPU, Memory Hierarchy, Cache, Pipeline, etc.",
-      "softwareEngineering": "Design Patterns, SOLID, Agile, Testing, etc.",
-      "security": "Encryption, Authentication, OWASP, XSS/SQLi, etc.",
-      "linux": "Commands, Permissions, Shell Scripts, Process Mgmt, etc.",
-      "web": "HTML/CSS/JS, Browser Rendering, REST API, etc."
-    },
     "difficulties": {
       "beginner": "Beginner",
       "beginnerDesc": "Basic concepts for CS beginners",
@@ -46424,24 +44074,11 @@
       "advanced": "Advanced",
       "advancedDesc": "Deep concepts and applied problems"
     },
-    "difficultyDescriptions": {
-      "beginner": "Basic concepts for CS beginners",
-      "intermediate": "Interview-level questions",
-      "advanced": "Deep concepts and applied problems"
-    },
     "startQuiz": "Start Quiz",
-    "questionCount": "Questions",
-    "questionOf": "{current} / {total}",
     "nextQuestion": "Next Question",
     "prevQuestion": "Previous Question",
-    "submitQuiz": "View Results",
     "correct": "Correct!",
     "incorrect": "Incorrect",
-    "explanation": "Explanation",
-    "score": "Score",
-    "scoreResult": "{score} / {total}",
-    "percentage": "{percent}%",
-    "grade": "Grade",
     "grades": {
       "A": "A (90%+)",
       "B": "B (80%+)",
@@ -46449,32 +44086,10 @@
       "D": "D (60%+)",
       "F": "F (Below 60%)"
     },
-    "gradeMessages": {
-      "A": "Excellent! You have a solid CS foundation!",
-      "B": "Great job! A little more study and you'll be perfect.",
-      "C": "Not bad! Review the wrong answers and you'll improve quickly.",
-      "D": "You should review the fundamentals again.",
-      "F": "Still a long way to go. Keep studying!"
-    },
-    "resultTitle": "Quiz Results",
-    "wrongAnswers": "Review Wrong Answers",
-    "wrongAnswersDesc": "Review the questions you got wrong",
-    "noWrongAnswers": "Perfect score! No wrong answers!",
     "yourAnswer": "Your Answer",
     "correctAnswer": "Correct Answer",
-    "retryQuiz": "Retry Quiz",
     "retryWrong": "Retry Wrong Only",
-    "changeCategory": "Change Category",
-    "shareResult": "Share Result",
     "copied": "Copied!",
-    "timeSpent": "Time Spent",
-    "minutes": "min",
-    "seconds": "sec",
-    "progressLabel": "Progress",
-    "allCategories": "All",
-    "questionCountLabel": "{count} questions",
-    "answered": "Answered",
-    "unanswered": "Unanswered",
     "questionsUnit": "questions",
     "questionLabel": "Question",
     "showResult": "View Results",
@@ -46537,32 +44152,22 @@
     "downloadZip": "Download ZIP",
     "downloadMerged": "Merge Vertically",
     "downloading": "Downloading...",
-    "merging": "Merging images...",
     "filterMinSize": "Min size (px)",
-    "filterType": "File type",
     "allTypes": "All",
     "copyUrl": "Copy URL",
     "openOriginal": "View Original",
     "downloadSingle": "Download",
-    "imageSize": "{width} × {height}",
     "unknownSize": "Size unknown",
     "loadError": "Load failed",
     "fetchError": "Could not fetch the page. Please check the URL.",
-    "corsError": "This page is restricted due to CORS policy.",
     "mergedFilename": "merged-images.png",
     "zipFilename": "images.zip",
     "recentUrls": "Recent URLs",
     "clearHistory": "Clear History",
-    "imageCount": "Images",
-    "fileSize": "File size",
-    "dimensions": "Size",
     "mergeGap": "Image gap",
     "mergeBackground": "Background",
     "mergeWidth": "Output width",
-    "previewMerge": "Merge Preview",
     "viewDeduped": "Deduplicated",
-    "viewGrouped": "Grouped",
-    "viewAll": "All",
     "dedupRemoved": "{count} duplicates removed",
     "quickSelect": "Quick select",
     "sizeXL": "800px+",
@@ -47248,13 +44853,10 @@
     "draw": "Draw",
     "yourChoice": "Your Choice",
     "cpuChoice": "CPU Choice",
-    "result": "Result",
     "round": "Round",
-    "score": "Score",
     "history": "History",
     "reset": "Reset",
     "play": "Play",
-    "nextRound": "Next Round",
     "bestOf3": "Best of 3",
     "bestOf5": "Best of 5",
     "bestOf7": "Best of 7",
@@ -47262,8 +44864,6 @@
     "addPlayer": "Add",
     "startTournament": "Start Tournament",
     "winner": "Winner",
-    "bracket": "Bracket",
-    "semifinals": "Semifinals",
     "finals": "Finals",
     "stats": "Stats",
     "winRate": "Win Rate",
@@ -47310,17 +44910,8 @@
     "category": "Category",
     "custom": "Custom",
     "addItem": "Add some items",
-    "removeItem": "Remove",
-    "catCompany": "Company Dinner",
-    "catMt": "Trip/MT",
-    "catCouple": "Couple",
-    "catLight": "Light",
     "reroll": "Spin Again",
     "reset": "Reset",
-    "intensity": "Intensity",
-    "easy": "Easy",
-    "medium": "Medium",
-    "hard": "Hard",
     "penaltyIs": "Dare Selected!",
     "ready": "Spin the roulette!",
     "history": "Recent Results",
@@ -47387,11 +44978,7 @@
     "timeUp": "Time's Up!",
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit Fullscreen",
-    "players": "Players",
-    "turnTime": "Turn Time",
     "currentPlayer": "Current Player",
-    "nextPlayer": "Next Player",
-    "playerName": "Player Name",
     "addPlayer": "Add",
     "perTurn": "Per turn",
     "guide": {
@@ -49031,6 +46618,15 @@
     }
   },
   "brokerageFee": {
+    "fmt": {
+      "eok": "{c}",
+      "eokOnly": "{c}",
+      "man": "{c}",
+      "zero": "{c}",
+      "axisEok": "{c}",
+      "axisMan": "{c}",
+      "cheonman": "{c}"
+    },
     "title": "Brokerage Fee Calculator",
     "subtitle": "Calculate the legal maximum Korean real estate brokerage fee (2026 rates) for sales, jeonse and monthly rent, including officetels and commercial property, VAT and negotiated rates.",
     "units": {
@@ -52125,6 +49721,11 @@
     }
   },
   "rentalYield": {
+    "fmt": {
+      "eok": "{c}",
+      "eokOnly": "{c}",
+      "man": "{c}"
+    },
     "title": "Rental Yield Calculator",
     "subtitle": "Calculate gross, net and cash-on-cash yields for officetels, retail units and homes, plus monthly cash flow, break-even rent and the price or rent needed to hit a target yield.",
     "won": " KRW",

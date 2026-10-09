@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/notepad'
 import { FileText, Plus, Trash2, Download, Pin, PinOff, Menu, X, Search, Maximize2, Minimize2, Upload, Archive, Replace } from 'lucide-react'
 import { analyze } from '@/utils/charCount'
+import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
 import {
   type Note, type Settings, STORAGE_KEY, SETTINGS_KEY, DEFAULT_SETTINGS, FONT_SIZES,
   newId, parseNotes, parseSettings, backupJson, mergeNotes, sortNotes, searchNotes,
@@ -60,6 +61,7 @@ export default function Notepad() {
   const taRef = useRef<HTMLTextAreaElement>(null)
   const findRef = useRef<HTMLInputElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const focusBtnRef = useRef<HTMLButtonElement>(null)
   const notesRef = useRef(notes)
   notesRef.current = notes
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -265,13 +267,13 @@ export default function Notepad() {
       if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 's') {
         e.preventDefault()
         exportTxt()
-      } else if (e.key === 'Escape' && focusMode) {
-        setFocusMode(false)
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [exportTxt, focusMode])
+  }, [exportTxt])
+  // 편집창의 Esc 는 'Esc 후 Tab' 탈출에 쓰므로(data-keep-escape) 집중 모드를 끝내지 않는다
+  useFullscreenEscape(focusMode, () => setFocusMode(false), focusBtnRef)
 
   const onEditorKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const ta = e.currentTarget
@@ -406,7 +408,7 @@ export default function Notepad() {
                   </select>
                   <button onClick={() => setSettings(s => ({ ...s, mono: !s.mono }))} className={toggleBtn(settings.mono)} aria-pressed={settings.mono}>{t('mono')}</button>
                   <button onClick={() => setSettings(s => ({ ...s, wrap: !s.wrap }))} className={toggleBtn(settings.wrap)} aria-pressed={settings.wrap}>{t('wrap')}</button>
-                  <button onClick={() => setFocusMode(f => !f)} className={toolBtn} aria-pressed={focusMode}>
+                  <button ref={focusBtnRef} onClick={() => setFocusMode(f => !f)} className={toolBtn} aria-pressed={focusMode}>
                     {focusMode ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}{focusMode ? t('exitFocus') : t('focus')}
                   </button>
                   <button onClick={exportTxt} className={toolBtn} title={t('exportShortcut')}>
@@ -437,7 +439,7 @@ export default function Notepad() {
                   </div>
                 )}
 
-                <textarea ref={taRef} value={active.content} onChange={e => updateActive({ content: e.target.value })} onKeyDown={onEditorKey}
+                <textarea ref={taRef} value={active.content} onChange={e => updateActive({ content: e.target.value })} onKeyDown={onEditorKey} data-keep-escape
                   placeholder={t('contentPlaceholder')} aria-label={t('contentPlaceholder')} spellCheck={false}
                   wrap={settings.wrap ? 'soft' : 'off'} style={{ fontSize: settings.fontSize, tabSize: 4 }}
                   className={`ui-field w-full px-4 py-3 leading-relaxed resize-y ${settings.mono ? 'font-mono' : ''} ${focusMode ? 'flex-1 min-h-[50vh]' : 'h-[60vh] min-h-[320px]'}`} />

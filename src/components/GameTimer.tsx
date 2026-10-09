@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gameTimer'
 import { RotateCcw, Play, Pause, Flag, Maximize2, Minimize2, Timer, Clock, Users } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
 
 type Mode = 'countdown' | 'stopwatch' | 'turnTimer'
 
@@ -75,6 +76,8 @@ export default function GameTimer() {
   const t = useTranslations('gameTimer')
   const [mode, setMode] = useState<Mode>('countdown')
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const fullscreenBtnRef = useRef<HTMLButtonElement>(null)
+  useFullscreenEscape(isFullscreen, () => setIsFullscreen(false), fullscreenBtnRef)
 
   // ── Countdown state ──
   const [cdHours, setCdHours] = useState(0)
@@ -322,6 +325,7 @@ export default function GameTimer() {
               <p className="text-sm text-white/60 mt-0.5">{t('description')}</p>
             </div>
             <button
+              ref={fullscreenBtnRef}
               onClick={() => setIsFullscreen(f => !f)}
               className={GLASS_BTN + ' p-2 px-3'}
               aria-label={isFullscreen ? t('exitFullscreen') : t('fullscreen')}

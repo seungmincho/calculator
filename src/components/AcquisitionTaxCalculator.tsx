@@ -31,11 +31,8 @@ const EOK = 100_000_000
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 const pct = (v: number, d = 2) => `${(v * 100).toFixed(d).replace(/\.?0+$/, '')}%`
 const parseNum = (s: string) => Number(s.replace(/[^\d]/g, '')) || 0
-function eokMan(v: number): string {
-  const eok = Math.floor(v / EOK)
-  const man = Math.floor((v % EOK) / 10_000)
-  return [eok > 0 ? `${eok}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
-}
+// 억·만 읽기: ko 는 fmt.* 키의 {e}억 {n}만, en 은 {c}(500M·1.2B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
 const today = () => {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -44,6 +41,12 @@ const pick = <T extends string>(v: string | null, list: readonly T[], def: T): T
 
 export default function AcquisitionTaxCalculator() {
   const t = useTranslations('acquisitionTaxCalc')
+  const eokMan = (v: number) => {
+    const eok = Math.floor(v / EOK)
+    const man = Math.floor((v % EOK) / 10_000)
+    return t(`fmt.${eok > 0 ? (man > 0 ? 'eok' : 'eokOnly') : man > 0 ? 'man' : 'zero'}`, { e: eok, n: man.toLocaleString('ko-KR'), c: compact.format(v) })
+  }
+  const axisEok = (e: unknown, v: number) => t('fmt.axisEok', { e, c: compact.format(v) }) // e = 억 단위 표기 그대로
   const sp = useSearchParams()
 
   const [mode, setMode] = useState<Mode>(() => pick(sp.get('mode'), MODES, 'buy'))
@@ -385,14 +388,14 @@ export default function AcquisitionTaxCalculator() {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={chart} margin={{ top: 16, right: 12, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
-                    <XAxis dataKey="p" type="number" domain={[0, 'dataMax']} tickFormatter={(v: number) => `${v}억`} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
-                    <YAxis tickFormatter={(v: number) => (v >= 10_000 ? `${(v / 10_000).toFixed(1)}억` : `${v.toLocaleString()}만`)} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={56} stroke="var(--line)" />
+                    <XAxis dataKey="p" type="number" domain={[0, 'dataMax']} tickFormatter={(v: number) => axisEok(v, v * EOK)} tick={{ fontSize: 11, fill: 'var(--muted)' }} stroke="var(--line)" />
+                    <YAxis tickFormatter={(v: number) => (v >= 10_000 ? axisEok((v / 10_000).toFixed(1), v * 10_000) : t('fmt.axisMan', { n: v.toLocaleString(), c: compact.format(v * 10_000) }))} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={56} stroke="var(--line)" />
                     <Tooltip
-                      labelFormatter={(v) => `${t('u.chart.price')} ${v}억`}
-                      formatter={(v) => [`${Number(v ?? 0).toLocaleString()}만${t('units.won')}`, t('result.totalTax')]}
+                      labelFormatter={(v) => `${t('u.chart.price')} ${axisEok(v, Number(v) * EOK)}`}
+                      formatter={(v) => [`${t('fmt.axisMan', { n: Number(v ?? 0).toLocaleString(), c: compact.format(Number(v ?? 0) * 10_000) })}${t('units.won')}`, t('result.totalTax')]}
                     />
-                    <ReferenceLine x={6} stroke="var(--faint)" strokeDasharray="4 3" label={{ value: '6억', position: 'top', fontSize: 10, fill: 'var(--muted)' }} />
-                    <ReferenceLine x={9} stroke="var(--faint)" strokeDasharray="4 3" label={{ value: '9억', position: 'top', fontSize: 10, fill: 'var(--muted)' }} />
+                    <ReferenceLine x={6} stroke="var(--faint)" strokeDasharray="4 3" label={{ value: axisEok(6, 6 * EOK), position: 'top', fontSize: 10, fill: 'var(--muted)' }} />
+                    <ReferenceLine x={9} stroke="var(--faint)" strokeDasharray="4 3" label={{ value: axisEok(9, 9 * EOK), position: 'top', fontSize: 10, fill: 'var(--muted)' }} />
                     <ReferenceLine x={price / EOK} stroke="var(--fg)" strokeDasharray="2 3" label={{ value: t('u.chart.now'), position: 'insideTopRight', fontSize: 10, fill: 'var(--fg)' }} />
                     <Line type="linear" dataKey="tax" stroke="var(--primary)" strokeWidth={2.5} dot={false} />
                   </LineChart>

@@ -16,14 +16,16 @@ const KINDS: readonly Kind[] = ['house', 'land', 'nonbiz', 'presale']
 const won = (v: number) => Math.round(v).toLocaleString('ko-KR')
 const pct = (v: number) => `${+(v * 100).toFixed(2)}%`
 const num = (s: string | null) => Number((s ?? '').replace(/[^\d]/g, '')) || 0
-/** 15억 3,000만 */
-function eok(v: number): string {
-  const e = Math.floor(v / 1e8), m = Math.floor((v % 1e8) / 1e4)
-  return [e ? `${e}억` : '', m ? `${m.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ') || '0'
-}
+// 억·만 읽기: ko 는 fmt.* 키의 {e}억 {n}만, en 은 {c}(1.53B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
 
 export default function CapitalGainsTax() {
   const t = useTranslations('capitalGainsTax')
+  /** 15억 3,000만 */
+  const eok = (v: number) => {
+    const e = Math.floor(v / 1e8), m = Math.floor((v % 1e8) / 1e4)
+    return t(`fmt.${e ? (m ? 'eok' : 'eokOnly') : m ? 'man' : 'zero'}`, { e, n: m.toLocaleString('ko-KR'), c: compact.format(v) })
+  }
   const sp = useSearchParams()
   const legacy = sp.get('sp') !== null // 예전 공유 링크 (ia 하나로 조정지역 표시)
 

@@ -34,29 +34,34 @@ function formatComma(value: string): string {
   return Number(num).toLocaleString('ko-KR')
 }
 
-function formatKoreanMoney(value: number): string {
+// 억·만 읽기: ko 는 fmt.* 키의 {e}억 {n}만원, en 은 {c} KRW(323.45M·1.2B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
+type T = ReturnType<typeof useTranslations>
+
+function formatKoreanMoney(value: number, t: T): string {
   if (value < 0) {
-    return '-' + formatKoreanMoney(-value)
+    return '-' + formatKoreanMoney(-value, t)
   }
   const eok = Math.floor(value / 100000000)
   const man = Math.floor((value % 100000000) / 10000)
   const rest = Math.round(value % 10000)
+  const vars = { e: eok.toLocaleString('ko-KR'), n: man.toLocaleString('ko-KR'), r: rest > 0 ? ` ${rest.toLocaleString('ko-KR')}` : '', c: compact.format(value) }
 
   if (eok > 0 && man > 0) {
-    return `${eok.toLocaleString('ko-KR')}억 ${man.toLocaleString('ko-KR')}만원`
+    return t('fmt.eok', vars)
   } else if (eok > 0) {
-    return `${eok.toLocaleString('ko-KR')}억원`
+    return t('fmt.eokOnly', vars)
   } else if (man > 0) {
-    return `${man.toLocaleString('ko-KR')}만${rest > 0 ? ` ${rest.toLocaleString('ko-KR')}` : ''}원`
+    return t('fmt.man', vars)
   }
-  return `${Math.round(value).toLocaleString('ko-KR')}원`
+  return t('fmt.won', { n: Math.round(value).toLocaleString('ko-KR') })
 }
 
-function formatChartAxis(value: number): string {
+function formatChartAxis(value: number, t: T): string {
   if (value >= 100000000) {
-    return `${(value / 100000000).toFixed(1)}억`
+    return t('fmt.axisEok', { e: (value / 100000000).toFixed(1), c: compact.format(value) })
   } else if (value >= 10000) {
-    return `${(value / 10000).toFixed(0)}만`
+    return t('fmt.axisMan', { n: (value / 10000).toFixed(0), c: compact.format(value) })
   }
   return value.toLocaleString('ko-KR')
 }
@@ -393,10 +398,10 @@ export default function CagrCalculator() {
     if (!resultA) return ''
     if (mode === 'cagr') {
       const r = resultA as { cagr: number; totalReturn: number; totalGain: number }
-      return `CAGR: ${r.cagr.toFixed(2)}%, ${t('result.totalReturn')}: ${r.totalReturn.toFixed(1)}%, ${t('result.totalGain')}: ${formatKoreanMoney(r.totalGain)}`
+      return `CAGR: ${r.cagr.toFixed(2)}%, ${t('result.totalReturn')}: ${r.totalReturn.toFixed(1)}%, ${t('result.totalGain')}: ${formatKoreanMoney(r.totalGain, t)}`
     } else if (mode === 'future') {
       const r = resultA as { futureValue: number; totalReturn: number; totalGain: number }
-      return `${t('result.futureValue')}: ${formatKoreanMoney(r.futureValue)}, ${t('result.totalReturn')}: ${r.totalReturn.toFixed(1)}%, ${t('result.totalGain')}: ${formatKoreanMoney(r.totalGain)}`
+      return `${t('result.futureValue')}: ${formatKoreanMoney(r.futureValue, t)}, ${t('result.totalReturn')}: ${r.totalReturn.toFixed(1)}%, ${t('result.totalGain')}: ${formatKoreanMoney(r.totalGain, t)}`
     } else {
       const r = resultA as { fullYears: number; months: number }
       return `${t('result.requiredPeriod')}: ${r.fullYears}${t('units.year')} ${r.months}${t('units.month')}`
@@ -459,7 +464,7 @@ export default function CagrCalculator() {
           </label>
           {renderCommaInput(sv, setSv, '10,000,000')}
           <p className="text-xs text-muted mt-1 text-right">
-            {parseNumber(sv) > 0 ? formatKoreanMoney(parseNumber(sv)) : ''}
+            {parseNumber(sv) > 0 ? formatKoreanMoney(parseNumber(sv), t) : ''}
           </p>
         </div>
 
@@ -472,7 +477,7 @@ export default function CagrCalculator() {
               </label>
               {renderCommaInput(ev, setEv, '20,000,000')}
               <p className="text-xs text-muted mt-1 text-right">
-                {parseNumber(ev) > 0 ? formatKoreanMoney(parseNumber(ev)) : ''}
+                {parseNumber(ev) > 0 ? formatKoreanMoney(parseNumber(ev), t) : ''}
               </p>
             </div>
             <div>
@@ -527,7 +532,7 @@ export default function CagrCalculator() {
               </label>
               {renderCommaInput(tv, setTv, '100,000,000')}
               <p className="text-xs text-muted mt-1 text-right">
-                {parseNumber(tv) > 0 ? formatKoreanMoney(parseNumber(tv)) : ''}
+                {parseNumber(tv) > 0 ? formatKoreanMoney(parseNumber(tv), t) : ''}
               </p>
             </div>
             <div>
@@ -682,7 +687,7 @@ export default function CagrCalculator() {
                         </p>
                         <div className="mt-3 space-y-1 text-sm opacity-90">
                           <p>{t('result.totalReturn')}: {r.totalReturn.toFixed(1)}%</p>
-                          <p>{t('result.totalGain')}: {formatKoreanMoney(r.totalGain)}</p>
+                          <p>{t('result.totalGain')}: {formatKoreanMoney(r.totalGain, t)}</p>
                         </div>
                       </>
                     )
@@ -693,10 +698,10 @@ export default function CagrCalculator() {
                     return (
                       <>
                         <p className="text-sm opacity-80">{t('result.futureValueLabel')}</p>
-                        <p className="text-4xl font-bold mt-1">{formatKoreanMoney(r.futureValue)}</p>
+                        <p className="text-4xl font-bold mt-1">{formatKoreanMoney(r.futureValue, t)}</p>
                         <div className="mt-3 space-y-1 text-sm opacity-90">
                           <p>{t('result.totalReturn')}: {r.totalReturn.toFixed(1)}%</p>
-                          <p>{t('result.totalGain')}: {formatKoreanMoney(r.totalGain)}</p>
+                          <p>{t('result.totalGain')}: {formatKoreanMoney(r.totalGain, t)}</p>
                         </div>
                       </>
                     )
@@ -767,15 +772,15 @@ export default function CagrCalculator() {
                           </tr>
                           <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('compare.finalValue')}</td>
-                            <td className="text-right py-2 px-3">{formatKoreanMoney(rA.endValue)}</td>
-                            <td className="text-right py-2 px-3">{formatKoreanMoney(rB.endValue)}</td>
+                            <td className="text-right py-2 px-3">{formatKoreanMoney(rA.endValue, t)}</td>
+                            <td className="text-right py-2 px-3">{formatKoreanMoney(rB.endValue, t)}</td>
                           </tr>
                           <tr>
                             <td className="py-2 px-3">{t('compare.difference')}</td>
                             <td colSpan={2} className="text-right py-2 px-3 font-medium">
                               {rA.endValue === rB.endValue
                                 ? t('compare.same')
-                                : formatKoreanMoney(Math.abs(rA.endValue - rB.endValue))
+                                : formatKoreanMoney(Math.abs(rA.endValue - rB.endValue), t)
                               }
                               {rA.endValue !== rB.endValue && (
                                 <span className={rA.endValue > rB.endValue ? 'text-primary ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
@@ -805,15 +810,15 @@ export default function CagrCalculator() {
                           </tr>
                           <tr className="border-b border-line">
                             <td className="py-2 px-3">{t('compare.finalValue')}</td>
-                            <td className="text-right py-2 px-3">{formatKoreanMoney(rA.futureValue)}</td>
-                            <td className="text-right py-2 px-3">{formatKoreanMoney(rB.futureValue)}</td>
+                            <td className="text-right py-2 px-3">{formatKoreanMoney(rA.futureValue, t)}</td>
+                            <td className="text-right py-2 px-3">{formatKoreanMoney(rB.futureValue, t)}</td>
                           </tr>
                           <tr>
                             <td className="py-2 px-3">{t('compare.difference')}</td>
                             <td colSpan={2} className="text-right py-2 px-3 font-medium">
                               {Math.round(rA.futureValue) === Math.round(rB.futureValue)
                                 ? t('compare.same')
-                                : formatKoreanMoney(Math.abs(rA.futureValue - rB.futureValue))
+                                : formatKoreanMoney(Math.abs(rA.futureValue - rB.futureValue), t)
                               }
                               {Math.round(rA.futureValue) !== Math.round(rB.futureValue) && (
                                 <span className={rA.futureValue > rB.futureValue ? 'text-primary ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
@@ -878,13 +883,13 @@ export default function CagrCalculator() {
                       label={{ value: t('chart.year'), position: 'insideBottomRight', offset: -5, fill: '#6b7280' }}
                     />
                     <YAxis
-                      tickFormatter={formatChartAxis}
+                      tickFormatter={(v: number) => formatChartAxis(v, t)}
                       tick={{ fill: '#6b7280', fontSize: 12 }}
                       width={70}
                     />
                     <Tooltip
                       formatter={(value, name) => [
-                        formatKoreanMoney(Number(value ?? 0)),
+                        formatKoreanMoney(Number(value ?? 0), t),
                         (name as string) === 'value' ? (compareMode ? t('compare.investmentA') : t('chart.value')) : t('compare.investmentB')
                       ]}
                       labelFormatter={(label) => `${label}${t('units.year')}`}
@@ -950,9 +955,9 @@ export default function CagrCalculator() {
                       {chartData.map(row => (
                         <tr key={row.year} className="border-b border-line">
                           <td className="py-2 px-2 text-fg">{row.year}{t('units.year')}</td>
-                          <td className="text-right py-2 px-2 text-fg font-medium">{formatKoreanMoney(row.value)}</td>
+                          <td className="text-right py-2 px-2 text-fg font-medium">{formatKoreanMoney(row.value, t)}</td>
                           <td className="text-right py-2 px-2 text-sub">
-                            {row.year > 0 ? `+${formatKoreanMoney(row.growth)}` : '-'}
+                            {row.year > 0 ? `+${formatKoreanMoney(row.growth, t)}` : '-'}
                           </td>
                           <td className="text-right py-2 px-2 text-sub">
                             {row.year > 0 ? `${row.growthRate.toFixed(2)}%` : '-'}
@@ -960,10 +965,10 @@ export default function CagrCalculator() {
                           {compareMode && (
                             <>
                               <td className="text-right py-2 px-2 text-emerald-700 dark:text-emerald-400 font-medium">
-                                {row.valueB != null ? formatKoreanMoney(row.valueB) : '-'}
+                                {row.valueB != null ? formatKoreanMoney(row.valueB, t) : '-'}
                               </td>
                               <td className="text-right py-2 px-2 text-emerald-600 dark:text-emerald-400">
-                                {row.year > 0 && row.growthB != null ? `+${formatKoreanMoney(row.growthB)}` : '-'}
+                                {row.year > 0 && row.growthB != null ? `+${formatKoreanMoney(row.growthB, t)}` : '-'}
                               </td>
                             </>
                           )}

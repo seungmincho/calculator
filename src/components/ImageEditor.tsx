@@ -6,6 +6,8 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Upload, Download, RotateCw, RotateCcw, Square, Type, Palette, Sliders, Undo, Redo, Maximize, X, Save, Image as ImageIcon } from 'lucide-react';
 import GuideSection from '@/components/GuideSection';
 import '@/lib/i18n/ns/imageEditor';
+import { useTranslations } from '@/lib/i18n';
+import { useFullscreenEscape } from '@/hooks/useFullscreenEscape';
 
 interface ImageDimensions {
   width: number;
@@ -45,6 +47,10 @@ const ImageEditor = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const t = useTranslations('imageEditor');
+  // 전체화면에선 이 버튼이 사라지므로 빠져나온 뒤 다시 그려진 버튼으로 포커스를 돌린다
+  const fullscreenBtnRef = useRef<HTMLButtonElement>(null);
+  useFullscreenEscape(isFullscreen, () => setIsFullscreen(false), fullscreenBtnRef);
   const [editedImageUrl, setEditedImageUrl] = useState<string | null>(null);
 
   // Editing states
@@ -620,9 +626,11 @@ const ImageEditor = () => {
             </div>
             {!isFullscreen && (
               <button
+                ref={fullscreenBtnRef}
                 onClick={() => setIsFullscreen(true)}
                 className="p-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-                title="전체화면"
+                title={t('fullscreen')}
+                aria-label={t('fullscreen')}
               >
                 <Maximize className="w-5 h-5 text-sub" />
               </button>
@@ -1084,6 +1092,7 @@ const ImageEditor = () => {
           <button
             onClick={() => setIsFullscreen(false)}
             className="fixed top-4 right-4 z-50 p-2 bg-gray-900 bg-opacity-50 hover:bg-opacity-70 text-white rounded-full transition-colors"
+            aria-label={t('exitFullscreen')}
           >
             <X className="w-6 h-6" />
           </button>

@@ -37,10 +37,13 @@ const minus = (v: number) => `${Math.round(v) > 0 ? '−' : ''}${won(v)}`
 const signed = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${won(Math.abs(v))}`
 const pct = (v: number | null) => (v == null ? '—' : `${v.toFixed(2)}%`)
 const digits = (s: string) => Number(s.replace(/[^\d]/g, '')) || 0
-function eokMan(v: number): string {
+// 억·만 읽기(만 미만은 ''): ko 는 fmt.* 키의 {e}억 {n}만, en 은 {c}(500M·1.2B) — 억·만을 B·M 으로 바꾸면 10·100배 틀린다
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 })
+function eokMan(v: number, t: ReturnType<typeof useTranslations>): string {
   const eok = Math.floor(v / EOK)
   const man = Math.floor((v % EOK) / MAN)
-  return [eok > 0 ? `${eok}억` : '', man > 0 ? `${man.toLocaleString('ko-KR')}만` : ''].filter(Boolean).join(' ')
+  if (!(eok > 0) && !(man > 0)) return ''
+  return t(`fmt.${eok > 0 ? (man > 0 ? 'eok' : 'eokOnly') : 'man'}`, { e: eok, n: man.toLocaleString('ko-KR'), c: compact.format(v) })
 }
 const pick = <T extends string>(v: string | null, list: readonly T[], def: T): T => (list.includes(v as T) ? (v as T) : def)
 
@@ -95,7 +98,8 @@ function Segmented<T extends string>({ label, options, value, onChange, render }
 function Money({ id, label, value, onChange, unit, hint }: {
   id: string; label: string; value: number; onChange: (v: number) => void; unit: string; hint?: ReactNode
 }) {
-  const read = eokMan(value)
+  const t = useTranslations('rentalYield')
+  const read = eokMan(value, t)
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-body mb-2">{label}</label>
@@ -201,9 +205,9 @@ export default function RentalYieldCalculator() {
   const headline = t('share.headline', { net: pct(r.net), cf: signed(r.monthlyCF) })
   const card = {
     tool: t('title'),
-    label: t('share.label', { type: typeLabel, price: eokMan(inp.price) || '0' }),
+    label: t('share.label', { type: typeLabel, price: eokMan(inp.price, t) || '0' }),
     headline,
-    sub: t('share.sub', { deposit: eokMan(inp.deposit) || '0', rent: won(inp.rent) }),
+    sub: t('share.sub', { deposit: eokMan(inp.deposit, t) || '0', rent: won(inp.rent) }),
     rows: [
       { label: t('tile.surface'), value: pct(r.surface) },
       { label: t('tile.leveraged'), value: pct(r.leveraged) },
@@ -211,7 +215,7 @@ export default function RentalYieldCalculator() {
       { label: t('result.breakEven'), value: r.breakEvenRent == null ? '—' : `${won(r.breakEvenRent)}${W}` },
     ],
   }
-  const shareText = t('share.text', { type: typeLabel, price: eokMan(inp.price) || '0', headline })
+  const shareText = t('share.text', { type: typeLabel, price: eokMan(inp.price, t) || '0', headline })
 
   const sources = t.raw('guide.sources.items') as { label: string; url: string }[]
 
@@ -376,7 +380,7 @@ export default function RentalYieldCalculator() {
               <div className="bg-subtle rounded-2xl p-4">
                 <p className="text-sm text-muted">{t('target.price', { target })}</p>
                 <p className="text-xl font-bold text-fg tabular-nums mt-1">{maxPrice == null ? '—' : `${won(maxPrice)}${W}`}</p>
-                <p className="text-xs text-muted mt-0.5">{maxPrice == null ? t('target.none') : t('target.priceHint', { read: eokMan(maxPrice) || '0', diff: signed(maxPrice - inp.price) })}</p>
+                <p className="text-xs text-muted mt-0.5">{maxPrice == null ? t('target.none') : t('target.priceHint', { read: eokMan(maxPrice, t) || '0', diff: signed(maxPrice - inp.price) })}</p>
               </div>
             </div>
           </div>

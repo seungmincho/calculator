@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/markdownEditor'
 import GuideSection from '@/components/GuideSection'
+import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
 import { renderMarkdown, textStats, htmlDocument, plain, MD_CSS } from '@/utils/markdown'
 
 type ViewMode = 'split' | 'editor' | 'preview'
@@ -28,6 +29,7 @@ export default function MarkdownEditor() {
   const previewRef = useRef<HTMLDivElement>(null)
   const headingMenuRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const fullscreenBtnRef = useRef<HTMLButtonElement>(null)
   const loaded = useRef(false)
 
   // ── 마운트: 초안 복원 + 모바일은 편집/미리보기 탭 방식 ──
@@ -63,12 +65,7 @@ export default function MarkdownEditor() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
-  useEffect(() => {
-    if (!isFullscreen) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsFullscreen(false) }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [isFullscreen])
+  useFullscreenEscape(isFullscreen, () => setIsFullscreen(false), fullscreenBtnRef)
 
   useEffect(() => {
     if (!notice) return
@@ -303,7 +300,7 @@ export default function MarkdownEditor() {
             >
               {t('toc')}
             </button>
-            <button onClick={() => setIsFullscreen((f) => !f)} className={btnCls}>
+            <button ref={fullscreenBtnRef} onClick={() => setIsFullscreen((f) => !f)} className={btnCls}>
               {isFullscreen ? t('exitFullscreen') : t('fullscreen')}
             </button>
           </div>
