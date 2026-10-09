@@ -21,11 +21,11 @@ interface ToolAnalyticsDashboardProps {
 }
 
 const categoryColors: Record<CategoryKey, string> = {
-  calculators: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
-  tools: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
-  media: 'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300',
-  health: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
-  games: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300',
+  calculators: 'bg-soft text-sub',
+  tools: 'bg-soft text-sub',
+  media: 'bg-soft text-sub',
+  health: 'bg-soft text-sub',
+  games: 'bg-soft text-sub',
 }
 
 const categoryEmoji: Record<CategoryKey, string> = {

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { useTranslations } from '@/lib/i18n/fuelCalculator'
 import type { FuelComparisonItem } from './FuelChartPlots'
 
 const CostPiePlot = dynamic(() => import('./FuelChartPlots').then(module => module.CostPiePlot), { ssr: false })
@@ -15,6 +16,7 @@ interface FuelChartsProps {
 }
 
 export default function FuelCharts({ fuelCost, depreciationCost, tripKm, comparison }: FuelChartsProps) {
+  const t = useTranslations('fuelCalculator')
   const [ready, setReady] = useState(false)
   const chartsRef = useRef<HTMLDivElement>(null)
 
@@ -38,18 +40,18 @@ export default function FuelCharts({ fuelCost, depreciationCost, tripKm, compari
   return (
     <div ref={chartsRef} className="grid md:grid-cols-2 gap-6">
       <div className="ui-card p-6">
-        <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">비용 구성</h3>
-        <div className="h-64" role="img" aria-label={`유류비 ${fuelCost.toLocaleString('ko-KR')}원, 감가상각비 ${depreciationCost.toLocaleString('ko-KR')}원`}>
+        <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">{t('charts.costBreakdown')}</h3>
+        <div className="h-64" role="img" aria-label={t('charts.costBreakdownAria', { fuel: fuelCost.toLocaleString('ko-KR'), depreciation: depreciationCost.toLocaleString('ko-KR') })}>
           {ready ? <CostPiePlot fuelCost={fuelCost} depreciationCost={depreciationCost} /> : <div aria-hidden="true" className="h-full rounded-xl bg-soft animate-pulse motion-reduce:animate-none" />}
         </div>
       </div>
       <div className="ui-card p-6">
-        <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">연료별 비용 비교</h3>
-        <div className="h-52" role="img" aria-label={comparison.map(item => `${item.name} ${item.cost.toLocaleString('ko-KR')}원`).join(', ')}>
+        <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">{t('charts.fuelComparison')}</h3>
+        <div className="h-52" role="img" aria-label={comparison.map(item => t('charts.costItem', { name: item.name, cost: item.cost.toLocaleString('ko-KR') })).join(', ')}>
           {ready ? <FuelComparisonPlot data={comparison} /> : <div aria-hidden="true" className="h-full rounded-xl bg-soft animate-pulse motion-reduce:animate-none" />}
         </div>
         <p className="text-xs text-gray-400 mt-2 text-center">
-          {tripKm.toLocaleString()}km 기준 · 굵은 바 = 현재 선택 연료
+          {t('charts.basis', { km: tripKm.toLocaleString() })}
         </p>
       </div>
     </div>

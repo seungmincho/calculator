@@ -266,8 +266,8 @@ export default function EnvEditor() {
                 onClick={switchToRaw}
                 className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors ${
                   viewMode === 'raw'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-surface text-body hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-primary text-white'
+                    : 'bg-surface text-body hover:bg-subtle'
                 }`}
               >
                 <FileText size={14} />
@@ -277,8 +277,8 @@ export default function EnvEditor() {
                 onClick={switchToTable}
                 className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors ${
                   viewMode === 'table'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-surface text-body hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-primary text-white'
+                    : 'bg-surface text-body hover:bg-subtle'
                 }`}
               >
                 <Table size={14} />
@@ -288,7 +288,7 @@ export default function EnvEditor() {
             {/* Import file */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
             >
               <Upload size={14} />
               {t('importFile')}
@@ -297,7 +297,7 @@ export default function EnvEditor() {
             {/* Sample */}
             <button
               onClick={handleLoadSample}
-              className="px-3 py-2 text-sm font-medium bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+              className="px-3 py-2 text-sm font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
             >
               {t('sample')}
             </button>
@@ -314,7 +314,7 @@ export default function EnvEditor() {
               <textarea
                 value={rawText}
                 onChange={e => handleRawChange(e.target.value)}
-                className="w-full h-96 font-mono text-sm px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full h-96 font-mono text-sm px-3 py-2 border border-line-strong rounded-lg bg-subtle text-fg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 placeholder="KEY=value"
                 spellCheck={false}
               />
@@ -338,7 +338,7 @@ export default function EnvEditor() {
                     return (
                       <div key={entry.id} className="grid grid-cols-12 gap-2 items-center">
                         <div className="col-span-11 h-4 border-b border-dashed border-line" />
-                        <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-gray-400 hover:text-red-500 transition-colors flex justify-center">
+                        <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-faint hover:text-red-500 transition-colors flex justify-center">
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -352,10 +352,10 @@ export default function EnvEditor() {
                             type="text"
                             value={entry.rawComment}
                             onChange={e => updateEntry(entry.id, 'rawComment', e.target.value)}
-                            className="w-full px-2 py-1.5 font-mono text-sm border border-line rounded bg-subtle text-sub focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-2 py-1.5 font-mono text-sm border border-line rounded bg-subtle text-sub focus:ring-1 focus:ring-primary"
                           />
                         </div>
-                        <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-gray-400 hover:text-red-500 transition-colors flex justify-center">
+                        <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-faint hover:text-red-500 transition-colors flex justify-center">
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -371,7 +371,7 @@ export default function EnvEditor() {
                           value={entry.key}
                           onChange={e => updateEntry(entry.id, 'key', e.target.value)}
                           placeholder="KEY_NAME"
-                          className={`w-full px-2 py-1.5 font-mono text-sm border rounded focus:ring-1 focus:ring-blue-500 bg-field text-fg ${
+                          className={`w-full px-2 py-1.5 font-mono text-sm border rounded focus:ring-1 focus:ring-primary bg-field text-fg ${
                             isDupe ? 'border-yellow-400' : isInvalid ? 'border-orange-400' : 'border-line-strong'
                           }`}
                         />
@@ -382,7 +382,7 @@ export default function EnvEditor() {
                           value={entry.value}
                           onChange={e => updateEntry(entry.id, 'value', e.target.value)}
                           placeholder="value"
-                          className="w-full px-2 py-1.5 font-mono text-sm border border-line-strong rounded focus:ring-1 focus:ring-blue-500 bg-field text-fg"
+                          className="w-full px-2 py-1.5 font-mono text-sm border border-line-strong rounded focus:ring-1 focus:ring-primary bg-field text-fg"
                         />
                       </div>
                       <div className="col-span-3">
@@ -391,10 +391,10 @@ export default function EnvEditor() {
                           value={entry.comment}
                           onChange={e => updateEntry(entry.id, 'comment', e.target.value)}
                           placeholder="# comment"
-                          className="w-full px-2 py-1.5 text-sm border border-line rounded focus:ring-1 focus:ring-blue-500 bg-field text-muted"
+                          className="w-full px-2 py-1.5 text-sm border border-line rounded focus:ring-1 focus:ring-primary bg-field text-muted"
                         />
                       </div>
-                      <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-gray-400 hover:text-red-500 transition-colors flex justify-center">
+                      <button onClick={() => deleteEntry(entry.id)} className="col-span-1 text-faint hover:text-red-500 transition-colors flex justify-center">
                         <Trash2 size={14} />
                       </button>
                     </div>
@@ -403,7 +403,7 @@ export default function EnvEditor() {
 
                 <button
                   onClick={addEntry}
-                  className="flex items-center gap-2 mt-3 px-4 py-2 text-sm font-medium bg-subtle text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-lg transition-colors w-full justify-center"
+                  className="flex items-center gap-2 mt-3 px-4 py-2 text-sm font-medium bg-subtle text-primary hover:bg-soft rounded-lg transition-colors w-full justify-center"
                 >
                   <Plus size={14} />
                   {t('addVariable')}
@@ -418,7 +418,7 @@ export default function EnvEditor() {
               <h2 className="text-base font-semibold text-fg">{t('export')}</h2>
               <button
                 onClick={() => copyToClipboard(exportOutput, 'export')}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
                 {copiedId === 'export' ? <Check size={14} /> : <Copy size={14} />}
                 {copiedId === 'export' ? t('copied') : t('copy')}
@@ -432,8 +432,8 @@ export default function EnvEditor() {
                   onClick={() => setExportFormat(tab.id)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                     exportFormat === tab.id
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-primary text-white'
+                      : 'bg-soft text-sub hover:bg-subtle'
                   }`}
                 >
                   {tab.label}
@@ -454,11 +454,11 @@ export default function EnvEditor() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted">{t('variables')}</span>
-                <span className="font-mono font-medium text-blue-600 dark:text-blue-400">{varEntries.filter(e => e.key).length}</span>
+                <span className="font-mono font-medium text-fg">{varEntries.filter(e => e.key).length}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted">{t('comments')}</span>
-                <span className="font-mono font-medium text-green-600 dark:text-green-400">{commentEntries.length}</span>
+                <span className="font-mono font-medium text-fg">{commentEntries.length}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted">{t('emptyLines')}</span>
@@ -493,14 +493,14 @@ export default function EnvEditor() {
                 ))}
                 {emptyValueKeys.slice(0, 3).map(key => (
                   <div key={`empty-${key}`} className="flex items-start gap-2">
-                    <span className="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded shrink-0">
+                    <span className="inline-block px-2 py-0.5 text-xs font-medium bg-soft text-body rounded shrink-0">
                       {t('emptyValue')}
                     </span>
                     <span className="font-mono text-xs text-body break-all">{key}</span>
                   </div>
                 ))}
                 {emptyValueKeys.length > 3 && (
-                  <p className="text-xs text-gray-400">+{emptyValueKeys.length - 3} more</p>
+                  <p className="text-xs text-faint">+{emptyValueKeys.length - 3} more</p>
                 )}
               </div>
             </div>

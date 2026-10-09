@@ -16,8 +16,8 @@ interface DrawRecord {
 
 type SortMode = 'none' | 'asc' | 'desc'
 
-const GLASS_CARD = 'bg-white/10 dark:bg-gray-900/20 border border-line rounded-2xl p-6'
-const GLASS_BTN = 'bg-surface border border-line rounded-xl px-4 py-2 font-medium text-gray-800 dark:text-white hover:bg-soft transition-all duration-200 shadow-md active:scale-95'
+const GLASS_CARD = 'bg-surface border border-line rounded-2xl p-6'
+const GLASS_BTN = 'bg-surface border border-line rounded-xl px-4 py-2 font-medium text-body hover:bg-soft transition-all duration-200 active:scale-95'
 
 export default function RandomNumberPicker() {
   const t = useTranslations('randomNumberPicker')
@@ -171,7 +171,7 @@ export default function RandomNumberPicker() {
                 type="number"
                 value={min}
                 onChange={e => { setMin(Number(e.target.value)); setError('') }}
-                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
             <div>
@@ -180,7 +180,7 @@ export default function RandomNumberPicker() {
                 type="number"
                 value={max}
                 onChange={e => { setMax(Number(e.target.value)); setError('') }}
-                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
             <div>
@@ -191,7 +191,7 @@ export default function RandomNumberPicker() {
                 max={50}
                 value={count}
                 onChange={e => { setCount(Number(e.target.value)); setError('') }}
-                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                className="w-full px-3 py-2 bg-surface border border-line rounded-xl text-fg text-center font-bold focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
           </div>
@@ -204,7 +204,7 @@ export default function RandomNumberPicker() {
                 role="switch"
                 aria-checked={noDuplicates}
                 onClick={() => setNoDuplicates(v => !v)}
-                className={`w-11 h-6 rounded-full transition-colors duration-200 flex items-center px-1 cursor-pointer ${noDuplicates ? 'bg-cyan-500' : 'bg-gray-300 dark:bg-gray-600'}`}
+                className={`w-11 h-6 rounded-full transition-colors duration-200 flex items-center px-1 cursor-pointer ${noDuplicates ? 'bg-primary' : 'bg-line-strong'}`}
               >
                 <span className={`w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${noDuplicates ? 'translate-x-5' : 'translate-x-0'}`} />
               </button>
@@ -229,7 +229,7 @@ export default function RandomNumberPicker() {
           <button
             onClick={draw}
             disabled={isDrawing}
-            className="flex items-center gap-2 px-8 py-3 rounded-2xl font-bold text-white bg-primary hover:bg-blue-700 disabled:opacity-60 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-200 active:scale-95 text-lg"
+            className="flex items-center gap-2 px-8 py-3 rounded-2xl font-bold text-white bg-primary hover:bg-blue-700 disabled:opacity-60 transition-all duration-200 active:scale-95 text-lg"
           >
             <Shuffle size={20} className={isDrawing ? 'animate-spin' : ''} />
             {isDrawing ? t('drawing') : t('draw')}
@@ -260,18 +260,14 @@ export default function RandomNumberPicker() {
                   key={i}
                   className={`
                     relative flex items-center justify-center rounded-2xl font-black
-                    bg-gradient-to-br from-cyan-400/30 to-blue-500/30 dark:from-cyan-500/20 dark:to-blue-600/20
+                    bg-primary-soft
                     border border-line
-                    shadow-[0_0_15px_rgba(6,182,212,0.3)] dark:shadow-[0_0_15px_rgba(6,182,212,0.2)]
                     transition-all duration-300
                     ${isDrawing ? 'animate-pulse scale-95 opacity-70' : (revealed[i] ? 'scale-100 opacity-100' : 'scale-50 opacity-0')}
                     ${n >= 1000 ? 'w-20 h-16 text-lg' : n >= 100 ? 'w-16 h-16 text-xl' : 'w-14 h-14 text-2xl'}
                   `}
-                  style={!isDrawing && revealed[i] ? {
-                    boxShadow: '0 0 20px rgba(6,182,212,0.4), inset 2px 2px 8px rgba(255,255,255,0.2)'
-                  } : undefined}
                 >
-                  <span className="text-fg drop-shadow-sm">{n}</span>
+                  <span className="text-fg">{n}</span>
                 </div>
               ))}
             </div>
@@ -284,9 +280,9 @@ export default function RandomNumberPicker() {
             <p className="text-sm font-semibold text-sub mb-3">{t('history')}</p>
             <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
               {history.map((rec, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs bg-surface rounded-xl px-3 py-2">
-                  <span className="text-gray-400 shrink-0 tabular-nums">{rec.timestamp}</span>
-                  <span className="text-gray-400 shrink-0">[{rec.min}~{rec.max}]</span>
+                <div key={i} className="flex items-center gap-2 text-xs bg-subtle rounded-xl px-3 py-2">
+                  <span className="text-faint shrink-0 tabular-nums">{rec.timestamp}</span>
+                  <span className="text-faint shrink-0">[{rec.min}~{rec.max}]</span>
                   <span className="text-body font-semibold truncate">
                     {rec.numbers.join(', ')}
                   </span>

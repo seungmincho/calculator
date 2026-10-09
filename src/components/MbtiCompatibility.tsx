@@ -483,7 +483,7 @@ export default function MbtiCompatibility() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs font-medium text-muted mb-1">연애 스타일</div>
+                    <div className="text-xs font-medium text-muted mb-1">{t('loveStyle')}</div>
                     <p className="text-xs text-body leading-relaxed">{profile.loveStyle}</p>
                   </div>
                 </div>

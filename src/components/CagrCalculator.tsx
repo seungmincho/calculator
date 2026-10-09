@@ -416,7 +416,7 @@ export default function CagrCalculator() {
       value={value}
       onChange={e => onChange(formatComma(e.target.value))}
       placeholder={placeholder}
-      className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right`}
+      className={`w-full px-3 py-2 ${glassInput} text-right`}
     />
   )
 
@@ -428,7 +428,7 @@ export default function CagrCalculator() {
         value={value}
         onChange={e => onChange(e.target.value.replace(/[^0-9.]/g, ''))}
         placeholder={placeholder}
-        className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500 text-right pr-10`}
+        className={`w-full px-3 py-2 ${glassInput} text-right pr-10`}
       />
       {suffix && (
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">
@@ -486,13 +486,13 @@ export default function CagrCalculator() {
                 <div className="flex rounded-lg overflow-hidden border border-line-strong">
                   <button
                     onClick={() => setPeriodUnit('years')}
-                    className={`px-3 py-2 text-sm ${periodUnit === 'years' ? 'bg-blue-600 text-white' : 'bg-field text-body'}`}
+                    className={`px-3 py-2 text-sm ${periodUnit === 'years' ? 'bg-primary text-white' : 'bg-field text-body'}`}
                   >
                     {t('input.periodYears')}
                   </button>
                   <button
                     onClick={() => setPeriodUnit('months')}
-                    className={`px-3 py-2 text-sm ${periodUnit === 'months' ? 'bg-blue-600 text-white' : 'bg-field text-body'}`}
+                    className={`px-3 py-2 text-sm ${periodUnit === 'months' ? 'bg-primary text-white' : 'bg-field text-body'}`}
                   >
                     {t('input.periodMonths')}
                   </button>
@@ -552,7 +552,7 @@ export default function CagrCalculator() {
         </div>
         <button
           onClick={copyLink}
-          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+          className="flex items-center gap-1.5 shrink-0 px-3 py-2 text-sm bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
           title={tc('copyLink')}
         >
           {copiedId === 'link' ? <Check className="w-4 h-4 text-green-500" /> : <Link className="w-4 h-4" />}
@@ -570,8 +570,8 @@ export default function CagrCalculator() {
               onClick={() => setMode(m)}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
                 mode === m
-                  ? 'bg-primary hover:bg-blue-700 text-white'
-                  : 'text-sub hover:bg-gray-50 dark:hover:bg-gray-700'
+                  ? 'bg-primary text-white'
+                  : 'text-sub hover:bg-soft'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -612,7 +612,7 @@ export default function CagrCalculator() {
             <select
               value={compoundFreq}
               onChange={e => setCompoundFreq(e.target.value as CompoundFreq)}
-              className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+              className={`w-full px-3 py-2 ${glassInput}`}
             >
               <option value="yearly">{t('input.yearly')}</option>
               <option value="monthly">{t('input.monthly')}</option>
@@ -625,7 +625,7 @@ export default function CagrCalculator() {
               <button
                 onClick={() => setCompareMode(!compareMode)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  compareMode ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                  compareMode ? 'bg-primary' : 'bg-line-strong'
                 }`}
               >
                 <span
@@ -657,7 +657,7 @@ export default function CagrCalculator() {
             {/* Reset */}
             <button
               onClick={handleReset}
-              className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+              className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -669,7 +669,7 @@ export default function CagrCalculator() {
         <div className="lg:col-span-2 space-y-6">
           {/* Primary Result Card */}
           {resultA ? (
-            <div id="cagr-calculator-result" className="bg-primary rounded-xl shadow-lg p-6 text-white scroll-mt-20">
+            <div id="cagr-calculator-result" className="bg-primary rounded-xl p-6 text-white scroll-mt-20">
               <div className="flex items-start justify-between">
                 <div>
                   {mode === 'cagr' && (() => {
@@ -729,7 +729,7 @@ export default function CagrCalculator() {
             </div>
           ) : (
             <div className={`${glassCard} ${glassInset} p-8 text-center`}>
-              <BarChart3 className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+              <BarChart3 className="w-12 h-12 text-faint mx-auto mb-3" />
               <p className="text-muted">{t('result.placeholder')}</p>
             </div>
           )}
@@ -745,7 +745,7 @@ export default function CagrCalculator() {
                   <thead>
                     <tr className="border-b border-line">
                       <th className="text-left py-2 px-3 text-muted">{t('compare.item')}</th>
-                      <th className="text-right py-2 px-3 text-blue-600 dark:text-blue-400">{t('compare.investmentA')}</th>
+                      <th className="text-right py-2 px-3 text-primary">{t('compare.investmentA')}</th>
                       <th className="text-right py-2 px-3 text-emerald-600 dark:text-emerald-400">{t('compare.investmentB')}</th>
                     </tr>
                   </thead>
@@ -778,7 +778,7 @@ export default function CagrCalculator() {
                                 : formatKoreanMoney(Math.abs(rA.endValue - rB.endValue))
                               }
                               {rA.endValue !== rB.endValue && (
-                                <span className={rA.endValue > rB.endValue ? 'text-blue-600 dark:text-blue-400 ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
+                                <span className={rA.endValue > rB.endValue ? 'text-primary ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
                                   ({rA.endValue > rB.endValue ? 'A' : 'B'} {t('compare.advantage')})
                                 </span>
                               )}
@@ -816,7 +816,7 @@ export default function CagrCalculator() {
                                 : formatKoreanMoney(Math.abs(rA.futureValue - rB.futureValue))
                               }
                               {Math.round(rA.futureValue) !== Math.round(rB.futureValue) && (
-                                <span className={rA.futureValue > rB.futureValue ? 'text-blue-600 dark:text-blue-400 ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
+                                <span className={rA.futureValue > rB.futureValue ? 'text-primary ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
                                   ({rA.futureValue > rB.futureValue ? 'A' : 'B'} {t('compare.advantage')})
                                 </span>
                               )}
@@ -849,7 +849,7 @@ export default function CagrCalculator() {
                                 : `${Math.abs(rA.requiredYears - rB.requiredYears).toFixed(1)}${t('units.year')}`
                               }
                               {Math.abs(rA.requiredYears - rB.requiredYears) >= 0.01 && (
-                                <span className={rA.requiredYears < rB.requiredYears ? 'text-blue-600 dark:text-blue-400 ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
+                                <span className={rA.requiredYears < rB.requiredYears ? 'text-primary ml-1' : 'text-emerald-600 dark:text-emerald-400 ml-1'}>
                                   ({rA.requiredYears < rB.requiredYears ? 'A' : 'B'} {t('compare.faster')})
                                 </span>
                               )}
@@ -927,7 +927,7 @@ export default function CagrCalculator() {
                 className="w-full flex items-center justify-between px-6 py-4 text-left"
               >
                 <h3 className="text-lg font-semibold text-fg">{t('table.title')}</h3>
-                {showTable ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+                {showTable ? <ChevronUp className="w-5 h-5 text-faint" /> : <ChevronDown className="w-5 h-5 text-faint" />}
               </button>
               {showTable && (
                 <div className="px-6 pb-6 overflow-x-auto">
@@ -987,7 +987,7 @@ export default function CagrCalculator() {
           <h2 className="text-xl font-semibold text-fg flex items-center gap-2">
             {t('guide.title')}
           </h2>
-          {showGuide ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+          {showGuide ? <ChevronUp className="w-5 h-5 text-faint" /> : <ChevronDown className="w-5 h-5 text-faint" />}
         </button>
         {showGuide && (
           <div className="px-6 pb-6 space-y-6">
@@ -997,7 +997,7 @@ export default function CagrCalculator() {
               <ul className="space-y-2">
                 {(t.raw('guide.whatIsCagr.items') as string[]).map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-body text-sm">
-                    <span className="text-blue-500 mt-1">&#8226;</span>
+                    <span className="text-faint mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -1010,7 +1010,7 @@ export default function CagrCalculator() {
               <ul className="space-y-2">
                 {(t.raw('guide.formula.items') as string[]).map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-body text-sm">
-                    <span className="text-blue-500 mt-1">&#8226;</span>
+                    <span className="text-faint mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -1023,7 +1023,7 @@ export default function CagrCalculator() {
               <ul className="space-y-2">
                 {(t.raw('guide.usage.items') as string[]).map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-body text-sm">
-                    <span className="text-blue-500 mt-1">&#8226;</span>
+                    <span className="text-faint mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -1036,7 +1036,7 @@ export default function CagrCalculator() {
               <ul className="space-y-2">
                 {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-body text-sm">
-                    <span className="text-blue-500 mt-1">&#8226;</span>
+                    <span className="text-faint mt-1">&#8226;</span>
                     <span>{item}</span>
                   </li>
                 ))}

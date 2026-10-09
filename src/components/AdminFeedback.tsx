@@ -32,10 +32,10 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  bug: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-  feature: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  suggestion: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-  other: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+  bug: 'bg-soft text-sub',
+  feature: 'bg-soft text-sub',
+  suggestion: 'bg-soft text-sub',
+  other: 'bg-soft text-sub',
 }
 
 function formatDate(dateStr: string, t: (key: string, vars?: Record<string, unknown>) => string): string {
@@ -247,8 +247,8 @@ export default function AdminFeedback() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className={`${glassCard} ${glassInset} p-8 w-full max-w-md`}>
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-              <Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="p-2 bg-soft rounded-lg">
+              <Lock className="w-6 h-6 text-sub" />
             </div>
             <h1 className="text-xl font-bold text-fg">{t('login.title')}</h1>
           </div>
@@ -266,7 +266,7 @@ export default function AdminFeedback() {
               <button
                 type="button"
                 onClick={() => setShowPassword(v => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-sub"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -294,8 +294,8 @@ export default function AdminFeedback() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-            <Inbox className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <div className="p-2 bg-soft rounded-lg">
+            <Inbox className="w-5 h-5 text-sub" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
@@ -306,7 +306,7 @@ export default function AdminFeedback() {
         </div>
         <button
           onClick={handleLogout}
-          className="self-start sm:self-auto flex items-center gap-1 text-sm text-muted hover:text-gray-700 dark:hover:text-gray-200 px-3 py-1.5 border border-line-strong rounded-lg transition-colors"
+          className="self-start sm:self-auto flex items-center gap-1 text-sm text-muted hover:text-body px-3 py-1.5 border border-line-strong rounded-lg transition-colors"
         >
           <LogOut className="w-3.5 h-3.5" />
           {t('logout')}
@@ -323,7 +323,7 @@ export default function AdminFeedback() {
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 filterTab === tab
                   ? 'bg-primary text-white shadow-sm'
-                  : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
+                  : 'text-muted hover:text-body'
               }`}
             >
               {t(`filter.${tab}`)}
@@ -332,7 +332,7 @@ export default function AdminFeedback() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <Filter className="w-4 h-4 text-faint flex-shrink-0" />
           <select
             value={categoryFilter}
             onChange={e => setCategoryFilter(e.target.value as CategoryFilter)}
@@ -356,7 +356,7 @@ export default function AdminFeedback() {
       {/* Empty */}
       {!isLoading && !loadError && inquiries.length === 0 && (
         <div className={`${glassCard} ${glassInset} p-12 text-center`}>
-          <Inbox className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+          <Inbox className="w-12 h-12 text-faint mx-auto mb-3" />
           <p className="text-muted">{t('empty')}</p>
         </div>
       )}
@@ -374,11 +374,11 @@ export default function AdminFeedback() {
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted uppercase">{t('table.actions')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-line">
               {inquiries.map(inquiry => (
                 <React.Fragment key={inquiry.id}>
                   <tr
-                    className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer ${
+                    className={`hover:bg-subtle transition-colors cursor-pointer ${
                       !inquiry.is_read ? 'bg-primary-soft text-primary' : ''
                     }`}
                     onClick={() => setExpandedId(expandedId === inquiry.id ? null : inquiry.id)}
@@ -391,7 +391,7 @@ export default function AdminFeedback() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         {!inquiry.is_read && (
-                          <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                          <span className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
                         )}
                         {/* 행 클릭은 마우스용, 키보드는 이 버튼으로 펼친다 */}
                         <button
@@ -418,18 +418,18 @@ export default function AdminFeedback() {
                         <button
                           onClick={() => handleToggleRead(inquiry)}
                           title={inquiry.is_read ? t('markUnread') : t('markRead')}
-                          className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-soft text-faint hover:text-sub transition-colors"
                         >
                           {inquiry.is_read ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                         <button
                           onClick={() => setConfirmDeleteId(inquiry.id)}
                           title={t('delete')}
-                          className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-gray-400 hover:text-red-500 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-faint hover:text-red-500 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
-                        {expandedId === inquiry.id ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                        {expandedId === inquiry.id ? <ChevronUp className="w-4 h-4 text-faint" /> : <ChevronDown className="w-4 h-4 text-faint" />}
                       </div>
                     </td>
                   </tr>
@@ -440,8 +440,8 @@ export default function AdminFeedback() {
                         <div className="bg-surface rounded-lg p-4 border border-line space-y-2">
                           <p className="text-sm text-sub whitespace-pre-wrap">{inquiry.message}</p>
                           {inquiry.page_url && (
-                            <p className="text-xs text-gray-400">
-                              {t('pageUrl')}: <span className="text-blue-500">{inquiry.page_url}</span>
+                            <p className="text-xs text-faint">
+                              {t('pageUrl')}: <span className="text-primary">{inquiry.page_url}</span>
                             </p>
                           )}
                         </div>
@@ -462,12 +462,12 @@ export default function AdminFeedback() {
             <div
               key={inquiry.id}
               className={`${glassCard} ${glassInset} p-4 ${
-                !inquiry.is_read ? 'ring-1 ring-blue-200 dark:ring-blue-800' : ''
+                !inquiry.is_read ? 'ring-1 ring-primary/40' : ''
               }`}
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  {!inquiry.is_read && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
+                  {!inquiry.is_read && <span className="w-2 h-2 bg-primary rounded-full" />}
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[inquiry.category] ?? CATEGORY_COLORS.other}`}>
                     {categoryLabel(inquiry.category)}
                   </span>
@@ -475,13 +475,13 @@ export default function AdminFeedback() {
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <button
                     onClick={() => handleToggleRead(inquiry)}
-                    className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400"
+                    className="p-1.5 rounded-lg hover:bg-soft text-faint"
                   >
                     {inquiry.is_read ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                   <button
                     onClick={() => setConfirmDeleteId(inquiry.id)}
-                    className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-gray-400 hover:text-red-500"
+                    className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-faint hover:text-red-500"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -492,7 +492,7 @@ export default function AdminFeedback() {
                 {inquiry.title}
               </h3>
 
-              <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+              <div className="flex items-center gap-2 text-xs text-faint mb-2">
                 <Clock className="w-3 h-3" />
                 <span>{formatDate(inquiry.created_at, t)}</span>
                 {inquiry.contact && <><span>·</span><span>{inquiry.contact}</span></>}
@@ -505,7 +505,7 @@ export default function AdminFeedback() {
                 <p className={`text-sm text-sub ${expandedId === inquiry.id ? 'whitespace-pre-wrap' : 'line-clamp-2'}`}>
                   {inquiry.message}
                 </p>
-                <span className="inline-flex items-center gap-1 text-xs text-blue-500 mt-1">
+                <span className="inline-flex items-center gap-1 text-xs text-primary mt-1">
                   {expandedId === inquiry.id
                     ? <><ChevronUp className="w-3 h-3" />{t('collapse')}</>
                     : <><ChevronDown className="w-3 h-3" />{t('expand')}</>
@@ -533,7 +533,7 @@ export default function AdminFeedback() {
       {/* Loading spinner */}
       {isLoading && inquiries.length === 0 && (
         <div className="text-center py-12">
-          <div className="inline-block w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          <div className="inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
           <p className="text-muted mt-3 text-sm">{t('loading')}</p>
         </div>
       )}
@@ -554,7 +554,7 @@ export default function AdminFeedback() {
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmDeleteId(null)}
-                className="flex-1 px-4 py-2 border border-line-strong rounded-lg text-body hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium"
+                className="flex-1 px-4 py-2 border border-line-strong rounded-lg text-body hover:bg-subtle text-sm font-medium"
               >
                 {tc('cancel')}
               </button>

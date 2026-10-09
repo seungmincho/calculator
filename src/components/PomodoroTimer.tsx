@@ -523,30 +523,21 @@ export default function PomodoroTimer() {
   const circumference = 2 * Math.PI * radius
   const strokeDashoffset = circumference * (1 - progress)
 
-  const phaseColorMap: Record<Phase, { text: string; stroke: string; bg: string; buttonFrom: string; buttonTo: string; accent: string }> = {
+  const phaseColorMap: Record<Phase, { text: string; stroke: string; accent: string }> = {
     work: {
       text: 'text-red-500',
       stroke: '#ef4444',
-      bg: 'bg-red-50 dark:bg-red-950',
-      buttonFrom: 'from-red-500',
-      buttonTo: 'to-rose-600',
       accent: 'accent-red-500',
     },
     shortBreak: {
       text: 'text-green-500',
       stroke: '#22c55e',
-      bg: 'bg-subtle',
-      buttonFrom: 'from-green-500',
-      buttonTo: 'to-emerald-600',
       accent: 'accent-green-500',
     },
     longBreak: {
-      text: 'text-blue-500',
+      text: 'text-primary',
       stroke: '#3b82f6',
-      bg: 'bg-subtle',
-      buttonFrom: 'from-blue-500',
-      buttonTo: 'to-indigo-600',
-      accent: 'accent-blue-500',
+      accent: 'accent-primary',
     },
   }
 
@@ -593,7 +584,7 @@ export default function PomodoroTimer() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSettings(s => ({ ...s, soundEnabled: !s.soundEnabled }))}
-            className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
+            className="p-2 rounded-lg bg-soft hover:bg-subtle text-body"
             aria-label={settings.soundEnabled ? t('soundOff') : t('soundOn')}
             title={settings.soundEnabled ? t('soundOff') : t('soundOn')}
           >
@@ -607,7 +598,7 @@ export default function PomodoroTimer() {
                 requestNotificationPermission()
               }
             }}
-            className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
+            className="p-2 rounded-lg bg-soft hover:bg-subtle text-body"
             aria-label={settings.notificationsEnabled ? t('notifOff') : t('notifOn')}
             title={settings.notificationsEnabled ? t('notifOff') : t('notifOn')}
           >
@@ -615,7 +606,7 @@ export default function PomodoroTimer() {
           </button>
           <button
             onClick={openSettings}
-            className="p-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
+            className="p-2 rounded-lg bg-soft hover:bg-subtle text-body"
             aria-label={t('settings')}
             title={t('settings')}
           >
@@ -638,8 +629,8 @@ export default function PomodoroTimer() {
             }}
             className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
               p === phase
-                ? `${phaseColorMap[p].bg} ${phaseColorMap[p].text} font-semibold`
-                : 'bg-gray-100 dark:bg-gray-800 text-muted hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-primary text-white font-semibold'
+                : 'bg-soft text-muted hover:bg-subtle'
             }`}
           >
             {phaseLabels[p]}
@@ -668,7 +659,7 @@ export default function PomodoroTimer() {
             <circle
               cx="100" cy="100" r={radius}
               fill="none" stroke="currentColor" strokeWidth="6"
-              className="text-gray-200 dark:text-gray-700"
+              className="text-track"
             />
             <circle
               cx="100" cy="100" r={radius}
@@ -700,7 +691,7 @@ export default function PomodoroTimer() {
         <div className="flex items-center gap-4">
           <button
             onClick={handleResetPhase}
-            className="p-3 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub"
+            className="p-3 rounded-full bg-soft hover:bg-subtle text-sub"
             aria-label={t('resetPhase')}
             title={t('resetPhase')}
           >
@@ -709,7 +700,7 @@ export default function PomodoroTimer() {
 
           <button
             onClick={handleStartPause}
-            className={`flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r ${colors.buttonFrom} ${colors.buttonTo} text-white font-semibold text-lg shadow-md hover:shadow-lg transition-shadow`}
+            className={`flex items-center gap-2 px-8 py-4 rounded-full bg-primary hover:bg-blue-700 text-white font-semibold text-lg transition-colors`}
             aria-label={isRunning ? t('pause') : t('start')}
           >
             {isRunning ? <Pause size={24} /> : <Play size={24} />}
@@ -718,7 +709,7 @@ export default function PomodoroTimer() {
 
           <button
             onClick={handleSkip}
-            className="p-3 rounded-full bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-sub"
+            className="p-3 rounded-full bg-soft hover:bg-subtle text-sub"
             aria-label={t('skip')}
             title={t('skip')}
           >
@@ -754,7 +745,7 @@ export default function PomodoroTimer() {
           className="flex items-center justify-between w-full text-left"
         >
           <h2 className="text-lg font-semibold text-fg">{t('taskTitle')}</h2>
-          {showTasks ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
+          {showTasks ? <ChevronUp size={20} className="text-faint" /> : <ChevronDown size={20} className="text-faint" />}
         </button>
 
         {showTasks && (
@@ -767,13 +758,13 @@ export default function PomodoroTimer() {
                 onChange={e => setNewTaskText(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addTask()}
                 placeholder={t('taskPlaceholder')}
-                className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-red-500 text-sm`}
+                className={`flex-1 px-3 py-2 ${glassInput} text-sm`}
               />
               <button
                 onClick={addTask}
                 disabled={!newTaskText.trim()}
                 aria-label={t('taskAdd')}
-                className="px-3 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-2 rounded-lg bg-primary text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Plus size={18} />
               </button>
@@ -789,8 +780,8 @@ export default function PomodoroTimer() {
                     key={task.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border transition-colors cursor-pointer ${
                       task.id === activeTaskId
-                        ? 'border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950'
-                        : 'border-line hover:bg-gray-50 dark:hover:bg-gray-700'
+                        ? 'border-primary bg-primary-soft'
+                        : 'border-line hover:bg-subtle'
                     } ${task.completed ? 'opacity-50' : ''}`}
                     onClick={() => !task.completed && setActiveTaskId(task.id === activeTaskId ? null : task.id)}
                   >
@@ -801,8 +792,8 @@ export default function PomodoroTimer() {
                       aria-label={t('taskDone', { task: task.text })}
                       className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                         task.completed
-                          ? 'bg-green-500 border-green-500 text-white'
-                          : 'border-line-strong hover:border-red-400'
+                          ? 'bg-primary border-primary text-white'
+                          : 'border-line-strong hover:border-primary'
                       }`}
                     >
                       {task.completed && <Check size={12} />}
@@ -818,7 +809,7 @@ export default function PomodoroTimer() {
                     </button>
                     {/* Est pomodoros */}
                     <div className="flex items-center gap-1" onClick={e => e.stopPropagation()}>
-                      <span className="text-xs text-gray-400">{task.completedPomodoros}/</span>
+                      <span className="text-xs text-faint">{task.completedPomodoros}/</span>
                       <input
                         type="number"
                         min={1}
@@ -832,7 +823,7 @@ export default function PomodoroTimer() {
                     <button
                       onClick={e => { e.stopPropagation(); deleteTask(task.id) }}
                       aria-label={t('taskDelete', { task: task.text })}
-                      className="flex-shrink-0 p-1 text-gray-400 hover:text-red-500"
+                      className="flex-shrink-0 p-1 text-faint hover:text-red-500"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -850,20 +841,20 @@ export default function PomodoroTimer() {
 
         {/* Today + session stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-          <div className="bg-red-50 dark:bg-red-950 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400">{todayPomodoros}</div>
+          <div className="bg-subtle rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-fg">{todayPomodoros}</div>
             <div className="text-xs text-muted mt-1">{t('statsTodayPomodoros')}</div>
           </div>
           <div className="bg-subtle rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{todayMinutes}</div>
+            <div className="text-2xl font-bold text-fg">{todayMinutes}</div>
             <div className="text-xs text-muted mt-1">{t('statsTodayMinutes')}</div>
           </div>
           <div className="bg-subtle rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{completedRounds}</div>
+            <div className="text-2xl font-bold text-fg">{completedRounds}</div>
             <div className="text-xs text-muted mt-1">{t('statsSessionRounds')}</div>
           </div>
           <div className="bg-subtle rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{streak}</div>
+            <div className="text-2xl font-bold text-fg">{streak}</div>
             <div className="text-xs text-muted mt-1">{t('statsStreak')}</div>
           </div>
         </div>
@@ -884,13 +875,13 @@ export default function PomodoroTimer() {
                     <div
                       className={`w-full rounded-t transition-all duration-300 ${
                         isToday
-                          ? 'bg-red-400 dark:bg-red-500'
-                          : 'bg-gray-300 dark:bg-gray-600'
+                          ? 'bg-primary'
+                          : 'bg-line-strong'
                       }`}
                       style={{ height: `${Math.max(barHeight, 4)}%`, minHeight: '2px' }}
                     />
                   </div>
-                  <span className={`text-xs ${isToday ? 'text-red-500 font-bold' : 'text-faint'}`}>
+                  <span className={`text-xs ${isToday ? 'text-primary font-bold' : 'text-faint'}`}>
                     {dayLabels[i] ?? ''}
                   </span>
                 </div>
@@ -913,7 +904,7 @@ export default function PomodoroTimer() {
           >
             <div className="flex items-center justify-between">
               <h2 id="pomodoro-settings-title" className="text-xl font-semibold text-fg">{t('settingsTitle')}</h2>
-              <button onClick={() => setShowSettings(false)} aria-label={tc('close')} className="p-1 text-gray-400 hover:text-gray-600">
+              <button onClick={() => setShowSettings(false)} aria-label={tc('close')} className="p-1 text-faint hover:text-sub">
                 <X size={20} />
               </button>
             </div>
@@ -951,13 +942,13 @@ export default function PomodoroTimer() {
               <div>
                 <label className="flex items-center justify-between text-sm font-medium text-body mb-1">
                   <span>{t('settingsLongBreak')}</span>
-                  <span className="text-blue-500 font-mono">{tempSettings.longBreakDuration}{t('settingsMin')}</span>
+                  <span className="text-primary font-mono">{tempSettings.longBreakDuration}{t('settingsMin')}</span>
                 </label>
                 <input
                   type="range" min={1} max={60}
                   value={tempSettings.longBreakDuration}
                   onChange={e => setTempSettings(s => ({ ...s, longBreakDuration: Number(e.target.value) }))}
-                  className="w-full accent-blue-500"
+                  className="w-full accent-primary"
                 />
               </div>
 
@@ -970,7 +961,7 @@ export default function PomodoroTimer() {
                   type="range" min={2} max={10}
                   value={tempSettings.longBreakInterval}
                   onChange={e => setTempSettings(s => ({ ...s, longBreakInterval: Number(e.target.value) }))}
-                  className="w-full accent-gray-500"
+                  className="w-full accent-primary"
                 />
               </div>
             </div>
@@ -988,7 +979,7 @@ export default function PomodoroTimer() {
                   {notificationPermission === 'default' && (
                     <button
                       onClick={requestNotificationPermission}
-                      className="text-xs px-2 py-1 rounded bg-soft text-sub hover:bg-blue-200"
+                      className="text-xs px-2 py-1 rounded bg-soft text-sub hover:bg-subtle"
                     >
                       {t('settingsNotifAllow')}
                     </button>
@@ -1007,7 +998,7 @@ export default function PomodoroTimer() {
                       aria-label={t('settingsBrowserNotif')}
                       className="sr-only peer"
                     />
-                    <div className="w-9 h-5 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-500 peer-disabled:opacity-50 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
+                    <div className="w-9 h-5 bg-line-strong rounded-full peer peer-checked:bg-primary peer-disabled:opacity-50 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
                   </label>
                 </div>
               </div>
@@ -1022,7 +1013,7 @@ export default function PomodoroTimer() {
                     aria-label={t('settingsSound')}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
+                  <div className="w-9 h-5 bg-line-strong rounded-full peer peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
                 </label>
               </div>
 
@@ -1038,12 +1029,12 @@ export default function PomodoroTimer() {
                       value={tempSettings.soundVolume}
                       onChange={e => setTempSettings(s => ({ ...s, soundVolume: Number(e.target.value) }))}
                       aria-label={t('settingsVolume')}
-                      className="w-full accent-blue-500"
+                      className="w-full accent-primary"
                     />
                   </div>
                   <button
                     onClick={() => playPreviewSound(tempSettings.soundVolume)}
-                    className="text-sm px-3 py-1.5 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
+                    className="text-sm px-3 py-1.5 rounded-lg bg-soft hover:bg-subtle text-body"
                   >
                     {t('settingsPreview')}
                   </button>
@@ -1063,7 +1054,7 @@ export default function PomodoroTimer() {
                     aria-label={t('autoStart')}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
+                  <div className="w-9 h-5 bg-line-strong rounded-full peer peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
                 </label>
               </div>
             </div>
@@ -1072,13 +1063,13 @@ export default function PomodoroTimer() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={() => setShowSettings(false)}
-                className="flex-1 px-4 py-2 rounded-lg bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body"
+                className="flex-1 px-4 py-2 rounded-lg bg-soft hover:bg-subtle text-body"
               >
                 {t('cancel')}
               </button>
               <button
                 onClick={handleSaveSettings}
-                className="flex-1 px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium"
+                className="flex-1 px-4 py-2 rounded-lg bg-primary hover:bg-blue-700 text-white font-medium"
               >
                 {t('save')}
               </button>
@@ -1096,7 +1087,7 @@ export default function PomodoroTimer() {
             <ol className="space-y-2">
               {(t.raw('guideHowItems') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400 flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-soft text-sub flex items-center justify-center text-xs font-bold">{i + 1}</span>
                   {item}
                 </li>
               ))}
@@ -1107,7 +1098,7 @@ export default function PomodoroTimer() {
             <ul className="space-y-2">
               {(t.raw('guideTipsItems') as string[]).map((item, i) => (
                 <li key={i} className="flex gap-2 text-sm text-sub">
-                  <span className="flex-shrink-0 text-red-500 mt-0.5">•</span>
+                  <span className="flex-shrink-0 text-faint mt-0.5">•</span>
                   {item}
                 </li>
               ))}

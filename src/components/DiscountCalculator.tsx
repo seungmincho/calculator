@@ -243,8 +243,8 @@ export default function DiscountCalculator() {
                   onClick={() => setMode('discountRate')}
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'discountRate'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-primary text-white'
+                      : 'bg-soft text-body hover:bg-subtle'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -256,8 +256,8 @@ export default function DiscountCalculator() {
                   onClick={() => setMode('finalPrice')}
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'finalPrice'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-primary text-white'
+                      : 'bg-soft text-body hover:bg-subtle'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -269,8 +269,8 @@ export default function DiscountCalculator() {
                   onClick={() => setMode('discountAmount')}
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'discountAmount'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-primary text-white'
+                      : 'bg-soft text-body hover:bg-subtle'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -290,7 +290,7 @@ export default function DiscountCalculator() {
                 type="number"
                 value={originalPrice}
                 onChange={(e) => setOriginalPrice(Math.max(0, Number(e.target.value)))}
-                className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+                className={`w-full px-3 py-2 ${glassInput}`}
                 min="0"
               />
             </div>
@@ -307,7 +307,7 @@ export default function DiscountCalculator() {
                       type="number"
                       value={discountRate}
                       onChange={(e) => setDiscountRate(Math.min(100, Math.max(0, Number(e.target.value))))}
-                      className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+                      className={`flex-1 px-3 py-2 ${glassInput}`}
                       min="0"
                       max="100"
                       step="0.1"
@@ -330,8 +330,8 @@ export default function DiscountCalculator() {
                         onClick={() => setDiscountRate(rate)}
                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           discountRate === rate
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                            ? 'bg-primary text-white'
+                            : 'bg-soft text-body hover:bg-subtle'
                         }`}
                       >
                         {rate}%
@@ -353,7 +353,7 @@ export default function DiscountCalculator() {
                   onChange={(e) => setFinalPrice(Math.max(0, Number(e.target.value)))}
                   aria-invalid={invalidFinalPrice}
                   aria-describedby={invalidFinalPrice ? 'discount-final-price-error' : undefined}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full px-3 py-2 ${glassInput}`}
                   min="0"
                 />
               </div>
@@ -368,7 +368,7 @@ export default function DiscountCalculator() {
                   type="number"
                   value={discountAmount}
                   onChange={(e) => setDiscountAmount(Math.max(0, Number(e.target.value)))}
-                  className={`w-full px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full px-3 py-2 ${glassInput}`}
                   min="0"
                 />
               </div>
@@ -378,14 +378,14 @@ export default function DiscountCalculator() {
             <div className="flex gap-2">
               <button
                 onClick={reset}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('reset')}
               </button>
               <button
                 onClick={copyLink}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-subtle hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-subtle hover:bg-soft text-primary rounded-lg transition-colors"
                 title={t('copyLink')}
               >
                 {copiedId === 'link' ? (
@@ -422,7 +422,7 @@ export default function DiscountCalculator() {
                     type="number"
                     value={discount.rate}
                     onChange={(e) => updateMultiDiscountRate(discount.id, Number(e.target.value))}
-                    className={`flex-1 px-3 py-2 ${glassInput} focus:ring-2 focus:ring-blue-500`}
+                    className={`flex-1 px-3 py-2 ${glassInput}`}
                     min="0"
                     max="100"
                     step="0.1"
@@ -445,7 +445,7 @@ export default function DiscountCalculator() {
             {multiDiscounts.length < 3 && (
               <button
                 onClick={addMultiDiscount}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-subtle text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-subtle text-primary hover:bg-soft rounded-lg transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 {t('addDiscount')}
@@ -468,15 +468,15 @@ export default function DiscountCalculator() {
               ))}
               <div className="flex justify-between text-sm pt-2 border-t border-line">
                 <span className="text-sub">{t('effectiveRate')}</span>
-                <span className="font-semibold text-green-600 dark:text-green-400">{formatPercent(multiResult.effectiveRate)}%</span>
+                <span className="font-semibold text-fg">{formatPercent(multiResult.effectiveRate)}%</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-sub">{t('totalSavings')}</span>
-                <span className="font-semibold text-orange-600 dark:text-orange-400">₩{formatCurrency(multiResult.totalSavings)}</span>
+                <span className="font-semibold text-fg">₩{formatCurrency(multiResult.totalSavings)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium text-fg">{t('finalPrice')}</span>
-                <span className="text-lg font-bold text-purple-600 dark:text-purple-400">₩{formatCurrency(multiResult.finalPrice)}</span>
+                <span className="text-lg font-bold text-primary">₩{formatCurrency(multiResult.finalPrice)}</span>
               </div>
             </div>
           </div>
@@ -589,11 +589,11 @@ export default function DiscountCalculator() {
                 {/* Savings segment (orange) */}
                 {savingsPct > 0 && (
                   <div
-                    className="bg-primary flex items-center justify-center transition-all duration-500"
+                    className="bg-primary/30 flex items-center justify-center transition-all duration-500"
                     style={{ width: `${savingsPct}%` }}
                   >
                     {savingsPct >= 12 && (
-                      <span className="text-white text-xs font-semibold px-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                      <span className="text-fg text-xs font-semibold px-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
                         {formatPercent(savingsPct)}%
                       </span>
                     )}
@@ -602,7 +602,7 @@ export default function DiscountCalculator() {
                 {/* 100% case — no savings */}
                 {savingsPct === 0 && finalPct === 0 && (
                   <div className="flex-1 bg-track flex items-center justify-center">
-                    <span className="text-gray-500 text-xs">0%</span>
+                    <span className="text-muted text-xs">0%</span>
                   </div>
                 )}
               </div>
@@ -612,7 +612,7 @@ export default function DiscountCalculator() {
                 {/* Original */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className="inline-block w-3 h-3 rounded-sm bg-primary flex-shrink-0" />
+                    <span className="inline-block w-3 h-3 rounded-sm bg-track flex-shrink-0" />
                     <span className="text-xs text-muted">{t('originalPrice')}</span>
                   </div>
                   <p className="text-sm font-bold text-fg">₩{formatCurrency(result.original)}</p>
@@ -624,16 +624,16 @@ export default function DiscountCalculator() {
                     <span className="inline-block w-3 h-3 rounded-sm bg-primary flex-shrink-0" />
                     <span className="text-xs text-muted">{t('finalPrice')}</span>
                   </div>
-                  <p className="text-sm font-bold text-purple-600 dark:text-purple-400">₩{formatCurrency(result.final)}</p>
+                  <p className="text-sm font-bold text-primary">₩{formatCurrency(result.final)}</p>
                   <p className="text-xs text-faint">{formatPercent(finalPct)}%</p>
                 </div>
                 {/* Savings */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className="inline-block w-3 h-3 rounded-sm bg-primary flex-shrink-0" />
+                    <span className="inline-block w-3 h-3 rounded-sm bg-primary/30 flex-shrink-0" />
                     <span className="text-xs text-muted">{t('savings')}</span>
                   </div>
-                  <p className="text-sm font-bold text-orange-600 dark:text-orange-400">₩{formatCurrency(result.savings)}</p>
+                  <p className="text-sm font-bold text-fg">₩{formatCurrency(result.savings)}</p>
                   <p className="text-xs text-faint">{formatPercent(savingsPct)}%</p>
                 </div>
               </div>
@@ -671,7 +671,7 @@ export default function DiscountCalculator() {
             <ul className="space-y-2">
               {(t.raw('guide.basic.items') as string[]).map((item, index) => (
                 <li key={index} className="flex items-start gap-2 text-body">
-                  <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
+                  <span className="text-faint mt-1">•</span>
                   <span>{item}</span>
                 </li>
               ))}

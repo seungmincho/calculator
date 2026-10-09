@@ -599,8 +599,8 @@ export default function MyChart() {
             onClick={() => setDataTab('paste')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               dataTab === 'paste'
-                ? 'bg-blue-600 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-body hover:bg-subtle'
             }`}
           >
             {t('dataInput.pasteTab')}
@@ -609,8 +609,8 @@ export default function MyChart() {
             onClick={() => setDataTab('sample')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               dataTab === 'sample'
-                ? 'bg-blue-600 text-white'
-                : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-body hover:bg-subtle'
             }`}
           >
             {t('dataInput.sampleTab')}
@@ -621,7 +621,7 @@ export default function MyChart() {
           <div
             className={`relative rounded-lg border-2 border-dashed transition-colors ${
               isDragging
-                ? 'border-blue-500 bg-subtle'
+                ? 'border-primary bg-primary-soft'
                 : 'border-line-strong'
             }`}
             onDrop={handleDrop}
@@ -636,7 +636,7 @@ export default function MyChart() {
             />
             {isDragging && (
               <div className="absolute inset-0 flex items-center justify-center bg-subtle rounded-lg pointer-events-none">
-                <div className="flex flex-col items-center gap-2 text-blue-600 dark:text-blue-300">
+                <div className="flex flex-col items-center gap-2 text-primary">
                   <Upload className="w-8 h-8" />
                   <span className="text-sm font-medium">{t('dataInput.dropHere')}</span>
                 </div>
@@ -649,7 +649,7 @@ export default function MyChart() {
               <button
                 key={key}
                 onClick={() => handleLoadSample(key)}
-                className="flex flex-col items-start gap-1 p-4 rounded-lg border border-line hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-left"
+                className="flex flex-col items-start gap-1 p-4 rounded-lg border border-line hover:border-primary hover:bg-primary-soft transition-colors text-left"
               >
                 <span className="text-sm font-medium text-fg">
                   {t(`sampleData.${dataset.label}`)}
@@ -695,12 +695,12 @@ export default function MyChart() {
                       onClick={() => updateConfig('chartType', type)}
                       className={`flex flex-col items-center gap-1 p-3 rounded-lg transition-colors ${
                         config.chartType === type
-                          ? 'border-2 border-blue-500 bg-subtle'
-                          : 'border-2 border-line hover:border-blue-300'
+                          ? 'border-2 border-primary bg-primary-soft'
+                          : 'border-2 border-line hover:border-line-strong'
                       }`}
                     >
-                      <Icon className={`w-5 h-5 ${config.chartType === type ? 'text-blue-600 dark:text-blue-400' : 'text-muted'}`} />
-                      <span className={`text-xs ${config.chartType === type ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-sub'}`}>
+                      <Icon className={`w-5 h-5 ${config.chartType === type ? 'text-primary' : 'text-muted'}`} />
+                      <span className={`text-xs ${config.chartType === type ? 'text-primary font-medium' : 'text-sub'}`}>
                         {t(`chartTypes.${type}`)}
                       </span>
                     </button>
@@ -730,7 +730,7 @@ export default function MyChart() {
                 <label className="block text-sm font-medium text-body mb-1">
                   {t('config.yAxis')}
                   {config.chartType === 'pie' && (
-                    <span className="text-xs text-gray-400 ml-1">({t('config.singleOnly')})</span>
+                    <span className="text-xs text-faint ml-1">({t('config.singleOnly')})</span>
                   )}
                 </label>
                 <div className="space-y-1 max-h-40 overflow-y-auto border border-line rounded-lg p-2">
@@ -742,7 +742,7 @@ export default function MyChart() {
                       return (
                         <label
                           key={h}
-                          className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 ${
+                          className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer hover:bg-subtle ${
                             isDisabled ? 'opacity-50 cursor-not-allowed' : ''
                           }`}
                         >
@@ -751,7 +751,7 @@ export default function MyChart() {
                             checked={isChecked}
                             disabled={isDisabled}
                             onChange={() => toggleYField(h)}
-                            className="accent-blue-600 rounded"
+                            className="accent-primary rounded"
                           />
                           <span className="text-sm text-body">{h}</span>
                           {isNumericColumn(parsedData.rows, h) && (
@@ -770,7 +770,7 @@ export default function MyChart() {
                 <div>
                   <label className="block text-sm font-medium text-body mb-1">
                     {t('config.groupBy')}
-                    <span className="text-xs text-gray-400 ml-1">({t('config.optional')})</span>
+                    <span className="text-xs text-faint ml-1">({t('config.optional')})</span>
                   </label>
                   <select
                     value={config.groupField}
@@ -846,8 +846,8 @@ export default function MyChart() {
                       onClick={() => updateConfig('colorScheme', scheme)}
                       className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors ${
                         config.colorScheme === scheme
-                          ? 'bg-subtle ring-2 ring-blue-500'
-                          : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                          ? 'bg-primary-soft ring-2 ring-primary'
+                          : 'hover:bg-subtle'
                       }`}
                     >
                       <div className="flex gap-0.5">
@@ -905,14 +905,14 @@ export default function MyChart() {
                   </button>
                   <button
                     onClick={() => copyToClipboard(optionCode, 'option')}
-                    className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-subtle text-body rounded-lg text-sm font-medium transition-colors"
                   >
                     {copiedId === 'option' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {t('export.copyOption')}
                   </button>
                   <button
                     onClick={() => copyToClipboard(reactCode, 'react')}
-                    className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 text-body rounded-lg text-sm font-medium transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-soft hover:bg-subtle text-body rounded-lg text-sm font-medium transition-colors"
                   >
                     {copiedId === 'react' ? <Check className="w-4 h-4 text-green-500" /> : <Code className="w-4 h-4" />}
                     {t('export.copyReact')}
@@ -936,9 +936,9 @@ export default function MyChart() {
                             key={h}
                             className={`text-left px-3 py-2 font-medium ${
                               h === config.xField
-                                ? 'text-blue-600 dark:text-blue-400'
+                                ? 'text-primary'
                                 : config.yFields.includes(h)
-                                  ? 'text-green-600 dark:text-green-400'
+                                  ? 'text-fg'
                                   : 'text-sub'
                             }`}
                           >
@@ -986,8 +986,8 @@ export default function MyChart() {
               onClick={() => setCodeTab('option')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 codeTab === 'option'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-white'
+                  : 'bg-soft text-body hover:bg-subtle'
               }`}
             >
               {t('codeOutput.optionTab')}
@@ -996,8 +996,8 @@ export default function MyChart() {
               onClick={() => setCodeTab('react')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 codeTab === 'react'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-primary text-white'
+                  : 'bg-soft text-body hover:bg-subtle'
               }`}
             >
               {t('codeOutput.reactTab')}
@@ -1042,7 +1042,7 @@ export default function MyChart() {
             <ul className="space-y-1.5">
               {(t.raw('guide.formats.items') as string[]).map((item, i) => (
                 <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">&#8226;</span>
+                  <span className="text-faint mt-0.5">&#8226;</span>
                   {item}
                 </li>
               ))}
@@ -1056,7 +1056,7 @@ export default function MyChart() {
             <ul className="space-y-1.5">
               {(t.raw('guide.chartTypes.items') as string[]).map((item, i) => (
                 <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">&#8226;</span>
+                  <span className="text-faint mt-0.5">&#8226;</span>
                   {item}
                 </li>
               ))}
@@ -1070,7 +1070,7 @@ export default function MyChart() {
             <ul className="space-y-1.5">
               {(t.raw('guide.tips.items') as string[]).map((item, i) => (
                 <li key={i} className="text-sm text-sub flex items-start gap-2">
-                  <span className="text-blue-500 mt-0.5">&#8226;</span>
+                  <span className="text-faint mt-0.5">&#8226;</span>
                   {item}
                 </li>
               ))}
@@ -1102,7 +1102,7 @@ function ToggleSwitch({
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-          checked ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+          checked ? 'bg-primary' : 'bg-line-strong'
         }`}
       >
         <span

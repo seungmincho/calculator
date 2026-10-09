@@ -4,6 +4,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/boardGamePage'
+import '@/lib/i18n/ns/chess'
 import { Monitor, Zap, ChevronRight, Gamepad2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
@@ -13,6 +14,7 @@ type Difficulty = 'easy' | 'normal' | 'hard'
 
 export default function ChessPageContent() {
   const t = useTranslations('boardGamePage')
+  const tChess = useTranslations('chess')
   const [mode, setMode] = useState<'select' | 'ai'>('select')
   const [difficulty, setDifficulty] = useState<Difficulty>('normal')
 
@@ -21,9 +23,9 @@ export default function ChessPageContent() {
   }
 
   const difficultyOptions: { value: Difficulty; emoji: string; label: string; desc: string; color: string; activeColor: string }[] = [
-    { value: 'easy',   emoji: '😊', label: t('easy') || '쉬움',   desc: t('easyDesc') || 'AI가 느리게 반응',   color: 'border-line bg-subtle text-green-700 dark:text-green-400',   activeColor: 'border-green-500 bg-green-500 text-white' },
-    { value: 'normal', emoji: '🎯', label: t('normal') || '보통', desc: t('normalDesc') || '기본 전략 사용',     color: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400',   activeColor: 'border-amber-500 bg-amber-500 text-white' },
-    { value: 'hard',   emoji: '🔥', label: t('hard') || '어려움', desc: t('hardDesc') || '최적의 수 계산',     color: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400',             activeColor: 'border-red-500 bg-red-500 text-white' },
+    { value: 'easy',   emoji: '😊', label: t('easy'),   desc: t('easyDesc'),   color: 'border-line bg-subtle text-green-700 dark:text-green-400',   activeColor: 'border-green-500 bg-green-500 text-white' },
+    { value: 'normal', emoji: '🎯', label: t('normal'), desc: t('normalDesc'),     color: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400',   activeColor: 'border-amber-500 bg-amber-500 text-white' },
+    { value: 'hard',   emoji: '🔥', label: t('hard'), desc: t('hardDesc'),     color: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400',             activeColor: 'border-red-500 bg-red-500 text-white' },
   ]
 
   return (
@@ -33,14 +35,14 @@ export default function ChessPageContent() {
         <div className="w-16 h-16 bg-soft rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3">
           ♟️
         </div>
-        <h1 className="text-2xl font-bold text-fg">체스 (Chess)</h1>
-        <p className="text-sm text-muted mt-1">AI와 대전하는 클래식 체스 게임</p>
+        <h1 className="text-2xl font-bold text-fg">{tChess('pageTitle')}</h1>
+        <p className="text-sm text-muted mt-1">{tChess('description')}</p>
       </div>
 
       {/* Mode selection - AI only */}
       <div className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden">
         <div className="px-5 py-4 border-b border-line">
-          <h2 className="font-bold text-fg">{t('selectPlayMode') || '플레이 방식 선택'}</h2>
+          <h2 className="font-bold text-fg">{t('selectPlayMode')}</h2>
         </div>
         <div className="p-4 space-y-3">
           <div className="rounded-xl border-2 border-line overflow-hidden">
@@ -49,15 +51,15 @@ export default function ChessPageContent() {
                 <Monitor className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div className="flex-1">
-                <p className="font-bold text-fg">{t('vsComputer') || '컴퓨터 대전'}</p>
-                <p className="text-xs text-muted">{t('vsComputerDesc') || 'AI와 1인 플레이 · 인터넷 불필요'}</p>
+                <p className="font-bold text-fg">{t('vsComputer')}</p>
+                <p className="text-xs text-muted">{t('vsComputerDesc')}</p>
               </div>
             </div>
 
             <div className="px-4 pb-3 space-y-2">
               <div className="flex items-center gap-1.5 text-xs text-muted">
                 <Zap className="w-3.5 h-3.5" />
-                <span>{t('difficulty') || '난이도'}</span>
+                <span>{t('difficulty')}</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {difficultyOptions.map(opt => (
@@ -78,7 +80,7 @@ export default function ChessPageContent() {
                 className="w-full py-3 bg-primary hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <Monitor className="w-4 h-4" />
-                {t('startAI') || 'AI와 대전 시작'}
+                {t('startAI')}
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
@@ -93,7 +95,7 @@ export default function ChessPageContent() {
           className="inline-flex items-center gap-2 text-sm text-muted hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <Gamepad2 className="w-4 h-4" />
-          {t('moreGames') || '게임 센터에서 더 많은 게임 보기'}
+          {t('moreGames')}
           <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
         </Link>
       </div>

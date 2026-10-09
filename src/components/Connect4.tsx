@@ -568,7 +568,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
             {t('waitingForOpponent')}
           </h2>
           <p className="text-sub mb-6">
-            {t('shareLinkDesc') || '초대 링크를 상대에게 공유하세요!'}
+            {t('shareLinkDesc')}
           </p>
           <GameInviteLink peerId={peerId} gameSlug="connect4" gameTitle={t('title')} />
           <details className="bg-soft rounded-xl p-4 mb-6">

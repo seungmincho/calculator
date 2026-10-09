@@ -186,7 +186,7 @@ export default function FeedbackWidget({ calculatorType, className = '' }: Feedb
                       onClick={() => setRating(star)}
                       onMouseEnter={() => setHoveredRating(star)}
                       onMouseLeave={() => setHoveredRating(0)}
-                      aria-label={`${star}점`}
+                      aria-label={t('feedback.rating.star', { star })}
                       aria-pressed={rating === star}
                       className="p-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >

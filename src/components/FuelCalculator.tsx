@@ -119,24 +119,24 @@ function downloadFile(content: string, filename: string, type: string) {
 
 // OPINET 시도 코드 매핑
 const SIDO_OPTIONS = [
-  { code: '', name: '전국 평균' },
-  { code: '01', name: '서울' },
-  { code: '02', name: '경기' },
-  { code: '03', name: '강원' },
-  { code: '04', name: '충북' },
-  { code: '05', name: '충남' },
-  { code: '06', name: '전북' },
-  { code: '07', name: '전남' },
-  { code: '08', name: '경북' },
-  { code: '09', name: '경남' },
-  { code: '10', name: '부산' },
-  { code: '11', name: '제주' },
-  { code: '14', name: '대구' },
-  { code: '15', name: '인천' },
-  { code: '16', name: '광주' },
-  { code: '17', name: '대전' },
-  { code: '18', name: '울산' },
-  { code: '19', name: '세종' },
+  { code: '', key: 'all' },
+  { code: '01', key: 'seoul' },
+  { code: '02', key: 'gyeonggi' },
+  { code: '03', key: 'gangwon' },
+  { code: '04', key: 'chungbuk' },
+  { code: '05', key: 'chungnam' },
+  { code: '06', key: 'jeonbuk' },
+  { code: '07', key: 'jeonnam' },
+  { code: '08', key: 'gyeongbuk' },
+  { code: '09', key: 'gyeongnam' },
+  { code: '10', key: 'busan' },
+  { code: '11', key: 'jeju' },
+  { code: '14', key: 'daegu' },
+  { code: '15', key: 'incheon' },
+  { code: '16', key: 'gwangju' },
+  { code: '17', key: 'daejeon' },
+  { code: '18', key: 'ulsan' },
+  { code: '19', key: 'sejong' },
 ] as const
 
 interface DrivingLogEntry {
@@ -428,7 +428,8 @@ const FuelCalculator = () => {
   }, [tripKm, efficiency, fuelPrices, fuelType, depreciationMultiplier, vehicleType])
 
   // 유가 출처 문구 (예: "OPINET 서울 · 2026-09-30 기준")
-  const sidoName = selectedSido ? SIDO_OPTIONS.find(s => s.code === selectedSido)?.name ?? '' : t('priceSource.nationwide')
+  const sidoKey = SIDO_OPTIONS.find(s => s.code === selectedSido)?.key
+  const sidoName = selectedSido ? (sidoKey ? t(`region.names.${sidoKey}`) : '') : t('priceSource.nationwide')
   const priceSourceLabel = priceSource === 'opinet'
     ? t('priceSource.opinet', { region: sidoName, date: priceDate })
     : priceSource === 'manual' ? t('priceSource.manual') : t('priceSource.default')
@@ -1040,7 +1041,7 @@ const FuelCalculator = () => {
                     className="w-full ui-field px-3 py-2 text-sm"
                   >
                     {SIDO_OPTIONS.map(s => (
-                      <option key={s.code} value={s.code}>{s.name}</option>
+                      <option key={s.code} value={s.code}>{t(`region.names.${s.key}`)}</option>
                     ))}
                   </select>
                 </div>

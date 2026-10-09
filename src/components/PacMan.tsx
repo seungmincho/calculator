@@ -770,12 +770,11 @@ export default function PacMan() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-body mb-2">점수 시스템</h3>
+            <h3 className="text-sm font-semibold text-body mb-2">{t('guide.scoring.title')}</h3>
             <ul className="space-y-1 text-sm text-sub">
-              <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>일반 점(·): 10점</li>
-              <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>파워 펠릿: 50점</li>
-              <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>유령 먹기: 200 → 400 → 800 → 1600점</li>
-              <li className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>P키 또는 Esc: 일시정지</li>
+              {(t.raw('guide.scoring.items') as string[]).map((item: string, i: number) => (
+                <li key={i} className="flex items-start gap-2"><span className="text-yellow-500 mt-0.5">•</span>{item}</li>
+              ))}
             </ul>
           </div>
         </div>

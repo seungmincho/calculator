@@ -44,7 +44,7 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
         hour: '2-digit',
         minute: '2-digit'
       })
-      pdf.text(`생성일: ${dateStr}`, 20, 35)
+      pdf.text(t('pdf.createdAt', { date: dateStr }), 20, 35)
       
       let yPosition = 50
       
@@ -68,16 +68,16 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
       
       // Footer
       pdf.setFontSize(10)
-      pdf.text('툴허브 (toolhub.ai.kr)에서 생성됨', 20, 280)
-      pdf.text('이 계산 결과는 참고용이며, 실제 적용시 전문가 상담을 권장합니다.', 20, 285)
+      pdf.text(t('pdf.generatedBy'), 20, 280)
+      pdf.text(t('pdf.disclaimer'), 20, 285)
       
       // Download the PDF
-      const fileName = `${calculatorType}_결과_${now.getFullYear()}_${(now.getMonth() + 1).toString().padStart(2, '0')}_${now.getDate().toString().padStart(2, '0')}.pdf`
+      const fileName = `${calculatorType}_${t('pdf.fileSuffix')}_${now.getFullYear()}_${(now.getMonth() + 1).toString().padStart(2, '0')}_${now.getDate().toString().padStart(2, '0')}.pdf`
       pdf.save(fileName)
       
     } catch (error) {
       console.error('PDF 생성 실패:', error)
-      alert('PDF 생성에 실패했습니다. 다시 시도해주세요.')
+      alert(t('pdf.error'))
     } finally {
       setIsGenerating(false)
     }
@@ -87,21 +87,21 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
     let yPos = startY
     
     pdf.setFontSize(16)
-    pdf.text('연봉 계산 결과', 20, yPos)
+    pdf.text(t('pdf.salary.title'), 20, yPos)
     yPos += 15
     
     pdf.setFontSize(12)
     const items = [
-      { label: '총 연봉', value: `${formatNumber(data.gross)}원` },
-      { label: '세전 월급', value: `${formatNumber(data.monthlyGross)}원` },
-      { label: '실수령액 (연)', value: `${formatNumber(data.netAnnual)}원` },
-      { label: '실수령액 (월)', value: `${formatNumber(data.netMonthly)}원` },
-      { label: '국민연금', value: `${formatNumber(data.nationalPension)}원` },
-      { label: '건강보험', value: `${formatNumber(data.healthInsurance)}원` },
-      { label: '장기요양보험', value: `${formatNumber(data.longTermCare)}원` },
-      { label: '고용보험', value: `${formatNumber(data.employmentInsurance)}원` },
-      { label: '소득세', value: `${formatNumber(data.incomeTax)}원` },
-      { label: '지방소득세', value: `${formatNumber(data.localTax)}원` }
+      { label: t('pdf.salary.gross'), value: won(data.gross) },
+      { label: t('pdf.salary.monthlyGross'), value: won(data.monthlyGross) },
+      { label: t('pdf.salary.netAnnual'), value: won(data.netAnnual) },
+      { label: t('pdf.salary.netMonthly'), value: won(data.netMonthly) },
+      { label: t('pdf.salary.nationalPension'), value: won(data.nationalPension) },
+      { label: t('pdf.salary.healthInsurance'), value: won(data.healthInsurance) },
+      { label: t('pdf.salary.longTermCare'), value: won(data.longTermCare) },
+      { label: t('pdf.salary.employmentInsurance'), value: won(data.employmentInsurance) },
+      { label: t('pdf.salary.incomeTax'), value: won(data.incomeTax) },
+      { label: t('pdf.salary.localTax'), value: won(data.localTax) }
     ]
     
     items.forEach(item => {
@@ -116,20 +116,20 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
     let yPos = startY
     
     pdf.setFontSize(16)
-    pdf.text('로또번호 생성 결과', 20, yPos)
+    pdf.text(t('pdf.lotto.title'), 20, yPos)
     yPos += 15
     
     pdf.setFontSize(12)
     if (Array.isArray(data) && data.length > 0) {
       data.forEach((set, index) => {
-        pdf.text(`${index + 1}게임: ${set.numbers.join(', ')}`, 20, yPos)
+        pdf.text(t('pdf.lotto.game', { n: index + 1, numbers: set.numbers.join(', ') }), 20, yPos)
         yPos += 8
       })
     } else if (data.numbers) {
-      pdf.text(`생성번호: ${data.numbers.join(', ')}`, 20, yPos)
+      pdf.text(t('pdf.lotto.numbers', { numbers: data.numbers.join(', ') }), 20, yPos)
       yPos += 8
       if (data.bonusNumber) {
-        pdf.text(`보너스번호: ${data.bonusNumber}`, 20, yPos)
+        pdf.text(t('pdf.lotto.bonus', { n: data.bonusNumber }), 20, yPos)
         yPos += 8
       }
     }
@@ -141,17 +141,17 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
     let yPos = startY
     
     pdf.setFontSize(16)
-    pdf.text('대출 계산 결과', 20, yPos)
+    pdf.text(t('pdf.loan.title'), 20, yPos)
     yPos += 15
     
     pdf.setFontSize(12)
     const items = [
-      { label: '대출금액', value: `${formatNumber(data.loanAmount)}원` },
-      { label: '연이자율', value: `${data.interestRate}%` },
-      { label: '대출기간', value: `${data.loanTerm}년` },
-      { label: '월 상환액', value: `${formatNumber(data.monthlyPayment)}원` },
-      { label: '총 상환액', value: `${formatNumber(data.totalPayment)}원` },
-      { label: '총 이자액', value: `${formatNumber(data.totalInterest)}원` }
+      { label: t('pdf.loan.loanAmount'), value: won(data.loanAmount) },
+      { label: t('pdf.loan.interestRate'), value: `${data.interestRate}%` },
+      { label: t('pdf.loan.loanTerm'), value: t('pdf.years', { value: data.loanTerm }) },
+      { label: t('pdf.loan.monthlyPayment'), value: won(data.monthlyPayment) },
+      { label: t('pdf.loan.totalPayment'), value: won(data.totalPayment) },
+      { label: t('pdf.loan.totalInterest'), value: won(data.totalInterest) }
     ]
     
     items.forEach(item => {
@@ -166,14 +166,14 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
     let yPos = startY
     
     pdf.setFontSize(16)
-    pdf.text('부동산 계산 결과', 20, yPos)
+    pdf.text(t('pdf.realEstate.title'), 20, yPos)
     yPos += 15
     
     pdf.setFontSize(12)
     // Generic content handling for real estate data
     Object.entries(data).forEach(([key, value]) => {
       if (typeof value === 'number') {
-        pdf.text(`${key}: ${formatNumber(value)}원`, 20, yPos)
+        pdf.text(`${key}: ${won(value)}`, 20, yPos)
         yPos += 8
       } else if (typeof value === 'string') {
         pdf.text(`${key}: ${value}`, 20, yPos)
@@ -188,7 +188,7 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
     let yPos = startY
     
     pdf.setFontSize(16)
-    pdf.text('계산 결과', 20, yPos)
+    pdf.text(t('pdf.generic.title'), 20, yPos)
     yPos += 15
     
     pdf.setFontSize(12)
@@ -200,7 +200,7 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
       } else if (typeof value === 'string') {
         pdf.text(`${key}: ${value}`, 20, yPos)
       } else if (typeof value === 'boolean') {
-        pdf.text(`${key}: ${value ? '예' : '아니오'}`, 20, yPos)
+        pdf.text(`${key}: ${value ? t('pdf.yes') : t('pdf.no')}`, 20, yPos)
       } else {
         pdf.text(`${key}: ${JSON.stringify(value)}`, 20, yPos)
       }
@@ -220,6 +220,8 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
     return num.toLocaleString('ko-KR')
   }
 
+  const won = (num: number): string => t('pdf.won', { value: formatNumber(num) })
+
   return (
     <button
       onClick={generatePDF}
@@ -231,7 +233,7 @@ export default function PDFExport({ data, calculatorType, title, className = '' 
       ) : (
         <Download className="w-4 h-4 mr-2" />
       )}
-      {isGenerating ? t('pdf.generating') || 'PDF 생성 중...' : t('pdf.download') || 'PDF 다운로드'}
+      {isGenerating ? t('pdf.generating') : t('pdf.download')}
     </button>
   )
 }

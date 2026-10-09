@@ -239,7 +239,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       const roomHook = gameRooms[joiningRoom.gameType]
       const success = await roomHook.joinRoom(joiningRoom.id)
       if (!success) {
-        setJoinError(t('joinRoomError') || '방 입장에 실패했습니다.')
+        setJoinError(t('joinRoomError'))
         setIsJoining(false)
         return
       }
@@ -247,7 +247,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       setJoiningRoom(null)
     } catch (err) {
       console.error('Join room error:', err)
-      setJoinError(t('joinRoomError') || '방 입장에 실패했습니다.')
+      setJoinError(t('joinRoomError'))
     } finally {
       setIsJoining(false)
     }
@@ -329,7 +329,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
         </div>
         <div className="flex-1 min-w-0">
           <span className={`text-xs ${globalNickname.trim() ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>
-            {globalNickname.trim() ? t('myNickname') || '내 닉네임 (온라인 대전용)' : t('setNicknameFirst') || '온라인 대전을 위해 닉네임을 설정하세요'}
+            {globalNickname.trim() ? t('myNickname') : t('setNicknameFirst')}
           </span>
           {globalNickname.trim() && (
             <span className="ml-2 font-bold text-fg text-sm">{globalNickname}</span>
@@ -341,7 +341,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
               type="text"
               value={tempNickname}
               onChange={(e) => setTempNickname(e.target.value)}
-              placeholder={t('nicknamePlaceholder') || '닉네임 입력'}
+              placeholder={t('nicknamePlaceholder')}
               maxLength={20}
               autoFocus
               onKeyDown={(e) => e.key === 'Enter' && handleSaveNickname()}
@@ -364,7 +364,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             }`}
           >
             <Edit3 className="w-3.5 h-3.5" />
-            {globalNickname.trim() ? (t('edit') || '변경') : (t('setNickname') || '설정')}
+            {globalNickname.trim() ? t('edit') : t('setNickname')}
           </button>
         )}
       </div>
@@ -372,9 +372,9 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
       {/* 필터 탭 */}
       <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
         {([
-          { key: 'all' as ModeFilter, label: t('filterAll') || '전체', count: ALL_GAMES.length, sub: '' },
-          { key: 'multiplayer' as ModeFilter, label: t('filterMultiplayer') || '보드게임', count: BOARD_GAMES.length, sub: t('modeAiOnline') },
-          { key: 'solo' as ModeFilter, label: t('filterSolo') || '솔로게임', count: soloGames.length, sub: t('playNow') || '바로 플레이' },
+          { key: 'all' as ModeFilter, label: t('filterAll'), count: ALL_GAMES.length, sub: '' },
+          { key: 'multiplayer' as ModeFilter, label: t('filterMultiplayer'), count: BOARD_GAMES.length, sub: t('modeAiOnline') },
+          { key: 'solo' as ModeFilter, label: t('filterSolo'), count: soloGames.length, sub: t('playNow') },
         ]).map(({ key, label, count, sub }) => (
           <button
             key={key}
@@ -450,7 +450,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                     )}
                     {game.modes?.includes('solo') && !game.modes?.includes('ai') && (
                       <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 bg-soft text-sub rounded-md font-medium">
-                        ▶ {t('badgeSolo') || '솔로'}
+                        ▶ {t('badgeSolo')}
                       </span>
                     )}
                   </div>
@@ -475,7 +475,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   onClick={() => setSelectedGame(null)}
                   className="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs"
                 >
-                  {t('closePanel') || '✕ 닫기'}
+                  {t('closePanel')}
                 </button>
               </div>
 
@@ -495,7 +495,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                       {t('vsComputer')}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500">{t('vsComputerDesc') || 'AI와 1인 플레이'}</p>
+                  <p className="text-xs text-gray-500">{t('vsComputerDesc')}</p>
                 </button>
                 <button
                   onClick={() => setPlayMode('online')}
@@ -511,7 +511,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                       {t('vsOnline')}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500">{t('vsOnlineDesc') || '실시간 온라인 대전'}</p>
+                  <p className="text-xs text-gray-500">{t('vsOnlineDesc')}</p>
                 </button>
               </div>
 
@@ -550,7 +550,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   {!globalNickname.trim() && (
                     <div className="p-2.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800 flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400">
                       <User className="w-4 h-4" />
-                      {t('setNicknameFirst') || '상단에서 닉네임을 먼저 설정하세요'}
+                      {t('setNicknameFirst')}
                     </div>
                   )}
                   <div className="flex gap-2 items-center">
@@ -559,7 +559,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                       type="text"
                       value={roomTitle}
                       onChange={(e) => setRoomTitle(e.target.value)}
-                      placeholder={t('roomTitlePlaceholder') || '방 제목 (선택)'}
+                      placeholder={t('roomTitlePlaceholder')}
                       maxLength={30}
                       className="flex-1 px-3 py-1.5 text-sm rounded-lg border border-line bg-field text-fg focus:outline-none focus:border-emerald-500"
                     />
@@ -663,7 +663,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
         <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
           <div className="px-4 py-3 border-b border-line flex items-center gap-2">
             <User className="w-4 h-4 text-violet-600" />
-            <span className="font-semibold text-fg text-sm">{t('myStats') || '나의 전적'}</span>
+            <span className="font-semibold text-fg text-sm">{t('myStats')}</span>
           </div>
           <div className="p-3">
             {isLoadingAIStats ? (
@@ -686,7 +686,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-gray-500">{t('winRate') || '승률'}</span>
+                    <span className="text-xs text-gray-500">{t('winRate')}</span>
                     <span className={`text-sm font-bold ${winRate >= 50 ? 'text-green-600' : 'text-red-500'}`}>{winRate}%</span>
                   </div>
                   <div className="w-full bg-track rounded-full h-1.5">
@@ -723,7 +723,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
         <div className="bg-surface rounded-xl shadow-sm border border-line overflow-hidden">
           <div className="px-4 py-3 border-b border-line flex items-center gap-2">
             <Globe className="w-4 h-4 text-amber-600" />
-            <span className="font-semibold text-fg text-sm">{t('globalStats') || '전체 통계'}</span>
+            <span className="font-semibold text-fg text-sm">{t('globalStats')}</span>
           </div>
           <div className="p-3">
             {isLoadingAIStats ? (
@@ -734,26 +734,26 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-2 text-center">
                     <Trophy className="w-4 h-4 mx-auto mb-1 text-amber-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.totalGames.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500">{t('totalGamesPlayed') || '총 게임'}</p>
+                    <p className="text-xs text-gray-500">{t('totalGamesPlayed')}</p>
                   </div>
                   <div className="bg-subtle rounded-lg p-2 text-center">
                     <Monitor className="w-4 h-4 mx-auto mb-1 text-indigo-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.totalAIGames.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500">{t('aiGames') || 'AI 대전'}</p>
+                    <p className="text-xs text-gray-500">{t('aiGames')}</p>
                   </div>
                   <div className="bg-subtle rounded-lg p-2 text-center">
                     <Users className="w-4 h-4 mx-auto mb-1 text-emerald-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.totalOnlineGames.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500">{t('onlineGames') || '온라인'}</p>
+                    <p className="text-xs text-gray-500">{t('onlineGames')}</p>
                   </div>
                   <div className="bg-subtle rounded-lg p-2 text-center">
                     <Gamepad2 className="w-4 h-4 mx-auto mb-1 text-blue-600" />
                     <p className="text-lg font-bold text-fg">{globalStats.uniquePlayers.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500">{t('uniquePlayers') || '참여자'}</p>
+                    <p className="text-xs text-gray-500">{t('uniquePlayers')}</p>
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">{t('gamePopularity') || '인기 게임'}</p>
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">{t('gamePopularity')}</p>
                   <div className="space-y-1.5 max-h-[120px] overflow-y-auto">
                     {BOARD_GAMES.map(game => ({
                       game,
@@ -791,7 +791,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
             ) : (
               <div className="text-center py-6">
                 <Globe className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                <p className="text-xs text-gray-400">{t('noGlobalStats') || '통계 데이터 없음'}</p>
+                <p className="text-xs text-gray-400">{t('noGlobalStats')}</p>
               </div>
             )}
           </div>
@@ -833,7 +833,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
               <div className="flex items-center gap-3 p-3 bg-subtle rounded-xl">
                 <User className="w-4 h-4 text-blue-500" />
                 <div>
-                  <p className="text-xs text-gray-500">{t('myNickname') || '내 닉네임'}</p>
+                  <p className="text-xs text-gray-500">{t('myNickname')}</p>
                   <p className="font-medium text-fg text-sm">{globalNickname}</p>
                 </div>
               </div>
@@ -844,7 +844,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   disabled={isJoining}
                   className="flex-1 py-2.5 px-4 rounded-xl border-2 border-line text-body font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all disabled:opacity-50 text-sm"
                 >
-                  {t('cancel') || '취소'}
+                  {t('cancel')}
                 </button>
                 <button
                   onClick={handleConfirmJoin}
@@ -852,7 +852,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
                 >
                   {isJoining
-                    ? <><Loader2 className="w-4 h-4 animate-spin" />{t('joining') || '입장 중...'}</>
+                    ? <><Loader2 className="w-4 h-4 animate-spin" />{t('joining')}</>
                     : <><Play className="w-4 h-4" />{t('joinRoom')}</>
                   }
                 </button>

@@ -611,7 +611,7 @@ function TermDetail({
       {/* Related terms */}
       {term.relatedTermIds && term.relatedTermIds.length > 0 && (
         <div>
-          <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.relatedTermIds')}</h4>
+          <h4 className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{t('term.relatedTerms')}</h4>
           <div className="flex flex-wrap gap-1.5">
             {term.relatedTermIds.map(relId => {
               const related = CS_DICTIONARY_TERMS.find(t => t.id === relId)

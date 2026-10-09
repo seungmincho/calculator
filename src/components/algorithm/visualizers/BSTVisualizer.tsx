@@ -633,6 +633,9 @@ function BSTStepsList({
     }
   }, [currentIndex])
 
+  const t = useTranslations('bstVisualizer')
+  const tHub = useTranslations('algorithmHub')
+
   if (displaySteps.length === 0) return null
 
   const ACTION_STYLE: Record<BSTStep['action'], string> = {
@@ -662,16 +665,16 @@ function BSTStepsList({
   }
 
   const ACTION_LABEL: Record<BSTStep['action'], string> = {
-    compare:              '비교',
-    'go-left':            '← 왼쪽',
-    'go-right':           '오른쪽 →',
-    insert:               '삽입',
-    found:                '발견',
-    'not-found':          '없음',
-    'delete-leaf':        '단말 삭제',
-    'delete-one-child':   '단일 자식 삭제',
-    'delete-two-children':'두 자식 삭제',
-    successor:            '후계자',
+    compare:              t('stepsGuide.compare'),
+    'go-left':            t('stepsList.goLeft'),
+    'go-right':           t('stepsList.goRight'),
+    insert:               t('stepsGuide.insert'),
+    found:                t('stepsList.found'),
+    'not-found':          t('stepsGuide.notFound'),
+    'delete-leaf':        t('stepsList.deleteLeaf'),
+    'delete-one-child':   t('stepsList.deleteOneChild'),
+    'delete-two-children':t('stepsList.deleteTwoChildren'),
+    successor:            t('stepsList.successor'),
   }
 
   const windowStart = Math.max(0, currentIndex - 10)
@@ -682,7 +685,7 @@ function BSTStepsList({
     <div ref={listRef} className="space-y-1">
       {windowStart > 0 && (
         <div className="text-xs text-faint text-center py-1">
-          ... 이전 {windowStart}개 단계 ...
+          {tHub('controls.stepsBefore', { count: windowStart })}
         </div>
       )}
       {windowSteps.map(step => {
@@ -707,15 +710,15 @@ function BSTStepsList({
                 {ACTION_LABEL[step.action]}
               </span>
               <span className="text-sub">
-                {step.nodeId >= 0 ? `노드 #${step.nodeId} (값: ${step.value})` : `값 ${step.value} 없음`}
+                {step.nodeId >= 0 ? t('stepsList.node', { id: step.nodeId, value: step.value }) : t('stepsList.valueMissing', { value: step.value })}
               </span>
               <span className="ml-auto text-[10px] text-faint">
-                깊이 {step.depth >= 0 ? step.depth : '-'}
+                {t('stepsList.depth', { depth: step.depth >= 0 ? step.depth : '-' })}
               </span>
             </div>
             {step.comparisons > 0 && (
               <div className="mt-1 text-[10px] text-muted">
-                비교 횟수: <strong className="text-amber-600 dark:text-amber-400">{step.comparisons}</strong>
+                {t('stats.comparisons')}: <strong className="text-amber-600 dark:text-amber-400">{step.comparisons}</strong>
               </div>
             )}
           </button>
@@ -723,7 +726,7 @@ function BSTStepsList({
       })}
       {windowEnd < displaySteps.length - 1 && (
         <div className="text-xs text-faint text-center py-1">
-          ... 이후 {displaySteps.length - 1 - windowEnd}개 단계 ...
+          {tHub('controls.stepsAfter', { count: displaySteps.length - 1 - windowEnd })}
         </div>
       )}
     </div>

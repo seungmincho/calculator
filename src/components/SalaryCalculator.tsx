@@ -339,7 +339,7 @@ const SalaryCalculatorContent = () => {
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                       salaryType === type
                         ? 'bg-primary text-white shadow-sm'
-                        : 'text-sub hover:text-gray-900 dark:hover:text-gray-200'
+                        : 'text-sub hover:text-fg'
                     }`}
                   >
                     {t(`input.${type}`)}
@@ -362,7 +362,7 @@ const SalaryCalculatorContent = () => {
                   placeholder={salaryType === 'annual' ? t('input.salaryPlaceholderAnnual') : t('input.salaryPlaceholderMonthly')}
                   className={`ui-field px-4 py-4 text-lg font-semibold pr-14`}
                 />
-                <span className="absolute right-4 top-4 text-gray-600 font-medium">{t('input.currency')}</span>
+                <span className="absolute right-4 top-4 text-sub font-medium">{t('input.currency')}</span>
               </div>
             </div>
 
@@ -434,7 +434,7 @@ const SalaryCalculatorContent = () => {
             <details className="group rounded-2xl border border-line bg-surface overflow-hidden">
               <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-body select-none list-none">
                 <span>{t('advanced.title')} <span className="font-normal text-faint">{t('advanced.summary')}</span></span>
-                <span className="text-gray-400 transition-transform duration-200 group-open:rotate-45 text-lg leading-none" aria-hidden="true">+</span>
+                <span className="text-faint transition-transform duration-200 group-open:rotate-45 text-lg leading-none" aria-hidden="true">+</span>
               </summary>
               <div className="border-t border-line px-5 py-5 space-y-5">
                 {/* 상여금 설정 */}
@@ -624,7 +624,7 @@ const SalaryCalculatorContent = () => {
                     type="range" min={0} max={30} step={1} value={raisePct}
                     onChange={(e) => setRaisePct(Number(e.target.value))}
                     aria-label={t('viral.raise.sliderLabel')}
-                    className="w-full accent-blue-600"
+                    className="w-full accent-primary"
                   />
                   <div className="grid grid-cols-2 gap-3">
                     <div>
@@ -669,7 +669,7 @@ const SalaryCalculatorContent = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.workIncomeDeduction')}</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.workIncomeDeduction)}{formatNumber(result.workIncomeDeduction)}{t('input.currency')}</span>
+                      <span className="font-medium text-primary">{minus(result.workIncomeDeduction)}{formatNumber(result.workIncomeDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.workIncome')}</span>
@@ -677,11 +677,11 @@ const SalaryCalculatorContent = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.personalDeduction')} ({t('input.people', { n: dependents })})</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.taxInfo.personalDeduction)}{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
+                      <span className="font-medium text-primary">{minus(result.taxInfo.personalDeduction)}{formatNumber(result.taxInfo.personalDeduction)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.pensionDeduction')}</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.deductions.nationalPension)}{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
+                      <span className="font-medium text-primary">{minus(result.deductions.nationalPension)}{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.taxableStandard')}</span>
@@ -689,7 +689,7 @@ const SalaryCalculatorContent = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.taxCredit')}</span>
-                      <span className="font-medium text-green-600 dark:text-green-400">{minus(result.taxInfo.taxCredit)}{formatNumber(result.taxInfo.taxCredit)}{t('input.currency')}</span>
+                      <span className="font-medium text-primary">{minus(result.taxInfo.taxCredit)}{formatNumber(result.taxInfo.taxCredit)}{t('input.currency')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sub">{t('result.annualTaxEstimate')}</span>
@@ -705,33 +705,33 @@ const SalaryCalculatorContent = () => {
                 <h3 className="font-semibold text-fg">{t('result.deductionBreakdown')}</h3>
                 
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.nationalPension')} ({pct(INSURANCE.pensionRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.healthInsurance')} ({pct(INSURANCE.healthRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.longTermCare')} ({pct(INSURANCE.longTermCareRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.employmentInsurance')} ({pct(INSURANCE.employmentRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.employmentInsurance)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.incomeTax')}</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.incomeTax)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.localIncomeTax')} (10%)</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.localIncomeTax)}{t('input.currency')}</span>
                   </div>
-                  <div className="flex justify-between py-3 border-t-2 border-gray-200/80 dark:border-white/[0.10] font-bold">
+                  <div className="flex justify-between py-3 border-t-2 border-line font-bold">
                     <span className="text-fg">{t('result.totalDeduction')}</span>
-                    <span className="text-red-600 dark:text-red-400 font-bold">{formatNumber(result.deductions.total)}{t('input.currency')}</span>
+                    <span className="text-fg font-bold">{formatNumber(result.deductions.total)}{t('input.currency')}</span>
                   </div>
                 </div>
               </div>
@@ -820,10 +820,10 @@ const SalaryCalculatorContent = () => {
                     <td className="py-3 px-4 text-right text-fg">
                       {formatNumber(row.netAnnual)}{t('input.currency')}
                     </td>
-                    <td className="py-3 px-4 text-right font-medium text-blue-600 dark:text-blue-400">
+                    <td className="py-3 px-4 text-right font-medium text-primary">
                       {formatNumber(row.netMonthly)}{t('input.currency')}
                     </td>
-                    <td className="py-3 px-4 text-right text-red-600 dark:text-red-400">
+                    <td className="py-3 px-4 text-right text-sub">
                       {formatNumber(row.totalDeductions)}{t('input.currency')}
                     </td>
                     <td className="py-3 px-4 text-right font-medium text-fg">
@@ -904,7 +904,7 @@ const SalaryCalculatorContent = () => {
                   </div>
                   
                   {parseInt(performanceBonus) > 0 && (
-                    <div className="p-3 bg-surface border border-amber-200/40 dark:border-amber-400/20 rounded-xl">
+                    <div className="p-3 bg-surface border border-line rounded-xl">
                       <p className="text-sm text-body">
                         <strong>{t('charts.monthly.performanceLabel')}</strong> {t('charts.monthly.performance', { pct: performanceBonus, amount: formatNumber(Math.floor(result.gross * (parseInt(performanceBonus) / 100))) })}
                       </p>
@@ -976,7 +976,7 @@ const SalaryCalculatorContent = () => {
                           <div className="font-medium text-fg">
                             {formatNumber(item.value)}{t('input.currency')}
                           </div>
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-muted">
                             {((item.value / result.deductions.total) * 100).toFixed(1)}%
                           </div>
                         </div>
@@ -985,7 +985,7 @@ const SalaryCalculatorContent = () => {
                     <div className="pt-3 border-t border-line">
                       <div className="flex items-center justify-between">
                         <span className="font-semibold text-fg">{t('result.totalDeduction')}</span>
-                        <span className="font-bold text-red-600 dark:text-red-400">
+                        <span className="font-bold text-fg">
                           {formatNumber(result.deductions.total)}{t('input.currency')}
                         </span>
                       </div>
@@ -1089,24 +1089,24 @@ const SalaryCalculatorContent = () => {
           
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="bg-surface border border-line p-6 rounded-2xl">
-              <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+              <h4 className="text-xl font-semibold text-fg mb-4 flex items-center">
                 
                 {t('insurance.health.title')}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <h5 className="font-semibold text-blue-600">{t('insurance.health.healthInsurance.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('insurance.health.healthInsurance.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.health.healthInsurance.description')}</p>
-                  <div className="mt-2 text-xs text-blue-500 space-y-1">
+                  <div className="mt-2 text-xs text-muted space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.health.healthInsurance.details.${index}`)}</p>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-green-600">{t('insurance.health.longTermCare.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('insurance.health.longTermCare.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.health.longTermCare.description')}</p>
-                  <div className="mt-2 text-xs text-green-500 space-y-1">
+                  <div className="mt-2 text-xs text-muted space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.health.longTermCare.details.${index}`)}</p>
                     ))}
@@ -1116,24 +1116,24 @@ const SalaryCalculatorContent = () => {
             </div>
 
             <div className="bg-surface border border-line p-6 rounded-2xl">
-              <h4 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4 flex items-center">
+              <h4 className="text-xl font-semibold text-fg mb-4 flex items-center">
                 
                 {t('insurance.pension.title')}
               </h4>
               <div className="space-y-4">
                 <div>
-                  <h5 className="font-semibold text-purple-600">{t('insurance.pension.nationalPension.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('insurance.pension.nationalPension.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.pension.nationalPension.description')}</p>
-                  <div className="mt-2 text-xs text-purple-500 space-y-1">
+                  <div className="mt-2 text-xs text-muted space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.pension.nationalPension.details.${index}`)}</p>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-orange-600">{t('insurance.pension.employment.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('insurance.pension.employment.title')}</h5>
                   <p className="text-sm text-sub">{t('insurance.pension.employment.description')}</p>
-                  <div className="mt-2 text-xs text-orange-500 space-y-1">
+                  <div className="mt-2 text-xs text-muted space-y-1">
                     {[0, 1, 2].map((index) => (
                       <p key={index}>• {t(`insurance.pension.employment.details.${index}`)}</p>
                     ))}
@@ -1159,41 +1159,41 @@ const SalaryCalculatorContent = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-fg">{t('taxBracket.headers.salaryRange')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/20 dark:divide-white/[0.06]">
+              <tbody className="divide-y divide-line">
                 <tr className="hover:bg-soft transition-colors">
                   <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.0.bracket')}</td>
-                  <td className="px-6 py-4 text-center text-sm font-bold text-green-600">6%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">-</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-fg">6%</td>
+                  <td className="px-6 py-4 text-center text-sm text-muted">-</td>
                   <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.0.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
                   <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.1.bracket')}</td>
-                  <td className="px-6 py-4 text-center text-sm font-bold text-blue-600">15%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.1.deduction')}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-fg">15%</td>
+                  <td className="px-6 py-4 text-center text-sm text-muted">{t('taxBracket.rows.1.deduction')}</td>
                   <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.1.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
                   <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.2.bracket')}</td>
-                  <td className="px-6 py-4 text-center text-sm font-bold text-purple-600">24%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.2.deduction')}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-fg">24%</td>
+                  <td className="px-6 py-4 text-center text-sm text-muted">{t('taxBracket.rows.2.deduction')}</td>
                   <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.2.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
                   <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.3.bracket')}</td>
-                  <td className="px-6 py-4 text-center text-sm font-bold text-orange-600">35%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.3.deduction')}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-fg">35%</td>
+                  <td className="px-6 py-4 text-center text-sm text-muted">{t('taxBracket.rows.3.deduction')}</td>
                   <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.3.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
                   <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.4.bracket')}</td>
-                  <td className="px-6 py-4 text-center text-sm font-bold text-red-600">38%</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.4.deduction')}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-fg">38%</td>
+                  <td className="px-6 py-4 text-center text-sm text-muted">{t('taxBracket.rows.4.deduction')}</td>
                   <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.4.range')}</td>
                 </tr>
                 <tr className="hover:bg-soft transition-colors">
                   <td className="px-6 py-4 text-sm text-fg">{t('taxBracket.rows.5.bracket')}</td>
-                  <td className="px-6 py-4 text-center text-sm font-bold text-red-700">40%+</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-500">{t('taxBracket.rows.5.deduction')}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-fg">40%+</td>
+                  <td className="px-6 py-4 text-center text-sm text-muted">{t('taxBracket.rows.5.deduction')}</td>
                   <td className="px-6 py-4 text-sm text-sub">{t('taxBracket.rows.5.range')}</td>
                 </tr>
               </tbody>
@@ -1231,15 +1231,15 @@ const SalaryCalculatorContent = () => {
               </div>
               <div className="space-y-3">
                 <div>
-                  <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.creditCard.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.incomeDeduction.creditCard.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.creditCard.description')}</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.housing.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.incomeDeduction.housing.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.housing.description')}</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-green-600">{t('taxStrategy.incomeDeduction.childcare.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.incomeDeduction.childcare.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.incomeDeduction.childcare.description')}</p>
                 </div>
               </div>
@@ -1254,15 +1254,15 @@ const SalaryCalculatorContent = () => {
               </div>
               <div className="space-y-3">
                 <div>
-                  <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.medical.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.taxCredit.medical.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.medical.description')}</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.education.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.taxCredit.education.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.education.description')}</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-blue-600">{t('taxStrategy.taxCredit.donation.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.taxCredit.donation.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.taxCredit.donation.description')}</p>
                 </div>
               </div>
@@ -1277,15 +1277,15 @@ const SalaryCalculatorContent = () => {
               </div>
               <div className="space-y-3">
                 <div>
-                  <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.pensionFund.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.pension.pensionFund.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.pensionFund.description')}</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.irp.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.pension.irp.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.irp.description')}</p>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-purple-600">{t('taxStrategy.pension.isa.title')}</h5>
+                  <h5 className="font-semibold text-body">{t('taxStrategy.pension.isa.title')}</h5>
                   <p className="text-sm text-sub">{t('taxStrategy.pension.isa.description')}</p>
                 </div>
               </div>

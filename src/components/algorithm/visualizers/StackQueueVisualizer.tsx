@@ -135,43 +135,43 @@ export default function StackQueueVisualizer() {
     const n = getNum()
     if (n === null) return
     setStack(prev => [...prev, n])
-    setLastOp(`Push ${n} → 스택 (LIFO)`)
+    setLastOp(t('ops.push', { n }))
     flashOp('push', 'stack', n)
-  }, [getNum, flashOp])
+  }, [getNum, flashOp, t])
 
   const handlePop = useCallback(() => {
     setStack(prev => {
       if (prev.length === 0) {
-        setLastOp('Pop → 스택이 비어 있음')
+        setLastOp(t('ops.popEmpty'))
         return prev
       }
       const val = prev[prev.length - 1]
-      setLastOp(`Pop ${val} ← 스택 상단 (LIFO)`)
+      setLastOp(t('ops.pop', { n: val }))
       flashOp('pop', 'stack', val)
       return prev.slice(0, -1)
     })
-  }, [flashOp])
+  }, [flashOp, t])
 
   const handleEnqueue = useCallback(() => {
     const n = getNum()
     if (n === null) return
     setQueue(prev => [...prev, n])
-    setLastOp(`Enqueue ${n} → 큐 후단 (FIFO)`)
+    setLastOp(t('ops.enqueue', { n }))
     flashOp('enqueue', 'queue', n)
-  }, [getNum, flashOp])
+  }, [getNum, flashOp, t])
 
   const handleDequeue = useCallback(() => {
     setQueue(prev => {
       if (prev.length === 0) {
-        setLastOp('Dequeue → 큐가 비어 있음')
+        setLastOp(t('ops.dequeueEmpty'))
         return prev
       }
       const val = prev[0]
-      setLastOp(`Dequeue ${val} ← 큐 전단 (FIFO)`)
+      setLastOp(t('ops.dequeue', { n: val }))
       flashOp('dequeue', 'queue', val)
       return prev.slice(1)
     })
-  }, [flashOp])
+  }, [flashOp, t])
 
   // ── Demo mode ──────────────────────────────────────────────
   const handleRunDemo = useCallback(() => {
@@ -299,7 +299,7 @@ export default function StackQueueVisualizer() {
                   value={inputValue}
                   onChange={e => setInputValue(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') handlePush() }}
-                  placeholder="값 입력"
+                  placeholder={t('valuePlaceholder')}
                   disabled={isDemoMode}
                   className="w-24 px-3 py-1.5 text-sm border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-emerald-500 disabled:opacity-40"
                 />
@@ -510,7 +510,7 @@ export default function StackQueueVisualizer() {
                       <div className="font-mono text-body">O(1)</div>
                       <div className="font-mono text-body">O(1)</div>
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">* 연결 리스트 기반 구현 시</div>
+                    <div className="text-xs text-gray-400 mt-1">{t('steps.linkedListNote')}</div>
                   </div>
 
                   {/* Use cases */}
@@ -537,13 +537,13 @@ export default function StackQueueVisualizer() {
                 <div className="space-y-4">
                   <div className="space-y-1">
                     <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 px-1">
-                      Stack 구현
+                      {t('code.stack')}
                     </div>
                     <CodeViewer code={STACK_CODE} language="javascript" highlightLines={[]} />
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 px-1">
-                      Queue 구현
+                      {t('code.queue')}
                     </div>
                     <CodeViewer code={QUEUE_CODE} language="javascript" highlightLines={[]} />
                   </div>

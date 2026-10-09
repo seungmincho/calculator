@@ -513,10 +513,10 @@ export default function RegexExtractor() {
       </div>
 
       {/* 초보자를 위한 스마트 모드 */}
-      <div className="bg-subtle rounded-2xl shadow-lg p-6 mb-8">
+      <div className="bg-subtle rounded-2xl p-6 mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <Wand2 className="w-6 h-6 text-green-600" />
+            <Wand2 className="w-6 h-6 text-muted" />
             <h2 id="rx-smart" className="text-xl font-bold text-fg">
               {t('smartMode.title')}
             </h2>
@@ -525,7 +525,7 @@ export default function RegexExtractor() {
             <button
               onClick={() => setShowGuide(!showGuide)}
               aria-expanded={showGuide}
-              className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+              className="flex items-center space-x-2 px-3 py-1 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
             >
               <BookOpen className="w-4 h-4" />
               <span className="text-sm">{t('smartMode.guide')}</span>
@@ -533,7 +533,7 @@ export default function RegexExtractor() {
             <button
               onClick={() => setShowPatternBuilder(!showPatternBuilder)}
               aria-expanded={showPatternBuilder}
-              className="flex items-center space-x-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+              className="flex items-center space-x-2 px-3 py-1 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
             >
               <Target className="w-4 h-4" />
               <span className="text-sm">{t('smartMode.patternBuilder')}</span>
@@ -557,8 +557,8 @@ export default function RegexExtractor() {
               }}
               className={`p-3 rounded-lg border-2 text-left transition-all ${
                 smartMode === mode.id
-                  ? 'border-green-500 bg-subtle'
-                  : 'border-line hover:border-green-300'
+                  ? 'border-primary bg-primary-soft'
+                  : 'border-line hover:border-line-strong'
               }`}
             >
               <div className="font-medium text-fg text-sm">
@@ -580,12 +580,12 @@ export default function RegexExtractor() {
               onChange={(e) => setUserDescription(e.target.value)}
               aria-label={smartModes.find(m => m.id === smartMode)?.title}
               placeholder={smartModes.find(m => m.id === smartMode)?.placeholder}
-              className="flex-1 px-4 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              className="flex-1 px-4 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg"
               disabled={!!smartModes.find(m => m.id === smartMode)?.noInput}
             />
             <button
               onClick={applySmartMode}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
             >
               <Lightbulb className="w-4 h-4" />
               <span>{t('smartMode.apply')}</span>
@@ -603,7 +603,7 @@ export default function RegexExtractor() {
             </h3>
             <button
               onClick={() => setShowGuide(false)}
-              className="p-1 text-gray-400 hover:text-gray-600"
+              className="p-1 text-faint hover:text-sub"
               aria-label={tCommon('close')}
             >
               <EyeOff className="w-5 h-5" />
@@ -663,7 +663,7 @@ export default function RegexExtractor() {
             </h3>
             <button
               onClick={() => setShowPatternBuilder(false)}
-              className="p-1 text-gray-400 hover:text-gray-600"
+              className="p-1 text-faint hover:text-sub"
               aria-label={tCommon('close')}
             >
               <EyeOff className="w-5 h-5" />
@@ -692,7 +692,7 @@ export default function RegexExtractor() {
               <button
                 key={item.symbol}
                 onClick={() => setPattern(pattern + item.symbol)}
-                className="p-2 bg-soft rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-center"
+                className="p-2 bg-soft rounded-lg hover:bg-subtle transition-colors text-center"
               >
                 <code className="block font-mono text-sm">{item.symbol}</code>
                 <span className="text-xs text-muted">{t(`patternBuilder.symbols.${item.key}`)}</span>
@@ -726,11 +726,11 @@ export default function RegexExtractor() {
                   }}
                   className={`p-4 rounded-lg border-2 text-left transition-all ${
                     operation === key
-                      ? 'border-blue-500 bg-subtle'
-                      : 'border-line hover:border-blue-300'
+                      ? 'border-primary bg-primary-soft'
+                      : 'border-line hover:border-line-strong'
                   }`}
                 >
-                  <Icon className="w-6 h-6 mb-2 text-blue-600" />
+                  <Icon className="w-6 h-6 mb-2 text-sub" />
                   <div className="font-medium text-fg">{label}</div>
                   <div className="text-sm text-muted">{desc}</div>
                 </button>
@@ -747,7 +747,7 @@ export default function RegexExtractor() {
               <button
                 onClick={() => setShowPresets(!showPresets)}
                 aria-expanded={showPresets}
-                className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                className="flex items-center space-x-2 px-3 py-1 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
               >
                 <Eye className="w-4 h-4" />
                 <span className="text-sm">{t('pattern.presets')}</span>
@@ -765,9 +765,9 @@ export default function RegexExtractor() {
                 placeholder={t('pattern.placeholder')}
                 aria-label={t('pattern.title')}
                 aria-invalid={!isValid}
-                className={`w-full px-4 py-3 border rounded-lg font-mono text-sm focus:ring-2 focus:border-transparent dark:bg-gray-700 dark:text-white ${
+                className={`w-full px-4 py-3 border rounded-lg font-mono text-sm focus:ring-2 focus:border-transparent bg-field text-fg ${
                   isValid 
-                    ? 'border-line-strong focus:ring-blue-500' 
+                    ? 'border-line-strong focus:ring-primary' 
                     : 'border-red-500 focus:ring-red-500'
                 }`}
               />
@@ -788,7 +788,7 @@ export default function RegexExtractor() {
             {pattern && isValid && (
               <div className="mt-3 p-3 bg-subtle rounded-lg">
                 <div className="flex items-start space-x-2">
-                  <HelpCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <HelpCircle className="w-4 h-4 text-muted mt-0.5 flex-shrink-0" />
                   <div>
                     <div className="text-sm font-medium text-fg mb-1">
                       {t('pattern.explanation')}
@@ -819,8 +819,8 @@ export default function RegexExtractor() {
                     aria-pressed={flags.includes(flag)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       flags.includes(flag)
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-primary text-white'
+                        : 'bg-soft text-body hover:bg-subtle'
                     }`}
                     title={desc}
                   >
@@ -842,7 +842,7 @@ export default function RegexExtractor() {
                   value={replacement}
                   onChange={(e) => setReplacement(e.target.value)}
                   placeholder={t('replacement.placeholder')}
-                  className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg"
                 />
                 <div className="mt-1 text-xs text-muted">
                   {t('replacement.help')}
@@ -860,7 +860,7 @@ export default function RegexExtractor() {
                 </h3>
                 <button
                   onClick={() => setShowPresets(false)}
-                  className="p-1 text-gray-400 hover:text-gray-600"
+                  className="p-1 text-faint hover:text-sub"
                   aria-label={tCommon('close')}
                 >
                   <EyeOff className="w-5 h-5" />
@@ -876,8 +876,8 @@ export default function RegexExtractor() {
                     aria-pressed={selectedCategory === category}
                     className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-sm transition-colors ${
                       selectedCategory === category
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-soft text-body hover:bg-gray-200'
+                        ? 'bg-primary text-white'
+                        : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
                     {getCategoryIcon(category)}
@@ -892,7 +892,7 @@ export default function RegexExtractor() {
                   <button
                     key={index}
                     onClick={() => applyPreset(preset)}
-                    className="w-full text-left p-3 bg-subtle rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    className="w-full text-left p-3 bg-subtle rounded-lg hover:bg-soft transition-colors"
                   >
                     <div className="font-medium text-fg">
                       {t(`presets.patterns.${preset.name}`)}
@@ -916,7 +916,7 @@ export default function RegexExtractor() {
                 {t('input.title')}
               </h3>
               <div className="flex space-x-2">
-                <label className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer transition-colors">
+                <label className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle cursor-pointer transition-colors">
                   <span className="text-sm">{t('input.upload')}</span>
                   <input
                     type="file"
@@ -930,7 +930,7 @@ export default function RegexExtractor() {
                     setInputText('')
                     updateURL({ input: '' })
                   }}
-                  className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span className="text-sm">{tCommon('clear')}</span>
@@ -947,7 +947,7 @@ export default function RegexExtractor() {
               placeholder={t('input.placeholder')}
               aria-label={t('input.title')}
               rows={12}
-              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg resize-none"
             />
             
             <div className="mt-2 text-sm text-muted">
@@ -974,25 +974,25 @@ export default function RegexExtractor() {
                   {t('results.matchInfo')}
                 </h3>
                 {isProcessing && (
-                  <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
+                  <RefreshCw className="w-5 h-5 text-primary animate-spin" />
                 )}
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-3 bg-subtle rounded-lg" aria-live="polite" aria-atomic="true">
-                  <div className="text-2xl font-bold text-blue-600">{matches.length}</div>
+                  <div className="text-2xl font-bold text-fg">{matches.length}</div>
                   <div className="text-sm text-sub">{t('results.matches')}</div>
                 </div>
                 <div className="text-center p-3 bg-subtle rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">{outputText.split('\n').filter(line => line.trim()).length}</div>
+                  <div className="text-2xl font-bold text-fg">{outputText.split('\n').filter(line => line.trim()).length}</div>
                   <div className="text-sm text-sub">{t('results.outputLines')}</div>
                 </div>
                 <div className="text-center p-3 bg-subtle rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">{outputText.length}</div>
+                  <div className="text-2xl font-bold text-fg">{outputText.length}</div>
                   <div className="text-sm text-sub">{t('results.outputChars')}</div>
                 </div>
                 <div className="text-center p-3 bg-subtle rounded-lg">
-                  <div className="text-2xl font-bold text-gray-600">{((matches.length / Math.max(inputText.split('\n').length, 1)) * 100).toFixed(1)}%</div>
+                  <div className="text-2xl font-bold text-fg">{((matches.length / Math.max(inputText.split('\n').length, 1)) * 100).toFixed(1)}%</div>
                   <div className="text-sm text-body">{t('results.matchRate')}</div>
                 </div>
               </div>
@@ -1035,14 +1035,14 @@ export default function RegexExtractor() {
                   <>
                     <button
                       onClick={() => copyToClipboard(outputText)}
-                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
                     >
                       <Copy className="w-4 h-4" />
                       <span className="text-sm">{isCopied ? tCommon('copied') : tCommon('copy')}</span>
                     </button>
                     <button
                       onClick={downloadResult}
-                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
                     >
                       <Download className="w-4 h-4" />
                       <span className="text-sm">{t('results.download')}</span>
@@ -1058,7 +1058,7 @@ export default function RegexExtractor() {
               placeholder={t('results.placeholder')}
               aria-label={t('results.title')}
               rows={15}
-              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm bg-subtle dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm bg-subtle text-fg resize-none"
             />
           </div>
 
@@ -1067,7 +1067,7 @@ export default function RegexExtractor() {
             <div className="flex space-x-3">
               <button
                 onClick={handleShare}
-                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-3 rounded-lg text-body transition-colors"
+                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-subtle px-4 py-3 rounded-lg text-body transition-colors"
               >
                 <Share2 className="w-5 h-5" />
                 <span>{t('results.share')}</span>
@@ -1075,7 +1075,7 @@ export default function RegexExtractor() {
               
               <button
                 onClick={handleSaveCalculation}
-                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-3 rounded-lg text-body transition-colors"
+                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-subtle px-4 py-3 rounded-lg text-body transition-colors"
               >
                 <Save className="w-5 h-5" />
                 <span>{tCommon('save')}</span>

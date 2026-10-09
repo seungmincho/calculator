@@ -31,105 +31,47 @@ const COMMON_PATTERNS: CommonPattern[] = [
   { labelKey: 'patternRrn', pattern: '\\d{6}-[1-4]\\d{6}' },
 ]
 
-// Map of regex tokens to Korean explanations
-const TOKEN_MAP: [RegExp, string][] = [
-  [/\\d/g, '숫자(0-9)'],
-  [/\\D/g, '숫자가 아닌 문자'],
-  [/\\w/g, '단어 문자(영숫자+_)'],
-  [/\\W/g, '단어 문자가 아닌 문자'],
-  [/\\s/g, '공백 문자'],
-  [/\\S/g, '공백이 아닌 문자'],
-  [/\\b/g, '단어 경계'],
-  [/\\\./g, '마침표(.)'],
-  [/\\\+/g, '플러스(+)'],
-  [/\\\*/g, '별표(*)'],
-  [/\\\?/g, '물음표(?)'],
-  [/\[a-z\]/g, '소문자 알파벳'],
-  [/\[A-Z\]/g, '대문자 알파벳'],
-  [/\[0-9\]/g, '숫자 0~9'],
-  [/\[가-힣\]/g, '한글 음절'],
-  [/\^/g, '문자열/줄 시작'],
-  [/\$/g, '문자열/줄 끝'],
-  [/\{(\d+),(\d+)\}/g, '최소$1~최대$2회 반복'],
-  [/\{(\d+)\}/g, '$1회 반복'],
-  [/\+/g, '1회 이상 반복'],
-  [/\*/g, '0회 이상 반복'],
-  [/\?/g, '0 또는 1회'],
-  [/\./g, '임의의 한 문자'],
-  [/\|/g, '또는(OR)'],
-  [/\(/g, '그룹 시작'],
-  [/\)/g, '그룹 끝'],
-]
+type Translate = (key: string, vars?: Record<string, unknown>) => string
 
-function buildExplanation(pattern: string): string {
+function buildExplanation(pattern: string, t: Translate): string {
   if (!pattern) return ''
+  const x = (key: string, vars?: Record<string, unknown>) => t(`explain.${key}`, vars)
   const parts: string[] = []
-  const tokenPatterns: [RegExp, string][] = [
-    [/\\d/g, '숫자'],
-    [/\\D/g, '비숫자'],
-    [/\\w/g, '단어문자'],
-    [/\\W/g, '비단어문자'],
-    [/\\s/g, '공백'],
-    [/\\S/g, '비공백'],
-    [/\\b/g, '단어경계'],
-    [/\\\./g, '마침표'],
-    [/\[가-힣\]\+/g, '한글 1회 이상'],
-    [/\[가-힣\]\*/g, '한글 0회 이상'],
-    [/\[가-힣\]/g, '한글 한 글자'],
-    [/\[a-zA-Z0-9\]/g, '영숫자 한 자'],
-    [/\[a-z\]\+/g, '소문자 1회 이상'],
-    [/\[a-z\]/g, '소문자 한 자'],
-    [/\[A-Z\]\+/g, '대문자 1회 이상'],
-    [/\[A-Z\]/g, '대문자 한 자'],
-    [/\[0-9\]\+/g, '숫자 1회 이상'],
-    [/\[0-9\]/g, '숫자 한 자'],
-    [/\{(\d+),(\d+)\}/g, '최소$1~최대$2회'],
-    [/\{(\d+)\}/g, '$1회 반복'],
-    [/\+/g, '1회 이상'],
-    [/\*/g, '0회 이상'],
-    [/\?/g, '선택적(0~1)'],
-    [/\^/g, '시작'],
-    [/\$/g, '끝'],
-    [/\|/g, '또는'],
-  ]
-
-  // Describe character classes with quantifiers
-  const descMap: [string, string][] = []
-  let work = pattern
+  const work = pattern
   // extract tokens linearly
   let i = 0
   while (i < work.length) {
     if (work[i] === '\\' && i + 1 < work.length) {
       const ch = work[i + 1]
-      const labels: Record<string, string> = { d: '숫자', D: '비숫자', w: '단어문자', W: '비단어문자', s: '공백', S: '비공백', b: '단어경계', n: '줄바꿈', t: '탭', '.': '마침표', '+': '+', '*': '*', '?': '?', '[': '[', ']': ']', '(': '(', ')': ')' }
+      const labels: Record<string, string> = { d: x('digit'), D: x('nonDigit'), w: x('word'), W: x('nonWord'), s: x('space'), S: x('nonSpace'), b: x('wordBoundary'), n: x('newline'), t: x('tab'), '.': x('period'), '+': '+', '*': '*', '?': '?', '[': '[', ']': ']', '(': '(', ')': ')' }
       parts.push(labels[ch] ?? `\\${ch}`)
       i += 2
     } else if (work[i] === '[') {
       const end = work.indexOf(']', i)
-      if (end === -1) { parts.push('문자 클래스'); i++; continue }
+      if (end === -1) { parts.push(x('charClass')); i++; continue }
       const inner = work.slice(i, end + 1)
-      let label = `문자 클래스 ${inner}`
-      if (inner === '[가-힣]') label = '한글'
-      else if (inner === '[a-z]') label = '소문자'
-      else if (inner === '[A-Z]') label = '대문자'
-      else if (inner === '[0-9]') label = '숫자'
-      else if (inner === '[a-zA-Z0-9]') label = '영숫자'
-      else if (inner === '[^>]') label = "> 제외 문자"
+      let label = x('charClassOf', { inner })
+      if (inner === '[가-힣]') label = x('hangul')
+      else if (inner === '[a-z]') label = x('lower')
+      else if (inner === '[A-Z]') label = x('upper')
+      else if (inner === '[0-9]') label = x('digit')
+      else if (inner === '[a-zA-Z0-9]') label = x('alnum')
+      else if (inner === '[^>]') label = x('notGt')
       // check quantifier
       const next = work[end + 1]
-      if (next === '+') { parts.push(`${label} 1회 이상`); i = end + 2 }
-      else if (next === '*') { parts.push(`${label} 0회 이상`); i = end + 2 }
-      else if (next === '?') { parts.push(`${label} 0~1회`); i = end + 2 }
+      if (next === '+') { parts.push(x('quantified', { label, q: x('oneOrMore') })); i = end + 2 }
+      else if (next === '*') { parts.push(x('quantified', { label, q: x('zeroOrMore') })); i = end + 2 }
+      else if (next === '?') { parts.push(x('quantified', { label, q: x('optional') })); i = end + 2 }
       else { parts.push(label); i = end + 1 }
     } else if (work[i] === '(') {
-      parts.push('그룹 시작')
+      parts.push(x('groupStart'))
       i++
     } else if (work[i] === ')') {
       let q = ''
-      if (work[i + 1] === '+') { q = '1회 이상'; i++ }
-      else if (work[i + 1] === '*') { q = '0회 이상'; i++ }
-      else if (work[i + 1] === '?') { q = '0~1회'; i++ }
-      parts.push(q ? `그룹 끝(${q})` : '그룹 끝')
+      if (work[i + 1] === '+') { q = x('oneOrMore'); i++ }
+      else if (work[i + 1] === '*') { q = x('zeroOrMore'); i++ }
+      else if (work[i + 1] === '?') { q = x('optional'); i++ }
+      parts.push(q ? x('groupEndQuantified', { q }) : x('groupEnd'))
       i++
     } else if (work[i] === '{') {
       const end = work.indexOf('}', i)
@@ -137,22 +79,21 @@ function buildExplanation(pattern: string): string {
       const inner = work.slice(i + 1, end)
       if (inner.includes(',')) {
         const [min, max] = inner.split(',')
-        parts.push(`최소${min}~최대${max}회`)
+        parts.push(x('range', { min, max }))
       } else {
-        parts.push(`${inner}회 반복`)
+        parts.push(x('repeat', { n: inner }))
       }
       i = end + 1
-    } else if (work[i] === '+') { parts.push('1회 이상'); i++ }
-    else if (work[i] === '*') { parts.push('0회 이상'); i++ }
-    else if (work[i] === '?') { parts.push('0~1회'); i++ }
-    else if (work[i] === '.') { parts.push('임의의 한 문자'); i++ }
-    else if (work[i] === '^') { parts.push('시작'); i++ }
-    else if (work[i] === '$') { parts.push('끝'); i++ }
-    else if (work[i] === '|') { parts.push('또는'); i++ }
+    } else if (work[i] === '+') { parts.push(x('oneOrMore')); i++ }
+    else if (work[i] === '*') { parts.push(x('zeroOrMore')); i++ }
+    else if (work[i] === '?') { parts.push(x('optional')); i++ }
+    else if (work[i] === '.') { parts.push(x('anyChar')); i++ }
+    else if (work[i] === '^') { parts.push(x('start')); i++ }
+    else if (work[i] === '$') { parts.push(x('end')); i++ }
+    else if (work[i] === '|') { parts.push(x('or')); i++ }
     else { i++ }
   }
 
-  void TOKEN_MAP; void tokenPatterns; void descMap
   return parts.slice(0, 12).join(' · ')
 }
 
@@ -192,11 +133,11 @@ export default function RegexBuilder() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
   const flagList: { flag: Flag; label: string; title: string }[] = [
-    { flag: 'g', label: 'g', title: '전체 매칭 (global)' },
-    { flag: 'i', label: 'i', title: '대소문자 무시 (case-insensitive)' },
-    { flag: 'm', label: 'm', title: '여러 줄 (multiline)' },
-    { flag: 's', label: 's', title: '점이 줄바꿈 포함 (dotAll)' },
-    { flag: 'u', label: 'u', title: '유니코드 (unicode)' },
+    { flag: 'g', label: 'g', title: t('flagTitles.g') },
+    { flag: 'i', label: 'i', title: t('flagTitles.i') },
+    { flag: 'm', label: 'm', title: t('flagTitles.m') },
+    { flag: 's', label: 's', title: t('flagTitles.s') },
+    { flag: 'u', label: 'u', title: t('flagTitles.u') },
   ]
 
   const flagString = useMemo(() => Array.from(flags).join(''), [flags])
@@ -251,7 +192,7 @@ export default function RegexBuilder() {
     } catch { return testText }
   }, [pattern, testText, replaceWith, flagString, flags, regexError])
 
-  const explanation = useMemo(() => buildExplanation(pattern), [pattern])
+  const explanation = useMemo(() => buildExplanation(pattern, t), [pattern, t])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -365,7 +306,7 @@ export default function RegexBuilder() {
             value={testText}
             onChange={e => setTestText(e.target.value)}
             rows={6}
-            placeholder="테스트할 텍스트를 입력하세요..."
+            placeholder={t('testPlaceholder')}
             className={`${inputBase} border-line-strong resize-none`}
           />
           {/* Highlighted output */}
@@ -387,7 +328,7 @@ export default function RegexBuilder() {
                 type="text"
                 value={replaceWith}
                 onChange={e => setReplaceWith(e.target.value)}
-                placeholder="$1, $2 로 그룹 참조 가능"
+                placeholder={t('replacePlaceholder')}
                 className={`${inputBase} border-line-strong`}
               />
               <div className="text-xs font-medium text-muted mb-1">{t('result')}</div>
@@ -429,7 +370,7 @@ export default function RegexBuilder() {
                       </td>
                       <td className="py-1.5 font-mono text-sub text-xs">
                         {m.groups.length > 0 ? m.groups.map((g, gi) => (
-                          <span key={gi} className="mr-1 bg-subtle text-sub rounded px-1">{g || '(없음)'}</span>
+                          <span key={gi} className="mr-1 bg-subtle text-sub rounded px-1">{g || t('emptyGroup')}</span>
                         )) : '-'}
                       </td>
                     </tr>

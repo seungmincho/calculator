@@ -45,18 +45,18 @@ const CATEGORY_BG: Record<string, string> = {
   teal: 'bg-soft text-sub border-line',
   cyan: 'bg-soft text-sub border-line',
   pink: 'bg-soft text-sub border-line',
-  amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+  amber: 'bg-soft text-sub border-line',
 }
 
 const CATEGORY_TAB_ACTIVE: Record<string, string> = {
-  orange: 'bg-orange-500 text-white',
-  green: 'bg-green-500 text-white',
-  blue: 'bg-blue-500 text-white',
-  purple: 'bg-purple-500 text-white',
-  teal: 'bg-teal-500 text-white',
-  cyan: 'bg-cyan-500 text-white',
-  pink: 'bg-pink-500 text-white',
-  amber: 'bg-amber-500 text-white',
+  orange: 'bg-primary text-white',
+  green: 'bg-primary text-white',
+  blue: 'bg-primary text-white',
+  purple: 'bg-primary text-white',
+  teal: 'bg-primary text-white',
+  cyan: 'bg-primary text-white',
+  pink: 'bg-primary text-white',
+  amber: 'bg-primary text-white',
 }
 
 // ── Helpers ──
@@ -280,21 +280,21 @@ export default function DevCheatsheet() {
       </div>
 
       {/* Search + Filters */}
-      <div className="bg-surface rounded-xl shadow-lg p-4 space-y-4">
+      <div className="bg-surface border border-line rounded-xl p-4 space-y-4">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-faint" />
           <input
             type="text"
             value={searchInput}
             onChange={e => handleSearchInput(e.target.value)}
             placeholder={t('search.placeholder')}
-            className="w-full pl-10 pr-10 py-2.5 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+            className="w-full pl-10 pr-10 py-2.5 border border-line-strong rounded-lg bg-field text-fg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
           />
           {searchInput && (
             <button
               onClick={clearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-sub"
             >
               <X className="w-4 h-4" />
             </button>
@@ -313,8 +313,8 @@ export default function DevCheatsheet() {
                 onClick={() => setDifficulty(d)}
                 className={`px-2.5 py-1 text-xs rounded-full transition-colors ${
                   difficulty === d
-                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium'
-                    : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-primary text-white font-medium'
+                    : 'bg-soft text-sub hover:bg-subtle'
                 }`}
               >
                 {d === 'all' ? t('filter.all') : (
@@ -332,8 +332,8 @@ export default function DevCheatsheet() {
             onClick={() => setShowBookmarkedOnly(prev => !prev)}
             className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-full transition-colors ${
               showBookmarkedOnly
-                ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300 font-medium'
-                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white font-medium'
+                : 'bg-soft text-sub hover:bg-subtle'
             }`}
           >
             <BookMarked className="w-3.5 h-3.5" />
@@ -350,15 +350,15 @@ export default function DevCheatsheet() {
             onClick={() => handleCategoryChange('all')}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
               category === 'all'
-                ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900'
-                : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-primary text-white'
+                : 'bg-soft text-sub hover:bg-subtle'
             }`}
           >
             {t('filter.all')}
             <span className={`text-xs px-1.5 py-0.5 rounded-full ${
               category === 'all'
-                ? 'bg-white/20 dark:bg-gray-900/20'
-                : 'bg-gray-200 dark:bg-gray-600'
+                ? 'bg-white/20'
+                : 'bg-surface'
             }`}>
               {totalCount}
             </span>
@@ -374,8 +374,8 @@ export default function DevCheatsheet() {
                 onClick={() => handleCategoryChange(key)}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive
-                    ? CATEGORY_TAB_ACTIVE[cat.color] || 'bg-gray-900 text-white'
-                    : 'bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? CATEGORY_TAB_ACTIVE[cat.color] || 'bg-primary text-white'
+                    : 'bg-soft text-sub hover:bg-subtle'
                 }`}
               >
                 <span>{cat.icon}</span>
@@ -383,7 +383,7 @@ export default function DevCheatsheet() {
                 <span className={`text-xs px-1.5 py-0.5 rounded-full ${
                   isActive
                     ? 'bg-white/20'
-                    : 'bg-gray-200 dark:bg-gray-600'
+                    : 'bg-surface'
                 }`}>
                   {count}
                 </span>
@@ -395,8 +395,8 @@ export default function DevCheatsheet() {
 
       {/* Command List */}
       {filtered.length === 0 ? (
-        <div className="bg-surface rounded-xl shadow-lg p-12 text-center">
-          <Search className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+        <div className="bg-surface border border-line rounded-xl p-12 text-center">
+          <Search className="w-12 h-12 text-faint mx-auto mb-3" />
           <p className="text-muted">{t('search.noResults')}</p>
         </div>
       ) : (
@@ -407,7 +407,7 @@ export default function DevCheatsheet() {
             const catInfo = CHEATSHEET_CATEGORIES[catKey]
 
             return (
-              <div key={catKey} className="bg-surface rounded-xl shadow-lg overflow-hidden">
+              <div key={catKey} className="bg-surface border border-line rounded-xl overflow-hidden">
                 {/* Category Header */}
                 {category === 'all' && (
                   <div className={`px-6 py-3 border-b border-line flex items-center gap-2 ${CATEGORY_BG[catInfo.color] || ''}`}>
@@ -419,7 +419,7 @@ export default function DevCheatsheet() {
                 )}
 
                 {/* Commands */}
-                <div className="divide-y divide-gray-100 dark:divide-gray-700/50">
+                <div className="divide-y divide-line">
                   {commands.map(cmd => {
                     const isExpanded = expandedIds.has(cmd.id)
                     const isBookmarked = bookmarks.includes(cmd.id)
@@ -458,7 +458,7 @@ export default function DevCheatsheet() {
                               className={`p-1.5 rounded-lg transition-colors ${
                                 isBookmarked
                                   ? 'text-yellow-500 hover:text-yellow-600'
-                                  : 'text-gray-300 dark:text-gray-600 hover:text-yellow-500 opacity-0 group-hover:opacity-100 focus:opacity-100'
+                                  : 'text-faint hover:text-yellow-500 opacity-0 group-hover:opacity-100 focus:opacity-100'
                               }`}
                               title={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
                             >
@@ -468,7 +468,7 @@ export default function DevCheatsheet() {
                             {/* Copy */}
                             <button
                               onClick={() => copyToClipboard(cmd.command, cmd.id)}
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                              className="p-1.5 rounded-lg text-faint hover:text-primary transition-colors"
                               title={isCopied ? t('command.copied') : t('command.copy')}
                             >
                               {isCopied ? (
@@ -482,7 +482,7 @@ export default function DevCheatsheet() {
                             {(cmd.example || cmd.tags.length > 0) && (
                               <button
                                 onClick={() => toggleExpand(cmd.id)}
-                                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                                className="p-1.5 rounded-lg text-faint hover:text-sub transition-colors"
                               >
                                 {isExpanded ? (
                                   <ChevronUp className="w-4 h-4" />

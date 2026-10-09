@@ -670,7 +670,7 @@ export default function Omok({ initialRoom, isHost: isHostProp, onBack, joinPeer
             {t('waitingForOpponent')}
           </h2>
           <p className="text-sub mb-6">
-            {t('shareLinkDesc') || '초대 링크를 상대에게 공유하세요!'}
+            {t('shareLinkDesc')}
           </p>
 
           <GameInviteLink peerId={peerId} gameSlug="omok" gameTitle={t('title')} />

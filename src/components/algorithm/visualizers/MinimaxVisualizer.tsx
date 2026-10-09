@@ -417,7 +417,7 @@ export default function MinimaxVisualizer() {
                   )}
                   {bestMove >= 0 && (
                     <span className="text-sub">
-                      {t('stats.bestMove')}: <strong className="text-emerald-600 dark:text-emerald-400">{bestMove + 1}번</strong>
+                      {t('stats.bestMove')}: <strong className="text-emerald-600 dark:text-emerald-400">{t('stats.bestMoveCell', { n: bestMove + 1 })}</strong>
                     </span>
                   )}
                 </div>
@@ -481,7 +481,7 @@ export default function MinimaxVisualizer() {
                 {/* Next player indicator (only when interactive) */}
                 {!isRunning && !checkWinner(board).winner && (
                   <div className="text-xs text-muted">
-                    다음:
+                    {t('board.next')}
                     <span className={`ml-1 font-bold ${nextPlayer(board) === 'X' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
                       {nextPlayer(board)}
                     </span>
@@ -489,14 +489,14 @@ export default function MinimaxVisualizer() {
                 )}
                 {checkWinner(board).winner && !isRunning && (
                   <div className="text-xs font-medium text-yellow-600 dark:text-yellow-400">
-                    {checkWinner(board).winner} 승!
+                    {t('board.winner', { winner: checkWinner(board).winner })}
                   </div>
                 )}
               </div>
 
               {/* Preset & clear buttons */}
               <div className="space-y-2 flex-1 min-w-0">
-                <p className="text-xs font-medium text-muted">프리셋 보드</p>
+                <p className="text-xs font-medium text-muted">{t('controls.presetTitle')}</p>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => handlePreset(PRESET_EMPTY)}
@@ -708,6 +708,9 @@ function MinimaxStepsList({
     }
   }, [currentIndex])
 
+  const t = useTranslations('minimaxVisualizer')
+  const tHub = useTranslations('algorithmHub')
+
   if (displaySteps.length === 0) return null
 
   const ACTION_STYLES: Record<MinimaxStep['action'], string> = {
@@ -725,10 +728,10 @@ function MinimaxStepsList({
   }
 
   const ACTION_LABELS: Record<MinimaxStep['action'], string> = {
-    expand: '탐색',
-    evaluate: '평가',
-    backpropagate: '선택',
-    prune: '가지치기',
+    expand: t('stepsList.expand'),
+    evaluate: t('stepsList.evaluate'),
+    backpropagate: t('stepsList.backpropagate'),
+    prune: t('stats.prunedNodes'),
   }
 
   // Show surrounding window — compact, only ±5 around current
@@ -740,7 +743,7 @@ function MinimaxStepsList({
     <div ref={listRef} className="space-y-1">
       {windowStart > 0 && (
         <div className="text-xs text-faint text-center py-1">
-          ... 이전 {windowStart}개 단계 ...
+          {tHub('controls.stepsBefore', { count: windowStart })}
         </div>
       )}
       {windowSteps.map((step) => {
@@ -768,10 +771,10 @@ function MinimaxStepsList({
               </span>
               <span className="text-sub truncate">
                 {node?.move !== null && node?.move !== undefined
-                  ? `${isMaximizing ? 'X' : 'O'} → ${node.move + 1}번칸`
+                  ? t('stepsList.move', { player: isMaximizing ? 'X' : 'O', cell: node.move + 1 })
                   : step.depth === 0
-                    ? '루트'
-                    : `깊이 ${step.depth}`}
+                    ? t('stepsList.root')
+                    : t('stepsList.depth', { depth: step.depth })}
               </span>
               {step.score !== null && (
                 <span className={`ml-auto text-[10px] font-bold tabular-nums ${step.score > 0 ? 'text-blue-600 dark:text-blue-400' : step.score < 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-500'}`}>
@@ -789,7 +792,7 @@ function MinimaxStepsList({
       })}
       {windowEnd < displaySteps.length - 1 && (
         <div className="text-xs text-faint text-center py-1">
-          ... 이후 {displaySteps.length - 1 - windowEnd}개 단계 ...
+          {tHub('controls.stepsAfter', { count: displaySteps.length - 1 - windowEnd })}
         </div>
       )}
     </div>
