@@ -701,9 +701,9 @@ export default function DijkstraVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="dijkstraVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

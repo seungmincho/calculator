@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
-  title: 'CPU 스케줄링 시각화 - FCFS, SJF, Round Robin 비교 | 툴허브',
+  title: 'CPU 스케줄링 시각화 - FCFS·SJF·라운드 로빈 비교 | 툴허브',
   description: 'CPU 스케줄링 알고리즘을 간트 차트로 시각화하고 비교하세요. FCFS, SJF, SRTF, Round Robin, Priority 스케줄링을 애니메이션으로 학습할 수 있습니다.',
   keywords: 'CPU 스케줄링, 프로세스 스케줄링, FCFS, SJF, SRTF, Round Robin, Priority, 운영체제, OS 시각화, 간트 차트, 대기시간, 반환시간',
   openGraph: {
-    title: 'CPU 스케줄링 시각화 - FCFS, SJF, Round Robin 비교 | 툴허브',
+    title: 'CPU 스케줄링 시각화 - FCFS·SJF·라운드 로빈 비교 | 툴허브',
     description: 'CPU 스케줄링 알고리즘을 간트 차트로 시각화하고 비교하세요. FCFS, SJF, SRTF, Round Robin, Priority 스케줄링을 애니메이션으로 학습합니다.',
     url: 'https://toolhub.ai.kr/cpu-scheduling/',
     siteName: '툴허브',

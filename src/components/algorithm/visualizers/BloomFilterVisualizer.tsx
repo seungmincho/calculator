@@ -369,9 +369,9 @@ export default function BloomFilterVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={BLOOM_CODE} language="javascript" highlightLines={codeHighlightLines} title="bloomFilter.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="bloomFilterVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

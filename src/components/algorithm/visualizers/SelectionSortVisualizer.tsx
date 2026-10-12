@@ -359,9 +359,9 @@ export default function SelectionSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="selectionSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

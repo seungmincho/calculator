@@ -348,9 +348,9 @@ export default function BubbleSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="bubbleSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

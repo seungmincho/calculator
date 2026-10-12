@@ -347,9 +347,9 @@ export default function InsertionSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="insertionSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

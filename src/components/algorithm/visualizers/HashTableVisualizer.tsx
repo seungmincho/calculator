@@ -521,11 +521,11 @@ export default function HashTableVisualizer() {
               )}
 
               {/* Guide tab */}
-              {activeTab === 'guide' && (
+              <div hidden={activeTab !== 'guide'}>
                 <div className="p-4">
                   <GuideSection namespace="hashTableVisualizer" />
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

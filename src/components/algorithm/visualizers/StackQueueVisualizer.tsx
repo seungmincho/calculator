@@ -551,11 +551,11 @@ export default function StackQueueVisualizer() {
               )}
 
               {/* Guide tab */}
-              {activeTab === 'guide' && (
+              <div hidden={activeTab !== 'guide'}>
                 <div className="-m-4">
                   <GuideSection namespace="stackQueueVisualizer" />
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

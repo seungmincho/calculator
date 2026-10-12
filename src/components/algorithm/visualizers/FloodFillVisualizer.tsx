@@ -510,9 +510,9 @@ export default function FloodFillVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="floodFillVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

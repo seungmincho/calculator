@@ -336,9 +336,9 @@ export default function FloydWarshallVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={FW_CODE} language="javascript" highlightLines={codeHighlightLines} title="floydWarshall.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="floydWarshallVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

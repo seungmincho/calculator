@@ -417,9 +417,9 @@ export default function BinarySearchVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="binarySearchVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

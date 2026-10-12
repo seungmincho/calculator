@@ -293,9 +293,9 @@ export default function ShellSortVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={SHELL_SORT_CODE} language="javascript" highlightLines={codeHighlightLines} title="shellSort.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="shellSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

@@ -239,9 +239,9 @@ export default function NQueensVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={NQUEENS_CODE} language="javascript" highlightLines={codeHighlightLines} title="nQueens.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="nQueensVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

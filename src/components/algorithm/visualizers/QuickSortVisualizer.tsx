@@ -365,9 +365,9 @@ export default function QuickSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="quickSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

@@ -292,7 +292,7 @@ export default function LCSVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={LCS_CODE} language="javascript" highlightLines={codeHighlightLines} title="lcs.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="lcsVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="lcsVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

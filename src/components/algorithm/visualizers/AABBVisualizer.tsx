@@ -399,9 +399,9 @@ export default function AABBVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="aabbVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

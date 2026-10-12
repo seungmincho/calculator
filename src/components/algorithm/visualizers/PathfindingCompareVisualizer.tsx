@@ -386,7 +386,7 @@ export default function PathfindingCompareVisualizer() {
                   </div>
                 )}
 
-                {activeTab === 'guide' && <GuideSection namespace="pathfindingCompareVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="pathfindingCompareVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

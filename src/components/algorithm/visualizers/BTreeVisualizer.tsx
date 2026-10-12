@@ -442,7 +442,7 @@ export default function BTreeVisualizer() {
                   </div>
                 )}
 
-                {activeTab === 'guide' && <GuideSection namespace="bTreeVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="bTreeVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

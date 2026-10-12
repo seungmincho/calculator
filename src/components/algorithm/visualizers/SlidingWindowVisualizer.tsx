@@ -356,7 +356,7 @@ export default function SlidingWindowVisualizer() {
                     title={mode === 'fixed' ? 'fixedWindow.js' : 'variableWindow.js'}
                   />
                 )}
-                {activeTab === 'guide' && <GuideSection namespace="slidingWindowVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="slidingWindowVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

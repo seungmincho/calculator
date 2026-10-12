@@ -374,9 +374,9 @@ export default function MergeSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="mergeSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

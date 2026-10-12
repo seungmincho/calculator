@@ -5,13 +5,13 @@ import GitVisualizer from '@/components/GitVisualizer'
 import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
-  title: 'Git 시각화 - branch, merge, rebase 인터랙티브 학습 | 툴허브',
+  title: 'Git 시각화 - branch·merge·rebase 학습 | 툴허브',
   description:
     'Git의 branch, merge, rebase, cherry-pick 명령을 인터랙티브 커밋 그래프로 시각화하며 학습하세요. 실시간 커밋 트리, 단계별 설명, 프리셋 시나리오로 Git을 쉽게 이해할 수 있습니다.',
   keywords:
     'git 시각화, git branch, git merge, git rebase, git cherry-pick, 깃 시각화, git 학습, git 커밋 그래프, git 인터랙티브, git reset',
   openGraph: {
-    title: 'Git 시각화 - branch, merge, rebase 인터랙티브 학습 | 툴허브',
+    title: 'Git 시각화 - branch·merge·rebase 학습 | 툴허브',
     description:
       'Git 명령을 인터랙티브 커밋 그래프로 시각화하며 학습하세요. branch, merge, rebase, cherry-pick을 직접 실행하고 결과를 눈으로 확인합니다.',
     type: 'website',

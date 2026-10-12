@@ -342,7 +342,7 @@ export default function TrieVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={CODE_MAP[operation]} language="javascript" highlightLines={codeHighlightLines} title={CODE_TITLE[operation]} />}
-                {activeTab === 'guide' && <GuideSection namespace="trieVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="trieVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

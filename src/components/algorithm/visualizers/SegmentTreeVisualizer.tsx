@@ -439,7 +439,7 @@ export default function SegmentTreeVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={currentCode} language="javascript" highlightLines={codeHighlightLines} title={codeTitle} />
                 )}
-                {activeTab === 'guide' && <GuideSection namespace="segmentTreeVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="segmentTreeVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

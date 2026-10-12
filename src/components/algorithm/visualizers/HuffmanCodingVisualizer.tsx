@@ -275,7 +275,7 @@ export default function HuffmanCodingVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={HUFFMAN_CODE} language="javascript" highlightLines={codeHighlightLines} title="huffman.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="huffmanCodingVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="huffmanCodingVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

@@ -261,9 +261,9 @@ export default function VoronoiVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={VORONOI_CODE} language="javascript" highlightLines={codeHighlightLines} title="voronoi.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="voronoiVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

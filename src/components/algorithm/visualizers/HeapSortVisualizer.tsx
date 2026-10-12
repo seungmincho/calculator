@@ -355,9 +355,9 @@ export default function HeapSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="heapSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

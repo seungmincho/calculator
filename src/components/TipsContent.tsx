@@ -13,31 +13,13 @@ interface Tip {
   tip: string;
 }
 
-export default function TipsContent() {
+export default function TipsContent({ tips }: { tips: Tip[] }) {
   const t = useTranslations('tipsPage');
-  const [tips, setTips] = useState<Tip[]>([]);
-  const [filteredTips, setFilteredTips] = useState<Tip[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  // 팁 목록은 서버에서 받아 HTML 에 바로 렌더한다(예전엔 마운트 후 fetch 라 검색엔진이 빈 페이지로 봤다)
+  const [filteredTips, setFilteredTips] = useState<Tip[]>(tips);
+  const categories = Array.from(new Set(tips.map(tip => tip.category)));
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
-
-  useEffect(() => {
-    const fetchTips = async () => {
-      try {
-        const response = await fetch('/tips.json');
-        const data: Tip[] = await response.json();
-        setTips(data);
-        setFilteredTips(data);
-
-        const uniqueCategories: string[] = Array.from(new Set(data.map((tip: Tip) => tip.category)));
-        setCategories(uniqueCategories);
-      } catch (error) {
-        console.error('Failed to fetch tips:', error);
-      }
-    };
-
-    fetchTips();
-  }, []);
 
   useEffect(() => {
     let filtered = tips;

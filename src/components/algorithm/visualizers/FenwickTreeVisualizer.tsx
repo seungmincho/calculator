@@ -427,7 +427,7 @@ export default function FenwickTreeVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={currentCode} language="javascript" highlightLines={codeHighlightLines} title={codeTitle} />
                 )}
-                {activeTab === 'guide' && <GuideSection namespace="fenwickTreeVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="fenwickTreeVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

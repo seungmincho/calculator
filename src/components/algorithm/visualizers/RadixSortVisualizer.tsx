@@ -331,9 +331,9 @@ export default function RadixSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="radixSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

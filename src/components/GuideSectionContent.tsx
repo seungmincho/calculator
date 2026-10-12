@@ -120,8 +120,8 @@ export default function GuideSectionContent({ translate: t, defaultOpen = false 
         </button>
       </h2>
 
-      {isOpen && (
-        <div id={panelId} className="mt-6 space-y-6">
+      {/* 접혀 있어도 본문을 HTML 에 남긴다 — 렌더하지 않으면 검색엔진이 가이드를 못 읽는다 */}
+      <div id={panelId} hidden={!isOpen} className="mt-6 space-y-6">
           {whatIs && (
             <div>
               <h3 className="text-base font-bold text-fg mb-2">
@@ -237,7 +237,6 @@ export default function GuideSectionContent({ translate: t, defaultOpen = false 
             </div>
           )}
         </div>
-      )}
     </div>
   )
 }

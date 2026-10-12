@@ -316,7 +316,7 @@ export default function GraphReprVisualizer() {
                   </div>
                 )}
 
-                {activeTab === 'guide' && <GuideSection namespace="graphReprVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="graphReprVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

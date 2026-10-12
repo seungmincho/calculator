@@ -4,7 +4,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
-  title: 'AI 프롬프트 생성기 - ChatGPT·Claude·Midjourney 프롬프트 빌더 | 툴허브',
+  title: 'AI 프롬프트 생성기 - ChatGPT·Claude 프롬프트 | 툴허브',
   description: 'AI 프롬프트를 쉽게 만들어보세요. 역할, 작업, 톤, 형식을 선택하면 ChatGPT/Claude용 텍스트 프롬프트와 Midjourney/DALL-E용 이미지 프롬프트를 자동 생성합니다.',
   keywords: 'AI 프롬프트, 프롬프트 생성기, ChatGPT 프롬프트, Claude 프롬프트, Midjourney 프롬프트, DALL-E 프롬프트, 프롬프트 엔지니어링, AI 활용',
   openGraph: {

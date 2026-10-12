@@ -557,9 +557,9 @@ export default function BFSDFSVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="bfsDfsVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

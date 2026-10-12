@@ -306,7 +306,7 @@ export default function RabinKarpVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={RABIN_KARP_CODE} language="javascript" highlightLines={codeHighlightLines} title="rabin-karp.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="rabinKarpVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="rabinKarpVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

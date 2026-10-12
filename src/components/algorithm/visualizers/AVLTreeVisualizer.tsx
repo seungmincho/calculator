@@ -431,7 +431,7 @@ export default function AVLTreeVisualizer() {
                   </div>
                 )}
 
-                {activeTab === 'guide' && <GuideSection namespace="avlTreeVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="avlTreeVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

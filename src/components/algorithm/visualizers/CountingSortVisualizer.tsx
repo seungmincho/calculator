@@ -339,9 +339,9 @@ export default function CountingSortVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="countingSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

@@ -269,9 +269,9 @@ export default function TopologicalSortVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={TOPSORT_CODE} language="javascript" highlightLines={codeHighlightLines} title="topologicalSort.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="topologicalSortVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

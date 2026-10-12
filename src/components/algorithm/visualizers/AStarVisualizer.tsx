@@ -696,9 +696,9 @@ export default function AStarVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="aStarVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

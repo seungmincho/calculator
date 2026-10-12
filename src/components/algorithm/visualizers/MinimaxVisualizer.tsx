@@ -663,9 +663,9 @@ export default function MinimaxVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="minimaxVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

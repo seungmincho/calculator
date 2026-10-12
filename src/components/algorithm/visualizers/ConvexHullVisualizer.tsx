@@ -280,9 +280,9 @@ export default function ConvexHullVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={GRAHAM_SCAN_CODE} language="javascript" highlightLines={codeHighlightLines} title="grahamScan.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="convexHullVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

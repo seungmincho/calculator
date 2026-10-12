@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   keywords: '연봉 실수령액 표, 연봉별 실수령액, 2026 실수령액 표, 월급 실수령액, 연봉 3000 실수령액, 연봉 4000 실수령액, 연봉 5000 실수령액, 연봉 6000 실수령액, 연봉 1억 실수령액',
-  openGraph: { title: TITLE, description: DESC, url: `${SITE}/salary-table/`, siteName: '툴허브', locale: 'ko_KR', type: 'website' },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE}/salary-table/`, siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/salary-table.png', width: 1200, height: 630, alt: TITLE }] },
   twitter: { card: 'summary_large_image', title: TITLE, description: DESC, images: ['https://toolhub.ai.kr/og/salary-table.png'] },
   alternates: { canonical: `${SITE}/salary-table/` },
 }

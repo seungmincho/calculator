@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
-  title: '종합소득세 계산기 2026 (2025년 귀속) - 프리랜서 세금 자동계산 | 툴허브',
+  title: '종합소득세 계산기 2026 - 프리랜서 세금 자동계산 | 툴허브',
   description: '2026·2025년 귀속 종합소득세를 자동으로 계산합니다. 프리랜서 3.3% 원천징수 환급액, 업종별 단순경비율·기준경비율, 사업소득 세액공제까지 단계별로 확인하세요.',
   keywords: '종합소득세 계산기, 종합소득세 2026, 프리랜서 세금, 3.3% 원천징수, 단순경비율, 기준경비율, 사업소득세, 종합소득세 환급, 프리랜서 환급, 5월 종합소득세',
   openGraph: {

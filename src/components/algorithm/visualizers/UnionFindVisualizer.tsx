@@ -271,9 +271,9 @@ export default function UnionFindVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={UF_CODE} language="javascript" highlightLines={codeHighlightLines} title="unionFind.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="unionFindVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
-  title: '메모리 관리 시각화 - 페이지 교체 알고리즘 FIFO, LRU, LFU 비교 | 툴허브',
+  title: '메모리 관리 시각화 - FIFO·LRU·LFU 페이지 교체 | 툴허브',
   description: '페이지 교체 알고리즘(FIFO, LRU, LFU, Optimal)을 프레임 테이블로 시각화하고 비교합니다. 단계별 애니메이션, 히트/폴트 통계, Belady의 모순까지 직접 체험하세요.',
   keywords: '페이지 교체 알고리즘, FIFO, LRU, LFU, Optimal, 메모리 관리, 운영체제, 페이지 폴트, 가상 메모리, Belady anomaly, page replacement',
   openGraph: {

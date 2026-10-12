@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
-  title: 'cURL Command Builder - cURL 명령어 생성 & 코드 변환 | 툴허브',
+  title: 'cURL 명령어 생성기 - fetch·Python 코드 변환 | 툴허브',
   description: 'cURL 명령어를 폼에서 쉽게 생성하고, 붙여넣은 cURL을 JavaScript fetch, axios, Python requests, Go net/http, PHP curl 코드로 변환하세요. 헤더, 인증, 바디, 쿼리 파라미터를 GUI로 설정합니다.',
   keywords: 'cURL 빌더, cURL 생성기, cURL to Python, cURL to JavaScript, cURL to fetch, cURL to axios, cURL to Go, cURL to PHP, API 테스트, HTTP 요청, REST API, cURL 변환',
   openGraph: {
-    title: 'cURL Command Builder - cURL 명령어 생성 & 코드 변환 | 툴허브',
+    title: 'cURL 명령어 생성기 - fetch·Python 코드 변환 | 툴허브',
     description: 'cURL 명령어를 GUI로 생성하고 6가지 프로그래밍 언어 코드로 변환. fetch, axios, Python, Go, PHP 지원.',
     url: 'https://toolhub.ai.kr/curl-builder/',
     siteName: '툴허브',

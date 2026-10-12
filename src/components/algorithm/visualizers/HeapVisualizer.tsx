@@ -391,7 +391,7 @@ export default function HeapVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={currentCode} language="javascript" highlightLines={codeHighlightLines} title={codeTitle} />
                 )}
-                {activeTab === 'guide' && <GuideSection namespace="heapVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="heapVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

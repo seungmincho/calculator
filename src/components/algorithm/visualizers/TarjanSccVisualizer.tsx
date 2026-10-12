@@ -352,9 +352,9 @@ export default function TarjanSccVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={TARJAN_CODE} language="javascript" highlightLines={codeHighlightLines} title="tarjanScc.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="tarjanSccVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

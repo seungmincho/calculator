@@ -345,7 +345,7 @@ export default function LisVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={method === 'dp' ? LIS_DP_CODE : LIS_BS_CODE} language="javascript" highlightLines={codeHighlightLines} title={method === 'dp' ? 'lis_dp.js' : 'lis_bs.js'} />}
-                {activeTab === 'guide' && <GuideSection namespace="lisVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="lisVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

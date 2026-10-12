@@ -304,7 +304,7 @@ export default function KnapsackVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={KNAPSACK_CODE} language="javascript" highlightLines={codeHighlightLines} title="knapsack.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="knapsackVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="knapsackVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

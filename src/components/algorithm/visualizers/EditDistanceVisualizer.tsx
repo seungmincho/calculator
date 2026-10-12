@@ -357,9 +357,9 @@ export default function EditDistanceVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={ED_CODE} language="javascript" highlightLines={codeHighlightLines} title="editDistance.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="editDistanceVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

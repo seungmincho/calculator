@@ -282,7 +282,7 @@ export default function FibonacciDpVisualizer() {
                     highlightLines={codeHighlightLines} title={CODE_TITLE[mode]} />
                 )}
 
-                {activeTab === 'guide' && <GuideSection namespace="fibonacciDpVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="fibonacciDpVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

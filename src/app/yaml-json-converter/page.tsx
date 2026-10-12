@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
-  title: 'YAML ↔ JSON 변환기 - YAML to JSON, JSON to YAML 온라인 변환 | 툴허브',
+  title: 'YAML ↔ JSON 변환기 - 온라인 양방향 변환 | 툴허브',
   description: 'YAML과 JSON을 실시간으로 상호 변환합니다. Kubernetes YAML, Docker Compose, CI/CD 설정 파일을 JSON으로 변환하거나, JSON 데이터를 YAML로 변환하세요. 파일 업로드, 다운로드, 키 정렬 지원.',
   keywords: 'YAML to JSON, JSON to YAML, YAML 변환기, JSON 변환기, Kubernetes YAML, Docker Compose, YAML 파서, YAML 온라인',
   openGraph: {

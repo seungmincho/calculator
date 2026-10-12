@@ -326,7 +326,7 @@ export default function SuffixArrayVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={SA_CODE} language="javascript" highlightLines={codeHighlightLines} title="suffix-array.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="suffixArrayVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="suffixArrayVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

@@ -298,7 +298,7 @@ export default function KMPVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={KMP_CODE} language="javascript" highlightLines={codeHighlightLines} title="kmp.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="kmpVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="kmpVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

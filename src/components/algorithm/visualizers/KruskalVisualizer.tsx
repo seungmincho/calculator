@@ -257,9 +257,9 @@ export default function KruskalVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={KRUSKAL_CODE} language="javascript" highlightLines={codeHighlightLines} title="kruskal.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="kruskalVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

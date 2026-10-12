@@ -389,7 +389,7 @@ export default function LinkedListVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={currentCode} language="javascript" highlightLines={[]} title={codeTitle} />}
-                {activeTab === 'guide' && <GuideSection namespace="linkedListVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="linkedListVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

@@ -435,7 +435,7 @@ export default function RedBlackTreeVisualizer() {
                   </div>
                 )}
 
-                {activeTab === 'guide' && <GuideSection namespace="redBlackTreeVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="redBlackTreeVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

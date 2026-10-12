@@ -591,9 +591,9 @@ export default function BSTVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="bstVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

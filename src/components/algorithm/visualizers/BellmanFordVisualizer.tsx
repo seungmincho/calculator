@@ -326,9 +326,9 @@ export default function BellmanFordVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={BF_CODE} language="javascript" highlightLines={codeHighlightLines} title="bellmanFord.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="bellmanFordVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

@@ -323,9 +323,9 @@ export default function EulerPathVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={EULER_CODE} language="javascript" highlightLines={codeHighlightLines} title="hierholzer.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="eulerPathVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

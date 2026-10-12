@@ -304,7 +304,7 @@ export default function CoinChangeVisualizer() {
                   </div>
                 )}
                 {activeTab === 'code' && <CodeViewer code={COIN_CHANGE_CODE} language="javascript" highlightLines={codeHighlightLines} title="coinChange.js" />}
-                {activeTab === 'guide' && <GuideSection namespace="coinChangeVisualizer" defaultOpen />}
+                <div hidden={activeTab !== 'guide'}><GuideSection namespace="coinChangeVisualizer" defaultOpen /></div>
               </div>
             </div>
           </div>

@@ -267,9 +267,9 @@ export default function PrimVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={PRIM_CODE} language="javascript" highlightLines={codeHighlightLines} title="prim.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="primVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

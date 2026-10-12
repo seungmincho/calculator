@@ -276,9 +276,9 @@ export default function RaycastingVisualizer() {
                 {activeTab === 'code' && (
                   <CodeViewer code={DDA_CODE} language="javascript" highlightLines={[]} title="raycasting.js" />
                 )}
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="raycastingVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

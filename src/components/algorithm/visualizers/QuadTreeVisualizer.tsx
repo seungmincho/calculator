@@ -592,9 +592,9 @@ export default function QuadTreeVisualizer() {
                   />
                 )}
 
-                {activeTab === 'guide' && (
+                <div hidden={activeTab !== 'guide'}>
                   <GuideSection namespace="quadTreeVisualizer" defaultOpen />
-                )}
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import TipsContent from '@/components/TipsContent'
+import tips from '../../../public/tips.json'
 
 export const metadata: Metadata = {
   title: '금융 꿀팁 모음 - 400개 재테크 팁 | 툴허브',
@@ -63,7 +64,7 @@ export default function TipsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <I18nWrapper>
-        <TipsContent />
+        <TipsContent tips={tips} />
       </I18nWrapper>
     </>
   )

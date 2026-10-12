@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     description: '거리와 목표 시간 또는 페이스로 완주 시간·속도·누적 스플릿을 계산하세요.',
     url: 'https://toolhub.ai.kr/running-pace/',
     siteName: '툴허브', locale: 'ko_KR', type: 'website',
+    images: [{ url: 'https://toolhub.ai.kr/og/running-pace.png', width: 1200, height: 630, alt: '러닝·마라톤 페이스 계산기' }],
   },
 }
 
