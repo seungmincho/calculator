@@ -2489,6 +2489,8 @@
     "description": "We provide various calculators needed in daily life.",
     "privacy": "Privacy Policy",
     "inquiry": "Contact / Feedback",
+    "about": "About",
+    "terms": "Terms",
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
@@ -21860,60 +21862,66 @@
   "privacy": {
     "title": "Privacy Policy",
     "section1": {
-      "title": "1. Information We Collect",
-      "content": "ToolHub collects minimal information necessary to provide our services. Most tools can be used without any personal information collection.",
+      "title": "1. Information we collect",
+      "content": "ToolHub has no sign-up, and most values you enter are processed only inside your browser. Information is recorded on our servers only when you use the features below.",
       "items": [
-        "Automatically collected: Visit logs, service usage records, device information (browser type, OS)",
-        "Cookies: Service settings (dark mode, language, favorites, etc.) are stored in your browser's localStorage and are not sent to our servers",
-        "Advertising: Google AdSense may use cookies for ad delivery"
+        "Game leaderboards: the nickname you enter (up to 20 characters), score, play time and a random per-device identifier",
+        "AI and online matches: game, difficulty and win/loss statistics, and online room information (room title, host nickname)",
+        "Contact / feedback form: title and message, contact details if you choose to leave them, the page you sent it from, browser information (User-Agent) and a browser-trait hash to detect duplicate submissions",
+        "Ratings and anonymous salary statistics: rating and comment, salary plus optional age group, gender and industry, and a browser-trait hash to allow one submission per day",
+        "Popular tools: the address of the tool clicked (an aggregate that cannot identify you)",
+        "Collected automatically: Cloudflare visit statistics (cookieless aggregates) and Google AdSense advertising cookies",
+        "Display settings, favorites and calculation history are stored only in your browser (localStorage) and never sent to our servers"
       ]
     },
     "section2": {
-      "title": "2. Purpose of Information Use",
+      "title": "2. Purpose of use",
       "items": [
-        "Service provision and operation",
-        "Statistical analysis for service improvement",
-        "Advertising (Google AdSense)"
+        "Providing game leaderboards and match records",
+        "Answering inquiries and fixing errors",
+        "Anonymous statistics (salary ranking, popular tools)",
+        "Visit statistics to improve the Service",
+        "Displaying ads (Google AdSense)"
       ]
     },
     "section3": {
-      "title": "3. Data Retention Period",
-      "content": "ToolHub does not store personal information on servers. User settings are stored only in your browser's localStorage and are deleted when you clear your browser data."
+      "title": "3. Retention and deletion",
+      "content": "Game records and anonymous statistics are kept while the feature is operated. Inquiries are kept for as long as needed to answer and resolve them and then deleted, and any information recorded on our servers is deleted without delay upon a verified request. Information stored in your browser is removed when you clear your browser data."
     },
     "section4": {
-      "title": "4. Third-Party Sharing",
-      "content": "ToolHub does not share your personal information with third parties. However, Google's Privacy Policy applies when ads are served through Google AdSense."
+      "title": "4. Third parties and processors",
+      "content": "ToolHub does not sell or provide user information to third parties. To run the Service we use Cloudflare (hosting and visit statistics) and Supabase (game records and inquiries), and Google's privacy policy applies to advertising."
     },
     "section5": {
-      "title": "5. Cookies and Advertising",
-      "content": "ToolHub serves ads through Google AdSense, which may use cookies in the process.",
+      "title": "5. Cookies and advertising",
+      "content": "ToolHub displays ads through Google AdSense, which may use cookies.",
       "items": [
-        "Google uses cookies for ad delivery",
+        "Google uses cookies to serve ads",
         "You can disable cookies in your browser settings",
-        "To opt out of personalized ads, visit Google Ad Settings (ads.google.com/settings)"
+        "To opt out of personalized ads, change your Google Ad Settings (ads.google.com/settings)"
       ]
     },
     "section6": {
-      "title": "6. Your Rights",
+      "title": "6. Your rights",
       "items": [
+        "You can ask to review or delete information recorded on our servers, such as leaderboard entries or inquiries, using the contact below",
         "You can delete or disable cookies in your browser settings",
-        "You can clear localStorage data to reset all settings",
-        "For privacy inquiries, please contact us using the information below"
+        "You can clear the site data (localStorage) in your browser to reset all settings and history"
       ]
     },
     "section7": {
-      "title": "7. Technical Security Measures",
+      "title": "7. Protection measures",
       "items": [
-        "HTTPS (SSL/TLS) encrypted communication",
-        "Client-side processing that avoids storing personal data on servers",
-        "Sensitive calculation data is processed only on your device"
+        "HTTPS (SSL/TLS) encrypted connections",
+        "Values entered into calculators are processed on your device and not sent to our servers",
+        "Duplicate checks use only one-way hashes that cannot be reversed"
       ]
     },
     "section8": {
-      "title": "8. Contact Information",
-      "content": "For questions about this Privacy Policy, please contact us at toolhub.ai.kr@gmail.com."
+      "title": "8. Privacy inquiries",
+      "content": "For questions about this policy, please contact toolhub.ai.kr@gmail.com."
     },
-    "effectiveDate": "Effective Date: February 21, 2026"
+    "effectiveDate": "Effective: October 12, 2026 (previous version: February 21, 2026)"
   },
   "tipsPage": {
     "title": "Financial Tips Collection",
@@ -51204,5 +51212,161 @@
       "rank": "#{rank}",
       "copyLine": "#{rank}: {name}"
     }
+  },
+  "about": {
+    "title": "About ToolHub",
+    "intro": "ToolHub (toolhub.ai.kr) is a free collection of web tools: everyday calculators for salary, tax and loans, developer tools, image and media tools, health calculators and games. Everything runs in your browser with no sign-up or install.",
+    "toolsTitle": "What we offer",
+    "toolCount": "{count} tools",
+    "categories": {
+      "calculators": "Calculators",
+      "tools": "Developer tools",
+      "media": "Image & media",
+      "health": "Health",
+      "games": "Games"
+    },
+    "sections": [
+      {
+        "title": "Rules and sources behind the numbers",
+        "items": [
+          "Values set by law or official notice (tax, social insurance, minimum wage, lending rules) are calculated from official sources such as the Korea Law Information Center, the National Tax Service, the National Pension Service, the National Health Insurance Service, the Ministry of Employment and Labor and the Financial Services Commission.",
+          "Income tax in the take-home pay calculator uses the National Tax Service simplified withholding tax table, the same table employers use for payroll.",
+          "Each tool states the year and source it applies, on screen or in its guide, and is updated when rates or tax law change.",
+          "Results are for reference. Actual amounts can differ with personal circumstances or an agency's review, so confirm with the relevant agency before filing, borrowing or signing anything important."
+        ]
+      },
+      {
+        "title": "Where does your input go?",
+        "items": [
+          "Calculators and most tools process your input only inside your browser. Photo and document editing also happens on your device, and any feature that needs a server says so on screen.",
+          "Recent calculations, favorites and display settings are stored only in your browser.",
+          "Only shared features (game rankings and matches, inquiries, anonymous salary statistics) are recorded on our servers. See the Privacy Policy for details."
+        ]
+      },
+      {
+        "title": "How we stay free",
+        "paragraphs": [
+          "ToolHub runs without sign-ups or payments and covers its costs with Google AdSense ads. Ads never affect calculation results."
+        ]
+      },
+      {
+        "title": "Report an error or contact us",
+        "paragraphs": [
+          "If a calculation is wrong or a law change is missing, please tell us and we will fix it. Suggestions for new tools are welcome too."
+        ]
+      }
+    ],
+    "inquiryButton": "Contact / feedback",
+    "emailLabel": "Email",
+    "email": "toolhub.ai.kr@gmail.com",
+    "termsLink": "Terms of Service",
+    "privacyLink": "Privacy Policy"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "intro": "Thank you for using ToolHub (toolhub.ai.kr, the \"Service\"). These terms set out the conditions for using the Service and the rights and obligations of users and the Service.",
+    "sections": [
+      {
+        "title": "Article 1 (Purpose)",
+        "paragraphs": [
+          "These terms govern the use of every web tool the Service provides, including calculators, developer, media and health tools, and games."
+        ]
+      },
+      {
+        "title": "Article 2 (Definitions)",
+        "items": [
+          "\"Service\" means all tools and content provided at toolhub.ai.kr and its pages.",
+          "\"User\" means anyone who uses the Service under these terms. The Service has no membership, so everyone who visits and uses it is a user."
+        ]
+      },
+      {
+        "title": "Article 3 (Posting and changes)",
+        "items": [
+          "These terms take effect when posted on the Service.",
+          "When the terms change, the effective date and reason are posted on this page at least 7 days in advance, or 30 days in advance for changes unfavorable to users.",
+          "If you do not agree with the changed terms, you may stop using the Service."
+        ]
+      },
+      {
+        "title": "Article 4 (Provision of the Service)",
+        "items": [
+          "The Service is free and requires no sign-up.",
+          "Features that rely on public data (fuel prices, business registration status, etc.) or outside services may be temporarily unavailable or delayed depending on the provider.",
+          "Tools may be added or changed without notice to improve them, and some tools may be discontinued when operationally necessary."
+        ]
+      },
+      {
+        "title": "Article 5 (Nature of results)",
+        "items": [
+          "Results and guidance from the Service are reference information based on official sources and have no legal effect or official evidentiary value.",
+          "Important decisions such as tax filing, payroll, loans, contracts or health matters should be confirmed with the relevant agency or a professional.",
+          "There may be a delay between a change in law or rates and its reflection in the Service.",
+          "Except in cases of intent or gross negligence, the Service is not liable for damages arising from the use of its results."
+        ]
+      },
+      {
+        "title": "Article 6 (Game records)",
+        "items": [
+          "When you submit a score to a leaderboard, the nickname you enter (up to 20 characters), score, play time and a random per-device identifier are stored, and the nickname and score are shown to other users.",
+          "AI match results (game, difficulty, win/loss) are recorded for statistics.",
+          "Online matches record room information (room title, host nickname, game type) on our server, and the game itself runs over a direct browser-to-browser connection (WebRTC). Setting up that connection may reveal your network address (IP) to your opponent's browser.",
+          "Inappropriate nicknames or abnormal scores may be removed without notice."
+        ]
+      },
+      {
+        "title": "Article 7 (User obligations)",
+        "paragraphs": [
+          "Users must not:"
+        ],
+        "items": [
+          "Disrupt the Service, for example with automated bulk requests that overload the servers",
+          "Manipulate scores or submit rankings by abnormal means",
+          "Register nicknames or inquiries that defame or offend others",
+          "Use the Service for unlawful purposes or use its tools to infringe others' copyright or portrait rights"
+        ]
+      },
+      {
+        "title": "Article 8 (Copyright)",
+        "items": [
+          "Rights to the Service's design, text, guides and source code belong to ToolHub.",
+          "Rights to what you create with the tools (converted images, generated text or code, etc.) belong to you; rights to the original material remain with its owner."
+        ]
+      },
+      {
+        "title": "Article 9 (Advertising)",
+        "items": [
+          "The Service displays Google AdSense ads.",
+          "The Service is not responsible for transactions between users and advertisers made through ads."
+        ]
+      },
+      {
+        "title": "Article 10 (External links)",
+        "paragraphs": [
+          "External sites the Service links to (public agencies, references, etc.) are governed by their own policies."
+        ]
+      },
+      {
+        "title": "Article 11 (Privacy)",
+        "paragraphs": [
+          "The Service protects user information according to its Privacy Policy."
+        ]
+      },
+      {
+        "title": "Article 12 (Governing law and jurisdiction)",
+        "paragraphs": [
+          "These terms are governed by the laws of the Republic of Korea, and disputes arising from use of the Service are settled by the court with jurisdiction under the Civil Procedure Act."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": [
+          "Questions about these terms can be sent via the contact page or to toolhub.ai.kr@gmail.com."
+        ]
+      }
+    ],
+    "effectiveDate": "Effective: October 12, 2026",
+    "aboutLink": "About ToolHub",
+    "privacyLink": "Privacy Policy",
+    "inquiryLink": "Contact / feedback"
   }
 }

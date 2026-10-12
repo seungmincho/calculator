@@ -308,6 +308,10 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/picross': Grid3x3,
   '/mahjong-solitaire': Gem,
   '/crossword': Type,
+  // 사이트 안내
+  '/about': BookOpen,
+  '/terms': FileText,
+  '/privacy': ShieldCheck,
 }
 
 export const categoryIcons: Record<CategoryKey, LucideIcon> = {

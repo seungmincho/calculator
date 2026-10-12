@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 04 Oct 2026 15:13:28 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 12 Oct 2026 09:45:16 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[고향사랑기부금 계산기]]></title>
@@ -379,7 +379,7 @@
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
-    <title><![CDATA[LH 보금자리론 계산기]]></title>
+    <title><![CDATA[보금자리론 계산기]]></title>
     <link>https://toolhub.ai.kr/bogeumjari-loan/</link>
     <guid>https://toolhub.ai.kr/bogeumjari-loan/</guid>
     <description><![CDATA[생애최초 우대대출 한도·금리]]></description>
@@ -648,7 +648,7 @@
     <title><![CDATA[유니코드 텍스트 꾸미기]]></title>
     <link>https://toolhub.ai.kr/fancy-text/</link>
     <guid>https://toolhub.ai.kr/fancy-text/</guid>
-    <description><![CDATA[볼드·이탤릭·고딕·취소선 등 15가지 유니코드 폰트로 SNS 텍스트 꾸미기]]></description>
+    <description><![CDATA[볼드·이탤릭·고딕·취소선 등 23가지 유니코드 폰트로 SNS 텍스트 꾸미기]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -837,7 +837,7 @@
     <title><![CDATA[견적서·세금계산서 생성기]]></title>
     <link>https://toolhub.ai.kr/invoice-generator/</link>
     <guid>https://toolhub.ai.kr/invoice-generator/</guid>
-    <description><![CDATA[견적서/세금계산서 작성, 부가세 자동 계산, PDF 출력]]></description>
+    <description><![CDATA[견적서·거래명세서·청구서 작성, 부가세 자동 계산, PDF 출력]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -991,7 +991,7 @@
     <title><![CDATA[오늘 뭐 먹지]]></title>
     <link>https://toolhub.ai.kr/menu-picker/</link>
     <guid>https://toolhub.ai.kr/menu-picker/</guid>
-    <description><![CDATA[오늘 뭐 먹지? 룰렛으로 메뉴 추천! 8개 카테고리 100+ 메뉴]]></description>
+    <description><![CDATA[오늘 뭐 먹지? 룰렛으로 메뉴 추천! 12개 카테고리 300+ 메뉴]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -1012,7 +1012,7 @@
     <title><![CDATA[모니터 테스트]]></title>
     <link>https://toolhub.ai.kr/monitor-test/</link>
     <guid>https://toolhub.ai.kr/monitor-test/</guid>
-    <description><![CDATA[14가지 종합 모니터 품질 검사 도구]]></description>
+    <description><![CDATA[18가지 종합 모니터 품질 검사 도구]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -1166,7 +1166,7 @@
     <title><![CDATA[랜덤 뽑기]]></title>
     <link>https://toolhub.ai.kr/random-picker/</link>
     <guid>https://toolhub.ai.kr/random-picker/</guid>
-    <description><![CDATA[랜덤 숫자, 이름 뽑기, 팀 나누기]]></description>
+    <description><![CDATA[명단에서 당첨자를 중복 없이 추첨, 검증 링크 공유]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

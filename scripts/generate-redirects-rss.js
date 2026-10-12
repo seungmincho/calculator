@@ -78,7 +78,7 @@ const csVisualizerHrefs = [
 ];
 
 // Static routes not in menuConfig
-const staticRoutes = ['/offline', '/tips', '/calculators', '/tools', '/media', '/health',
+const staticRoutes = ['/offline', '/tips', '/about', '/terms','/calculators', '/tools', '/media', '/health',
   ...[2400, 2600, 2800, 3000, 3200, 3500, 3800, 4000, 4500, 5000, 5500, 6000, 7000, 8000, 10000].map(b => '/salary-table/' + b)];
 
 // --- Build complete sorted unique set for _redirects ---

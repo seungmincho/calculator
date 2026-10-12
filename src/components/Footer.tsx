@@ -62,7 +62,7 @@ const Footer = () => {
           <p className="text-sm text-muted">
             {t('footer.copyright')}
           </p>
-          <div className="flex items-center gap-4 text-sm text-muted">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted">
             <Link prefetch={false} href="/tips" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('navigation.financialTips')}
             </Link>
@@ -71,6 +71,12 @@ const Footer = () => {
             </Link>
             <Link prefetch={false} href={`/inquiry${pathname && pathname !== '/' ? `?from=${encodeURIComponent(pathname)}` : ''}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.inquiry')}
+            </Link>
+            <Link prefetch={false} href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {t('footer.about')}
+            </Link>
+            <Link prefetch={false} href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {t('footer.terms')}
             </Link>
             <Link prefetch={false} href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('footer.privacy')}
