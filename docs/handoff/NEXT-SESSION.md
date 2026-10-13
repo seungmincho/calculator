@@ -3,10 +3,10 @@
 전체 흐름·백로그·완료 로그는 [IMPROVEMENT-LOOP.md](IMPROVEMENT-LOOP.md).
 
 ## 1. 상태
-- **배치 17~34 로컬 커밋만** (563c225 … 165f52e). 푸시·배포 안 함 — 사용자: "배포보다 개선 먼저". 운영은 f831dbb(유류비 공유 링크)까지.
-- 배치33(SEO 정적 감사): 접힌 가이드·알고리즘 가이드 탭 본문이 HTML 에 들어가게 바꿈 → 페이지 HTML 이 커졌으니 **배포 전 빌드본 `node scripts/check-static-html.cjs out` 필수**(dynamic 경계가 12.8KB 넘으면 본문이 </main> 뒤로 빠짐). 감사는 `node scripts/audit-seo-static.cjs out <json>`(3분, 전후 비교는 scratchpad 가 아니라 다시 돌려서).
+- **배치 17~34 배포·푸시 완료(2026-10-13)** — 운영 83828c1f, origin b8f07b5. 사용자가 빌드 후 wrangler:deploy 가 업로드 중 끊김(커밋 메모리 한도) → 여유 3GB 확보 뒤 node22 로 업로드만 다시 해서 성공. curl 로 /about/·/terms/·A* 가이드 본문·SW v4.35.0 확인.
+- 배치33(SEO 정적 감사): 빌드본 확인 결과 check-static-html 문제 0(팁 상세 noindex 400p 제외), 감사 전후 — 알고리즘 본문 평균 1,240→2,286자, 근접 중복 1,566→105쌍(연봉표 15p만 남음), 얇은 페이지 9→4. 감사 재실행: `node scripts/audit-seo-static.cjs out <json>`(3분). /tips/ HTML 이 582KB(팁 400개 + RSC) — 무거우면 첫 50개만 렌더하고 나머지는 더보기.
 - 배치34: /about/·/terms/ 신규, 개인정보처리방침을 실제 저장 항목에 맞춤. 운영 주체(개인/사업자) 이름은 적지 않음 — 사용자가 정하면 terms·about 에 추가.
-- 배포 전 할 일: `public/sw.js` 캐시 버전 올리기(9ccadd0 에서 v4.35.0 — 배치33·34 정적 파일 추가분 반영해 한 번 더). 빌드는 예약 여유 9GB+ 필요 — 이 PC는 다른 프로젝트(octopus-iq-mastra) nuxt dev 2개가 떠 있으면 여유가 0.6~3GB까지 내려가 dev 서버도 메모리 감시에 종료됨.
+- 다음 배포 때 `public/sw.js` 캐시 버전 올리기(운영 v4.35.0). 빌드는 예약 여유 9GB+ 필요 — 이 PC는 다른 프로젝트(octopus-iq-mastra) nuxt dev 2개가 떠 있으면 여유가 0.6~3GB까지 내려가 dev 서버도 메모리 감시에 종료됨.
 - 검증 방식: 범위 tsc(변경 파일 tsconfig, 2~3GB 캡) 0, 변경 줄 lint 신규만 확인, i18n audit 0, 저장소 전체 t() 키 누락 검사, dev 서버는 여유 6GB 이상일 때만(메모리 감시 함께, SW 해제 후 확인). 운영 사이트 일괄 자동 로드 금지(CF 분석·AdSense 오염).
 
 ## 2. 사용자 결정 대기
