@@ -10,7 +10,7 @@
 - 검증 방식: 범위 tsc(변경 파일 tsconfig, 2~3GB 캡) 0, 변경 줄 lint 신규만 확인, i18n audit 0, 저장소 전체 t() 키 누락 검사, dev 서버는 여유 6GB 이상일 때만(메모리 감시 함께, SW 해제 후 확인). 운영 사이트 일괄 자동 로드 금지(CF 분석·AdSense 오염).
 
 ## 2. 사용자 결정 대기
-- 유가 수집 cron: GitHub secret OPINET_API_KEY 재입력 후 Run workflow (빈 결과면 해외 IP 차단 → CF 실시간 조회에 하루 1회 수집 얹기)
+- 유가 수집(2026-10-20): GitHub cron 폐기(OPINET 이 해외 IP 에 빈 결과). `/api/fuel-prices` 실시간 조회 성공 시 최근 7일(전국+시도)을 Supabase 에 upsert(12시간 1회) — **배포해야 동작**. 6/1~10/19 공백은 사용자 CSV 로 채움(LPG·전국 00 없음, 이후 백필이 덮음). 7일 넘게 비면 오피넷 CSV 3종 → `node scripts/import-fuel-prices.mjs`. Supabase SQL Editor 에서 `DROP POLICY IF EXISTS "fuel_prices_insert_service" ON fuel_prices;` 실행 필요(anon 쓰기 열림). 2026-10-20 새 OPINET 키는 국내에서도 빈 결과 — 예전 키 F260324567 유지
 - 로또 WebApplication JSON-LD를 metadata.other(meta) → script로 (GuideSectionContent hidden 렌더는 배치33에서 완료)
 - 연봉 실수령액 표 15페이지 금액별 고유 정보 추가 여부(#47)
 

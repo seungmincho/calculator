@@ -126,18 +126,19 @@ const SIDO_OPTIONS = [
   { code: '04', key: 'chungbuk' },
   { code: '05', key: 'chungnam' },
   { code: '06', key: 'jeonbuk' },
-  { code: '07', key: 'jeonnam' },
   { code: '08', key: 'gyeongbuk' },
   { code: '09', key: 'gyeongnam' },
   { code: '10', key: 'busan' },
   { code: '11', key: 'jeju' },
   { code: '14', key: 'daegu' },
   { code: '15', key: 'incheon' },
-  { code: '16', key: 'gwangju' },
   { code: '17', key: 'daejeon' },
   { code: '18', key: 'ulsan' },
   { code: '19', key: 'sejong' },
+  { code: '20', key: 'jeonnamGwangju' },
 ] as const
+// OPINET 이 전남(07)·광주(16)를 전남광주(20) 하나로 합쳤다 — 예전 저장값·공유 링크를 옮긴다
+const sidoCode = (code?: string | null) => code === '07' || code === '16' ? '20' : code || ''
 
 interface DrivingLogEntry {
   id: string
@@ -281,7 +282,9 @@ const FuelCalculator = () => {
 
       // Supabase 과거 데이터 응답
       if (data.source === 'supabase' && Array.isArray(data.data)) {
-        const rows = data.data as Array<{ gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_cd?: string }>
+        // RPC 는 전국 조회에 18행을 주는데 지역이 16·17개인 날이면 전날 행이 섞인다 — 가장 최근 날짜만
+        const rows = (data.data as Array<{ gasoline?: number; premium_gasoline?: number; diesel?: number; lpg?: number; trade_date?: string; sido_cd?: string }>)
+          .filter((r, _, all) => r.trade_date === all[0].trade_date)
         let gasoline = 0, premiumGasoline = 0, diesel = 0, lpg = 0
         // 전국은 OPINET 전국 평균 행('00')이 있으면 그대로 — 시도 단순 평균은 주유소 수 가중이 없어 실시간 전국가와 다르다
         const one = sido ? rows[0] : rows.find(r => r.sido_cd === '00')
@@ -342,7 +345,7 @@ const FuelCalculator = () => {
     if (savedMultiplier) setDepreciationMultiplier(Number(savedMultiplier) || 1.0)
     // 공유 링크의 지역·기준일·유가가 내 저장 지역·실시간 유가보다 우선
     const qSido = searchParams.get('sido')
-    const sido = qSido !== null && SIDO_OPTIONS.some(o => o.code === qSido) ? qSido : safeStorage.getItem('fuel_selected_sido') || ''
+    const sido = sidoCode(qSido !== null && SIDO_OPTIONS.some(o => o.code === sidoCode(qSido)) ? qSido : safeStorage.getItem('fuel_selected_sido'))
     const qDate = normDate(searchParams.get('date') ?? '')
     const date = qDate && qDate < localDate() ? qDate : '' // 오늘 이후면 실시간
     setSelectedSido(sido)
@@ -488,7 +491,7 @@ const FuelCalculator = () => {
           setPriceSource('manual')
         }
         if (settings.depreciationMultiplier) setDepreciationMultiplier(settings.depreciationMultiplier)
-        if (settings.selectedSido !== undefined) setSelectedSido(settings.selectedSido)
+        if (settings.selectedSido !== undefined) setSelectedSido(sidoCode(settings.selectedSido))
         setSettingsFeedback(t('vehicleSettings.loaded'))
         setTimeout(() => setSettingsFeedback(null), 2000)
       } catch {

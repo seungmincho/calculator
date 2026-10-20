@@ -26,9 +26,9 @@ ALTER TABLE fuel_prices ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "fuel_prices_read_all" ON fuel_prices
   FOR SELECT USING (true);
 
--- service_role로 INSERT (CF Workers에서 사용)
-CREATE POLICY "fuel_prices_insert_service" ON fuel_prices
-  FOR INSERT WITH CHECK (true);
+-- 쓰기 정책은 두지 않는다 — service_role(CF Functions)은 RLS 를 건너뛴다.
+-- 예전 "fuel_prices_insert_service"(FOR INSERT WITH CHECK (true))는 역할 지정이 없어 anon 에게도 열려 있었다(2026-10-20 확인).
+DROP POLICY IF EXISTS "fuel_prices_insert_service" ON fuel_prices;
 
 -- 조회 RPC: 특정 날짜 + 지역의 유가 조회
 CREATE OR REPLACE FUNCTION get_fuel_price(p_date DATE, p_sido_cd VARCHAR DEFAULT NULL)
