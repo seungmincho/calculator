@@ -1,7 +1,7 @@
 // Service Worker for ToolHub PWA
-const CACHE_NAME = 'toolhub-v4.35.0'
-const STATIC_CACHE_NAME = 'toolhub-static-v4.35.0'
-const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.0'
+const CACHE_NAME = 'toolhub-v4.35.1'
+const STATIC_CACHE_NAME = 'toolhub-static-v4.35.1'
+const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.1'
 
 // Files to cache immediately (trailing slashes match trailingSlash:true in next.config).
 // 도구 페이지는 미리 받지 않음 — 방문한 페이지만 fetch 핸들러가 캐시 (첫 방문 모바일 데이터 절약)
@@ -68,8 +68,14 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Normalize URL: ensure trailing slash for page requests (matches trailingSlash:true)
+  // API 는 서비스 워커가 건드리지 않는다 — 캐시하면 유가 같은 실시간·과거 조회 결과가 버전이 바뀔 때까지 굳는다.
+  // 캐시 기간은 각 함수의 Cache-Control 이 정한다.
   const url = new URL(event.request.url)
+  if (url.pathname.startsWith('/api/')) {
+    return
+  }
+
+  // Normalize URL: ensure trailing slash for page requests (matches trailingSlash:true)
   const hasExtension = url.pathname.split('/').pop().includes('.')
   if (!hasExtension && !url.pathname.endsWith('/')) {
     url.pathname += '/'
@@ -82,7 +88,7 @@ self.addEventListener('fetch', (event) => {
       if (cachedResponse) {
         // Update cache in background for dynamic content
         if (isDynamicContent(event.request.url)) {
-          updateCache(event.request)
+          updateCache(normalizedRequest) // 조회한 키와 같은 키로 갱신해야 다음 방문에 새 응답이 나간다
         }
         return cachedResponse
       }
@@ -123,7 +129,6 @@ self.addEventListener('fetch', (event) => {
 // Helper function to determine if content is dynamic
 function isDynamicContent(url) {
   const dynamicPatterns = [
-    '/api/',
     '/lotto-generator/',
     '/tips/',
     '/exchange-calculator/'

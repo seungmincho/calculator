@@ -104,13 +104,15 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         })
       }
 
-      const rows = await res.json()
+      const rows = await res.json() as { trade_date?: string }[]
+      // 요청일 자료가 아직 없어 이전 날짜로 대체한 응답은 곧 바뀐다(백필·CSV 적재) — 하루 캐시하면 그동안 옛 날짜가 보인다
+      const exact = rows[0]?.trade_date === date
       return new Response(JSON.stringify({
         source: 'supabase',
         requested_date: date,
         sido: sido || 'all',
         data: rows,
-      }), { headers: { ...headers, 'Cache-Control': 'public, max-age=86400' } })
+      }), { headers: { ...headers, 'Cache-Control': `public, max-age=${exact ? 86400 : 600}` } })
     } catch (err) {
       return new Response(JSON.stringify({ error: 'Supabase error', detail: String(err) }), {
         status: 500, headers,

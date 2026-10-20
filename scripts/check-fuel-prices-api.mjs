@@ -68,6 +68,8 @@ try {
   const historical = await request('?date=2026-10-03&sido=01')
   assert.equal((await historical.response.json()).data[0].trade_date, '2026-05-31')
   assert.deepEqual(JSON.parse(historical.first.options.body), { p_date: '2026-10-03', p_sido_cd: '01' })
+  assert.equal(historical.response.headers.get('Cache-Control'), 'public, max-age=600', 'a fallback to an earlier date must not stick for a day')
+  assert.equal((await request('?date=2026-05-31&sido=01')).response.headers.get('Cache-Control'), 'public, max-age=86400')
   assert.equal((await request('', {})).response.status, 500)
   assert.equal((await request('?date=2026-10-03', {})).response.status, 500)
   console.log('check-fuel-prices-api OK: national, region, all regions, separate caches, 7-day backfill, historical and missing configuration')
