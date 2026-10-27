@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import BrandMark from './BrandMark';
 import { usePathname } from 'next/navigation';
-import { Calculator } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n/shared';
 import { menuConfig, categoryKeys } from '@/config/menuConfig';
 
@@ -28,6 +27,13 @@ const Footer = () => {
               {t('footer.description')}
             </p>
           </div>
+          <a
+            href="https://byeolnyang.toolhub.ai.kr/"
+            className="w-full rounded-2xl border border-line bg-subtle px-5 py-4 transition-colors hover:bg-soft focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary md:max-w-sm"
+          >
+            <span className="block text-sm font-semibold text-fg">{t('footer.byeolnyang.title')} →</span>
+            <span className="mt-1 block text-sm leading-relaxed text-sub">{t('footer.byeolnyang.description')}</span>
+          </a>
         </div>
 
         {/* Category links grid - critical for SEO internal linking */}

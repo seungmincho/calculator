@@ -2485,6 +2485,10 @@
     }
   },
   "footer": {
+    "byeolnyang": {
+      "title": "Saju & tarot for fun at Byeolnyang",
+      "description": "Meet Byeolnyang the cat, explore your saju, and draw a tarot card for the day. (Korean)"
+    },
     "title": "ToolHub",
     "description": "We provide various calculators needed in daily life.",
     "privacy": "Privacy Policy",
