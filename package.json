@@ -24,7 +24,6 @@
     "@codemirror/lang-json": "^6.0.2",
     "@codemirror/search": "^6.6.0",
     "@supabase/supabase-js": "^2.89.0",
-    "@tailwindcss/oxide-win32-x64-msvc": "4.2.2",
     "@types/js-yaml": "^4.0.9",
     "@types/qrcode": "^1.5.6",
     "@uiw/react-codemirror": "^4.25.4",

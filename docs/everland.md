@@ -91,9 +91,10 @@ Pages 조회당 최신 스냅샷 1행 + 오늘 요약 최대 144행을 읽는다
 
 ## 로컬 검증
 
-기존 저장소는 Windows 전용 `@tailwindcss/oxide-win32-x64-msvc` 직접 의존성과 npm lockfile 불일치 때문에 Linux `npm ci`가 실패한다. 이번 검증은 `npm install --force --ignore-scripts --package-lock=false --cache /tmp/toolhub-npm-cache`로 의존성을 설치했고 package.json·lockfile을 변경하지 않았다. 이 기존 설치 문제는 별도 정리가 필요하다.
+Linux CI 준비 과정에서 Windows 전용 `@tailwindcss/oxide-win32-x64-msvc@4.2.2` 직접 의존성을 제거했다. 기존 `package-lock.json`은 이미 Tailwind 4.1.18과 운영체제별 선택 의존성을 기록하고 있어 재생성하지 않았다. Linux에서는 해당 플랫폼의 네이티브 패키지가 설치되며, Windows 패키지도 선택 의존성으로 유지된다. 초기 개발 때 사용한 강제 설치 우회는 더 이상 필요하지 않다. 후속 검증은 기존 `node_modules`와 로컬 환경 파일이 없는 별도 복사본에서 Node 24.19.0 / npm 11.9.0으로 수행했다.
 
 ```sh
+npm ci
 npm run messages:generate
 npm run messages:check
 node scripts/i18n-namespaces.cjs --apply
