@@ -1,0 +1,12 @@
+# Template only. Copy to wrangler.local.toml after the user creates the D1 database.
+name = "toolhub-everland-collector"
+main = "index.ts"
+compatibility_date = "2026-11-01"
+workers_dev = false
+[triggers]
+crons = ["*/10 * * * *"]
+[[d1_databases]]
+binding = "EVERLAND_DB"
+# database_name: set only after confirming the actual database name
+database_id = "REPLACE_WITH_USER_CREATED_DATABASE_ID"
+migrations_dir = "migrations"

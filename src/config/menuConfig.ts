@@ -251,6 +251,7 @@ export const menuConfig: MenuConfig = {
       { href: '/dev-cheatsheet', labelKey: 'footer.links.devCheatsheet', descriptionKey: 'toolsShowcase.tools.devCheatsheet.description', icon: '📋', addedDate: '2026-03-29', subcategory: 'subcategory.devTools' },
       { href: '/system-design', labelKey: 'footer.links.systemDesign', descriptionKey: 'toolsShowcase.tools.systemDesign.description', icon: '🏛️', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
       { href: '/coding-patterns', labelKey: 'footer.links.codingPatterns', descriptionKey: 'toolsShowcase.tools.codingPatterns.description', icon: '🧩', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/everland-wait-times', labelKey: 'footer.links.everlandWaitTimes', descriptionKey: 'toolsShowcase.tools.everlandWaitTimes.description', icon: '🎡', addedDate: '2026-11-04', subcategory: 'subcategory.otherTools' },
       { href: '/dev-roadmap', labelKey: 'footer.links.devRoadmap', descriptionKey: 'toolsShowcase.tools.devRoadmap.description', icon: '🗺️', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
     ],
   },

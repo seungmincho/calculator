@@ -47,3 +47,6 @@ next-env.d.ts
 
 # wrangler pages dev 임시 번들
 .wrangler/
+
+# User-specific Everland deployment configuration
+workers/everland/wrangler.local.toml

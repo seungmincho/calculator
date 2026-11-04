@@ -71,7 +71,7 @@ self.addEventListener('fetch', (event) => {
   // API 는 서비스 워커가 건드리지 않는다 — 캐시하면 유가 같은 실시간·과거 조회 결과가 버전이 바뀔 때까지 굳는다.
   // 캐시 기간은 각 함수의 Cache-Control 이 정한다.
   const url = new URL(event.request.url)
-  if (url.pathname.startsWith('/api/')) {
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/everland-board')) {
     return
   }
 

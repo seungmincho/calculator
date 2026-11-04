@@ -1,0 +1,13 @@
+# Everland uses the shared D1 selected by the user. Database name is not yet confirmed.
+# The installed Wrangler 3 accepts binding + database_id; do not guess database_name.
+[[d1_databases]]
+binding = "EVERLAND_DB"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"
+
+[[env.production.d1_databases]]
+binding = "EVERLAND_DB"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"
+
+[[env.preview.d1_databases]]
+binding = "EVERLAND_DB"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"

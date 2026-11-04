@@ -1,4 +1,6 @@
 const fs = require('fs');
+const path = require('path');
+const projectFile = name => path.join(__dirname, '..', name);
 
 // menuConfig가 단일 출처 (Node 24 타입 스트리핑으로 .ts 직접 로드)
 const { menuConfig, categoryKeys } = require('../src/config/menuConfig.ts');
@@ -97,11 +99,11 @@ const redirectLines = [
   ...Object.entries(movedRoutes).flatMap(([from, to]) => [from + '  ' + to + '  301', from + '/  ' + to + '  301']),
   ...allSorted.map(h => h + '  ' + h + '/  301'),
 ];
-fs.writeFileSync('C:/projects/salary-calculator/public/_redirects', redirectLines.join('\n') + '\n');
+fs.writeFileSync(projectFile('public/_redirects'), redirectLines.join('\n') + '\n');
 console.log('_redirects: ' + allSorted.length + ' rules written');
 
 // --- Generate rss.xml ---
-const ko = JSON.parse(fs.readFileSync('C:/projects/salary-calculator/messages/ko.json', 'utf8'));
+const ko = JSON.parse(fs.readFileSync(projectFile('messages/ko.json'), 'utf8'));
 const footerLinks = ko.footer.links;
 
 function getTitle(labelKey) {
@@ -136,6 +138,6 @@ const rssXml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   '  </channel>\n' +
   '</rss>';
 
-fs.writeFileSync('C:/projects/salary-calculator/public/rss.xml', rssXml);
+fs.writeFileSync(projectFile('public/rss.xml'), rssXml);
 console.log('rss.xml: ' + rssItems.length + ' items written');
 console.log('Total unique hrefs in _redirects: ' + allSorted.length);

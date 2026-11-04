@@ -7,7 +7,7 @@ import { resolve } from 'node:path'
 export const sharedNamespaces = ['accessibility', 'common', 'dailyTips', 'favorites', 'footer', 'header',
   'homePage', 'mobileNav', 'navigation', 'pushNotification', 'searchDialog', 'toolsShowcase',
   'subcategory', 'shareResult', 'relatedTools', 'analyticsDashboard', 'feedback', 'pdf']
-export const toolNamespaces = ['loan', 'salary', 'fuelCalculator', 'runningPace', 'governmentSubsidy', 'youthRentSubsidy']
+export const toolNamespaces = ['loan', 'salary', 'fuelCalculator', 'runningPace', 'governmentSubsidy', 'youthRentSubsidy', 'everlandWaitTimes']
 
 // Every non-shared ko namespace also gets messages/generated/ko/ns/<ns>.json plus a
 // side-effect module src/lib/i18n/ns/<ns>.ts that registers it with src/lib/i18n.ts.

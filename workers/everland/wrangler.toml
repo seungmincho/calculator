@@ -1,0 +1,15 @@
+# Prepared locally only; no deployment or remote configuration has been performed.
+# D1 name is unconfirmed. Wrangler 3 accepts the known database ID without a name.
+# Confirm database_name before using a newer Wrangler version that requires it.
+name = "toolhub-everland-collector"
+main = "index.ts"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[[d1_databases]]
+binding = "EVERLAND_DB"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"
+migrations_dir = "migrations"

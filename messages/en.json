@@ -2498,6 +2498,7 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "everlandWaitTimes": "Everland wait times",
       "hometownDonation": "Hometown Love Donation Calculator",
       "medicalTaxCredit": "Medical Expense Tax Credit",
       "rentTaxCredit": "Monthly Rent Tax Credit",
@@ -7229,6 +7230,10 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "everlandWaitTimes": {
+        "title": "Everland wait times",
+        "description": "See reported waits and how they change today."
+      },
       "hometownDonation": {
         "title": "Hometown Love Donation Calculator",
         "description": "Tax credit and 30% thank-you gift per donation, the real cost, and why up to 200K KRW pays off"
@@ -51371,5 +51376,63 @@
     "aboutLink": "About ToolHub",
     "privacyLink": "Privacy Policy",
     "inquiryLink": "Contact / feedback"
+  },
+  "everlandWaitTimes": {
+    "title": "Everland wait times",
+    "subtitle": "See reported waits and how they change today.",
+    "boardTitle": "Everland wait-time dashboard",
+    "openBoard": "Open full dashboard",
+    "intro": "This page summarizes posted ride wait times supplied by ThemeParks.wiki. These are not measured personal waits, visitor counts or future crowd predictions.",
+    "guideTitle": "How to read the data",
+    "guide": "Zero means a reported wait of zero. Missing waits remain unknown even when a ride is operating. Closed, temporarily down and refurbishment are separate provider statuses; we do not infer the cause. Follow the official Everland app and on-site guidance.",
+    "timeGuide": "Collection time means a successful API response. A ride’s value update time is the last change recorded by the provider; these timestamps may differ. A collection delay over 20 minutes is marked as an earlier observation.",
+    "mapGuide": "The location overview is our own coordinate diagram, not the official illustrated park map, directions or entrance locations. Coordinates have not been independently verified. The official map image is not reproduced without confirmed permission.",
+    "faqTitle": "Frequently asked questions",
+    "faqQuestion": "Can today’s waits predict tomorrow’s crowds?",
+    "faqAnswer": "No. Weather, ride availability and demand change. This first version provides observations only, without an unvalidated crowd forecast.",
+    "related": "Plan a visit with the holiday planner",
+    "official": "Official Everland park map",
+    "loading": "Loading the dashboard. If it does not appear, use the full dashboard link.",
+    "unavailable": "Data is temporarily unavailable. Try again later or check the official Everland app.",
+    "empty": "No observations have been collected yet. Wait times will appear when available.",
+    "stale": "Collection is delayed. Showing the last successful observation, which may differ from current conditions.",
+    "collected": "Collected",
+    "updated": "Value updated",
+    "all": "All",
+    "operating": "Operating",
+    "reported": "Reporting waits",
+    "median": "Median posted wait",
+    "minutes": "{value} min",
+    "status": {
+      "OPERATING": "Operating",
+      "CLOSED": "Closed",
+      "DOWN": "Temporarily down",
+      "REFURBISHMENT": "Refurbishment",
+      "UNKNOWN": "Unknown"
+    },
+    "noWait": "Wait unavailable",
+    "unknown": "Unknown",
+    "search": "Search ride names",
+    "filter": "Operating status",
+    "sort": "Sort",
+    "nameSort": "By name",
+    "waitSort": "Shortest wait",
+    "noMatches": "No rides match your filters.",
+    "map": "Location overview",
+    "north": "North ↑",
+    "mapHelp": "Select a point for ride details. Use the list for overlapping locations. Paths and entrances are not shown.",
+    "selected": "Selected ride",
+    "noLocation": "Location unavailable",
+    "list": "Attractions",
+    "history": "Today’s wait-time trend (Korea time)",
+    "historyHelp": "Median of operating rides with reported waits. The included rides can change between observations. This is not an overall crowd measure. Failed collections are not filled in.",
+    "noHistory": "Not enough observations today. The trend appears after at least two collections.",
+    "observations": "View observations",
+    "time": "Korea time",
+    "coverage": "Reporting / operating rides",
+    "refresh": "Refresh",
+    "cadence": "Collected every 10 minutes · display checks every 5 minutes",
+    "back": "Back to ToolHub",
+    "lastKnown": "Last observation"
   }
 }
