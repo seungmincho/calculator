@@ -2,6 +2,8 @@
 /severance-pay/  /retirement-calculator/  301
 /monthly-rent-subsidy  /youth-rent-subsidy/  301
 /monthly-rent-subsidy/  /youth-rent-subsidy/  301
+/everland-wait-times  /everland/map/  301
+/everland-wait-times/  /everland/map/  301
 /15-puzzle  /15-puzzle/  301
 /2048  /2048/  301
 /3d-viewer  /3d-viewer/  301
@@ -152,7 +154,7 @@
 /enneagram  /enneagram/  301
 /env-editor  /env-editor/  301
 /ev-subsidy  /ev-subsidy/  301
-/everland-wait-times  /everland-wait-times/  301
+/everland  /everland/  301
 /exchange-calculator  /exchange-calculator/  301
 /exercise-calorie  /exercise-calorie/  301
 /fancy-text  /fancy-text/  301
@@ -173,6 +175,7 @@
 /grade-calculator  /grade-calculator/  301
 /gradient-descent  /gradient-descent/  301
 /greeting-generator  /greeting-generator/  301
+/gyeongju-world  /gyeongju-world/  301
 /hangman  /hangman/  301
 /hash-generator  /hash-generator/  301
 /health  /health/  301
@@ -219,6 +222,7 @@
 /loan-calculator  /loan-calculator/  301
 /loan-schedule  /loan-schedule/  301
 /lorem-ipsum  /lorem-ipsum/  301
+/lotte-world  /lotte-world/  301
 /lottery-draw  /lottery-draw/  301
 /lotto-generator  /lotto-generator/  301
 /lotto-tax  /lotto-tax/  301

@@ -16,9 +16,9 @@ export function validLocation(value: unknown): Ride['location'] {
     v.latitude >= 37.288 && v.latitude <= 37.297 && v.longitude >= 127.197 && v.longitude <= 127.209
     ? { latitude: v.latitude, longitude: v.longitude } : null
 }
-export function normalize(children: unknown, live: unknown, fetchedAt: string): Snapshot {
+export function normalize(children: unknown, live: unknown, fetchedAt: string, parkId: string = PARK_ID): Snapshot {
   const c = record(children), l = record(live)
-  if (c.id !== PARK_ID || l.id !== PARK_ID || !Array.isArray(c.children) || !Array.isArray(l.liveData) || !l.liveData.length || !timestamp(fetchedAt)) throw new Error('Invalid Everland response')
+  if (c.id !== parkId || l.id !== parkId || !Array.isArray(c.children) || !Array.isArray(l.liveData) || !l.liveData.length || !timestamp(fetchedAt)) throw new Error('Invalid park response')
   const metadata = new Map(c.children.map(record).filter(x => x.entityType === 'ATTRACTION' && typeof x.id === 'string').map(x => [x.id, x]))
   const states = new Map(l.liveData.map(record).filter(x => x.entityType === 'ATTRACTION' && typeof x.id === 'string').map(x => [x.id, x]))
   if (!states.size) throw new Error('No attraction states in Everland response')

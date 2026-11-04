@@ -12,3 +12,19 @@ CRONT_SECRET = "9096b5579e89359c3b4bd169d884b30fee8c8f04d7cd8e1b20e3c178bb652ecb
 
 [[analytics_engine]]
 binding = "ANALYTICS"
+
+# Everland uses the existing toolhub D1, verified on 2026-11-04.
+[[d1_databases]]
+binding = "EVERLAND_DB"
+database_name = "toolhub"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"
+
+[[env.production.d1_databases]]
+binding = "EVERLAND_DB"
+database_name = "toolhub"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"
+
+[[env.preview.d1_databases]]
+binding = "EVERLAND_DB"
+database_name = "toolhub"
+database_id = "0c60527d-f048-4d7c-ae52-dd050dd02992"

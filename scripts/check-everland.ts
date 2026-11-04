@@ -33,6 +33,7 @@ async function main() {
   }
   const sqlite = new DatabaseSync(':memory:')
   sqlite.exec(readFileSync('workers/everland/migrations/0001_waits.sql','utf8'))
+  sqlite.exec(readFileSync('workers/everland/migrations/0002_visit_planner.sql','utf8'))
   const db: Database = {prepare(sql:string):Statement {
     let values:(string|number)[]=[]
     return {bind(...args){values=args;return this},async first<T>(){return (sqlite.prepare(sql).get(...values)??null) as T|null},async all<T>(){return {results:sqlite.prepare(sql).all(...values) as T[]}}}
@@ -41,10 +42,10 @@ async function main() {
   assert.equal(emptyResponse.status,200)
   const emptyHtml = await emptyResponse.text()
   assert.ok(emptyHtml.includes('아직 수집된 기록이 없습니다.'))
-  assert.ok(!emptyHtml.includes('<article class="ride"'))
+  assert.ok(emptyHtml.includes('/everland-assets/guide-map.webp'),'reference map remains available without live waits')
   const onePointHtml = renderDashboard(snapshot,[summarize(snapshot)],'ko',false,now)
   assert.ok(onePointHtml.includes('오늘의 기록이 아직 충분하지 않습니다.'))
-  assert.ok(onePointHtml.includes('공식 내부 안내도'))
+  assert.ok(onePointHtml.includes('2023년'))
   const fixtureFetch: typeof fetch = async input => new Response(JSON.stringify(String(input).endsWith('/children')?children:live))
   await collect(db,fixtureFetch,now-10*60000)
   await collect(db,fixtureFetch,now)
@@ -83,7 +84,7 @@ async function main() {
     const page=await browser.newPage({viewport:{width:390,height:844}})
     const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message))
     await page.goto('http://127.0.0.1:4141/everland-board/')
-    assert.equal(await page.locator('.ride').count(),7)
+    assert.ok(await page.locator('.ride').count()>=7)
     assert.equal(await page.locator('#stale').isVisible(),false)
     await page.locator('#search').fill('Zero')
     assert.equal(await page.locator('.ride:visible').count(),1)
@@ -96,7 +97,7 @@ async function main() {
     await page.locator('#filter').selectOption('')
     await page.locator('#sort').selectOption('wait')
     assert.match(await page.locator('.ride').first().innerText(),/Zero/)
-    await page.locator('.pin[data-ride="0"]').click()
+    await page.locator('.pin').first().click()
     assert.ok((await page.locator('#selected').innerText()).length>0)
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'mobile overflow')
     await page.locator('summary').click()

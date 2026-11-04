@@ -3,3 +3,8 @@ Allow: /
 Disallow: /offline/
 
 Sitemap: https://toolhub.ai.kr/sitemap.xml
+
+Sitemap: https://toolhub.ai.kr/everland/sitemap.xml
+
+Sitemap: https://toolhub.ai.kr/lotte-world/sitemap.xml
+Sitemap: https://toolhub.ai.kr/gyeongju-world/sitemap.xml

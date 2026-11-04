@@ -1,7 +1,7 @@
 // Service Worker for ToolHub PWA
-const CACHE_NAME = 'toolhub-v4.35.2'
-const STATIC_CACHE_NAME = 'toolhub-static-v4.35.2'
-const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.2'
+const CACHE_NAME = 'toolhub-v4.35.5'
+const STATIC_CACHE_NAME = 'toolhub-static-v4.35.5'
+const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.5'
 
 // Files to cache immediately (trailing slashes match trailingSlash:true in next.config).
 // 도구 페이지는 미리 받지 않음 — 방문한 페이지만 fetch 핸들러가 캐시 (첫 방문 모바일 데이터 절약)
@@ -71,7 +71,7 @@ self.addEventListener('fetch', (event) => {
   // API 는 서비스 워커가 건드리지 않는다 — 캐시하면 유가 같은 실시간·과거 조회 결과가 버전이 바뀔 때까지 굳는다.
   // 캐시 기간은 각 함수의 Cache-Control 이 정한다.
   const url = new URL(event.request.url)
-  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/everland-board')) {
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/everland') || url.pathname.startsWith('/lotte-world') || url.pathname.startsWith('/gyeongju-world')) {
     return
   }
 

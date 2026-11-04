@@ -24,6 +24,14 @@ export async function collect(db: Database, request: typeof fetch = fetch, now?:
       .bind(bucket, seoulDay(collectedAt), snapshot.fetchedAt, JSON.stringify(snapshot), JSON.stringify(summary)),
     db.prepare('DELETE FROM everland_snapshots WHERE bucket < ?').bind(bucket - 7 * 86400000),
   ])
+  // Keep daily aggregates for later validation; forecasts currently use calendar
+  // rules only. Never claim that a single week's observations train a crowd model.
+  await db.batch([db.prepare(`INSERT INTO everland_daily (day,observations,mean_median,updated_at)
+    SELECT day,COUNT(*),AVG(json_extract(summary,'$.median')),? FROM everland_snapshots
+    WHERE day=? AND strftime('%H',fetched_at,'+9 hours') >= '10' AND strftime('%H',fetched_at,'+9 hours') < '18'
+      AND json_extract(summary,'$.median') IS NOT NULL
+    GROUP BY day ON CONFLICT(day) DO UPDATE SET observations=excluded.observations,mean_median=excluded.mean_median,updated_at=excluded.updated_at`)
+    .bind(snapshot.fetchedAt,seoulDay(collectedAt))])
   return snapshot
 }
 export async function readDashboard(db: Database, now = Date.now()): Promise<{ snapshot: Snapshot | null; history: Summary[] }> {

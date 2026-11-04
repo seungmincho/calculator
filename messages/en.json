@@ -1605,13 +1605,13 @@
         "isNon": "Non-adjusted area — heavy tax from the 3rd home"
       },
       "owner": {
-        "label": "Homes owned after purchase",
-        "hint": "All homes in the household including this one (incl. presale rights and residential officetels)",
         "1": "1 home",
-        "2temp": "Temporary 2",
         "2": "2 homes",
         "3": "3 homes",
-        "4": "4+ homes"
+        "4": "4+ homes",
+        "label": "Homes owned after purchase",
+        "hint": "All homes in the household including this one (incl. presale rights and residential officetels)",
+        "2temp": "Temporary 2"
       },
       "relief": {
         "label": "Acquisition tax relief",
@@ -2498,7 +2498,7 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
-      "everlandWaitTimes": "Everland wait times",
+      "everlandWaitTimes": "Everland visit planner",
       "hometownDonation": "Hometown Love Donation Calculator",
       "medicalTaxCredit": "Medical Expense Tax Credit",
       "rentTaxCredit": "Monthly Rent Tax Credit",
@@ -2779,7 +2779,9 @@
       "youthRentSubsidy": "Youth Rent Subsidy Calculator",
       "evSubsidy": "EV Subsidy Calculator",
       "childBenefit": "Child Benefit Calculator",
-      "jeonseChecklist": "Jeonse Safety Checklist"
+      "jeonseChecklist": "Jeonse Safety Checklist",
+      "lotteWorldPlanner": "Lotte World visit planner",
+      "gyeongjuWorldPlanner": "Gyeongju World visit planner"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -6209,9 +6211,13 @@
       },
       "tipsTitle": "Tips",
       "tips": {
-        "0": "Maximum 8 participants allowed",
-        "1": "Adjust animation speed for more fun",
-        "2": "Save results to check them later"
+        "title": "Tips",
+        "items": [
+          "Higher complexity makes the game more exciting with more participants.",
+          "Use blind mode to hide results for a surprise reveal effect.",
+          "Share results via URL so others can verify the same ladder.",
+          "Use presets (lunch menu, duty assignment, etc.) for a quick start."
+        ]
       },
       "whatIs": {
         "title": "What is the Ladder Game?",
@@ -6224,15 +6230,6 @@
           "2. Enter the result items (prizes, penalties, etc.).",
           "3. Choose a game mode: position selection, blind, or reveal one by one.",
           "4. Generate the ladder and select a starting column to see the result."
-        ]
-      },
-      "tips": {
-        "title": "Tips",
-        "items": [
-          "Higher complexity makes the game more exciting with more participants.",
-          "Use blind mode to hide results for a surprise reveal effect.",
-          "Share results via URL so others can verify the same ladder.",
-          "Use presets (lunch menu, duty assignment, etc.) for a quick start."
         ]
       },
       "faq": {
@@ -6738,6 +6735,11 @@
       },
       "tipsTitle": "Usage Tips",
       "tips": {
+        "0": "Keep logo size under 20% of total QR code size",
+        "1": "Use high contrast colors for easier scanning",
+        "2": "Print at minimum 3cm × 3cm size for best results",
+        "3": "Use URL shortening services for complex URLs",
+        "4": "Use the copy image button to copy QR code as PNG image to clipboard",
         "title": "Making QR codes that scan",
         "items": [
           "For print, at least 2 cm per side is recommended; make posters scanned from afar larger (a common rule of thumb is about 1/10 of the scanning distance).",
@@ -6746,12 +6748,7 @@
           "The standard recommends a 4-module quiet zone. Graphics touching the QR lower the scan rate.",
           "Shorter URLs make simpler codes that still read when printed small.",
           "Before printing, print at actual size and scan with at least two devices (iPhone and Android)."
-        ],
-        "0": "Keep logo size under 20% of total QR code size",
-        "1": "Use high contrast colors for easier scanning",
-        "2": "Print at minimum 3cm × 3cm size for best results",
-        "3": "Use URL shortening services for complex URLs",
-        "4": "Use the copy image button to copy QR code as PNG image to clipboard"
+        ]
       },
       "whatIs": {
         "title": "What is the QR Code Generator?",
@@ -7232,7 +7229,8 @@
     "tools": {
       "everlandWaitTimes": {
         "title": "Everland wait times",
-        "description": "See reported waits and how they change today."
+        "description": "Choose a visit day with weather and crowd estimates, then explore the ride map.",
+        "name": "Everland visit planner"
       },
       "hometownDonation": {
         "title": "Hometown Love Donation Calculator",
@@ -8353,6 +8351,14 @@
       "jeonseChecklist": {
         "title": "Jeonse Safety Checklist",
         "description": "20+ essential checks before signing a jeonse lease, risk score, safety guide"
+      },
+      "lotteWorldPlanner": {
+        "name": "Lotte World visit planner",
+        "description": "Compare Lotte World visit dates using weather and crowd estimates, then explore the ride map."
+      },
+      "gyeongjuWorldPlanner": {
+        "name": "Gyeongju World visit planner",
+        "description": "Compare Gyeongju World visit dates using weather and crowd estimates, then explore the ride map."
       }
     }
   },
@@ -22455,15 +22461,15 @@
         "yellowHint": "Deduction limit for your business income: {limitWon} KRW"
       },
       "ind": {
-        "940909": "Other self-employed",
-        "940926": "Software freelancer",
         "940100": "Writer / translator",
-        "940903": "Instructor / tutor",
+        "940302": "Actor / talent",
         "940306": "Solo media creator",
         "940500": "Entertainment support",
         "940600": "Advisory / consulting / proofreading",
+        "940903": "Instructor / tutor",
+        "940909": "Other self-employed",
         "940918": "Courier (quick service)",
-        "940302": "Actor / talent",
+        "940926": "Software freelancer",
         "custom": "Enter manually"
       },
       "method": {
@@ -27570,13 +27576,66 @@
     "winsLabel": "W",
     "guide": {
       "title": "Guide",
-      "whatIs": { "title": "What is Coin Flip?", "description": "A fair 50:50 random decision tool with 3D flip animation. Features streak tracking, statistics, and best-of-N match mode for various decision-making scenarios." },
-      "howToUse": { "title": "How to Use", "items": ["Click 'Flip' to toss the coin with a spinning animation.", "Consecutive flips automatically update the heads/tails statistics.", "Use best-of-N mode for two-player decisions.", "Check the history for previous results."] },
-      "howItWorks": { "title": "How It Works", "items": ["When you click the button, Math.random() generates a number between 0-1, determining heads or tails at the 0.5 threshold.", "CSS 3D transform (rotateY) renders the coin flip animation.", "Each result is recorded in history, with heads/tails ratio updated in real-time.", "In best-of-N mode, the winner is automatically determined when a majority is reached."] },
-      "realWorld": { "title": "Real-World Uses", "items": ["Choosing offense/defense before sports matches (soccer, cricket, etc.)", "Quick decisions among friends for bets or turn order", "Demonstrating the law of large numbers in probability classes", "Fast binary decisions when you can't make up your mind"] },
-      "comparison": { "title": "Compared to Other Tools", "items": ["Coin flip vs Dice: Coin for 2 choices, dice for 6+ options", "Coin flip vs Roulette: Roulette supports 3+ custom items for diverse selections", "Coin flip vs Lottery draw: Lottery allows adjustable win/lose ratios for unequal probabilities"] },
-      "tips": { "title": "Tips", "items": ["Great for quick binary decisions.", "Best-of-N mode increases decision reliability.", "Use statistics to demonstrate probability concepts."] },
-      "faq": { "title": "FAQ", "items": [{ "q": "Is it truly fair?", "a": "Yes, it uses Math.random() for a 50:50 probability. The more you flip, the closer the ratio converges to 50%." }, { "q": "Can the same side come up multiple times?", "a": "Yes, each flip is independent. Even after 10 heads in a row, the next flip is still 50:50." }] }
+      "whatIs": {
+        "title": "What is Coin Flip?",
+        "description": "A fair 50:50 random decision tool with 3D flip animation. Features streak tracking, statistics, and best-of-N match mode for various decision-making scenarios."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Click 'Flip' to toss the coin with a spinning animation.",
+          "Consecutive flips automatically update the heads/tails statistics.",
+          "Use best-of-N mode for two-player decisions.",
+          "Check the history for previous results."
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "items": [
+          "When you click the button, Math.random() generates a number between 0-1, determining heads or tails at the 0.5 threshold.",
+          "CSS 3D transform (rotateY) renders the coin flip animation.",
+          "Each result is recorded in history, with heads/tails ratio updated in real-time.",
+          "In best-of-N mode, the winner is automatically determined when a majority is reached."
+        ]
+      },
+      "realWorld": {
+        "title": "Real-World Uses",
+        "items": [
+          "Choosing offense/defense before sports matches (soccer, cricket, etc.)",
+          "Quick decisions among friends for bets or turn order",
+          "Demonstrating the law of large numbers in probability classes",
+          "Fast binary decisions when you can't make up your mind"
+        ]
+      },
+      "comparison": {
+        "title": "Compared to Other Tools",
+        "items": [
+          "Coin flip vs Dice: Coin for 2 choices, dice for 6+ options",
+          "Coin flip vs Roulette: Roulette supports 3+ custom items for diverse selections",
+          "Coin flip vs Lottery draw: Lottery allows adjustable win/lose ratios for unequal probabilities"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Great for quick binary decisions.",
+          "Best-of-N mode increases decision reliability.",
+          "Use statistics to demonstrate probability concepts."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is it truly fair?",
+            "a": "Yes, it uses Math.random() for a 50:50 probability. The more you flip, the closer the ratio converges to 50%."
+          },
+          {
+            "q": "Can the same side come up multiple times?",
+            "a": "Yes, each flip is independent. Even after 10 heads in a row, the next flip is still 50:50."
+          }
+        ]
+      }
     }
   },
   "diceRoller": {
@@ -27597,10 +27656,40 @@
     "modifier": "Modifier",
     "guide": {
       "title": "Guide",
-      "whatIs": { "title": "What is Dice Roller?", "description": "An online dice tool for board games, TRPG, and probability learning. Roll up to 10 dice simultaneously with D4/D6/D8/D10/D12/D20 options and automatic sum/max/min/average calculation." },
-      "howToUse": { "title": "How to Use", "items": ["Set the number of dice (1-10) and sides (4/6/8/10/12/20).", "Click 'Roll' for animated results.", "Set a modifier (+/-) to automatically adjust the total.", "Check history and distribution for previous rolls."] },
-      "tips": { "title": "Tips", "items": ["D&D/TRPG: Use various dice combos like 4d6 for ability scores.", "Replaces physical dice for board games.", "Great for probability experiments in class."] },
-      "faq": { "title": "FAQ", "items": [{ "q": "Does it support D20?", "a": "Yes, it supports D4/D6/D8/D10/D12/D20 — all dice needed for TRPG." }, { "q": "What is a modifier?", "a": "A value added to or subtracted from the dice total. Useful for applying ability modifiers in TRPG." }] }
+      "whatIs": {
+        "title": "What is Dice Roller?",
+        "description": "An online dice tool for board games, TRPG, and probability learning. Roll up to 10 dice simultaneously with D4/D6/D8/D10/D12/D20 options and automatic sum/max/min/average calculation."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Set the number of dice (1-10) and sides (4/6/8/10/12/20).",
+          "Click 'Roll' for animated results.",
+          "Set a modifier (+/-) to automatically adjust the total.",
+          "Check history and distribution for previous rolls."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "D&D/TRPG: Use various dice combos like 4d6 for ability scores.",
+          "Replaces physical dice for board games.",
+          "Great for probability experiments in class."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Does it support D20?",
+            "a": "Yes, it supports D4/D6/D8/D10/D12/D20 — all dice needed for TRPG."
+          },
+          {
+            "q": "What is a modifier?",
+            "a": "A value added to or subtracted from the dice total. Useful for applying ability modifiers in TRPG."
+          }
+        ]
+      }
     }
   },
   "teamDivider": {
@@ -27630,17 +27719,93 @@
     },
     "presets": {
       "label": "Presets",
-      "sports": { "label": "Sports", "names": ["Alex", "Jordan", "Taylor", "Morgan", "Casey", "Riley", "Sam", "Jamie", "Drew", "Quinn"] },
-      "study": { "label": "Group Project", "names": ["Student A", "Student B", "Student C", "Student D", "Student E", "Student F"] },
-      "company": { "label": "Company Team", "names": ["Kim", "Lee", "Park", "Choi", "Jung", "Kang", "Jo", "Han"] },
-      "game": { "label": "Game Team", "names": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6"] }
+      "sports": {
+        "label": "Sports",
+        "names": [
+          "Alex",
+          "Jordan",
+          "Taylor",
+          "Morgan",
+          "Casey",
+          "Riley",
+          "Sam",
+          "Jamie",
+          "Drew",
+          "Quinn"
+        ]
+      },
+      "study": {
+        "label": "Group Project",
+        "names": [
+          "Student A",
+          "Student B",
+          "Student C",
+          "Student D",
+          "Student E",
+          "Student F"
+        ]
+      },
+      "company": {
+        "label": "Company Team",
+        "names": [
+          "Kim",
+          "Lee",
+          "Park",
+          "Choi",
+          "Jung",
+          "Kang",
+          "Jo",
+          "Han"
+        ]
+      },
+      "game": {
+        "label": "Game Team",
+        "names": [
+          "Player1",
+          "Player2",
+          "Player3",
+          "Player4",
+          "Player5",
+          "Player6"
+        ]
+      }
     },
     "guide": {
       "title": "Guide",
-      "whatIs": { "title": "What is Team Divider?", "description": "A tool to fairly distribute participants into teams. Supports random, balanced (skill-based), and captain draft modes for sports, group projects, team-building events, and more." },
-      "howToUse": { "title": "How to Use", "items": ["Enter participant names (comma or line-break separated).", "Set the number of teams (2-8).", "Choose a distribution mode (Random/Balanced/Captain Draft).", "Click 'Divide Teams' to see results."] },
-      "tips": { "title": "Tips", "items": ["Captain draft mode is the fairest as each captain picks alternately.", "Copy results to share in group chats.", "Click 'Redivide' for a new random split."] },
-      "faq": { "title": "FAQ", "items": [{ "q": "Max participants?", "a": "No limit on participants, but team count must be less than participant count." }, { "q": "Uneven numbers?", "a": "Extra members are distributed to earlier teams. E.g., 7 people → 3 teams = 3/2/2." }] }
+      "whatIs": {
+        "title": "What is Team Divider?",
+        "description": "A tool to fairly distribute participants into teams. Supports random, balanced (skill-based), and captain draft modes for sports, group projects, team-building events, and more."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter participant names (comma or line-break separated).",
+          "Set the number of teams (2-8).",
+          "Choose a distribution mode (Random/Balanced/Captain Draft).",
+          "Click 'Divide Teams' to see results."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Captain draft mode is the fairest as each captain picks alternately.",
+          "Copy results to share in group chats.",
+          "Click 'Redivide' for a new random split."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Max participants?",
+            "a": "No limit on participants, but team count must be less than participant count."
+          },
+          {
+            "q": "Uneven numbers?",
+            "a": "Extra members are distributed to earlier teams. E.g., 7 people → 3 teams = 3/2/2."
+          }
+        ]
+      }
     }
   },
   "lotteryDraw": {
@@ -27671,10 +27836,40 @@
     "lot": "Lot",
     "guide": {
       "title": "Guide",
-      "whatIs": { "title": "What is Lottery Draw?", "description": "A random drawing tool with customizable win/lose ratios. Perfect for penalty selection, gift raffles, and duty assignment. Draw one by one for suspense or all at once for quick results." },
-      "howToUse": { "title": "How to Use", "items": ["Set total lots and number of winners.", "Enter participant names (optional).", "Choose 'One by One' or 'All at Once' mode.", "Click each lot to reveal the result."] },
-      "tips": { "title": "Tips", "items": ["Set custom prizes for 1st/2nd/3rd place tiered prizes.", "One-by-one mode builds excitement at parties.", "Hide results then reveal all at once for a surprise."] },
-      "faq": { "title": "FAQ", "items": [{ "q": "Can a drawn lot come up again?", "a": "No, drawn lots are removed. Only remaining lots are available (without replacement)." }, { "q": "Can I customize the win ratio?", "a": "Yes, freely set total and winner count. E.g., 3 out of 10 = 30% chance." }] }
+      "whatIs": {
+        "title": "What is Lottery Draw?",
+        "description": "A random drawing tool with customizable win/lose ratios. Perfect for penalty selection, gift raffles, and duty assignment. Draw one by one for suspense or all at once for quick results."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Set total lots and number of winners.",
+          "Enter participant names (optional).",
+          "Choose 'One by One' or 'All at Once' mode.",
+          "Click each lot to reveal the result."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Set custom prizes for 1st/2nd/3rd place tiered prizes.",
+          "One-by-one mode builds excitement at parties.",
+          "Hide results then reveal all at once for a surprise."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can a drawn lot come up again?",
+            "a": "No, drawn lots are removed. Only remaining lots are available (without replacement)."
+          },
+          {
+            "q": "Can I customize the win ratio?",
+            "a": "Yes, freely set total and winner count. E.g., 3 out of 10 = 30% chance."
+          }
+        ]
+      }
     }
   },
   "randomNumberPicker": {
@@ -27729,8 +27924,14 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "What is the difference between no-duplicates and allow-duplicates?", "a": "No-duplicates ensures each number appears only once; an error occurs if the count exceeds the range. Allow-duplicates lets the same number appear multiple times." },
-          { "q": "Can I use this to generate lottery numbers?", "a": "Yes, the Lotto preset (1~45, 6 picks, no duplicates) generates fair random numbers. However, there is no way to improve actual winning odds." }
+          {
+            "q": "What is the difference between no-duplicates and allow-duplicates?",
+            "a": "No-duplicates ensures each number appears only once; an error occurs if the count exceeds the range. Allow-duplicates lets the same number appear multiple times."
+          },
+          {
+            "q": "Can I use this to generate lottery numbers?",
+            "a": "Yes, the Lotto preset (1~45, 6 picks, no duplicates) generates fair random numbers. However, there is no way to improve actual winning odds."
+          }
         ]
       }
     }
@@ -27764,10 +27965,40 @@
     },
     "guide": {
       "title": "Guide",
-      "whatIs": { "title": "What is Yes or No?", "description": "A fun random answer tool for overcoming decision paralysis. Enter a question and get a Magic 8-ball style answer. Supports simple Yes/No to 7-level detailed responses with adjustable YES probability." },
-      "howToUse": { "title": "How to Use", "items": ["Enter your question (e.g., 'Should I exercise today?').", "Choose answer mode (Simple / Detailed).", "Click 'Ask' for an animated answer.", "Adjust YES probability with the slider (default 50%)."] },
-      "tips": { "title": "Tips", "items": ["Best for light everyday decisions, not life-changing ones.", "Detailed mode gives nuanced 7-level answers (Absolutely YES ~ Absolutely NO).", "Check history for all your previous questions and answers."] },
-      "faq": { "title": "FAQ", "items": [{ "q": "Same answer for same question?", "a": "No, each answer is randomly generated. The same question can get different answers each time." }, { "q": "Can I change the YES probability?", "a": "Yes, use the slider to set YES probability anywhere from 0% to 100%." }] }
+      "whatIs": {
+        "title": "What is Yes or No?",
+        "description": "A fun random answer tool for overcoming decision paralysis. Enter a question and get a Magic 8-ball style answer. Supports simple Yes/No to 7-level detailed responses with adjustable YES probability."
+      },
+      "howToUse": {
+        "title": "How to Use",
+        "items": [
+          "Enter your question (e.g., 'Should I exercise today?').",
+          "Choose answer mode (Simple / Detailed).",
+          "Click 'Ask' for an animated answer.",
+          "Adjust YES probability with the slider (default 50%)."
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Best for light everyday decisions, not life-changing ones.",
+          "Detailed mode gives nuanced 7-level answers (Absolutely YES ~ Absolutely NO).",
+          "Check history for all your previous questions and answers."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Same answer for same question?",
+            "a": "No, each answer is randomly generated. The same question can get different answers each time."
+          },
+          {
+            "q": "Can I change the YES probability?",
+            "a": "Yes, use the slider to set YES probability anywhere from 0% to 100%."
+          }
+        ]
+      }
     }
   },
   "breakoutGame": {
@@ -30825,13 +31056,13 @@
         "other": "Elsewhere (incl. rest of Gyeonggi)"
       },
       "owner": {
-        "label": "Homes owned after purchase",
-        "hint": "Household total including this home (pre-sale rights and residential officetels count)",
         "1": "1 home",
-        "2temp": "Temporary 2",
         "2": "2 homes",
         "3": "3 homes",
         "4": "4+ homes",
+        "label": "Homes owned after purchase",
+        "hint": "Household total including this home (pre-sale rights and residential officetels count)",
+        "2temp": "Temporary 2",
         "corp": "Corporation"
       },
       "under1eok": "Officially assessed value ≤ ₩100M",
@@ -44347,9 +44578,18 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Are questions randomized?", "a": "Yes, questions are shuffled randomly each time even with the same category and difficulty." },
-          { "q": "Is this helpful for interviews?", "a": "Yes, Intermediate and Advanced questions cover concepts frequently asked in technical interviews." },
-          { "q": "Can I retry only wrong answers?", "a": "Yes, use the 'Retry Wrong Only' button on the results screen to retry only the questions you got wrong." }
+          {
+            "q": "Are questions randomized?",
+            "a": "Yes, questions are shuffled randomly each time even with the same category and difficulty."
+          },
+          {
+            "q": "Is this helpful for interviews?",
+            "a": "Yes, Intermediate and Advanced questions cover concepts frequently asked in technical interviews."
+          },
+          {
+            "q": "Can I retry only wrong answers?",
+            "a": "Yes, use the 'Retry Wrong Only' button on the results screen to retry only the questions you got wrong."
+          }
         ]
       }
     }
@@ -44481,9 +44721,18 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Can non-CS majors understand this?", "a": "Yes! Every term includes easy analogies and real-world examples. Start from beginner difficulty and work your way up." },
-          { "q": "Where is my progress saved?", "a": "Progress is saved in your browser's local storage. Your learning history is preserved when you revisit on the same browser." },
-          { "q": "How does it connect with the CS Quiz?", "a": "Learn concepts in the dictionary first, then test your understanding by taking quizzes in the same category." }
+          {
+            "q": "Can non-CS majors understand this?",
+            "a": "Yes! Every term includes easy analogies and real-world examples. Start from beginner difficulty and work your way up."
+          },
+          {
+            "q": "Where is my progress saved?",
+            "a": "Progress is saved in your browser's local storage. Your learning history is preserved when you revisit on the same browser."
+          },
+          {
+            "q": "How does it connect with the CS Quiz?",
+            "a": "Learn concepts in the dictionary first, then test your understanding by taking quizzes in the same category."
+          }
         ]
       }
     }
@@ -44573,9 +44822,18 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Do junior developers need to know all this?", "a": "Beginner level is essential for juniors, intermediate for 1-3 years experience, and advanced for seniors. Start with difficulty matching your career level." },
-          { "q": "Should I memorize the answers word for word?", "a": "No. Understand the key points and practice explaining in your own words. Understanding beats memorization in interviews." },
-          { "q": "Which category should I start with?", "a": "Start with Data Structures and Algorithms, then Network and OS. Add DB, Security, or Web based on the position you're applying for." }
+          {
+            "q": "Do junior developers need to know all this?",
+            "a": "Beginner level is essential for juniors, intermediate for 1-3 years experience, and advanced for seniors. Start with difficulty matching your career level."
+          },
+          {
+            "q": "Should I memorize the answers word for word?",
+            "a": "No. Understand the key points and practice explaining in your own words. Understanding beats memorization in interviews."
+          },
+          {
+            "q": "Which category should I start with?",
+            "a": "Start with Data Structures and Algorithms, then Network and OS. Add DB, Security, or Web based on the position you're applying for."
+          }
         ]
       }
     }
@@ -44629,11 +44887,26 @@
     },
     "roadmap": {
       "title": "Learning Roadmap",
-      "step1": { "title": "Learn Terms", "description": "Understand basics" },
-      "step2": { "title": "Visualize", "description": "Experience concepts" },
-      "step3": { "title": "Algorithms", "description": "Deep dive" },
-      "step4": { "title": "Take Quiz", "description": "Verify learning" },
-      "step5": { "title": "Interview", "description": "Practice" }
+      "step1": {
+        "title": "Learn Terms",
+        "description": "Understand basics"
+      },
+      "step2": {
+        "title": "Visualize",
+        "description": "Experience concepts"
+      },
+      "step3": {
+        "title": "Algorithms",
+        "description": "Deep dive"
+      },
+      "step4": {
+        "title": "Take Quiz",
+        "description": "Verify learning"
+      },
+      "step5": {
+        "title": "Interview",
+        "description": "Practice"
+      }
     },
     "categories": {
       "title": "Resources by Category",
@@ -44688,9 +44961,18 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Where should I start?", "a": "Non-CS majors: Dictionary → Visualizer → Quiz. CS majors: Take a quiz to find weak areas, then focus study there." },
-          { "q": "Do I need to use all tools?", "a": "Choose based on your goal. For urgent interview prep, focus on Interview. For building foundations, prioritize Dictionary + Visualizer + Quiz." },
-          { "q": "Is my data safe?", "a": "All learning records are stored in your browser's local storage. Nothing is sent to any server." }
+          {
+            "q": "Where should I start?",
+            "a": "Non-CS majors: Dictionary → Visualizer → Quiz. CS majors: Take a quiz to find weak areas, then focus study there."
+          },
+          {
+            "q": "Do I need to use all tools?",
+            "a": "Choose based on your goal. For urgent interview prep, focus on Interview. For building foundations, prioritize Dictionary + Visualizer + Quiz."
+          },
+          {
+            "q": "Is my data safe?",
+            "a": "All learning records are stored in your browser's local storage. Nothing is sent to any server."
+          }
         ]
       }
     }
@@ -44750,8 +45032,14 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Does it work offline?", "a": "Yes, if installed as a PWA, cached content is available offline." },
-          { "q": "Where are bookmarks saved?", "a": "In your browser's local storage. They persist across visits on the same browser." }
+          {
+            "q": "Does it work offline?",
+            "a": "Yes, if installed as a PWA, cached content is available offline."
+          },
+          {
+            "q": "Where are bookmarks saved?",
+            "a": "In your browser's local storage. They persist across visits on the same browser."
+          }
         ]
       }
     }
@@ -44831,9 +45119,18 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Should juniors prepare for system design?", "a": "Basic design sense helps even juniors. Start with intermediate level (URL Shortener, Rate Limiter, Notification System)." },
-          { "q": "How do you draw diagrams in real interviews?", "a": "Use a whiteboard or online tools like Excalidraw. Focus on key components and data flow." },
-          { "q": "How to allocate time in a 45-min interview?", "a": "Requirements 5min, Estimation 5min, High-level Design 15min, Deep Dive 15min, Q&A 5min." }
+          {
+            "q": "Should juniors prepare for system design?",
+            "a": "Basic design sense helps even juniors. Start with intermediate level (URL Shortener, Rate Limiter, Notification System)."
+          },
+          {
+            "q": "How do you draw diagrams in real interviews?",
+            "a": "Use a whiteboard or online tools like Excalidraw. Focus on key components and data flow."
+          },
+          {
+            "q": "How to allocate time in a 45-min interview?",
+            "a": "Requirements 5min, Estimation 5min, High-level Design 15min, Deep Dive 15min, Q&A 5min."
+          }
         ]
       }
     }
@@ -44899,8 +45196,14 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Are 15 patterns enough?", "a": "Yes, these 15 patterns cover the vast majority of coding test problems. Advanced problems often combine multiple patterns." },
-          { "q": "What order should I study?", "a": "Easy (Two Pointers, HashMap, Tree Traversal) → Medium (BFS/DFS, Binary Search, Sliding Window) → Hard (DP, Topological Sort)." }
+          {
+            "q": "Are 15 patterns enough?",
+            "a": "Yes, these 15 patterns cover the vast majority of coding test problems. Advanced problems often combine multiple patterns."
+          },
+          {
+            "q": "What order should I study?",
+            "a": "Easy (Two Pointers, HashMap, Tree Traversal) → Medium (BFS/DFS, Binary Search, Sliding Window) → Hard (DP, Topological Sort)."
+          }
         ]
       }
     }
@@ -44967,8 +45270,14 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Which track should I choose?", "a": "UI/UX interest → Frontend. Server/data → Backend. Both → Fullstack. Infrastructure/automation → DevOps." },
-          { "q": "Do I need to learn everything?", "a": "No. Focus on ★ essential skills first, then add optional ones as needed." }
+          {
+            "q": "Which track should I choose?",
+            "a": "UI/UX interest → Frontend. Server/data → Backend. Both → Fullstack. Infrastructure/automation → DevOps."
+          },
+          {
+            "q": "Do I need to learn everything?",
+            "a": "No. Focus on ★ essential skills first, then add optional ones as needed."
+          }
         ]
       }
     }
@@ -45111,8 +45420,14 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "How does the computer choose?", "a": "It's completely random. Previous results don't affect future choices." },
-          { "q": "How many players can join a tournament?", "a": "2 to 8 players can participate." }
+          {
+            "q": "How does the computer choose?",
+            "a": "It's completely random. Previous results don't affect future choices."
+          },
+          {
+            "q": "How many players can join a tournament?",
+            "a": "2 to 8 players can participate."
+          }
         ]
       }
     }
@@ -45160,8 +45475,14 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Can I customize the items?", "a": "Yes! Switch to the 'Custom' category to freely add and remove any dare you like." },
-          { "q": "Is the result truly random?", "a": "Yes, each spin uses Math.random() to fairly select the winning segment." }
+          {
+            "q": "Can I customize the items?",
+            "a": "Yes! Switch to the 'Custom' category to freely add and remove any dare you like."
+          },
+          {
+            "q": "Is the result truly random?",
+            "a": "Yes, each spin uses Math.random() to fairly select the winning segment."
+          }
         ]
       }
     }
@@ -45226,9 +45547,18 @@
       "faq": {
         "title": "FAQ",
         "items": [
-          { "q": "Can I mute the timer sounds?", "a": "The alert sounds play automatically in the current version. You can mute them by silencing your device." },
-          { "q": "Are lap records saved?", "a": "Lap records are kept for the current session only. They are cleared when you press Reset." },
-          { "q": "Does the turn timer auto-advance to the next player?", "a": "Yes, when the turn time expires it automatically switches to the next player and plays an alert sound." }
+          {
+            "q": "Can I mute the timer sounds?",
+            "a": "The alert sounds play automatically in the current version. You can mute them by silencing your device."
+          },
+          {
+            "q": "Are lap records saved?",
+            "a": "Lap records are kept for the current session only. They are cleared when you press Reset."
+          },
+          {
+            "q": "Does the turn timer auto-advance to the next player?",
+            "a": "Yes, when the turn time expires it automatically switches to the next player and plays an alert sound."
+          }
         ]
       }
     }
@@ -51386,7 +51716,7 @@
     "guideTitle": "How to read the data",
     "guide": "Zero means a reported wait of zero. Missing waits remain unknown even when a ride is operating. Closed, temporarily down and refurbishment are separate provider statuses; we do not infer the cause. Follow the official Everland app and on-site guidance.",
     "timeGuide": "Collection time means a successful API response. A ride’s value update time is the last change recorded by the provider; these timestamps may differ. A collection delay over 20 minutes is marked as an earlier observation.",
-    "mapGuide": "The location overview is our own coordinate diagram, not the official illustrated park map, directions or entrance locations. Coordinates have not been independently verified. The official map image is not reproduced without confirmed permission.",
+    "mapGuide": "Locations matched to numbered facilities on Everland’s 2023 guide. Current facilities may differ.",
     "faqTitle": "Frequently asked questions",
     "faqQuestion": "Can today’s waits predict tomorrow’s crowds?",
     "faqAnswer": "No. Weather, ride availability and demand change. This first version provides observations only, without an unvalidated crowd forecast.",
@@ -51418,11 +51748,11 @@
     "nameSort": "By name",
     "waitSort": "Shortest wait",
     "noMatches": "No rides match your filters.",
-    "map": "Location overview",
+    "map": "Find rides on the guide map",
     "north": "North ↑",
-    "mapHelp": "Select a point for ride details. Use the list for overlapping locations. Paths and entrances are not shown.",
+    "mapHelp": "Numbers show wait minutes. The overview shows eight major rides. Zoom in or search to reveal other matched locations; select a marker for its name and status.",
     "selected": "Selected ride",
-    "noLocation": "Location unavailable",
+    "noLocation": "Location not matched on this guide edition.",
     "list": "Attractions",
     "history": "Today’s wait-time trend (Korea time)",
     "historyHelp": "Median of operating rides with reported waits. The included rides can change between observations. This is not an overall crowd measure. Failed collections are not filled in.",
@@ -51432,7 +51762,535 @@
     "coverage": "Reporting / operating rides",
     "refresh": "Refresh",
     "cadence": "Collected every 10 minutes · display checks every 5 minutes",
-    "back": "Back to ToolHub",
-    "lastKnown": "Last observation"
+    "back": "Back to visit recommendations",
+    "lastKnown": "Last observation",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomReset": "Fit map",
+    "mapSource": "Original Everland guide PDF",
+    "noLive": "Live data unavailable"
+  },
+  "everlandPlanner": {
+    "title": "When should you visit Everland?",
+    "intro": "Compare the weather and expected crowd levels before choosing a day.",
+    "eyebrow": "Everland visit planner",
+    "planTab": "Best days to visit",
+    "mapTab": "Ride map & waits",
+    "home": "ToolHub",
+    "profileLabel": "Your visit",
+    "profiles": {
+      "balanced": "A relaxed day",
+      "family": "With children",
+      "rides": "Focus on rides"
+    },
+    "scopeLabel": "Available days",
+    "scopes": {
+      "all": "Including weekdays",
+      "weekend": "Weekends & holidays"
+    },
+    "best": "A day to consider first",
+    "alternatives": "Other days to compare",
+    "relativeBest": "Relatively better in these conditions",
+    "caution": "The forecast calls for caution outdoors. Check the latest forecast and official operating notices.",
+    "score": "Visit suitability",
+    "scoreUnit": "points",
+    "scoreHelp": "A comparison score combining weather and calendar assumptions, not satisfaction or predictive accuracy.",
+    "weather": "Daytime temperature",
+    "rain": "Estimated precipitation",
+    "wind": "Peak forecast wind",
+    "crowdLabel": "Expected crowds",
+    "crowd": {
+      "low": "Relatively quieter",
+      "medium": "Moderate expected",
+      "high": "Busy expected"
+    },
+    "crowdNote": "Calendar-based estimate",
+    "reasons": {
+      "dry": "Less than 0.5 mm of rain is expected during the comparison window.",
+      "lightRain": "Light rain is forecast. Bring a raincoat.",
+      "rain": "Rain may affect outdoor activities and rides.",
+      "comfortable": "Daytime temperatures of 14–27°C are relatively comfortable outdoors.",
+      "cold": "Some daytime periods are below 14°C. Bring an extra layer.",
+      "hot": "Daytime temperatures exceed 27°C. Prepare for heat.",
+      "holiday": "A public holiday is assumed to be busier than a normal weekday.",
+      "weekend": "Weekends are assumed to be busier than weekdays.",
+      "friday": "Fridays are assumed to be busier than other weekdays.",
+      "weekday": "Monday–Thursday is assumed to be quieter than weekends.",
+      "wind": "Windy periods are forecast. Check official ride notices.",
+      "storm": "Thunderstorm signals require caution outdoors.",
+      "indoor": "An indoor visit reduces rain, temperature and wind penalties. Outdoor ride operation is not guaranteed."
+    },
+    "reasonTitle": "Why this day?",
+    "dateList": "Compare dates",
+    "dateListIntro": "Select a day for weather periods and the reasoning behind its score.",
+    "selected": "Selected day",
+    "dayDetail": "Weather during your visit",
+    "visitWindow": "We compare 10:00–18:00 KST. Check official opening and closing times.",
+    "hourlyTime": "Period",
+    "temperature": "Temperature",
+    "rainfall": "Rain",
+    "windSpeed": "Wind",
+    "coarse": "This date includes 6–12 hour forecast intervals; fine hourly differences are unavailable.",
+    "prorated": "Rain totals are apportioned by the overlap between forecast intervals and the visit window, not exact timing or probability.",
+    "tentative": "5+ days away · subject to change",
+    "nearby": "Near-term forecast",
+    "fullDateLink": "Forecast page for this date",
+    "weatherState": {
+      "clear": "Clear",
+      "cloud": "Cloudy",
+      "rain": "Rain",
+      "snow": "Snow",
+      "storm": "Thunder",
+      "unknown": "Forecast"
+    },
+    "none": "No dates match these conditions.",
+    "noData": "Updating the weather forecast.",
+    "noDataHelp": "A fresh forecast with at least six daytime hours is unavailable. We do not show recommendation scores until data is sufficient.",
+    "noScope": "No weekend or holiday has sufficient forecast data. Try including weekdays.",
+    "refresh": "Check the latest forecast",
+    "issued": "Forecast issued",
+    "fetched": "Last checked",
+    "timezone": "All dates and times use Korea Standard Time (KST).",
+    "sourceTitle": "Data & recommendation criteria",
+    "weatherSource": "Weather: MET Norway Locationforecast",
+    "weatherSourceDetail": "Global numerical forecasts at Everland, Yongin (37.294, 127.204), checked about hourly. Not a substitute for KMA warnings or on-site observations.",
+    "methodologyTitle": "How are days ranked?",
+    "methodology": "Weather scores use temperature, precipitation and wind during the visit window. Crowds are estimated from weekdays and public holidays. Weather/calendar weights are 70/30 for a relaxed visit, 85/15 with children and 80/20 for rides. Rain, cold, wind and thunderstorms lower scores.",
+    "limitations": "Crowds currently use preliminary calendar rules, without attendance, events, group bookings, school breaks or reservation data. Ride waits are collected separately and do not yet power a validated crowd prediction model.",
+    "safetyRule": "At least 8 mm rain, 9 m/s wind, freezing or 33°C+ temperatures, or a thunderstorm signal caps suitability at 45 points. These are ToolHub comparison rules, not ride closure thresholds.",
+    "staleRule": "Recommendations stop when forecast issue or fetch time is over 24 hours old. Recheck before travelling, especially for distant dates.",
+    "official": "Official Everland information",
+    "officialWeather": "KMA weather & warnings",
+    "license": "Weather license · CC BY 4.0",
+    "independent": "An independent ToolHub reference service, not an official Everland service.",
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "Which weekday is best for Everland?",
+        "a": "With other conditions equal, compare Monday to Thursday first. Holidays, events and group visits can change this pattern. This page combines current forecasts with an explanation for each date."
+      },
+      {
+        "q": "Is a rainy day better because it is quieter?",
+        "a": "We do not assume rain makes the park quieter. Rain reduces visit suitability because it may affect outdoor activities and ride operations."
+      },
+      {
+        "q": "Do recommendations change for children or rides?",
+        "a": "The family profile puts more weight on weather and comfortable temperatures. The ride profile penalizes rain more heavily. After choosing a date, use the map to check ride locations and current operating status."
+      },
+      {
+        "q": "Are crowds actual attendance predictions?",
+        "a": "No. They are relative estimates based on weekdays and public holidays, not validated attendance or waiting-time predictions."
+      },
+      {
+        "q": "How far ahead can I compare?",
+        "a": "Dates with sufficient daytime coverage within MET Norway’s approximately nine-day forecast. Dates five or more days away are marked as tentative."
+      }
+    ],
+    "mapTitle": "Ride locations and today’s waits",
+    "mapIntro": "Once you choose a date, find the rides you want to visit on the guide map.",
+    "mapFrame": "Everland guide map and ride waits",
+    "mapVersion": "Map: Everland’s published 2023 guide. Facilities and names may have changed. Only matched locations are shown.",
+    "mapSource": "Original guide PDF",
+    "mapCaption": "Locations on this illustrated guide are not walking directions or exact entrances.",
+    "shareLabel": "Suggested visit day",
+    "compare": "Compare with the highest-ranked day",
+    "sameBest": "This date has the highest comparison score for your preferences.",
+    "difference": "{value} points below the highest-ranked day.",
+    "staticIntro": "Check live forecasts to compare visit dates using weekday/holiday assumptions, rain, temperature and wind. Find rides on the guide map.",
+    "todayPartial": "Today is excluded from full-day recommendations when earlier forecast periods are missing.",
+    "monthDay": "{month}/{day}",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "topRank": "Choice {rank}",
+    "allDays": "All dates",
+    "dateTitle": "Everland weather & crowds on {date}",
+    "dateDescription": "Compare daytime temperature, rain, wind, calendar-based crowds and the reasons for visiting Everland on {date}.",
+    "allTools": "All tools",
+    "choosePark": "Choose a park",
+    "parkNames": {
+      "everland": "Everland",
+      "lotte-world": "Lotte World",
+      "gyeongju-world": "Gyeongju World"
+    },
+    "areaLabel": "Visit area",
+    "areas": {
+      "all": "Indoor + Magic Island",
+      "indoor": "Mostly indoors"
+    },
+    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply."
+  },
+  "lotteWorldPlanner": {
+    "title": "When should you visit Lotte World?",
+    "intro": "Choose a day for Lotte World in Jamsil, with separate indoor and outdoor weather considerations.",
+    "eyebrow": "Lotte World visit planner",
+    "planTab": "Best days to visit",
+    "mapTab": "Ride map & operations",
+    "home": "ToolHub",
+    "profileLabel": "Your visit",
+    "profiles": {
+      "balanced": "A relaxed day",
+      "family": "With children",
+      "rides": "Focus on rides"
+    },
+    "scopeLabel": "Available days",
+    "scopes": {
+      "all": "Including weekdays",
+      "weekend": "Weekends & holidays"
+    },
+    "best": "A day to consider first",
+    "alternatives": "Other days to compare",
+    "relativeBest": "Relatively better in these conditions",
+    "caution": "The forecast calls for caution outdoors. Check the latest forecast and official operating notices.",
+    "score": "Visit suitability",
+    "scoreUnit": "points",
+    "scoreHelp": "A comparison score combining weather and calendar assumptions, not satisfaction or predictive accuracy.",
+    "weather": "Daytime temperature",
+    "rain": "Estimated precipitation",
+    "wind": "Peak forecast wind",
+    "crowdLabel": "Expected crowds",
+    "crowd": {
+      "low": "Relatively quieter",
+      "medium": "Moderate expected",
+      "high": "Busy expected"
+    },
+    "crowdNote": "Calendar-based estimate",
+    "reasons": {
+      "dry": "Less than 0.5 mm of rain is expected during the comparison window.",
+      "lightRain": "Light rain is forecast. Bring a raincoat.",
+      "rain": "Rain may affect outdoor activities and rides.",
+      "comfortable": "Daytime temperatures of 14–27°C are relatively comfortable outdoors.",
+      "cold": "Some daytime periods are below 14°C. Bring an extra layer.",
+      "hot": "Daytime temperatures exceed 27°C. Prepare for heat.",
+      "holiday": "A public holiday is assumed to be busier than a normal weekday.",
+      "weekend": "Weekends are assumed to be busier than weekdays.",
+      "friday": "Fridays are assumed to be busier than other weekdays.",
+      "weekday": "Monday–Thursday is assumed to be quieter than weekends.",
+      "wind": "Windy periods are forecast. Check official ride notices.",
+      "storm": "Thunderstorm signals require caution outdoors.",
+      "indoor": "An indoor visit reduces rain, temperature and wind penalties. Outdoor ride operation is not guaranteed."
+    },
+    "reasonTitle": "Why this day?",
+    "dateList": "Compare dates",
+    "dateListIntro": "Select a day for weather periods and the reasoning behind its score.",
+    "selected": "Selected day",
+    "dayDetail": "Weather during your visit",
+    "visitWindow": "We compare 10:00–18:00 KST. Check official opening and closing times.",
+    "hourlyTime": "Period",
+    "temperature": "Temperature",
+    "rainfall": "Rain",
+    "windSpeed": "Wind",
+    "coarse": "This date includes 6–12 hour forecast intervals; fine hourly differences are unavailable.",
+    "prorated": "Rain totals are apportioned by the overlap between forecast intervals and the visit window, not exact timing or probability.",
+    "tentative": "5+ days away · subject to change",
+    "nearby": "Near-term forecast",
+    "fullDateLink": "Forecast page for this date",
+    "weatherState": {
+      "clear": "Clear",
+      "cloud": "Cloudy",
+      "rain": "Rain",
+      "snow": "Snow",
+      "storm": "Thunder",
+      "unknown": "Forecast"
+    },
+    "none": "No dates match these conditions.",
+    "noData": "Updating the weather forecast.",
+    "noDataHelp": "A fresh forecast with at least six daytime hours is unavailable. We do not show recommendation scores until data is sufficient.",
+    "noScope": "No weekend or holiday has sufficient forecast data. Try including weekdays.",
+    "refresh": "Check the latest forecast",
+    "issued": "Forecast issued",
+    "fetched": "Last checked",
+    "timezone": "All dates and times use Korea Standard Time (KST).",
+    "sourceTitle": "Data & recommendation criteria",
+    "weatherSource": "Weather: MET Norway Locationforecast",
+    "weatherSourceDetail": "Global numerical forecasts near Lotte World (37.511, 127.098), checked about hourly. Not a substitute for KMA warnings or on-site observations.",
+    "methodologyTitle": "How are days ranked?",
+    "methodology": "Weather scores use temperature, precipitation and wind during the visit window. Crowds are estimated from weekdays and public holidays. Weather/calendar weights are 70/30 for a relaxed visit, 85/15 with children and 80/20 for rides. Rain, cold, wind and thunderstorms lower scores. For indoor visits, only 30% of weather penalties apply. Weather/calendar weights become 50/50 with children and 40/60 otherwise.",
+    "limitations": "Crowds currently use preliminary weekday/holiday rules, without attendance, events, groups, school holidays or reservations. This is not a validated attendance or wait prediction model.",
+    "safetyRule": "At least 8 mm rain, 9 m/s wind, freezing or 33°C+ temperatures, or a thunderstorm signal caps suitability at 45 points. These are ToolHub comparison rules, not ride closure thresholds. Indoor scores are still capped at 65 for thunderstorms, at least 20 mm rain or 15 m/s wind.",
+    "staleRule": "Recommendations stop when forecast issue or fetch time is over 24 hours old. Recheck before travelling, especially for distant dates.",
+    "official": "Official Lotte World Jamsil information",
+    "officialWeather": "KMA weather & warnings",
+    "license": "Weather license · CC BY 4.0",
+    "independent": "An independent ToolHub reference service, not an official Lotte World service.",
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "Which weekday is best for Lotte World?",
+        "a": "With other conditions equal, compare Monday to Thursday first. Holidays, events and group visits can change this pattern. This page combines current forecasts with an explanation for each date."
+      },
+      {
+        "q": "Is a rainy day better because it is quieter?",
+        "a": "We do not assume rain makes the park quieter. Rain reduces visit suitability because it may affect outdoor activities and ride operations."
+      },
+      {
+        "q": "Do recommendations change for children or rides?",
+        "a": "The family profile puts more weight on weather and comfortable temperatures. The ride profile penalizes rain more heavily. After choosing a date, use the map to check ride locations and current operating status."
+      },
+      {
+        "q": "Are crowds actual attendance predictions?",
+        "a": "No. They are relative estimates based on weekdays and public holidays, not validated attendance or waiting-time predictions."
+      },
+      {
+        "q": "How far ahead can I compare?",
+        "a": "Dates with sufficient daytime coverage within MET Norway’s approximately nine-day forecast. Dates five or more days away are marked as tentative."
+      },
+      {
+        "q": "Is Lotte World suitable for a rainy day?",
+        "a": "You can plan around indoor Adventure, but outdoor Magic Island and travel conditions differ. Indoor mode reduces weather penalties; mixed visits use normal outdoor criteria. Check official operating notices."
+      },
+      {
+        "q": "Does this cover Lotte World Busan?",
+        "a": "This page covers Lotte World Adventure in Jamsil, Seoul. Busan weather, facilities and maps are not included."
+      }
+    ],
+    "mapTitle": "Ride locations and operating information",
+    "mapIntro": "Once you choose a date, find the rides you want to visit on the guide map.",
+    "mapFrame": "Lotte World guide map and ride information",
+    "mapVersion": "Map extracted from Lotte World’s official September 2026 guide. Facilities and operations may change. Markers match verified guide numbers.",
+    "mapSource": "Original guide PDF",
+    "mapCaption": "Locations on this illustrated guide are not walking directions or exact entrances.",
+    "shareLabel": "Suggested visit day",
+    "compare": "Compare with the highest-ranked day",
+    "sameBest": "This date has the highest comparison score for your preferences.",
+    "difference": "{value} points below the highest-ranked day.",
+    "staticIntro": "Check live forecasts to compare visit dates using weekday/holiday assumptions, rain, temperature and wind. Find rides on the guide map.",
+    "todayPartial": "Today is excluded from full-day recommendations when earlier forecast periods are missing.",
+    "monthDay": "{month}/{day}",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "topRank": "Choice {rank}",
+    "allDays": "All dates",
+    "dateTitle": "Lotte World weather & crowds on {date}",
+    "dateDescription": "Compare daytime temperature, rain, wind, calendar-based crowds and the reasons for visiting Lotte World on {date}.",
+    "allTools": "All tools",
+    "choosePark": "Choose a park",
+    "parkNames": {
+      "everland": "Everland",
+      "lotte-world": "Lotte World",
+      "gyeongju-world": "Gyeongju World"
+    },
+    "areaLabel": "Visit area",
+    "areas": {
+      "all": "Indoor + Magic Island",
+      "indoor": "Mostly indoors"
+    },
+    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply."
+  },
+  "gyeongjuWorldPlanner": {
+    "title": "When should you visit Gyeongju World?",
+    "intro": "Compare weather and expected crowds for an outdoor visit to Gyeongju World.",
+    "eyebrow": "Gyeongju World visit planner",
+    "planTab": "Best days to visit",
+    "mapTab": "Ride map & operations",
+    "home": "ToolHub",
+    "profileLabel": "Your visit",
+    "profiles": {
+      "balanced": "A relaxed day",
+      "family": "With children",
+      "rides": "Focus on rides"
+    },
+    "scopeLabel": "Available days",
+    "scopes": {
+      "all": "Including weekdays",
+      "weekend": "Weekends & holidays"
+    },
+    "best": "A day to consider first",
+    "alternatives": "Other days to compare",
+    "relativeBest": "Relatively better in these conditions",
+    "caution": "The forecast calls for caution outdoors. Check the latest forecast and official operating notices.",
+    "score": "Visit suitability",
+    "scoreUnit": "points",
+    "scoreHelp": "A comparison score combining weather and calendar assumptions, not satisfaction or predictive accuracy.",
+    "weather": "Daytime temperature",
+    "rain": "Estimated precipitation",
+    "wind": "Peak forecast wind",
+    "crowdLabel": "Expected crowds",
+    "crowd": {
+      "low": "Relatively quieter",
+      "medium": "Moderate expected",
+      "high": "Busy expected"
+    },
+    "crowdNote": "Calendar-based estimate",
+    "reasons": {
+      "dry": "Less than 0.5 mm of rain is expected during the comparison window.",
+      "lightRain": "Light rain is forecast. Bring a raincoat.",
+      "rain": "Rain may affect outdoor activities and rides.",
+      "comfortable": "Daytime temperatures of 14–27°C are relatively comfortable outdoors.",
+      "cold": "Some daytime periods are below 14°C. Bring an extra layer.",
+      "hot": "Daytime temperatures exceed 27°C. Prepare for heat.",
+      "holiday": "A public holiday is assumed to be busier than a normal weekday.",
+      "weekend": "Weekends are assumed to be busier than weekdays.",
+      "friday": "Fridays are assumed to be busier than other weekdays.",
+      "weekday": "Monday–Thursday is assumed to be quieter than weekends.",
+      "wind": "Windy periods are forecast. Check official ride notices.",
+      "storm": "Thunderstorm signals require caution outdoors.",
+      "indoor": "An indoor visit reduces rain, temperature and wind penalties. Outdoor ride operation is not guaranteed."
+    },
+    "reasonTitle": "Why this day?",
+    "dateList": "Compare dates",
+    "dateListIntro": "Select a day for weather periods and the reasoning behind its score.",
+    "selected": "Selected day",
+    "dayDetail": "Weather during your visit",
+    "visitWindow": "We compare 10:00–18:00 KST. Check official opening and closing times.",
+    "hourlyTime": "Period",
+    "temperature": "Temperature",
+    "rainfall": "Rain",
+    "windSpeed": "Wind",
+    "coarse": "This date includes 6–12 hour forecast intervals; fine hourly differences are unavailable.",
+    "prorated": "Rain totals are apportioned by the overlap between forecast intervals and the visit window, not exact timing or probability.",
+    "tentative": "5+ days away · subject to change",
+    "nearby": "Near-term forecast",
+    "fullDateLink": "Forecast page for this date",
+    "weatherState": {
+      "clear": "Clear",
+      "cloud": "Cloudy",
+      "rain": "Rain",
+      "snow": "Snow",
+      "storm": "Thunder",
+      "unknown": "Forecast"
+    },
+    "none": "No dates match these conditions.",
+    "noData": "Updating the weather forecast.",
+    "noDataHelp": "A fresh forecast with at least six daytime hours is unavailable. We do not show recommendation scores until data is sufficient.",
+    "noScope": "No weekend or holiday has sufficient forecast data. Try including weekdays.",
+    "refresh": "Check the latest forecast",
+    "issued": "Forecast issued",
+    "fetched": "Last checked",
+    "timezone": "All dates and times use Korea Standard Time (KST).",
+    "sourceTitle": "Data & recommendation criteria",
+    "weatherSource": "Weather: MET Norway Locationforecast",
+    "weatherSourceDetail": "Global numerical forecasts near Gyeongju World (35.837, 129.281), checked about hourly. Not a substitute for KMA warnings or on-site observations.",
+    "methodologyTitle": "How are days ranked?",
+    "methodology": "Weather scores use temperature, precipitation and wind during the visit window. Crowds are estimated from weekdays and public holidays. Weather/calendar weights are 70/30 for a relaxed visit, 85/15 with children and 80/20 for rides. Rain, cold, wind and thunderstorms lower scores.",
+    "limitations": "Crowds currently use preliminary weekday/holiday rules, without attendance, events, groups, school holidays or reservations. This is not a validated attendance or wait prediction model.",
+    "safetyRule": "At least 8 mm rain, 9 m/s wind, freezing or 33°C+ temperatures, or a thunderstorm signal caps suitability at 45 points. These are ToolHub comparison rules, not ride closure thresholds.",
+    "staleRule": "Recommendations stop when forecast issue or fetch time is over 24 hours old. Recheck before travelling, especially for distant dates.",
+    "official": "Official Gyeongju World information",
+    "officialWeather": "KMA weather & warnings",
+    "license": "Weather license · CC BY 4.0",
+    "independent": "An independent ToolHub reference service, not an official Gyeongju World service.",
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "Which weekday is best for Gyeongju World?",
+        "a": "With other conditions equal, compare Monday to Thursday first. Holidays, events and group visits can change this pattern. This page combines current forecasts with an explanation for each date."
+      },
+      {
+        "q": "Is a rainy day better because it is quieter?",
+        "a": "We do not assume rain makes the park quieter. Rain reduces visit suitability because it may affect outdoor activities and ride operations."
+      },
+      {
+        "q": "Do recommendations change for children or rides?",
+        "a": "The family profile puts more weight on weather and comfortable temperatures. The ride profile penalizes rain more heavily. After choosing a date, use the map to check ride locations and current operating status."
+      },
+      {
+        "q": "Are crowds actual attendance predictions?",
+        "a": "No. They are relative estimates based on weekdays and public holidays, not validated attendance or waiting-time predictions."
+      },
+      {
+        "q": "How far ahead can I compare?",
+        "a": "Dates with sufficient daytime coverage within MET Norway’s approximately nine-day forecast. Dates five or more days away are marked as tentative."
+      },
+      {
+        "q": "Can rain or wind affect Gyeongju World rides?",
+        "a": "Outdoor facilities may change operations due to weather or maintenance. Scores describe visit suitability, not individual ride operations. Check official hours and closure notices before travelling."
+      }
+    ],
+    "mapTitle": "Ride locations and operating information",
+    "mapIntro": "Once you choose a date, find the rides you want to visit on the guide map.",
+    "mapFrame": "Gyeongju World guide map and ride information",
+    "mapVersion": "Map extracted from Gyeongju World’s official September 2026 guide. Facilities and operations may change. Markers match verified guide numbers.",
+    "mapSource": "Original guide PDF",
+    "mapCaption": "Locations on this illustrated guide are not walking directions or exact entrances.",
+    "shareLabel": "Suggested visit day",
+    "compare": "Compare with the highest-ranked day",
+    "sameBest": "This date has the highest comparison score for your preferences.",
+    "difference": "{value} points below the highest-ranked day.",
+    "staticIntro": "Check live forecasts to compare visit dates using weekday/holiday assumptions, rain, temperature and wind. Find rides on the guide map.",
+    "todayPartial": "Today is excluded from full-day recommendations when earlier forecast periods are missing.",
+    "monthDay": "{month}/{day}",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "topRank": "Choice {rank}",
+    "allDays": "All dates",
+    "dateTitle": "Gyeongju World weather & crowds on {date}",
+    "dateDescription": "Compare daytime temperature, rain, wind, calendar-based crowds and the reasons for visiting Gyeongju World on {date}.",
+    "allTools": "All tools",
+    "choosePark": "Choose a park",
+    "parkNames": {
+      "everland": "Everland",
+      "lotte-world": "Lotte World",
+      "gyeongju-world": "Gyeongju World"
+    },
+    "areaLabel": "Visit area",
+    "areas": {
+      "all": "Indoor + Magic Island",
+      "indoor": "Mostly indoors"
+    },
+    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply."
+  },
+  "parkGuideMap": {
+    "title": "Find rides on the guide map",
+    "area": "Map area",
+    "search": "Find a facility",
+    "searchPlaceholder": "Name or guide number",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Fit map",
+    "help": "Numbers match the official guide; they are not wait times. Overlapping markers are reduced in the overview. Zoom or search to find every facility, then select a marker or list item for details.",
+    "selected": "Selected facility",
+    "list": "Facility list",
+    "noMatches": "No matching facilities.",
+    "official": "Check official operating information",
+    "source": "Original guide",
+    "guide": "Extracted from the official September 2026 guide. Illustrated locations, not exact entrances or walking directions.",
+    "lotStatus": "Lotte World currently provides operating status through our source. Numeric waiting times are unavailable and are not shown.",
+    "noStatus": "Gyeongju World live operation and waiting times are not connected. A marker does not indicate that a ride is currently operating.",
+    "updated": "Last collected",
+    "stale": "Operating data is over 20 minutes old. Check official information for current status.",
+    "notCollected": "Operating status has not yet been collected.",
+    "noWait": "Wait unavailable",
+    "status": {
+      "OPERATING": "Operating",
+      "CLOSED": "Closed",
+      "DOWN": "Temporarily stopped",
+      "REFURBISHMENT": "Maintenance",
+      "UNKNOWN": "Status unavailable"
+    },
+    "back": "Back to visit recommendations",
+    "zones": {
+      "indoor1": "Adventure 1F",
+      "upper": "Adventure 2F–4F",
+      "underground": "Underland B1F",
+      "outdoor": "Magic Island",
+      "park": "Gyeongju World",
+      "floor2": "Adventure 2F",
+      "floor3": "Adventure 3F",
+      "floor4": "Adventure 4F"
+    },
+    "indoor": "Indoor",
+    "outdoor": "Outdoor",
+    "unmatched": "Facilities from the current source that could not be matched to this guide are not placed at guessed locations."
   }
 }
