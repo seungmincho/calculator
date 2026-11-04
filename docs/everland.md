@@ -1,135 +1,113 @@
 # 에버랜드 대기 현황 개발·운영 안내
 
-2026-11-04. 작업 브랜치 `feat/everland-wait-times`. 배포·푸시·원격 자원 생성 없음.
+2026-11-04. 기능 브랜치 `feat/everland-wait-times`. 현재 구현은 **iframe 없이 같은 도메인의 독립 현황판으로 이동**한다. 이전 iframe·교차 출처 임베드 제안과 설정 안내를 이 문서로 대체한다. 실제 원격 Worker·D1·Route 상태는 Cloudflare 인증 부재로 확인하지 못했다.
 
-## 구현
+## 구조와 표시 내용
 
-- `/everland-wait-times/`: 정적 Next.js 페이지. 메뉴·사이트맵 등록, OG 이미지, RSS, 가이드·FAQ·출처와 연휴 플래너 연결.
-- `/everland-board/`: Cloudflare Pages Function이 **사람이 보는 HTML 현황판**을 렌더링. 같은 사이트 내 iframe에서 표시하며 크게 보기도 가능. raw JSON API, 피드, CSV 다운로드, 타 사이트 임베드는 제공하지 않음.
-- `workers/everland/index.ts`: 10분 간격 예약 수집. ThemeParks.wiki `/children` + `/live`만 호출하고 검증 후 D1에 저장. 외부 HTTP 요청은 404이며 공개 수집 트리거 없음.
-- 10분 버킷 기준 중복 수집을 upsert. 7일 보관. 스냅샷과 요약은 원자적으로 저장. 실패·429·비정상 응답은 기존 정상 시각과 기록을 유지.
-- 오늘의 추이는 **한국 날짜 기준, 운영 중이면서 시간이 있는 기구의 표시 대기시간 중앙값**. 집계 대상 수 표시, 결측 구간 보간 없음. 방문객 수나 미래 예측이 아님.
-- `OPERATING`, `CLOSED`, `DOWN`, `REFURBISHMENT`, `UNKNOWN`을 구분. 0분은 실제 숫자 0만 표시. 미제공·음수·문자열·NaN·비운영 상태의 대기시간은 null로 유지.
-- 수집 성공 시각과 제공자의 값 변경 시각을 분리. 20분 이상 수집 지연 시 경고. 화면은 5분마다 확인하며 서비스 워커는 현황판을 캐시하지 않음.
+- `/everland-wait-times/`: 기존 Pages가 제공하는 정적 안내·SEO 페이지. 메뉴, 사이트맵, OG, 가이드, FAQ, 출처를 포함하며 `/everland-board/`로 이동하는 일반 링크를 제공한다. iframe·postMessage·추가 공개 환경변수를 사용하지 않는다.
+- `/everland-board/`: 독립 Worker `toolhub-everland-collector`가 D1에서 읽어 완전한 사용자용 HTML 페이지를 제공한다. 일반 문서 탐색으로 열며 현황판 상단/하단 링크로 안내 페이지로 돌아간다. JSON API·피드·CSV·공개 수집 트리거는 없다.
+- Worker의 `scheduled`: 10분마다 ThemeParks.wiki `/children`과 `/live`를 조회한다. HTTP 읽기는 수집을 실행하지 않는다. 10분 버킷 upsert, 7일 보관이며 쓰기는 `everland_snapshots`에만 제한한다. 실패·429는 마지막 성공 데이터와 시각을 보존한다.
+- 제공자 상태 `OPERATING`, `CLOSED`, `DOWN`, `REFURBISHMENT`, `UNKNOWN`을 구분한다. 실제 숫자 0만 0분으로 표시하고 미제공·음수·문자열·비운영 상태 대기시간은 null로 유지한다.
+- 수집 성공 시각과 기구별 제공자 갱신 시각을 분리한다. 마지막 수집이 20분을 넘으면 이전 정상 기록임을 표시한다. 화면은 보이는 동안 5분마다 새로 확인한다.
+- 오늘의 추이는 한국 날짜 기준, 운영 중이며 시간이 제공된 기구들의 표시 대기시간 중앙값이다. 집계 대상 수를 함께 표시하고 결측 구간은 보간하지 않는다. 방문객 수·미래 혼잡도 예측이 아니다.
+- 기존 Pages Function은 이미 Pages에 D1을 연결한 설치를 위한 대안으로 유지한다. 권장 독립 Worker 경로에서는 Pages D1 바인딩이 필요 없다.
 
-## 지도 요청과 남은 부분
+## 이용약관과 iframe 제거 이유
 
-사용자가 원하는 것은 **에버랜드 내부 안내도 이미지 위 대기시간 표시**다. 현재 만든 것은 제공 좌표 기반 자체 위치 참고도이며, 이 요청을 완전히 구현했다고 보아서는 안 된다.
+[ThemeParks.wiki 약관](https://www.themeparks.wiki/terms)은 자체 제품에서 사용자에게 대기시간을 표시하는 것을 허용하고, 무료 사용 시 링크가 있는 Powered by ThemeParks.wiki 표시를 요구한다. 반면 제3자 사이트로 데이터를 전달하는 iframe/위젯은 재배포로 분류한다. [가격 FAQ](https://www.themeparks.wiki/pricing)도 다른 사람의 사이트에 삽입하는 위젯을 금지 대상으로 설명한다.
 
-공식 이미지의 상업적 재사용 허락을 확인하지 못해 복제·핫링크·재배포하지 않았다. 공식 지도 링크만 제공한다. 참고도에는 길·입구·구역 경계를 추측해서 그리지 않았으며, 모든 좌표를 정확한 공식 위치로 표현하지 않는다.
+같은 운영자의 다른 도메인 간 iframe이 명시적으로 허용된다는 확인은 얻지 못했다. HTML 변환이나 CSP 허용 목록 자체가 권리 확인을 대신하지 않으므로 해당 구현을 제거했다. 독립 현황판은 자체 웹사이트에서 사람에게 직접 표시하며, `Content-Security-Policy: frame-ancestors 'none'` 및 `X-Frame-Options: DENY`로 같은 출처를 포함한 모든 iframe 삽입을 차단한다. 원시 JSON·대량 다운로드를 제공하지 않는다. 이 구조는 약관의 사용자용 대시보드 허용 범위에 더 직접적으로 대응한다.
 
-2026-11-04 조회에서 메타데이터 57개에 좌표가 있었고 모두 보수적인 공원 주변 범위 안에 있었다. 같은 좌표를 쓰는 항목도 있다. 이 범위 검사는 입구나 실제 시설 위치의 독립 검증이 아니다. 지도 이미지를 확보해도 일러스트는 좌표와 선형 정합하지 않을 수 있어 **각 기구의 이미지상 위치를 수동 검수**해야 한다.
+CORS 허용 헤더는 없다. 일반 페이지 탐색에는 CORS가 필요하지 않다. CSP/CORS는 HTTP 인증이나 스크래핑 방지가 아니며 공개 페이지를 서버에서 직접 읽는 것까지 막지는 않는다. GET/HEAD만 제공하고 다른 메서드는 405, 현황판 외 경로는 404다. no-store, noindex, nosniff를 적용한다. 현황판의 검색 색인을 완료했다고 주장하지 않으며 검색용 안내 페이지는 정적 HTML로 유지한다.
 
-다음 중 하나가 필요하다:
+## 지도 한계
 
-1. 에버랜드의 상업적 웹 게시·이미지 수정/오버레이 허락이 확인된 안내도 파일과 이용 조건.
-2. 독립적으로 제작해 상업 이용 권리를 가진 내부 안내도와 검수된 이미지 좌표.
+사용자가 원하는 **에버랜드 내부 안내도 이미지 위 대기시간**은 아직 구현하지 못했다. 현재는 제공 좌표를 배치한 자체 격자 참고도이며 길·입구·구역 경계를 추정하지 않는다. 공식 이미지의 상업적 게시·수정·오버레이 허락이 확인되지 않아 복제·핫링크·재배포하지 않고 공식 지도 링크만 제공한다.
 
-안내도 교체는 `src/lib/everland/render.ts`의 위치도 렌더 부분에서 진행한다. 권리·버전·좌표 검증 근거를 함께 기록한 뒤 연결해야 한다. 지도 타일·외부 지도 라이브러리는 현재 사용하지 않으므로 타일 비용은 없다.
+제공 좌표의 공원 주변 범위 검사는 실제 기구 입구 위치의 독립 검증이 아니다. 겹치는 좌표도 있어 목록에서 기구를 선택할 수 있다. 허락된 공식 이미지 또는 상업적 사용 권리가 있는 자체 안내도를 확보하더라도, 일러스트 좌표는 지리 좌표와 단순 정합하지 않을 수 있어 각 기구의 이미지상 위치를 수동 검수해야 한다. 외부 지도 타일·라이브러리·지도 요금은 없다.
 
-## Git 전달 시 Pages 설정 적용
+## 보존한 기존 구성
 
-기존 루트 `wrangler.toml`에는 민감한 설정이 있어 그 파일의 변경본을 이번 기능 커밋에 넣지 않는다. 기존 값을 임의로 삭제·교체하지도 않는다. 클라우드 작업 디렉터리의 추가 바인딩은 유지하되, Git으로 전달하는 안전한 추가 블록은 **`workers/everland/pages-bindings.toml`**이다. 이 파일에는 D1 ID와 바인딩 이름만 있다.
+사용자가 만든 D1 ID는 `0c60527d-f048-4d7c-ae52-dd050dd02992`, 코드의 바인딩 이름은 `EVERLAND_DB`다. 실제 DB 이름과 원격 스키마는 미확인이다. 사용자는 migration SQL 실행을 완료했다고 밝혔다. 새 DB 생성·Supabase 이전·스키마 변경은 필요하지 않다.
 
-로컬에서 기능 브랜치를 받은 뒤 루트 `wrangler.toml`에 기존 `EVERLAND_DB` 설정이 없는지 확인하고, `pages-bindings.toml`의 전체 블록을 파일 끝에 한 번만 추가한다. 같은 이름의 D1 바인딩이 이미 있으면 중복 추가하지 않고 ID를 대조한다. `pages-bindings.toml`은 단독 배포 설정 파일이 아니다.
+민감한 루트 `wrangler.toml`은 이번 변경에 포함하지 않는다. 이전 작업의 로컬 D1 블록도 임의 삭제하지 않고 유지한다. Pages의 기존 변수·바인딩·관리자·유가·Supabase 설정을 변경하지 않는다. `workers/everland/pages-bindings.toml`은 이전 Pages D1 방식의 참고 파일이며 현재 경로에서는 적용하지 않는다.
 
-수집 Worker의 독립 설정 **`workers/everland/wrangler.toml`**은 민감한 값이 없어 기능 커밋에 포함한다. 기존 루트 설정의 민감값 정리·회전은 별도 작업이며 이번 커밋에서 처리하지 않는다.
+안전한 Worker 설정 파일은 기존 내용 그대로 유지한다: `workers_dev=false`, 알려진 D1 ID, 10분 Cron. Route는 아직 넣지 않았다. 실제 zone 및 기존 Route 충돌 확인 없이 추측한 설정을 배포하지 않는다. 자동 수집과 실제 데이터 연결은 Worker와 Route 배포 전에는 작동하지 않는다.
 
-## 사용자 D1 연결 준비 상태 (2026-11-04 후속)
+## Cloudflare에서 필요한 사용자 조치
 
-사용자가 D1 ID `0c60527d-f048-4d7c-ae52-dd050dd02992`를 제공하고 테이블 SQL 실행을 완료했다고 알렸다. 실제 DB 이름과 원격 테이블 상태는 이 환경에서 확인하지 않았다. 아래 초기 생성 안내의 `toolhub-everland`는 기존 제안 이름이며 실제 생성된 DB 이름으로 단정하지 않는다. **새 DB를 다시 만들거나 SQL을 다시 실행할 필요는 없다.**
+아래는 실행 순서이며 이 환경에서 원격 설정을 변경한 기록이 아니다. 기존 Pages Git 연결은 `seungmincho/calculator`, 운영 브랜치 `main`, 빌드 `npm run build`, 출력 `out`으로 사용자 화면에서 확인되었다. 기능 브랜치 푸시는 Pages 미리보기를 만들 수 있지만 Worker 생성·Route 설정을 대신하지 않는다.
 
-- 루트 `wrangler.toml`: 기본·production·preview 각각 `EVERLAND_DB`에 제공된 ID를 추가했다. 기존 구성값은 바꾸지 않았다. preview도 같은 물리 DB를 읽는 구성이다.
-- 수집 Worker: `workers/everland/wrangler.toml`에 동일한 ID와 `EVERLAND_DB`, 10분 Cron을 준비했다. 이제 별도 `wrangler.local.toml` 복사 없이 이 파일을 배포 준비 대상으로 사용할 수 있다.
-- DB 이름은 추측하지 않고 `database_name`을 생략했다. 설치된 Wrangler 3.114.17의 스키마·검증기는 `binding`과 `database_id`로 검사하며 로컬 dry-run으로 확인한다. 최신 공식 문서는 `database_name`도 필수로 설명하므로 Wrangler를 바꾸거나 이름 기반 DB 명령을 쓰기 전 실제 이름을 확인해야 한다.
-- 어떤 원격 연결·권한·배포·Cron 활성화도 실행하지 않았다. 파일 변경은 다음 승인된 배포 때 적용된다. 따라서 자동 수집은 아직 시작되지 않았다.
+1. **기존 D1 확인:** Storage & databases → D1 SQL database에서 ID가 위 값인 DB를 선택한다. Console에서 아래 읽기 전용 SQL로 테이블과 인덱스를 확인한다. 이미 있으면 새 DB 생성이나 migration 재실행을 반복하지 않는다.
 
-## Cloudflare 설정 순서 (대시보드 기준)
+   ```sql
+   SELECT name, sql FROM sqlite_master
+   WHERE name IN ('everland_snapshots', 'everland_day_bucket');
+   ```
 
-아래는 안내이며 아직 계정 설정·SQL 실행·배포를 수행하지 않았다. D1 생성만으로는 수집이 시작되지 않는다. **수집 Worker 코드 + D1 바인딩 + Cron을 실제 배포한 뒤** 예약 수집이 동작한다. Pages 배포만으로 수집 Worker가 생기거나 Cron이 실행되지 않는다.
+2. **도메인 연결 가능 여부 확인:** Cloudflare Websites에서 `toolhub.ai.kr`을 포함하는 실제 zone이 활성인지, 해당 호스트의 DNS가 Cloudflare 프록시를 사용하는지 확인한다. 기존 Worker Routes에 `/everland-board/`를 이미 처리하는 규칙이 없는지도 확인한다. 조건이 맞지 않으면 DNS나 전체 사이트 설정을 임의 변경하지 않고 실제 상태를 알려야 한다.
 
-### 지금 미리 준비할 수 있는 단계
+3. **Worker Git 연결:** Workers & Pages → Create application → GitHub에서 `seungmincho/calculator`를 연결한다. Worker 이름은 `toolhub-everland-collector`, 루트 디렉터리는 저장소 루트, 빌드 명령은 비움, 배포 명령은 다음과 같다. 자동 감지된 루트 Pages 설정으로 배포하지 않는다.
 
-1. Cloudflare 계정의 **Storage & databases → D1 SQL database → Create Database**에서 **`toolhub-everland`** 생성. 대시보드 분류명이 다르면 `D1 SQL database` 화면을 찾는다. 이름은 코드에 쓰이는 바인딩 이름과 다르다.
-2. **D1 → toolhub-everland → Console**에서 `workers/everland/migrations/0001_waits.sql`의 전체 내용을 붙여 넣고 **Execute**. `CREATE TABLE`과 `CREATE INDEX`만 있으며 기존 데이터를 지우지 않는다. **Tables**에서 `everland_snapshots` 테이블을 확인한다. 처음에는 0행이 정상이다.
-3. **Workers & Pages → toolhub.ai.kr이 연결된 기존 Pages 프로젝트 → Settings → Bindings**에서 현재 설정 관리 방식을 확인한다. 로컬 프로젝트 설정명은 `salary-calculator`지만 실제 계정의 프로젝트는 커스텀 도메인으로 식별한다.
-   - 대시보드에서 수정 가능한 경우: **Add → D1 database bindings**, Variable name **`EVERLAND_DB`**, D1 database **`toolhub-everland`**. 사용할 Production/Preview 환경에 각각 설정. 실제 적용은 해당 환경 재배포 후다.
-   - **Wrangler 관리로 읽기 전용이면 대시보드에서 강제로 바꾸지 않는다.** 이 저장소는 Wrangler 설정을 갖고 있으므로 DB ID를 확인한 다음 승인된 배포 준비 단계에서 Pages의 해당 환경 `d1_databases` 설정에 반영해야 한다. 구성 파일이 정본이며 대시보드만 바꾸는 방법을 전제로 하지 않는다.
-4. DB ID는 D1 개요에서 확인할 수 있다. API 키나 Cloudflare 토큰을 대화로 보내지 않는다. 현재 ThemeParks.wiki 익명 라이브 API에는 별도 키가 필요하지 않다.
+   ```sh
+   npx wrangler deploy --config workers/everland/wrangler.toml
+   ```
 
-### 별도 배포 승인 이후 단계
+   처음에는 수정 코드가 들어 있는 `feat/everland-wait-times`를 선택한다. main에 반영한 이후 Worker 운영 브랜치도 main으로 맞춘다. Worker Preview builds는 비활성화해 같은 D1에 여러 예약 수집기가 만들어지지 않도록 한다. SQL migration은 이 명령으로 자동 적용되지 않는다.
 
-5. 수집 Worker **`toolhub-everland-collector`**를 실제 소스로 생성·배포한다. `workers/everland/wrangler.example.toml`을 같은 폴더 `wrangler.local.toml`로 복사하고 DB ID를 입력하면 코드·바인딩·Cron 설정을 함께 배포할 수 있다. 예제의 자리표시자 그대로 배포하지 않는다. 대시보드에서 Hello World를 만드는 동작도 이미 원격 배포이므로 미리 해둘 필요가 없다.
-6. Worker **Bindings → Add binding → D1 database**에 해당하는 연결을 확인한다: Variable name **`EVERLAND_DB`** → DB **`toolhub-everland`**. Pages와 수집 Worker 양쪽이 같은 DB를 가리켜야 한다. Wrangler로 배포할 때는 예제 설정에 이 연결이 들어 있으므로 대시보드에서 중복 생성하지 않고 확인한다.
-7. Worker **Settings → Triggers → Cron Triggers**에서 **`*/10 * * * *`** 확인. UTC 기준 10분마다 실행한다. Wrangler로 관리하면 Cron도 파일에서 관리한다. Worker의 `scheduled` 코드와 바인딩이 준비된 다음 활성화하며 공개 HTTP URL을 열어 수집을 시작하는 방식은 제공하지 않는다.
-8. Cron 변경 전파는 최대 약 15분 걸릴 수 있다. 첫 수집 성공 후 D1 **Console**에서 아래 읽기 전용 SQL로 확인한다. 두 번째 성공 기록이 생겨야 오늘의 추이 그래프가 표시된다. Cron 이벤트 화면은 새 Worker에서 최대 약 30분 늦게 나타날 수도 있다.
+4. **기존 인증 사용 가능 여부 확인:** Workers Builds도 API 토큰으로 배포한다. 기본 설정은 토큰 자동 생성이며 기존 적절한 토큰 선택도 지원한다. 새 자격증명 생성이 승인되지 않았으므로 기존 인증이 없으면 여기서 중단하고 그 필요를 보고한다. 토큰 값을 채팅으로 보내지 않는다. 기존 권한·보안 설정도 임의 확대하지 않는다.
+
+5. **배포 후 바인딩·예약 확인:** Worker Bindings에서 `EVERLAND_DB`가 기존 D1 ID를 가리키는지, Settings → Triggers → Cron Triggers에서 `*/10 * * * *`인지 확인한다. 현재 설치된 Wrangler 3.114.17은 이름 없이 DB ID로 검증했지만 Wrangler 버전을 변경할 때는 실제 database_name을 확인해야 한다.
+
+6. **같은 도메인의 경로 연결:** Worker → Settings → Domains & Routes → Add → Route에서 확인한 zone을 선택하고 정확히 `https://toolhub.ai.kr/everland-board/*`를 연결한다. 안내 페이지 링크는 항상 끝에 `/`가 있는 주소를 사용한다. `toolhub.ai.kr/*` 전체 경로나 기존 호스트 전체를 대체하는 Worker Custom Domain은 사용하지 않는다. Route는 대시보드에서 관리한다. 현재 Worker 파일에는 route/routes 키가 없고 workers_dev=false이므로 공식 문서의 대시보드 전용 관리 조건에 맞는다. 이 조건을 유지하고 향후 Git 재배포에서도 Route가 유지되는지 확인한다. 루트 Pages 설정 파일에 Route를 추가하지 않는다. 현재는 workers.dev가 꺼져 있으므로 임의의 workers.dev URL을 열어 확인하는 절차가 아니다.
+
+7. **실제 수집 확인:** Cron은 UTC 기준 10분 간격이고 설정 전파에 최대 약 15분이 걸릴 수 있다. D1 Console에서 아래 SQL로 성공 시각을 확인하고 `https://toolhub.ai.kr/everland-board/`를 직접 연다. 예시 데이터로 초기 상태를 채우지 않는다.
 
    ```sql
    SELECT count(*) AS observations, max(fetched_at) AS latest_success
    FROM everland_snapshots;
    ```
 
-9. Pages의 바인딩을 반영하고 새 기능 소스와 `functions/`를 포함하여 **먼저 preview 배포**한다. 바인딩을 수정한 이후 이미 배포된 페이지에는 재배포가 필요하다. D1 최근 시각, `/everland-board/` HTML, `/everland-wait-times/` 화면을 함께 확인한 뒤 production 배포를 별도로 진행한다. Pages Functions는 단순 정적 파일 드래그앤드롭만으로 연결된다고 가정하지 않는다.
+8. **Pages 운영 반영:** 검증된 기능 브랜치를 main에 반영하면 기존 Pages Git 자동 배포가 안내 페이지를 반영한다. Worker 배포와 Pages 배포는 별개다. 현황판 연결을 먼저 확인하고 안내 페이지의 이동·복귀·모바일 동작을 확인한다. 기능 브랜치 미리보기의 `*.pages.dev/everland-board/`에는 위 커스텀 도메인 Route가 적용되지 않아 Pages D1 미연결 시 503이 계속될 수 있다. 그것을 운영 Worker 검증 결과로 해석하지 않는다.
 
-### 초기 화면과 장애 상태
+이 환경에는 Cloudflare 배포 인증이 없어 위 원격 조치를 대신 실행하지 못했다. GitHub 소스 전달과 Cloudflare 실제 연결 완료를 구분해서 보고한다. 새 계정·토큰·유료 플랜·DNS·Route를 자동 생성하거나 변경하지 않는다.
 
-- DB 연결 없음·SQL 미적용·조회 실패: 현황판 HTTP 503과 데이터 이용 불가 안내.
-- 테이블은 있지만 0행: 기록 준비 안내. 가짜 대기시간을 표시하지 않음.
-- 첫 성공: 시설별 현황 표시. 오늘 기록이 1개면 추이 부족 안내.
-- 오늘 성공 기록 2개 이상: 관측 중앙값의 추이 표시. 결측 구간을 채우지 않음.
-- 마지막 성공 후 20분 초과: 이전 정상 기록을 유지하며 수집 지연 안내.
+## 초기 상태와 비용
 
-`next dev`와 production 정적 build는 원격 수집 작업을 실행하지 않는다. 로컬 검토 화면에 넣은 관측본도 원격 D1에 저장하지 않았다.
+- DB 연결 없음·SQL 미적용·조회 실패: HTTP 503과 데이터 이용 불가 안내.
+- 정상 DB에 0행: HTTP 200과 기록 준비 안내.
+- 첫 성공: 기구별 현황, 오늘 기록이 1개면 추이 부족 안내.
+- 같은 한국 날짜에 2개 이상 기록: 관측 중앙값의 추이.
+- 20분 초과 지연: 이전 정상 기록과 지연 경고.
 
-## 예상 비용
+수집은 144회/일, 4,320회/30일이며 매 수집 2번 API 호출한다. 7일 보관으로 약 1,009개 버킷을 유지한다. HTML 조회는 최신 스냅샷 1행과 오늘 요약 최대 144행을 반환하며 실제 D1 청구 스캔 행은 더 많을 수 있다. 화면 5분 갱신도 조회에 포함된다. 기존 계정·공통 D1의 사용량과 한도를 공유하므로 기존 서비스에 대한 간접 영향은 남는다.
 
-매일 24시간 10분 간격: **144회/일, 4,320회/30일**, 매 수집 2개 API 호출로 **8,640회/30일**. 운영시간을 추정해서 수집을 끊지 않는다. D1은 수집당 스냅샷 한 행을 쓰고, 7일 이후 한 행씩 삭제하며 인덱스 쓰기도 계산된다. 수천 행/일보다 적은 규모가 예상된다. 데이터 크기에 따라 다르지만 7일 저장은 수십 MB 수준을 예상한다.
-
-Pages 조회당 최신 스냅샷 1행 + 오늘 요약 최대 144행을 읽는다. 화면 5분 갱신도 추가 조회이므로 트래픽과 기존 계정 사용량을 함께 봐야 한다.
-
-2026-11-04 공식 가격표 기준 D1 Free는 읽기 500만 행/일, 쓰기 10만 행/일, 총 저장 5GB. Workers Free는 요청 10만/일, CPU 제한이 있다. 작은 초기 트래픽은 무료 범위로 설계했지만 운영 사용량·CPU 실측 전 **0원 보장은 하지 않는다**. 무료 한도를 넘으면 자동 유료 전환을 가정하지 말고 오류 및 플랜을 확인한다.
+2026-11-04 공식 문서 기준 Workers Free 요청 10만/일·CPU 10ms/호출, D1 Free 읽기 500만 행/일·쓰기 10만 행/일·총 저장 5GB다. 초기 소규모 운영은 무료 범위를 목표로 하지만 실제 CPU·사용량 측정 전 0원을 보장하지 않는다. 플랜 변경은 실행하지 않았다.
 
 ## 로컬 검증
 
-Linux CI 준비 과정에서 Windows 전용 `@tailwindcss/oxide-win32-x64-msvc@4.2.2` 직접 의존성을 제거했다. Tailwind 4.1.18의 운영체제별 선택 의존성은 유지하므로 Linux에서는 Linux 네이티브 패키지가 설치된다. 초기 개발 때 사용한 강제 설치 우회는 더 이상 필요하지 않다.
-
-Cloudflare가 pnpm으로 설치할 때 드러난 별도 문제도 수정했다. 코드에서 직접 사용하는 `html2canvas`, `@codemirror/state`, `@codemirror/view`를 직접 의존성으로 선언하고 npm lockfile을 갱신했다. 기존 npm 잠금 버전은 유지한다. 저장소의 패키지 매니저는 npm이므로 서로 다른 버전을 담고 있던 `pnpm-lock.yaml`은 제거하고 `packageManager`를 `npm@11.9.0`으로 명시했다. Cloudflare 설치 로그에서도 npm을 선택했는지 확인한다. 별도 pnpm 설치 명령이 대시보드에 지정되어 있다면 파일 정리만으로 그 설정이 바뀌지는 않는다.
-
-후속 검증은 기존 `node_modules`와 로컬 환경 파일이 없는 별도 복사본에서 Node 24.19.0 / npm 11.9.0으로 수행했다.
+Node 24 / npm 11.9.0, npm lockfile을 사용한다. Linux 설치를 위한 직접 의존성/lockfile 수정은 앞선 e11e7f7까지 포함되어 있다. 이번 독립 현황판 변경에는 새 의존성이 없다.
 
 ```sh
-npm ci
 npm run messages:generate
 npm run messages:check
-node scripts/i18n-namespaces.cjs --apply
-node scripts/i18n-namespaces.cjs --audit
 npx tsc --noEmit
 npx tsc --noEmit --incremental false --target es2022 --module esnext --moduleResolution bundler --resolveJsonModule --esModuleInterop --allowImportingTsExtensions --skipLibCheck functions/everland-board/index.ts workers/everland/index.ts
-npx eslint src/lib/everland src/components/EverlandWaitTimes.tsx src/app/everland-wait-times/page.tsx functions/everland-board/index.ts workers/everland/index.ts
+npx eslint src/lib/everland src/components/EverlandWaitTimes.tsx functions/everland-board/index.ts workers/everland/index.ts
 node_modules/.bin/esbuild scripts/check-everland.ts --bundle --platform=node --packages=external --format=cjs --outfile=/tmp/check-everland.cjs
 NODE_PATH="$PWD/node_modules" EVERLAND_BROWSER_TEST=1 node /tmp/check-everland.cjs
 ```
 
-브라우저 테스트는 Chromium `/usr/bin/chromium` 또는 `CHROMIUM_PATH`가 필요하다. 테스트용 데이터는 스크립트 내부의 합성 데이터이며 운영에 저장하지 않는다. SQLite는 메모리 DB에서만 실행한다.
+브라우저 테스트는 `/usr/bin/chromium` 또는 CHROMIUM_PATH를 사용한다. 데이터는 테스트용 합성 fixture이고 SQLite는 메모리 DB다. 실제 upstream·원격 D1에 쓰지 않는다. 최종 검증 결과와 로그는 `docs/verify/2026-11-04-everland.md`에 기록한다.
 
-후속 명시적 요청으로 `npx tsc --noEmit` 통과 후 `SKIP_BUILD_TYPECHECK=1 npm run build` 전체 production build를 완료했다. 772/772 정적 페이지 생성 성공. 에버랜드의 정적 본문·canonical·JSON-LD·사이트맵·OG를 확인했고, production 출력의 모바일/데스크톱 브라우저 검증도 통과했다. 실제 Cloudflare D1/Cron preview 검증은 남아 있다. 이 구현은 날짜별 SEO 예측 페이지를 만들지 않고 정적 안내 페이지의 기반만 마련한다. 실시간 iframe은 중복 검색을 피하도록 noindex이며 라이브 관측값의 검색 색인을 완료한 것은 아니다.
+## 근거
 
-## 근거 (2026-11-04 확인)
+- [ThemeParks.wiki 이용약관](https://www.themeparks.wiki/terms), [가격·사용 FAQ](https://www.themeparks.wiki/pricing)
+- [공식 내부 지도](https://www.everland.com/everland/map), [공식 이용약관](https://www.everland.com/terms) — 이미지 재사용 허락 미확인
+- [Workers Route 요구사항·대시보드 절차](https://developers.cloudflare.com/workers/configuration/routing/routes/)
+- [Custom Domains의 호스트 전체 매칭](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+- [Workers Builds 설정·인증](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+- [Cron 설정·전파 시간](https://developers.cloudflare.com/workers/configuration/cron-triggers/)
+- [Workers 가격](https://developers.cloudflare.com/workers/platform/pricing/), [D1 가격](https://developers.cloudflare.com/d1/platform/pricing/)
 
-- ThemeParks.wiki 이용약관: https://www.themeparks.wiki/terms — 사용자 대상 표시 허용, 연결된 `Powered by ThemeParks.wiki` 필수, 데이터 재배포 제한.
-- 무료 API: https://www.themeparks.wiki/pricing
-- 공식 내부 지도: https://www.everland.com/everland/map
-- 공식 가이드맵 안내: https://www.everland.com/everland/information/guidemap
-- 공식 이용약관: https://www.everland.com/terms — 부모 스레드 조사에서 제22조 상업적 복제 제한 확인. 이번 실행기의 정적 웹 읽기는 JS 앱 내용까지 얻지 못했으며 별도 사용 허락은 확인되지 않음.
-- D1 가격: https://developers.cloudflare.com/d1/platform/pricing/
-- Workers 가격: https://developers.cloudflare.com/workers/platform/pricing/
-- OSM 타일 정책도 검토했으나 사용자 설명에 따라 타일 지도를 구현에 사용하지 않음: https://operations.osmfoundation.org/policies/tiles/
-
-## Production build 검증 추가 (2026-11-04)
-
-- 타입 검사를 별도로 통과했으므로 저장소 지침대로 build 중 중복 타입 검사만 생략했다. build 로그의 `Skipping validation of types`는 이 설정의 정상 표시다.
-- build 오류 없음. `baseline-browser-mapping` 데이터가 2개월 이상 됐다는 동일 경고가 worker별 총 10번 출력됐다. 기존 의존성 경고이며 자동 업그레이드는 하지 않았다.
-- `check-static-html.cjs out`: 771개 HTML 검사에서 기존 `tips/1`~`tips/400`의 h1 없음 400건. 모두 `noindex`임을 확인했으며 기존 인계 문서에도 기록된 항목이다. 에버랜드와 나머지 페이지에는 해당 검사 실패 없음.
-- 로그: `/tmp/everland-production-build.log`, `/tmp/everland-static-check.log`. 에버랜드 개별 정적 검사: `/tmp/everland-evidence/production-html-results.json`.
-- 로컬 검토 주소 `http://127.0.0.1:4143/everland-wait-times/`는 이제 production 정적 출력과 개발 시 수집본을 연결한다. 수집본은 고정 시각의 관측이며 이후 자동 갱신되는 운영 데이터가 아니다.
-- 대시보드 절차 근거: [D1 생성·Console](https://developers.cloudflare.com/d1/get-started/), [Pages D1 바인딩](https://developers.cloudflare.com/pages/functions/bindings/), [Wrangler 설정 정본](https://developers.cloudflare.com/pages/functions/wrangler-configuration/), [Cron 설정·전파 시간](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
+- [대시보드에서만 Route를 관리하는 Wrangler 조건](https://developers.cloudflare.com/workers/wrangler/configuration/#routes) — route/routes 생략, workers_dev=false.

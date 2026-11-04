@@ -56,16 +56,38 @@ async function main() {
   await collect(db,fixtureFetch,now-9*86400000)
   await collect(db,fixtureFetch,now)
   assert.equal(sqlite.prepare('SELECT count(*) AS n FROM everland_snapshots').get()!.n,2,'retention removes expired data')
-  assert.equal((await worker.fetch()).status,404)
+  assert.equal((await worker.fetch(new Request('https://worker.example/api/waits'), {EVERLAND_DB:db})).status,404)
+  const workerRequest = new Request('https://worker.example/everland-board/')
+  const workerResponse = await worker.fetch(workerRequest, {EVERLAND_DB:db})
+  assert.equal(workerResponse.status,200)
+  assert.match(workerResponse.headers.get('content-type')!, /text\/html/)
+  assert.equal(workerResponse.headers.get('access-control-allow-origin'),null)
+  assert.equal(workerResponse.headers.get('x-frame-options'),'DENY')
+  assert.equal(workerResponse.headers.get('cache-control'),'no-store')
+  assert.equal(workerResponse.headers.get('x-robots-tag'),'noindex')
+  assert.ok(workerResponse.headers.get('content-security-policy')!.includes("frame-ancestors 'none'"))
+  assert.ok(!workerResponse.headers.get('content-security-policy')!.includes('https://*.pages.dev'))
+  assert.equal((await worker.fetch(workerRequest, {})).status,503)
+  assert.equal((await worker.fetch(workerRequest, {EVERLAND_DB:{...db,prepare(){throw new Error('private diagnostic')}}})).status,503)
+  for (const method of ['POST','PUT','DELETE','OPTIONS']) {
+    const denied = await worker.fetch(new Request(workerRequest,{method}), {EVERLAND_DB:db})
+    assert.equal(denied.status,405)
+    assert.equal(denied.headers.get('allow'),'GET, HEAD')
+  }
+  assert.equal(await (await worker.fetch(new Request(workerRequest,{method:'HEAD'}), {EVERLAND_DB:db})).text(),'')
   const request=new Request('https://toolhub.ai.kr/everland-board/')
   assert.equal((await onRequestGet({request,env:{}})).status,503)
   const response=await onRequestGet({request,env:{EVERLAND_DB:db}})
-  assert.equal(response.headers.get('x-frame-options'),'SAMEORIGIN')
+  assert.equal(response.headers.get('x-frame-options'),'DENY')
   assert.match(response.headers.get('content-type')!,/text\/html/)
   const html=await response.text()
   assert.ok(html.includes('&lt;img src=x onerror=alert(1)&gt;'))
   assert.ok(!html.includes('<img src=x onerror=alert(1)>'))
   assert.ok(html.includes('Powered by ThemeParks.wiki'))
+  assert.ok(html.includes('수집 확인'))
+  assert.ok(html.includes('수집이 지연되어'))
+  assert.ok(!html.includes('postMessage'))
+  assert.ok(!html.includes('<iframe'))
   console.log('PASS: normalization, 0/missing/status, validation, KST midnight, staleness, SQLite persistence/retention/idempotency, 429 preservation, HTML escaping and frame policy')
 
   if(process.env.EVERLAND_BROWSER_TEST!=='1')return
@@ -73,11 +95,18 @@ async function main() {
   // Refresh fixture timestamps so stale UI is tested separately from ordinary rendering.
   await collect(db,fixtureFetch,Date.now()-600000)
   await collect(db,fixtureFetch,Date.now())
+  const embedFixture='<!doctype html><iframe src="http://127.0.0.1:4141/everland-board/"></iframe>'
   const server=createServer(async(req,res)=>{
-    const request=new Request(`http://localhost:4141${req.url}`)
-    const response=await onRequestGet({request,env:{EVERLAND_DB:db}})
+    if(req.url==='/test-frame/') {
+      res.setHeader('Content-Type','text/html');res.end(embedFixture);return
+    }
+    const request=new Request(`http://127.0.0.1:4141${req.url}`)
+    const response=await worker.fetch(request,{EVERLAND_DB:db})
     res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text())
   }).listen(4141,'127.0.0.1')
+  const parentServer=createServer((_req,res)=>{
+    res.setHeader('Content-Type','text/html');res.end(embedFixture)
+  }).listen(4142,'127.0.0.1')
   const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']})
   try{
     const page=await browser.newPage({viewport:{width:390,height:844}})
@@ -107,9 +136,28 @@ async function main() {
     await page.screenshot({path:'/tmp/everland-evidence/desktop-fixture.png',fullPage:true})
     await page.goto('http://127.0.0.1:4141/everland-board/?lang=en')
     assert.equal(await page.locator('h1').innerText(),'Everland wait-time dashboard')
+    assert.equal(await page.locator('iframe').count(),0)
+    assert.ok(await page.locator('a[href="https://www.themeparks.wiki/"]').isVisible())
+    assert.equal(await page.locator('header a[href="/everland-wait-times/"]').count(),1)
+    // Even ToolHub's own origin cannot embed the standalone page.
+    for(const url of ['http://127.0.0.1:4141/test-frame/','http://127.0.0.1:4142/']) {
+      const blockedFrame=page.waitForEvent('console',{predicate:message=>message.text().includes('frame-ancestors')||message.text().includes('X-Frame-Options')})
+      await page.goto(url)
+      await blockedFrame
+    }
+    // Existing records remain visible with a clear stale warning, then no data is shown for an empty DB.
+    sqlite.prepare('DELETE FROM everland_snapshots').run()
+    await collect(db,fixtureFetch,Date.now()-21*60000)
+    await page.goto('http://127.0.0.1:4141/everland-board/')
+    assert.equal(await page.locator('#stale').isVisible(),true)
+    assert.equal(await page.locator('.ride').count(),7)
+    sqlite.prepare('DELETE FROM everland_snapshots').run()
+    await page.reload()
+    assert.equal(await page.locator('.ride').count(),0)
+    assert.ok((await page.locator('[role="status"]:visible').innerText()).includes('아직 수집된 기록'))
     assert.deepEqual(errors,[])
-    writeFileSync('/tmp/everland-evidence/results.json',JSON.stringify({unit:'passed',browser:'passed',errors,fixtures:true},null,2))
-    console.log('PASS: Chromium mobile/desktop, search, empty filter, status filter, sort, map selection, trend table, English, no overflow/JS errors')
-  }finally{await browser.close();server.close();sqlite.close()}
+    writeFileSync('/tmp/everland-evidence/results.json',JSON.stringify({unit:'passed',browser:'passed',standalone:'passed',sameOriginEmbedBlocked:'passed',crossOriginEmbedBlocked:'passed',staleAndEmpty:'passed',errors,fixtures:true},null,2))
+    console.log('PASS: standalone page, same/cross-origin embeds blocked, stale/empty states; Chromium mobile/desktop, search, empty filter, status filter, sort, map selection, trend table, English, no overflow/JS errors')
+  }finally{await browser.close();server.close();parentServer.close();sqlite.close()}
 }
 main().catch(e=>{console.error(e);process.exitCode=1})
