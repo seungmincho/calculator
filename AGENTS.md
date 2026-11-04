@@ -9,7 +9,7 @@ Next.js 16 App Router 정적 export(`out/`) · React 19 · TypeScript · Tailwin
 
 ## 명령
 
-패키지 매니저는 **npm** 이다. 이 PC 에서 pnpm 은 store 위치 문제가 있다(lockfile 은 둘 다 있다).
+패키지 매니저는 **npm** 이며 `package-lock.json`을 사용한다. CI에서도 `npm ci`로 설치한다. 다른 패키지 매니저의 lockfile을 추가하면 Cloudflare의 자동 설치 선택이 달라질 수 있다.
 
 ```bash
 npm run dev                  # 번역 생성 후 next dev --turbopack, 포트 3039

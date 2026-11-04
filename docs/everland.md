@@ -91,7 +91,11 @@ Pages 조회당 최신 스냅샷 1행 + 오늘 요약 최대 144행을 읽는다
 
 ## 로컬 검증
 
-Linux CI 준비 과정에서 Windows 전용 `@tailwindcss/oxide-win32-x64-msvc@4.2.2` 직접 의존성을 제거했다. 기존 `package-lock.json`은 이미 Tailwind 4.1.18과 운영체제별 선택 의존성을 기록하고 있어 재생성하지 않았다. Linux에서는 해당 플랫폼의 네이티브 패키지가 설치되며, Windows 패키지도 선택 의존성으로 유지된다. 초기 개발 때 사용한 강제 설치 우회는 더 이상 필요하지 않다. 후속 검증은 기존 `node_modules`와 로컬 환경 파일이 없는 별도 복사본에서 Node 24.19.0 / npm 11.9.0으로 수행했다.
+Linux CI 준비 과정에서 Windows 전용 `@tailwindcss/oxide-win32-x64-msvc@4.2.2` 직접 의존성을 제거했다. Tailwind 4.1.18의 운영체제별 선택 의존성은 유지하므로 Linux에서는 Linux 네이티브 패키지가 설치된다. 초기 개발 때 사용한 강제 설치 우회는 더 이상 필요하지 않다.
+
+Cloudflare가 pnpm으로 설치할 때 드러난 별도 문제도 수정했다. 코드에서 직접 사용하는 `html2canvas`, `@codemirror/state`, `@codemirror/view`를 직접 의존성으로 선언하고 npm lockfile을 갱신했다. 기존 npm 잠금 버전은 유지한다. 저장소의 패키지 매니저는 npm이므로 서로 다른 버전을 담고 있던 `pnpm-lock.yaml`은 제거하고 `packageManager`를 `npm@11.9.0`으로 명시했다. Cloudflare 설치 로그에서도 npm을 선택했는지 확인한다. 별도 pnpm 설치 명령이 대시보드에 지정되어 있다면 파일 정리만으로 그 설정이 바뀌지는 않는다.
+
+후속 검증은 기존 `node_modules`와 로컬 환경 파일이 없는 별도 복사본에서 Node 24.19.0 / npm 11.9.0으로 수행했다.
 
 ```sh
 npm ci
