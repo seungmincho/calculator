@@ -8,6 +8,8 @@
 - **계산 API·MCP**: /api/calc/retirement·unemployment·minimum-wage, MCP 도구 8개. 배포 후 `tools/list` 로 8개 확인.
 - **YMYL 근거·기준일**: 18곳에 근거 상자/기준일 줄(b2a0f752). law.go.kr 은 없는 조문도 200을 돌려줘서 조문 단위 URL(지방세법 제12조·주택임대차보호법 제7조의2·소득세법 제129조·조특법 제86조의3·제95조의2 등)은 법령명까지만 확인됨. 빌드 후 `node scripts/audit-seo-static.cjs out` 재측정.
 - **`/manito/` 마니또 뽑기(db5cb66c)**: 배정·링크 로직 `src/utils/manito.ts`(검사 `scripts/check-manito.ts`). 링크 = `#1`+가린 JSON(XOR+base64url, 암호 아님 — 화면 문구도 그렇게 안내). 받는 쪽은 hash 를 useSyncExternalStore 로 읽어 정적 HTML·첫 렌더는 진행자 화면. 첫 화면 예시는 시드 1 고정이라 명단을 고치면 무작위 시드로 바꾼다(같은 명단을 넣어 배정을 재현하는 부정 방지). 12월 홈 시즌 카드에 넣을지 검토.
+- **`/calendar-2027/` 2027 달력(cd32e1fa)**: `src/utils/yearCalendar.ts`(24절기·명절은 천문연 달력자료 2027을 그대로 — 검사 `scripts/check-year-calendar.ts`). **해마다 11월 초**: 천문연 calendarData?year=다음해 로 SOLAR_TERMS·CUSTOM_DAYS 추가 → `src/app/calendar-2027` 폴더를 `calendar-2028` 로 복사(YEAR·TITLE 리터럴·DESC·FAQ 숫자) → menuConfig·번역·OG. 천문연 2026 페이지는 2026.4 공휴일 규정 개정 전 자료라 노동절·제헌절이 없음(사이트 데이터가 맞음).
+- **`/dividend-calculator/` 배당금 계산기(cd32e1fa)**: `src/utils/dividend.ts` 조문 주석(소득세법 §129·§14, 조특법 §104의27 고배당 분리과세 2026~2028 사업연도, ISA §91의18, 건보 시행규칙 §44). 미국 조약세율 15%는 국세청 원문 미확인(입력칸 기본값). 종합과세 추가 세액은 계산하지 않고 안내만. 검사 `scripts/check-dividend.ts`.
 - **남은 것**: DecisionToolsBar(15페이지 공용 서버 컴포넌트) 한국어 하드코딩, 돌림판 저장 이미지 문구가 /roulette 에서도 "메뉴 룰렛", 사다리 결과 공개 후 포커스가 행에서 빠짐, 건강보험 상·하한·점수당 금액은 12월 2027 고시 후 갱신.
 
 ## 2026-11-06 AI 검색·에이전트 대응 (커밋, 미배포)
