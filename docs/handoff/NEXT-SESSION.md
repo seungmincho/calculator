@@ -5,7 +5,8 @@
 - **`public/llms.txt`**(llmstxt.org 형식): `scripts/generate-llms-txt.cjs`가 menuConfig·ko 번역으로 만들고, `generate-redirects-rss.js` 끝에서 함께 돈다(도구 추가 때 자동 갱신). 맨 위에 연말·연초 핵심 13개와 계산 API 안내. robots.txt 주석으로 위치 표시.
 - **`/api/calc/{salary|four-insurance|age|sun}`**: 페이지와 같은 utils로 계산한 JSON(CORS *, 캐시 1시간, noindex). 정적 HTML은 기본값 결과라 에이전트가 쿼리 값을 정확히 받으려면 이 API가 필요. 명세 `public/openapi.json`, 테스트 `scripts/check-agent-api.ts`(esbuild 번들 후 실행, 잘못된 입력 14종 400).
 - 운영에서 AI 크롤러 UA(GPTBot·ClaudeBot·PerplexityBot·Google-Extended 등)는 200이었지만, Cloudflare AI 봇 차단은 실제 봇 IP로 판단하므로 **대시보드(보안 → 봇 / AI Crawl Control)에서 차단 여부 확인 필요**(사용자).
-- 다음 후보: IndexNow(Bing → ChatGPT·Copilot 검색 반영 속도), 원격 MCP 서버(같은 계산을 에이전트 도구로).
+- **IndexNow**: 키 파일 `public/39688abd60472a6f22b49655a86486b4.txt`(공개값), 전송 `node scripts/indexnow.mjs --recent 7`(또는 경로를 슬래시 없이 나열, `--dry-run`). api.indexnow.org(Bing 등 공유)와 네이버 서치어드바이저에 직접 보낸다. **배포 후에만** — 키 파일이 운영에 없으면 보내기 전에 멈춘다. 이번 묶음 배포 뒤 첫 전송 대상: 최근 7일 도구 10개 + 홈.
+- 다음 후보: 원격 MCP 서버(같은 계산을 에이전트 도구로).
 
 ## 2026-11-06 스키장 개장일·날씨 (커밋, 미배포)
 

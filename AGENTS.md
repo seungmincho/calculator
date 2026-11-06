@@ -22,6 +22,7 @@ node scripts/i18n-namespaces.cjs --audit   # 쓰는 네임스페이스가 모두
 node scripts/generate-og.mjs <slug>        # public/og/<slug>.png + page.tsx openGraph·twitter images 삽입
 node scripts/generate-redirects-rss.js     # menuConfig → public/_redirects · public/rss.xml · public/llms.txt(AI용 사이트 안내)
 node scripts/check-static-html.cjs out     # 빌드 후: 본문이 숨겨졌거나 h1 이 없는 페이지 목록
+node scripts/indexnow.mjs --recent 7      # 배포 후: 최근 7일 새·바뀐 도구를 Bing·네이버에 바로 알림(IndexNow, Google 은 미지원)
 npm run wrangler:dev         # out/ 을 Cloudflare Pages 로컬로 띄운다
 ```
 
