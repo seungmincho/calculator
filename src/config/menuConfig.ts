@@ -136,6 +136,7 @@ export const menuConfig: MenuConfig = {
       { href: '/four-insurance', labelKey: 'footer.links.fourInsurance', descriptionKey: 'toolsShowcase.tools.fourInsurance.description', icon: '🛡️', addedDate: '2026-11-06', subcategory: 'subcategory.salaryWork' },
       { href: '/age-table', labelKey: 'footer.links.ageTable', descriptionKey: 'toolsShowcase.tools.ageTable.description', icon: '🎂', addedDate: '2026-11-06', subcategory: 'subcategory.others' },
       { href: '/changes-2027', labelKey: 'footer.links.changes2027', descriptionKey: 'toolsShowcase.tools.changes2027.description', icon: '📰', addedDate: '2026-11-06', subcategory: 'subcategory.others' },
+      { href: '/dividend-calculator', labelKey: 'footer.links.dividendCalculator', descriptionKey: 'toolsShowcase.tools.dividendCalculator.description', icon: '💰', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
     ],
   },
   tools: {
@@ -263,6 +264,7 @@ export const menuConfig: MenuConfig = {
       { href: '/sunrise-sunset', labelKey: 'footer.links.sunriseSunset', descriptionKey: 'toolsShowcase.tools.sunriseSunset.description', icon: '🌅', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
       { href: '/new-year-sunrise', labelKey: 'footer.links.newYearSunrise', descriptionKey: 'toolsShowcase.tools.newYearSunrise.description', icon: '🌄', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
       { href: '/manito', labelKey: 'footer.links.manito', descriptionKey: 'toolsShowcase.tools.manito.description', icon: '🎁', addedDate: '2026-11-07', subcategory: 'subcategory.decision' },
+      { href: '/calendar-2027', labelKey: 'footer.links.calendar2027', descriptionKey: 'toolsShowcase.tools.calendar2027.description', icon: '📅', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {

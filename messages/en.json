@@ -2841,7 +2841,9 @@
       "ageTable": "Age Table",
       "changes2027": "What Changes in 2027",
       "skiResorts": "Ski Resort Openings & Weather",
-      "manito": "Secret Santa Draw"
+      "manito": "Secret Santa Draw",
+      "calendar2027": "2027 Calendar",
+      "dividendCalculator": "Dividend Calculator"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8582,6 +8584,14 @@
       "manito": {
         "title": "Secret Santa Draw",
         "description": "One-loop draw with private links for each person"
+      },
+      "calendar2027": {
+        "title": "2027 Calendar",
+        "description": "2027 calendar with Korean holidays, lunar dates and solar terms, printable"
+      },
+      "dividendCalculator": {
+        "title": "Dividend Calculator",
+        "description": "After-tax dividends, monthly income target and Korean dividend tax"
       }
     }
   },
@@ -53971,5 +53981,505 @@
         ]
       }
     }
+  },
+  "yearCalendar": {
+    "title": "{year} Calendar",
+    "subtitle": "Korean public holidays, substitute holidays, lunar dates and the 24 solar terms at a glance, printable on A4",
+    "summary": {
+      "holidays": "Public holidays",
+      "holidaysNote": "incl. {sub} substitute holidays",
+      "weekday": "Weekday holidays",
+      "weekdayNote": "{n} fall on weekends",
+      "offDays": "Days off a year",
+      "offDaysNote": "{w} weekend days + {h} weekday holidays",
+      "longWeekends": "Breaks of 3+ days",
+      "longWeekendsNote": "Longest {days} days · {range}",
+      "days": "{n} days",
+      "times": "{n}"
+    },
+    "actions": {
+      "printYear": "Print year (1 page)",
+      "printMonths": "Print months (12 pages)",
+      "planner": "Stretch breaks with leave"
+    },
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "md": "{m}/{d}",
+    "mdw": "{m}/{d} ({w})",
+    "range": "{from} – {to}",
+    "monthName": "{m}",
+    "monthTitle": "{year}-{m}",
+    "lunar": "{m}.{d}",
+    "lunarLeap": "L{m}.{d}",
+    "lunarFull": "Lunar {m}/{d}",
+    "lunarFullLeap": "Lunar leap {m}/{d}",
+    "overview": {
+      "title": "{year} at a glance",
+      "hint": "Tap a month name to see it large below"
+    },
+    "month": {
+      "title": "Monthly calendar",
+      "prev": "Previous month",
+      "next": "Next month",
+      "events": "Holidays and solar terms in {m}",
+      "none": "No public holidays this month",
+      "lunarHint": "Small numbers under dates are lunar dates"
+    },
+    "legend": {
+      "holiday": "Sunday / holiday",
+      "saturday": "Saturday",
+      "term": "Solar term",
+      "today": "Today"
+    },
+    "substitute": "Substitute holiday ({name})",
+    "tables": {
+      "holidays": {
+        "title": "{year} public holidays",
+        "date": "Date",
+        "name": "Holiday"
+      },
+      "long": {
+        "title": "{year} breaks of 3+ days",
+        "range": "Period",
+        "days": "Days",
+        "includes": "Holidays"
+      },
+      "terms": {
+        "title": "{year} solar terms",
+        "name": "Term",
+        "date": "Date",
+        "time": "Time (KST)"
+      },
+      "custom": {
+        "title": "{year} traditional days",
+        "name": "Name",
+        "date": "Date",
+        "lunar": "Lunar"
+      }
+    },
+    "terms": {
+      "sohan": "Minor Cold",
+      "daehan": "Major Cold",
+      "ipchun": "Start of Spring",
+      "usu": "Rain Water",
+      "gyeongchip": "Awakening of Insects",
+      "chunbun": "Spring Equinox",
+      "cheongmyeong": "Pure Brightness",
+      "gogu": "Grain Rain",
+      "ipha": "Start of Summer",
+      "soman": "Grain Full",
+      "mangjong": "Grain in Ear",
+      "haji": "Summer Solstice",
+      "soseo": "Minor Heat",
+      "daeseo": "Major Heat",
+      "ipchu": "Start of Autumn",
+      "cheoseo": "End of Heat",
+      "baengno": "White Dew",
+      "chubun": "Autumn Equinox",
+      "hallo": "Cold Dew",
+      "sanggang": "Frost Descent",
+      "ipdong": "Start of Winter",
+      "soseol": "Minor Snow",
+      "daeseol": "Major Snow",
+      "dongji": "Winter Solstice"
+    },
+    "custom": {
+      "daeboreum": "First Full Moon",
+      "hansik": "Hansik",
+      "dano": "Dano",
+      "chobok": "Chobok (1st hot day)",
+      "jungbok": "Jungbok (2nd hot day)",
+      "malbok": "Malbok (3rd hot day)",
+      "chilseok": "Chilseok"
+    },
+    "ics": {
+      "note": "ToolHub {year} calendar: {url}"
+    },
+    "print": {
+      "foot": "toolhub.ai.kr/calendar-{year} · Holidays: Regulations on Public Holidays · Solar terms and lunar dates: KASI"
+    },
+    "guide": {
+      "title": "About the {year} calendar",
+      "howTo": {
+        "title": "How to read",
+        "items": [
+          "Red dates are Sundays and public holidays; blue dates are Saturdays.",
+          "In the monthly calendar, small numbers under dates are lunar dates, with solar terms and traditional days noted.",
+          "Save holidays to your phone or Google Calendar in one go with the .ics file.",
+          "To find where annual leave gives the longest break, use the holiday planner."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How many public holidays does Korea have in 2027?",
+            "a": "24 days, including 7 substitute holidays (Seollal, Labor Day, Constitution Day, Liberation Day, National Foundation Day, Hangeul Day, Christmas). 15 of them fall on weekdays. With 104 weekend days that's 119 days off, one fewer than 2026 (120)."
+          },
+          {
+            "q": "When is Seollal 2027?",
+            "a": "Feb 6 (Sat) to Feb 8 (Mon). Because the break overlaps a weekend, Feb 9 (Tue) is a substitute holiday, so Feb 6–9 are off."
+          },
+          {
+            "q": "When is Chuseok 2027?",
+            "a": "Sep 14 (Tue) to 16 (Thu). Taking leave on the 13th and 17th gives nine days off, Sep 11 to 19."
+          },
+          {
+            "q": "Which days are substitute holidays in 2027?",
+            "a": "Feb 9 (Seollal), May 3 (Labor Day), Jul 19 (Constitution Day), Aug 16 (Liberation Day), Oct 4 (National Foundation Day), Oct 11 (Hangeul Day) and Dec 27 (Christmas)."
+          },
+          {
+            "q": "Are Labor Day and Constitution Day holidays?",
+            "a": "Yes. A 2026 amendment of the Regulations on Public Holidays made Labor Day (May 1) and Constitution Day (Jul 17) public holidays. Both fall on Saturdays in 2027, so May 3 and Jul 19 are substitute holidays."
+          },
+          {
+            "q": "How are the 24 solar terms set?",
+            "a": "The sun's path (the ecliptic) is divided every 15°, giving 24 terms a year. Dates and times follow KASI calendar data (KST): Start of Spring Feb 4 10:46, Summer Solstice Jun 21 23:11, Winter Solstice Dec 22 11:42."
+          },
+          {
+            "q": "When are the 'bok' days in 2027?",
+            "a": "Chobok Jul 20, Jungbok Jul 30, Malbok Aug 9. The First Full Moon is Feb 21 and Dano is Jun 9."
+          },
+          {
+            "q": "Can I print it or save a PDF?",
+            "a": "'Print year' fits 12 months on one landscape A4 page; 'Print months' prints each month large with lunar dates, holidays and solar terms. Choose 'Save as PDF' in the print dialog to get a file."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "KASI — 2027 calendar data (solar terms, lunar dates, traditional days)",
+            "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?year=2027"
+          },
+          {
+            "label": "Regulations on Public Holidays — National Law Information Center",
+            "url": "https://www.law.go.kr/법령/관공서의공휴일에관한규정"
+          }
+        ],
+        "asOf": "Checked Nov 7, 2026 · temporary holidays are announced separately"
+      }
+    }
+  },
+  "dividendCalculator": {
+    "title": "Dividend Calculator",
+    "subtitle": "After-tax dividends and monthly income, the investment needed for a monthly target, ISA and pension account comparison, Korea's comprehensive financial income taxation, the high-dividend separate taxation option and dividend reinvestment, under 2026 Korean tax law.",
+    "won": " KRW",
+    "fmt": {
+      "eokMan": "{won} KRW",
+      "eok": "{won} KRW",
+      "man": "{won} KRW",
+      "won": "{won} KRW"
+    },
+    "unit": {
+      "share": "sh"
+    },
+    "in": {
+      "mode": "Input method",
+      "modes": {
+        "amount": "By amount",
+        "shares": "By shares"
+      },
+      "amount": "Amount invested",
+      "yield": "Dividend yield (annual)",
+      "yieldHint": "Annual dividend ÷ share price. Use the yield shown in your brokerage app or a finance portal.",
+      "shares": "Shares held",
+      "price": "Share price",
+      "investedHint": "Invested {v}",
+      "dps": "Dividend per share (annual total)",
+      "dpsHint": "Per-payment dividend × payments per year. Yield {rate}%",
+      "freq": "Payout frequency",
+      "freqs": {
+        "monthly": "Monthly",
+        "quarterly": "Quarterly",
+        "semiannual": "Semiannual",
+        "annual": "Annual"
+      },
+      "market": "Market",
+      "markets": {
+        "domestic": "Korean stock/ETF",
+        "overseas": "Overseas stock"
+      },
+      "foreign": "Foreign withholding rate",
+      "foreignHint": "US stocks usually 15% (Korea-US tax treaty). Your Korean broker withholds only the shortfall below 14%.",
+      "otherFin": "Other interest and dividends this year (pre-tax)",
+      "otherFinHint": "Deposit interest, dividends from other holdings, etc. Used for the 20 million KRW threshold.",
+      "hd": "Apply high-dividend separate taxation",
+      "hdHint": "For dividends from qualifying high-dividend companies received from 2026. You apply when filing in May of the following year."
+    },
+    "result": {
+      "perPay": {
+        "monthly": "Each monthly payout (after tax)",
+        "quarterly": "Each quarterly payout (after tax)",
+        "semiannual": "Each semiannual payout (after tax)",
+        "annual": "Annual payout (after tax)"
+      },
+      "sub": "Pre-tax {gross} KRW a year · after tax {net} KRW a year",
+      "empty": "Enter an amount and a dividend yield (or shares, price and dividend per share) to see the result.",
+      "perPayGross": "Per payout (pre-tax)",
+      "annualGross": "Annual dividends (pre-tax)",
+      "incomeTax": "Dividend income tax 14%",
+      "foreignTax": "Foreign withholding {rate}%",
+      "krTax": "Korean income tax (shortfall below 14%)",
+      "localTax": "Local income tax (10% of income tax)",
+      "annualNet": "Annual dividends (after tax)",
+      "monthlyAvg": "Monthly average (after tax)",
+      "taxTotal": "Total tax",
+      "taxRate": "effective {rate}%",
+      "netYield": "After-tax yield",
+      "hdLine": "If you apply for separate taxation, you pay another {extra} KRW in May next year, for a final after-tax {net} KRW a year.",
+      "finLine": "Your financial income exceeds 20 million KRW, so it is subject to comprehensive taxation. Withholding is not final; it is settled in the income tax return next May.",
+      "finLink": "See the threshold check"
+    },
+    "fin": {
+      "title": "Comprehensive taxation and health insurance check",
+      "counted": "Financial income counted toward 20 million KRW",
+      "countedHint": "This holding {div} KRW + other interest and dividends {other} KRW (pre-tax)",
+      "countedHintHd": "Other interest and dividends {other} KRW (pre-tax). This holding's {div} KRW, under high-dividend separate taxation, is excluded (NTS notice, Mar 9, 2026).",
+      "room": "Room left under 20 million KRW",
+      "excess": "Amount over 20 million KRW",
+      "maxInvest": "Investment that stays under 20 million KRW at a {rate}% yield",
+      "ok": "At 20 million KRW or less, withholding is final (separate taxation). No filing is needed.",
+      "okHd": "Your other interest and dividends are 20 million KRW or less, so they are not taxed comprehensively. Including this holding, though, you exceed 20 million KRW, so this result holds only if you apply for high-dividend separate taxation in your May income tax return. Otherwise comprehensive taxation applies.",
+      "over": "Your financial income is {excess} KRW over 20 million KRW, so you must file an income tax return next May.",
+      "overItems": [
+        "The first 20 million KRW is taxed at 14%; the excess is added to your other income (salary, business, etc.) and taxed at progressive rates of 6-45% (Income Tax Act Art. 14, 55).",
+        "You never pay less than 14% applied to all financial income: the higher of the two methods applies (comparative taxation, Art. 62).",
+        "For Korean corporate dividends, 10% of the part above 20 million KRW is added to income (gross-up) and the same amount is credited against tax (Art. 17(3), 56). Overseas dividends are not grossed up.",
+        "The extra tax depends heavily on your other income and deductions, so this calculator does not estimate it. In a low bracket it barely changes; in a high bracket it can rise a lot.",
+        "For the three years after a year of comprehensive taxation, you cannot open or extend an ISA (Restriction of Special Taxation Act Art. 129-2)."
+      ],
+      "toIncomeTax": "Calculate income tax with your other income",
+      "nhisTitle": "Health insurance",
+      "nhisOk": "Interest and dividends total 10 million KRW or less, so they are left out of the regional premium and the employee's non-salary income. {room} KRW left until 10 million KRW.",
+      "nhisMax": "At a {rate}% yield, an investment of up to {max} stays under 10 million KRW.",
+      "nhisOver": "Interest and dividends of {total} KRW exceed 10 million KRW, so the full amount counts as income for health insurance.",
+      "nhisItems": [
+        "It counts toward the regional subscriber's income premium, or the employee subscriber's non-salary income. Employees pay an extra premium when non-salary income exceeds 20 million KRW a year (NHI Act Enforcement Decree Art. 41).",
+        "Dependents must have total business, financial, pension, wage and other income of 20 million KRW or less a year (NHIS guidance).",
+        "Premiums from January to October use income from two years earlier; November and December use the previous year."
+      ],
+      "nhisNote": "Basis: NHI Act Enforcement Rule Art. 44(1). NHIS has not said how separately taxed high-dividend income is treated, so it is included here."
+    },
+    "hd": {
+      "title": "High-dividend company separate taxation",
+      "desc": "Dividends from qualifying high-dividend companies received on or after January 1, 2026 can be taxed separately at the rates below, without being added to other income, if you apply when filing in May of the following year (Restriction of Special Taxation Act Art. 104-27). They are also excluded from the 20 million KRW threshold.",
+      "col": {
+        "range": "High-dividend income (annual)",
+        "tax": "Income tax",
+        "marginal": "Rate incl. local tax"
+      },
+      "upTo": "Up to {to}",
+      "range": "Over {from} to {to}",
+      "over": "Over {from}",
+      "flat": "{rate}%",
+      "formula": "{base} + {rate}% of the amount over {from}",
+      "withLocal": "{rate}%",
+      "offHint": "Turn on 'Apply high-dividend separate taxation' in the inputs to see the tax for this holding.",
+      "rows": {
+        "income": "Separate income tax",
+        "local": "Local income tax (10% of the rate)",
+        "total": "Total separate tax",
+        "withheld": "Withheld when paid (15.4%)",
+        "extra": "Extra payment next May",
+        "net": "Final annual dividends after tax"
+      },
+      "same": "This holding pays 20 million KRW or less a year, so the separate rate is 14% (15.4% with local tax), the same as withholding. It helps when, combined with other interest and dividends, you exceed 20 million KRW.",
+      "compare": "You may choose whichever of comprehensive or separate taxation is lower. With little other income, comprehensive taxation can be lower, so compare when filing. The NTS has said it will provide a comparison simulator.",
+      "note": "Companies disclose whether they qualify on the Korea Exchange KIND system by the day after the annual meeting approves the dividend. It does not apply unless you apply.",
+      "overseas": "Overseas dividends do not qualify. Only cash dividends from Korean listed companies do."
+    },
+    "acct": {
+      "title": "After-tax dividends by account",
+      "desc": "The same {gross} KRW of annual dividends is taxed differently depending on the account.",
+      "isaType": "ISA type",
+      "isaTypes": {
+        "normal": "General (2M KRW tax-free)",
+        "low": "Low-income/farmer (4M KRW)"
+      },
+      "col": {
+        "account": "Account",
+        "tax": "Annual tax",
+        "net": "Annual after tax",
+        "when": "How it is taxed"
+      },
+      "general": {
+        "name": "Regular account",
+        "when": "15.4% withheld on each payout"
+      },
+      "isa": {
+        "name": "ISA (brokerage)",
+        "when": "Taxed once at closing after 3 years: net income up to {exempt} tax-free, 9.9% above. Shown as a 3-year average"
+      },
+      "pension": {
+        "name": "Pension savings / IRP",
+        "when": "Tax-deferred inside the account; 5.5% when received as a pension after age 55 (under 70)",
+        "sub": "Age 70s 4.4% {u80} KRW · 80+ 3.3% {o80} KRW · non-pension withdrawal 16.5% {other} KRW"
+      },
+      "best": "Lowest tax",
+      "isaOverflow": "The {amount} above the ISA's 100 million KRW lifetime limit is calculated as a regular account.",
+      "notes": [
+        "ISA: up to 20 million KRW a year (unused room carries over) and 100 million KRW in total, kept for at least 3 years. Closing within 3 years claws back the tax relief (Restriction of Special Taxation Act Art. 91-18).",
+        "Dividends inside an ISA are not added to the 20 million KRW threshold. You cannot open one if you were subject to comprehensive taxation in any of the last 3 years.",
+        "Pension savings at a brokerage can hold only funds and ETFs, not individual stocks. Contributions are capped at 18 million KRW a year (Income Tax Act Enforcement Decree Art. 40-2).",
+        "Pension tax applies on withdrawal to investment gains and to contributions that received a tax credit. Private pensions above 15 million KRW a year choose between comprehensive taxation and 16.5% separate taxation (Income Tax Act Art. 14(3)9, 64-4)."
+      ],
+      "overseas": "Overseas-listed stocks and ETFs cannot be held in an ISA or pension account, so no comparison is shown (Restriction of Special Taxation Act Art. 91-18(3), Income Tax Act Enforcement Decree Art. 40-2). Korean-listed overseas ETFs can be held, but they are taxed differently."
+    },
+    "target": {
+      "title": "Monthly dividend target",
+      "desc": "Enter the after-tax amount you want each month to see the investment needed at the current yield and tax rate.",
+      "presets": "Common targets",
+      "input": "Target monthly dividend (after tax)",
+      "result": "Investment needed",
+      "exact": "Exactly {v} KRW",
+      "sub": "At a {rate}% yield and {tax}% tax · needs {gross} KRW of pre-tax dividends a year",
+      "finWarn": "With your other interest and dividends this exceeds 20 million KRW, triggering comprehensive taxation. Your actual after-tax amount may be lower depending on other income, and health insurance premiums may rise.",
+      "noYield": "Enter a dividend yield to calculate."
+    },
+    "sim": {
+      "title": "Dividend reinvestment simulation",
+      "desc": "Assumes each after-tax payout buys more of the same holding. The share price stays the same and only the dividend per share grows each year by the growth rate.",
+      "growth": "Dividend growth rate (annual)",
+      "growthHint": "0-30%. At 0 the dividend per share stays the same.",
+      "col": {
+        "when": "Period",
+        "value": "Value with reinvestment",
+        "monthly": "Monthly after-tax dividend that year",
+        "noReinvest": "Cumulative dividends without reinvesting"
+      },
+      "now": "Now",
+      "year": "After {n} years",
+      "note": "Only the withholding rate ({tax}%) is applied. If growing dividends push financial income over 20 million KRW, comprehensive taxation may raise the tax. Price changes, exchange rates and fees are not included."
+    },
+    "share": {
+      "label": "{amount} · {rate}% yield · {what}",
+      "text": "At {amount} invested and a {rate}% yield, I get {monthly} a month in dividends after tax"
+    },
+    "guide": {
+      "title": "Dividend calculation guide",
+      "how": {
+        "title": "How it is calculated",
+        "items": [
+          "Pre-tax annual dividends = amount × yield, or shares × annual dividend per share. Each payout is the annual amount divided by the number of payouts, so actual payouts may differ.",
+          "Korean stock and ETF dividends are withheld at 15.4%: 14% income tax (Income Tax Act Art. 129) plus 1.4% local income tax (10% of income tax, Local Tax Act Art. 103-13). Amounts under 10 KRW are dropped.",
+          "For overseas stocks, the foreign tax is subtracted from 14% and the Korean broker withholds only the shortfall. If the foreign tax is 14% or more, nothing more is withheld in Korea (Income Tax Act Art. 129(4)).",
+          "The 20 million KRW threshold uses pre-tax amounts and adds all interest and dividends, including overseas dividends.",
+          "Monthly or quarterly, the tax is the same as long as the annual total is the same."
+        ]
+      },
+      "accounts": {
+        "title": "Tax by account",
+        "items": [
+          "Regular account: 15.4% on each payout. Above 20 million KRW of financial income, comprehensive taxation applies next May.",
+          "ISA: kept 3+ years, account net income up to 2 million KRW (4 million for low-income/farmers) is tax-free and the rest is taxed separately at 9.9%, not added to comprehensive income (Restriction of Special Taxation Act Art. 91-18).",
+          "Pension savings / IRP: dividends are reinvested tax-free inside the account and taxed at 5.5-3.3% by age when received as a pension after 55. Other withdrawals are taxed at 16.5% (Income Tax Act Art. 129).",
+          "An ISA can hold Korean listed stocks and Korean funds/ETFs; pension savings can hold only funds and ETFs."
+        ]
+      },
+      "highDiv": {
+        "title": "High-dividend separate taxation requirements",
+        "items": [
+          "Eligible companies: KOSPI/KOSDAQ-listed Korean companies (excluding KONEX and investment companies) whose prior-year dividends did not fall below fiscal 2024, with a payout ratio of 40%+ or a payout ratio of 25%+ and dividends up 10%+ on the year before (Restriction of Special Taxation Act Art. 104-27(1)).",
+          "Fiscal 2025 dividends (paid in 2026) are judged on that year's own payout ratio and dividend growth (Addenda Art. 48).",
+          "Eligible dividends: cash dividends received on or after January 1, 2026, through dividends for the fiscal year including 2028. The NTS says it applies from the May 2027 return through the May 2030 return.",
+          "Rates: 14% up to 20 million KRW, 20% up to 300 million, 25% up to 5 billion, 30% above (progressive by bracket; local income tax of 10% of the rate on top, Restriction of Special Local Taxation Act Art. 167-6).",
+          "It is not automatic: you file a separate taxation application with your May income tax return (Enforcement Decree Art. 104-24(6)). Withholding at payout is the same as for other dividends."
+        ]
+      },
+      "tips": {
+        "title": "Good to know",
+        "items": [
+          "Dividend yields are usually based on the past year's dividends. Dividends can be cut or stopped depending on company results.",
+          "Near the 20 million KRW threshold, receiving part of your dividends in an ISA or pension account helps: dividends inside them do not count toward the threshold.",
+          "Interest and dividends over 10 million KRW a year affect health insurance, so dependents and regional subscribers should watch this threshold too.",
+          "If you become subject to comprehensive taxation, you must file an income tax return yourself next May."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much tax is there on dividends?",
+            "a": "Korean stock and ETF dividends are withheld at 15.4%: 14% income tax plus 1.4% local income tax (Income Tax Act Art. 129, Local Tax Act Art. 103-13). At 100 million KRW and a 5% yield, 770,000 KRW is withheld from 5 million KRW, leaving 4.23 million KRW, or 352,500 KRW a month on average. If your interest and dividends are 20 million KRW or less a year, that is the end of it."
+          },
+          {
+            "q": "When does comprehensive financial income taxation apply?",
+            "a": "When your pre-tax interest and dividends exceed 20 million KRW in a year (Income Tax Act Art. 14(3)6). Exactly 20 million KRW does not trigger it. The first 20 million KRW is taxed at 14%, and the excess is added to salary, business and other income at progressive rates of 6-45%, filed next May. You never pay less than 14% on all financial income (Art. 62), and Korean corporate dividends go through gross-up and the dividend tax credit."
+          },
+          {
+            "q": "Do dividends affect health insurance premiums?",
+            "a": "If interest and dividends total 10 million KRW or less a year, they are left out of the regional premium and the employee's non-salary income; above that, the full amount counts (NHI Act Enforcement Rule Art. 44(1)). Employees pay an extra premium when non-salary income exceeds 20 million KRW a year, and dependents must have total income of 20 million KRW or less."
+          },
+          {
+            "q": "Who benefits from high-dividend separate taxation?",
+            "a": "People whose financial income exceeds 20 million KRW a year. If you apply, high-dividend company dividends are excluded from the threshold and taxed separately at 14-30% (plus local tax). At 20 million KRW or less you already pay 14%, so nothing changes. With little other income, comprehensive taxation can be lower, so compare when filing. You apply with a separate taxation application in your May income tax return."
+          },
+          {
+            "q": "How are US stock dividends taxed?",
+            "a": "The US first withholds 15% under the Korea-US tax treaty. That is above Korea's 14%, so the Korean broker withholds nothing more and the total is 15% (Income Tax Act Art. 129(4)). If the foreign rate were 10%, Korea would withhold the 4% shortfall plus 0.4% local income tax, for 14.4%. Overseas dividends also count toward the 20 million KRW threshold."
+          },
+          {
+            "q": "Should dividend stocks go in an ISA or a pension account?",
+            "a": "An ISA kept 3+ years makes net income up to 2 million KRW (4 million for low-income holders) tax-free and taxes the rest at 9.9%, and it can hold individual Korean stocks. Pension savings / IRP reinvest dividends untaxed and charge 3.3-5.5% when received as a pension after 55, but cannot hold individual stocks and charge 16.5% on non-pension withdrawals. Dividends inside either account do not count toward the 20 million KRW threshold."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Income Tax Act Art. 14, 17, 56, 62, 129 (Korea Law Information Center)",
+            "url": "https://www.law.go.kr/법령/소득세법"
+          },
+          {
+            "label": "Restriction of Special Taxation Act Art. 91-18 (ISA), 104-27 (high-dividend), 129-2",
+            "url": "https://www.law.go.kr/법령/조세특례제한법"
+          },
+          {
+            "label": "Restriction of Special Taxation Act Enforcement Decree Art. 104-24",
+            "url": "https://www.law.go.kr/법령/조세특례제한법시행령/제104조의24"
+          },
+          {
+            "label": "Local Tax Act Art. 103-13 (local income tax withholding)",
+            "url": "https://www.law.go.kr/법령/지방세법/제103조의13"
+          },
+          {
+            "label": "Restriction of Special Local Taxation Act Art. 167-6",
+            "url": "https://www.law.go.kr/법령/지방세특례제한법/제167조의6"
+          },
+          {
+            "label": "NHI Act Enforcement Rule Art. 44 (10 million KRW financial income)",
+            "url": "https://www.law.go.kr/법령/국민건강보험법시행규칙/제44조"
+          },
+          {
+            "label": "NTS press release: high-dividend separate taxation (Mar 9, 2026)",
+            "url": "https://www.nts.go.kr/nts/na/ntt/selectNttInfo.do?mi=2201&bbsId=1028&nttSn=1349597"
+          },
+          {
+            "label": "NTS: dividend income withholding",
+            "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6478&cntntsId=7914"
+          },
+          {
+            "label": "NTS: treaty withholding rate summary",
+            "url": "https://www.nts.go.kr/nts/na/ntt/selectNttInfo.do?nttSn=1344917&mi=2516"
+          },
+          {
+            "label": "NHIS: dependent income and property requirements",
+            "url": "https://www.nhis.or.kr/nhis/policy/wbhada07400m01.do"
+          }
+        ],
+        "asOf": "Checked November 2026 · current law on the Korea Law Information Center, NTS and NHIS guidance"
+      }
+    },
+    "disclaimer": "For reference only. Actual tax can differ with other income, deductions and payment dates; check with Hometax or a tax professional before filing."
   }
 }

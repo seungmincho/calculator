@@ -182,6 +182,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/sunrise-sunset': ['/new-year-sunrise', '/world-clock', '/lunar-converter', '/dday-calculator'],
   '/new-year-sunrise': ['/sunrise-sunset', '/holiday-planner', '/greeting-generator', '/dday-calculator'],
   '/manito': ['/lottery-draw', '/ladder-game', '/team-divider', '/dutch-pay', '/greeting-generator', '/dday-calculator'],
+  '/calendar-2027': ['/holiday-planner', '/lunar-converter', '/dday-calculator', '/age-table', '/changes-2027', '/new-year-sunrise'],
+  '/dividend-calculator': ['/stock-calculator', '/investment-calculator', '/savings-calculator', '/compound-calculator', '/income-tax', '/cagr-calculator'],
   '/timer': ['/pomodoro', '/presentation-timer', '/breathing-exercise', '/metronome'],
   '/pomodoro': ['/timer', '/kanban-board', '/white-noise', '/notepad'],
   '/presentation-timer': ['/timer', '/pomodoro', '/meeting-minutes', '/order-picker', '/character-counter', '/text-to-speech'],

@@ -72,6 +72,8 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/ski-resorts': Snowflake,
   '/new-year-sunrise': Sunrise,
   '/manito': Gift,
+  '/calendar-2027': CalendarDays,
+  '/dividend-calculator': HandCoins,
   '/holiday-planner': CalendarDays,
   '/everland': Map,
   '/lotte-world': Map,

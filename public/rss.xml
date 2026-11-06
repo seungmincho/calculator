@@ -5,8 +5,22 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Fri, 06 Nov 2026 15:24:50 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 17:11:57 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[2027 달력]]></title>
+    <link>https://toolhub.ai.kr/calendar-2027/</link>
+    <guid>https://toolhub.ai.kr/calendar-2027/</guid>
+    <description><![CDATA[공휴일·대체공휴일·음력·24절기를 넣은 2027년 달력, A4 인쇄]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[배당금 계산기]]></title>
+    <link>https://toolhub.ai.kr/dividend-calculator/</link>
+    <guid>https://toolhub.ai.kr/dividend-calculator/</guid>
+    <description><![CDATA[세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[마니또 뽑기]]></title>
     <link>https://toolhub.ai.kr/manito/</link>

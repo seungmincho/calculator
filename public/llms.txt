@@ -124,6 +124,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [전세사기 체크리스트](https://toolhub.ai.kr/jeonse-checklist/): 전세 계약 전 필수 확인 항목 20개+, 위험도 점수, 안전 가이드
 - [해외직구 관부가세 계산기](https://toolhub.ai.kr/customs-duty/): 직구 면세 한도와 관세·부가세를 원화로 바로 계산
 - [김장 계산기](https://toolhub.ai.kr/kimjang-calculator/): 배추 포기 수로 양념 재료량과 김장 비용 계산
+- [배당금 계산기](https://toolhub.ai.kr/dividend-calculator/): 세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세
 
 ## 개발 도구
 
@@ -247,6 +248,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [개발자 로드맵](https://toolhub.ai.kr/dev-roadmap/): 프론트엔드·백엔드·풀스택·DevOps — 단계별 학습 경로와 추천 기술 스택
 - [일출·일몰 시간](https://toolhub.ai.kr/sunrise-sunset/): 날짜·도시별 일출·일몰·낮 길이·골든아워
 - [마니또 뽑기](https://toolhub.ai.kr/manito/): 서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크
+- [2027 달력](https://toolhub.ai.kr/calendar-2027/): 공휴일·대체공휴일·음력·24절기를 넣은 2027년 달력, A4 인쇄
 
 ## 이미지/미디어 도구
 
