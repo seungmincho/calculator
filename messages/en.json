@@ -6165,6 +6165,78 @@
     }
   },
   "ladder": {
+    "defaults": {
+      "participant": "Participant {n}",
+      "outcome": "Outcome {n}"
+    },
+    "presetItems": {
+      "lunch": {
+        "participants": [
+          "Me",
+          "Friend 1",
+          "Friend 2",
+          "Friend 3"
+        ],
+        "outcomes": [
+          "Jjajangmyeon",
+          "Jjamppong",
+          "Ramyeon",
+          "Gimbap"
+        ]
+      },
+      "duty": {
+        "participants": [
+          "No. 1",
+          "No. 2",
+          "No. 3"
+        ],
+        "outcomes": [
+          "On duty",
+          "On duty",
+          "Exempt"
+        ]
+      },
+      "gameOrder": {
+        "participants": [
+          "Player 1",
+          "Player 2",
+          "Player 3",
+          "Player 4"
+        ],
+        "outcomes": [
+          "1st",
+          "2nd",
+          "3rd",
+          "4th"
+        ]
+      },
+      "teams": {
+        "participants": [
+          "Participant 1",
+          "Participant 2",
+          "Participant 3",
+          "Participant 4"
+        ],
+        "outcomes": [
+          "Team A",
+          "Team B",
+          "Team A",
+          "Team B"
+        ]
+      },
+      "coffee": {
+        "participants": [
+          "Me",
+          "Coworker 1",
+          "Coworker 2"
+        ],
+        "outcomes": [
+          "Buys",
+          "Buys",
+          "Exempt"
+        ]
+      }
+    },
     "selection": {
       "title": "Pick positions ({placed}/{total} placed)",
       "random": "Random",
@@ -6226,6 +6298,7 @@
       "placeholder": "Please generate a ladder first"
     },
     "result": {
+      "revealAria": "Reveal result for {name}",
       "clickToReveal": "Click to reveal",
       "rematch": "Rematch",
       "reshuffle": "New ladder only",
@@ -51586,8 +51659,8 @@
     "header": {
       "title": "Decision Tools",
       "subtitle": "Decide fairly with a spinning wheel and a random order draw",
-      "rouletteTitle": "Menu Roulette",
-      "rouletteSubtitle": "Spin the wheel to decide today's menu",
+      "rouletteTitle": "Spin Wheel",
+      "rouletteSubtitle": "Enter items and spin the wheel to pick one",
       "orderTitle": "Pick an Order",
       "orderSubtitle": "Enter the participants and we'll draw a random order"
     },
@@ -51596,6 +51669,7 @@
       "order": "Order Draw"
     },
     "common": {
+      "participant": "Participant {n}",
       "removeItem": "Remove {item}",
       "copied": "Copied"
     },

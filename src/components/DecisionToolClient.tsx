@@ -29,7 +29,7 @@ export type DecisionToolHref = keyof typeof tools
 
 export default function DecisionToolClient({ href }: { href: DecisionToolHref }) {
   if (href === '/roulette') {
-    return <DecisionTools initialTab="roulette" single title="돌림판" subtitle="항목을 입력하고 돌림판을 돌려 하나를 고르세요" />
+    return <DecisionTools initialTab="roulette" single />
   }
   const Tool = tools[href] as React.ComponentType
   return <Tool />

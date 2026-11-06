@@ -53,53 +53,9 @@ const glass = {
   pill: 'bg-surface border border-line',
 }
 
-// Preset configurations
-interface Preset {
-  id: string
-  participants: ParticipantInfo[]
-  outcomes: string[]
-}
-
-const PRESETS: Preset[] = [
-  {
-    id: 'lunch',
-    participants: [
-      { name: '나', animal: '🐶' }, { name: '친구1', animal: '🐱' },
-      { name: '친구2', animal: '🐭' }, { name: '친구3', animal: '🐹' }
-    ],
-    outcomes: ['짜장면', '짬뽕', '라면', '김밥']
-  },
-  {
-    id: 'duty',
-    participants: [
-      { name: '1번', animal: '🐶' }, { name: '2번', animal: '🐱' }, { name: '3번', animal: '🐭' }
-    ],
-    outcomes: ['당번', '당번', '면제']
-  },
-  {
-    id: 'gameOrder',
-    participants: [
-      { name: '플레이어1', animal: '🐶' }, { name: '플레이어2', animal: '🐱' },
-      { name: '플레이어3', animal: '🐭' }, { name: '플레이어4', animal: '🐹' }
-    ],
-    outcomes: ['1순위', '2순위', '3순위', '4순위']
-  },
-  {
-    id: 'teams',
-    participants: [
-      { name: '참가자1', animal: '🐶' }, { name: '참가자2', animal: '🐱' },
-      { name: '참가자3', animal: '🐭' }, { name: '참가자4', animal: '🐹' }
-    ],
-    outcomes: ['A팀', 'B팀', 'A팀', 'B팀']
-  },
-  {
-    id: 'coffee',
-    participants: [
-      { name: '나', animal: '🐶' }, { name: '동료1', animal: '🐱' }, { name: '동료2', animal: '🐭' }
-    ],
-    outcomes: ['구매', '구매', '면제']
-  },
-]
+// 빠른 시작 프리셋: 이름·결과는 번역(presetItems.<id>), 동물은 앞에서부터 차례로
+const PRESET_IDS = ['lunch', 'duty', 'gameOrder', 'teams', 'coffee']
+const DEFAULT_ANIMALS = ['🐶', '🐱', '🐭', '🐹']
 
 // Easing functions
 const easeInOutCubic = (t: number) =>
@@ -188,12 +144,12 @@ export default function LadderGame() {
 
   const animalIcons = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦄']
 
-  const [participants, setParticipants] = useState<ParticipantInfo[]>([
-    { name: '참가자1', animal: '🐶' },
-    { name: '참가자2', animal: '🐱' },
-    { name: '참가자3', animal: '🐭' },
-  ])
-  const [outcomes, setOutcomes] = useState<string[]>(['결과1', '결과2', '결과3'])
+  const defaultParticipants = (): ParticipantInfo[] =>
+    DEFAULT_ANIMALS.slice(0, 3).map((animal, i) => ({ name: t('defaults.participant', { n: i + 1 }), animal }))
+  const defaultOutcomes = () => [1, 2, 3].map(n => t('defaults.outcome', { n }))
+
+  const [participants, setParticipants] = useState<ParticipantInfo[]>(defaultParticipants)
+  const [outcomes, setOutcomes] = useState<string[]>(defaultOutcomes)
   const [ladderLines, setLadderLines] = useState<LadderLine[]>([])
   const [ladderComplexity, setLadderComplexity] = useState<number>(3)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -240,9 +196,10 @@ export default function LadderGame() {
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('ladder')
 
-  const applyPreset = useCallback((preset: Preset) => {
-    setParticipants(preset.participants)
-    setOutcomes(preset.outcomes)
+  const applyPreset = (id: string) => {
+    const names = t.raw(`presetItems.${id}.participants`) as string[]
+    setParticipants(names.map((name, i) => ({ name, animal: DEFAULT_ANIMALS[i % DEFAULT_ANIMALS.length] })))
+    setOutcomes(t.raw(`presetItems.${id}.outcomes`) as string[])
     setLadderLines([])
     setResults({})
     setShowResults(false)
@@ -252,9 +209,9 @@ export default function LadderGame() {
     setRevealedOutcomes(new Set())
     setManualRevealed(new Set())
     setIsSelectionPhase(false)
-    setColAssignments(preset.participants.map((_, i) => i))
+    setColAssignments(names.map((_, i) => i))
     setSelectedParticipant(null)
-  }, [])
+  }
 
   // ── Position assignment helpers ──────────────────────────────────
   const autoAssign = useCallback(() => {
@@ -340,8 +297,8 @@ export default function LadderGame() {
     const animal = free.length > 0
       ? free[Math.floor(Math.random() * free.length)]
       : animalIcons[participants.length % animalIcons.length]
-    const next = [...participants, { name: `참가자${participants.length + 1}`, animal }]
-    const nextO = [...outcomes, `결과${outcomes.length + 1}`]
+    const next = [...participants, { name: t('defaults.participant', { n: participants.length + 1 }), animal }]
+    const nextO = [...outcomes, t('defaults.outcome', { n: outcomes.length + 1 })]
     setParticipants(next)
     setOutcomes(nextO)
     updateURL({
@@ -882,10 +839,10 @@ export default function LadderGame() {
           onLoadHistory={(historyId: string) => {
             const inputs = loadFromHistory(historyId)
             if (inputs) {
-              const ps = inputs.participants || [{ name: '참가자1', animal: '🐶' }, { name: '참가자2', animal: '🐱' }, { name: '참가자3', animal: '🐭' }]
+              const ps = inputs.participants || defaultParticipants()
               const cx = inputs.ladderComplexity || 3
               setParticipants(ps)
-              setOutcomes(inputs.outcomes || ['결과1', '결과2', '결과3'])
+              setOutcomes(inputs.outcomes || defaultOutcomes())
               setLadderComplexity(cx)
               // 같은 사다리(seed)·위치·결과까지 복원. seed가 없는 예전 이력은 새 사다리로 다시 시작
               const seed = Number(inputs.seed)
@@ -928,14 +885,14 @@ export default function LadderGame() {
                 {t('presets.title')}
               </label>
               <div className="flex flex-wrap gap-2 pb-1" role="group" aria-labelledby="ladder-presets">
-                {PRESETS.map(preset => (
+                {PRESET_IDS.map(id => (
                   <button
-                    key={preset.id}
-                    onClick={() => applyPreset(preset)}
+                    key={id}
+                    onClick={() => applyPreset(id)}
                     disabled={isPlaying}
                     className="flex-shrink-0 px-3 py-1.5 bg-emerald-100/75 dark:bg-emerald-500/[0.10] text-sub border border-line rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/[0.14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                   >
-                    {t(`presets.${preset.id}`)}
+                    {t(`presets.${id}`)}
                   </button>
                 ))}
               </div>
@@ -1553,6 +1510,7 @@ export default function LadderGame() {
                       role={shouldHide ? 'button' : undefined}
                       tabIndex={shouldHide ? 0 : undefined}
                       onKeyDown={shouldHide ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal() } } : undefined}
+                      aria-label={shouldHide ? t('result.revealAria', { name }) : undefined}
                       className={`flex items-center justify-between p-3 bg-surface rounded-xl border border-line shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-500 ${
                         shouldHide ? 'cursor-pointer hover:shadow-md' : ''
                       }`}

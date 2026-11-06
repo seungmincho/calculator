@@ -27,9 +27,6 @@ interface DecisionToolsProps {
   menuMode?: boolean
   /** URL 파라미터가 없을 때 룰렛 기본 항목으로 적용할 프리셋 (예: 메뉴 룰렛 → '저녁메뉴') */
   defaultPreset?: keyof typeof PRESETS
-  /** single 모드 제목/설명 덮어쓰기 */
-  title?: string
-  subtitle?: string
 }
 
 const WHEEL_COLORS = [
@@ -61,8 +58,6 @@ const PRESET_LABEL: Record<string, string> = {
   저녁메뉴: 'dinner', 점심메뉴: 'lunch', 한식: 'korean', 중식: 'chinese', 일식: 'japanese', 양식: 'western', 분식: 'bunsik', 야식배달: 'lateNight', 카페: 'cafe', 벌칙: 'penalty',
 }
 
-const DEFAULT_PARTICIPANTS = ['참가자 1', '참가자 2', '참가자 3', '참가자 4']
-
 // confetti colours
 const CONFETTI_COLORS = ['#EF4444', '#3B82F6', '#22C55E', '#F59E0B', '#A855F7', '#EC4899']
 
@@ -78,8 +73,9 @@ interface Confetti {
   alpha: number
 }
 
-export default function DecisionTools({ initialTab = 'roulette', single = false, menuMode = false, defaultPreset, title, subtitle }: DecisionToolsProps) {
+export default function DecisionTools({ initialTab = 'roulette', single = false, menuMode = false, defaultPreset }: DecisionToolsProps) {
   const t = useTranslations('decisionTools')
+  const defaultParticipants = [1, 2, 3, 4].map(n => t('common.participant', { n }))
   const searchParams = useSearchParams()
 
   const [activeTab, setActiveTab] = useState<'roulette' | 'order'>(initialTab)
@@ -87,7 +83,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   // ─── Roulette state ───────────────────────────────────────────────────────
   // 초기값은 결정적 기본값(정적 HTML = 첫 클라이언트 렌더). 공유 링크 파라미터는 마운트 후 적용.
   const [rouletteItems, setRouletteItems] = useState<string[]>(() =>
-    defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS
+    defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : defaultParticipants
   )
   const [canvasSize, setCanvasSize] = useState(300)
   const [newRouletteItem, setNewRouletteItem] = useState('')
@@ -107,7 +103,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   const confettiRafRef = useRef<number | null>(null)
 
   // ─── Order Picker state ──────────────────────────────────────────────────
-  const [orderItems, setOrderItems] = useState<string[]>(DEFAULT_PARTICIPANTS)
+  const [orderItems, setOrderItems] = useState<string[]>(defaultParticipants)
   const [newOrderItem, setNewOrderItem] = useState('')
   const [orderResult, setOrderResult] = useState<string[]>([])
   const [revealedCount, setRevealedCount] = useState(0)
@@ -136,12 +132,12 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     window.history.replaceState(window.history.state, '', url)
   }
   useEffect(() => {
-    syncParam('roulette', rouletteItems, defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS)
+    syncParam('roulette', rouletteItems, defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : defaultParticipants)
   }, [rouletteItems]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    syncParam('order', orderItems, DEFAULT_PARTICIPANTS)
-  }, [orderItems])
+    syncParam('order', orderItems, defaultParticipants)
+  }, [orderItems]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Draw roulette wheel ─────────────────────────────────────────────────
   const drawWheel = useCallback((angle: number, items: string[]) => {
@@ -479,14 +475,14 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">
-          {title ?? (menuMode ? t('menu.title') : single ? (initialTab === 'order' ? t('header.orderTitle') : t('header.rouletteTitle')) : t('header.title'))}
+          {menuMode ? t('menu.title') : single ? (initialTab === 'order' ? t('header.orderTitle') : t('header.rouletteTitle')) : t('header.title')}
         </h1>
         <p className="text-sm text-muted mt-1">
-          {subtitle ?? (menuMode ? t('menu.subtitle') : single
+          {menuMode ? t('menu.subtitle') : single
             ? initialTab === 'order'
               ? t('header.orderSubtitle')
               : t('header.rouletteSubtitle')
-            : t('header.subtitle'))}
+            : t('header.subtitle')}
         </p>
       </div>
 

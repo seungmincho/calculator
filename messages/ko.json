@@ -6164,6 +6164,78 @@
     }
   },
   "ladder": {
+    "defaults": {
+      "participant": "참가자{n}",
+      "outcome": "결과{n}"
+    },
+    "presetItems": {
+      "lunch": {
+        "participants": [
+          "나",
+          "친구1",
+          "친구2",
+          "친구3"
+        ],
+        "outcomes": [
+          "짜장면",
+          "짬뽕",
+          "라면",
+          "김밥"
+        ]
+      },
+      "duty": {
+        "participants": [
+          "1번",
+          "2번",
+          "3번"
+        ],
+        "outcomes": [
+          "당번",
+          "당번",
+          "면제"
+        ]
+      },
+      "gameOrder": {
+        "participants": [
+          "플레이어1",
+          "플레이어2",
+          "플레이어3",
+          "플레이어4"
+        ],
+        "outcomes": [
+          "1순위",
+          "2순위",
+          "3순위",
+          "4순위"
+        ]
+      },
+      "teams": {
+        "participants": [
+          "참가자1",
+          "참가자2",
+          "참가자3",
+          "참가자4"
+        ],
+        "outcomes": [
+          "A팀",
+          "B팀",
+          "A팀",
+          "B팀"
+        ]
+      },
+      "coffee": {
+        "participants": [
+          "나",
+          "동료1",
+          "동료2"
+        ],
+        "outcomes": [
+          "구매",
+          "구매",
+          "면제"
+        ]
+      }
+    },
     "selection": {
       "title": "위치 선택 ({placed}/{total} 배치)",
       "random": "랜덤 배치",
@@ -6225,6 +6297,7 @@
       "placeholder": "먼저 사다리를 생성해주세요"
     },
     "result": {
+      "revealAria": "{name} 결과 공개",
       "clickToReveal": "클릭하여 공개",
       "rematch": "리매치",
       "reshuffle": "사다리만 다시",
@@ -51587,8 +51660,8 @@
     "header": {
       "title": "결정 도구",
       "subtitle": "돌림판과 순서뽑기로 공정하게 결정하세요",
-      "rouletteTitle": "메뉴 룰렛",
-      "rouletteSubtitle": "돌림판을 돌려 오늘의 메뉴를 정하세요",
+      "rouletteTitle": "돌림판",
+      "rouletteSubtitle": "항목을 입력하고 돌림판을 돌려 하나를 고르세요",
       "orderTitle": "순서 정하기",
       "orderSubtitle": "참가자를 입력하면 랜덤으로 순서를 뽑아드려요"
     },
@@ -51597,6 +51670,7 @@
       "order": "순서뽑기"
     },
     "common": {
+      "participant": "참가자 {n}",
       "removeItem": "{item} 삭제",
       "copied": "복사됨"
     },
