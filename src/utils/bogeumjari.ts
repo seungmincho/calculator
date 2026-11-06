@@ -1,7 +1,7 @@
 // 보금자리론 자격·한도·금리 순수 로직. 회귀 체크: node scripts/check-bogeumjari.ts
 // 출처 (2026-10-04 확인)
 // - 상품 조건: https://www.hf.go.kr/ko/sub01/sub01_01_01.do (일반) · sub01_01_02.do (생애최초 등 특례)
-// - 금리: https://www.hf.go.kr/ko/sub01/sub01_01_04.do (2026-10-01 공시)
+// - 금리: https://www.hf.go.kr/ko/sub01/sub01_01_04.do (2026-11-09 공시, 2026-11-06 확인)
 // - 규제지역 정책모기지 LTV·DTI: 금융위 10.15 대책 FAQ https://www.fsc.go.kr/po020201/85466
 // - 수도권·규제지역 생애최초 LTV 80→70%: 금융위 6.27 대책 https://www.fsc.go.kr/no010101/84824
 // - CB점수 271점 이상·271~614점 LTV 10%p 차감, 전세사기피해자 특례: sub01_01_01.do · sub01_01_02.do (2026-10-04 확인)
@@ -16,17 +16,43 @@ export const REGIONS: Region[] = ['local', 'capital', 'regulated']
 export type Credit = 'high' | 'mid' | 'low'
 export const CREDITS: Credit[] = ['high', 'mid', 'low']
 
-/** 금리 기준일 — 매월 1일 공사 공시. 바뀌면 PERIOD_RATES와 함께 여기만 수정 */
-export const RATE_BASIS = { date: '2026-10-01', label: '2026년 10월', url: 'https://www.hf.go.kr/ko/sub01/sub01_01_04.do' }
+/**
+ * 금리 기준일 — 공사가 매월 1일 전후 공시(달 중간에 다시 바꾸기도 함, 2026-11-09 사례).
+ * 매월 갱신 절차:
+ *  1. sub01_01_04.do 의 '아낌e보금자리론' 행을 확인한다.
+ *  2. 새 달이면 지금 PERIOD_RATES·RATE_BASIS 를 PREV_PERIOD_RATES·PREV_RATE_BASIS 로 옮긴다
+ *     (같은 달 안의 재공시면 PREV 는 그대로 — '지난달 대비' 문구가 지난달과 비교하도록).
+ *  3. 새 금리를 PERIOD_RATES 에, 공시일을 RATE_BASIS 에 넣는다. page.tsx 화면 문구는 여기서 계산된다.
+ *  4. messages ko·en bogeumjariLoan.guide.faq.items 의 금리 숫자, scripts/check-bogeumjari.ts 기대값을 고치고
+ *     node scripts/check-bogeumjari.ts 로 확인한다.
+ */
+export const RATE_BASIS = { date: '2026-11-09', label: '2026년 11월', url: 'https://www.hf.go.kr/ko/sub01/sub01_01_04.do' }
 
-/** 아낌e 보금자리론 기준금리 (2026-10-01 공시, 9월과 동일). 공식 만기는 10·15·20·30·40·50년 */
+/** 아낌e 보금자리론 기준금리 (2026-11-09 공시, 전 만기 0.10%p 인상 — 11-08 신청분까지는 11-01 공시 = 10월 금리). 공식 만기는 10·15·20·30·40·50년 */
 export const PERIOD_RATES: Record<string, number> = {
+  '10': 5.00,
+  '15': 5.10,
+  '20': 5.15,
+  '30': 5.20,
+  '40': 5.25,
+  '50': 5.30,
+}
+
+/** 지난달 금리 ('지난달 대비' 표시용). 2026-10-01 공시 = 2026-11-01 공시 */
+export const PREV_RATE_BASIS = { date: '2026-10-01', label: '2026년 10월' }
+export const PREV_PERIOD_RATES: Record<string, number> = {
   '10': 4.90,
   '15': 5.00,
   '20': 5.05,
   '30': 5.10,
   '40': 5.15,
   '50': 5.20,
+}
+/** 지난달 대비 기준금리 변화(%p, 소수 둘째 자리 — 5.2 - 5.1 부동소수 오차 제거). 지난달 표에 없는 만기면 null */
+export const rateChange = (period: string) => {
+  const prev = PREV_PERIOD_RATES[period]
+  const now = PERIOD_RATES[period]
+  return prev === undefined || now === undefined ? null : { prev, diff: Number((now - prev).toFixed(2)) }
 }
 export const DISCOUNT_CAP = 1.0
 /** 규제지역 담보주택 가산금리 (전세사기피해자 제외) */

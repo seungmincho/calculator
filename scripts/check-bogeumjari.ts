@@ -1,7 +1,7 @@
 // 보금자리론 회귀 체크: node scripts/check-bogeumjari.ts
-// 기준: hf.go.kr 상품안내(sub01_01_01/02, 2026-10-04 확인)·금리안내(2026-10-01 공시), 금융위 10.15 FAQ, 6.27 대책
+// 기준: hf.go.kr 상품안내(sub01_01_01/02, 2026-10-04 확인)·금리안내(2026-11-09 공시), 금융위 10.15 FAQ, 6.27 대책
 import assert from 'node:assert/strict'
-import { calcBogeumjari, didimdolHint, getLtv, getIncomeLimit, PERIOD_RATES, MIN_RATE, type BogeumjariInput } from '../src/utils/bogeumjari.ts'
+import { calcBogeumjari, didimdolHint, getLtv, getIncomeLimit, PERIOD_RATES, PREV_PERIOD_RATES, MIN_RATE, rateChange, type BogeumjariInput } from '../src/utils/bogeumjari.ts'
 
 const base: BogeumjariInput = {
   income: 60_000_000, price: 400_000_000, type: 'general', children: 0, period: '30', age: 35,
@@ -9,10 +9,15 @@ const base: BogeumjariInput = {
 }
 const run = (x: Partial<BogeumjariInput>) => calcBogeumjari({ ...base, ...x })
 
-// 공식 만기·금리 (아낌e 2026-10-01): 25년 만기 없음
+// 공식 만기·금리 (아낌e 2026-11-09, 10월 대비 0.10%p 인상): 25년 만기 없음
 assert.deepEqual(Object.keys(PERIOD_RATES), ['10', '15', '20', '30', '40', '50'])
-assert.deepEqual(Object.values(PERIOD_RATES), [4.9, 5.0, 5.05, 5.1, 5.15, 5.2])
-assert.equal(MIN_RATE.toFixed(2), '3.90')
+assert.deepEqual(Object.values(PERIOD_RATES), [5.0, 5.1, 5.15, 5.2, 5.25, 5.3])
+assert.equal(MIN_RATE.toFixed(2), '4.00')
+// 지난달(2026-10-01) 대비: 만기 표가 같고, 부동소수 오차 없이 0.1
+assert.deepEqual(Object.keys(PREV_PERIOD_RATES), Object.keys(PERIOD_RATES))
+assert.deepEqual(Object.keys(PERIOD_RATES).map((p) => rateChange(p)?.diff), [0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
+assert.deepEqual(rateChange('30'), { prev: 5.1, diff: 0.1 })
+assert.equal(rateChange('25'), null)
 
 // 소득 기준
 assert.deepEqual(
@@ -36,10 +41,10 @@ assert.equal(run({ type: 'first', region: 'capital' }).maxLoan, 280_000_000)
 assert.equal(run({ type: 'first', price: 600_000_000, income: 69_000_000 }).binding.key, 'cap')
 
 // 규제지역 가산 0.2%p (전세사기피해자 제외), 우대 상한 1.0%p
-assert.equal(run({ region: 'regulated' }).rate, 5.3)
-assert.equal(run({ region: 'capital' }).rate, 5.1)
-assert.equal(run({ region: 'regulated', perks: ['fraud'] }).rate, 4.1)
-assert.equal(run({ type: 'newlywed', children: 3, perks: ['single'] }).rate, 4.1) // 0.3+0.7+0.7 → 1.0 상한
+assert.equal(run({ region: 'regulated' }).rate, 5.4)
+assert.equal(run({ region: 'capital' }).rate, 5.2)
+assert.equal(run({ region: 'regulated', perks: ['fraud'] }).rate, 4.2)
+assert.equal(run({ type: 'newlywed', children: 3, perks: ['single'] }).rate, 4.2) // 0.3+0.7+0.7 → 1.0 상한
 
 // 규제지역 실수요자(무주택·7천 이하·6억 이하) → LTV·DTI 미차감
 let r = run({ region: 'regulated' })
@@ -81,7 +86,7 @@ assert.equal(run({ period: '50', age: 38, type: 'newlywed' }).eligible, true)
 assert.ok(run({ region: 'capital' }).checks.some((c) => c.label === '전입 의무' && c.status === 'warn'))
 assert.ok(!run({}).checks.some((c) => c.label === '전입 의무'))
 
-// DTI 역산: 연 6천 × 60% = 월 300만 여력 → 5.1% 30년 원리금균등
+// DTI 역산: 연 6천 × 60% = 월 300만 여력 → 5.2% 30년 원리금균등
 r = run({ price: 600_000_000, income: 60_000_000, type: 'first' })
 assert.ok(r.monthly <= 3_000_000 && r.dti <= 60)
 

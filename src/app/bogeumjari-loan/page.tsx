@@ -2,6 +2,15 @@ import { Metadata } from 'next';
 import BogeumjariLoanCalculator from '@/components/BogeumjariLoanCalculator';
 import ToolFaq from '@/components/ToolFaq';
 import RelatedTools from '@/components/RelatedTools';
+import { PERIOD_RATES, RATE_BASIS, DISCOUNT_CAP, MIN_RATE } from '@/utils/bogeumjari';
+
+// 금리 문구는 src/utils/bogeumjari.ts 공시 금리에서 만든다 — 매월 그 파일만 고치면 된다
+const pct = (n: number) => `${n.toFixed(2)}%`;
+const RATES = Object.values(PERIOD_RATES);
+const LO = Math.min(...RATES), HI = Math.max(...RATES);
+const RANGE = `${pct(LO)}~${pct(HI)}`;
+const [BY, BM, BD] = RATE_BASIS.date.split('-').map(Number);
+const BASIS = `${BY}년 ${BM}월 ${BD}일`;
 
 export const metadata: Metadata = {
   title: '보금자리론 계산기 - 생애최초·신혼부부·다자녀 금리 비교 | 툴허브',
@@ -36,7 +45,7 @@ export default function BogeumjariLoanPage() {
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
-      '2026년 10월 1일 공시 금리 반영 (기준 4.90~5.20%, 우대 시 3.90%~, 규제지역 +0.2%p)',
+      `${BASIS} 공시 금리 반영 (기준 ${RANGE}, 우대 시 ${pct(MIN_RATE)}~, 규제지역 +0.2%p)`,
       '유형별 자동 계산 (생애최초·신혼·다자녀·일반)',
       '우대금리 자동 적용 및 내역 표시',
       '최대 대출한도 계산 (LTV 45~80%, 지역·유형·신용점수별)',
@@ -83,13 +92,13 @@ export default function BogeumjariLoanPage() {
   };
 
   const faq = [
-    { q: '2026년 보금자리론 금리는 얼마인가요?', a: '2026년 10월 1일 공시 기준 아낌e 보금자리론 기준금리는 10년 4.90% ~ 50년 5.20%입니다(9월과 동일). 규제지역 소재 주택은 0.2%p가 가산됩니다(전세사기피해자 제외). 신혼가구(0.3%p), 다자녀(2자녀 0.5%p·3자녀 이상 0.7%p), 신생아출산가구(0.2%p), 저소득청년(0.1%p), 한부모·장애인·다문화가구(각 0.7%p) 등 최대 1.0%p 우대 적용 시 최저 3.90~4.20%까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.' },
+    { q: '2026년 보금자리론 금리는 얼마인가요?', a: `${BASIS} 공시 기준 아낌e 보금자리론 기준금리는 10년 ${pct(PERIOD_RATES['10'])} ~ 50년 ${pct(PERIOD_RATES['50'])}입니다. 규제지역 소재 주택은 0.2%p가 가산됩니다(전세사기피해자 제외). 신혼가구(0.3%p), 다자녀(2자녀 0.5%p·3자녀 이상 0.7%p), 신생아출산가구(0.2%p), 저소득청년(0.1%p), 한부모·장애인·다문화가구(각 0.7%p) 등 최대 1.0%p 우대 적용 시 최저 ${pct(LO - DISCOUNT_CAP)}~${pct(HI - DISCOUNT_CAP)}까지 낮아집니다. 고정금리로 만기까지 동일하게 적용됩니다. 금리는 매월 변동되므로 한국주택금융공사에서 최신 금리를 확인하세요.` },
     { q: '보금자리론 자격조건은 어떻게 되나요?', a: '무주택자(또는 1주택자 처분 조건), 부부합산 연소득 7천만원 이하(신혼부부 8.5천만, 자녀 1명 9천만, 다자녀 1억), 6억원 이하 주택, DTI 60% 이하(규제지역 50%, 생애최초·실수요자 제외), NICE 신용점수 271점 이상이 기본 조건입니다. 신용점수가 271~614점이면 LTV가 10%p 차감됩니다. 생애최초 구입자는 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 한도도 3.6억→4.2억으로 늘어납니다.' },
-    { q: '보금자리론과 디딤돌대출 중 어떤 게 유리한가요?', a: '디딤돌대출은 소득 6천만원 이하(생애최초·2자녀 7천만, 신혼 8.5천만) 무주택자를 위한 상품으로 금리가 연 2.85~4.15%로 낮지만 한도가 일반 2억(생애최초 2.4억, 신혼·2자녀 3.2억)으로 제한됩니다. 보금자리론은 소득 7천만원 이하에 한도가 최대 4.2억이지만 금리가 연 4.90~5.20%(우대 시 3.90%~)입니다. 소득이 낮으면 디딤돌, 한도가 부족하면 보금자리론이 유리합니다.' },
+    { q: '보금자리론과 디딤돌대출 중 어떤 게 유리한가요?', a: `디딤돌대출은 소득 6천만원 이하(생애최초·2자녀 7천만, 신혼 8.5천만) 무주택자를 위한 상품으로 금리가 연 2.85~4.15%로 낮지만 한도가 일반 2억(생애최초 2.4억, 신혼·2자녀 3.2억)으로 제한됩니다. 보금자리론은 소득 7천만원 이하에 한도가 최대 4.2억이지만 금리가 연 ${RANGE}(우대 시 ${pct(MIN_RATE)}~)입니다. 소득이 낮으면 디딤돌, 한도가 부족하면 보금자리론이 유리합니다.` },
     { q: '신혼부부 보금자리론 조건은 무엇인가요?', a: '혼인 7년 이내이거나 3개월 내 결혼 예정인 부부가 대상입니다. 소득 기준이 부부합산 8.5천만원으로 일반(7천만)보다 완화되고, 금리 우대 0.3%p가 적용됩니다. 대출한도는 최대 3.6억(일반과 동일), LTV는 70%입니다.' },
-    { q: '보금자리론 대출 기간은 최대 몇 년인가요?', a: '보금자리론 대출 기간은 10년, 15년, 20년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 4.90% → 50년 5.20%). 만 40세 미만은 체증식 상환(50년 만기 제외)도 선택 가능하며, 40년은 만 40세 미만(신혼 50세 미만), 50년은 만 35세 미만(신혼 40세 미만)만 가능합니다.' },
+    { q: '보금자리론 대출 기간은 최대 몇 년인가요?', a: `보금자리론 대출 기간은 10년, 15년, 20년, 30년, 40년, 50년 중 선택할 수 있습니다. 기간이 길수록 금리가 소폭 높아집니다(10년 ${pct(PERIOD_RATES['10'])} → 50년 ${pct(PERIOD_RATES['50'])}). 만 40세 미만은 체증식 상환(50년 만기 제외)도 선택 가능하며, 40년은 만 40세 미만(신혼 50세 미만), 50년은 만 35세 미만(신혼 40세 미만)만 가능합니다.` },
     { q: '생애최초 보금자리론 자격 조건은?', a: '생애최초 보금자리론을 받으려면 본인과 배우자 모두 과거에 주택을 소유한 이력이 없어야 합니다(세대원 전원 무주택 이력 없음). 부부합산 연소득 7천만원 이하, 주택가격 6억원 이하, DTI 60% 이하 조건도 동일하게 적용됩니다. 자격 충족 시 LTV가 70%→80%(수도권·규제지역 70%)로 확대되고 대출한도도 3.6억→4.2억으로 늘어납니다. 생애최초 자체 우대금리는 없으며, 신혼·다자녀 등 해당 우대금리는 별도로 적용됩니다.' },
-    { q: '생애최초 보금자리론 금리는 얼마인가요?', a: '생애최초 보금자리론은 금리가 아니라 LTV(80%)와 한도(4.2억)를 우대하는 유형으로, 금리는 일반과 같은 기준금리(2026년 10월 30년 5.10%)가 적용됩니다. 신혼가구(0.3%p), 다자녀(0.5~0.7%p), 저소득청년(0.1%p) 등 해당 우대금리를 합산해 최대 1.0%p까지 차감되며, 30년 만기 기준 최저 4.10%입니다.' },
+    { q: '생애최초 보금자리론 금리는 얼마인가요?', a: `생애최초 보금자리론은 금리가 아니라 LTV(80%)와 한도(4.2억)를 우대하는 유형으로, 금리는 일반과 같은 기준금리(${RATE_BASIS.label} 30년 ${pct(PERIOD_RATES['30'])})가 적용됩니다. 신혼가구(0.3%p), 다자녀(0.5~0.7%p), 저소득청년(0.1%p) 등 해당 우대금리를 합산해 최대 1.0%p까지 차감되며, 30년 만기 기준 최저 ${pct(PERIOD_RATES['30'] - DISCOUNT_CAP)}입니다.` },
     { q: '생애최초 보금자리론 최대 한도는?', a: '생애최초 보금자리론의 최대 대출 한도는 4억 2천만원입니다. 일반 유형(3.6억)보다 6천만원 더 높습니다. 실제 대출 가능 금액은 주택가격의 80%(LTV 80%) 이내에서 결정되며, DTI(총부채상환비율) 60% 기준도 함께 적용됩니다. 예를 들어 주택가격이 5억원이면 LTV 80% 적용 시 최대 4억원까지 가능합니다(수도권·규제지역은 LTV 70%로 3억 5천만원).' },
     { q: '생애최초와 신혼부부 둘 다 해당되면 어떻게 되나요?', a: '생애최초 조건(LTV 80%, 한도 4.2억)을 적용받으면서 신혼부부 우대금리(0.3%p)도 함께 적용받을 수 있습니다. 단, 전체 우대금리는 최대 1.0%p 한도이므로 중복 적용 시에도 1.0%p를 초과하지 않습니다.' },
     { q: '전세사기피해자 보금자리론 조건은?', a: '전세사기피해자등 결정문 정본으로 확인되는 피해자는 소득 상한 없이 9억원 이하 주택(주거용 오피스텔 포함)을 대상으로 최대 4억원까지 받을 수 있습니다. 신규 주택은 LTV 80%, 피해주택 낙찰 시 낙찰가의 100%까지이며 DTI는 100% 이내입니다. 우대금리 1.0%p가 적용되고 규제지역 가산금리(0.2%p)와 조기상환수수료가 면제됩니다.' },
@@ -119,7 +128,7 @@ export default function BogeumjariLoanPage() {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: '기준금리', value: '4.90~5.20%', sub: '우대 시 최저 3.90%', color: 'blue' },
+                { label: '기준금리', value: RANGE, sub: `우대 시 최저 ${pct(MIN_RATE)}`, color: 'blue' },
                 { label: '최대 대출한도', value: '4.2억원', sub: '생애최초 기준', color: 'green' },
                 { label: '최대 LTV', value: '80%', sub: '생애최초·지방 (수도권 70%)', color: 'purple' },
                 { label: 'DTI 기준', value: '60% 이하', sub: '총부채상환비율', color: 'orange' },
@@ -223,7 +232,7 @@ export default function BogeumjariLoanPage() {
           {/* 3. 2026년 금리표 */}
           <section>
             <h2 className="text-xl font-bold text-fg mb-4">
-              2026년 10월 기준 금리표 (아낌e 보금자리론)
+              {RATE_BASIS.label} 기준 금리표 (아낌e 보금자리론)
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
@@ -236,13 +245,9 @@ export default function BogeumjariLoanPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { period: '10년', base: '4.90%', mid: '4.60%', max: '3.90%' },
-                    { period: '20년', base: '5.05%', mid: '4.75%', max: '4.05%' },
-                    { period: '30년', base: '5.10%', mid: '4.80%', max: '4.10%' },
-                    { period: '40년', base: '5.15%', mid: '4.85%', max: '4.15%' },
-                    { period: '50년', base: '5.20%', mid: '4.90%', max: '4.20%' },
-                  ].map((row, i) => (
+                  {Object.entries(PERIOD_RATES).map(([y, r]) => (
+                    { period: `${y}년`, base: pct(r), mid: pct(r - 0.3), max: pct(r - DISCOUNT_CAP) }
+                  )).map((row, i) => (
                     <tr key={row.period} className={`border-b border-line ${i % 2 === 0 ? 'bg-surface' : 'bg-subtle'}`}>
                       <td className="px-4 py-3 font-medium text-fg">{row.period}</td>
                       <td className="px-4 py-3 text-center text-body">{row.base}</td>
@@ -305,7 +310,7 @@ export default function BogeumjariLoanPage() {
                     { label: '소득 기준', didim: '6천만원 이하\n(생애최초·2자녀 7천만, 신혼 8.5천만)', bogeum: '7천만원 이하\n(신혼 8.5천만·자녀1 9천만·2자녀+ 1억)' },
                     { label: '주택가격', didim: '5억원 이하\n(신혼·2자녀 6억)', bogeum: '6억원 이하' },
                     { label: '대출 한도', didim: '일반 2억원\n(생애최초 2.4억, 신혼·2자녀 3.2억)', bogeum: '최대 4.2억원' },
-                    { label: '금리 수준', didim: '2.85~4.15%', bogeum: '4.90~5.20% (우대 시 3.90%~)' },
+                    { label: '금리 수준', didim: '2.85~4.15%', bogeum: `${RANGE} (우대 시 ${pct(MIN_RATE)}~)` },
                     { label: '금리 유형', didim: '고정/혼합', bogeum: '고정금리' },
                     { label: '추천 대상', didim: '소득 낮은 경우\n한도 2억(생애최초 2.4억) 충분 시', bogeum: '한도 더 필요 시\n소득 6~7천만 구간' },
                   ].map((row, i) => (
@@ -438,7 +443,7 @@ export default function BogeumjariLoanPage() {
           {/* 출처 */}
           <div className="text-xs text-faint border-t border-line pt-6">
             <p className="mb-1 font-medium">참고 출처</p>
-            <p>한국주택금융공사(HF) 공식 홈페이지 (hf.go.kr) · 마이홈포털 (myhome.go.kr) · 2026년 10월 1일 보금자리론 금리 공시 기준</p>
+            <p>한국주택금융공사(HF) 공식 홈페이지 (hf.go.kr) · 마이홈포털 (myhome.go.kr) · {BASIS} 보금자리론 금리 공시 기준</p>
             <p className="mt-1">※ 본 계산기는 참고용이며, 실제 대출 조건은 금융기관 심사 결과에 따라 다를 수 있습니다. 정확한 내용은 주택금융공사 또는 해당 금융기관에 문의하세요.</p>
           </div>
         </div>

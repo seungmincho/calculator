@@ -4022,6 +4022,11 @@
       "noteLink": "Korea Housing Finance Corporation product guide"
     },
     "result": {
+      "baseRateChange": {
+        "up": "Up {diff}%p from last month ({prev}%)",
+        "down": "Down {diff}%p from last month ({prev}%)",
+        "same": "Same as last month"
+      },
       "empty": "Enter income and home price to see results automatically",
       "eligible": "Eligible",
       "eligibleWarn": "Eligible (some items need checking)",
@@ -4214,7 +4219,7 @@
           },
           {
             "q": "What's the interest rate?",
-            "a": "Per the October 1, 2026 notice, Akkim-e Bogeumjari rates are 4.90% (10-year) to 5.20% (50-year). Discounts add up to 1.0%p at most, and homes in regulated zones carry a 0.2%p surcharge. Rates change monthly, so check the HF rate page."
+            "a": "Per the November 9, 2026 notice, Akkim-e Bogeumjari rates are 5.00% (10-year) to 5.30% (50-year), up 0.10%p from October. Discounts add up to 1.0%p at most, and homes in regulated zones carry a 0.2%p surcharge. Rates change monthly, so check the HF rate page."
           },
           {
             "q": "How does it differ from Didimddol Loan?",
@@ -4226,7 +4231,7 @@
           },
           {
             "q": "What is the interest rate for first-time buyer Bogeumjari Loan?",
-            "a": "There is no first-time-buyer rate discount; the same base rate applies (5.10% for 30 years as of October 2026). Applicable discounts such as newlywed (0.3%p), multi-child (0.5-0.7%p) or low-income youth (0.1%p) can lower it by up to 1.0%p, to 4.10% for 30 years. Homes in regulated zones add 0.2%p."
+            "a": "There is no first-time-buyer rate discount; the same base rate applies (5.20% for 30 years as of November 2026). Applicable discounts such as newlywed (0.3%p), multi-child (0.5-0.7%p) or low-income youth (0.1%p) can lower it by up to 1.0%p, to 4.20% for 30 years. Homes in regulated zones add 0.2%p."
           },
           {
             "q": "What is the maximum loan amount for first-time buyer Bogeumjari Loan?",

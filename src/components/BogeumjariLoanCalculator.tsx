@@ -13,7 +13,7 @@ import ToolIcon from '@/components/ToolIcon';
 import {
   type LoanType, type Owned, type HouseKind, type Region, type Credit, type CheckStatus, type CheckItem,
   REGIONS, CREDITS, RATE_BASIS, PERIOD_RATES, DISCOUNT_CAP, MIN_RATE, PERKS, LOAN_TYPES, DIDIMDOL, FRAUD, HOUSE_PRICE_LIMIT,
-  getIncomeLimit, calcBogeumjari, didimdolHint, annuity, fmtKRW as fmtKRWBase, rateFor,
+  getIncomeLimit, calcBogeumjari, didimdolHint, annuity, fmtKRW as fmtKRWBase, rateFor, rateChange,
 } from '@/utils/bogeumjari';
 import { useTranslations } from '@/lib/i18n';
 import '@/lib/i18n/ns/bogeumjariLoan';
@@ -222,6 +222,7 @@ export default function BogeumjariLoanCalculator() {
   const label = 'block text-sm font-medium text-body mb-2';
   const hint = 'text-xs text-muted mt-1';
   const autoIncomeLimit = getIncomeLimit(loanType, childNum);
+  const change = rateChange(period);
   const newbornBlocked = loanType === 'newlywed';
   const didim = didimdolHint({ income: incomeNum, price: priceNum, type: loanType, children: childNum, owned });
   // 다음 단계 도구: 각 도구가 이미 읽는 URL 파라미터 이름 그대로 전달
@@ -499,6 +500,13 @@ export default function BogeumjariLoanCalculator() {
                   <span className="text-sub">{t('result.baseRate', { years: period })}</span>
                   <span className="tabular-nums text-fg">{result.baseRate.toFixed(2)}%</span>
                 </div>
+                {change && (
+                  <p className="text-xs text-muted text-right tabular-nums -mt-1">
+                    {change.diff === 0
+                      ? t('result.baseRateChange.same')
+                      : t(change.diff > 0 ? 'result.baseRateChange.up' : 'result.baseRateChange.down', { diff: Math.abs(change.diff).toFixed(2), prev: change.prev.toFixed(2) })}
+                  </p>
+                )}
                 {result.discounts.map((d) => (
                   <div key={d.label} className="flex justify-between text-sub">
                     <span>{t(`perks.${d.id}`)}</span>
