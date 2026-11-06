@@ -52009,6 +52009,7 @@
       "next": "Next",
       "summary": "{count} relatively quiet weekdays left this month.",
       "picks": "Forecast picks",
+      "pick": "Top pick",
       "short": {
         "low": "Quiet",
         "medium": "Normal",
@@ -52202,6 +52203,7 @@
       "next": "Next",
       "summary": "{count} relatively quiet weekdays left this month.",
       "picks": "Forecast picks",
+      "pick": "Top pick",
       "short": {
         "low": "Quiet",
         "medium": "Normal",
@@ -52391,6 +52393,7 @@
       "next": "Next",
       "summary": "{count} relatively quiet weekdays left this month.",
       "picks": "Forecast picks",
+      "pick": "Top pick",
       "short": {
         "low": "Quiet",
         "medium": "Normal",

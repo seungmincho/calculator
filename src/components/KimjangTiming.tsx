@@ -111,7 +111,7 @@ export default function KimjangTiming() {
                     <li key={d.date} className="flex items-center gap-3 py-2.5 text-sm">
                       <span className="text-body w-20 shrink-0">{dayLabel(d.date)}</span>
                       <span className="text-sub tabular-nums flex-1">{t('temps', { min: d.min, mean: d.mean })}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${fits(d) ? 'bg-primary-soft text-primary' : 'bg-soft text-muted'}`}>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${fits(d) ? 'bg-primary text-white font-semibold' : 'bg-soft text-muted'}`}>
                         {fits(d) ? t('fit') : t('notFit')}
                       </span>
                     </li>

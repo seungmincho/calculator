@@ -105,7 +105,7 @@ export default function SkiResorts() {
                     <span className="text-sub tabular-nums">{t('temps', { low: d.low, high: d.high })}</span>
                     <span className="text-sub">{precip(d)}</span>
                     <span className="text-sub tabular-nums">{t('wind', { v: d.wind })}</span>
-                    <span className={`ml-auto px-2 py-0.5 rounded-full text-xs font-medium ${before ? 'bg-soft text-muted' : s.score >= 80 ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>{before ? t(estimated ? 'beforeOpenUsual' : 'beforeOpen') : `${s.score}${t('scoreUnit')}`}</span>
+                    <span className={`ml-auto px-2 py-0.5 rounded-full text-xs font-medium ${before ? 'bg-soft text-muted' : s.score >= 80 ? 'bg-primary text-white font-semibold' : 'bg-soft text-sub'}`}>{before ? t(estimated ? 'beforeOpenUsual' : 'beforeOpen') : `${s.score}${t('scoreUnit')}`}</span>
                   </li>
                 ))}
               </ul>
