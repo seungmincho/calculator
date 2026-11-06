@@ -530,6 +530,36 @@
       }
     },
     "guide": {
+      "sources": {
+        "title": "Legal basis & sources",
+        "items": [
+          {
+            "label": "NTS — wage withholding tax table (amended 2026-02-27)",
+            "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6583&cntntsId=7862"
+          },
+          {
+            "label": "Income Tax Act Enforcement Decree, Table 2 (withholding table) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법시행령"
+          },
+          {
+            "label": "Income Tax Act (Art. 47 earned income deduction, Art. 59 earned income tax credit, Art. 59-2 child tax credit) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법"
+          },
+          {
+            "label": "NHIS — 2026 changes to health and long-term care insurance",
+            "url": "https://www.nhis.or.kr/renewal_popup/poster/20260204_poster_longdesc_1.html"
+          },
+          {
+            "label": "National Pension income cap and floor — Korea.kr policy briefing",
+            "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148957832"
+          },
+          {
+            "label": "Insurance Premium Collection Act Enforcement Decree Art. 12 (employment insurance rate) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/고용보험및산업재해보상보험의보험료징수등에관한법률시행령"
+          }
+        ],
+        "asOf": "Based on the 2026 social insurance rates and the withholding tax table (amended 2026-02-27) · rates checked 6 Nov 2026. You can preview the 2027 rates with the year switch above; they become the default on 1 Jan 2027."
+      },
       "title": "Salary Calculation Master Guide",
       "subtitle": "From new employees to executives! A complete guide to mastering everything about salary calculation. We'll tell you all the secrets to increase your take-home pay, from 4 major insurances to year-end tax settlement!",
       "features": {
@@ -816,6 +846,20 @@
     }
   },
   "loan": {
+    "sources": {
+      "title": "Sources",
+      "items": [
+        {
+          "label": "Financial Services Commission — stage 3 stress DSR plan (2025-05-20)",
+          "url": "https://www.fsc.go.kr/no010101/84617"
+        },
+        {
+          "label": "Korea Federation of Banks — stress rate disclosure",
+          "url": "https://portal.kfb.or.kr/compare/stress_loan.php"
+        }
+      ],
+      "asOf": "DSR rules follow FSC and KFB materials checked 4 Oct 2026."
+    },
     "mode": {
       "calc": "Loan → monthly",
       "rev": "Monthly → max loan"
@@ -1221,6 +1265,7 @@
         "note": "Estimate only; raises and bonus changes are not included. For tax, any fraction of a year counts as a full year, so passing N full years by a single day raises the deduction."
       },
       "sources": {
+        "asOf": "Based on laws in force as of October 2026 (retirement income tax uses the deduction tables for retirements on or after 1 Jan 2023) · checked October 2026",
         "title": "Laws and official sources",
         "retirementAct": "Employee Retirement Benefit Security Act (Art. 3, 4, 8, 9) — National Law Information Center",
         "laborAct": "Labor Standards Act (Art. 2 average/ordinary wage, Art. 37 late interest) — National Law Information Center",
@@ -3553,6 +3598,24 @@
     }
   },
   "carTax": {
+    "sources": {
+      "title": "Legal basis & sources",
+      "items": [
+        {
+          "label": "Local Tax Act Art. 12 (tax rates on acquisitions other than real estate) — law.go.kr",
+          "url": "https://www.law.go.kr/법령/지방세법/제12조"
+        },
+        {
+          "label": "Restriction of Special Local Taxation Act (compact car, EV, multi-child, disability reliefs) — law.go.kr",
+          "url": "https://www.law.go.kr/법령/지방세특례제한법"
+        },
+        {
+          "label": "Wetax — acquisition tax filing and payment",
+          "url": "https://www.wetax.go.kr"
+        }
+      ],
+      "asOf": "Based on laws in force as of October 2026 · checked October 2026. Reliefs have sunset dates and can change each year."
+    },
     "u": {
       "won": " KRW",
       "price": "Car price",
@@ -4242,6 +4305,20 @@
     }
   },
   "medianIncome": {
+    "sources": {
+      "title": "Legal basis & sources",
+      "items": [
+        {
+          "label": "Ministry of Health and Welfare press release — 2027 standard median income",
+          "url": "https://mohw.go.kr/board.es?act=view&bid=0027&list_no=1491453&mid=a10503010100"
+        },
+        {
+          "label": "Ministry of Health and Welfare — 2026 basic livelihood eligibility thresholds",
+          "url": "https://www.mohw.go.kr/menu.es?mid=a10708010300"
+        }
+      ],
+      "asOf": "Based on MOHW notices No. 2025-135 (2026) and No. 2026-157 (2027) · checked October 2026"
+    },
     "won": "₩{n}",
     "household": "{n}-person household",
     "benefits": {
@@ -13525,6 +13602,7 @@
       "professional": "Finance/insurance, professional services, business support, real-estate rental"
     },
     "sources": {
+      "asOf": "Based on the VAT Act and Enforcement Decree in force as of October 2026 · checked October 2026",
       "title": "Rules and sources (2026)",
       "items": [
         "VAT rate 10%: VAT Act Art. 30",
@@ -14164,6 +14242,25 @@
       "note": "This conversion method follows the MOLIT/Ministry of Justice guidance. The 5% cap does not apply to brand-new contracts."
     },
     "sources": {
+      "links": [
+        {
+          "label": "Housing Lease Protection Act Art. 7-2 (cap on the conversion rate to monthly rent) — law.go.kr",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법/제7조의2"
+        },
+        {
+          "label": "Housing Lease Protection Act Enforcement Decree Art. 9 (conversion rate)",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법시행령/제9조"
+        },
+        {
+          "label": "Housing Lease Protection Act Art. 7 (requests to adjust rent)",
+          "url": "https://www.law.go.kr/법령/주택임대차보호법/제7조"
+        },
+        {
+          "label": "Restriction of Special Taxation Act Art. 95-2 (monthly rent tax credit)",
+          "url": "https://www.law.go.kr/법령/조세특례제한법/제95조의2"
+        }
+      ],
+      "asOf": "Laws as in force when checked in October 2026; base rate as of the Monetary Policy Board decision on {date}.",
       "title": "Sources",
       "items": [
         "Conversion cap: Housing Lease Protection Act art. 7-2, Enforcement Decree art. 9 — the lower of 10% and the BOK base rate + 2%p",
@@ -15545,6 +15642,7 @@
         ]
       },
       "sources": {
+        "asOf": "Based on the Labor Standards Act and Minimum Wage Act as in force in October 2026 and the published minimum wages (KRW 10,320 for 2026, KRW 10,700 for 2027) · checked October 2026",
         "title": "Legal basis & sources",
         "items": [
           {
@@ -22595,6 +22693,28 @@
   },
   "freelancerTax": {
     "ft": {
+      "sources": {
+        "title": "Legal basis & sources",
+        "items": [
+          {
+            "label": "Income Tax Act Art. 129 (withholding rates) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법/제129조"
+          },
+          {
+            "label": "Income Tax Act (Art. 55 rates, Art. 59-4 special tax credits) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법"
+          },
+          {
+            "label": "Income Tax Act Enforcement Decree (Arts. 143 and 145 estimation) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법시행령"
+          },
+          {
+            "label": "Restriction of Special Taxation Act Art. 86-3 (Yellow Umbrella deduction) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/조세특례제한법/제86조의3"
+          }
+        ],
+        "asOf": "Based on laws in force as of October 2026 and the NTS expense-rate notice for tax year 2025 · checked October 2026"
+      },
       "subtitle": "Estimate your May income tax refund or extra payment from freelance income with 3.3% withheld. Uses NTS 2025 expense rates and 2026 tax brackets.",
       "won": " KRW",
       "people": "{n}",
@@ -26498,6 +26618,7 @@
         ]
       },
       "sources": {
+        "asOf": "Based on the Labor Standards Act as in force in October 2026 and the published minimum wages (KRW 10,320 for 2026, KRW 10,700 for 2027) · checked October 2026",
         "title": "Legal basis & sources",
         "items": [
           {
@@ -32229,6 +32350,24 @@
   },
   "incomeTaxCalc": {
     "it": {
+      "sources": {
+        "title": "Legal basis & sources",
+        "items": [
+          {
+            "label": "Income Tax Act — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법"
+          },
+          {
+            "label": "Income Tax Act Enforcement Decree (Art. 87 expenses for other income, Art. 143 estimation) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/소득세법시행령"
+          },
+          {
+            "label": "Restriction of Special Taxation Act (Art. 86-3 Yellow Umbrella, Art. 104-8 e-filing credit) — law.go.kr",
+            "url": "https://www.law.go.kr/법령/조세특례제한법"
+          }
+        ],
+        "asOf": "Based on laws in force, checked on law.go.kr on 8 Oct 2026 (tax years 2025 and 2026)"
+      },
       "year": {
         "label": "Tax year",
         "option": "Tax year {year}",
@@ -32777,11 +32916,12 @@
     }
   },
   "healthInsurance": {
+    "sourcesAsOf": "Based on the 2026 premium rates and cap/floor notice · rates checked 6 Nov 2026. From 1 Jan 2027 the long-term care rate becomes 13.90% of the health premium (applied automatically); the 7.19% health rate is frozen.",
     "a11y": {
       "tabs": "Coverage type",
       "wageBasis": "Wage input basis"
     },
-    "rateBadge": "2026 rates · Health {rate} · Long-term care {ltc} of health premium · {point} KRW per property point",
+    "rateBadge": "{year} rates · Health {rate} · Long-term care {ltc} of health premium · {point} KRW per property point",
     "wp": {
       "modeMonthly": "Monthly pay",
       "modeAnnual": "Annual salary",
@@ -33933,6 +34073,7 @@
         "brokerage": "Brokerage fee"
       },
       "sources": {
+        "asOf": "Laws and payment schedule checked 4 Oct 2026.",
         "title": "Sources",
         "items": [
           {
@@ -37037,6 +37178,24 @@
         "cpi": "All amounts are in 2026 money. Pensions rise every January by last year's CPI ({p}% in 2026)."
       },
       "guide": {
+        "sources": {
+          "title": "Legal basis & sources",
+          "items": [
+            {
+              "label": "National Pension Act — law.go.kr",
+              "url": "https://www.law.go.kr/법령/국민연금법"
+            },
+            {
+              "label": "NPS — dependent pension amounts and A value (2026)",
+              "url": "https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0048M0.do"
+            },
+            {
+              "label": "Korea.kr — National Pension income cap/floor adjustment (2026-01-12)",
+              "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148957832"
+            }
+          ],
+          "asOf": "2026 reference values · checked October 2026"
+        },
         "title": "National pension in a nutshell",
         "source": "Sources: National Pension Act (effective 2026-01-01, Act No. 20903), Art. 63-2 (effective 2026-06-17), 2026 A value 3,193,511 KRW, dependent pension (spouse 306,630, child/parent 204,360 KRW per year). Laws: law.go.kr.",
         "formula": {
@@ -37738,6 +37897,28 @@
     }
   },
   "bonusCalculator": {
+    "sources": {
+      "title": "Legal basis & sources",
+      "items": [
+        {
+          "label": "NTS — wage withholding tax table (amended 2026-02-27)",
+          "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6583&cntntsId=7862"
+        },
+        {
+          "label": "Income Tax Act Enforcement Decree (Art. 194 withholding on bonuses, Table 2 withholding table) — law.go.kr",
+          "url": "https://www.law.go.kr/법령/소득세법시행령"
+        },
+        {
+          "label": "NHIS — 2026 changes to health and long-term care insurance",
+          "url": "https://www.nhis.or.kr/renewal_popup/poster/20260204_poster_longdesc_1.html"
+        },
+        {
+          "label": "Insurance Premium Collection Act Enforcement Decree Art. 12 (employment insurance rate) — law.go.kr",
+          "url": "https://www.law.go.kr/법령/고용보험및산업재해보상보험의보험료징수등에관한법률시행령"
+        }
+      ],
+      "asOf": "Based on the withholding tax table (amended 2026-02-27) and the 2026 social insurance rates · rates checked 6 Nov 2026. From 1 Jan 2027 the 2027 rates are used."
+    },
     "byMonthlyPercent": "% of monthly pay",
     "bonusMonthlyPercent": "Bonus as % of monthly pay",
     "monthlySalaryHint": "Monthly pay (annual ÷ 12): {amount} KRW",
@@ -44421,6 +44602,24 @@
     }
   },
   "childBenefit": {
+    "sources": {
+      "title": "Legal basis & sources",
+      "items": [
+        {
+          "label": "Bokjiro — child allowance extended to children under 9 (2026)",
+          "url": "https://www.bokjiro.go.kr/ssis-tbu/cms/pc/news/news/1309692_1114.html"
+        },
+        {
+          "label": "Child Allowance Act — law.go.kr",
+          "url": "https://www.law.go.kr/법령/아동수당법"
+        },
+        {
+          "label": "Incheon — childcare fee support for ages 0–2 (2026 unit rates)",
+          "url": "https://www.incheon.go.kr/earlychild/EC030301"
+        }
+      ],
+      "asOf": "2026 payment rules · checked 5 Oct 2026"
+    },
     "title": "Child Benefit Calculator",
     "description": "Calculate parent pay, child allowance, and childcare allowance based on your children's ages.",
     "hero": {
@@ -47858,6 +48057,7 @@
         ]
       },
       "sources": {
+        "checked": "checked October 2026",
         "title": "Legal basis and official sites",
         "items": [
           {

@@ -477,6 +477,7 @@ export default function VatCalculator() {
           <span className="text-faint mx-2">·</span>
           <a href="https://www.nts.go.kr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{t('sources.nts')}</a>
         </p>
+        <p className="text-xs text-muted mt-2">{t('sources.asOf')}</p>
       </div>
 
       <GuideSection namespace="vatCalculator" />

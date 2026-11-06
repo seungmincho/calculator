@@ -355,6 +355,12 @@ export default function RentConverter() {
         <ul className="space-y-1 text-sm text-sub list-disc list-inside">
           {(t.raw('sources.items') as string[]).map((x) => <li key={x}>{x}</li>)}
         </ul>
+        <ul className="mt-3 space-y-1 text-sm">
+          {(t.raw('sources.links') as { label: string; url: string }[]).map((s) => (
+            <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+          ))}
+        </ul>
+        <p className="text-xs text-muted mt-3">{t('sources.asOf', { date: BASE_RATE.date })}</p>
       </div>
 
       <GuideSection namespace="rentConverter" />

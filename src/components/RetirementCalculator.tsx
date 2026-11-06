@@ -418,6 +418,7 @@ export default function RetirementCalculator() {
             </li>
           ))}
         </ul>
+        <p className="text-xs text-muted mt-3">{t('rc.sources.asOf')}</p>
       </div>
       <p className="text-xs text-muted">{t('rc.disclaimer')}</p>
     </div>

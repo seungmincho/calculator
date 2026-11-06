@@ -442,6 +442,7 @@ export default function HourlyWage() {
               </li>
             ))}
           </ul>
+          <p className="text-xs text-muted">{t('u.sources.asOf')}</p>
         </div>
 
         <div className="flex flex-wrap gap-2">

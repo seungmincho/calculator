@@ -432,7 +432,7 @@ export default function AnnualCarTax() {
               <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
             ))}
           </ul>
-          <p className="text-xs text-muted">{t('guide.sources.asOf')}</p>
+          <p className="text-xs text-muted">{t('guide.sources.asOf')} · {t('guide.sources.checked')}</p>
         </div>
 
         <div className="flex flex-wrap gap-2">

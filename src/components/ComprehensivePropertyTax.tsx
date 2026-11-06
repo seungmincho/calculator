@@ -677,7 +677,7 @@ export default function ComprehensivePropertyTax() {
                 </li>
               ))}
             </ul>
-            <p className="text-xs text-muted mt-2">{t('u.sources.basis')}</p>
+            <p className="text-xs text-muted mt-2">{t('u.sources.basis')} {t('u.sources.asOf')}</p>
           </div>
         </div>
       </section>

@@ -1395,6 +1395,15 @@ const SalaryCalculatorContent = () => {
             </ul>
           </nav>
         </div>
+        <div className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('guide.sources.title')}</p>
+          <ul className="space-y-1">
+            {(t.raw('guide.sources.items') as { label: string; url: string }[]).map((s) => (
+              <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted">{t('guide.sources.asOf')}</p>
+        </div>
       </div>
     </div>
   );

@@ -432,6 +432,16 @@ export default function LoanCalculator() {
       </div>
 
       <GuideSection translate={t} defaultOpen />
+
+      <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+        <p className="font-medium text-body">{t('sources.title')}</p>
+        <ul className="space-y-1">
+          {(t.raw('sources.items') as { label: string; url: string }[]).map((s) => (
+            <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+          ))}
+        </ul>
+        <p className="text-xs text-muted">{t('sources.asOf')}</p>
+      </div>
     </div>
   )
 }

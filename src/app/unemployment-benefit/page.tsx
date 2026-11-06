@@ -76,6 +76,7 @@ export default function UnemploymentBenefitPage() {
             <li><strong>신청 시기:</strong> 이직 다음 날부터 12개월이 지나면 남은 소정급여일수는 소멸되므로 퇴사 후 바로 신청하세요.</li>
             <li><strong>구직 활동 의무:</strong> 보통 4주마다 실업인정일 전까지 재취업활동(입사지원, 취업특강 등)을 하고 고용센터에서 실업인정을 받아야 급여가 지급됩니다.</li>
           </ul>
+          <p className="text-xs text-muted mt-6">2026년 고용보험법·시행령 기준(2026.1.1 이후 이직자 1일 상한 68,100원, 최저임금 10,320원 기준 하한) · 2026년 10월 확인</p>
         </div>
       </section>
     </>

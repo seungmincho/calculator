@@ -372,6 +372,16 @@ export default function FreelancerTax() {
         <p className="text-xs text-muted mt-6">{t('ft.guide.sources')}</p>
       </div>
 
+      <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+        <p className="font-medium text-body">{t('ft.sources.title')}</p>
+        <ul className="space-y-1">
+          {(t.raw('ft.sources.items') as { label: string; url: string }[]).map((s) => (
+            <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+          ))}
+        </ul>
+        <p className="text-xs text-muted">{t('ft.sources.asOf')}</p>
+      </div>
+
       <div className="bg-amber-50 text-amber-800 rounded-2xl p-4 flex items-start gap-3">
         <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
         <p className="text-xs">{t('ft.disclaimer')}</p>

@@ -135,7 +135,7 @@ export default function HealthInsuranceCalculator() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <p className="text-xs text-sub mt-2">
-          {t('rateBadge', { rate: pct(HI.rate), ltc: pct(HI.ltcRate, 2), point: HI.pointValue })}
+          {t('rateBadge', { year: INSURANCE.year, rate: pct(HI.rate), ltc: pct(HI.ltcRate, 2), point: HI.pointValue })}
         </p>
       </div>
 
@@ -375,6 +375,7 @@ export default function HealthInsuranceCalculator() {
           <a href="https://www.nhis.or.kr/nhis/policy/wbhada07500m01.do" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkDependent')}</a>
           <a href="https://www.law.go.kr/법령/국민건강보험법시행령" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkLaw')}</a>
         </div>
+        <p className="text-xs text-muted mt-2">{t('sourcesAsOf')}</p>
       </div>
     </div>
   )

@@ -436,7 +436,16 @@ export default function NationalPensionCalculator() {
             ))}
           </div>
         </section>
-        <p className="text-xs text-muted">{t('u.guide.source')}</p>
+        <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+          <p className="font-medium text-body">{t('u.guide.sources.title')}</p>
+          <ul className="space-y-1">
+            {(t.raw('u.guide.sources.items') as { label: string; url: string }[]).map((s) => (
+              <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a></li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted">{t('u.guide.source')}</p>
+          <p className="text-xs text-muted">{t('u.guide.sources.asOf')}</p>
+        </div>
       </div>
     </div>
   )
