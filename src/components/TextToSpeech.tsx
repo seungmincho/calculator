@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/textToSpeech'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Play, Pause, Square, ClipboardPaste, WrapText, Eraser, Link2, Check } from 'lucide-react'
 import {
   chunkText, estimateSeconds, formatDuration, tidyText, wordRange, sortVoices, pickVoice,
@@ -27,7 +28,8 @@ export default function TextToSpeech() {
   const samples = (t.raw('samples.items') as Sample[] | undefined) ?? []
 
   const [text, setText] = useState(() => samples[0]?.text ?? '')
-  const [supported, setSupported] = useState(true)
+  const hydrated = useHydrated()
+  const supported = !hydrated || 'speechSynthesis' in window
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [voicesLoaded, setVoicesLoaded] = useState(false)
   const [voiceName, setVoiceName] = useState<string | null>(null)
@@ -40,7 +42,26 @@ export default function TextToSpeech() {
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
-  const [platform, setPlatform] = useState<Platform>('other')
+  const [copyFailed, setCopyFailed] = useState(false)
+  const platform: Platform = hydrated ? detectPlatform(navigator.userAgent) : 'other'
+  const [initialized, setInitialized] = useState(false)
+
+  // 정적 HTML과 첫 렌더를 맞춘 다음, 저장 설정보다 공유 링크 값을 우선 복원한다.
+  if (hydrated && !initialized) {
+    setInitialized(true)
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? 'null')
+      if (saved) {
+        if (typeof saved.rate === 'number' && saved.rate >= 0.5 && saved.rate <= 2) setRate(saved.rate)
+        if (typeof saved.pitch === 'number' && saved.pitch >= 0.5 && saved.pitch <= 2) setPitch(saved.pitch)
+        if (typeof saved.volume === 'number' && saved.volume >= 0 && saved.volume <= 1) setVolume(saved.volume)
+      }
+    } catch { /* 저장소 차단 또는 잘못된 값 */ }
+    const q = searchParams.get('t')
+    if (q) setText(q.slice(0, URL_TEXT_LIMIT))
+    const r = Number(searchParams.get('r'))
+    if (r >= 0.5 && r <= 2) setRate(r)
+  }
 
   const segments = useMemo(() => chunkText(text), [text])
   const voice = voices.find((v) => v.name === voiceName) ?? null
@@ -50,23 +71,17 @@ export default function TextToSpeech() {
   const idx = useRef(0)
   const uttRef = useRef<SpeechSynthesisUtterance | null>(null) // GC로 onend가 안 오는 Chrome 버그 방지
   const live = useRef({ segments, voice, rate, pitch, volume })
-  live.current = { segments, voice, rate, pitch, volume }
-  const settingsLoaded = useRef(false)
+  useEffect(() => { live.current = { segments, voice, rate, pitch, volume } }, [segments, voice, rate, pitch, volume])
   const readerRef = useRef<HTMLDivElement>(null)
 
   // ── 음성 목록 (voiceschanged는 비동기, Safari는 이벤트가 없을 때가 있어 몇 번 더 조회) ──
   useEffect(() => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) { setSupported(false); return }
+    if (!('speechSynthesis' in window)) return
     const synth = window.speechSynthesis
+    const sessionRef = session
     synth.cancel() // 새로고침 전 발화가 남아 있는 Chrome 대비
-    setPlatform(detectPlatform(navigator.userAgent))
     let saved: string | null = null
     try { saved = localStorage.getItem(VOICE_KEY) } catch { /* 저장소 차단 */ }
-    try {
-      const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? 'null')
-      if (s) { setRate(s.rate ?? 1); setPitch(s.pitch ?? 1); setVolume(s.volume ?? 1) }
-    } catch { /* 무시 */ }
-    settingsLoaded.current = true
 
     const load = () => {
       const vs = synth.getVoices()
@@ -83,23 +98,15 @@ export default function TextToSpeech() {
       synth.removeEventListener('voiceschanged', load)
       timers.forEach(clearTimeout)
       clearTimeout(giveUp)
-      session.current++
+      sessionRef.current++
       synth.cancel()
     }
   }, [])
 
-  // URL ?t=텍스트&r=속도 복원
   useEffect(() => {
-    const q = searchParams.get('t')
-    if (q) setText(q.slice(0, URL_TEXT_LIMIT))
-    const r = Number(searchParams.get('r'))
-    if (r >= 0.5 && r <= 2) setRate(r)
-  }, [searchParams])
-
-  useEffect(() => {
-    if (!settingsLoaded.current) return
+    if (!initialized) return
     try { localStorage.setItem(SETTINGS_KEY, JSON.stringify({ rate, pitch, volume })) } catch { /* 무시 */ }
-  }, [rate, pitch, volume])
+  }, [initialized, rate, pitch, volume])
 
   // ── 재생 엔진: 문장(최대 140자) 단위로 이어 읽기 ──
   const speakFrom = useCallback((start: number) => {
@@ -199,6 +206,9 @@ export default function TextToSpeech() {
 
   const changeText = useCallback((next: string) => {
     stop()
+    setError(null)
+    setCopyFailed(false)
+    setCopied(false)
     setText(next)
   }, [stop])
 
@@ -231,9 +241,15 @@ export default function TextToSpeech() {
   }, [text, rate])
 
   const copyLink = async () => {
-    try { await navigator.clipboard.writeText(shareUrl) } catch { /* 권한 없음 */ }
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setCopyFailed(false)
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      setCopied(false)
+      setCopyFailed(true)
+    }
   }
 
   // ── 표시용 계산 ──
@@ -255,12 +271,13 @@ export default function TextToSpeech() {
       const active = i === cur
       const w = active && word && word[0] >= s.start && word[1] <= s.end ? word : null
       parts.push(
-        <span
+        <button
+          type="button"
           key={i}
           data-i={i}
           onClick={() => speakFrom(i)}
           title={t('reader.clickHint')}
-          className={`cursor-pointer rounded px-0.5 -mx-0.5 transition-colors ${
+          className={`max-w-full text-left whitespace-pre-wrap break-words rounded px-0.5 -mx-0.5 transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
             active ? 'bg-primary-soft text-primary' : 'hover:bg-soft'
           }`}
         >
@@ -271,7 +288,7 @@ export default function TextToSpeech() {
               {text.slice(w[1], s.end)}
             </>
           ) : s.text}
-        </span>,
+        </button>,
       )
       last = s.end
     })
@@ -300,20 +317,20 @@ export default function TextToSpeech() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="min-w-0 lg:col-span-2 space-y-6">
           {/* 텍스트 입력 */}
-          <div className="ui-card p-6 space-y-4">
+          <div id="tts-input" className="ui-card p-4 sm:p-6 space-y-4 scroll-mt-20">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <label htmlFor="tts-text" className="text-sm font-semibold text-body">{t('textInput')}</label>
               <div className="flex flex-wrap gap-2">
-                <button onClick={pasteClipboard} className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5">
+                <button onClick={pasteClipboard} className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5">
                   <ClipboardPaste className="w-4 h-4" />{t('tools.paste')}
                 </button>
-                <button onClick={() => changeText(tidyText(text))} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
+                <button onClick={() => changeText(tidyText(text))} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
                   <WrapText className="w-4 h-4" />{t('tools.tidy')}
                 </button>
-                <button onClick={() => changeText('')} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
+                <button onClick={() => changeText('')} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
                   <Eraser className="w-4 h-4" />{t('tools.clear')}
                 </button>
               </div>
@@ -323,9 +340,23 @@ export default function TextToSpeech() {
               value={text}
               onChange={(e) => changeText(e.target.value)}
               placeholder={t('textPlaceholder')}
-              className="ui-field px-4 py-3 min-h-[180px] leading-relaxed"
+              className="ui-field px-4 py-3 min-h-[140px] sm:min-h-[180px] text-base leading-relaxed"
             />
-            {notice && <p className="text-sm text-amber-700 dark:text-amber-300">{notice}</p>}
+            <div id="tts-controls" className="scroll-mt-20 flex flex-wrap items-center gap-3">
+              <button onClick={toggle} disabled={!canPlay} className="ui-btn px-5 py-3 min-w-[128px]">
+                {status === 'speaking' ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                {status === 'speaking' ? t('pause') : status === 'paused' ? t('resume') : t('play')}
+              </button>
+              <button onClick={stop} disabled={status === 'stopped'} className="bg-soft hover:bg-subtle text-body rounded-xl px-4 py-3 font-semibold inline-flex items-center gap-2 disabled:opacity-45">
+                <Square className="w-4 h-4" />{t('stop')}
+              </button>
+              <div className="text-sm text-sub ml-auto tabular-nums" aria-live="polite">
+                {status === 'speaking' ? t('speaking') : status === 'paused' ? t('paused') : t('stopped')}
+                {status !== 'stopped' && ` · ${t('remaining', { time: formatDuration(remainSec) })}`}
+              </div>
+            </div>
+            {error && <p role="alert" className="bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-4 text-sm">{error}</p>}
+            {notice && <p role="status" className="text-sm text-sub">{notice}</p>}
             <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-sub tabular-nums">
               <span>{t('charCount')} {text.length.toLocaleString()}</span>
               <span>{t('stats.charsNoSpace')} {text.replace(/\s/g, '').length.toLocaleString()}</span>
@@ -339,7 +370,7 @@ export default function TextToSpeech() {
                   <button
                     key={s.label}
                     onClick={() => changeText(s.text)}
-                    className={`rounded-full px-3 py-1.5 text-sm font-medium ${
+                    className={`rounded-full min-h-11 px-3 py-1.5 text-sm font-medium ${
                       text === s.text ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
@@ -351,19 +382,10 @@ export default function TextToSpeech() {
           </div>
 
           {/* 플레이어 + 읽기 화면 */}
-          <div className="ui-card p-6 space-y-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <button onClick={toggle} disabled={!canPlay} className="ui-btn px-5 py-3 min-w-[128px]">
-                {status === 'speaking' ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                {status === 'speaking' ? t('pause') : status === 'paused' ? t('resume') : t('play')}
-              </button>
-              <button onClick={stop} disabled={status === 'stopped'} className="bg-soft hover:bg-subtle text-body rounded-xl px-4 py-3 font-semibold inline-flex items-center gap-2 disabled:opacity-45">
-                <Square className="w-4 h-4" />{t('stop')}
-              </button>
-              <div className="text-sm text-sub ml-auto tabular-nums" aria-live="polite">
-                {status === 'speaking' ? t('speaking') : status === 'paused' ? t('paused') : t('stopped')}
-                {status !== 'stopped' && ` · ${t('remaining', { time: formatDuration(remainSec) })}`}
-              </div>
+          <div className="ui-card p-4 sm:p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-sm font-semibold text-body">{t('reader.title')}</h2>
+              <a href="#tts-controls" className="min-h-11 inline-flex items-center text-sm text-primary font-medium">{t('reader.controls')}</a>
             </div>
 
             {segments.length > 1 && (
@@ -375,17 +397,13 @@ export default function TextToSpeech() {
                   value={Math.max(cur, 0)}
                   onChange={(e) => speakFrom(Number(e.target.value))}
                   aria-label={t('progressLabel')}
-                  className="w-full accent-blue-600"
+                  className="w-full h-11 accent-primary"
                 />
                 <div className="flex justify-between text-xs text-muted tabular-nums">
                   <span>{t('progress', { current: Math.max(cur, 0) + 1, total: segments.length })}</span>
                   <span>{formatDuration(totalSec)}</span>
                 </div>
               </div>
-            )}
-
-            {error && (
-              <div className="bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-4 text-sm">{error}</div>
             )}
 
             <div>
@@ -403,11 +421,11 @@ export default function TextToSpeech() {
 
         {/* 설정 */}
         <div className="space-y-6">
-          <div className="ui-card p-6 space-y-5">
+          <div className="ui-card p-4 sm:p-6 space-y-5">
             <div>
               <label htmlFor="tts-voice" className="block text-sm font-semibold text-body mb-2">{t('voice')}</label>
               {voices.length > 0 ? (
-                <select id="tts-voice" value={voiceName ?? ''} onChange={(e) => changeVoice(e.target.value)} className="ui-field px-3 py-2.5 text-sm">
+                <select id="tts-voice" value={voiceName ?? ''} onChange={(e) => changeVoice(e.target.value)} className="ui-field px-3 py-2.5 text-base">
                   {koVoices.length > 0 && (
                     <optgroup label={t('voiceGroups.korean')}>
                       {koVoices.map((v) => <option key={v.name} value={v.name}>{voiceLabel(v)}</option>)}
@@ -435,7 +453,7 @@ export default function TextToSpeech() {
                   <button
                     key={p.key}
                     onClick={() => setRate(p.rate)}
-                    className={`rounded-xl px-2 py-2 text-sm font-medium ${
+                    className={`rounded-xl min-h-11 px-2 py-2 text-sm font-medium ${
                       rate === p.rate ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
@@ -458,7 +476,7 @@ export default function TextToSpeech() {
                   id={`tts-${key}`}
                   type="range" min={min} max={max} step={step} value={value}
                   onChange={(e) => set(Number(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full h-11 accent-primary"
                 />
               </div>
             ))}
@@ -466,19 +484,20 @@ export default function TextToSpeech() {
               <p className="text-xs text-muted">{t('settingsNote')}</p>
               <button
                 onClick={() => { setRate(1); setPitch(1); setVolume(1) }}
-                className="bg-soft hover:bg-subtle text-body rounded-xl px-3 py-1.5 text-xs font-medium shrink-0"
+                className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-xs font-medium shrink-0"
               >
                 {t('resetSettings')}
               </button>
             </div>
           </div>
 
-          <div className="ui-card p-6 space-y-3">
+          <div className="ui-card p-4 sm:p-6 space-y-3">
             <p className="text-sm font-semibold text-body">{t('share.title')}</p>
             <button onClick={copyLink} disabled={!text || tooLongForUrl} className="ui-btn-soft w-full px-4 py-2.5 text-sm">
               {copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
               {copied ? t('share.copied') : t('share.copy')}
             </button>
+            {copyFailed && <p role="status" className="text-sm text-sub">{t('share.copyFailed')}</p>}
             <p className="text-xs text-muted">
               {tooLongForUrl ? t('share.tooLong', { max: URL_TEXT_LIMIT.toLocaleString() }) : t('share.hint')}
             </p>
@@ -495,7 +514,7 @@ export default function TextToSpeech() {
       </div>
 
       {/* 가이드 */}
-      <div className="ui-card p-6 space-y-6">
+      <div className="ui-card p-4 sm:p-6 space-y-6">
         <h2 className="text-xl font-semibold text-fg">{t('guide.title')}</h2>
         <div>
           <h3 className="text-lg font-semibold text-fg mb-2">{t('guide.whatIs.title')}</h3>

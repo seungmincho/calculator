@@ -23,6 +23,8 @@ interface DecisionToolsProps {
   initialTab?: 'roulette' | 'order'
   /** 단일 도구 모드: 탭 전환기를 숨기고 initialTab 도구만 노출 (전용 랜딩 페이지용) */
   single?: boolean
+  /** 메뉴 전용: 빠른 식사 선택과 돌리기를 후보 편집보다 먼저 배치 */
+  menuMode?: boolean
   /** URL 파라미터가 없을 때 룰렛 기본 항목으로 적용할 프리셋 (예: 메뉴 룰렛 → '저녁메뉴') */
   defaultPreset?: keyof typeof PRESETS
   /** single 모드 제목/설명 덮어쓰기 */
@@ -54,10 +56,6 @@ const PRESETS: Record<string, string[]> = {
   벌칙: ['노래 한 곡', '춤 한 번', '커피 사기', '청소당번', '발표하기', '간식 사기'],
 }
 
-const PRESET_EMOJI: Record<string, string> = {
-  저녁메뉴: '🌙', 점심메뉴: '🍱', 한식: '🍚', 중식: '🥡', 일식: '🍣', 양식: '🍕', 분식: '🌭', 야식배달: '🍗', 카페: '☕', 벌칙: '😈',
-}
-
 // 프리셋 버튼 라벨 번역 키(presets.*). PRESETS 키·항목은 defaultPreset·URL 과 맞물린 데이터라 한국어 그대로 둔다.
 const PRESET_LABEL: Record<string, string> = {
   저녁메뉴: 'dinner', 점심메뉴: 'lunch', 한식: 'korean', 중식: 'chinese', 일식: 'japanese', 양식: 'western', 분식: 'bunsik', 야식배달: 'lateNight', 카페: 'cafe', 벌칙: 'penalty',
@@ -80,7 +78,7 @@ interface Confetti {
   alpha: number
 }
 
-export default function DecisionTools({ initialTab = 'roulette', single = false, defaultPreset, title, subtitle }: DecisionToolsProps) {
+export default function DecisionTools({ initialTab = 'roulette', single = false, menuMode = false, defaultPreset, title, subtitle }: DecisionToolsProps) {
   const t = useTranslations('decisionTools')
   const searchParams = useSearchParams()
 
@@ -103,7 +101,6 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const angleRef = useRef(0)
-  const velocityRef = useRef(0)
   const rafRef = useRef<number | null>(null)
   const confettiRef = useRef<Confetti[]>([])
   const confettiCanvasRef = useRef<HTMLCanvasElement>(null)
@@ -136,7 +133,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     const url = new URL(window.location.href)
     if (items.join(',') === defaults.join(',')) url.searchParams.delete(key)
     else url.searchParams.set(key, items.join(','))
-    window.history.replaceState({}, '', url)
+    window.history.replaceState(window.history.state, '', url)
   }
   useEffect(() => {
     syncParam('roulette', rouletteItems, defaultPreset ? PRESETS[defaultPreset].slice(0, 12) : DEFAULT_PARTICIPANTS)
@@ -144,7 +141,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
   useEffect(() => {
     syncParam('order', orderItems, DEFAULT_PARTICIPANTS)
-  }, [orderItems]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [orderItems])
 
   // ─── Draw roulette wheel ─────────────────────────────────────────────────
   const drawWheel = useCallback((angle: number, items: string[]) => {
@@ -224,27 +221,18 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     setIsSpinning(true)
     setSpinResult(null)
 
-    const minRotations = 3
-    const minVelocity = 15
-    const maxVelocity = 25
-    velocityRef.current = minVelocity + Math.random() * (maxVelocity - minVelocity)
+    // 시간 기준으로 종료한다. 속도 감쇠만 쓰면 최소 회전수에 도달하지 못할 수 있다.
+    const startAngle = angleRef.current
+    const travel = (4 + Math.random()) * 2 * Math.PI
+    const duration = 4200
+    const startedAt = performance.now()
 
-    // ensure at least minRotations full spins
-    const targetExtraAngle = (minRotations + Math.random()) * 2 * Math.PI
-    let accumulatedAngle = 0
-    let hasMinRotations = false
-
-    const friction = 0.98
-
-    const animate = () => {
-      velocityRef.current *= friction
-      accumulatedAngle += velocityRef.current * (1 / 60)
-      angleRef.current += velocityRef.current * (1 / 60)
+    const animate = (now: number) => {
+      const progress = Math.min(1, (now - startedAt) / duration)
+      angleRef.current = startAngle + travel * (1 - Math.pow(1 - progress, 3))
       setCurrentAngle(angleRef.current)
 
-      if (accumulatedAngle >= targetExtraAngle) hasMinRotations = true
-
-      if (hasMinRotations && velocityRef.current < 0.05) {
+      if (progress >= 1) {
         // determine result: pointer is at top (angle = -PI/2 from canvas)
         // The item under the top is determined by normalizing the angle
         const sliceAngle = (2 * Math.PI) / rouletteItems.length
@@ -326,17 +314,24 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   // ─── Roulette item management ─────────────────────────────────────────────
   const addRouletteItem = () => {
     const trimmed = newRouletteItem.trim()
-    if (!trimmed || rouletteItems.length >= 12) return
+    if (isSpinning || !trimmed || rouletteItems.length >= 12) return
+    setSpinResult(null)
+    setRouletteCopied(false)
     setRouletteItems(prev => [...prev, trimmed])
     setNewRouletteItem('')
   }
 
   const removeRouletteItem = (index: number) => {
-    if (rouletteItems.length <= 2) return
+    if (isSpinning || rouletteItems.length <= 2) return
+    setSpinResult(null)
+    setRouletteCopied(false)
     setRouletteItems(prev => prev.filter((_, i) => i !== index))
   }
 
   const applyPreset = (key: keyof typeof PRESETS) => {
+    if (isSpinning) return
+    setSpinResult(null)
+    setRouletteCopied(false)
     setRouletteItems(PRESETS[key].slice(0, 12))
   }
 
@@ -471,7 +466,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     const update = () => {
       if (wheelContainerRef.current) {
         const w = wheelContainerRef.current.clientWidth
-        setCanvasSize(Math.max(280, Math.min(380, w - 8)))
+        setCanvasSize(Math.max(1, Math.min(380, w - 8)))
       }
     }
     update()
@@ -484,10 +479,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">
-          {title ?? (single ? (initialTab === 'order' ? t('header.orderTitle') : t('header.rouletteTitle')) : t('header.title'))}
+          {title ?? (menuMode ? t('menu.title') : single ? (initialTab === 'order' ? t('header.orderTitle') : t('header.rouletteTitle')) : t('header.title'))}
         </h1>
         <p className="text-sm text-muted mt-1">
-          {subtitle ?? (single
+          {subtitle ?? (menuMode ? t('menu.subtitle') : single
             ? initialTab === 'order'
               ? t('header.orderSubtitle')
               : t('header.rouletteSubtitle')
@@ -517,12 +512,12 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
       {/* ═══ ROULETTE TAB ═══════════════════════════════════════════════════ */}
       {activeTab === 'roulette' && (
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left: items + presets */}
-          <div className="lg:col-span-2 space-y-4">
+          <div id="roulette-items" className={`min-w-0 lg:col-span-2 space-y-4 scroll-mt-20 ${menuMode ? 'order-2 lg:order-1' : ''}`}>
             <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
               <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-fg">{t('roulette.itemsTitle')}</h2>
+                <h2 className="font-semibold text-fg">{menuMode ? t('menu.itemsTitle') : t('roulette.itemsTitle')}</h2>
                 <span className="text-xs text-gray-400">{rouletteItems.length}/12</span>
               </div>
 
@@ -530,13 +525,15 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               <div>
                 <p className="text-xs text-muted mb-2">{t('roulette.presetsLabel')}</p>
                 <div className="flex flex-wrap gap-2">
-                  {Object.keys(PRESETS).map(key => (
+                  {Object.keys(PRESETS).filter(key => !menuMode || key !== '벌칙').map(key => (
                     <button
                       key={key}
                       onClick={() => applyPreset(key)}
-                      className="px-3 py-1 text-xs bg-subtle text-sub rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors"
+                      disabled={isSpinning}
+                      aria-pressed={rouletteItems.join(',') === PRESETS[key].join(',')}
+                      className={`min-h-11 px-3 py-2 text-sm rounded-xl disabled:opacity-50 ${rouletteItems.join(',') === PRESETS[key].join(',') ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
                     >
-                      <span aria-hidden="true">{PRESET_EMOJI[key] ?? '📋'}</span> {PRESET_LABEL[key] ? t(`presets.${PRESET_LABEL[key]}`) : key}
+                      {PRESET_LABEL[key] ? t(`presets.${PRESET_LABEL[key]}`) : key}
                     </button>
                   ))}
                 </div>
@@ -555,9 +552,9 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     </span>
                     <button
                       onClick={() => removeRouletteItem(i)}
-                      disabled={rouletteItems.length <= 2}
+                      disabled={isSpinning || rouletteItems.length <= 2}
                       aria-label={t('common.removeItem', { item })}
-                      className="text-gray-400 hover:text-red-500 disabled:opacity-30 transition-colors"
+                      className="min-h-11 min-w-11 inline-flex items-center justify-center text-muted hover:text-red-500 disabled:opacity-30 transition-colors"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -575,14 +572,14 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                   placeholder={t('roulette.addPlaceholder')}
                   aria-label={t('roulette.addInputLabel')}
                   maxLength={20}
-                  disabled={rouletteItems.length >= 12}
-                  className={`${glassInput} flex-1 px-3 py-2 text-sm disabled:opacity-50`}
+                  disabled={isSpinning || rouletteItems.length >= 12}
+                  className={`${glassInput} min-w-0 min-h-11 flex-1 px-3 py-2 text-base disabled:opacity-50`}
                 />
                 <button
                   onClick={addRouletteItem}
-                  disabled={rouletteItems.length >= 12 || !newRouletteItem.trim()}
+                  disabled={isSpinning || rouletteItems.length >= 12 || !newRouletteItem.trim()}
                   aria-label={t('roulette.addButton')}
-                  className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  className="ui-btn min-h-11 min-w-11 px-3 py-2 disabled:opacity-50"
                 >
                   <Plus size={16} />
                 </button>
@@ -595,7 +592,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={() => setShowHistory(v => !v)}
                   aria-expanded={showHistory}
-                  className="flex items-center justify-between w-full text-sm font-medium text-body"
+                  className="flex min-h-11 items-center justify-between w-full text-sm font-medium text-body"
                 >
                   <span>{t('roulette.history', { count: spinHistory.length })}</span>
                   {showHistory ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -615,32 +612,44 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
           </div>
 
           {/* Right: wheel + result */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className={`min-w-0 lg:col-span-3 space-y-4 ${menuMode ? 'order-1 lg:order-2' : ''}`}>
+            {menuMode && (
+              <div className="ui-card p-4 sm:p-5 space-y-3">
+                <p className="text-sm font-semibold text-body">{t('menu.quickTitle')}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {['저녁메뉴', '점심메뉴'].map(key => (
+                    <button key={key} onClick={() => applyPreset(key)} disabled={isSpinning}
+                      aria-pressed={rouletteItems.join(',') === PRESETS[key].join(',')}
+                      className={`min-h-11 rounded-xl px-3 py-2 text-sm font-medium disabled:opacity-50 ${rouletteItems.join(',') === PRESETS[key].join(',') ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}>
+                      {t(`presets.${PRESET_LABEL[key]}`)}
+                    </button>
+                  ))}
+                </div>
+                <a href="#roulette-items" className="min-h-11 inline-flex items-center text-sm text-primary font-medium">{t('menu.edit', { count: rouletteItems.length })}</a>
+              </div>
+            )}
             <div className={`${glassCard} ${glassInset} p-5`}>
               {/* Wheel container */}
               <div ref={wheelContainerRef} className="relative flex flex-col items-center gap-4">
                 {/* 스크린리더용 결과 알림 (결과 카드는 조건부 렌더라 live region 을 따로 둔다) */}
                 <p className="sr-only" aria-live="polite">{spinResult ? t('roulette.resultAnnounce', { result: spinResult }) : ''}</p>
-                {/* Pointer arrow */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center">
-                  <div
-                    className="w-0 h-0"
-                    style={{
-                      borderLeft: '10px solid transparent',
-                      borderRight: '10px solid transparent',
-                      borderTop: '20px solid #1e293b',
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-                    }}
-                  />
-                </div>
-
                 {/* Relative wrapper for confetti overlay */}
-                <div className="relative" style={{ width: canvasSize, height: canvasSize }}>
+                <div className="relative order-2 max-w-full" style={{ width: canvasSize, height: canvasSize }}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center">
+                    <div
+                      className="w-0 h-0"
+                      style={{
+                        borderLeft: '10px solid transparent',
+                        borderRight: '10px solid transparent',
+                        borderTop: '20px solid var(--color-fg)',
+                      }}
+                    />
+                  </div>
                   <canvas
                     ref={canvasRef}
                     width={canvasSize}
                     height={canvasSize}
-                    className="rounded-full shadow-xl"
+                    className="rounded-full max-w-full"
                     role="img"
                     aria-label={t('roulette.wheelLabel', { items: rouletteItems.join(', ') })}
                   />
@@ -657,30 +666,36 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <button
                   onClick={spin}
                   disabled={isSpinning || rouletteItems.length < 2}
-                  className="w-full max-w-xs bg-primary hover:bg-blue-700 text-white rounded-xl px-6 py-3 font-bold text-lg disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
+                  id="roulette-spin"
+                  className="ui-btn order-1 w-full min-h-12 px-6 py-3 font-bold text-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {isSpinning ? t('roulette.spinning') : t('roulette.spin')}
                 </button>
+                {spinResult && (
+                  <a href="#roulette-result" className="order-1 min-h-11 inline-flex items-center text-lg font-semibold text-primary break-words">
+                    {t('roulette.resultAnnounce', { result: spinResult })}
+                  </a>
+                )}
               </div>
             </div>
 
             {/* Result card */}
             {spinResult && (
-              <div className="bg-subtle rounded-xl shadow-lg p-5 border border-line">
-                <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">{t('roulette.result')}</p>
-                <div className="flex items-center justify-between">
-                  <p className="text-2xl font-bold text-fg">{spinResult}</p>
+              <div id="roulette-result" className="ui-card p-4 sm:p-5">
+                <p className="text-sm text-sub font-medium mb-1">{t('roulette.result')}</p>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="min-w-0 break-words text-2xl font-bold text-fg">{spinResult}</p>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={saveWheelImage}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-surface text-sub rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                      className="ui-btn-soft min-h-11 flex items-center gap-1 px-3 py-2 text-sm"
                     >
                       {wheelSaved ? <Check size={14} className="text-green-500" /> : <Download size={14} />}
                       {wheelSaved ? t('roulette.saved') : t('roulette.saveImage')}
                     </button>
                     <button
                       onClick={copyRouletteResult}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-surface text-sub rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
+                      className="ui-btn-soft min-h-11 flex items-center gap-1 px-3 py-2 text-sm"
                     >
                       {rouletteCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
                       {rouletteCopied ? t('common.copied') : t('roulette.copy')}
@@ -695,7 +710,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
       {/* ═══ ORDER PICKER TAB ════════════════════════════════════════════════ */}
       {activeTab === 'order' && (
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left: participants */}
           <div className="lg:col-span-2 space-y-4">
             <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>

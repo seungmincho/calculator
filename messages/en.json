@@ -7658,11 +7658,11 @@
       },
       "textToSpeech": {
         "title": "Text to Speech",
-        "description": "Read text aloud with TTS"
+        "description": "Paste text, listen sentence by sentence, and adjust reading speed"
       },
       "taxiFare": {
         "title": "Taxi Fare Calculator",
-        "description": "Calculate estimated taxi fare"
+        "description": "Estimate taxi fare with late-night and out-of-city surcharges"
       },
       "installmentCalc": {
         "title": "Installment Calculator",
@@ -7686,7 +7686,7 @@
       },
       "shippingCalc": {
         "title": "Shipping Calculator",
-        "description": "Calculate delivery shipping costs"
+        "description": "Compare postal, courier and convenience store rates by weight and size"
       },
       "parkingFee": {
         "title": "Parking Fee Calculator",
@@ -8138,7 +8138,7 @@
       },
       "menuRoulette": {
         "title": "Menu Roulette",
-        "description": "Can't decide what to eat? Spin the roulette to pick your meal"
+        "description": "Dinner and lunch roulette with editable choices"
       },
       "csVisualizer": {
         "title": "CS Concept Visualizer",
@@ -16385,7 +16385,7 @@
       "paste": "Paste",
       "tidy": "Clean line breaks/spaces",
       "clear": "Clear",
-      "pasteFailed": "Could not read the clipboard. Paste into the text box with Ctrl+V (⌘+V)."
+      "pasteFailed": "Clipboard access was denied. Touch and hold the text field to paste, or use Ctrl+V (⌘+V)."
     },
     "stats": {
       "charsNoSpace": "Without spaces",
@@ -16416,15 +16416,18 @@
     "reader": {
       "hint": "The current sentence and word are highlighted. Click a sentence to start reading from there.",
       "clickHint": "Read from this sentence",
-      "empty": "Enter text and it will appear here sentence by sentence."
+      "empty": "Enter text and it will appear here sentence by sentence.",
+      "title": "Reading view",
+      "controls": "Playback controls"
     },
     "shortcuts": "Shortcuts: Space play/pause (when not typing) · Esc stop · Resuming restarts the current sentence.",
     "share": {
       "title": "Share as a link",
       "copy": "Copy text link",
       "copied": "Copied",
-      "hint": "The link opens this tool with the same text and speed.",
-      "tooLong": "Links can hold up to {max} characters. Please shorten the text."
+      "hint": "Share the same text and speed. The recipient needs to press Play to hear it.",
+      "tooLong": "Links can hold up to {max} characters. Please shorten the text.",
+      "copyFailed": "Could not copy the link. Check your browser clipboard permission and try again."
     },
     "recording": {
       "title": "Can I save it as MP3?",
@@ -16437,7 +16440,7 @@
       ]
     },
     "title": "Text to Speech (TTS)",
-    "description": "Reads text aloud sentence by sentence without cut-offs. Highlights the current sentence, lets you click any sentence to start there, and adjusts speed for study, presentation practice and narration drafts.",
+    "description": "Paste your text and listen. Read long passages sentence by sentence, follow highlights, and adjust the speed.",
     "textInput": "Text to Read",
     "textPlaceholder": "Enter text to be read aloud...",
     "voice": "Select Voice",
@@ -16544,7 +16547,9 @@
       "diff": "vs selected"
     },
     "title": "Taxi Fare Calculator",
-    "description": "Enter region, distance, time and boarding hour to estimate taxi fare including late-night and out-of-city surcharges.",
+    "description": "Estimate taxi fare by region and distance. Surcharges reflect your boarding time and travel outside the city.",
+    "distanceHint": "Not sure of the distance? Check the driving distance in kilometers in your map app.",
+    "editInputs": "Edit trip details",
     "distance": "Distance (km)",
     "distancePlaceholder": "Enter distance",
     "time": "Estimated Time (min)",
@@ -17447,7 +17452,13 @@
       "sources": "Sources:"
     },
     "title": "Shipping Calculator",
-    "description": "Compare Korean courier & convenience store shipping rates (2026 rates)",
+    "description": "Compare parcel rates by weight and box size, including drop-off and pickup requirements.",
+    "editInputs": "Edit weight and size",
+    "noRates": {
+      "title": "No shipping rates available",
+      "short": "Check details",
+      "description": "No carrier provides a rate for this weight, size, or destination. Check your inputs or contact a carrier for a quote."
+    },
     "weight": "Weight (kg)",
     "weightPlaceholder": "Enter weight",
     "width": "Width (cm)",
@@ -51526,13 +51537,13 @@
       "history": "Spin history ({count})",
       "resultAnnounce": "Result: {result}",
       "wheelLabel": "Wheel: {items}",
-      "spin": "🎡 Spin!",
+      "spin": "Spin",
       "spinning": "Spinning...",
       "result": "Result",
       "saveImage": "Image",
       "saved": "Saved",
       "copy": "Copy",
-      "imageHeading": "🎡 Today's pick",
+      "imageHeading": "Today's choice",
       "imageFooter": "toolhub.ai.kr · Menu Roulette"
     },
     "order": {
@@ -51549,6 +51560,13 @@
       "empty": "Press Draw and the order will appear here",
       "rank": "#{rank}",
       "copyLine": "#{rank}: {name}"
+    },
+    "menu": {
+      "title": "Dinner menu roulette",
+      "subtitle": "Choose dinner or lunch and spin. You can also add or remove your own choices.",
+      "quickTitle": "Choose your meal",
+      "edit": "View or edit {count} choices",
+      "itemsTitle": "Edit menu choices"
     }
   },
   "about": {

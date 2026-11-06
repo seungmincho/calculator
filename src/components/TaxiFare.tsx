@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/taxiFare'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Link as LinkIcon, Check, Download } from 'lucide-react'
 import {
   REGION_RATES, REGION_GROUPS, REGION_KEYS, TAXI_TYPES,
@@ -19,57 +20,63 @@ const PEOPLE = [1, 2, 3, 4]
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 
 const seg = (on: boolean) =>
-  `rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  `min-h-11 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
 export default function TaxiFare() {
   const t = useTranslations('taxiFare')
   const searchParams = useSearchParams()
+  const hydrated = useHydrated()
+  const [urlRestored, setUrlRestored] = useState(false)
 
-  const [distance, setDistance] = useState<string>(() => searchParams.get('distance') ?? '5')
-  const [time, setTime] = useState<string>(() => searchParams.get('time') ?? '15')
-  const [timeAuto, setTimeAuto] = useState<boolean>(() => !searchParams.get('time'))
-  const [traffic, setTraffic] = useState<Traffic>(() => {
-    const p = searchParams.get('traffic') as Traffic
-    return TRAFFICS.includes(p) ? p : 'normal'
-  })
-  const [region, setRegion] = useState<RegionKey>(() => {
-    const p = searchParams.get('region') as RegionKey
-    return REGION_KEYS.includes(p) ? p : 'seoul'
-  })
-  const [taxiType, setTaxiType] = useState<TaxiType>(() => {
-    const p = searchParams.get('type') as TaxiType
-    return TAXI_TYPES.includes(p) ? p : 'regular'
-  })
-  const [hour, setHour] = useState<number>(() => {
-    const h = parseInt(searchParams.get('hour') ?? '', 10)
-    return Number.isFinite(h) && h >= 0 && h <= 23 ? h : 14
-  })
-  const [outOfCity, setOutOfCity] = useState<boolean>(() => searchParams.get('out') === '1')
-  const [people, setPeople] = useState<number>(() => {
-    const n = parseInt(searchParams.get('n') ?? '', 10)
-    return PEOPLE.includes(n) ? n : 1
-  })
+  const [distance, setDistance] = useState('5')
+  const [time, setTime] = useState('15')
+  const [timeAuto, setTimeAuto] = useState(true)
+  const [traffic, setTraffic] = useState<Traffic>('normal')
+  const [region, setRegion] = useState<RegionKey>('seoul')
+  const [taxiType, setTaxiType] = useState<TaxiType>('regular')
+  const [hour, setHour] = useState(14)
+  const [outOfCity, setOutOfCity] = useState(false)
+  const [people, setPeople] = useState(1)
   const [copied, setCopied] = useState(false)
   const [saved, setSaved] = useState(false)
 
+  // 정적 HTML과 첫 렌더는 기본값으로 맞춘 뒤, 공유 조건을 한 번만 복원한다.
+  // URL 동기화도 복원 이후 시작해야 공유 링크가 기본값으로 덮이지 않는다.
+  if (hydrated && !urlRestored) {
+    setUrlRestored(true)
+    setDistance(searchParams.get('distance') ?? '5')
+    setTime(searchParams.get('time') ?? '15')
+    setTimeAuto(!searchParams.get('time'))
+    const tr = searchParams.get('traffic') as Traffic
+    const rk = searchParams.get('region') as RegionKey
+    const ty = searchParams.get('type') as TaxiType
+    const h = Number.parseInt(searchParams.get('hour') ?? '', 10)
+    const n = Number.parseInt(searchParams.get('n') ?? '', 10)
+    setTraffic(TRAFFICS.includes(tr) ? tr : 'normal')
+    setRegion(REGION_KEYS.includes(rk) ? rk : 'seoul')
+    setTaxiType(TAXI_TYPES.includes(ty) ? ty : 'regular')
+    setHour(Number.isFinite(h) && h >= 0 && h <= 23 ? h : 14)
+    setPeople(PEOPLE.includes(n) ? n : 1)
+    setOutOfCity(searchParams.get('out') === '1')
+  }
+
   const distanceNum = Math.max(0, parseFloat(distance) || 0)
 
-  // 소요 시간 자동 추정: 사용자가 직접 입력하기 전까지 거리·교통 상황을 따라감
-  useEffect(() => {
-    if (timeAuto) setTime(String(estimateMinutes(distanceNum, traffic)))
-  }, [timeAuto, distanceNum, traffic])
+  // 자동 시간은 입력에서 바로 파생해 중간 요금이 한 번 더 표시되지 않게 한다.
+  const displayedTime = timeAuto ? String(estimateMinutes(distanceNum, traffic)) : time
 
   // URL 동기화 (공유 링크)
   useEffect(() => {
+    if (!urlRestored) return
     const params = new URLSearchParams({
       distance, region, type: taxiType, hour: String(hour), out: outOfCity ? '1' : '0', traffic,
     })
     if (!timeAuto) params.set('time', time)
     if (people > 1) params.set('n', String(people))
-    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}`)
-  }, [distance, time, timeAuto, traffic, region, taxiType, hour, outOfCity, people])
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}${window.location.hash}`)
+  }, [distance, time, timeAuto, traffic, region, taxiType, hour, outOfCity, people, urlRestored])
 
-  const timeNum = Math.max(0, parseFloat(time) || 0)
+  const timeNum = Math.max(0, parseFloat(displayedTime) || 0)
 
   const schedule = useMemo(() => getSchedule(region, taxiType), [region, taxiType])
   const premiumRate = useMemo(() => getSchedule(region, 'deluxe'), [region])
@@ -212,10 +219,10 @@ export default function TaxiFare() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* 입력 */}
-        <div className="lg:col-span-1">
-          <div className="ui-card p-6 space-y-6">
+        <div id="taxi-input" className="min-w-0 lg:col-span-1 scroll-mt-20">
+          <div className="ui-card p-4 sm:p-6 space-y-6">
             <MobileResultLink href="#taxi-result" label={t('result.total')} value={`${fare.total.toLocaleString()}${won}`} more={t('jumpToResult')} />
             <div>
               <label htmlFor="taxi-region" className={labelCls}>{t('region')}</label>
@@ -223,7 +230,7 @@ export default function TaxiFare() {
                 id="taxi-region"
                 value={region}
                 onChange={(e) => setRegion(e.target.value as RegionKey)}
-                className="ui-field px-4 py-3"
+                className="ui-field min-w-0 min-h-11 px-4 py-3 text-base"
               >
                 {REGION_GROUPS.map((g) => (
                   <optgroup key={g.groupKey} label={t(`regionGroups.${g.groupKey}`)}>
@@ -247,7 +254,7 @@ export default function TaxiFare() {
                   placeholder={t('distancePlaceholder')}
                   step="0.1"
                   min="0"
-                  className="ui-field px-4 py-3"
+                  className="ui-field min-w-0 min-h-11 px-4 py-3 text-base"
                 />
                 <span className="text-sm text-muted whitespace-nowrap">km</span>
               </div>
@@ -258,6 +265,7 @@ export default function TaxiFare() {
                   </button>
                 ))}
               </div>
+              <p className="text-xs text-muted mt-2">{t('distanceHint')}</p>
             </div>
 
             <div>
@@ -283,12 +291,12 @@ export default function TaxiFare() {
                 id="taxi-time"
                 type="number"
                 inputMode="numeric"
-                value={time}
+                value={displayedTime}
                 onChange={(e) => { setTime(e.target.value); setTimeAuto(false) }}
                 placeholder={t('timePlaceholder')}
                 step="1"
                 min="0"
-                className="ui-field px-4 py-3"
+                className="ui-field min-w-0 min-h-11 px-4 py-3 text-base"
               />
               <p className="text-xs text-muted mt-1.5">{timeAuto ? t('traffic.autoHint') : t('traffic.manualHint')}</p>
             </div>
@@ -298,11 +306,11 @@ export default function TaxiFare() {
                 <span className="text-sm font-medium text-body">
                   {t('boardingTime')} <span className="text-fg font-semibold tabular-nums">{hh(hour)}{t('hourUnit')}</span>
                 </span>
-                <button type="button" onClick={() => setHour(new Date().getHours())} className="ui-btn-soft text-xs px-2.5 py-1">
+                <button type="button" onClick={() => setHour(new Date().getHours())} className="ui-btn-soft min-h-11 text-xs px-3 py-2">
                   {t('nowButton')}
                 </button>
               </div>
-              <div className="grid grid-cols-8 gap-1" role="radiogroup" aria-label={t('boardingTime')}>
+              <div className="grid grid-cols-4 min-[360px]:grid-cols-6 lg:grid-cols-4 gap-1.5" role="radiogroup" aria-label={t('boardingTime')}>
                 {HOURS.map((h) => {
                   const r = nightRateFor(h, schedule)
                   const on = h === hour
@@ -314,7 +322,7 @@ export default function TaxiFare() {
                       aria-checked={on}
                       onClick={() => setHour(h)}
                       title={r > 0 ? `+${Math.round(r * 100)}%` : undefined}
-                      className={`rounded-lg py-1.5 text-xs tabular-nums leading-tight transition-colors ${
+                      className={`min-h-11 rounded-lg py-2 text-sm tabular-nums leading-tight transition-colors ${
                         on ? 'bg-primary text-white' : r > 0 ? 'bg-primary-soft text-primary' : 'bg-soft text-sub hover:bg-subtle'
                       }`}
                     >
@@ -340,7 +348,7 @@ export default function TaxiFare() {
               </div>
             </div>
 
-            <label className="flex items-start gap-3 cursor-pointer">
+            <label className="flex min-h-11 items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={outOfCity}
@@ -368,10 +376,11 @@ export default function TaxiFare() {
         </div>
 
         {/* 결과 */}
-        <div className="lg:col-span-2 space-y-6">
-          <div id="taxi-result" className="ui-hero p-6 scroll-mt-20">
+        <div id="taxi-result" className="min-w-0 lg:col-span-2 space-y-6 scroll-mt-20">
+          <a href="#taxi-input" className="ui-btn-soft inline-flex min-h-11 items-center px-4 py-2 lg:hidden">{t('editInputs')}</a>
+          <div className="ui-hero p-4 sm:p-6">
             <p className="text-sm text-white/70">{t('result.total')}</p>
-            <p className="text-4xl font-bold tabular-nums mt-1" aria-live="polite">
+            <p className="text-4xl font-bold tabular-nums mt-1 [overflow-wrap:anywhere]" aria-live="polite">
               {fare.total.toLocaleString()}<span className="text-2xl ml-1">{won}</span>
             </p>
             <p className="text-sm text-white/70 mt-2">
@@ -386,7 +395,7 @@ export default function TaxiFare() {
             )}
           </div>
 
-          <div className="ui-card p-6">
+          <div className="ui-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-fg mb-3">{t('result.title')}</h2>
             <dl>
               {([
@@ -396,7 +405,7 @@ export default function TaxiFare() {
                 ...(fare.nightSurcharge > 0 ? [[`${t('result.nightSurcharge')} (${Math.round(fare.nightRate * 100)}%)`, fare.nightSurcharge, true]] : []),
                 ...(fare.outSurcharge > 0 ? [[`${t('result.outSurcharge')} (${Math.round(fare.outRate * 100)}%)`, fare.outSurcharge, true]] : []),
               ] as [string, number, boolean][]).map(([label, v, plus]) => (
-                <div key={label} className="flex justify-between items-center py-3 border-b border-line last:border-0">
+                <div key={label} className="flex flex-wrap justify-between items-center gap-2 py-3 border-b border-line last:border-0">
                   <dt className="text-body">{label}</dt>
                   <dd className={`font-semibold tabular-nums ${plus ? 'text-primary' : 'text-fg'}`}>
                     {plus ? '+' : ''}{v.toLocaleString()} {won}
@@ -408,7 +417,7 @@ export default function TaxiFare() {
           </div>
 
           {/* 더치페이 */}
-          <div className="ui-card p-6">
+          <div className="ui-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-fg mb-3">{t('split.title')}</h2>
             <div className="grid grid-cols-4 gap-1.5 mb-4" role="group" aria-label={t('split.title')}>
               {PEOPLE.map((n) => (
@@ -417,7 +426,7 @@ export default function TaxiFare() {
                 </button>
               ))}
             </div>
-            <div className="flex items-baseline justify-between">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
               <span className="text-body">{t('split.perPerson', { n: people })}</span>
               <span className="text-2xl font-bold text-fg tabular-nums">{split.toLocaleString()}{won}</span>
             </div>
@@ -430,7 +439,7 @@ export default function TaxiFare() {
           </div>
 
           {/* 차종 비교 */}
-          <div className="ui-card p-6">
+          <div className="ui-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-fg">{t('comparison.title')}</h2>
             <p className="text-sm text-muted mt-1 mb-5">{t('comparison.subtitle')}</p>
             <div className="space-y-4">
@@ -439,8 +448,8 @@ export default function TaxiFare() {
                 const pct = maxFare > 0 ? Math.round((f / maxFare) * 100) : 0
                 const on = taxiType === type
                 return (
-                  <button key={type} type="button" onClick={() => setTaxiType(type)} aria-pressed={on} className="block w-full text-left">
-                    <div className="flex justify-between items-center mb-1">
+                  <button key={type} type="button" onClick={() => setTaxiType(type)} aria-pressed={on} className="block min-h-11 w-full text-left">
+                    <div className="flex flex-wrap justify-between items-center gap-2 mb-1">
                       <span className={`text-sm font-medium ${on ? 'text-primary' : 'text-body'}`}>{t(`types.${type}`)}</span>
                       <span className={`text-sm font-bold tabular-nums ${on ? 'text-primary' : 'text-fg'}`}>{f.toLocaleString()}{won}</span>
                     </div>
@@ -455,10 +464,11 @@ export default function TaxiFare() {
           </div>
 
           {/* 지역별 비교 */}
-          <div className="ui-card p-6">
+          <div className="ui-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-fg">{t('regionCompare.title')}</h2>
             <p className="text-sm text-muted mt-1 mb-4">{t('regionCompare.subtitle')}</p>
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto" role="region" aria-label={t('regionCompare.title')} tabIndex={0}>
+            <table className="w-full text-sm whitespace-nowrap">
               <thead>
                 <tr className="text-muted text-left">
                   <th className="font-medium py-2 pl-3">{t('regionCompare.region')}</th>
@@ -478,7 +488,7 @@ export default function TaxiFare() {
                       className={`cursor-pointer border-t border-line tabular-nums ${on ? 'bg-primary-soft text-primary font-semibold' : 'text-body hover:bg-subtle'}`}
                     >
                       <td className="py-2 pl-3">
-                        <button type="button" onClick={() => setRegion(rk)} aria-pressed={on} className="text-left">{t(`regions.${rk}`)}</button>
+                        <button type="button" onClick={() => setRegion(rk)} aria-pressed={on} className="min-h-11 text-left">{t(`regions.${rk}`)}</button>
                       </td>
                       <td className="py-2 text-right">{REGION_RATES[rk].base.toLocaleString()}</td>
                       <td className={`py-2 text-right ${on ? '' : 'text-fg font-medium'}`}>{total.toLocaleString()}{won}</td>
@@ -488,6 +498,7 @@ export default function TaxiFare() {
                 })}
               </tbody>
             </table>
+            </div>
           </div>
 
           {/* 지역 요금 기준 */}

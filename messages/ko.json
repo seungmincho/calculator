@@ -3895,7 +3895,7 @@
       "morseCode": "모스부호 변환",
       "reactionTest": "반응속도 테스트",
       "residentNumber": "주민번호 검증",
-      "shippingCalc": "배송비 계산",
+      "shippingCalc": "택배비 계산기",
       "parkingFee": "주차 요금 계산",
       "bloodPressure": "혈압 기록",
       "colorBlindTest": "색약 테스트",
@@ -7657,11 +7657,11 @@
       },
       "textToSpeech": {
         "title": "텍스트 읽어주기",
-        "description": "텍스트를 음성으로 읽어줍니다"
+        "description": "글 붙여넣기, 문장별 음성 재생과 속도 조절"
       },
       "taxiFare": {
         "title": "택시 요금 계산기",
-        "description": "거리/시간 기반 택시 요금 계산"
+        "description": "거리별 예상 택시비와 심야·시외할증 계산"
       },
       "installmentCalc": {
         "title": "카드 할부 계산기",
@@ -7684,8 +7684,8 @@
         "description": "주민등록번호 형식 유효성 검증"
       },
       "shippingCalc": {
-        "title": "배송비 계산기",
-        "description": "택배 배송비 견적 계산"
+        "title": "택배비 계산기",
+        "description": "무게·크기로 우체국·일반·편의점 택배비 비교"
       },
       "parkingFee": {
         "title": "주차 요금 계산기",
@@ -8137,7 +8137,7 @@
       },
       "menuRoulette": {
         "title": "메뉴 추천 룰렛",
-        "description": "오늘 뭐 먹지? 점심·저녁 메뉴를 룰렛 돌려서 결정하세요"
+        "description": "저녁·점심 메뉴 돌림판, 후보 직접 추가·편집"
       },
       "csVisualizer": {
         "title": "CS 개념 시각화",
@@ -16386,7 +16386,7 @@
       "paste": "붙여넣기",
       "tidy": "줄바꿈·공백 정리",
       "clear": "지우기",
-      "pasteFailed": "클립보드를 읽을 수 없습니다. 입력란에 Ctrl+V(⌘+V)로 붙여넣어 주세요."
+      "pasteFailed": "클립보드를 읽을 수 없습니다. 입력란을 길게 눌러 붙여넣거나, 키보드에서 Ctrl+V(⌘+V)를 눌러 주세요."
     },
     "stats": {
       "charsNoSpace": "공백 제외",
@@ -16417,15 +16417,18 @@
     "reader": {
       "hint": "읽는 문장과 단어가 표시됩니다. 문장을 누르면 그 문장부터 읽습니다.",
       "clickHint": "이 문장부터 읽기",
-      "empty": "텍스트를 입력하면 여기에 문장 단위로 표시됩니다."
+      "empty": "텍스트를 입력하면 여기에 문장 단위로 표시됩니다.",
+      "title": "읽는 문장",
+      "controls": "재생·정지 버튼으로"
     },
     "shortcuts": "단축키: Space 재생/일시정지(입력 중 제외) · Esc 정지 · 일시정지 후 계속하면 그 문장 처음부터 다시 읽습니다.",
     "share": {
       "title": "링크로 공유",
       "copy": "텍스트 링크 복사",
       "copied": "복사했습니다",
-      "hint": "링크를 열면 같은 텍스트와 속도로 바로 들을 수 있습니다.",
-      "tooLong": "링크 공유는 {max}자까지만 가능합니다. 텍스트를 줄여 주세요."
+      "hint": "같은 글과 속도를 공유합니다. 링크를 연 사람이 재생을 눌러야 소리가 나옵니다.",
+      "tooLong": "링크 공유는 {max}자까지만 가능합니다. 텍스트를 줄여 주세요.",
+      "copyFailed": "링크를 복사하지 못했습니다. 브라우저의 클립보드 권한을 확인한 뒤 다시 눌러 주세요."
     },
     "recording": {
       "title": "MP3로 저장할 수 있나요?",
@@ -16438,7 +16441,7 @@
       ]
     },
     "title": "텍스트 읽어주기 (TTS)",
-    "description": "한국어 텍스트를 문장 단위로 끊김 없이 읽어줍니다. 읽는 문장 하이라이트, 문장 클릭 재생, 속도 조절로 학습·발표 연습·나레이션 원고 확인에 쓰세요.",
+    "description": "글을 붙여넣고 바로 들어보세요. 긴 글 문장별 재생, 읽는 부분 표시, 속도 조절을 지원합니다.",
     "textInput": "읽을 텍스트",
     "textPlaceholder": "읽어줄 텍스트를 입력하세요...",
     "voice": "음성 선택",
@@ -16545,7 +16548,9 @@
       "diff": "선택 지역 대비"
     },
     "title": "택시 요금 계산기",
-    "description": "지역·거리·시간·탑승 시각을 입력하면 심야할증·시외할증까지 반영한 예상 택시 요금을 계산합니다.",
+    "description": "지역과 이동거리로 예상 택시비를 확인하세요. 탑승 시각과 시외 이동 여부에 따라 할증을 반영합니다.",
+    "distanceHint": "거리를 모르면 지도 앱의 자동차 길찾기에서 이동거리(km)를 확인하세요.",
+    "editInputs": "입력 조건 수정",
     "distance": "이동 거리 (km)",
     "distancePlaceholder": "거리 입력",
     "time": "예상 소요 시간 (분)",
@@ -17448,7 +17453,13 @@
       "sources": "출처:"
     },
     "title": "택배비 계산기",
-    "description": "2026년 최신 요금 기반 택배사·편의점택배 배송비 비교",
+    "description": "무게와 상자 크기로 택배비를 비교하세요. 접수 방법과 받는 곳도 함께 확인할 수 있어요.",
+    "editInputs": "무게·크기 수정",
+    "noRates": {
+      "title": "비교 가능한 택배 요금이 없어요",
+      "short": "조건 확인",
+      "description": "무게·크기 제한이나 배송 지역 때문에 요금을 제공하는 업체가 없습니다. 입력값을 확인하거나 택배사에 별도 문의하세요."
+    },
     "weight": "무게 (kg)",
     "weightPlaceholder": "무게 입력",
     "width": "가로 (cm)",
@@ -51527,13 +51538,13 @@
       "history": "뽑기 기록 ({count})",
       "resultAnnounce": "결과: {result}",
       "wheelLabel": "돌림판: {items}",
-      "spin": "🎡 돌리기!",
+      "spin": "돌리기",
       "spinning": "돌아가는 중...",
       "result": "결과",
       "saveImage": "이미지",
       "saved": "저장됨",
       "copy": "복사",
-      "imageHeading": "🎡 오늘의 선택",
+      "imageHeading": "오늘의 선택",
       "imageFooter": "toolhub.ai.kr · 메뉴 룰렛"
     },
     "order": {
@@ -51550,6 +51561,13 @@
       "empty": "뽑기를 누르면 여기에 순서가 나와요",
       "rank": "{rank}위",
       "copyLine": "{rank}위: {name}"
+    },
+    "menu": {
+      "title": "저녁메뉴 추천 룰렛",
+      "subtitle": "저녁·점심 메뉴를 골라 바로 돌려보세요. 후보를 직접 추가하거나 뺄 수도 있어요.",
+      "quickTitle": "어떤 메뉴를 고를까요?",
+      "edit": "후보 {count}개 확인·수정",
+      "itemsTitle": "메뉴 후보 편집"
     }
   },
   "about": {

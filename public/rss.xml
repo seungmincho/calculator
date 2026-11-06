@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Wed, 04 Nov 2026 09:19:23 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 07:26:29 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[에버랜드 방문 추천]]></title>
@@ -27,6 +27,34 @@
     <guid>https://toolhub.ai.kr/lotte-world/</guid>
     <description><![CDATA[롯데월드 날씨와 예상 혼잡도로 방문 날짜를 비교하고 안내도에서 놀이기구를 찾아보세요.]]></description>
     <pubDate>Tue, 03 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[메뉴 추천 룰렛]]></title>
+    <link>https://toolhub.ai.kr/menu-roulette/</link>
+    <guid>https://toolhub.ai.kr/menu-roulette/</guid>
+    <description><![CDATA[저녁·점심 메뉴 돌림판, 후보 직접 추가·편집]]></description>
+    <pubDate>Sat, 24 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[택배비 계산기]]></title>
+    <link>https://toolhub.ai.kr/shipping-calculator/</link>
+    <guid>https://toolhub.ai.kr/shipping-calculator/</guid>
+    <description><![CDATA[무게·크기로 우체국·일반·편의점 택배비 비교]]></description>
+    <pubDate>Sat, 24 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[택시 요금 계산]]></title>
+    <link>https://toolhub.ai.kr/taxi-fare/</link>
+    <guid>https://toolhub.ai.kr/taxi-fare/</guid>
+    <description><![CDATA[거리별 예상 택시비와 심야·시외할증 계산]]></description>
+    <pubDate>Sat, 24 Oct 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[텍스트 읽어주기]]></title>
+    <link>https://toolhub.ai.kr/text-to-speech/</link>
+    <guid>https://toolhub.ai.kr/text-to-speech/</guid>
+    <description><![CDATA[글 붙여넣기, 문장별 음성 재생과 속도 조절]]></description>
+    <pubDate>Sat, 24 Oct 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
     <title><![CDATA[고향사랑기부금 계산기]]></title>
@@ -1282,13 +1310,6 @@
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
-    <title><![CDATA[배송비 계산]]></title>
-    <link>https://toolhub.ai.kr/shipping-calculator/</link>
-    <guid>https://toolhub.ai.kr/shipping-calculator/</guid>
-    <description><![CDATA[택배 배송비 견적 계산]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
     <title><![CDATA[서명 생성기]]></title>
     <link>https://toolhub.ai.kr/signature-generator/</link>
     <guid>https://toolhub.ai.kr/signature-generator/</guid>
@@ -1380,13 +1401,6 @@
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
-    <title><![CDATA[택시 요금 계산]]></title>
-    <link>https://toolhub.ai.kr/taxi-fare/</link>
-    <guid>https://toolhub.ai.kr/taxi-fare/</guid>
-    <description><![CDATA[거리/시간 기반 택시 요금 계산]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
     <title><![CDATA[테트리스]]></title>
     <link>https://toolhub.ai.kr/tetris/</link>
     <guid>https://toolhub.ai.kr/tetris/</guid>
@@ -1398,13 +1412,6 @@
     <link>https://toolhub.ai.kr/text-converter/</link>
     <guid>https://toolhub.ai.kr/text-converter/</guid>
     <description><![CDATA[대소문자, camelCase, snake_case 변환]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[텍스트 읽어주기]]></title>
-    <link>https://toolhub.ai.kr/text-to-speech/</link>
-    <guid>https://toolhub.ai.kr/text-to-speech/</guid>
-    <description><![CDATA[텍스트를 음성으로 읽어줍니다]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -1622,13 +1629,6 @@
     <link>https://toolhub.ai.kr/cs-visualizer/</link>
     <guid>https://toolhub.ai.kr/cs-visualizer/</guid>
     <description><![CDATA[Git, CPU, 네트워크, ML 등 10개 CS 핵심 개념을 인터랙티브 시각화로 학습]]></description>
-    <pubDate>Fri, 27 Mar 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[메뉴 추천 룰렛]]></title>
-    <link>https://toolhub.ai.kr/menu-roulette/</link>
-    <guid>https://toolhub.ai.kr/menu-roulette/</guid>
-    <description><![CDATA[오늘 뭐 먹지? 점심·저녁 메뉴를 룰렛 돌려서 결정하세요]]></description>
     <pubDate>Fri, 27 Mar 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

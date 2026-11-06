@@ -6,10 +6,12 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = "저녁메뉴 추천 룰렛 - 점심·저녁 메뉴 돌림판 | 툴허브"
+const DESC = "오늘 뭐 먹지? 저녁·점심 메뉴를 고르고 바로 돌려보세요. 한식·중식·일식 등 메뉴 모음, 후보 직접 추가·삭제, 결과 복사와 이미지 저장을 무료로 이용할 수 있습니다."
+
 export const metadata: Metadata = {
-  title: '저녁메뉴 추천 룰렛 · 돌림판 - 오늘 뭐 먹지? | 툴허브',
-  description:
-    '저녁·점심 메뉴 고민 끝! 돌림판을 돌리면 한식·중식·일식·양식·분식·치킨 중 오늘의 메뉴를 랜덤 추천. 메뉴 직접 추가, 결과 공유까지 무료.',
+  title: TITLE,
+  description: DESC,
   keywords: [
     '메뉴 추천 룰렛',
     '오늘의 메뉴 추천 룰렛',
@@ -29,9 +31,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: '툴허브' }],
   openGraph: {
-    title: '메뉴 추천 룰렛 - 오늘 뭐 먹지? | 툴허브',
-    description:
-      '오늘 점심 저녁 메뉴 고민 끝! 메뉴 추천 룰렛으로 랜덤하게 오늘의 메뉴를 결정하세요.',
+    title: TITLE,
+    description: DESC,
     type: 'website',
     url: 'https://toolhub.ai.kr/menu-roulette/',
     siteName: '툴허브',
@@ -47,8 +48,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '메뉴 추천 룰렛 - 오늘 뭐 먹지?',
-    description: '점심·저녁 메뉴 고민을 룰렛으로 단번에 해결하세요.',
+    title: TITLE,
+    description: DESC,
     images: ['https://toolhub.ai.kr/og/menu-roulette.png'],
   },
   alternates: {
@@ -71,9 +72,8 @@ export default function MenuRoulettePage() {
   const webAppJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: '메뉴 추천 룰렛',
-    description:
-      '오늘의 점심·저녁 메뉴를 룰렛으로 랜덤하게 결정하는 무료 온라인 도구. 한식, 중식, 일식, 양식, 분식 등 원하는 메뉴를 등록하고 돌려보세요.',
+    name: '저녁메뉴 추천 룰렛',
+    description: DESC,
     url: 'https://toolhub.ai.kr/menu-roulette/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -81,7 +81,7 @@ export default function MenuRoulettePage() {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     featureList: [
       '메뉴 항목 자유 추가/삭제',
-      '저녁·점심·한식·중식 등 10가지 메뉴 프리셋',
+      '저녁·점심·한식·중식 등 9가지 메뉴 프리셋',
       '회전 애니메이션 룰렛',
       '결과 이미지 저장·복사, 메뉴 목록 링크 공유',
       '모바일·PC 모두 지원',
@@ -111,7 +111,7 @@ export default function MenuRoulettePage() {
         '@type': 'HowToStep',
         position: 3,
         name: '룰렛 돌리기',
-        text: '룰렛 아래 "돌리기!" 버튼을 누르면 룰렛이 회전하기 시작합니다.',
+        text: '화면의 "돌리기" 버튼을 누르면 룰렛이 회전하기 시작합니다.',
       },
       {
         '@type': 'HowToStep',
@@ -152,13 +152,12 @@ export default function MenuRoulettePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <div className="mb-6"><DecisionToolsBar current="/menu-roulette" /></div>
-              {/* H1·부제는 /menu-picker(상황별 메뉴 추천)와 목적이 겹치지 않게 '직접 만드는 후보 룰렛'으로 */}
+              {/* 검색 제목과 H1을 맞추고, 직접 후보를 편집하는 흐름을 설명한다. */}
               <DecisionTools
                 initialTab="roulette"
                 single
                 defaultPreset="저녁메뉴"
-                title="직접 만드는 메뉴 룰렛"
-                subtitle="먹고 싶은 후보를 직접 적거나 프리셋으로 채우고, 돌림판을 돌려 하나를 고르세요"
+                menuMode
               />
               <ToolFaq items={faq} />
               <div className="mt-8">
@@ -173,7 +172,7 @@ export default function MenuRoulettePage() {
         <div className="space-y-8">
 
           {/* 메뉴 추천 룰렛이란? */}
-          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+          <div className="ui-card p-4 sm:p-6 space-y-4">
             <h2 className="text-xl font-bold text-fg">
               메뉴 추천 룰렛이란?
             </h2>
@@ -182,8 +181,8 @@ export default function MenuRoulettePage() {
               원하는 음식 목록을 입력하고 룰렛을 돌리면 무작위로 오늘의 메뉴가 선택됩니다.
             </p>
             <p className="text-body leading-relaxed">
-              "오늘 뭐 먹지?"라는 질문으로 시작되는 오랜 고민을 단 몇 초 만에 해결해 드립니다.
-              저녁메뉴·점심메뉴·한식·중식·일식 등 10가지 프리셋을 제공하며, 자주 가는 식당이나 좋아하는 메뉴를 직접 추가해
+              &quot;오늘 뭐 먹지?&quot;라는 질문으로 시작되는 오랜 고민을 단 몇 초 만에 해결해 드립니다.
+              저녁메뉴·점심메뉴·한식·중식·일식 등 9가지 프리셋을 제공하며, 자주 가는 식당이나 좋아하는 메뉴를 직접 추가해
               나만의 맞춤 룰렛을 만들 수 있습니다.
             </p>
             <p className="text-body leading-relaxed">
@@ -197,42 +196,42 @@ export default function MenuRoulettePage() {
           </div>
 
           {/* 이런 때 사용하세요 */}
-          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+          <div className="ui-card p-4 sm:p-6 space-y-4">
             <h2 className="text-xl font-bold text-fg">
               이런 때 사용하세요
             </h2>
             <ul className="space-y-3 text-body">
               <li className="flex gap-3">
-                <span className="text-orange-500 font-bold shrink-0">직장인 점심</span>
+                <span className="text-body font-bold shrink-0">직장인 점심</span>
                 <span>팀원들과 점심 메뉴를 정할 때 의견 충돌 없이 룰렛으로 공정하게 결정하세요.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-orange-500 font-bold shrink-0">가족 저녁</span>
+                <span className="text-body font-bold shrink-0">가족 저녁</span>
                 <span>온 가족이 원하는 메뉴를 적어 넣고 돌리면 저녁 메뉴 고민 끝!</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-orange-500 font-bold shrink-0">친구 모임</span>
+                <span className="text-body font-bold shrink-0">친구 모임</span>
                 <span>약속 장소 근처 맛집 목록을 입력하고 룰렛으로 식당을 결정해 보세요.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-orange-500 font-bold shrink-0">혼밥</span>
+                <span className="text-body font-bold shrink-0">혼밥</span>
                 <span>혼자 먹을 때도 결정 장애를 룰렛으로 해결! 새로운 메뉴 도전의 계기가 됩니다.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-orange-500 font-bold shrink-0">배달 주문</span>
+                <span className="text-body font-bold shrink-0">배달 주문</span>
                 <span>배달앱에서 즐겨찾는 메뉴를 등록해 두고 그날그날 룰렛으로 선택하세요.</span>
               </li>
             </ul>
           </div>
 
           {/* 인기 카테고리별 메뉴 */}
-          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+          <div className="ui-card p-4 sm:p-6 space-y-4">
             <h2 className="text-xl font-bold text-fg">
               인기 카테고리별 메뉴
             </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍚 한식</h3>
+                <h3 className="font-semibold text-fg mb-2">🍚 한식</h3>
                 <ul className="text-sm text-sub space-y-1">
                   <li>비빔밥, 김치찌개, 된장찌개</li>
                   <li>불고기, 삼겹살, 냉면</li>
@@ -240,7 +239,7 @@ export default function MenuRoulettePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🥡 중식</h3>
+                <h3 className="font-semibold text-fg mb-2">🥡 중식</h3>
                 <ul className="text-sm text-sub space-y-1">
                   <li>짜장면, 짬뽕, 탕수육</li>
                   <li>볶음밥, 마파두부, 깐풍기</li>
@@ -248,7 +247,7 @@ export default function MenuRoulettePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍱 일식</h3>
+                <h3 className="font-semibold text-fg mb-2">🍱 일식</h3>
                 <ul className="text-sm text-sub space-y-1">
                   <li>초밥, 라멘, 우동</li>
                   <li>돈카츠, 규동, 오야코동</li>
@@ -256,7 +255,7 @@ export default function MenuRoulettePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍕 양식</h3>
+                <h3 className="font-semibold text-fg mb-2">🍕 양식</h3>
                 <ul className="text-sm text-sub space-y-1">
                   <li>피자, 파스타, 스테이크</li>
                   <li>버거, 리조또, 샐러드</li>
@@ -264,7 +263,7 @@ export default function MenuRoulettePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🍜 분식</h3>
+                <h3 className="font-semibold text-fg mb-2">🍜 분식</h3>
                 <ul className="text-sm text-sub space-y-1">
                   <li>떡볶이, 순대, 튀김</li>
                   <li>라면, 김밥, 어묵</li>
@@ -272,7 +271,7 @@ export default function MenuRoulettePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">🌮 기타</h3>
+                <h3 className="font-semibold text-fg mb-2">🌮 기타</h3>
                 <ul className="text-sm text-sub space-y-1">
                   <li>태국음식, 베트남쌀국수</li>
                   <li>인도카레, 멕시칸, 케밥</li>
@@ -283,29 +282,29 @@ export default function MenuRoulettePage() {
           </div>
 
           {/* 사용 방법 */}
-          <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+          <div className="ui-card p-4 sm:p-6 space-y-4">
             <h2 className="text-xl font-bold text-fg">
               사용 방법
             </h2>
             <ol className="space-y-3 text-body">
               <li className="flex gap-3">
-                <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">1</span>
                 <span><strong className="text-fg">메뉴 목록 확인:</strong> 처음 채워진 저녁메뉴 프리셋(삼겹살, 치킨, 피자 등)을 확인하거나, 다른 프리셋을 고르거나, 원하는 메뉴를 직접 입력해 추가하세요.</span>
               </li>
               <li className="flex gap-3">
-                <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">2</span>
                 <span><strong className="text-fg">메뉴 커스터마이즈:</strong> 먹고 싶지 않은 메뉴는 삭제하고, 새 메뉴를 추가해 나만의 룰렛을 완성하세요. 최대 12개까지 등록 가능합니다.</span>
               </li>
               <li className="flex gap-3">
-                <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                <span><strong className="text-fg">룰렛 돌리기:</strong> 룰렛 아래 &quot;돌리기!&quot; 버튼을 누르면 룰렛이 회전하기 시작합니다.</span>
+                <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                <span><strong className="text-fg">룰렛 돌리기:</strong> 화면의 &quot;돌리기&quot; 버튼을 누르면 룰렛이 회전하기 시작합니다.</span>
               </li>
               <li className="flex gap-3">
-                <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">4</span>
                 <span><strong className="text-fg">결과 확인:</strong> 룰렛이 멈추면 오늘의 메뉴가 결정됩니다! 결과 화면에 선택된 메뉴가 크게 표시됩니다.</span>
               </li>
               <li className="flex gap-3">
-                <span className="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
+                <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">5</span>
                 <span><strong className="text-fg">결과 공유:</strong> 주소창 링크에 현재 메뉴 목록이 담겨 있으니 그대로 복사해 보내면 같은 룰렛을 돌릴 수 있습니다. 결과는 이미지로 저장할 수도 있어요.</span>
               </li>
             </ol>

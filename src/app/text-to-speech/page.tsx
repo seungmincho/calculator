@@ -5,17 +5,24 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import textToSpeechMessages from '../../../messages/generated/ko/ns/textToSpeech.json'
 
+const TITLE = "텍스트 읽어주기 (TTS) - 문장 읽기·속도 조절 | 툴허브"
+const DESC = "텍스트를 붙여넣고 한국어 음성으로 들어보세요. 긴 글 문장별 재생, 읽는 부분 표시, 속도 조절, 일시정지와 링크 공유를 지원합니다. 설치·가입 없이 무료로 이용하세요."
+
 export const metadata: Metadata = {
-  title: '텍스트 읽어주기 (TTS) - 긴 글 한국어 음성 | 툴허브',
-  description: '텍스트 읽어주기 - 한국어 긴 글도 문장 단위로 끊김 없이 읽어줍니다. 읽는 문장 하이라이트, 문장 클릭 재생, 느리게 학습 속도, 링크 공유. 설치·가입 없이 무료.',
+  title: TITLE,
+  description: DESC,
   keywords: '텍스트 읽어주기, TTS, 한국어 TTS, text to speech, 음성 변환, 텍스트 음성, 글 읽어주는 사이트, 나레이션',
-  openGraph: { title: '텍스트 읽어주기 (TTS) | 툴허브', description: '텍스트를 음성으로 변환', url: 'https://toolhub.ai.kr/text-to-speech/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/text-to-speech.png', width: 1200, height: 630, alt: '텍스트 읽어주기 (TTS)' }] },
-  twitter: { card: 'summary_large_image', title: '텍스트 읽어주기 | 툴허브', description: '텍스트를 음성으로 변환', images: ['https://toolhub.ai.kr/og/text-to-speech.png'] },
+  openGraph: {
+    title: TITLE,
+    description: DESC,
+    url: 'https://toolhub.ai.kr/text-to-speech/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/text-to-speech.png', width: 1200, height: 630, alt: '텍스트 읽어주기 (TTS)' }],
+  },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESC, images: ['https://toolhub.ai.kr/og/text-to-speech.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/text-to-speech/' },
 }
 
 export default function TextToSpeechPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '텍스트 읽어주기 (TTS)', description: '텍스트를 음성으로 변환', url: 'https://toolhub.ai.kr/text-to-speech/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['긴 글 문장 단위 연속 재생', '읽는 문장·단어 하이라이트', '문장 클릭 재생', '속도 프리셋(학습 0.8배)', '한국어 음성 우선·선택 기억', '단축키(Space/Esc)', '링크 공유'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '텍스트 읽어주기 (TTS)', description: DESC, url: 'https://toolhub.ai.kr/text-to-speech/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['긴 글 문장 단위 연속 재생', '읽는 문장·단어 하이라이트', '문장 클릭 재생', '속도 프리셋(학습 0.8배)', '한국어 음성 우선·선택 기억', '단축키(Space/Esc)', '링크 공유'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -46,7 +53,7 @@ export default function TextToSpeechPage() {
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>외국어 발음 확인:</strong> 영어나 일본어 텍스트를 붙여넣고 원어민 음성으로 발음을 들어보면 언어 학습 효과를 높일 수 있습니다.</li>
             <li><strong>문서 청취(오디오북):</strong> 긴 글이나 보고서를 음성으로 들으면 눈의 피로를 줄이면서도 내용을 파악할 수 있어 멀티태스킹이 가능합니다.</li>
-            <li><strong>속도 조절 활용:</strong> 발음 학습 시에는 '느리게(0.8배)'로 천천히, 문서를 빠르게 청취할 때는 1.5~2배속으로 설정하면 효율적입니다.</li>
+            <li><strong>속도 조절 활용:</strong> 발음 학습 시에는 &apos;느리게(0.8배)&apos;로 천천히, 문서를 빠르게 청취할 때는 1.5~2배속으로 설정하면 효율적입니다.</li>
             <li><strong>발표·나레이션 원고 점검:</strong> 원고를 넣고 예상 재생 시간과 문장 길이를 확인하면 말하기 어려운 긴 문장을 미리 고칠 수 있습니다.</li>
             <li><strong>접근성 활용:</strong> 시각적 불편이 있거나 읽기가 어려운 분들을 위해 웹 콘텐츠를 음성으로 전달할 때 TTS 기능을 활용하면 접근성이 크게 향상됩니다.</li>
           </ul>

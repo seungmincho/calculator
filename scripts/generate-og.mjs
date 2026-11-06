@@ -47,8 +47,9 @@ for (const file of pages('src/app')) {
   const og = src.match(/openGraph:\s*\{[^{}]*\}/)?.[0] ?? src.match(/openGraph:\s*\{[\s\S]*?\n\s{2,4}\}/)?.[0]
   if (!og && !decision) continue
   const konst = k => src.match(new RegExp(`const ${k}\\s*=\\s*(['"\`])((?:(?!\\1).)*)\\1`))?.[2]
-  const title = (decision?.title ?? str(og, 'title') ?? str(src, 'title') ?? konst('TITLE'))?.split(/\s[|｜]\s/)[0].split(' - ')[0].trim()
-  const desc = decision?.description ?? str(og, 'description') ?? str(src, 'description') ?? konst('DESC') ?? ''
+  // Metadata constants take priority over unrelated FAQ/HowTo strings elsewhere in the page.
+  const title = (decision?.title ?? str(og, 'title') ?? konst('TITLE') ?? str(src, 'title'))?.split(/\s[|｜]\s/)[0].split(' - ')[0].trim()
+  const desc = decision?.description ?? str(og, 'description') ?? konst('DESC') ?? str(src, 'description') ?? ''
   if (!title) continue
   const Icon = toolIcons[`/${rel}`] ?? toolIcons[`/${rel}/`] ?? categoryIcons.tools
   const icon = renderToStaticMarkup(createElement(Icon, { size: 160, color: '#ffffff', strokeWidth: 1.75 }))

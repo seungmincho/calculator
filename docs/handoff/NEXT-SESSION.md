@@ -35,9 +35,25 @@
 - 통합된 npm lockfile의 Windows 전용 직접 의존성 잔여 항목을 정리했고 기존 패키지 버전은 바꾸지 않았다. 15:10:34 KST 실제 Cron 수집 성공(57개 시설·대기시간 34개), 15:12 운영 화면의 실제 데이터와 모바일/데스크톱·검색·지도·영문 검증 통과. 첫 기록 시점이므로 추이는 다음 정상 수집 이후 표시된다.
 - 상세: [로컬 배포 검증](../verify/2026-11-04-everland-local-deploy.md). 운영 소스에는 원격 main에 없는 기존 로컬 개선도 포함된다.
 
+## 2026-10-27 별냥 링크 운영 배포 완료
+
+- 이전 세션은 footer d1c87262 push만 했고 배포는 하지 않았다. 이번 사용자 요청으로 기존 운영 소스를 유지해 전체 tsc/build 후 Wrangler Pages salary-calculator/main에 직접 배포했다.
+- 배포: https://bc6004c7.salary-calculator-d6q.pages.dev . 운영 toolhub.ai.kr 홈/TTS/메뉴의 별냥 링크와 sw.js v4.35.2를 확인했다. 기존 TTS/메뉴 개선도 유지한다.
+- 기존 운영 커밋 4개와 origin/main을 merge하고 캐시 변경까지 f3c8c31c로 push했다. 기존 미커밋 기능/문서는 보존했다. 원격만 빌드하면 이 로컬 개선이 빠질 수 있다. 아래 이전 기록의 배포 미수행/원격 통합 대기는 해결됐다.
+
+## 2026-10-27 별냥 상호 소개 링크 (별도 커밋·푸시 완료)
+
+- 사용자 요청으로 공통 푸터의 별냥 소개와 한·영 번역을 별도 작업 폴더에서 추가하고, `d1c87262`를 origin/main에 푸시했다. 변경 파일 5개만 포함했다.
+- `C:\projects\salary-calculator\.claude\worktrees\codex-byeolnyang-footer`에서 확인할 수 있다. 번역 생성·일치, namespace audit 미해결 0, Footer ESLint·범위 타입 검사, 개발 서버와 모바일 링크 표시를 확인했다. 전체 빌드·직접 배포는 실행하지 않았다.
+- 원래 main의 미푸시 4개 커밋과 기존 미커밋 작업은 보존했다. 로컬 main과 새 origin/main이 갈라져 있으므로 다음 툴허브 작업 때 기존 변경을 보존한 뒤 원격 변경을 통합해야 한다. force push하지 않는다.
+- 기존 미추적 `.github/workflows/deploy.yml`은 이번 푸시에 포함하지 않았다. 푸시 후 GitHub 배포 check/status가 아직 없어서 운영 반영은 미확인이다.
+- 드라이브 간 경로 오류가 났던 `D:\projects\saju-tarot\.claude\worktrees\toolhub-crosslink` 검증 폴더도 보존했다. 자동 승인 검토가 force 삭제를 거절하여 제거하지 않았다.
+
 전체 흐름·백로그·완료 로그는 [IMPROVEMENT-LOOP.md](IMPROVEMENT-LOOP.md).
 
 ## 1. 상태
+- **2026-10-25 TTS·메뉴 룰렛 검색 표기/모바일 개선 (미배포·미커밋)**: 재생·돌리기를 첫 화면에 배치, 320px 룰렛 넘침 해소, 회전이 끝나지 않는 감속 로직을 4.2초 애니메이션으로 수정. 후보 변경 잠금·결과 초기화, TTS 클립보드 실패·저장값·키보드 재생 처리, 제목·H1·OG 정렬. 브라우저 22/22(실제 한국어 음성 이벤트 포함)·전체 tsc·변경 lint·TTS 유틸·번역 검사 통과. [검증 보고서](../verify/2026-10-25-tts-menu-report.md). 빌드·배포는 미실행. 다음 후보는 색약 테스트이며 아직 착수하지 않음.
+- **2026-10-25 택시·택배 검색 표기/모바일 개선 (미배포·미커밋)**: 메타데이터·OG·메뉴 명칭 정리, 44px 입력/버튼·치수 한 줄 입력·결과→입력 이동·배송 제한 안내, 공유 URL hydration 수정. 브라우저 18/18·전체 tsc·변경 파일 lint·계산 회귀·번역 검사 통과. [검증 보고서](../verify/2026-10-25-taxi-shipping-report.md). `npm run build`는 사용자 요청 전 실행하지 않음. 사용자 기존 package.json/lock 및 .claude/.github 변경은 보존.
 - **배치 17~34 배포·푸시 완료(2026-10-13)** — 운영 83828c1f, origin b8f07b5. 사용자가 빌드 후 wrangler:deploy 가 업로드 중 끊김(커밋 메모리 한도) → 여유 3GB 확보 뒤 node22 로 업로드만 다시 해서 성공. curl 로 /about/·/terms/·A* 가이드 본문·SW v4.35.0 확인.
 - 배치33(SEO 정적 감사): 빌드본 확인 결과 check-static-html 문제 0(팁 상세 noindex 400p 제외), 감사 전후 — 알고리즘 본문 평균 1,240→2,286자, 근접 중복 1,566→105쌍(연봉표 15p만 남음), 얇은 페이지 9→4. 감사 재실행: `node scripts/audit-seo-static.cjs out <json>`(3분). /tips/ HTML 이 582KB(팁 400개 + RSC) — 무거우면 첫 50개만 렌더하고 나머지는 더보기.
 - 배치34: /about/·/terms/ 신규, 개인정보처리방침을 실제 저장 항목에 맞춤. 운영 주체(개인/사업자) 이름은 적지 않음 — 사용자가 정하면 terms·about 에 추가.

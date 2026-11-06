@@ -3,8 +3,10 @@
 import MobileResultLink from '@/components/MobileResultLink'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import '@/lib/i18n/ns/shippingCalc'
-import { Truck, Calculator, Copy, Check, RotateCcw, BookOpen, Save, Store } from 'lucide-react'
+import { Copy, Check, RotateCcw, Save } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from './CalculationHistory'
@@ -31,6 +33,9 @@ function fmtPrice(v: number | null, unit: string): string {
 
 export default function ShippingCalc() {
   const t = useTranslations('shippingCalc')
+  const searchParams = useSearchParams()
+  const hydrated = useHydrated()
+  const [urlRestored, setUrlRestored] = useState(false)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('shipping')
   const [showSaveButton, setShowSaveButton] = useState(false)
@@ -41,6 +46,18 @@ export default function ShippingCalc() {
   const [depth, setDepth] = useState<string>('15')
   const [destination, setDestination] = useState<DestinationType>('mainland')
   const [carrierCategory, setCarrierCategory] = useState<CarrierCategoryType>('standard')
+
+  // 정적 HTML은 기본값으로 맞추고, 공유 URL은 hydration 이후 한 번만 복원한다.
+  if (hydrated && !urlRestored) {
+    setUrlRestored(true)
+    setWeight(searchParams.get('weight') || '2')
+    setWidth(searchParams.get('width') || '30')
+    setHeight(searchParams.get('height') || '20')
+    setDepth(searchParams.get('depth') || '15')
+    const dest = searchParams.get('destination')
+    setDestination(dest === 'jeju' || dest === 'island' ? dest : 'mainland')
+    setCarrierCategory(searchParams.get('category') === 'cvs' ? 'cvs' : 'standard')
+  }
 
   // 요금은 실제 무게 단계와 크기(세 변 합) 단계 중 높은 단계로 정해진다 (findTier)
   // 음수 입력(-5 등)은 0으로 — '-5kg'·음수 세 변 합이 그대로 표시되고 최소 단계 요금이 나오던 문제
@@ -90,30 +107,14 @@ export default function ShippingCalc() {
   const updateURL = useCallback((params: Record<string, string>) => {
     const url = new URL(window.location.href)
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
-    window.history.replaceState({}, '', url.toString())
-  }, [])
-
-  // Read URL params on mount
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const w = params.get('weight')
-    const wi = params.get('width')
-    const h = params.get('height')
-    const d = params.get('depth')
-    const dest = params.get('destination')
-    const cat = params.get('category')
-    if (w) setWeight(w)
-    if (wi) setWidth(wi)
-    if (h) setHeight(h)
-    if (d) setDepth(d)
-    if (dest === 'mainland' || dest === 'jeju' || dest === 'island') setDestination(dest)
-    if (cat === 'standard' || cat === 'cvs') setCarrierCategory(cat)
+    window.history.replaceState(window.history.state, '', url.toString())
   }, [])
 
   // Sync URL when key inputs change
   useEffect(() => {
+    if (!urlRestored) return
     updateURL({ weight, width, height, depth, destination, category: carrierCategory })
-  }, [weight, width, height, depth, destination, carrierCategory, updateURL])
+  }, [weight, width, height, depth, destination, carrierCategory, updateURL, urlRestored])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -142,7 +143,7 @@ export default function ShippingCalc() {
     setDestination('mainland'); setCarrierCategory('standard')
   }
 
-  const inputCls = `${glassInput} px-3 py-2`
+  const inputCls = `${glassInput} min-w-0 min-h-11 px-3 py-2 text-base`
 
   return (
     <div className="space-y-8">
@@ -153,13 +154,16 @@ export default function ShippingCalc() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* ── Input Panel ── */}
-        <div className="lg:col-span-1">
-          <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
-            {bestOverall && (
-              <MobileResultLink href="#shipping-result" label={cd(bestOverall.carrier.id, 'name')} value={won(bestOverall.price!)} more={t('jumpToResult')} />
-            )}
+        <div id="shipping-input" className="min-w-0 lg:col-span-1 scroll-mt-20">
+          <div className={`${glassCard} ${glassInset} p-4 sm:p-6 space-y-6`}>
+            <MobileResultLink
+              href="#shipping-result"
+              label={bestOverall ? `${cd(bestOverall.carrier.id, 'name')} · ${cd(bestOverall.carrier.id, 'service')}` : t('noRates.title')}
+              value={bestOverall ? won(bestOverall.price!) : t('noRates.short')}
+              more={t('jumpToResult')}
+            />
 
             {/* Weight */}
             <div>
@@ -168,7 +172,7 @@ export default function ShippingCalc() {
               </label>
               <input
                 id="sc-weight"
-                type="number" step="0.1" min="0"
+                type="number" inputMode="decimal" step="0.1" min="0"
                 value={weight}
                 onChange={e => { setWeight(e.target.value); setShowSaveButton(true) }}
                 placeholder={t('weightPlaceholder')}
@@ -191,7 +195,7 @@ export default function ShippingCalc() {
                       onClick={() => { setWidth(String(b.w)); setHeight(String(b.h)); setDepth(String(b.d)); setShowSaveButton(true) }}
                       title={`${b.w}×${b.h}×${b.d}cm`}
                       aria-pressed={active}
-                      className={`py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      className={`min-h-11 px-2 py-2 rounded-lg text-sm font-medium transition-colors ${
                         active ? 'bg-primary text-white' : 'bg-soft hover:bg-subtle text-body'
                       }`}
                     >
@@ -200,13 +204,13 @@ export default function ShippingCalc() {
                   )
                 })}
               </div>
-              <div className="space-y-3">
+              <div className="grid grid-cols-3 gap-2">
                 {([['width', t('width')], ['height', t('height')], ['depth', t('depth')]] as [string, string][]).map(([field, label]) => (
-                  <div key={field}>
+                  <div key={field} className="min-w-0">
                     <label htmlFor={`sc-${field}`} className="block text-xs text-muted mb-1">{label}</label>
                     <input
                       id={`sc-${field}`}
-                      type="number" step="0.1" min="0"
+                      type="number" inputMode="decimal" step="0.1" min="0"
                       value={field === 'width' ? width : field === 'height' ? height : depth}
                       onChange={e => {
                         const val = e.target.value
@@ -237,9 +241,9 @@ export default function ShippingCalc() {
                     key={dest}
                     onClick={() => { setDestination(dest); setShowSaveButton(true) }}
                     aria-pressed={destination === dest}
-                    className={`py-2 rounded-lg text-xs font-medium transition-colors ${
+                    className={`min-h-11 px-2 py-2 rounded-lg text-sm font-medium transition-colors ${
                       destination === dest
-                        ? 'bg-primary hover:bg-blue-700 text-white'
+                        ? 'bg-primary text-white'
                         : 'bg-soft hover:bg-track text-body'
                     }`}
                   >
@@ -258,25 +262,23 @@ export default function ShippingCalc() {
                 <button
                   onClick={() => { setCarrierCategory('standard'); setShowSaveButton(true) }}
                   aria-pressed={carrierCategory === 'standard'}
-                  className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
+                  className={`min-h-11 px-2 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${
                     carrierCategory === 'standard'
-                      ? 'bg-primary hover:bg-blue-700 text-white'
+                      ? 'bg-primary text-white'
                       : 'bg-soft hover:bg-track text-body'
                   }`}
                 >
-                  <Truck className="w-3.5 h-3.5" />
                   {t('carrierStandard')}
                 </button>
                 <button
                   onClick={() => { setCarrierCategory('cvs'); setShowSaveButton(true) }}
                   aria-pressed={carrierCategory === 'cvs'}
-                  className={`py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${
+                  className={`min-h-11 px-2 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${
                     carrierCategory === 'cvs'
-                      ? 'bg-primary hover:bg-blue-700 text-white'
+                      ? 'bg-primary text-white'
                       : 'bg-soft hover:bg-track text-body'
                   }`}
                 >
-                  <Store className="w-3.5 h-3.5" />
                   {t('carrierCvs')}
                 </button>
               </div>
@@ -285,7 +287,7 @@ export default function ShippingCalc() {
             {/* Reset */}
             <button
               onClick={handleReset}
-              className="w-full bg-soft hover:bg-track text-body rounded-lg px-4 py-2 font-medium flex items-center justify-center gap-2"
+              className="ui-btn-soft min-h-11 w-full px-4 py-2 flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               {t('reset')}
@@ -294,11 +296,12 @@ export default function ShippingCalc() {
         </div>
 
         {/* ── Results Panel ── */}
-        <div className="lg:col-span-2 space-y-6">
+        <div id="shipping-result" className="min-w-0 lg:col-span-2 space-y-6 scroll-mt-20">
+          <a href="#shipping-input" className="ui-btn-soft inline-flex min-h-11 items-center px-4 py-2 lg:hidden">{t('editInputs')}</a>
 
           {/* Overall Best Pick (일반 + 편의점) */}
           {bestOverall && (
-            <div id="shipping-result" className={`${glassCard} p-6 scroll-mt-20`}>
+            <div className={`${glassCard} p-4 sm:p-6`}>
               <div className="text-sm text-muted">{t('bestOverall.title')}</div>
               <div className="mt-1 flex items-end justify-between gap-3 flex-wrap">
                 <div className="min-w-0">
@@ -336,9 +339,15 @@ export default function ShippingCalc() {
               />
             </div>
           )}
+          {!bestOverall && (
+            <div className="ui-card p-4 sm:p-6" role="status">
+              <h2 className="text-lg font-semibold text-fg">{t('noRates.title')}</h2>
+              <p className="mt-2 text-sm text-sub">{t('noRates.description')}</p>
+            </div>
+          )}
 
           {/* Weight Summary */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
+          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
               {t('weightSummary')}
             </h2>
@@ -360,11 +369,8 @@ export default function ShippingCalc() {
           </div>
 
           {/* Carrier Rates */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
+          <div className={`${glassCard} ${glassInset} p-4 sm:p-6`}>
             <h2 className="text-lg font-semibold text-fg mb-4 flex items-center gap-2">
-              {carrierCategory === 'standard'
-                ? <Truck className="w-5 h-5 text-blue-600" />
-                : <Store className="w-5 h-5 text-blue-600" />}
               {t(`ratesTitle.${carrierCategory}`)}
             </h2>
 
@@ -379,11 +385,11 @@ export default function ShippingCalc() {
                       isUnavailable
                         ? 'bg-subtle border-line opacity-50'
                         : isCheapest
-                        ? 'bg-subtle border-primary'
+                        ? 'bg-primary-soft border-primary'
                         : 'bg-subtle border-line'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center flex-wrap gap-1.5">
                           <span className={`font-semibold text-sm ${isUnavailable ? 'text-faint' : 'text-fg'}`}>
@@ -397,30 +403,30 @@ export default function ShippingCalc() {
                             <span className="px-1.5 py-0.5 text-xs bg-soft text-sub rounded-full">{t('result.cvsPickup')}</span>
                           )}
                         </div>
-                        <div className="flex items-center gap-2 mt-0.5">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
                           <span className="text-xs text-faint">{t('result.delivery', { days: cd(carrier.id, 'days') })}</span>
                           {carrier.note && (
                             <span className="text-xs text-faint">· {cd(carrier.id, 'note')}</span>
                           )}
                         </div>
                       </div>
-                      <div className="flex-shrink-0 flex items-center gap-1.5">
+                      <div className="flex min-w-0 items-center justify-between gap-2 sm:justify-end">
                         {isUnavailable ? (
-                          <span className="text-xs text-red-500 dark:text-red-400 font-medium">{t(`unavailableReason.${unavailableReason}`, { kg: carrier.maxWeight, cm: carrier.maxGirth })}</span>
+                          <span className="text-sm text-sub font-medium">{t(`unavailableReason.${unavailableReason}`, { kg: carrier.maxWeight, cm: carrier.maxGirth })}</span>
                         ) : (
                           <>
-                            <span className={`text-lg font-bold ${isCheapest ? 'text-sub' : 'text-fg'}`}>
+                            <span className={`text-lg font-bold tabular-nums ${isCheapest ? 'text-primary' : 'text-fg'}`}>
                               {won(price!)}
                             </span>
                             <button
                               onClick={() => copyToClipboard(price!.toString(), carrier.id)}
-                              className="p-1.5 hover:bg-track rounded-lg transition-colors"
+                              className="min-h-11 min-w-11 inline-flex items-center justify-center hover:bg-soft rounded-lg transition-colors"
                               title={t('result.copy')}
                               aria-label={`${cd(carrier.id, 'name')} ${cd(carrier.id, 'service')} ${t('result.copy')}`}
                             >
                               {copiedId === carrier.id
-                                ? <Check className="w-3.5 h-3.5 text-green-600" />
-                                : <Copy className="w-3.5 h-3.5 text-gray-400" />}
+                                ? <Check className="w-4 h-4 text-primary" />
+                                : <Copy className="w-4 h-4 text-muted" />}
                             </button>
                           </>
                         )}
@@ -447,7 +453,7 @@ export default function ShippingCalc() {
             {availableResults.length > 1 && (
               <div className="mt-5 p-4 bg-subtle rounded-lg">
                 <div className="text-sm text-muted mb-1">{t('priceRange.title')}</div>
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-2xl font-bold text-primary [overflow-wrap:anywhere]">
                   {won(availableResults[0].price!)} ~ {won(availableResults[availableResults.length - 1].price!)}
                 </div>
                 <div className="text-xs text-faint mt-1">
@@ -475,7 +481,7 @@ export default function ShippingCalc() {
                     saveCalculation({ weight, width, height, depth, destination, carrierCategory }, result)
                     setShowSaveButton(false)
                   }}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                  className="ui-btn min-h-11 flex items-center gap-2 px-4 py-2 text-sm"
                 >
                   <Save className="w-4 h-4" />
                   {t('save')}
@@ -492,7 +498,7 @@ export default function ShippingCalc() {
           {t('guide.title')}
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div>
             <h3 className="text-base font-semibold text-fg mb-3">
               {t('guide.calculation.title')}
@@ -526,7 +532,7 @@ export default function ShippingCalc() {
           {t('rateTable.title')}
         </h3>
         <p className="text-xs text-muted mb-3">{t('rateBasis', { date: RATE_BASIS })}</p>
-        <div className="overflow-x-auto rounded-lg border border-line">
+        <div className="overflow-x-auto rounded-lg border border-line" role="region" aria-label={t('rateTable.title')} tabIndex={0}>
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="bg-soft">

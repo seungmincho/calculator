@@ -4,20 +4,23 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = '택시 요금 계산기 - 심야·시외할증 계산 | 툴허브'
+const DESC = '지역과 이동거리를 입력해 예상 택시비를 계산하세요. 심야·시외할증을 반영하고 일반·모범·대형 택시 요금을 비교할 수 있습니다.'
+
 export const metadata: Metadata = {
-  title: '택시비 계산기 - 심야할증·시외할증 자동 계산 | 툴허브',
-  description: '택시 시외할증(시계외 20~50%)과 심야할증(20~40%)까지 자동 반영한 예상 택시비. 서울·경기·부산 등 17개 시·도 지역별 기본요금, 일반·모범·대형 비교, 결과 이미지 저장.',
+  title: TITLE,
+  description: DESC,
   keywords: '택시 요금 계산기, 택시비 계산기, 택시비 계산, 심야 택시 요금, 택시 심야할증, 시외 택시비, 부산 택시 요금, 대구 택시비, 모범택시 요금, taxi fare calculator',
   openGraph: {
-    title: '택시 요금 계산기 - 심야·시외할증 자동 | 툴허브',
-    description: '지역·거리·탑승 시각 기반 예상 택시비 계산. 심야할증·시외할증 자동 반영.',
+    title: TITLE,
+    description: DESC,
     url: 'https://toolhub.ai.kr/taxi-fare/',
     siteName: '툴허브',
     locale: 'ko_KR',
     type: 'website',
     images: [{ url: 'https://toolhub.ai.kr/og/taxi-fare.png', width: 1200, height: 630, alt: '택시 요금 계산기' }],
   },
-  twitter: { card: 'summary_large_image', title: '택시 요금 계산기 | 툴허브', description: '지역별 심야·시외할증 자동 반영 예상 택시비 계산', images: ['https://toolhub.ai.kr/og/taxi-fare.png'] },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESC, images: ['https://toolhub.ai.kr/og/taxi-fare.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/taxi-fare/' },
 }
 
@@ -26,7 +29,7 @@ export default function TaxiFarePage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '택시 요금 계산기',
-    description: '전국 17개 시·도 지역별 택시 요금과 심야·시외할증을 반영한 예상 택시비 계산기',
+    description: DESC,
     url: 'https://toolhub.ai.kr/taxi-fare/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
