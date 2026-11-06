@@ -31,10 +31,13 @@ function rules(year: number): Rule[] {
     { key: 'csatToday', href: '/csat-dday', from: exam, to: exam },
     { key: 'cardDeduction', href: '/card-deduction', from: `${year}-10-01`, to: `${year}-10-31` }, // 1~9월 실적 나온 뒤, 연말정산 미리보기 전
     { key: 'csatGrade', href: '/csat-grade', from: exam, to: addDays(exam, 21) },
+    { key: 'kimjangTiming', href: '/kimjang-timing', from: `${year}-11-10`, to: `${year}-12-10` }, // 김장 적기 검색이 몰리는 때
     { key: 'incomeTax', href: '/freelancer-tax', from: `${year}-05-01`, to: filing, target: filing, event: 'incomeTax' },
     { key: 'carTaxPrepay', href: '/annual-car-tax', from: lump.start, to: lump.due, target: lump.due, event: 'carTaxLumpDue' },
     { key: 'yearEndPre', href: '/year-end-tax', from: `${year}-11-01`, to: `${year}-12-31`, target: `${year}-12-31`, event: 'yearEnd' },
+    { key: 'newYearSunrise', href: '/new-year-sunrise', from: `${year}-12-15`, to: `${year + 1}-01-01` },
     { key: 'yearEnd', href: '/year-end-tax', from: `${year}-01-01`, to: `${year}-02-28` },
+    { key: 'salaryNewYear', href: '/salary-calculator', from: `${year}-01-01`, to: `${year}-01-31` }, // 새해 4대보험 요율 반영
     { key: 'newYear', href: '/greeting-generator', from: `${year}-12-01`, to: `${year + 1}-01-10` },
   ]
 }

@@ -21665,6 +21665,18 @@
       "newYear": {
         "title": "Year-end & New Year greetings",
         "desc": "Messages for clients, friends and family, ready to copy"
+      },
+      "kimjangTiming": {
+        "title": "Kimjang timing near you",
+        "desc": "Kimchi-making season by region from the forecast"
+      },
+      "newYearSunrise": {
+        "title": "New Year sunrise times",
+        "desc": "Jan 1 sunrise and cloud forecast at famous spots"
+      },
+      "salaryNewYear": {
+        "title": "Take-home pay this year",
+        "desc": "Recalculate with this year's social insurance rates"
       }
     },
     "hero": {

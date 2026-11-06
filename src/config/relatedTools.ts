@@ -2,7 +2,8 @@
 // 4개 또는 6개만 — 그리드(2·3·4열)가 꽉 차게. 검증: node scripts/check-related-tools.ts
 export const curatedRelated: Record<string, string[]> = {
   // 급여·근로
-  '/salary-calculator': ['/salary-table', '/bonus-calculator', '/year-end-tax', '/salary-rank', '/salary-comparison', '/minimum-wage'],
+  '/salary-calculator': ['/salary-table', '/four-insurance', '/bonus-calculator', '/year-end-tax', '/salary-rank', '/salary-comparison'],
+  '/four-insurance': ['/salary-calculator', '/pay-slip', '/health-insurance', '/national-pension', '/salary-table', '/minimum-wage'],
   '/salary-comparison': ['/salary-calculator', '/salary-rank', '/salary-table', '/bonus-calculator', '/hourly-wage', '/year-end-tax'],
   '/salary-table': ['/salary-calculator', '/salary-rank', '/salary-comparison', '/year-end-tax'],
   '/salary-rank': ['/salary-calculator', '/salary-table', '/salary-comparison', '/median-income'],
@@ -32,7 +33,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/tax-season': ['/income-tax', '/freelancer-tax', '/vat-calculator', '/pension-tax-credit', '/medical-tax-credit', '/health-insurance'],
   '/vat-calculator': ['/freelancer-tax', '/margin-calculator', '/invoice-generator', '/receipt-generator', '/business-number', '/tax-season'],
   '/freelancer-tax': ['/vat-calculator', '/tax-season', '/income-tax', '/health-insurance', '/invoice-generator', '/national-pension'],
-  '/health-insurance': ['/salary-calculator', '/national-pension', '/freelancer-tax', '/unemployment-benefit', '/medical-tax-credit', '/health-checkup'],
+  '/health-insurance': ['/salary-calculator', '/four-insurance', '/national-pension', '/freelancer-tax', '/unemployment-benefit', '/medical-tax-credit'],
   '/inheritance-gift-tax': ['/acquisition-tax', '/capital-gains-tax', '/comprehensive-property-tax', '/iou-generator', '/wedding-calculator', '/real-estate-calculator'],
   '/lotto-tax': ['/lotto-generator', '/savings-calculator', '/compound-calculator', '/investment-calculator', '/inheritance-gift-tax', '/acquisition-tax'],
   '/customs-duty': ['/exchange-calculator', '/shipping-calculator', '/vat-calculator', '/discount-calculator'],
@@ -86,7 +87,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/pc-electricity': ['/electricity-calculator', '/gas-bill', '/water-bill', '/budget-calculator'],
   '/gas-bill': ['/electricity-calculator', '/water-bill', '/pc-electricity', '/budget-calculator'],
   '/water-bill': ['/electricity-calculator', '/gas-bill', '/pc-electricity', '/budget-calculator'],
-  '/kimjang-calculator': ['/budget-calculator', '/dutch-pay', '/discount-calculator', '/unit-converter'],
+  '/kimjang-calculator': ['/kimjang-timing', '/budget-calculator', '/dutch-pay', '/discount-calculator'],
+  '/kimjang-timing': ['/kimjang-calculator', '/holiday-planner', '/sunrise-sunset', '/budget-calculator'],
   '/exchange-calculator': ['/customs-duty', '/shipping-calculator', '/world-clock', '/stock-calculator', '/percent-calculator', '/holiday-planner'],
   '/percent-calculator': ['/discount-calculator', '/average-calculator', '/margin-calculator', '/vat-calculator', '/cagr-calculator', '/stock-calculator'],
 
@@ -148,7 +150,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/resignation-letter': ['/retirement-calculator', '/unemployment-benefit', '/annual-leave', '/stamp-generator', '/health-insurance', '/email-template'],
   '/employment-contract': ['/minimum-wage', '/weekly-holiday-pay', '/pay-slip', '/hourly-wage', '/stamp-generator', '/annual-leave'],
   '/lease-contract': ['/jeonse-checklist', '/brokerage-fee', '/rent-converter', '/stamp-generator', '/jeonse-loan', '/rent-tax-credit'],
-  '/pay-slip': ['/salary-calculator', '/employment-contract', '/weekly-holiday-pay', '/minimum-wage', '/hourly-wage', '/health-insurance'],
+  '/pay-slip': ['/salary-calculator', '/four-insurance', '/employment-contract', '/weekly-holiday-pay', '/minimum-wage', '/health-insurance'],
   '/business-number': ['/invoice-generator', '/vat-calculator', '/resident-number', '/receipt-generator'],
 
   // 텍스트·변환
@@ -173,7 +175,9 @@ export const curatedRelated: Record<string, string[]> = {
   '/lunar-converter': ['/age-calculator', '/dday-calculator', '/holiday-planner', '/greeting-generator'],
   '/dday-calculator': ['/age-calculator', '/holiday-planner', '/lunar-converter', '/csat-dday', '/military-discharge', '/due-date'],
   '/time-converter': ['/world-clock', '/jwt-decoder', '/cron-tester', '/dday-calculator'],
-  '/world-clock': ['/time-converter', '/exchange-calculator', '/holiday-planner', '/dday-calculator'],
+  '/world-clock': ['/time-converter', '/sunrise-sunset', '/exchange-calculator', '/holiday-planner'],
+  '/sunrise-sunset': ['/new-year-sunrise', '/world-clock', '/lunar-converter', '/dday-calculator'],
+  '/new-year-sunrise': ['/sunrise-sunset', '/holiday-planner', '/greeting-generator', '/dday-calculator'],
   '/timer': ['/pomodoro', '/presentation-timer', '/breathing-exercise', '/metronome'],
   '/pomodoro': ['/timer', '/kanban-board', '/white-noise', '/notepad'],
   '/presentation-timer': ['/timer', '/pomodoro', '/meeting-minutes', '/order-picker', '/character-counter', '/text-to-speech'],

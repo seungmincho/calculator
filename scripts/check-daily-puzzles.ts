@@ -93,12 +93,14 @@ const picks = (ymd: string, hh?: number) => seasonalPicks(kst(ymd, hh)).map(p =>
 assert.deepEqual(picks('2026-10-04'), ['csatDday:46', 'cardDeduction:27'])
 assert.deepEqual(picks('2026-08-10'), [])                         // D-101
 assert.deepEqual(picks('2026-08-11'), ['csatDday:100'])
-assert.deepEqual(picks('2026-11-18', 23), ['csatDday:1', 'yearEndPre:43'])
+assert.deepEqual(picks('2026-11-18', 23), ['csatDday:1', 'kimjangTiming:22'])
 assert.deepEqual(picks('2026-11-19', 0), ['csatToday:0', 'csatGrade:21']) // KST 자정 직후
-assert.deepEqual(picks('2026-12-10'), ['csatGrade:0', 'yearEndPre:21'])
+assert.deepEqual(picks('2026-12-10'), ['csatGrade:0', 'kimjangTiming:0'])
+assert.deepEqual(picks('2026-12-20'), ['yearEndPre:11', 'newYearSunrise:12'])
+assert.deepEqual(picks('2027-01-01'), ['newYearSunrise:0', 'yearEnd:58'])
 assert.deepEqual(picks('2026-12-11'), ['yearEndPre:20', 'newYear:30'])
-assert.deepEqual(picks('2027-01-05'), ['yearEnd:54', 'newYear:5'])
-assert.deepEqual(picks('2027-01-11'), ['yearEnd:48'])
+assert.deepEqual(picks('2027-01-05'), ['yearEnd:54', 'salaryNewYear:26'])
+assert.deepEqual(picks('2027-01-11'), ['yearEnd:48', 'salaryNewYear:20'])
 assert.deepEqual(picks('2027-01-20'), ['carTaxPrepay:12', 'yearEnd:39']) // 2027-01-31 일요일 → 연납 마감 2/1
 assert.deepEqual(picks('2027-01-28'), ['seollal:11', 'carTaxPrepay:4'])  // 설 2027-02-07
 assert.deepEqual(picks('2027-02-09'), ['yearEnd:19'])
