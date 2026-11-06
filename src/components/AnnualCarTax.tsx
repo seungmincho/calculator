@@ -282,7 +282,7 @@ export default function AnnualCarTax() {
                     const best = l.month === 1
                     return (
                       <tr key={l.month} className={`border-b border-line ${best ? 'bg-primary-soft' : ''}`}>
-                        <td className={`py-2.5 pl-1 ${best ? 'text-primary font-semibold' : 'text-body'}`}>{t('u.lump.month', { m: l.month })}</td>
+                        <td className={`py-2.5 pl-1 ${best ? 'text-primary font-semibold' : 'text-body'}`}>{t('u.lump.month', { m: l.month })}{best && <span className="ml-1.5 whitespace-nowrap rounded-md bg-primary text-white text-xs font-semibold px-1.5 py-0.5">{t('u.lump.best')}</span>}</td>
                         <td className="py-2.5 text-right tabular-nums font-semibold text-fg">{won(l.total)}</td>
                         <td className="py-2.5 text-right tabular-nums text-primary">{minus(l.saved)}</td>
                         <td className="py-2.5 pr-1 text-right tabular-nums text-sub">{l.pct.toFixed(2)}%</td>

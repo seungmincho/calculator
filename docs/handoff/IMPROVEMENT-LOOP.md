@@ -93,7 +93,7 @@
 | 35 | — | Battleship.tsx·ChessAI.tsx dark: 색 쌍 → 토큰 | 완료(배치9, 상태색 red·amber·green만 남김) |
 | 36 | P0 | 종부세 일시적 2주택도 계약일 경과조치 — propertyHoldingTax.tempDeadlines(newAcq, bothAdjusted, contract?) + ComprehensivePropertyTax 입력 (2027.6.1 과세기준일분부터, 양도세 tempRule 재사용) | 완료(배치10): ?nc= 계약일, 종부세·양도세 8.3·취득세 8.26 |
 | 37 | P1 | 연말정산 시즌 롱테일 랜딩 추가 후보: 의료비 세액공제·월세 세액공제·연금저축 세액공제(yearEndTax 함수 재사용, /card-deduction 방식) | 완료(배치11, 사용자 기획 승인): /medical-tax-credit·/rent-tax-credit·/pension-tax-credit + 연말정산 허브(섹션별 딥링크·항목별 카드), yearEndTax.itemTaxSaving. 남은 것: 월세 배우자 별도 세대 합산(2026~) 계산 미반영(안내만), 연말 연금 납입 마감 시각(금융사별) 미확정 |
-| 47 | P1 | SEO 정적 감사 남은 것(scripts/audit-seo-static.cjs out — 빌드본만 읽음): 연봉 실수령액 표 15p 문구 100% 동일(숫자만 다름) → 금액별 고유 정보(백분위·중위소득 대비 등), YMYL 계산기 공식 출처 링크·기준일 표기(가이드 노출 후 재측정), HowTo JSON-LD 35p(리치결과 폐지, 무해), 마크다운 에디터 h1 2개(미리보기 예시) | 대기 |
+| 47 | P1 | SEO 정적 감사 남은 것(scripts/audit-seo-static.cjs out — 빌드본만 읽음): 연봉 실수령액 표 15p 문구 100% 동일(숫자만 다름) → 금액별 고유 정보(백분위·중위소득 대비 등), YMYL 계산기 공식 출처 링크·기준일 표기(가이드 노출 후 재측정), HowTo JSON-LD 35p(리치결과 폐지, 무해), 마크다운 에디터 h1 2개(미리보기 예시) | 일부 완료(2026-11-06): 연봉 표 15p에 금액별 고유 정보(국세청 분위·다음 분위까지 금액·평균 대비·시급/최저임금·1인 중위소득 대비·연말정산 기준선 4종·국민연금 상한, FAQ 2개, meta 설명) + 토큰·이모지 정리. 나머지(YMYL 출처·HowTo·마크다운 h1) 대기 |
 | 48 | P2 | 성능(CWV): PageSpeed 키 없는 할당량이 소진돼 미측정 — PSI API 키(무료) 받거나 pagespeed.web.dev 에서 홈·상위 2~3p 수동 | 대기 |
 
 조사 근거(2026-10-04 시즌 수요 조사): 2027 수치(최저임금 10,700원·국민연금 10%·건보 7.19% 동결·고용보험 1.0%)는 2차 출처 기준 — 반영 전 공식 고시 확인.

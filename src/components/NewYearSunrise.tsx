@@ -138,7 +138,7 @@ export default function NewYearSunrise({ target }: { target: string }) {
                       <td className="text-sub hidden sm:table-cell">{t(`regions.${r.region}`)}</td>
                       <td className="text-fg tabular-nums font-medium">{kstTime(r.rise)}</td>
                       <td className="text-sub tabular-nums">{d > 0 ? t('table.faster', { min: d }) : d < 0 ? t('table.slower', { min: -d }) : t('table.same')}</td>
-                      {sky?.available && <td className="text-sub tabular-nums">{s ? `${s.cloud}%` : '—'}</td>}
+                      {sky?.available && <td className="text-sub tabular-nums">{!s ? '—' : level(s) === 'clear' ? <span className="whitespace-nowrap rounded-md bg-primary text-white font-semibold px-1.5 py-0.5">{t('table.clear')} {s.cloud}%</span> : `${s.cloud}%`}</td>}
                     </tr>
                   )
                 })}

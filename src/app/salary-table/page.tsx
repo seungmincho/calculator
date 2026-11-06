@@ -50,7 +50,7 @@ export default function SalaryTablePage() {
       <div className="min-h-screen">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
           <header className="space-y-3">
-            <h1 className="text-3xl font-bold text-fg">연봉 실수령액 표 <span className="text-blue-600 dark:text-blue-400">{YEAR}</span></h1>
+            <h1 className="text-3xl font-bold text-fg">연봉 실수령액 표 <span className="text-primary">{YEAR}</span></h1>
             <p className="text-body leading-relaxed max-w-3xl">
               연봉 2,000만원부터 2억원까지 구간별 월 실수령액입니다. {YEAR}년 4대보험 요율과 국세청 근로소득 간이세액표를 반영했으며
               기준은 <strong>부양가족 1인(본인)·월 비과세 20만원</strong>입니다. 연봉을 클릭하면 부양가족·비과세를 바꿔 다시 계산할 수 있습니다.
@@ -74,7 +74,7 @@ export default function SalaryTablePage() {
           <div className={`${glassCard} overflow-x-auto`}>
             <table className="w-full text-sm text-right whitespace-nowrap">
               <caption className="sr-only">{YEAR}년 연봉별 월 실수령액 표 (부양가족 1인, 비과세 20만원)</caption>
-              <thead className="text-xs uppercase text-muted border-b border-black/10 dark:border-white/10">
+              <thead className="text-xs uppercase text-muted border-b border-line">
                 <tr>
                   <th scope="col" className="px-4 py-3 text-left">연봉</th>
                   <th scope="col" className="px-4 py-3">월 실수령액</th>
@@ -91,7 +91,7 @@ export default function SalaryTablePage() {
                   const tax = (r.deductions.incomeTax + r.deductions.localIncomeTax) / 12
                   const hot = bracketSet.has(man)
                   return (
-                    <tr key={man} className={`border-b border-black/5 dark:border-white/5 ${hot ? 'bg-blue-500/10 font-semibold' : man % 1000 === 0 ? 'bg-subtle' : ''}`}>
+                    <tr key={man} className={`border-b border-line ${hot ? 'bg-primary-soft font-semibold' : man % 1000 === 0 ? 'bg-subtle' : ''}`}>
                       <th scope="row" className="px-4 py-2 text-left font-medium">
                         <Link href={hot ? `/salary-table/${man}/` : calcLink(man)} className="text-sub hover:underline">{salaryLabel(man)}</Link>
                       </th>

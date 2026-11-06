@@ -47567,7 +47567,8 @@
         "pct": "Discount",
         "split": "June + December",
         "month": "Lump sum in month {m}",
-        "note": "Deduction (Local Tax Act Art. 128(3)): January/March = annual tax × days from the day after the deadline to Dec 31 ÷ 365 × 5%; June = 2nd-half tax × 5%; September = 2nd-half tax × remaining days ÷ 184 × 5%. Education tax shrinks with it. May differ from your bill by tens of won."
+        "note": "Deduction (Local Tax Act Art. 128(3)): January/March = annual tax × days from the day after the deadline to Dec 31 ÷ 365 × 5%; June = 2nd-half tax × 5%; September = 2nd-half tax × remaining days ÷ 184 × 5%. Education tax shrinks with it. May differ from your bill by tens of won.",
+        "best": "Best deal"
       },
       "schedule": {
         "title": "Payment schedule",
@@ -52674,7 +52675,8 @@
       "sky": "Clouds",
       "faster": "{min} min earlier",
       "slower": "{min} min later",
-      "same": "Same"
+      "same": "Same",
+      "clear": "Clear"
     },
     "toCalculator": "Sunrise and sunset for other dates and cities",
     "md": "{m}/{d}",
