@@ -178,6 +178,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/dday-calculator': ['/age-calculator', '/holiday-planner', '/lunar-converter', '/csat-dday', '/military-discharge', '/due-date'],
   '/time-converter': ['/world-clock', '/jwt-decoder', '/cron-tester', '/dday-calculator'],
   '/world-clock': ['/time-converter', '/sunrise-sunset', '/exchange-calculator', '/holiday-planner'],
+  '/ski-resorts': ['/sunrise-sunset', '/holiday-planner', '/everland', '/fuel-calculator'],
   '/sunrise-sunset': ['/new-year-sunrise', '/world-clock', '/lunar-converter', '/dday-calculator'],
   '/new-year-sunrise': ['/sunrise-sunset', '/holiday-planner', '/greeting-generator', '/dday-calculator'],
   '/timer': ['/pomodoro', '/presentation-timer', '/breathing-exercise', '/metronome'],

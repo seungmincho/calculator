@@ -2794,7 +2794,8 @@
       "sunriseSunset": "Sunrise & Sunset Times",
       "fourInsurance": "Social Insurance Calculator",
       "ageTable": "Age Table",
-      "changes2027": "What Changes in 2027"
+      "changes2027": "What Changes in 2027",
+      "skiResorts": "Ski Resort Openings & Weather"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8396,6 +8397,10 @@
       "changes2027": {
         "title": "What Changes in 2027",
         "description": "Minimum wage, social insurance, median income and labor changes by date"
+      },
+      "skiResorts": {
+        "title": "Ski Resorts",
+        "description": "Opening dates and a 9-day forecast for Korean ski resorts"
       }
     }
   },
@@ -53313,5 +53318,199 @@
       ]
     },
     "asOf": "Checked Nov 6, 2026. Items will be added when the government publishes its 2027 changes guide."
+  },
+  "skiResorts": {
+    "title": "Korea ski resort openings and weather 2026/27 — best days to go",
+    "subtitle": "Opening plans for 12 ski resorts and a 9-day forecast to pick the best day.",
+    "pickLabel": "Choose a resort",
+    "regions": {
+      "all": "All",
+      "gangwon": "Gangwon",
+      "capital": "Seoul area",
+      "south": "South"
+    },
+    "resorts": {
+      "yongpyong": {
+        "name": "Mona Yongpyong",
+        "place": "Pyeongchang, Gangwon"
+      },
+      "phoenix": {
+        "name": "Phoenix Snow Park",
+        "place": "Pyeongchang, Gangwon"
+      },
+      "high1": {
+        "name": "High1 Resort",
+        "place": "Jeongseon, Gangwon"
+      },
+      "alpensia": {
+        "name": "Alpensia",
+        "place": "Pyeongchang, Gangwon"
+      },
+      "vivaldi": {
+        "name": "Vivaldi Park",
+        "place": "Hongcheon, Gangwon"
+      },
+      "wellihilli": {
+        "name": "Welli Hilli Park",
+        "place": "Hoengseong, Gangwon"
+      },
+      "elysian": {
+        "name": "Elysian Gangchon",
+        "place": "Chuncheon, Gangwon"
+      },
+      "oakvalley": {
+        "name": "Oak Valley",
+        "place": "Wonju, Gangwon"
+      },
+      "konjiam": {
+        "name": "Konjiam Resort",
+        "place": "Gwangju, Gyeonggi"
+      },
+      "jisan": {
+        "name": "Jisan Resort",
+        "place": "Icheon, Gyeonggi"
+      },
+      "muju": {
+        "name": "Muju Deogyusan Resort",
+        "place": "Muju, Jeonbuk"
+      },
+      "edenvalley": {
+        "name": "Eden Valley",
+        "place": "Yangsan, Gyeongnam"
+      }
+    },
+    "opening": {
+      "target": "Opening target {date}",
+      "unknown": "Not announced · usually {usual}",
+      "source": "Announcement"
+    },
+    "usual": {
+      "lateNov": "late Nov",
+      "earlyDec": "early Dec",
+      "midDec": "mid Dec"
+    },
+    "resultLabel": "Best days at {resort}",
+    "officialSite": "Official site",
+    "best": "Best day",
+    "alternatives": "Also good: {list}",
+    "noDays": "No days after opening within the forecast range (about 9 days) yet. Where no date is announced, days before the usual opening are skipped.",
+    "unknownCaveat": "The opening date is not announced yet, so check the official site before you go.",
+    "beforeOpen": "Not open",
+    "beforeOpenUsual": "Likely closed",
+    "loading": "Loading forecast",
+    "failed": "Could not load the forecast. Please try again later.",
+    "md": "{m}/{d}",
+    "day": "{m}/{d} ({w})",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "temps": "{low}–{high}°C",
+    "snow": "Snow {mm} mm",
+    "rain": "Rain {mm} mm",
+    "dry": "Dry",
+    "wind": "Wind {v} m/s",
+    "scoreUnit": " pts",
+    "reasons": {
+      "dry": "No rain or snow, so stable snow",
+      "snow": "Fresh snow expected",
+      "rain": "Rain may spoil the snow",
+      "wind": "Strong wind may stop gondolas and lifts",
+      "cold": "Very cold, dress warmly",
+      "mild": "Warm temperatures may soften the snow",
+      "weekday": "Weekday, relatively quiet",
+      "friday": "Friday, moderately busy",
+      "weekend": "Weekend, busy",
+      "holiday": "Public holiday, busy"
+    },
+    "issued": "MET Norway forecast issued {time} (KST), 09:00–17:00.",
+    "scoreHelp": "A reference score: weather 60% (rain, strong wind, cold and warmth lower it; fresh snow raises it) and weekday/holiday crowds 40%. Winter break (late Dec–Feb) can be busy even on weekdays.",
+    "share": "Best day at {resort}: {value} (ToolHub ski)",
+    "openingTitle": "2026/27 ski resort opening dates",
+    "openingNote": "Opening targets announced by resorts; weather and snowmaking can change them. Where nothing is announced, last season’s timing is shown.",
+    "cols": {
+      "resort": "Resort",
+      "region": "Region",
+      "opening": "Opening"
+    },
+    "links": {
+      "sunrise": "Sunrise and sunset times",
+      "holiday": "Holiday planner"
+    },
+    "guide": {
+      "title": "Ski guide",
+      "tips": {
+        "title": "Avoiding crowds",
+        "items": [
+          "Weekends, holidays and winter break (late Dec–Feb) mean long lift lines. Weekday mornings are best.",
+          "Only some slopes open early in the season; check the official site for today’s slopes.",
+          "Lift tickets, season passes and shuttle buses differ by resort; check before you go."
+        ]
+      },
+      "weather": {
+        "title": "Reading the weather",
+        "items": [
+          "Rain hurts snow the most; above freezing, precipitation can fall as rain.",
+          "Fresh snow is welcome, but heavy snow blocks roads. Bring chains or winter tires.",
+          "The summit is colder and windier than the base; this forecast is for near the base."
+        ]
+      },
+      "season": {
+        "title": "Season timing",
+        "items": [
+          "High Gangwon resorts usually open first in late November, the Seoul area in early December and the south in mid-December.",
+          "Seasons usually end in early to mid March; Phoenix plans to run until March 14, 2027.",
+          "Opening dates change with weather and snowmaking, so check again before leaving."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When do Korean ski resorts open in 2026?",
+            "a": "As of Nov 6, Phoenix Snow Park targets Nov 27 and Alpensia Nov 28; the rest have not announced. Last season Mona Yongpyong and Phoenix opened first on Nov 21, and the Seoul area and south opened in early to mid December."
+          },
+          {
+            "q": "Which resort opens first?",
+            "a": "High, cold Pyeongchang resorts such as Mona Yongpyong and Phoenix usually open first. This year Phoenix announced its Nov 27 target first."
+          },
+          {
+            "q": "How do I pick a good day?",
+            "a": "A dry, calm weekday is best. Rain spoils the snow and strong wind can stop lifts. This page scores each forecast day by weather and weekday."
+          },
+          {
+            "q": "Which resorts are closest to Seoul?",
+            "a": "Konjiam (Gwangju, Gyeonggi) and Jisan (Icheon) are about an hour from Seoul; Elysian Gangchon, Vivaldi Park and Oak Valley are also close."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Phoenix 2026/27 opening target (Nov 27) — Dongri Archive",
+            "url": "https://www.dongriarchive.com/ko/post/ski-resort-opening-dates-2026-2027-season-pass"
+          },
+          {
+            "label": "Alpensia targets Nov 28 opening — Aju News (Nov 5, 2026)",
+            "url": "https://www.ajunews.com/view/20261105173644093"
+          },
+          {
+            "label": "Last season (2025/26) opening dates — foxcg",
+            "url": "https://foxcg.com/ski-resort-opening-schedule"
+          },
+          {
+            "label": "Weather forecast — MET Norway Locationforecast (CC BY 4.0)",
+            "url": "https://api.met.no/weatherapi/locationforecast/2.0/documentation"
+          }
+        ],
+        "asOf": "Checked Nov 6, 2026. Opening dates are updated as resorts announce them."
+      }
+    }
   }
 }
