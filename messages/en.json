@@ -2792,7 +2792,9 @@
       "kimjangTiming": "Kimjang Timing Forecast",
       "newYearSunrise": "New Year Sunrise Times",
       "sunriseSunset": "Sunrise & Sunset Times",
-      "fourInsurance": "Social Insurance Calculator"
+      "fourInsurance": "Social Insurance Calculator",
+      "ageTable": "Age Table",
+      "changes2027": "What Changes in 2027"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8386,6 +8388,14 @@
       "fourInsurance": {
         "title": "Social Insurance Calculator",
         "description": "Employee and employer premiums with 2027 rates"
+      },
+      "ageTable": {
+        "title": "Age Table",
+        "description": "International age and zodiac by birth year, this year and next"
+      },
+      "changes2027": {
+        "title": "What Changes in 2027",
+        "description": "Minimum wage, social insurance, median income and labor changes by date"
       }
     }
   },
@@ -53047,5 +53057,261 @@
         "asOf": "Checked Nov 6, 2026. 2027 accident rates and health caps will be updated after the December notices."
       }
     }
+  },
+  "ageTable": {
+    "title": "Korean age table {base}·{next} — international age and zodiac by birth year",
+    "subtitle": "See this year and next year’s international age, year age, zodiac sign and school entry year for every birth year from 1930.",
+    "nextYear": "{next} is the year of {ganzi}, the {name}. The zodiac changes at Lunar New Year.",
+    "resultLabel": "Born {year} · age in {next}",
+    "pickLabel": "Birth year",
+    "pickHint": "You can also tap a year in the table. Ages are after the birthday.",
+    "yearOption": "{year} ({animal})",
+    "ageValue": "{n}",
+    "beforeBirthday": "Before the birthday: {n}.",
+    "stats": {
+      "zodiac": "Zodiac",
+      "manBase": "Age in {base}",
+      "yeon": "Year age in {next}",
+      "school": "Elementary entry"
+    },
+    "zodiacLine": "{ganzi} · {name}",
+    "zodiacName": "{color} {animal}",
+    "colors": {
+      "blue": "Blue",
+      "red": "Red",
+      "yellow": "Yellow",
+      "white": "White",
+      "black": "Black"
+    },
+    "zodiac": {
+      "rat": "Rat",
+      "ox": "Ox",
+      "tiger": "Tiger",
+      "rabbit": "Rabbit",
+      "dragon": "Dragon",
+      "snake": "Snake",
+      "horse": "Horse",
+      "goat": "Goat",
+      "monkey": "Monkey",
+      "rooster": "Rooster",
+      "dog": "Dog",
+      "pig": "Pig"
+    },
+    "md": "{m}/{d}",
+    "seollalNote": "Born Jan 1–{until}, {year}: before Lunar New Year, so the previous sign ({prev}).",
+    "earlyNote": "Born in January or February, you may have entered school a year early ({year}); this ended with 2002 births.",
+    "countingNote": "Traditional Korean counting age would be {n}, but laws and contracts use international age.",
+    "toAgeCalculator": "Exact age from a birth date",
+    "toLunar": "Convert a lunar birthday",
+    "share": "Born {year}: age {age} in {next}, {name} (ToolHub age table)",
+    "tableTitle": "{next} age table",
+    "tableNote": "Ages are after that year’s birthday; one less before it. The zodiac assumes birth after Lunar New Year.",
+    "cols": {
+      "year": "Born",
+      "zodiac": "Zodiac",
+      "manNext": "Age in {next}",
+      "manBase": "Age in {base}",
+      "yeon": "Year age {next}",
+      "school": "School entry"
+    },
+    "yearValue": "{year}",
+    "groupsTitle": "Ages by zodiac sign (in {next})",
+    "groupTitle": "{animal}",
+    "groupItem": "{year}: {n}",
+    "guide": {
+      "title": "Age and zodiac guide",
+      "ages": {
+        "title": "International, year and counting age",
+        "items": [
+          "International age starts at 0 and adds a year on each birthday. Since June 28, 2023, Korean laws, contracts and documents use it.",
+          "Year age is the current year minus the birth year. Some laws, such as youth protection and military service, still use it.",
+          "Counting age is year age plus one and is no longer used officially."
+        ]
+      },
+      "zodiac": {
+        "title": "When the sign changes",
+        "items": [
+          "The zodiac and sexagenary year change at Lunar New Year, so January and February births can fall in the previous sign.",
+          "Lunar New Year 2027 is February 7, so births from Jan 1 to Feb 6, 2027 are the 2026 Red Horse.",
+          "Saju may divide the year at Ipchun (around Feb 4), which can differ from the Lunar New Year rule.",
+          "The heavenly stem sets the color: gap/eul blue, byeong/jeong red, mu/gi yellow, gyeong/sin white, im/gye black."
+        ]
+      },
+      "school": {
+        "title": "School entry year",
+        "items": [
+          "Children start elementary school in March of the year after they turn 6. Entrants in March 2027 were born in 2020.",
+          "Until the 2008 school year the cut-off was March 1, so January–February births entered a year early. Those born Jan–Feb 2002 were the last.",
+          "Early entry or deferral changes the year."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What zodiac year is 2027?",
+            "a": "Jeongmi, the Red Goat. The sign changes at Lunar New Year (Feb 7, 2027), so births from Jan 1 to Feb 6, 2027 are Horse."
+          },
+          {
+            "q": "How old are Goats in 2027?",
+            "a": "After their birthday: 2015 → 12, 2003 → 24, 1991 → 36, 1979 → 48, 1967 → 60, 1955 → 72, 1943 → 84, 1931 → 96."
+          },
+          {
+            "q": "International age vs year age?",
+            "a": "International age counts from the birthday; year age subtracts the birth year. Laws use international age since June 28, 2023, though some still use year age."
+          },
+          {
+            "q": "Until when were children enrolled early?",
+            "a": "Until the 2008 school year, January–February births entered a year early. Those born Jan–Feb 2002 were the last."
+          },
+          {
+            "q": "Who enters elementary school in 2027?",
+            "a": "Children born between Jan 1 and Dec 31, 2020, starting in March 2027."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Framework Act on Public Administration Art. 7-2 — law.go.kr",
+            "url": "https://www.law.go.kr/법령/행정기본법"
+          },
+          {
+            "label": "School entry cut-off change Q&A — Hangyo",
+            "url": "https://hangyo.com/mobile/article.html?no=17372"
+          },
+          {
+            "label": "Lunar calendar conversion — KASI",
+            "url": "https://astro.kasi.re.kr/life/pageView/8"
+          }
+        ],
+        "asOf": "Checked Nov 6, 2026. Lunar New Year and sexagenary years follow KASI data."
+      }
+    }
+  },
+  "changes2027": {
+    "title": "What changes in Korea in 2027 — pay, social insurance, welfare and labor",
+    "subtitle": "Minimum wage, social insurance, median income and labor rules changing in 2027, in date order and linked to calculators.",
+    "summary": {
+      "label": "What changes in your pay in 2027",
+      "minWage": "Minimum wage (hourly)",
+      "insurance": "Social insurance on 3M KRW (monthly)",
+      "net": "Take-home on 50M KRW salary (monthly)",
+      "note": "Insurance uses 2.8M KRW insured pay (3M minus 200k meals); take-home assumes 1 dependent and 200k non-taxable. The employment insurance proposal is excluded."
+    },
+    "won": "{n} KRW",
+    "plusWon": "+{n} KRW",
+    "minusWon": "-{n} KRW",
+    "share": "2027 minimum wage {wage} KRW; social insurance on 3M KRW pay rises {ins} KRW a month (ToolHub)",
+    "filterLabel": "Category",
+    "cats": {
+      "all": "All",
+      "pay": "Pay & insurance",
+      "labor": "Labor",
+      "welfare": "Welfare"
+    },
+    "confirmed": "Confirmed",
+    "pending": "Pending",
+    "date": "{m}/{d}/{y}",
+    "sourcePrefix": "Source:",
+    "items": {
+      "breakWaiver": {
+        "title": "4-hour shifts can skip the break",
+        "body": "For 4 working hours, the 30-minute break can be skipped at the worker’s explicit request (Labor Standards Act Art. 54 proviso). The 1-hour break for 8 hours stays.",
+        "link": "Work hours and breaks",
+        "source": "Labor Standards Act (Act No. 21784)"
+      },
+      "minWage": {
+        "title": "Minimum wage {wage} KRW per hour",
+        "body": "That is {monthly} KRW a month at 40 hours a week (209 hours), up {diff} KRW ({pct}%) from 2026.",
+        "link": "Minimum wage calculator",
+        "source": "Ministry of Employment and Labor notice"
+      },
+      "pension": {
+        "title": "National pension {from} → {to}",
+        "body": "Employee and employer each pay {half}, rising 0.5%p a year to 13% by 2033.",
+        "link": "Social insurance calculator",
+        "source": "National Pension Act supplementary provisions"
+      },
+      "longTermCare": {
+        "title": "Long-term care {from} → {to} of health premium",
+        "body": "That is {income} of pay, decided on Oct 30, 2026.",
+        "link": "Social insurance calculator",
+        "source": "Long-term Care Committee — Newspim"
+      },
+      "health": {
+        "title": "Health insurance frozen at {rate}",
+        "body": "The employee share stays {half}; deductions still rise with pay.",
+        "link": "Health insurance calculator",
+        "source": "Health Insurance Policy Committee (Sep 8, 2026) — Kyongbuk Maeil"
+      },
+      "eiRate": {
+        "title": "Employment insurance {from} → {to} (proposal)",
+        "body": "A government plan from September 2026; the decree is not amended yet. If confirmed, each side pays 0.1%p more.",
+        "link": "Social insurance calculator",
+        "source": "Employment insurance reform — Nate News"
+      },
+      "eiBasis": {
+        "title": "Employment insurance coverage by income, not hours",
+        "body": "The exclusion based on working hours (such as under 15 hours a week) moves to an income basis, set by decree.",
+        "link": "Weekly holiday pay",
+        "source": "Employment Insurance Act Art. 10 (Act No. 21473)"
+      },
+      "unemploymentFloor": {
+        "title": "Unemployment benefit at least {floor} KRW a day",
+        "body": "For job losses in 2027 the floor is 80% of minimum wage × 8 hours = {floor} KRW, above the {cap} KRW cap, so the floor is paid.",
+        "link": "Unemployment benefit calculator",
+        "source": "Employment Insurance Act Arts. 45–46"
+      },
+      "median": {
+        "title": "Standard median income up {pct}%",
+        "body": "{four} KRW a month for a 4-person household and {one} KRW for one person, the largest rise since 2015. Welfare thresholds move with it.",
+        "link": "Median income lookup",
+        "source": "Ministry of Health and Welfare (Jul 28, 2026)"
+      },
+      "livelihood": {
+        "title": "Livelihood benefit threshold {one} KRW (1 person)",
+        "body": "32% of median income; {four} KRW for 4 people. Medical 40%, housing 48% and education 50% stay the same.",
+        "link": "Thresholds by median income",
+        "source": "Korea.kr"
+      },
+      "childAllowance": {
+        "title": "Child allowance under {from} → under {to}",
+        "body": "Eligibility widens by one year each year until under 13 in 2030.",
+        "link": "Childcare benefit calculator",
+        "source": "Child Allowance Act amendment — Bokjiro"
+      },
+      "hourlyLeave": {
+        "title": "Annual leave in hourly units",
+        "body": "Workers can request annual leave by the hour (new Art. 60(5)); units and limits are set by decree.",
+        "link": "Annual leave calculator",
+        "source": "Labor Standards Act (Act No. 21784)"
+      },
+      "pensionCap": {
+        "title": "Pension income cap and floor updated",
+        "body": "Announced every July; until then 6.59M KRW cap and 410k floor.",
+        "link": "National pension calculator",
+        "source": "Korea.kr"
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "What is the 2027 minimum wage?",
+          "a": "10,700 KRW an hour, 2,236,300 KRW a month at 40 hours a week, up 380 KRW (3.7%) from 10,320 KRW."
+        },
+        {
+          "q": "Will more be deducted from pay in 2027?",
+          "a": "Yes. Pension goes from 4.75% to 5% for employees and long-term care from 13.14% to 13.90% of the health premium. On 3M KRW pay, insurance rises 7,770 KRW a month; on a 50M KRW salary, take-home falls about 11,000 KRW a month."
+        },
+        {
+          "q": "What is the 2027 standard median income?",
+          "a": "6,929,885 KRW for 4 people and 2,736,042 KRW for one, up 6.70%. Livelihood thresholds are 875,533 KRW (1) and 2,217,563 KRW (4)."
+        }
+      ]
+    },
+    "asOf": "Checked Nov 6, 2026. Items will be added when the government publishes its 2027 changes guide."
   }
 }

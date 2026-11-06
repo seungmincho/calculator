@@ -4,6 +4,7 @@ export const curatedRelated: Record<string, string[]> = {
   // 급여·근로
   '/salary-calculator': ['/salary-table', '/four-insurance', '/bonus-calculator', '/year-end-tax', '/salary-rank', '/salary-comparison'],
   '/four-insurance': ['/salary-calculator', '/pay-slip', '/health-insurance', '/national-pension', '/salary-table', '/minimum-wage'],
+  '/changes-2027': ['/minimum-wage', '/four-insurance', '/salary-calculator', '/median-income', '/unemployment-benefit', '/child-benefit'],
   '/salary-comparison': ['/salary-calculator', '/salary-rank', '/salary-table', '/bonus-calculator', '/hourly-wage', '/year-end-tax'],
   '/salary-table': ['/salary-calculator', '/salary-rank', '/salary-comparison', '/year-end-tax'],
   '/salary-rank': ['/salary-calculator', '/salary-table', '/salary-comparison', '/median-income'],
@@ -99,6 +100,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/child-benefit': ['/parental-leave', '/government-subsidy', '/due-date', '/median-income', '/year-end-tax', '/budget-calculator'],
 
   // 날짜·나이
+  '/age-table': ['/age-calculator', '/lunar-converter', '/greeting-generator', '/dday-calculator'],
   '/age-calculator': ['/lunar-converter', '/dday-calculator', '/health-checkup', '/biorhythm', '/national-pension', '/military-discharge'],
   '/military-discharge': ['/dday-calculator', '/age-calculator', '/minimum-wage', '/gpa-calculator', '/youth-rent-subsidy', '/government-subsidy'],
 
