@@ -24,14 +24,15 @@ export default function CarLoanCalculator() {
   const t = useTranslations('carLoan')
   const sp = useSearchParams()
 
-  const [price, setPrice] = useState(() => parseNum(sp.get('p')) || 35_000_000)
+  // 빈칸(p=0·d=0·r=)도 그대로 받는다 — 기본값으로 바꾸면 받는 쪽 결과가 달라진다
+  const [price, setPrice] = useState(() => (sp.get('p') !== null ? parseNum(sp.get('p')) : 35_000_000))
   const [options, setOptions] = useState(() => parseNum(sp.get('o')))
   const [discount, setDiscount] = useState(() => parseNum(sp.get('dc')))
   const [byPct, setByPct] = useState(() => sp.get('dm') !== 'amt')
   const [downPct, setDownPct] = useState(() => clamp(numOr(sp.get('dp'), 30), 0, 100))
-  const [downAmt, setDownAmt] = useState(() => parseNum(sp.get('d')) || 10_000_000)
+  const [downAmt, setDownAmt] = useState(() => (sp.get('d') !== null ? parseNum(sp.get('d')) : 10_000_000))
   const [months, setMonths] = useState(() => { const m = numOr(sp.get('m'), 48); return (TERMS as readonly number[]).includes(m) ? m : 48 })
-  const [rate, setRate] = useState(() => (/^\d{1,2}(\.\d{1,2})?$/.test(sp.get('r') ?? '') ? sp.get('r')! : '6.0'))
+  const [rate, setRate] = useState(() => { const r = sp.get('r'); return r !== null && /^\d{0,2}(\.\d{0,2})?$/.test(r) ? r : '6.0' }) // 입력칸과 같은 규칙
   const [balloonOn, setBalloonOn] = useState(() => numOr(sp.get('b'), 0) > 0)
   const [balloonPct, setBalloonPct] = useState(() => clamp(numOr(sp.get('b'), 0), 0, 60) || 30)
   const [fuel, setFuel] = useState<Fuel>(() => (FUELS.includes(sp.get('f') as Fuel) ? (sp.get('f') as Fuel) : 'normal'))

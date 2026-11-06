@@ -102,7 +102,7 @@ export default function BogeumjariLoanCalculator() {
     const ty = get('type'); if (ty && (LOAN_TYPES as string[]).includes(ty)) setLoanType(ty as LoanType);
     const pd = get('period'); if (pd && pd in PERIOD_RATES) setPeriod(pd);
     const c = get('children'); if (c && ['0', '1', '2', '3plus'].includes(c)) setChildren(c);
-    const a = get('age'); if (a && /^\d{1,3}$/.test(a)) setAge(a);
+    const a = get('age'); if (a !== null && /^\d{0,3}$/.test(a)) setAge(a); // 빈칸(age=)도 그대로 — 기본 35세로 바꾸면 결과가 달라진다
     const o = get('owned'); if (o && ['0', '1', '2'].includes(o)) setOwned(o as Owned);
     const k = get('kind'); if (k === 'apt' || k === 'other') setKind(k);
     const rg = get('region'); if (rg && (REGIONS as string[]).includes(rg)) setRegion(rg as Region);

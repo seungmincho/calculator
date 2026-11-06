@@ -67,7 +67,8 @@ export default function DsrCalculator() {
   }
   const sp = useSearchParams()
 
-  const [income, setIncome] = useState(() => Math.min(parseNum(sp.get('inc') ?? '') || 60_000_000, 10 * EOK))
+  // inc=0(빈칸)도 그대로 — 기본값으로 바꾸면 받는 쪽 DSR 이 달라진다
+  const [income, setIncome] = useState(() => (sp.get('inc') !== null ? Math.min(parseNum(sp.get('inc') ?? ''), 10 * EOK) : 60_000_000))
   const [sector, setSector] = useState<Sector>(() => pick(sp.get('sec'), SECTORS, 'bank'))
   const [kind, setKind] = useState<'mortgage' | 'credit'>(() => pick(sp.get('k'), KINDS, 'mortgage'))
   const [amount, setAmount] = useState(() => (sp.get('a') !== null ? Math.min(parseNum(sp.get('a') ?? ''), 100 * EOK) : 300_000_000))

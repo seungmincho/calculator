@@ -103,7 +103,8 @@ export default function CalorieCalculator() {
       gender: sex, age: String(age), height: String(height), weight: String(weight),
       activityLevel: activity, bmrFormula: formula, goal,
     })
-    if (goal !== 'maintain') { p.set('pace', String(pace)); p.set('targetWeight', String(target)) }
+    // 목표 체중은 계산에 쓰는 값(25~300)으로 — 빈칸(0)을 그대로 쓰면 받는 쪽이 기본 70kg 으로 읽는다
+    if (goal !== 'maintain') { p.set('pace', String(pace)); p.set('targetWeight', String(clampNum(target, 25, 300, DEF.tw))) }
     if (bodyFat) p.set('bf', String(bodyFat))
     window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
     setSaved(false)

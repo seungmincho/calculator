@@ -58,7 +58,7 @@ export default function UnemploymentBenefit() {
     const amt = Number(g('amt'))
     const legacyWage = Number(g('wage'))
     if (m) setMode(m)
-    if (amt > 0) setAmount(amt)
+    if (amt > 0 || g('amt') === '0') setAmount(amt) // amt=0(빈칸)도 그대로 — 기본 300만원으로 바꾸면 결과가 달라진다
     else if (legacyWage > 0) { setMode('day'); setAmount(legacyWage) }
     const a = pick(g('age'), AGES); if (a) setAge(a)
     const p = pick(g('period'), PERIODS); if (p) setPeriod(p)

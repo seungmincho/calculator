@@ -29,6 +29,8 @@ const commas = (s: string) => {
 }
 const compact = new Intl.NumberFormat('ko-KR', { notation: 'compact', maximumFractionDigits: 1 })
 const isDecimal = (s: string) => /^\d*\.?\d*$/.test(s)
+// 빈칸(r=)도 그대로 받는다 — 기본값으로 바꾸면 받는 쪽 결과가 달라진다
+const dec = (v: string | null, d: string) => (v !== null && isDecimal(v) ? v : d)
 const oneOf = <T extends string>(v: string | null, list: readonly T[], d: T): T => (list.includes(v as T) ? (v as T) : d)
 const DEFAULT_SC = ['3', '5', '7']
 const LINKS = [
@@ -46,19 +48,19 @@ export default function CompoundCalculator() {
   const [mode, setMode] = useState<Mode>(() => oneOf(sp.get('m'), ['lump', 'dca', 'goal'] as const, Number(sp.get('md')) > 0 ? 'dca' : 'lump'))
   const [principalText, setPrincipalText] = useState(() => commas(sp.get('p') ?? '10000000'))
   const [monthlyText, setMonthlyText] = useState(() => commas(sp.get('md') || '500000'))
-  const [rateText, setRateText] = useState(() => (isDecimal(sp.get('r') ?? '') && sp.get('r')) || '5')
-  const [periodText, setPeriodText] = useState(() => (isDecimal(sp.get('t') ?? '') && sp.get('t')) || '10')
+  const [rateText, setRateText] = useState(() => dec(sp.get('r'), '5'))
+  const [periodText, setPeriodText] = useState(() => dec(sp.get('t'), '10'))
   const [unit, setUnit] = useState<'years' | 'months'>(() => (sp.get('pt') === 'months' ? 'months' : 'years'))
   const [freq, setFreq] = useState<Freq>(() => oneOf(sp.get('f'), FREQS, 'yearly'))
   const [timing, setTiming] = useState<DepositTiming>(() => (sp.get('dt') === 'end' ? 'end' : 'begin'))
   const [tax, setTax] = useState<TaxKey>(() => oneOf(sp.get('tax'), TAX_KEYS, 'normal'))
   const [taxTiming, setTaxTiming] = useState<TaxTiming>(() => (sp.get('tt') === 'yearly' ? 'yearly' : 'maturity'))
-  const [infText, setInfText] = useState(() => (isDecimal(sp.get('inf') ?? '') && sp.get('inf')) || '2')
+  const [infText, setInfText] = useState(() => dec(sp.get('inf'), '2'))
   const [goalText, setGoalText] = useState(() => commas(sp.get('g') || '100000000'))
   const [solve, setSolve] = useState<Solve>(() => (sp.get('gs') === 'rate' ? 'rate' : 'monthly'))
   const [scenarios, setScenarios] = useState<string[]>(() => {
     const s = (sp.get('sc') ?? '').split('~')
-    return s.length === 3 && s.every((x) => x !== '' && isDecimal(x)) ? s : DEFAULT_SC
+    return s.length === 3 && s.every((x) => isDecimal(x)) ? s : DEFAULT_SC
   })
 
   const principal = num(principalText)

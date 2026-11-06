@@ -62,9 +62,10 @@ export default function ParentalLeaveCalculator() {
     const w = pick(g('who'), WHOS) ?? (g('sixPlusSix') === '0' ? 'one' : g('sixPlusSix') === '1' ? 'both' : null)
     if (w) setWho(w)
     const o = pick(g('order'), ORDERS); if (o) setOrder(o)
-    const wage = num(g('wage')); if (wage > 0) setMomWage(g('type') === 'annual' ? Math.floor(wage / 12) : wage)
+    // wage=0(빈칸)도 그대로 — 기본 월급으로 바꾸면 받는 쪽 결과가 달라진다
+    const wage = num(g('wage')); if (wage > 0 || g('wage') === '0') setMomWage(g('type') === 'annual' ? Math.floor(wage / 12) : wage)
     const d = num(g('duration')); if (d >= 1 && d <= 18) setMomMonths(d)
-    const fw = num(g('fwage')); if (fw > 0) setDadWage(fw)
+    const fw = num(g('fwage')); if (fw > 0 || g('fwage') === '0') setDadWage(fw)
     const fd = num(g('fduration')); if (fd >= 1 && fd <= 18) setDadMonths(fd)
     const s = toDate(g('start')) ?? todayKST()
     setStart(s)

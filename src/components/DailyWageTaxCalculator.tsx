@@ -62,7 +62,8 @@ export default function DailyWageTaxCalculator() {
   const sp = useSearchParams()
 
   const [wage, setWage] = useState(() => intParam(sp.get('w'), DEF.wage, 0, MAX_WAGE))
-  const [days, setDays] = useState(() => intParam(sp.get('d'), DEF.days, 1, MAX_DAYS))
+  // d=0(빈칸)도 그대로 — 기본 20일로 바꾸면 받는 쪽 결과가 달라진다(계산은 1일로 본다)
+  const [days, setDays] = useState(() => intParam(sp.get('d'), DEF.days, 0, MAX_DAYS))
   const [mode, setMode] = useState<PayMode>(() => (MODES.find((m) => m === sp.get('m')) ?? DEF.mode))
   const [weekDays, setWeekDays] = useState(() => intParam(sp.get('wd'), DEF.weekDays, 1, 7))
   const [meal, setMeal] = useState(() => intParam(sp.get('ml'), 0, 0, MEAL_MONTHLY_CAP))
@@ -71,7 +72,7 @@ export default function DailyWageTaxCalculator() {
   useEffect(() => {
     const q = new URLSearchParams()
     if (wage !== DEF.wage) q.set('w', String(wage))
-    if (days && days !== DEF.days) q.set('d', String(days))
+    if (days !== DEF.days) q.set('d', String(days))
     if (mode !== DEF.mode) q.set('m', mode)
     if (mode === 'week' && weekDays !== DEF.weekDays) q.set('wd', String(weekDays))
     if (meal > 0) q.set('ml', String(meal))

@@ -54,12 +54,13 @@ export default function MovingCost() {
 
   // ── 입력 (URL 복원) ──
   const [sizeUnit, setSizeUnit] = useState<SizeUnit>(() => (sp.get('unit') === 'sqm' ? 'sqm' : 'pyeong'))
-  const [sizeValue, setSizeValue] = useState(() => sp.get('size') || DEFAULTS.size)
+  // 빈칸(size=·km=)도 그대로 받는다 — 기본값으로 바꾸면 받는 쪽 견적이 달라진다
+  const [sizeValue, setSizeValue] = useState(() => sp.get('size') ?? DEFAULTS.size)
   const [type, setType] = useState<MoveType>(() => {
     const p = sp.get('type') as MoveType
     return MOVE_TYPES.includes(p) ? p : DEFAULTS.type
   })
-  const [km, setKm] = useState(() => sp.get('km') || String(LEGACY_DIST[sp.get('dist') ?? ''] ?? DEFAULTS.km))
+  const [km, setKm] = useState(() => sp.get('km') ?? String(LEGACY_DIST[sp.get('dist') ?? ''] ?? DEFAULTS.km))
   const [from, setFrom] = useState<Side>(() => parseSide(sp.get('from'), DEFAULTS.from))
   const [to, setTo] = useState<Side>(() => parseSide(sp.get('to'), DEFAULTS.to))
   const [storageDays, setStorageDays] = useState(() => int(sp.get('store'), DEFAULTS.store, 0, 365))
