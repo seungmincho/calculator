@@ -1,13 +1,24 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "ToolHub calculation API",
+    "title": "ToolHub calculation and tool search API",
     "version": "1.0.0",
-    "description": "Read-only Korean calculators from toolhub.ai.kr for AI agents and programs: take-home pay, social insurance, age/zodiac and sunrise/sunset. Results use the same code as the web pages (2026 and 2027 Korean rates). All amounts are KRW. No key needed; please cache responses.",
+    "description": "Read-only Korean calculators from toolhub.ai.kr for AI agents and programs: take-home pay, social insurance, age/zodiac and sunrise/sunset, plus a search over all ToolHub tools. The same tools are available as a remote MCP server at https://toolhub.ai.kr/mcp (Streamable HTTP, no auth). Results use the same code as the web pages (2026 and 2027 Korean rates). All amounts are KRW. No key needed; please cache responses.",
     "contact": { "url": "https://toolhub.ai.kr/about/" }
   },
   "servers": [{ "url": "https://toolhub.ai.kr" }],
   "paths": {
+    "/api/tools": {
+      "get": {
+        "operationId": "searchTools",
+        "summary": "Find ToolHub pages (calculators, converters, planners, games) for a need",
+        "parameters": [
+          { "name": "q", "in": "query", "required": true, "description": "Keywords in Korean or English, e.g. 연봉 실수령액, 김장 시기, json formatter", "schema": { "type": "string" } },
+          { "name": "limit", "in": "query", "description": "Max results, 1–20 (default 8)", "schema": { "type": "integer", "minimum": 1, "maximum": 20 } }
+        ],
+        "responses": { "200": { "description": "Matching tools with name, description, category and URL" }, "400": { "description": "q missing" } }
+      }
+    },
     "/api/calc/salary": {
       "get": {
         "operationId": "netSalary",
