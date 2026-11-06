@@ -1,11 +1,11 @@
 // 툴허브 원격 MCP 서버 (Streamable HTTP, 상태 없음, 읽기 전용). JSON-RPC 처리만 여기서 하고 functions/mcp.ts 가 HTTP 를 맡는다.
-// 도구: search_tools + /api/calc 4종(agentApi.ts 와 같은 계산). 검증: scripts/check-mcp.ts
+// 도구: search_tools + /api/calc 7종(agentApi.ts 와 같은 계산). 검증: scripts/check-mcp.ts
 import { handleCalc } from './agentApi.ts'
 import { searchTools, TOOL_COUNT } from './toolSearch.ts'
 
 export const PROTOCOL_VERSIONS = ['2025-06-18', '2025-03-26', '2024-11-05'] as const
 const SERVER_INFO = { name: 'toolhub', title: 'ToolHub (툴허브)', version: '1.0.0' }
-const INSTRUCTIONS = `ToolHub (toolhub.ai.kr) is a Korean web tool site with ${TOOL_COUNT} free tools. Use search_tools to find the right page for a user's need (Korean or English keywords), and the calculator tools for exact Korean take-home pay, social insurance (2026/2027 rates), age/zodiac and sunrise/sunset. Amounts are KRW; times are KST. Each result links to the page so users can check it.`
+const INSTRUCTIONS = `ToolHub (toolhub.ai.kr) is a Korean web tool site with ${TOOL_COUNT} free tools. Use search_tools to find the right page for a user's need (Korean or English keywords), and the calculator tools for exact Korean take-home pay, social insurance (2026/2027 rates), severance pay, unemployment benefit, minimum wage, age/zodiac and sunrise/sunset. Amounts are KRW; times are KST. Each result links to the page so users can check it.`
 
 const str = (description: string) => ({ type: 'string', description })
 const numb = (description: string) => ({ type: 'number', description })
@@ -26,8 +26,17 @@ export const TOOLS = [
   { name: 'sun_times', title: 'Sunrise and sunset in Korea', description: 'Sunrise, sunset, solar noon, day length, civil twilight and golden hour (KST) for a Korean city or coordinates.',
     inputSchema: { type: 'object', properties: { date: str('Date YYYY-MM-DD, default today KST'), city: str('seoul, busan, incheon, daegu, gwangju, daejeon, ulsan, jeju, gangneung, …'), lat: numb('Latitude 33–39 (with lon)'), lon: numb('Longitude 124–132') } },
     annotations: { readOnlyHint: true, openWorldHint: false } },
+  { name: 'severance_pay', title: 'Korean severance pay (퇴직금)', description: 'Statutory severance pay from service dates and average wage, with retirement income tax and net amount.',
+    inputSchema: { type: 'object', properties: { start: str('Hire date YYYY-MM-DD'), end: str('Retirement date YYYY-MM-DD (day after the last working day), default today KST'), pay: numb('Average monthly pre-tax wage of the last 3 months in KRW'), bonus: numb('Bonuses paid in the last 12 months, default 0'), leave: numb('Unused annual leave pay in the last 12 months, default 0') }, required: ['start', 'pay'] },
+    annotations: { readOnlyHint: true, openWorldHint: false } },
+  { name: 'unemployment_benefit', title: 'Korean unemployment benefit (실업급여)', description: 'Daily job-seeking benefit (60% of average wage within the cap/floor), benefit days by age and insured years, total and earliest dates. Eligibility is not checked.',
+    inputSchema: { type: 'object', properties: { pay: numb('Average monthly pre-tax wage of the last 3 months in KRW'), daily: numb('Average daily wage in KRW (instead of pay)'), age: { type: 'integer', description: 'Age on the leave date' }, years: numb('Employment insurance period in years'), leave: str('Last working day YYYY-MM-DD, default today KST'), hours: numb('Contractual hours per day 1–8, default 8') }, required: ['age', 'years'] },
+    annotations: { readOnlyHint: true, openWorldHint: false } },
+  { name: 'minimum_wage', title: 'Korean minimum wage (최저임금)', description: 'Minimum hourly wage for 2026/2027 converted to daily, weekly (with paid weekly holiday), monthly and yearly pay for given weekly hours.',
+    inputSchema: { type: 'object', properties: { year: { type: 'integer', enum: [2026, 2027], description: 'Default: current year' }, weeklyHours: numb('Contractual hours per week, default 40'), days: { type: 'integer', description: 'Working days per week, default 5' }, probation: { type: 'boolean', description: '10% probation reduction, default false' } } },
+    annotations: { readOnlyHint: true, openWorldHint: false } },
 ] as const
-const CALC: Record<string, string> = { net_salary: 'salary', social_insurance: 'four-insurance', korean_age: 'age', sun_times: 'sun' }
+const CALC: Record<string, string> = { net_salary: 'salary', social_insurance: 'four-insurance', korean_age: 'age', sun_times: 'sun', severance_pay: 'retirement', unemployment_benefit: 'unemployment', minimum_wage: 'minimum-wage' }
 
 type Id = string | number | null
 const ok = (id: Id, result: unknown) => ({ jsonrpc: '2.0', id, result })
@@ -43,7 +52,7 @@ function callTool(name: string, args: Record<string, unknown>, now: number) {
   const calc = CALC[name]
   if (!calc) return null
   const q = new URLSearchParams()
-  for (const [k, v] of Object.entries(args)) if (v != null && (typeof v === 'string' || typeof v === 'number')) q.set(k, String(v))
+  for (const [k, v] of Object.entries(args)) if (v != null && (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean')) q.set(k, String(v))
   const r = handleCalc(calc, q, now)
   return r.status === 200 ? text(r.body) : text(String(r.body.error ?? 'invalid input'), true)
 }

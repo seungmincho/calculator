@@ -39,11 +39,15 @@ assert.equal(s.structuredContent.monthly.net, 3_560_528); assert.equal(JSON.pars
 assert.equal(call('social_insurance', { pay: 3_000_000 }).structuredContent.employee, 272_080)
 assert.equal(call('korean_age', { birth: '1990-05-01', on: '2027-01-01' }).structuredContent.internationalAge, 36)
 assert.equal(call('sun_times', { date: '2026-01-01', city: 'seoul' }).structuredContent.sunrise, '07:47')
+assert.equal(call('severance_pay', { start: '2021-03-02', end: '2026-03-02', pay: 3_000_000 }).structuredContent.retirementPay, 15_008_219)
+assert.equal(call('unemployment_benefit', { pay: 6_000_000, age: 45, years: 4, leave: '2026-10-31' }).structuredContent.total, 68_100 * 180)
+assert.equal(call('minimum_wage', { year: 2026, weeklyHours: 20, days: 5, probation: false }).structuredContent.input.probation, false)
+assert.equal(call('minimum_wage', { year: 2027, probation: true }).structuredContent.hourly, 10_700 - 1_070)
 const found = call('search_tools', { query: '연봉 실수령액', limit: 3 }).structuredContent
 assert.equal(found.results.some((h: { url: string }) => h.url.endsWith('/salary-calculator/')), true)
 
 // Bad input → tool error result (isError), not a protocol error
-for (const [name, args] of [['net_salary', {}], ['net_salary', { annual: -1 }], ['sun_times', { city: 'tokyo' }], ['search_tools', {}], ['search_tools', { query: ' ' }]] as const) {
+for (const [name, args] of [['net_salary', {}], ['net_salary', { annual: -1 }], ['sun_times', { city: 'tokyo' }], ['search_tools', {}], ['search_tools', { query: ' ' }], ['severance_pay', { pay: 3_000_000 }], ['unemployment_benefit', { pay: 3_000_000 }]] as const) {
   const r = call(name, args); assert.equal(r.isError, true, `${name} ${JSON.stringify(args)}`); assert.ok(r.content[0].text.length > 0)
 }
 console.log(`check-mcp OK (${TOOL_COUNT} tools, ${TOOLS.length} MCP tools)`)

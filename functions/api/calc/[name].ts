@@ -1,4 +1,4 @@
-// Cloudflare Pages Function — /api/calc/<salary|four-insurance|age|sun> (읽기 전용 JSON, CORS 허용)
+// Cloudflare Pages Function — /api/calc/<salary|four-insurance|age|sun|retirement|unemployment|minimum-wage> (읽기 전용 JSON, CORS 허용)
 // 계산은 src/lib/agentApi.ts. 같은 입력은 같은 결과라 엣지·브라우저 캐시 1시간(1/1 요율 전환 고려).
 import { handleCalc } from '../../../src/lib/agentApi.ts'
 

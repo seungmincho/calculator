@@ -8,9 +8,13 @@ import { countingAge, manAge, schoolEntryYear, yeonAge, zodiacOf } from '../util
 import { yearInfo } from '../utils/ageTable.ts'
 import { kstDate, kstTime, sunTimes } from './sun/solar.ts'
 import { CITIES } from './sun/places.ts'
+import { calcRetirement } from '../utils/retirementPay.ts'
+import { WAITING_DAYS, avgDailyWage, benefitDays, dailyBenefit, dailyCap, type InsurancePeriod } from '../utils/unemploymentBenefit.ts'
+import { addDays } from '../utils/dday.ts'
+import { YEARS as MIN_WAGE_YEARS, calcMinWage, raiseFrom } from '../utils/minimumWageCalc.ts'
 
 const SITE = 'https://toolhub.ai.kr'
-export const CALC_NAMES = ['salary', 'four-insurance', 'age', 'sun'] as const
+export const CALC_NAMES = ['salary', 'four-insurance', 'age', 'sun', 'retirement', 'unemployment', 'minimum-wage'] as const
 export interface CalcResult { status: number; body: Record<string, unknown> }
 
 class BadInput extends Error {}
@@ -109,9 +113,56 @@ function sun(q: URLSearchParams, now: number) {
     basis: 'sea-level horizon, refraction -0.833°, about ±1 minute vs KASI', page: `${SITE}/sunrise-sunset/?date=${date}${cityId ? `&city=${cityId}` : ''}` }
 }
 
+function retirement(q: URLSearchParams, now: number) {
+  const start = day(q, 'start', '')
+  const end = day(q, 'end', kstDate(now))
+  if (end <= start) bad('end must be after start')
+  const pay = num(q, 'pay', 1, 1e9), bonus = num(q, 'bonus', 0, 1e10, 0), leave = num(q, 'leave', 0, 1e9, 0)
+  const r = calcRetirement({ start, end, monthly: pay, bonus, leave })!
+  return { tool: 'retirement', unit: 'KRW', input: { start, end, pay, bonus, leave },
+    serviceDays: r.days, service: { years: r.years, months: r.months }, eligible: r.eligible, ...(r.eligible ? {} : { eligibleFromEnd: r.oneYearEnd }),
+    averageDailyWage: Math.floor(r.dailyWage), retirementPay: r.pay, tax: { incomeTax: r.tax, localIncomeTax: r.localTax, total: r.totalTax }, net: r.net,
+    page: `${SITE}/retirement-calculator/?s=${start}&e=${end}&pay=${pay}&bonus=${bonus}&leave=${leave}`,
+    notes: ['end = retirement date, the day after the last working day.', 'pay = average monthly pre-tax wage of the last 3 months; bonus and leave = totals paid in the last 12 months (3/12 is added).', 'Statutory severance pay (퇴직금) with retirement income tax; DC/DB pension plans can differ.'] }
+}
+
+const periodOf = (years: number): InsurancePeriod => (years < 1 ? 'under1' : years < 3 ? '1to3' : years < 5 ? '3to5' : years < 10 ? '5to10' : 'over10')
+function unemployment(q: URLSearchParams, now: number) {
+  const leave = day(q, 'leave', kstDate(now))
+  const age = Math.floor(num(q, 'age', 15, 100)), years = num(q, 'years', 0, 60), hours = num(q, 'hours', 1, 8, 8)
+  const daily = q.get('daily') ? Math.floor(num(q, 'daily', 1, 1e7)) : null
+  const pay = daily == null ? num(q, 'pay', 1, 1e9) : null
+  const avg = daily ?? avgDailyWage(pay!, leave)
+  const group = age >= 50 ? 'over50' : 'under50', period = periodOf(years)
+  const d = dailyBenefit(avg, hours, leave), days = benefitDays(group, period)
+  const apply = addDays(leave, 1), paidFrom = addDays(apply, WAITING_DAYS)
+  return { tool: 'unemployment', unit: 'KRW', input: { leave, age, years, hours, ...(daily == null ? { pay } : { daily }) },
+    averageDailyWage: avg, dailyBenefit: d.daily, applied: d.applied, dailyCap: dailyCap(leave), dailyFloor: d.floor,
+    benefitDays: days, total: d.daily * days, per28Days: d.daily * 28,
+    earliestDates: { apply, paidFrom, lastPaidDay: addDays(paidFrom, days - 1) },
+    page: `${SITE}/unemployment-benefit/?mode=${daily == null ? 'month' : 'day'}&amt=${daily ?? pay}&age=${group}&period=${period}&reason=involuntary&leave=${leave}${hours === 8 ? '' : `&h=${hours}`}`,
+    notes: ['leave = last working day. Eligibility (180+ insured days in the 18 months before leaving, involuntary leave, job seeking) is not checked.', 'Benefit = 60% of average daily wage within the daily cap/floor for the leave date; benefit days by age (50+) and insured years.', 'Dates assume applying the day after leaving; 7 waiting days are unpaid.'] }
+}
+
+function minimumWage(q: URLSearchParams, now: number) {
+  const years = MIN_WAGE_YEARS as readonly number[], cur = Number(kstDate(now).slice(0, 4)), yv = q.get('year')
+  const year = yv == null || yv === '' ? (years.includes(cur) ? cur : years[years.length - 1]) : years.includes(Number(yv)) ? Number(yv) : bad(`year must be one of ${years.join(', ')}`)
+  const weeklyHours = num(q, 'weeklyHours', 1, 52, 40), days = Math.floor(num(q, 'days', 1, 7, 5))
+  const probation = q.get('probation') === '1' || q.get('probation') === 'true'
+  const r = calcMinWage(year, weeklyHours, days, probation), raise = raiseFrom(year)
+  const full = r.hours === 40 && r.days === 5
+  return { tool: 'minimum-wage', unit: 'KRW', year, input: { weeklyHours, days, probation },
+    hourly: r.hourly, daily: r.daily, weekly: r.weekly, weeklyHolidayPay: r.holidayPay, weeklyHolidayHours: r.holidayHours, monthlyHours: r.monthlyHours, monthly: r.monthly, yearly: r.yearly,
+    raise: { previousHourly: raise.prev, diff: raise.diff, ratePct: Math.round(raise.rate * 100) / 100 },
+    ...(r.clipped ? { clippedTo: { weeklyHours: r.hours, note: 'Contractual hours are capped at 8 per day and 40 per week; extra hours are overtime and not in this table.' } } : {}),
+    page: `${SITE}/minimum-wage/?y=${year}${full ? '' : `&m=pt&h=${r.hours}&d=${r.days}`}${probation ? '&p=1' : ''}`,
+    notes: ['Monthly = hourly × (weekly hours + paid weekly holiday hours) × 365/7/12, rounded (40h → 209h).', 'Probation 10% reduction applies only to 1+ year contracts, first 3 months, non-manual jobs.'] }
+}
+
 export function handleCalc(name: string, q: URLSearchParams, now = Date.now()): CalcResult {
   try {
-    const body = name === 'salary' ? salary(q) : name === 'four-insurance' ? insurance(q) : name === 'age' ? age(q, now) : name === 'sun' ? sun(q, now) : null
+    const fn: Record<string, (q: URLSearchParams, now: number) => Record<string, unknown>> = { salary, 'four-insurance': insurance, age, sun, retirement, unemployment, 'minimum-wage': minimumWage }
+    const body = Object.prototype.hasOwnProperty.call(fn, name) ? fn[name](q, now) : null
     if (!body) return { status: 404, body: { error: `unknown calculator '${name}'`, available: CALC_NAMES, docs: `${SITE}/openapi.json` } }
     return { status: 200, body: { ...body, source: 'ToolHub (toolhub.ai.kr)' } }
   } catch (e) {

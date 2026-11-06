@@ -15,12 +15,15 @@
 - [4대보험 근로자·회사 부담](https://toolhub.ai.kr/api/calc/four-insurance?pay=3000000): pay 또는 annual, nonTaxable, size, accident(%), year
 - [만 나이·띠·입학 연도](https://toolhub.ai.kr/api/calc/age?birth=1990-05-01): birth 또는 year, on(기준일)
 - [일출·일몰](https://toolhub.ai.kr/api/calc/sun?date=2027-01-01&city=seoul): date, city 또는 lat·lon(한국)
+- [퇴직금·퇴직소득세](https://toolhub.ai.kr/api/calc/retirement?start=2021-03-02&pay=3000000): start, end(퇴직일 = 마지막 근무 다음 날), pay(3개월 월평균), bonus, leave
+- [실업급여](https://toolhub.ai.kr/api/calc/unemployment?pay=3000000&age=40&years=3): pay 또는 daily, age, years(고용보험 기간), leave(이직일), hours
+- [최저임금 환산](https://toolhub.ai.kr/api/calc/minimum-wage?year=2027&weeklyHours=40): year(2026·2027), weeklyHours, days, probation
 
 - [도구 검색](https://toolhub.ai.kr/api/tools?q=연봉+실수령액): q(한국어·영어 키워드), limit(최대 20) — 필요에 맞는 툴허브 페이지 이름·설명·URL
 
 ## MCP 서버 (원격, 읽기 전용)
 
-Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Streamable HTTP 서버로 추가하면 됩니다(인증 없음). 도구: search_tools(도구 검색), net_salary(연봉 실수령액), social_insurance(4대보험), korean_age(만 나이·띠), sun_times(일출·일몰). 계산은 위 API와 같습니다.
+Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Streamable HTTP 서버로 추가하면 됩니다(인증 없음). 도구: search_tools(도구 검색), net_salary(연봉 실수령액), social_insurance(4대보험), korean_age(만 나이·띠), sun_times(일출·일몰), severance_pay(퇴직금), unemployment_benefit(실업급여), minimum_wage(최저임금). 계산은 위 API와 같습니다.
 
 ## 주요 도구 (한국 2026·2027 기준)
 

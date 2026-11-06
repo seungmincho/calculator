@@ -3,7 +3,7 @@
   "info": {
     "title": "ToolHub calculation and tool search API",
     "version": "1.0.0",
-    "description": "Read-only Korean calculators from toolhub.ai.kr for AI agents and programs: take-home pay, social insurance, age/zodiac and sunrise/sunset, plus a search over all ToolHub tools. The same tools are available as a remote MCP server at https://toolhub.ai.kr/mcp (Streamable HTTP, no auth). Results use the same code as the web pages (2026 and 2027 Korean rates). All amounts are KRW. No key needed; please cache responses.",
+    "description": "Read-only Korean calculators from toolhub.ai.kr for AI agents and programs: take-home pay, social insurance, severance pay, unemployment benefit, minimum wage, age/zodiac and sunrise/sunset, plus a search over all ToolHub tools. The same tools are available as a remote MCP server at https://toolhub.ai.kr/mcp (Streamable HTTP, no auth). Results use the same code as the web pages (2026 and 2027 Korean rates). All amounts are KRW. No key needed; please cache responses.",
     "contact": { "url": "https://toolhub.ai.kr/about/" }
   },
   "servers": [{ "url": "https://toolhub.ai.kr" }],
@@ -72,6 +72,48 @@
           { "name": "lon", "in": "query", "description": "Longitude within Korea (124–132)", "schema": { "type": "number" } }
         ],
         "responses": { "200": { "description": "Times as HH:MM in KST" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/api/calc/retirement": {
+      "get": {
+        "operationId": "severancePay",
+        "summary": "Statutory severance pay (퇴직금) with retirement income tax and net amount",
+        "parameters": [
+          { "name": "start", "in": "query", "required": true, "description": "Hire date YYYY-MM-DD", "schema": { "type": "string", "format": "date" } },
+          { "name": "end", "in": "query", "description": "Retirement date YYYY-MM-DD, the day after the last working day (default today in KST)", "schema": { "type": "string", "format": "date" } },
+          { "name": "pay", "in": "query", "required": true, "description": "Average monthly pre-tax wage of the last 3 months (KRW)", "schema": { "type": "number" } },
+          { "name": "bonus", "in": "query", "description": "Bonuses paid in the last 12 months (default 0)", "schema": { "type": "number" } },
+          { "name": "leave", "in": "query", "description": "Unused annual leave pay in the last 12 months (default 0)", "schema": { "type": "number" } }
+        ],
+        "responses": { "200": { "description": "Service days, eligibility (1 year or more), severance pay, tax and net" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/api/calc/unemployment": {
+      "get": {
+        "operationId": "unemploymentBenefit",
+        "summary": "Unemployment benefit (실업급여): daily amount within cap/floor, benefit days, total and earliest dates (eligibility not checked)",
+        "parameters": [
+          { "name": "pay", "in": "query", "description": "Average monthly pre-tax wage of the last 3 months (KRW)", "schema": { "type": "number" } },
+          { "name": "daily", "in": "query", "description": "Average daily wage (KRW), instead of pay", "schema": { "type": "number" } },
+          { "name": "age", "in": "query", "required": true, "description": "Age on the leave date (50+ gets longer benefit days)", "schema": { "type": "integer" } },
+          { "name": "years", "in": "query", "required": true, "description": "Employment insurance period in years", "schema": { "type": "number" } },
+          { "name": "leave", "in": "query", "description": "Last working day YYYY-MM-DD (default today in KST)", "schema": { "type": "string", "format": "date" } },
+          { "name": "hours", "in": "query", "description": "Contractual hours per day 1–8 (default 8)", "schema": { "type": "number" } }
+        ],
+        "responses": { "200": { "description": "Daily benefit, applied cap/floor, benefit days, total" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/api/calc/minimum-wage": {
+      "get": {
+        "operationId": "minimumWage",
+        "summary": "Korean minimum wage (최저임금) 2026/2027 as hourly, daily, weekly (with paid weekly holiday), monthly and yearly pay",
+        "parameters": [
+          { "name": "year", "in": "query", "description": "2026 or 2027 (default current year)", "schema": { "type": "integer", "enum": [2026, 2027] } },
+          { "name": "weeklyHours", "in": "query", "description": "Contractual hours per week (default 40)", "schema": { "type": "number" } },
+          { "name": "days", "in": "query", "description": "Working days per week (default 5)", "schema": { "type": "integer" } },
+          { "name": "probation", "in": "query", "description": "1 for the 10% probation reduction", "schema": { "type": "string", "enum": ["0", "1"] } }
+        ],
+        "responses": { "200": { "description": "Pay by period and raise from the previous year" }, "400": { "description": "Invalid input" } }
       }
     }
   }
