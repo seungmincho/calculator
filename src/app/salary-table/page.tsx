@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { glassCard } from '@/lib/glass'
-import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { INSURANCE, insuranceFor, pct } from '@/utils/insuranceRates'
 import RelatedTools from '@/components/RelatedTools'
-import { BASE, BRACKETS, SITE, TABLE_ROWS, YEAR, calcLink, manwon, net, salaryLabel, won } from './lib'
+import { BASE, BRACKETS, COMPARE_YEAR, SITE, TABLE_ROWS, YEAR, calcLink, manwon, net, netIn, salaryLabel, signedWon, won } from './lib'
 
 const TITLE = `연봉 실수령액 표 ${YEAR} - 2천만~2억 월 실수령액 한눈에 | 툴허브`
 const DESC = `${YEAR}년 4대보험·소득세 기준 연봉 2,000만~2억 구간별 월 실수령액 표. 국민연금 ${pct(INSURANCE.pensionRate)}·건강보험 ${pct(INSURANCE.healthRate)} 반영, 부양가족·비과세 조건별 계산기 바로가기.`
@@ -17,7 +17,12 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE}/salary-table/` },
 }
 
+const next = COMPARE_YEAR && COMPARE_YEAR > YEAR ? insuranceFor(COMPARE_YEAR) : null
 const FAQ = [
+  ...(next ? [{
+    q: `${next.year}년에는 실수령액이 얼마나 줄어드나요?`,
+    a: `${next.year}년 1월부터 국민연금 근로자 부담이 ${pct(INSURANCE.pensionRate)}에서 ${pct(next.pensionRate)}로, 장기요양보험료가 건강보험료의 ${pct(INSURANCE.longTermCareRate)}에서 ${pct(next.longTermCareRate)}로 오릅니다. 연봉 5,000만원(부양가족 1인·비과세 20만원)이면 월 실수령액이 약 ${won(net(5000).netMonthly - netIn(5000, next.year).netMonthly)} 줄어듭니다.${next.healthRate === INSURANCE.healthRate ? ' 건강보험료율은 동결입니다.' : ''}${next.employmentProposed ? ` 고용보험료 인상(근로자 ${pct(next.employmentRate)}→${pct(next.employmentProposed)})은 정부안이라 아직 반영하지 않았습니다.` : ''}`,
+  }] : []),
   { q: '이 표의 계산 기준은 무엇인가요?', a: `부양가족 1인(본인), 월 비과세 식대 20만원, ${YEAR}년 4대보험 요율(국민연금 ${pct(INSURANCE.pensionRate)}, 건강보험 ${pct(INSURANCE.healthRate)}, 장기요양 건강보험료의 ${pct(INSURANCE.longTermCareRate)}, 고용보험 ${pct(INSURANCE.employmentRate)})과 국세청 근로소득 간이세액표(2026.2.27 개정)를 적용했습니다. 부양가족이 늘면 실수령액은 표보다 많아집니다.` },
   { q: '회사에서 받는 월급과 왜 조금 다른가요?', a: '이 표의 소득세는 회사가 실제로 쓰는 국세청 근로소득 간이세액표(2026.2.27 개정) 기준이라 급여명세서와 거의 같습니다. 비과세 항목(식대 20만원 기준)·부양가족 수가 다르거나 성과급이 있는 달, 4대보험 보수월액이 전년도 기준인 경우 조금 달라질 수 있고, 연간 세금은 연말정산에서 확정됩니다.' },
   { q: '연봉이 오르면 실수령액도 같은 비율로 오르나요?', a: '아닙니다. 소득세가 누진세율(6~45%)이라 연봉이 높을수록 공제율이 올라갑니다. 연봉 3,000만원은 약 10%, 5,000만원은 약 14%, 1억원은 약 22%가 공제됩니다. 국민연금은 월 소득 659만원(연 7,908만원)까지만 부과되어 그 이상은 공제율 증가가 완만해집니다.' },
@@ -25,7 +30,7 @@ const FAQ = [
 ]
 
 export default function SalaryTablePage() {
-  const rows = TABLE_ROWS.map(man => ({ man, r: net(man) }))
+  const rows = TABLE_ROWS.map(man => ({ man, r: net(man), c: COMPARE_YEAR ? netIn(man, COMPARE_YEAR) : null }))
   const bracketSet = new Set<number>(BRACKETS)
 
   const jsonLd = [
@@ -50,6 +55,13 @@ export default function SalaryTablePage() {
               연봉 2,000만원부터 2억원까지 구간별 월 실수령액입니다. {YEAR}년 4대보험 요율과 국세청 근로소득 간이세액표를 반영했으며
               기준은 <strong>부양가족 1인(본인)·월 비과세 20만원</strong>입니다. 연봉을 클릭하면 부양가족·비과세를 바꿔 다시 계산할 수 있습니다.
             </p>
+            {COMPARE_YEAR && (
+              <p className="text-body leading-relaxed max-w-3xl">
+                {COMPARE_YEAR > YEAR
+                  ? <>{COMPARE_YEAR}년 1월부터 국민연금 {pct(insuranceFor(COMPARE_YEAR).pensionRate)}·장기요양 건보료의 {pct(insuranceFor(COMPARE_YEAR).longTermCareRate)}가 적용돼 같은 연봉이라도 실수령액이 줄어듭니다. 표의 &lsquo;{COMPARE_YEAR}년 월 실수령액&rsquo; 열에서 바로 비교하세요.</>
+                  : <>표의 &lsquo;{COMPARE_YEAR}년 월 실수령액&rsquo; 열은 작년 요율로 계산한 값입니다.</>}
+              </p>
+            )}
             <ul className="flex flex-wrap gap-2 text-sm">
               {BRACKETS.map(b => (
                 <li key={b}>
@@ -66,6 +78,7 @@ export default function SalaryTablePage() {
                 <tr>
                   <th scope="col" className="px-4 py-3 text-left">연봉</th>
                   <th scope="col" className="px-4 py-3">월 실수령액</th>
+                  {COMPARE_YEAR && <th scope="col" className="px-4 py-3">{COMPARE_YEAR}년 월 실수령액</th>}
                   <th scope="col" className="px-4 py-3">연 실수령액</th>
                   <th scope="col" className="px-4 py-3">4대보험(월)</th>
                   <th scope="col" className="px-4 py-3">세금(월)</th>
@@ -73,7 +86,7 @@ export default function SalaryTablePage() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map(({ man, r }) => {
+                {rows.map(({ man, r, c }) => {
                   const ins = (r.deductions.nationalPension + r.deductions.healthInsurance + r.deductions.longTermCare + r.deductions.employmentInsurance) / 12
                   const tax = (r.deductions.incomeTax + r.deductions.localIncomeTax) / 12
                   const hot = bracketSet.has(man)
@@ -83,6 +96,7 @@ export default function SalaryTablePage() {
                         <Link href={hot ? `/salary-table/${man}/` : calcLink(man)} className="text-sub hover:underline">{salaryLabel(man)}</Link>
                       </th>
                       <td className="px-4 py-2 text-fg font-semibold">{won(r.netMonthly)}</td>
+                      {c && <td className="px-4 py-2 text-body">{won(c.netMonthly)} <span className="text-xs text-muted">({signedWon(c.netMonthly - r.netMonthly)})</span></td>}
                       <td className="px-4 py-2 text-body">{won(r.netAnnual)}</td>
                       <td className="px-4 py-2 text-sub">{won(ins)}</td>
                       <td className="px-4 py-2 text-sub">{won(tax)}</td>

@@ -462,7 +462,10 @@
       "nonTaxableDesc": "Monthly meal allowance, transportation, etc. (e.g., 200,000 KRW/month)",
       "dependents": "Number of Dependents (Including yourself)",
       "children": "Children Aged 8–20 (included in dependents)",
-      "currency": "KRW"
+      "currency": "KRW",
+      "rateYear": "Insurance rate year",
+      "yearOption": "{year}",
+      "yearNote": "{year} employee rates: pension {pension}, health {health}, long-term care {ltc} of health, employment {employment}. Income tax uses the current withholding table."
     },
     "result": {
       "annualTaxEstimate": "Estimated annual tax at year-end (reference)",
@@ -487,7 +490,11 @@
       "employmentInsurance": "Employment Insurance",
       "incomeTax": "Income Tax",
       "localIncomeTax": "Local Income Tax",
-      "totalDeduction": "Total Deduction"
+      "totalDeduction": "Total Deduction",
+      "yearLess": "With {year} rates you take home {amount} KRW less per month",
+      "yearMore": "With {year} rates you take home {amount} KRW more per month",
+      "yearSame": "Same take-home pay as with {year} rates",
+      "employmentPending": "If the proposed employment insurance rise (employee {rate}) is confirmed, about {amount} KRW more is deducted per month. The decree is not amended yet."
     },
     "tips": {
       "title": "Today's Tips",
@@ -2784,7 +2791,8 @@
       "gyeongjuWorldPlanner": "Gyeongju World visit planner",
       "kimjangTiming": "Kimjang Timing Forecast",
       "newYearSunrise": "New Year Sunrise Times",
-      "sunriseSunset": "Sunrise & Sunset Times"
+      "sunriseSunset": "Sunrise & Sunset Times",
+      "fourInsurance": "Social Insurance Calculator"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8374,6 +8382,10 @@
       "sunriseSunset": {
         "title": "Sunrise & Sunset Calculator",
         "description": "Sunrise, sunset, day length and golden hour by date and city"
+      },
+      "fourInsurance": {
+        "title": "Social Insurance Calculator",
+        "description": "Employee and employer premiums with 2027 rates"
       }
     }
   },
@@ -52860,5 +52872,168 @@
       }
     },
     "monthTick": "{m}"
+  },
+  "fourInsurance": {
+    "title": "Korea social insurance calculator — employee, employer and 2027 changes",
+    "subtitle": "Enter a salary to split national pension, health, long-term care, employment and industrial accident insurance between you and the employer, and compare 2026 with 2027.",
+    "yearLabel": "Rate year",
+    "yearOption": "{year}",
+    "typeLabel": "Input",
+    "types": {
+      "monthly": "Monthly",
+      "annual": "Annual"
+    },
+    "payLabel": {
+      "monthly": "Gross monthly pay",
+      "annual": "Gross annual salary"
+    },
+    "won": " KRW",
+    "nonTaxableLabel": "Monthly non-taxable (meals etc.)",
+    "nonTaxableHint": "Meal allowance is non-taxable up to 200,000 KRW a month. Premiums apply to pay minus non-taxable items.",
+    "sizeLabel": "Company size (employer employment insurance extra)",
+    "sizes": {
+      "under150": "Under 150 employees",
+      "priority": "150+ priority-support company",
+      "mid": "150 to 999 employees",
+      "large": "1,000+ / central or local government"
+    },
+    "accidentLabel": "Industrial accident rate (%)",
+    "accidentHint": "Varies by industry. Default is the 2026 average of {avg}. Check your workplace rate on the notice or with COMWEL.",
+    "resultLabel": "{year} monthly premiums · insured pay {base} KRW",
+    "employeeTotal": "Employee (monthly)",
+    "employerTotal": "Employer (monthly)",
+    "laborCost": "Total labor cost (monthly)",
+    "annualNote": "Per year: employee {employee} KRW, employer {employer} KRW.",
+    "table": {
+      "title": "By item",
+      "item": "Item",
+      "employee": "Employee",
+      "employer": "Employer",
+      "total": "Total",
+      "sum": "Total"
+    },
+    "items": {
+      "pension": "National pension",
+      "health": "Health insurance",
+      "ltc": "Long-term care",
+      "employment": "Employment (unemployment)",
+      "stability": "Job stability & skills",
+      "accident": "Industrial accident"
+    },
+    "rates": {
+      "pension": "{rate} each",
+      "health": "{rate} each",
+      "ltc": "{rate} of health",
+      "employment": "{rate} each",
+      "stability": "employer {rate}",
+      "accident": "employer {rate}"
+    },
+    "notes": {
+      "pensionCap": "Pension is charged up to the {cap} KRW income cap.",
+      "pensionFloor": "Pension uses the {floor} KRW income floor.",
+      "healthCap": "Health insurance hit the monthly cap (or floor), so that amount is used.",
+      "proposed": "If the proposed employment insurance rise ({rate} each) is confirmed, employee and employer each pay {amount} KRW more per month. The decree is not amended yet, so the table excludes it.",
+      "accident2027": "2027 accident rates are announced in late December, so your entered rate is used."
+    },
+    "compare": {
+      "title": "Compared with {year}",
+      "employee": "Employee {diff}/month",
+      "employer": "Employer {diff}/month",
+      "rates": "{year} rates: pension {pension} each, health {health} each, long-term care {ltc} of health, employment {employment} each"
+    },
+    "links": {
+      "salary": "Take-home pay calculator",
+      "payslip": "Make a payslip",
+      "health": "Health insurance details"
+    },
+    "share": {
+      "text": "{year} social insurance on {pay} KRW pay: employee {employee} KRW, employer {employer} KRW (ToolHub)",
+      "sub": "Total labor cost {cost} KRW"
+    },
+    "guide": {
+      "title": "Social insurance guide",
+      "basics": {
+        "title": "How it is calculated",
+        "items": [
+          "The four insurances are national pension, health (with long-term care), employment and industrial accident insurance. The employer pays all of accident insurance; the rest is shared.",
+          "Premiums are pay minus non-taxable items (such as up to 200,000 KRW of meals) times the rate, with amounts under 10 KRW dropped.",
+          "National pension has an income cap and floor (updated every July), so very high or low pay is charged within that range.",
+          "Long-term care premiums are a percentage of the health premium and are collected with it."
+        ]
+      },
+      "y2027": {
+        "title": "What changes in 2027",
+        "items": [
+          "The pension rate rises from 9.5% to 10%, 5% each for employee and employer, on the way to 13% by 2033.",
+          "Long-term care rises from 13.14% to 13.90% of the health premium (decided Oct 30, 2026).",
+          "The health insurance rate stays at 7.19%.",
+          "A government plan would raise the unemployment insurance rate from 1.8% to 2.0%, but the decree is not amended yet. It will be applied once confirmed."
+        ]
+      },
+      "employer": {
+        "title": "What the employer adds",
+        "items": [
+          "Besides matching pension, health, long-term care and employment insurance, the employer alone pays job stability & skills premiums and accident insurance.",
+          "Job stability & skills premiums range from 0.25% (under 150 employees) to 0.85% (1,000+ or government).",
+          "Accident insurance rates are set by industry every year; the 2026 average is 1.47%.",
+          "So an employee paid 3,000,000 KRW a month (including 200,000 KRW meals) costs the employer about 11% more, around 3.32 million KRW."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much is social insurance on 3,000,000 KRW a month?",
+            "a": "With 2,800,000 KRW insured pay (after 200,000 KRW meals), the 2026 employee share is 272,080 KRW a month: pension 133,000, health 100,660, long-term care 13,220 and employment 25,200. In 2027, pension rises to 140,000 and long-term care to 13,990, for 279,850 KRW."
+          },
+          {
+            "q": "How much does the employer pay?",
+            "a": "The same shares plus job stability & skills (0.25–0.85%) and accident insurance (by industry, 2026 average 1.47%). For 2,800,000 KRW, under 150 employees and the average accident rate: 320,240 KRW a month in 2026, 328,010 KRW in 2027."
+          },
+          {
+            "q": "Do premiums rise in 2027?",
+            "a": "Yes. Pension goes from 4.75% to 5% each, and long-term care from 13.14% to 13.90% of health. Health is frozen; the employment insurance rise is only a proposal so far."
+          },
+          {
+            "q": "Are non-taxable meals charged?",
+            "a": "No. Non-taxable amounts such as meals (up to 200,000 KRW a month) are excluded from insured pay."
+          },
+          {
+            "q": "Do freelancers withholding 3.3% pay these?",
+            "a": "Freelancers taxed as business income are not workplace members. They pay pension and health as regional members; some service-provider occupations are covered by employment and accident insurance."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "NHIS — 2026 health and long-term care changes",
+            "url": "https://www.nhis.or.kr/renewal_popup/poster/20260204_poster_longdesc_1.html"
+          },
+          {
+            "label": "2027 long-term care rate +5.78% — Newspim",
+            "url": "https://www.newspim.com/news/view/20261030001234"
+          },
+          {
+            "label": "National pension income cap and floor — Korea.kr",
+            "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148957832"
+          },
+          {
+            "label": "Insurance Premium Collection Act Enforcement Decree Art. 12 — law.go.kr",
+            "url": "https://www.law.go.kr/법령/고용보험및산업재해보상보험의보험료징수등에관한법률시행령"
+          },
+          {
+            "label": "2026 average accident insurance rate 1.47% — Ministry of Employment and Labor",
+            "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18810"
+          },
+          {
+            "label": "Employment insurance 1.8→2.0% proposal — Nate News",
+            "url": "https://m.news.nate.com/view/20260901n33015"
+          }
+        ],
+        "asOf": "Checked Nov 6, 2026. 2027 accident rates and health caps will be updated after the December notices."
+      }
+    }
   }
 }

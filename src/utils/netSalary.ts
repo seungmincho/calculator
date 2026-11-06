@@ -2,7 +2,7 @@
  * 연봉 → 실수령액 순수 계산 (2026). SalaryCalculator·연봉 실수령액 표(/salary-table)가 공유.
  * 월 소득세는 근로소득 간이세액표 실데이터(wageTaxTable.ts). 입력 의미도 간이세액표와 동일: 공제대상가족 수(본인 포함) + 그중 8~20세 자녀 수.
  */
-import { INSURANCE, PENSION_ANNUAL_CAP } from './insuranceRates'
+import { INSURANCE, insuranceFor, type InsuranceYear } from './insuranceRates'
 import { wageTax } from './wageTaxTable'
 import { childCredit } from './yearEndTax'
 
@@ -17,6 +17,8 @@ export interface NetSalaryInput {
   children?: number
   /** 실제 납부한 연 국민연금(연금보험료공제). 생략 시 과세급여 × 요율(상한 적용). 성과급처럼 기준소득월액에 안 잡히는 소득용 */
   nationalPensionAnnual?: number
+  /** 4대보험 요율 연도. 생략 시 지금 적용되는 연도(insuranceRates.ts). 소득세 간이세액표는 연도와 무관하게 현행 표 */
+  year?: InsuranceYear
 }
 
 export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}) {
@@ -29,10 +31,11 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
   const taxableAnnual = Math.max(0, grossAnnual - nonTaxableAnnual)
 
   // 4대보험 (근로자 부담) — 요율·상한은 insuranceRates.ts 단일 관리
-  const nationalPension = opt.nationalPensionAnnual ?? Math.floor(Math.min(taxableAnnual, PENSION_ANNUAL_CAP) * INSURANCE.pensionRate)
-  const healthInsurance = Math.floor(taxableAnnual * INSURANCE.healthRate)
-  const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
-  const employmentInsurance = Math.floor(taxableAnnual * INSURANCE.employmentRate)
+  const R = opt.year ? insuranceFor(opt.year) : INSURANCE
+  const nationalPension = opt.nationalPensionAnnual ?? Math.floor(Math.min(taxableAnnual, R.pensionMonthlyCap * 12) * R.pensionRate)
+  const healthInsurance = Math.floor(taxableAnnual * R.healthRate)
+  const longTermCare = Math.floor(healthInsurance * R.longTermCareRate)
+  const employmentInsurance = Math.floor(taxableAnnual * R.employmentRate)
 
   // 근로소득공제 (총급여 기준, 한도 2천만). 총급여 = 연봉 − 비과세(소득세법 §20②) — 연봉으로 잡으면
   // 비과세가 연봉보다 클 때 과세급여 0인데 과세표준이 수천만 원으로 나온다

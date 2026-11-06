@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { glassCard } from '@/lib/glass'
 import { INSURANCE, pct } from '@/utils/insuranceRates'
-import { BASE, BRACKETS, SITE, YEAR, calcLink, manwon, net, salaryLabel, won } from '../lib'
+import { BASE, BRACKETS, COMPARE_YEAR, SITE, YEAR, calcLink, manwon, net, netIn, salaryLabel, signedWon, won } from '../lib'
 
 type Params = { amount: string }
 
@@ -49,6 +49,7 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
   if (!man) notFound()
   const r = net(man)
   const d = r.deductions
+  const c = COMPARE_YEAR ? netIn(man, COMPARE_YEAR) : null
   const monthlyGross = (man * 10_000) / 12
   const insMonthly = (d.nationalPension + d.healthInsurance + d.longTermCare + d.employmentInsurance) / 12
   const taxMonthly = (d.incomeTax + d.localIncomeTax) / 12
@@ -106,6 +107,11 @@ export default async function SalaryBracketPage({ params }: { params: Promise<Pa
               <div><dt className="text-muted">세금(월)</dt><dd className="font-semibold text-fg">-{won(taxMonthly)}</dd></div>
               <div><dt className="text-muted">연 실수령액</dt><dd className="font-semibold text-fg">{won(r.netAnnual)}</dd></div>
             </dl>
+            {c && COMPARE_YEAR && (
+              <p className="mt-4 text-sm text-body">
+                {COMPARE_YEAR}년 4대보험 요율 기준 월 실수령액은 <strong className="text-fg">{won(c.netMonthly)}</strong>({YEAR}년 대비 {signedWon(c.netMonthly - r.netMonthly)})입니다.
+              </p>
+            )}
             <Link href={calcLink(man)} className="mt-6 inline-block bg-primary hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 font-medium hover:from-blue-700 hover:to-indigo-700">
               내 조건으로 다시 계산 →
             </Link>

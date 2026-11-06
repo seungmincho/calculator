@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Fri, 06 Nov 2026 08:02:43 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 09:10:55 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[4대보험 계산기]]></title>
+    <link>https://toolhub.ai.kr/four-insurance/</link>
+    <guid>https://toolhub.ai.kr/four-insurance/</guid>
+    <description><![CDATA[근로자·회사 부담 4대보험과 2027년 요율 비교]]></description>
+    <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[김장 시기 예보]]></title>
     <link>https://toolhub.ai.kr/kimjang-timing/</link>

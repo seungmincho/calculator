@@ -133,6 +133,7 @@ export const menuConfig: MenuConfig = {
       { href: '/kimjang-calculator', labelKey: 'footer.links.kimjangCalculator', descriptionKey: 'toolsShowcase.tools.kimjangCalculator.description', icon: '🥬', addedDate: '2026-10-04', subcategory: 'subcategory.livingCost' },
       { href: '/holiday-planner', labelKey: 'footer.links.holidayPlanner', descriptionKey: 'toolsShowcase.tools.holidayPlanner.description', icon: '🗓️', addedDate: '2026-10-04', subcategory: 'subcategory.salaryWork' },
       { href: '/kimjang-timing', labelKey: 'footer.links.kimjangTiming', descriptionKey: 'toolsShowcase.tools.kimjangTiming.description', icon: '🌡️', addedDate: '2026-11-06', subcategory: 'subcategory.livingCost' },
+      { href: '/four-insurance', labelKey: 'footer.links.fourInsurance', descriptionKey: 'toolsShowcase.tools.fourInsurance.description', icon: '🛡️', addedDate: '2026-11-06', subcategory: 'subcategory.salaryWork' },
     ],
   },
   tools: {

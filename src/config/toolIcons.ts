@@ -65,6 +65,7 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/customs-duty': ShoppingCart,
   '/kimjang-calculator': Salad,
   '/kimjang-timing': ThermometerSnowflake,
+  '/four-insurance': ShieldCheck,
   '/sunrise-sunset': Sunset,
   '/new-year-sunrise': Sunrise,
   '/holiday-planner': CalendarDays,

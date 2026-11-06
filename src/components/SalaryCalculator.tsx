@@ -14,7 +14,7 @@ import CalculationHistory from '@/components/CalculationHistory';
 import FeedbackWidget from '@/components/FeedbackWidget';
 import PDFExport from '@/components/PDFExport';
 import dynamic from 'next/dynamic'
-import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { INSURANCE, INSURANCE_YEARS, insuranceFor, isInsuranceYear, pct, type InsuranceYear } from '@/utils/insuranceRates'
 import { calculateNetSalary as calcNetSalary } from '@/utils/netSalary'
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 
@@ -28,6 +28,7 @@ const SalaryCalculatorContent = () => {
   const [nonTaxableAmount, setNonTaxableAmount] = useState('0');
   const [dependents, setDependents] = useState('1');
   const [childrenUnder20, setChildrenUnder20] = useState('0');
+  const [rateYear, setRateYear] = useState<InsuranceYear>(INSURANCE.year); // 4대보험 요율 연도 (?year=)
   const [result, setResult] = useState<ReturnType<typeof calculateNetSalary>>(null);
   const [raisePct, setRaisePct] = useState(5);
   const [showTable, setShowTable] = useState(false);
@@ -59,18 +60,18 @@ const SalaryCalculatorContent = () => {
   };
 
   // 한국 연봉 실수령액 계산 함수 (4대보험 요율은 insuranceRates.ts 기준연도)
-  const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string) => {
+  const calculateNetSalary = (inputSalary: string, type: 'annual' | 'monthly', nonTaxable: string, dependentCount: string, childrenCount: string, year: InsuranceYear) => {
     const salaryNum = parseInt(inputSalary.replace(/,/g, ''));
     if (!salaryNum || salaryNum <= 0) return null;
     // 계산 로직은 utils/netSalary.ts (연봉 실수령액 표와 공유)
-    return calcNetSalary(type === 'monthly' ? salaryNum * 12 : salaryNum, taxOptions(nonTaxable, dependentCount, childrenCount));
+    return calcNetSalary(type === 'monthly' ? salaryNum * 12 : salaryNum, { ...taxOptions(nonTaxable, dependentCount, childrenCount), year });
   };
 
   const handleCalculate = React.useCallback(() => {
-    const calculation = calculateNetSalary(salary, salaryType, nonTaxableAmount, dependents, childrenUnder20);
+    const calculation = calculateNetSalary(salary, salaryType, nonTaxableAmount, dependents, childrenUnder20, rateYear);
     setResult(calculation);
     setShowSaveButton(!!calculation); // 계산 결과가 있으면 저장 버튼 표시
-  }, [salary, salaryType, nonTaxableAmount, dependents, childrenUnder20]);
+  }, [salary, salaryType, nonTaxableAmount, dependents, childrenUnder20, rateYear]);
 
   // 근로소득공제(연봉 × 0.7 등)는 원 미만이 생김 → 반올림 (소수에 쉼표가 끼어 '864,196.8,999,999,999'로 보이던 문제)
   const formatNumber = (num: number) => {
@@ -243,6 +244,7 @@ const SalaryCalculatorContent = () => {
     const nonTaxableParam = searchParams.get('nonTaxable');
     const dependentsParam = searchParams.get('dependents');
     const childrenParam = searchParams.get('children');
+    const yearParam = searchParams.get('year');
 
     if (salaryParam && /^\d{1,15}$/.test(salaryParam)) {
       setSalary(formatNumber(Number(salaryParam)));
@@ -259,6 +261,9 @@ const SalaryCalculatorContent = () => {
     if (childrenParam && /^\d+$/.test(childrenParam)) {
       setChildrenUnder20(childrenParam);
     }
+    if (isInsuranceYear(yearParam)) {
+      setRateYear(Number(yearParam) as InsuranceYear);
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -267,13 +272,13 @@ const SalaryCalculatorContent = () => {
     } else {
       setResult(null);
     }
-  }, [salary, salaryType, nonTaxableAmount, dependents, childrenUnder20, handleCalculate]);
+  }, [salary, salaryType, nonTaxableAmount, dependents, childrenUnder20, rateYear, handleCalculate]);
 
   // 연봉별 표 데이터 생성
   const generateSalaryTable = () => {
     const tableData = [];
     for (let salaryAmount = 20000000; salaryAmount <= 200000000; salaryAmount += 1000000) {
-      const calculation = calculateNetSalary(salaryAmount.toString(), 'annual', '0', '1', '0');
+      const calculation = calculateNetSalary(salaryAmount.toString(), 'annual', '0', '1', '0', rateYear);
       if (calculation) {
         tableData.push({
           grossAnnual: salaryAmount,
@@ -289,6 +294,11 @@ const SalaryCalculatorContent = () => {
   // ── 입소문 지표 (결과가 있을 때만 의미 있음) ──
   const opts = taxOptions(nonTaxableAmount, dependents, childrenUnder20);
   const topPct = result ? topPercent(result.gross) : 0;
+  // 선택한 요율 연도와 다른 연도의 월 실수령액 차이 (소득세는 같은 간이세액표라 4대보험 차이만 남는다)
+  const R = insuranceFor(rateYear);
+  const otherYear: InsuranceYear = rateYear === 2026 ? 2027 : 2026;
+  const other = result ? calcNetSalary(result.gross, { ...taxOptions(nonTaxableAmount, dependents, childrenUnder20), year: otherYear }) : null;
+  const yearDiff = result && other ? other.netMonthly - result.netMonthly : null;
   const deductionPct = result ? (result.deductions.total / result.gross) * 100 : 0;
   const raise = result ? simulateRaise(result.gross, raisePct, opts) : null;
   const toMan = (won: number) => t('viral.salaryMan', { man: formatNumber(Math.round(won / 10000)), won: formatNumber(won) });
@@ -346,6 +356,25 @@ const SalaryCalculatorContent = () => {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* 4대보험 요율 연도 */}
+            <div>
+              <p id="salary-year-label" className="block text-sm font-medium text-body mb-3">{t('input.rateYear')}</p>
+              <div className="flex p-1 rounded-2xl bg-soft" role="group" aria-labelledby="salary-year-label">
+                {INSURANCE_YEARS.map((y) => (
+                  <button
+                    key={y}
+                    type="button"
+                    onClick={() => { setRateYear(y); updateURL({ year: y === INSURANCE.year ? '' : String(y) }); }}
+                    aria-pressed={rateYear === y}
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${rateYear === y ? 'bg-primary text-white shadow-sm' : 'text-sub hover:text-fg'}`}
+                  >
+                    {t('input.yearOption', { year: y })}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-2">{t('input.yearNote', { year: rateYear, pension: pct(R.pensionRate), health: pct(R.healthRate), ltc: pct(R.longTermCareRate), employment: pct(R.employmentRate) })}</p>
             </div>
 
             {/* 급여 입력 */}
@@ -560,9 +589,14 @@ const SalaryCalculatorContent = () => {
                   <div className="text-4xl sm:text-5xl font-bold tracking-tight text-white mt-1 mb-2 tabular-nums" aria-live="polite">
                     {formatNumber(result.netMonthly)}<span className="text-2xl sm:text-3xl ml-1 font-semibold text-white/70">{t('input.currency')}</span>
                   </div>
-                  <p className="text-sm font-semibold text-white mb-5">
+                  <p className="text-sm font-semibold text-white mb-2">
                     {t('viral.heroTop', { salary: toMan(result.gross), top: topPct })}
                   </p>
+                  {yearDiff !== null && (
+                    <p className="text-xs text-white/80 mb-5">
+                      {yearDiff === 0 ? t('result.yearSame', { year: otherYear }) : t(yearDiff < 0 ? 'result.yearLess' : 'result.yearMore', { year: otherYear, amount: formatNumber(Math.abs(yearDiff)) })}
+                    </p>
+                  )}
                   <div className="grid grid-cols-2 gap-3 mb-5">
                     <div className="rounded-2xl bg-white/[0.14] px-4 py-3">
                       <div className="text-xs text-white/70 mb-1">{t('result.annualTakeHome')}</div>
@@ -706,21 +740,26 @@ const SalaryCalculatorContent = () => {
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between py-2 border-b border-line">
-                    <span className="text-sub">{t('result.nationalPension')} ({pct(INSURANCE.pensionRate)})</span>
+                    <span className="text-sub">{t('result.nationalPension')} ({pct(R.pensionRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.nationalPension)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-line">
-                    <span className="text-sub">{t('result.healthInsurance')} ({pct(INSURANCE.healthRate)})</span>
+                    <span className="text-sub">{t('result.healthInsurance')} ({pct(R.healthRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.healthInsurance)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-line">
-                    <span className="text-sub">{t('result.longTermCare')} ({pct(INSURANCE.longTermCareRate)})</span>
+                    <span className="text-sub">{t('result.longTermCare')} ({pct(R.longTermCareRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.longTermCare)}{t('input.currency')}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-line">
-                    <span className="text-sub">{t('result.employmentInsurance')} ({pct(INSURANCE.employmentRate)})</span>
+                    <span className="text-sub">{t('result.employmentInsurance')} ({pct(R.employmentRate)})</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.employmentInsurance)}{t('input.currency')}</span>
                   </div>
+                  {R.employmentProposed && (
+                    <p className="text-xs text-muted pb-2 border-b border-line">
+                      {t('result.employmentPending', { rate: pct(R.employmentProposed), amount: formatNumber(Math.floor(result.taxable / 12 * (R.employmentProposed - R.employmentRate))) })}
+                    </p>
+                  )}
                   <div className="flex justify-between py-2 border-b border-line">
                     <span className="text-sub">{t('result.incomeTax')}</span>
                     <span className="font-semibold text-fg">{formatNumber(result.deductions.incomeTax)}{t('input.currency')}</span>
