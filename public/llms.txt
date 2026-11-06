@@ -246,6 +246,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [경주월드 방문 추천](https://toolhub.ai.kr/gyeongju-world/): 경주월드 날씨와 예상 혼잡도로 방문 날짜를 비교하고 안내도에서 놀이기구를 찾아보세요.
 - [개발자 로드맵](https://toolhub.ai.kr/dev-roadmap/): 프론트엔드·백엔드·풀스택·DevOps — 단계별 학습 경로와 추천 기술 스택
 - [일출·일몰 시간](https://toolhub.ai.kr/sunrise-sunset/): 날짜·도시별 일출·일몰·낮 길이·골든아워
+- [마니또 뽑기](https://toolhub.ai.kr/manito/): 서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크
 
 ## 이미지/미디어 도구
 

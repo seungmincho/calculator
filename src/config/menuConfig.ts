@@ -262,6 +262,7 @@ export const menuConfig: MenuConfig = {
       { href: '/ski-resorts', labelKey: 'footer.links.skiResorts', descriptionKey: 'toolsShowcase.tools.skiResorts.description', icon: '⛷️', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
       { href: '/sunrise-sunset', labelKey: 'footer.links.sunriseSunset', descriptionKey: 'toolsShowcase.tools.sunriseSunset.description', icon: '🌅', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
       { href: '/new-year-sunrise', labelKey: 'footer.links.newYearSunrise', descriptionKey: 'toolsShowcase.tools.newYearSunrise.description', icon: '🌄', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
+      { href: '/manito', labelKey: 'footer.links.manito', descriptionKey: 'toolsShowcase.tools.manito.description', icon: '🎁', addedDate: '2026-11-07', subcategory: 'subcategory.decision' },
     ],
   },
   media: {

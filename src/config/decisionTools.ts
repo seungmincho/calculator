@@ -133,6 +133,7 @@ export const decisionTools: DecisionTool[] = [
       ],
     },
   },
+  { href: '/manito', short: '마니또' },
   { href: '/menu-picker', short: '오늘 뭐 먹지' },
   { href: '/random-picker', short: '랜덤 뽑기' },
   { href: '/lotto-generator', short: '로또 번호' },

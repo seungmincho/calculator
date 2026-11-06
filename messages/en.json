@@ -2840,7 +2840,8 @@
       "fourInsurance": "Social Insurance Calculator",
       "ageTable": "Age Table",
       "changes2027": "What Changes in 2027",
-      "skiResorts": "Ski Resort Openings & Weather"
+      "skiResorts": "Ski Resort Openings & Weather",
+      "manito": "Secret Santa Draw"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8577,6 +8578,10 @@
       "skiResorts": {
         "title": "Ski Resorts",
         "description": "Opening dates and a 9-day forecast for Korean ski resorts"
+      },
+      "manito": {
+        "title": "Secret Santa Draw",
+        "description": "One-loop draw with private links for each person"
       }
     }
   },
@@ -53815,6 +53820,155 @@
           }
         ],
         "asOf": "Checked Nov 6, 2026. Opening dates are updated as resorts announce them."
+      }
+    }
+  },
+  "manito": {
+    "title": "Secret Santa Draw",
+    "subtitle": "Enter names to draw one loop with no mutual pairs, then send everyone a link that shows only their own person",
+    "form": {
+      "group": "Group name (optional)",
+      "groupPlaceholder": "e.g. Team year-end party",
+      "names": "Participants",
+      "namesHint": "One per line, or separated by commas (3–50 people)",
+      "sampleNames": [
+        "Alex",
+        "Sam",
+        "Jordan",
+        "Taylor",
+        "Casey",
+        "Riley"
+      ],
+      "count": "{n} people",
+      "load": "Load last list ({n} people)",
+      "exclude": {
+        "title": "Don't pair (optional)",
+        "hint": "Two people who shouldn't draw each other, like couples or family",
+        "first": "First person",
+        "second": "Second person",
+        "pick": "Choose",
+        "add": "Add",
+        "remove": "Remove rule {a}, {b}",
+        "pair": "{a} ↔ {b}"
+      },
+      "budget": "Gift budget (optional)",
+      "won": "KRW",
+      "date": "Exchange date (optional)",
+      "memo": "Note (optional)",
+      "memoPlaceholder": "e.g. Handwritten card, reveal at the party"
+    },
+    "errors": {
+      "tooFew": "Add at least 3 participants",
+      "tooMany": "Up to 50 participants",
+      "duplicate": "Duplicate names: {names} — make them distinct",
+      "impossible": "The don't-pair rules make a single loop impossible. Remove some rules"
+    },
+    "result": {
+      "title": "Draw result",
+      "people": "{n} people",
+      "summary": "{n} people joined in one loop. Nobody drew each other",
+      "sendHint": "Copy each person's link and send it to them privately. The name appears only after they open it and tap Reveal.",
+      "copy": "Copy link",
+      "copied": "Copied",
+      "copyAria": "Copy {name}'s link",
+      "copiedFor": "Copied {name}'s link",
+      "copyFailed": "Couldn't copy. Check your browser permissions",
+      "copyAll": "Copy all links (organizer)",
+      "copiedAll": "Copied all links. Send them one by one, not to the group chat",
+      "allHeader": "[{group}] Secret Santa links — send each one privately",
+      "allHeaderFallback": "Secret Santa links — send each one privately",
+      "shareText": "Your Secret Santa link, {name}. Open it yourself only!\n{url}",
+      "redraw": "Draw again",
+      "editWarn": "Changing names or rules, or drawing again, makes a new assignment. Finalize the list before sending links.",
+      "spoiler": "Show the full result (organizer, spoilers)",
+      "privacy": "The assignment is stored, obscured, after the # in each link. That part is never sent to the server, and ToolHub doesn't store your list."
+    },
+    "reveal": {
+      "badge": "Secret Santa",
+      "greeting": "{name}, your person is",
+      "open": "Reveal",
+      "openHint": "Make sure nobody can see your screen before tapping",
+      "is": "{name}",
+      "announce": "{from}, your person is {to}",
+      "keepSecret": "Keep it secret until the reveal day!",
+      "budget": "Gift budget",
+      "date": "Exchange date",
+      "memo": "Note",
+      "dday": "D-{n}",
+      "today": "Today",
+      "past": "Past date",
+      "missions": "Mission ideas",
+      "calendar": "{group} Secret Santa exchange",
+      "calendarFallback": "Secret Santa exchange",
+      "start": "Run a draw for your group",
+      "invalid": "This link is broken or cut off. Ask the organizer to send it again."
+    },
+    "guide": {
+      "title": "How the draw works",
+      "howTo": {
+        "title": "How to use",
+        "items": [
+          "Enter one name per line. You can paste a list from a chat; commas and line breaks both work.",
+          "Add two people who shouldn't draw each other (couples, family) under Don't pair.",
+          "Budget, exchange date and note are shown in everyone's link.",
+          "Copy each person's link and send it privately. They see the name only after opening the link and tapping Reveal."
+        ]
+      },
+      "missions": {
+        "title": "Mission ideas",
+        "items": [
+          "Leave a coffee on their desk in the morning",
+          "Slip a one-line compliment into their drawer or bag",
+          "Find out their favourite snack and leave it for them",
+          "Be the first to react to their messages in the group chat",
+          "Quietly help tidy their desk",
+          "Say hello to them first once a day",
+          "Ask about what's on their mind and leave a cheering note",
+          "Back their favourite lunch pick",
+          "Write a handwritten card for the reveal day",
+          "Write an acrostic poem with their name",
+          "Recommend a song that suits them",
+          "Stay undiscovered until the reveal day"
+        ]
+      },
+      "tips": {
+        "title": "Tips",
+        "items": [
+          "Set a budget like 'about 30,000 KRW' so gifts feel balanced.",
+          "Pick a reveal day in advance and finish with a 'guess who was your Santa' round.",
+          "Posting all links in one group chat lets people peek. Send them one by one.",
+          "Changing names or drawing again changes the assignment. Finalize the list before sending links.",
+          "Because it's one loop, if A has B, B never has A, so no awkward mutual pairs."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is a Secret Santa (manito)?",
+            "a": "Each person secretly looks after one other person for a while, and on the last day everyone reveals who had whom. It's popular for year-end parties, Christmas, classes and clubs."
+          },
+          {
+            "q": "Can the organizer see the result?",
+            "a": "The organizer sees only copy buttons per person; the full result appears only when you expand 'Show the full result'. If you're also playing, don't expand it and open only your own link."
+          },
+          {
+            "q": "Are names in the link? Is anything stored on a server?",
+            "a": "The assignment is obscured after the # in the link, and that part is never sent to the server. ToolHub stores no lists or results; only the organizer's last list stays in their browser. It's obscured, not encrypted, so anyone with the link can open it. Send each link only to its owner."
+          },
+          {
+            "q": "How do don't-pair rules work?",
+            "a": "Pick two people who shouldn't be each other's Santa and tap Add. They won't be linked in either direction. With 3 people everyone is linked, so any rule makes the draw impossible."
+          },
+          {
+            "q": "How many people?",
+            "a": "From 3 to 50. More people leave room for more don't-pair rules."
+          },
+          {
+            "q": "What happens to links I already sent if I draw again?",
+            "a": "Drawing again makes a new assignment, while links already sent keep showing the old one. Send everyone new links after drawing again."
+          }
+        ]
       }
     }
   }

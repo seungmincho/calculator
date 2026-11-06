@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Fri, 06 Nov 2026 12:10:55 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 15:24:50 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[마니또 뽑기]]></title>
+    <link>https://toolhub.ai.kr/manito/</link>
+    <guid>https://toolhub.ai.kr/manito/</guid>
+    <description><![CDATA[서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[나이표]]></title>
     <link>https://toolhub.ai.kr/age-table/</link>
