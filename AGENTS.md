@@ -20,7 +20,7 @@ npm run messages:check       # 생성본이 원본과 어긋났는지만 본다
 node scripts/i18n-namespaces.cjs --apply   # 컴포넌트에 '@/lib/i18n/ns/<ns>' import 삽입
 node scripts/i18n-namespaces.cjs --audit   # 쓰는 네임스페이스가 모두 등록됐는지 검사
 node scripts/generate-og.mjs <slug>        # public/og/<slug>.png + page.tsx openGraph·twitter images 삽입
-node scripts/generate-redirects-rss.js     # menuConfig → public/_redirects · public/rss.xml
+node scripts/generate-redirects-rss.js     # menuConfig → public/_redirects · public/rss.xml · public/llms.txt(AI용 사이트 안내)
 node scripts/check-static-html.cjs out     # 빌드 후: 본문이 숨겨졌거나 h1 이 없는 페이지 목록
 npm run wrangler:dev         # out/ 을 Cloudflare Pages 로컬로 띄운다
 ```
@@ -113,7 +113,7 @@ npm run wrangler:dev         # out/ 을 Cloudflare Pages 로컬로 띄운다
 | 3 | `src/app/[tool-name]/page.tsx` | 메타데이터 + JSON-LD(WebApplication). 템플릿은 가이드 §3 |
 | 4 | `src/components/[ToolName].tsx` | `'use client'` 컴포넌트 |
 | 5 | `public/og/[slug].png` | `node scripts/generate-og.mjs [slug]` — page 의 openGraph 가 layout 이미지를 덮어쓰므로 필수 |
-| 6 | `public/rss.xml`, `public/_redirects` | `node scripts/generate-redirects-rss.js` (sitemap 은 menuConfig 에서 자동) |
+| 6 | `public/rss.xml`, `public/_redirects`, `public/llms.txt` | `node scripts/generate-redirects-rss.js` (sitemap 은 menuConfig 에서 자동) |
 
 - 계산 히스토리를 쓰면 `src/utils/localStorage.ts` 의 `generateHistoryTitle` 에 항목을 더한다.
 - 게임은 menuConfig 에 `modes` 를 넣으면 GameHub 에 자동으로 뜬다. `['ai', 'online']` 보드게임은

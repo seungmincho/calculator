@@ -141,3 +141,5 @@ const rssXml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
 fs.writeFileSync(projectFile('public/rss.xml'), rssXml);
 console.log('rss.xml: ' + rssItems.length + ' items written');
 console.log('Total unique hrefs in _redirects: ' + allSorted.length);
+
+require('./generate-llms-txt.cjs');

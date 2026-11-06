@@ -1,5 +1,12 @@
 # NEXT-SESSION (2026-10-12 — 개선 루프 배치 17~34 인계)
 
+## 2026-11-06 AI 검색·에이전트 대응 (커밋, 미배포)
+
+- **`public/llms.txt`**(llmstxt.org 형식): `scripts/generate-llms-txt.cjs`가 menuConfig·ko 번역으로 만들고, `generate-redirects-rss.js` 끝에서 함께 돈다(도구 추가 때 자동 갱신). 맨 위에 연말·연초 핵심 13개와 계산 API 안내. robots.txt 주석으로 위치 표시.
+- **`/api/calc/{salary|four-insurance|age|sun}`**: 페이지와 같은 utils로 계산한 JSON(CORS *, 캐시 1시간, noindex). 정적 HTML은 기본값 결과라 에이전트가 쿼리 값을 정확히 받으려면 이 API가 필요. 명세 `public/openapi.json`, 테스트 `scripts/check-agent-api.ts`(esbuild 번들 후 실행, 잘못된 입력 14종 400).
+- 운영에서 AI 크롤러 UA(GPTBot·ClaudeBot·PerplexityBot·Google-Extended 등)는 200이었지만, Cloudflare AI 봇 차단은 실제 봇 IP로 판단하므로 **대시보드(보안 → 봇 / AI Crawl Control)에서 차단 여부 확인 필요**(사용자).
+- 다음 후보: IndexNow(Bing → ChatGPT·Copilot 검색 반영 속도), 원격 MCP 서버(같은 계산을 에이전트 도구로).
+
 ## 2026-11-06 스키장 개장일·날씨 (커밋, 미배포)
 
 - **`/ski-resorts/`**: 12곳(`src/lib/ski/resorts.ts`). 2026/27 개장 목표가 나온 곳은 휘닉스 11/27·알펜시아 11/28뿐(11/6 기준), 나머지 `opening: null` → "공지 전 · 예년 시기" 표시, 추천은 예년 시기 첫날(11/21·12/1·12/11) 전 날짜를 "개장 전(예상)"으로 뺀다. **리조트 공지가 나오면 `opening`에 날짜·출처를 채운다(11월 중하순).**

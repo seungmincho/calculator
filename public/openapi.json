@@ -1,0 +1,67 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ToolHub calculation API",
+    "version": "1.0.0",
+    "description": "Read-only Korean calculators from toolhub.ai.kr for AI agents and programs: take-home pay, social insurance, age/zodiac and sunrise/sunset. Results use the same code as the web pages (2026 and 2027 Korean rates). All amounts are KRW. No key needed; please cache responses.",
+    "contact": { "url": "https://toolhub.ai.kr/about/" }
+  },
+  "servers": [{ "url": "https://toolhub.ai.kr" }],
+  "paths": {
+    "/api/calc/salary": {
+      "get": {
+        "operationId": "netSalary",
+        "summary": "Korean take-home pay (연봉 실수령액) after social insurance and income tax",
+        "parameters": [
+          { "name": "annual", "in": "query", "description": "Gross annual salary in KRW (required unless monthly is given)", "schema": { "type": "number", "minimum": 1 } },
+          { "name": "monthly", "in": "query", "description": "Gross monthly salary in KRW (annual = monthly × 12)", "schema": { "type": "number", "minimum": 1 } },
+          { "name": "nonTaxable", "in": "query", "description": "Monthly non-taxable pay such as meals (default 200000)", "schema": { "type": "number", "default": 200000 } },
+          { "name": "dependents", "in": "query", "description": "Dependents for withholding, including the employee (1–11, default 1)", "schema": { "type": "integer", "default": 1 } },
+          { "name": "children", "in": "query", "description": "Children aged 8–20 among dependents (default 0)", "schema": { "type": "integer", "default": 0 } },
+          { "name": "year", "in": "query", "description": "Social insurance rate year (2026 or 2027; default = year in force)", "schema": { "type": "integer", "enum": [2026, 2027] } }
+        ],
+        "responses": { "200": { "description": "Monthly and annual net pay with deduction items, rates and a link to the page" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/api/calc/four-insurance": {
+      "get": {
+        "operationId": "socialInsurance",
+        "summary": "Korean social insurance (4대보험) for employee and employer",
+        "parameters": [
+          { "name": "pay", "in": "query", "description": "Gross monthly pay in KRW (required unless annual is given)", "schema": { "type": "number", "minimum": 1 } },
+          { "name": "annual", "in": "query", "description": "Gross annual pay in KRW (pay = annual ÷ 12)", "schema": { "type": "number", "minimum": 1 } },
+          { "name": "nonTaxable", "in": "query", "description": "Monthly non-taxable pay (default 200000)", "schema": { "type": "number", "default": 200000 } },
+          { "name": "size", "in": "query", "description": "Company size for the employer job-stability premium", "schema": { "type": "string", "enum": ["under150", "priority", "mid", "large"], "default": "under150" } },
+          { "name": "accident", "in": "query", "description": "Industrial accident rate in percent (default 2026 average 1.47)", "schema": { "type": "number", "default": 1.47 } },
+          { "name": "year", "in": "query", "description": "Rate year (2026 or 2027)", "schema": { "type": "integer", "enum": [2026, 2027] } }
+        ],
+        "responses": { "200": { "description": "Monthly premiums by item for employee and employer, totals and labor cost" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/api/calc/age": {
+      "get": {
+        "operationId": "koreanAge",
+        "summary": "International age (만 나이), year age, Korean zodiac (띠) and elementary school entry year",
+        "parameters": [
+          { "name": "birth", "in": "query", "description": "Birth date YYYY-MM-DD (exact zodiac by Lunar New Year)", "schema": { "type": "string", "format": "date" } },
+          { "name": "year", "in": "query", "description": "Birth year, if the date is unknown", "schema": { "type": "integer" } },
+          { "name": "on", "in": "query", "description": "Reference date YYYY-MM-DD (default today in KST)", "schema": { "type": "string", "format": "date" } }
+        ],
+        "responses": { "200": { "description": "Ages, zodiac (ganzi and animal) and school entry year" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/api/calc/sun": {
+      "get": {
+        "operationId": "sunTimes",
+        "summary": "Sunrise, sunset, solar noon, day length, civil twilight and golden hour in Korea (KST)",
+        "parameters": [
+          { "name": "date", "in": "query", "description": "Date YYYY-MM-DD (default today in KST)", "schema": { "type": "string", "format": "date" } },
+          { "name": "city", "in": "query", "description": "City id: seoul, incheon, suwon, chuncheon, gangneung, daejeon, sejong, cheongju, cheonan, jeonju, gwangju, mokpo, yeosu, daegu, andong, pohang, ulsan, busan, changwon, jeju, seogwipo (default seoul)", "schema": { "type": "string" } },
+          { "name": "lat", "in": "query", "description": "Latitude within Korea (33–39), with lon instead of city", "schema": { "type": "number" } },
+          { "name": "lon", "in": "query", "description": "Longitude within Korea (124–132)", "schema": { "type": "number" } }
+        ],
+        "responses": { "200": { "description": "Times as HH:MM in KST" }, "400": { "description": "Invalid input" } }
+      }
+    }
+  }
+}

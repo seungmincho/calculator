@@ -1,3 +1,4 @@
+# AI 검색·에이전트 환영. 사이트 안내: https://toolhub.ai.kr/llms.txt
 User-agent: *
 Allow: /
 Disallow: /offline/
