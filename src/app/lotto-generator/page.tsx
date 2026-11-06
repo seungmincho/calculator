@@ -60,51 +60,50 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  other: {
-    'application/ld+json': JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "로또번호 생성기",
-      "alternateName": "로또 6/45 번호 생성기",
-      "description": "통계 기반 로또 번호 추천 및 과거 당첨번호 조회 서비스. 핫/콜드 번호 분석으로 더 똑똑한 번호 선택을 도와드립니다.",
-      "url": "https://toolhub.ai.kr/lotto-generator/",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "Any",
-      "browserRequirements": "Requires JavaScript. Chrome, Firefox, Safari, Edge 지원",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "KRW"
-      },
-      "featureList": [
-        "로또 6/45 번호 자동 생성",
-        "과거 당첨번호 조회 및 분석",
-        "통계 기반 번호 추천",
-        "핫/콜드 번호 분석",
-        "번호별 출현 빈도 차트",
-        "최신 당첨번호 자동 업데이트",
-        "번호 제외 및 포함 설정",
-        "연속번호 제외 옵션",
-        "고액 당첨번호 패턴 분석",
-        "결과 저장 및 공유"
-      ],
-      "creator": {
-        "@type": "Organization",
-        "name": "툴허브",
-        "url": "https://toolhub.ai.kr/"
-      },
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "로또 구매자, 번호 분석에 관심있는 사용자"
-      },
-      "inLanguage": ["ko-KR", "en-US"],
-      "isAccessibleForFree": true,
-      "dateModified": new Date().toISOString(),
-      "keywords": "로또번호생성기, 당첨번호조회, 로또통계, 핫번호, 콜드번호, 로또6/45",
-      "gamePlatform": "Web Browser",
-      "genre": "Lottery Number Generator"
-    })
+}
+
+// WebApplication 구조화 데이터는 <script>로 넣는다(metadata.other 는 <meta> 태그가 되어 검색엔진이 읽지 않는다)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "로또번호 생성기",
+  "alternateName": "로또 6/45 번호 생성기",
+  "description": "통계 기반 로또 번호 추천 및 과거 당첨번호 조회 서비스. 핫/콜드 번호 분석으로 더 똑똑한 번호 선택을 도와드립니다.",
+  "url": "https://toolhub.ai.kr/lotto-generator/",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript. Chrome, Firefox, Safari, Edge 지원",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
   },
+  "featureList": [
+    "로또 6/45 번호 자동 생성",
+    "과거 당첨번호 조회 및 분석",
+    "통계 기반 번호 추천",
+    "핫/콜드 번호 분석",
+    "번호별 출현 빈도 차트",
+    "최신 당첨번호 자동 업데이트",
+    "번호 제외 및 포함 설정",
+    "연속번호 제외 옵션",
+    "고액 당첨번호 패턴 분석",
+    "결과 저장 및 공유"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "툴허브",
+    "url": "https://toolhub.ai.kr/"
+  },
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "로또 구매자, 번호 분석에 관심있는 사용자"
+  },
+  "inLanguage": ["ko-KR", "en-US"],
+  "isAccessibleForFree": true,
+  "keywords": "로또번호생성기, 당첨번호조회, 로또통계, 핫번호, 콜드번호, 로또6/45",
+  "gamePlatform": "Web Browser",
+  "genre": "Lottery Number Generator"
 }
 
 export default function LottoGeneratorPage() {
@@ -115,6 +114,7 @@ export default function LottoGeneratorPage() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen py-12">
         <div className="container mx-auto px-4">
           <div className="mb-6"><DecisionToolsBar current="/lotto-generator" /></div>
