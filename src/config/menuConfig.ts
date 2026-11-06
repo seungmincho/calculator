@@ -132,6 +132,7 @@ export const menuConfig: MenuConfig = {
       { href: '/customs-duty', labelKey: 'footer.links.customsDuty', descriptionKey: 'toolsShowcase.tools.customsDuty.description', icon: '📦', addedDate: '2026-10-04', subcategory: 'subcategory.tax' },
       { href: '/kimjang-calculator', labelKey: 'footer.links.kimjangCalculator', descriptionKey: 'toolsShowcase.tools.kimjangCalculator.description', icon: '🥬', addedDate: '2026-10-04', subcategory: 'subcategory.livingCost' },
       { href: '/holiday-planner', labelKey: 'footer.links.holidayPlanner', descriptionKey: 'toolsShowcase.tools.holidayPlanner.description', icon: '🗓️', addedDate: '2026-10-04', subcategory: 'subcategory.salaryWork' },
+      { href: '/kimjang-timing', labelKey: 'footer.links.kimjangTiming', descriptionKey: 'toolsShowcase.tools.kimjangTiming.description', icon: '🌡️', addedDate: '2026-11-06', subcategory: 'subcategory.livingCost' },
     ],
   },
   tools: {

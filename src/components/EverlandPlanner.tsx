@@ -9,6 +9,7 @@ import { parks, PARK_IDS, type ParkId, type VisitArea } from '@/lib/theme-parks/
 import ShareResult from './ShareResult'
 import MobileResultLink from './MobileResultLink'
 import { recommended, visitDays, type Forecast, type Profile, type Scope, type VisitDay } from '@/lib/everland/planner'
+import type { CalendarDay, CalendarMonth } from '@/lib/theme-parks/calendar'
 
 export interface PlannerProps {
   park?: ParkId
@@ -19,12 +20,13 @@ export interface PlannerProps {
   initialScope?: Scope
   initialDate?: string
   pageDate?: string
-  view?: 'plan' | 'map'
+  view?: 'plan' | 'map' | 'calendar'
+  calendar?: CalendarMonth
 }
 const requestMapHeight = (frame: HTMLIFrameElement | null) => {
   frame?.contentWindow?.postMessage({type:'everland-resize'},window.location.origin)
 }
-export default function EverlandPlanner({ park = 'everland', initialArea = 'all', forecast, now, initialProfile = 'balanced', initialScope = 'all', initialDate = '', pageDate = '', view = 'plan' }: PlannerProps) {
+export default function EverlandPlanner({ park = 'everland', initialArea = 'all', forecast, now, initialProfile = 'balanced', initialScope = 'all', initialDate = '', pageDate = '', view = 'plan', calendar }: PlannerProps) {
   const config = parks[park]
   const basePath = `/${park}/`
   const everlandT = useTranslations('everlandPlanner')
@@ -36,12 +38,13 @@ export default function EverlandPlanner({ park = 'everland', initialArea = 'all'
   const [scope,setScope] = useState<Scope>(initialScope)
   const [chosen,setChosen] = useState(initialDate)
   const [frameHeight,setFrameHeight] = useState(1200)
+  const [calDate,setCalDate] = useState(() => calendar ? (calendar.days.some(d=>d.date===calendar.today) ? calendar.today : calendar.days[0].date) : '')
   const mapFrame = useRef<HTMLIFrameElement>(null)
   const days = visitDays(forecast,profile,now,park,area), top = recommended(days,scope), best = top[0]
   const selected = days.find(d=>d.date===chosen) ?? best
   const featured = pageDate ? days.find(d=>d.date===pageDate) ?? best : best
   const weekdays = t.raw('weekdays') as string[]
-  const dateLabel = (day: VisitDay) => `${t('monthDay',{month:Number(day.date.slice(5,7)),day:Number(day.date.slice(8))})} (${weekdays[day.weekday]})`
+  const dateLabel = (day: Pick<VisitDay,'date'|'weekday'>) => `${t('monthDay',{month:Number(day.date.slice(5,7)),day:Number(day.date.slice(8))})} (${weekdays[day.weekday]})`
   const time = (value: string) => new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(value))
   const hour = (value: string) => new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(value))
   const number = (value: number) => Math.round(value*10)/10
@@ -71,22 +74,67 @@ export default function EverlandPlanner({ park = 'everland', initialArea = 'all'
     <div><dt className="text-sm text-muted">{t('wind')}</dt><dd className="mt-1 text-lg font-semibold text-fg tabular-nums">{number(day.wind)} m/s</dd></div>
     <div><dt className="text-sm text-muted">{t('crowdLabel')}</dt><dd className="mt-1 font-semibold text-fg">{t(`crowd.${day.crowd}`)}</dd><dd className="text-xs text-muted mt-1">{t('crowdNote')}</dd></div>
   </dl>
+  const tone = (crowd: CalendarDay['crowd']) => crowd==='low' ? 'bg-primary-soft text-primary' : crowd==='medium' ? 'bg-surface border border-line text-body' : 'bg-soft text-body'
+  const calendarView = (cal: CalendarMonth) => {
+    const [year, month] = cal.month.split('-').map(Number)
+    const byDate = new Map(days.map(d=>[d.date,d]))
+    const cells: (CalendarDay|null)[] = [...Array<null>(cal.days[0].weekday).fill(null), ...cal.days]
+    const weeks = Array.from({length:Math.ceil(cells.length/7)},(_,i)=>cells.slice(i*7,i*7+7))
+    const sel = cal.days.find(d=>d.date===calDate) ?? cal.days[0], selDay = byDate.get(sel.date)
+    const quiet = cal.days.filter(d=>d.date>=cal.today&&d.crowd==='low').length
+    const picks = recommended(days.filter(d=>d.date.startsWith(cal.month)),'all')
+    const monthLink = (target: string|null, label: string) => target ? <a href={`${basePath}calendar/${target}/`} className="ui-btn-soft min-h-11 px-3 py-2 text-sm inline-flex items-center">{label}</a> : <span className="min-w-16" />
+    return <section aria-labelledby="calendar-month" className="mb-10">
+      <div className="flex items-center justify-between gap-3 mb-4">{monthLink(cal.prev,t('calendar.prev'))}<h2 id="calendar-month" className="text-xl font-bold text-fg">{t('calendar.month',{year,month})}</h2>{monthLink(cal.next,t('calendar.next'))}</div>
+      {cal.today.startsWith(cal.month)&&<p className="text-sm text-sub mb-4">{t('calendar.summary',{count:quiet})}</p>}
+      {picks.length>0&&<div className="flex flex-wrap items-center gap-2 mb-5"><span className="text-sm text-sub">{t('calendar.picks')}</span>{picks.map(p=><a key={p.date} href={dateUrl(p.date)} className="ui-btn-soft min-h-11 px-3 py-2 text-sm inline-flex items-center">{dateLabel(p)} · {p.score}{t('scoreUnit')}</a>)}</div>}
+      <table className="w-full table-fixed border-separate border-spacing-1">
+        <caption className="sr-only">{t('calendar.title',{month})}</caption>
+        <thead><tr>{weekdays.map(w=><th key={w} scope="col" className="text-xs font-medium text-muted py-1">{w}</th>)}</tr></thead>
+        <tbody>{weeks.map((week,i)=><tr key={i}>{Array.from({length:7},(_,j)=>{
+          const d = week[j]
+          if (!d) return <td key={j} />
+          const f = byDate.get(d.date), on = sel.date===d.date
+          return <td key={j} className="p-0 align-top"><button type="button" aria-pressed={on} onClick={()=>setCalDate(d.date)} aria-label={`${dateLabel(d)}, ${t(`crowd.${d.crowd}`)}${d.holiday?`, ${d.holiday}`:''}`} className={`w-full min-h-14 sm:min-h-24 rounded-lg sm:rounded-xl p-1 sm:p-2 flex flex-col items-start text-left ${tone(d.crowd)} ${d.date<cal.today?'opacity-60':''} ${on?'ring-2 ring-primary':''}`}>
+            <span className="text-sm font-semibold tabular-nums">{Number(d.date.slice(8))}{d.holiday&&<span aria-hidden="true"> •</span>}</span>
+            <span className="hidden sm:block text-xs">{t(`calendar.short.${d.crowd}`)}</span>
+            {f ? <span className="text-[11px] sm:text-xs tabular-nums mt-auto">{f.score}{t('scoreUnit')}</span> : d.measured!=null ? <span className="text-[11px] sm:text-xs tabular-nums mt-auto">{t('calendar.minutes',{value:Math.round(d.measured)})}</span> : null}
+            {d.closing&&<span className="hidden sm:block text-[11px] text-muted tabular-nums">~{hour(d.closing)}{d.extended?' +':''}</span>}
+          </button></td>})}</tr>)}</tbody>
+      </table>
+      <ul className="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-xs text-sub">
+        {(['low','medium','high'] as const).map(c=><li key={c} className="flex items-center gap-1.5"><span aria-hidden="true" className={`inline-block w-4 h-4 rounded ${tone(c)}`} />{t(`calendar.short.${c}`)}</li>)}
+        <li>{t('calendar.legendScore')}</li>{park==='everland'&&<li>{t('calendar.legendWait')}</li>}<li>{t('calendar.legendHours')}</li>
+      </ul>
+      <div className="ui-card p-5 sm:p-6 mt-6" aria-live="polite">
+        <h3 className="text-2xl font-bold text-fg">{dateLabel(sel)}{sel.holiday&&<span className="text-base font-medium text-sub ml-2">{sel.holiday}</span>}</h3>
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-5">
+          <div><dt className="text-sm text-muted">{t('crowdLabel')}</dt><dd className="mt-1 font-semibold text-fg">{t(`crowd.${sel.crowd}`)}</dd></div>
+          <div><dt className="text-sm text-muted">{t('calendar.hours')}</dt><dd className="mt-1 font-semibold text-fg tabular-nums">{sel.opening&&sel.closing?`${hour(sel.opening)}–${hour(sel.closing)}`:t(sel.date<cal.today?'calendar.noHoursPast':'calendar.noHours')}</dd>{sel.extended&&<dd className="text-xs text-muted mt-1">{t('calendar.extended')}</dd>}</div>
+          {selDay ? <><div><dt className="text-sm text-muted">{t('score')}</dt><dd className="mt-1 text-lg font-semibold text-primary tabular-nums">{selDay.score}{t('scoreUnit')}</dd></div><div><dt className="text-sm text-muted">{t('weather')}</dt><dd className="mt-1 font-semibold text-fg tabular-nums">{number(selDay.low)}~{number(selDay.high)}°C · {selDay.rain} mm</dd></div></>
+            : sel.measured!=null ? <div className="col-span-2"><dt className="text-sm text-muted">{t('calendar.measured')}</dt><dd className="mt-1 text-lg font-semibold text-fg tabular-nums">{t('calendar.minutes',{value:Math.round(sel.measured)})}</dd><dd className="text-xs text-muted mt-1">{t('calendar.measuredNote')}</dd></div>
+            : <div className="col-span-2"><dt className="text-sm text-muted">{t('score')}</dt><dd className="mt-1 text-sm text-sub">{t(sel.date<cal.today?'calendar.noRecord':'calendar.noForecast')}</dd></div>}
+        </dl>
+        {selDay&&<a className="inline-block mt-5 text-sm text-primary underline" href={dateUrl(sel.date)}>{t('fullDateLink')}</a>}
+      </div>
+      <p className="text-xs text-muted mt-4 leading-relaxed">{t('calendar.method')}</p>
+    </section>
+  }
   const reasons = (day: VisitDay) => <ul className="space-y-2 text-sm leading-relaxed text-body list-disc pl-5">{day.reasons.map(reason=><li key={reason}>{t(`reasons.${reason}`)}</li>)}</ul>
   return <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 sm:py-12 text-body">
     <nav aria-label={t('choosePark')} className="flex flex-wrap gap-2 mb-6">{PARK_IDS.map(id=><a key={id} href={`/${id}/`} aria-current={park===id?'page':undefined} className={`min-h-10 rounded-xl px-3 py-2 text-sm font-semibold ${park===id?'bg-primary text-white':'bg-soft text-sub hover:bg-track'}`}>{t(`parkNames.${id}`)}</a>)}</nav>
     <header className="mb-7">
       <p className="text-sm text-muted font-medium mb-3">{t('eyebrow')}</p>
-      <h1 className="text-3xl sm:text-4xl font-bold text-fg tracking-tight leading-tight">{view==='map' ? t('mapTitle') : pageDate ? t('dateTitle',{date:pageDate}) : t('title')}</h1>
-      <p className="text-sub mt-4 leading-relaxed">{view==='map' ? t('mapIntro') : t('intro')}</p>
+      <h1 className="text-3xl sm:text-4xl font-bold text-fg tracking-tight leading-tight">{view==='map' ? t('mapTitle') : calendar && view==='calendar' ? t('calendar.title',{month:Number(calendar.month.slice(5))}) : pageDate ? t('dateTitle',{date:pageDate}) : t('title')}</h1>
+      <p className="text-sub mt-4 leading-relaxed">{view==='map' ? t('mapIntro') : view==='calendar' ? t('calendar.intro') : t('intro')}</p>
     </header>
-    <nav aria-label={t('eyebrow')} className="flex gap-1 border-b border-line mb-7">
-      <a href={basePath} aria-current={view==='plan'?'page':undefined} className={`px-4 py-3 text-sm font-semibold rounded-t-xl ${view==='plan'?'bg-primary text-white':'text-sub hover:bg-soft'}`}>{t('planTab')}</a>
-      <a href={`${basePath}map/`} aria-current={view==='map'?'page':undefined} className={`px-4 py-3 text-sm font-semibold rounded-t-xl ${view==='map'?'bg-primary text-white':'text-sub hover:bg-soft'}`}>{t('mapTab')}</a>
+    <nav aria-label={t('eyebrow')} className="flex gap-1 border-b border-line mb-7 overflow-x-auto">
+      {([['plan',basePath,t('planTab')],...(config.providerId?[['calendar',`${basePath}calendar/`,t('calendar.tab')]]:[]),['map',`${basePath}map/`,t('mapTab')]] as [string,string,string][]).map(([key,href,label])=><a key={key} href={href} aria-current={view===key?'page':undefined} className={`shrink-0 whitespace-nowrap px-4 py-3 text-sm font-semibold rounded-t-xl ${view===key?'bg-primary text-white':'text-sub hover:bg-soft'}`}>{label}</a>)}
     </nav>
     {view==='map' ? <section>
       <p className="text-sm text-sub mb-2">{t('mapVersion')}</p><p className="text-sm text-muted mb-4">{t('mapCaption')} <a className="text-primary underline" href={config.guide} target="_blank" rel="noopener noreferrer">{t('mapSource')}</a></p>
       <iframe ref={mapFrame} id="everland-map-frame" src={config.board} title={t('mapFrame')} onLoad={()=>requestMapHeight(mapFrame.current)} className="block w-full border-0" style={{height:frameHeight}} />
-    </section> : <>
+    </section> : view==='calendar' && calendar ? calendarView(calendar) : <>
       {featured&&<MobileResultLink href="#everland-result" label={t(pageDate?'selected':featured.caution?'relativeBest':'best')} value={`${dateLabel(featured)} · ${featured.score}${t('scoreUnit')}`} className="mb-5" />}
       <form method="get" className="flex flex-col sm:flex-row sm:flex-wrap gap-5 sm:gap-8 mb-7" onSubmit={e=>e.preventDefault()}>
         <fieldset><legend className="text-sm text-sub mb-2">{t('profileLabel')}</legend><div className="flex flex-wrap gap-2">{(['balanced','family','rides'] as Profile[]).map(p=><button key={p} type="submit" name="profile" value={p} aria-pressed={profile===p} onClick={()=>{setProfile(p);setChosen('');updateUrl(p,scope,'')}} className={`min-h-11 px-3 py-2 rounded-xl text-sm font-semibold ${profile===p?'bg-primary text-white':'bg-soft text-sub hover:bg-track'}`}>{t(`profiles.${p}`)}</button>)}</div></fieldset>
@@ -110,7 +158,7 @@ export default function EverlandPlanner({ park = 'everland', initialArea = 'all'
         {metrics(selected)}<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-7"><div><h3 className="font-bold text-fg mb-3">{t('reasonTitle')}</h3>{reasons(selected)}{best&&<p className="text-sm text-sub mt-4">{selected.score===best.score?t('sameBest'):t('difference',{value:best.score-selected.score})}</p>}{selected.caution&&<p className="mt-4 text-sm font-semibold">{t('caution')}</p>}</div><div><h3 className="font-bold text-fg mb-3">{t('dayDetail')}</h3><div className="overflow-x-auto"><table className="w-full text-sm text-left"><thead><tr className="text-muted"><th className="py-2 font-medium">{t('hourlyTime')}</th><th className="font-medium">{t('temperature')}</th><th className="font-medium">{t('rainfall')}</th><th className="font-medium">{t('windSpeed')}</th></tr></thead><tbody>{selected.slots.map(slot=><tr key={slot.start} className="border-t border-line tabular-nums"><td className="py-2 pr-3 whitespace-nowrap">{hour(slot.start)}–{hour(slot.end)}</td><td className="pr-3">{number(slot.temperature)}°C</td><td className="pr-3">{number(slot.rain)} mm</td><td>{number(slot.wind)} m/s</td></tr>)}</tbody></table></div></div></div>
         <div className="mt-5 space-y-2 text-xs text-muted leading-relaxed">{selected.coarse&&<p>{t('coarse')}</p>}{selected.tentative&&<p>{t('tentative')}</p>}<p>{t('prorated')}</p></div>
       </section>}
-      <section className="mb-10 flex flex-wrap items-center justify-between gap-4 bg-subtle rounded-2xl p-6"><div><h2 className="text-lg font-bold text-fg">{t('mapTitle')}</h2><p className="text-sm text-sub mt-2">{t('mapIntro')}</p></div><a href={`${basePath}map/`} className="ui-btn px-5 py-3 text-sm">{t('mapTab')}</a></section>
+      <section className="mb-10 flex flex-wrap items-center justify-between gap-4 bg-subtle rounded-2xl p-6"><div><h2 className="text-lg font-bold text-fg">{t('mapTitle')}</h2><p className="text-sm text-sub mt-2">{t('mapIntro')}</p></div><div className="flex flex-wrap gap-2">{config.providerId&&<a href={`${basePath}calendar/`} className="ui-btn-soft px-5 py-3 text-sm">{t('calendar.tab')}</a>}<a href={`${basePath}map/`} className="ui-btn px-5 py-3 text-sm">{t('mapTab')}</a></div></section>
     </>}
     <section className="border-t border-line pt-7 mt-6" aria-labelledby="everland-method"><h2 id="everland-method" className="text-xl font-bold text-fg mb-5">{t('sourceTitle')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 text-sm leading-relaxed"><div><h3 className="font-bold text-fg mb-2">{t('methodologyTitle')}</h3><p>{t('methodology')}</p><p className="mt-3">{t('limitations')}</p><details className="mt-4"><summary className="cursor-pointer text-sub">{t('score')}</summary><p className="mt-3">{t('safetyRule')}</p><p className="mt-3">{t('staleRule')}</p><p className="mt-3">{t('todayPartial')}</p></details></div><div><a className="text-primary underline font-semibold" href="https://api.met.no/weatherapi/locationforecast/2.0/documentation">{t('weatherSource')}</a><p className="mt-2">{t('weatherSourceDetail')}</p>{forecast&&<dl className="mt-3 text-sub"><div>{t('issued')}: <time dateTime={forecast.issuedAt}>{time(forecast.issuedAt)}</time></div><div>{t('fetched')}: <time dateTime={forecast.fetchedAt}>{time(forecast.fetchedAt)}</time></div></dl>}<p className="mt-3 text-xs text-muted">{t('timezone')}</p><div className="flex flex-wrap gap-x-4 gap-y-2 mt-4"><a className="text-primary underline" href="https://api.met.no/doc/License">{t('license')}</a><a className="text-primary underline" href="https://www.weather.go.kr/w/index.do">{t('officialWeather')}</a><a className="text-primary underline" href={config.official}>{t('official')}</a></div></div></div>

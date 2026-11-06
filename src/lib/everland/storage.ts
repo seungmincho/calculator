@@ -6,6 +6,16 @@ export interface Statement {
 }
 export interface Database { prepare(sql: string): Statement; batch(statements: Statement[]): Promise<unknown> }
 export interface Env { EVERLAND_DB?: Database }
+const HOUR = "CAST(strftime('%H',fetched_at,'+9 hours') AS INTEGER)"
+const UPSERT_HOURLY = 'ON CONFLICT(park,day,hour,ride) DO UPDATE SET name=excluded.name,samples=excluded.samples,operating=excluded.operating,reported=excluded.reported,avg_wait=excluded.avg_wait,max_wait=excluded.max_wait'
+const HOURLY_RIDES = `INSERT INTO ride_hourly (park,day,hour,ride,name,samples,operating,reported,avg_wait,max_wait)
+  SELECT 'everland',day,${HOUR},json_extract(r.value,'$.id'),MAX(json_extract(r.value,'$.name')),COUNT(*),
+    SUM(json_extract(r.value,'$.status')='OPERATING'),COUNT(json_extract(r.value,'$.wait')),AVG(json_extract(r.value,'$.wait')),MAX(json_extract(r.value,'$.wait'))
+  FROM everland_snapshots, json_each(snapshot,'$.rides') r WHERE bucket >= ? GROUP BY 1,2,3,4 ${UPSERT_HOURLY}`
+const HOURLY_PARK = `INSERT INTO ride_hourly (park,day,hour,ride,name,samples,operating,reported,avg_wait,max_wait)
+  SELECT 'everland',day,${HOUR},'_park','',COUNT(*),ROUND(AVG(json_extract(summary,'$.operating'))),ROUND(AVG(json_extract(summary,'$.reporting'))),
+    AVG(json_extract(summary,'$.median')),MAX(json_extract(summary,'$.median'))
+  FROM everland_snapshots WHERE bucket >= ? GROUP BY 1,2,3 ${UPSERT_HOURLY}`
 export async function collect(db: Database, request: typeof fetch = fetch, now?: number) {
   const get = async (path: string) => {
     const res = await request(`${API}/${path}`, { signal: AbortSignal.timeout(15000), headers: { 'User-Agent': 'ToolHub/1.0 (+https://toolhub.ai.kr/everland-wait-times/)' } })
@@ -24,9 +34,12 @@ export async function collect(db: Database, request: typeof fetch = fetch, now?:
       .bind(bucket, seoulDay(collectedAt), snapshot.fetchedAt, JSON.stringify(snapshot), JSON.stringify(summary)),
     db.prepare('DELETE FROM everland_snapshots WHERE bucket < ?').bind(bucket - 7 * 86400000),
   ])
+  // Hourly history outlives the 7-day raw snapshots. Recompute only the current hour;
+  // when the table is empty (first deploy), rebuild from every raw snapshot still kept.
+  const from = await db.prepare('SELECT 1 AS x FROM ride_hourly LIMIT 1').first() ? Math.floor(collectedAt / 3600000) * 3600000 : 0
   // Keep daily aggregates for later validation; forecasts currently use calendar
   // rules only. Never claim that a single week's observations train a crowd model.
-  await db.batch([db.prepare(`INSERT INTO everland_daily (day,observations,mean_median,updated_at)
+  await db.batch([db.prepare(HOURLY_RIDES).bind(from), db.prepare(HOURLY_PARK).bind(from), db.prepare(`INSERT INTO everland_daily (day,observations,mean_median,updated_at)
     SELECT day,COUNT(*),AVG(json_extract(summary,'$.median')),? FROM everland_snapshots
     WHERE day=? AND strftime('%H',fetched_at,'+9 hours') >= '10' AND strftime('%H',fetched_at,'+9 hours') < '18'
       AND json_extract(summary,'$.median') IS NOT NULL

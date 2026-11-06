@@ -155,6 +155,7 @@ export default function KimjangCalculator() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('subtitle')}</p>
+        <Link href="/kimjang-timing/" className="inline-flex items-center min-h-[44px] text-sm text-primary hover:underline">{t('timingLink')}</Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -432,7 +433,7 @@ export default function KimjangCalculator() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {(['dutch-pay', 'budget-calculator', 'discount-calculator'] as const).map((href) => (
+          {(['kimjang-timing', 'dutch-pay', 'budget-calculator', 'discount-calculator'] as const).map((href) => (
             <Link key={href} href={`/${href}/`} className="ui-btn-soft min-h-[44px] inline-flex items-center px-3 py-2 text-sm">{t(`guide.links.${href}`)}</Link>
           ))}
         </div>

@@ -34,6 +34,7 @@ async function main() {
   const sqlite = new DatabaseSync(':memory:')
   sqlite.exec(readFileSync('workers/everland/migrations/0001_waits.sql','utf8'))
   sqlite.exec(readFileSync('workers/everland/migrations/0002_visit_planner.sql','utf8'))
+  sqlite.exec(readFileSync('workers/everland/migrations/0004_history.sql','utf8'))
   const db: Database = {prepare(sql:string):Statement {
     let values:(string|number)[]=[]
     return {bind(...args){values=args;return this},async first<T>(){return (sqlite.prepare(sql).get(...values)??null) as T|null},async all<T>(){return {results:sqlite.prepare(sql).all(...values) as T[]}}}
@@ -57,6 +58,8 @@ async function main() {
   await collect(db,fixtureFetch,now-9*86400000)
   await collect(db,fixtureFetch,now)
   assert.equal(sqlite.prepare('SELECT count(*) AS n FROM everland_snapshots').get()!.n,2,'retention removes expired data')
+  const hourly = () => sqlite.prepare("SELECT day,hour,ride,samples,operating,reported,avg_wait FROM ride_hourly WHERE ride IN ('0','1','6','_park') ORDER BY day,hour,ride").all().map(r=>Object.values(r).join('|'))
+  assert.deepEqual(hourly(),['2026-10-26|11|0|1|1|1|0','2026-10-26|11|1|1|1|0|','2026-10-26|11|6|1|1|1|20','2026-10-26|11|_park|1|3|2|10','2026-11-04|10|0|1|1|1|0','2026-11-04|10|1|1|1|0|','2026-11-04|10|6|1|1|1|20','2026-11-04|10|_park|1|3|2|10','2026-11-04|11|0|1|1|1|0','2026-11-04|11|1|1|1|0|','2026-11-04|11|6|1|1|1|20','2026-11-04|11|_park|1|3|2|10'],'hourly history: KST hour buckets, missing waits stay null, survives raw retention, retries do not double count')
   assert.equal((await worker.fetch()).status,404)
   const request=new Request('https://toolhub.ai.kr/everland-board/')
   assert.equal((await onRequestGet({request,env:{}})).status,503)

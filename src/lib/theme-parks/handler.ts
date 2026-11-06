@@ -5,11 +5,16 @@ import { renderPlanner, dateSitemap } from '../everland/page.tsx'
 import { readParkSnapshot } from './storage.ts'
 import { renderGuide } from './map-render.ts'
 import { parks, type ParkId, type VisitArea } from './config.ts'
+import { calendarMonth, calendarMonths, hasCalendar, readCalendar, type CalendarMonth } from './calendar.ts'
+import { seoulDay } from '../everland/model.ts'
 export interface ParkContext { request: Request; env: Env & { ASSETS: { fetch(request: Request): Promise<Response> } } }
 export async function handlePark({request,env}:ParkContext,park:ParkId) {
  const url=new URL(request.url),path=url.pathname.replace(/\/+$/,''),base=`/${park}`
  const suffix=path.slice(base.length),date=suffix.match(/^\/date\/(\d{4}-\d{2}-\d{2})$/)?.[1],now=Date.now()
- if (!path.startsWith(base) || (!['','/map','/sitemap.xml','/board'].includes(suffix)&&!date)) return new Response('Not found',{status:404,headers:{'X-Robots-Tag':'noindex'}})
+ const cal=suffix.match(/^\/calendar(?:\/(\d{4}-\d{2}))?$/),month=cal?.[1]
+ if (!path.startsWith(base) || (!['','/map','/sitemap.xml','/board'].includes(suffix)&&!date&&!cal) || (cal&&!hasCalendar(park)) || (month&&!calendarMonths(now).includes(month))) return new Response('Not found',{status:404,headers:{'X-Robots-Tag':'noindex'}})
+ // One canonical URL per month; the bare path always means the current KST month.
+ if (cal&&!month) return Response.redirect(new URL(`${base}/calendar/${seoulDay(now).slice(0,7)}/`,url.origin),302)
  if (suffix==='/board') {
   if(park==='everland')return Response.redirect(new URL('/everland-board/',url.origin),302)
   let snapshot=null
@@ -24,7 +29,11 @@ export async function handlePark({request,env}:ParkContext,park:ParkId) {
  const profile:Profile=['family','rides'].includes(url.searchParams.get('profile')??'')?url.searchParams.get('profile') as Profile:'balanced'
  const scope:Scope=url.searchParams.get('scope')==='weekend'?'weekend':'all'
  const area:VisitArea=parks[park].indoor&&url.searchParams.get('area')==='indoor'?'indoor':'all'
- const props={park,forecast,now,initialProfile:profile,initialScope:scope,initialArea:area,initialDate:date??url.searchParams.get('date')??'',pageDate:date,view:suffix==='/map'?'map' as const:'plan' as const}
+ let calendar:CalendarMonth|undefined
+ if(month){let source={schedules:[],daily:[]} as Awaited<ReturnType<typeof readCalendar>>
+  if(env.EVERLAND_DB)try{source=await readCalendar(env.EVERLAND_DB,park,month)}catch{/* Calendar rules still render without stored hours. */}
+  calendar=calendarMonth(month,now,source)}
+ const props={park,forecast,now,initialProfile:profile,initialScope:scope,initialArea:area,initialDate:date??url.searchParams.get('date')??'',pageDate:date,view:suffix==='/map'?'map' as const:month?'calendar' as const:'plan' as const,calendar}
  if(suffix==='/sitemap.xml')return new Response(dateSitemap(props),{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public, max-age=600'}})
  const shell=await(await env.ASSETS.fetch(new Request(new URL(`${base}/`,url.origin)))).text()
  const styles=[...shell.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)].map(m=>m[0]).join('')

@@ -2781,7 +2781,8 @@
       "childBenefit": "Child Benefit Calculator",
       "jeonseChecklist": "Jeonse Safety Checklist",
       "lotteWorldPlanner": "Lotte World visit planner",
-      "gyeongjuWorldPlanner": "Gyeongju World visit planner"
+      "gyeongjuWorldPlanner": "Gyeongju World visit planner",
+      "kimjangTiming": "Kimjang Timing Forecast"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8359,6 +8360,10 @@
       "gyeongjuWorldPlanner": {
         "name": "Gyeongju World visit planner",
         "description": "Compare Gyeongju World visit dates using weather and crowd estimates, then explore the ride map."
+      },
+      "kimjangTiming": {
+        "title": "Kimjang Timing",
+        "description": "When kimjang season starts in your region, from the forecast and normal dates"
       }
     }
   },
@@ -48987,11 +48992,13 @@
         "asOf": "Checked Oct 4, 2026. Default prices will be updated when aT publishes its 2026 kimjang survey."
       },
       "links": {
+        "kimjang-timing": "Kimjang timing by region",
         "dutch-pay": "Split the kimjang bill (Dutch pay)",
         "budget-calculator": "Plan this month's budget",
         "discount-calculator": "Kimjang-season discount calculator"
       }
-    }
+    },
+    "timingLink": "See kimjang timing for your region →"
   },
   "healthCheckup": {
     "title": "National Health Checkup Eligibility",
@@ -51942,7 +51949,36 @@
       "all": "Indoor + Magic Island",
       "indoor": "Mostly indoors"
     },
-    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply."
+    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply.",
+    "calendar": {
+      "tab": "Monthly calendar",
+      "title": "Everland crowd calendar",
+      "intro": "Expected crowds, operating hours, forecast scores and measured average waits for past days, all on one calendar.",
+      "metaDescription": "Everland {year}-{month} calendar with expected crowds, operating hours and weather scores by date.",
+      "month": "{month}/{year}",
+      "prev": "Previous",
+      "next": "Next",
+      "summary": "{count} relatively quiet weekdays left this month.",
+      "picks": "Forecast picks",
+      "short": {
+        "low": "Quiet",
+        "medium": "Normal",
+        "high": "Busy"
+      },
+      "legendScore": "pts = weather and crowd score (within the forecast)",
+      "legendWait": "min = measured average wait (past days)",
+      "legendHours": "~time = closing time, + = open later than usual",
+      "hours": "Hours",
+      "noHours": "Not announced yet",
+      "noHoursPast": "No record",
+      "extended": "Open later than usual",
+      "measured": "Measured average wait",
+      "measuredNote": "Average of the median posted wait of operating rides, recorded every 10 minutes from 10:00 to 18:00.",
+      "minutes": "{value} min",
+      "noForecast": "Beyond the forecast range (about 9 days), so only the weekday/holiday crowd rule is shown.",
+      "noRecord": "No record for this date.",
+      "method": "Crowd levels are a weekday/holiday rule (Mon–Thu quieter, Friday moderate, weekends and holidays busy). Once more than four weeks of records exist, they will be replaced with measured weekday averages. Hours are park schedules collected by ThemeParks.wiki and may change, so check the official notice before you go."
+    }
   },
   "lotteWorldPlanner": {
     "title": "When should you visit Lotte World?",
@@ -52106,7 +52142,36 @@
       "all": "Indoor + Magic Island",
       "indoor": "Mostly indoors"
     },
-    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply."
+    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply.",
+    "calendar": {
+      "tab": "Monthly calendar",
+      "title": "Lotte World crowd calendar",
+      "intro": "Expected crowds, operating hours and forecast scores, all on one calendar.",
+      "metaDescription": "Lotte World {year}-{month} calendar with expected crowds, operating hours and weather scores by date.",
+      "month": "{month}/{year}",
+      "prev": "Previous",
+      "next": "Next",
+      "summary": "{count} relatively quiet weekdays left this month.",
+      "picks": "Forecast picks",
+      "short": {
+        "low": "Quiet",
+        "medium": "Normal",
+        "high": "Busy"
+      },
+      "legendScore": "pts = weather and crowd score (within the forecast)",
+      "legendWait": "min = measured average wait (past days)",
+      "legendHours": "~time = closing time, + = open later than usual",
+      "hours": "Hours",
+      "noHours": "Not announced yet",
+      "noHoursPast": "No record",
+      "extended": "Open later than usual",
+      "measured": "Measured average wait",
+      "measuredNote": "Average of the median posted wait of operating rides, recorded every 10 minutes from 10:00 to 18:00.",
+      "minutes": "{value} min",
+      "noForecast": "Beyond the forecast range (about 9 days), so only the weekday/holiday crowd rule is shown.",
+      "noRecord": "No record for this date.",
+      "method": "Crowd levels are a weekday/holiday rule (Mon–Thu quieter, Friday moderate, weekends and holidays busy). Hours are park schedules collected by ThemeParks.wiki and may change, so check the official notice before you go."
+    }
   },
   "gyeongjuWorldPlanner": {
     "title": "When should you visit Gyeongju World?",
@@ -52266,7 +52331,36 @@
       "all": "Indoor + Magic Island",
       "indoor": "Mostly indoors"
     },
-    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply."
+    "areaNote": "Temperatures, rain and wind are outdoor forecasts. Indoor visits reduce weather penalties and weight, but travel risks and operating restrictions still apply.",
+    "calendar": {
+      "tab": "Monthly calendar",
+      "title": "Gyeongju World crowd calendar",
+      "intro": "Expected crowds, operating hours and forecast scores, all on one calendar.",
+      "metaDescription": "Gyeongju World {year}-{month} calendar with expected crowds, operating hours and weather scores by date.",
+      "month": "{month}/{year}",
+      "prev": "Previous",
+      "next": "Next",
+      "summary": "{count} relatively quiet weekdays left this month.",
+      "picks": "Forecast picks",
+      "short": {
+        "low": "Quiet",
+        "medium": "Normal",
+        "high": "Busy"
+      },
+      "legendScore": "pts = weather and crowd score (within the forecast)",
+      "legendWait": "min = measured average wait (past days)",
+      "legendHours": "~time = closing time, + = open later than usual",
+      "hours": "Hours",
+      "noHours": "Not announced yet",
+      "noHoursPast": "No record",
+      "extended": "Open later than usual",
+      "measured": "Measured average wait",
+      "measuredNote": "Average of the median posted wait of operating rides, recorded every 10 minutes from 10:00 to 18:00.",
+      "minutes": "{value} min",
+      "noForecast": "Beyond the forecast range (about 9 days), so only the weekday/holiday crowd rule is shown.",
+      "noRecord": "No record for this date.",
+      "method": "Crowd levels are a weekday/holiday rule (Mon–Thu quieter, Friday moderate, weekends and holidays busy). Hours are park schedules collected by ThemeParks.wiki and may change, so check the official notice before you go."
+    }
   },
   "parkGuideMap": {
     "title": "Find rides on the guide map",
@@ -52310,5 +52404,159 @@
     "indoor": "Indoor",
     "outdoor": "Outdoor",
     "unmatched": "Facilities from the current source that could not be matched to this guide are not placed at guessed locations."
+  },
+  "kimjangTiming": {
+    "title": "Kimjang Timing 2026 — Kimchi-Making Season by Region",
+    "subtitle": "See when your region enters the kimjang season, from the weather forecast and normal dates.",
+    "regionLabel": "Region",
+    "regionNote": "15 cities with published normal dates. Pick the one closest to you.",
+    "resultLabel": "Kimjang season in {city}",
+    "forecastLabel": "From the forecast",
+    "normalLabel": "Normal date",
+    "status": {
+      "loading": "Checking forecast",
+      "failed": "No forecast",
+      "now": "Now is the time",
+      "from": "From {date}",
+      "notYet": "Not yet by {date}"
+    },
+    "rule": "Rule: the first of 3 consecutive days with a daily mean of 4°C or lower and a low of 0°C or lower (KMA kimjang guideline).",
+    "daysTitle": "Upcoming days",
+    "allDays": "All",
+    "weekendOnly": "Weekends",
+    "temps": "Low {min}°C · Mean {mean}°C",
+    "fit": "Suitable",
+    "notFit": "Too warm",
+    "noWeekend": "No weekend within the forecast range.",
+    "issued": "MET Norway forecast issued {time} (KST).",
+    "forecastNote": "Later days use 6-hour steps, so daily means and lows are approximate. Forecasts change daily, so check again 2–3 days before.",
+    "failedNote": "The forecast could not be loaded, so only normal dates are shown. Please try again later.",
+    "toCalculator": "Calculate ingredients and cost",
+    "md": "{m}/{d}",
+    "day": "{m}/{d} ({w})",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "regions": {
+      "seoul": "Seoul",
+      "incheon": "Incheon",
+      "suwon": "Suwon",
+      "chuncheon": "Chuncheon",
+      "gangneung": "Gangneung",
+      "daejeon": "Daejeon",
+      "seosan": "Seosan",
+      "cheongju": "Cheongju",
+      "jeonju": "Jeonju",
+      "gwangju": "Gwangju",
+      "mokpo": "Mokpo",
+      "yeosu": "Yeosu",
+      "daegu": "Daegu",
+      "ulsan": "Ulsan",
+      "busan": "Busan"
+    },
+    "table": {
+      "title": "Kimjang season by region",
+      "city": "Region",
+      "normal": "Normal",
+      "forecast": "This forecast",
+      "from": "From {date}",
+      "notYet": "Not yet",
+      "note": "Normal dates come from Weatheri's table of normal kimjang dates. 'This forecast' is the first of 3 consecutive suitable days within about 9 forecast days."
+    },
+    "share": {
+      "sub": "Normal date {normal} · ToolHub Kimjang Timing",
+      "nextFit": "Next suitable day",
+      "text": "Kimjang season in {city}: {headline} (normal {normal})"
+    },
+    "guide": {
+      "title": "Kimjang timing guide",
+      "criterion": {
+        "title": "The guideline",
+        "items": [
+          "The Korea Meteorological Administration considers it kimjang season once the daily mean temperature stays at or below 4°C and the low at or below 0°C.",
+          "Kimchi made while it is warm ripens and sours quickly; once it gets too cold, cabbage and radish can freeze and lose flavor.",
+          "It is a reference based on normals, short- and mid-range forecasts and the monthly outlook. Being off by a day or two will not ruin your kimchi."
+        ]
+      },
+      "method": {
+        "title": "How this page calculates",
+        "items": [
+          "Daily mean and low temperatures come from MET Norway city forecasts, about 9 days ahead.",
+          "A single cold day does not count as \"staying\" cold. The season starts on the first of 3 consecutive suitable days.",
+          "Results can differ from any separate KMA announcement. For dates beyond the forecast, use the normal date.",
+          "Forecasts are refreshed every 3 hours."
+        ]
+      },
+      "prep": {
+        "title": "Once you pick a date",
+        "items": [
+          "Use the kimjang calculator to list ingredients and cost for your number of cabbages.",
+          "If you buy pre-salted cabbage, make the seasoning a day before so you can mix it on arrival.",
+          "Mix 2–3 cabbages first, taste, then adjust with salted seafood or salt.",
+          "Leave kimchi you will eat soon at room temperature for about a day; refrigerate long-keeping kimchi right away."
+        ]
+      },
+      "trend": {
+        "title": "Normal kimjang dates",
+        "items": [
+          "Chuncheon is mid-November; Suwon, Cheongju, Seosan and Seoul late November; Incheon, Daejeon and Jeonju early December.",
+          "Daegu is early December; Gwangju and Gangneung mid-December; Ulsan, Mokpo and Yeosu late December; Busan early January.",
+          "The season is getting later as temperatures rise: Seoul's date moved from about Nov 25 (1920–1950 average) to about Nov 29 (1981–2010)."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "When should I make kimjang in 2026?",
+            "a": "It depends on the region. Normal dates are about Nov 29 for Seoul, Dec 1 for Daejeon, Dec 5 for Daegu, Dec 11 for Gwangju and Jan 2 for Busan. Pick a region to see whether this year's season starts within about 9 forecast days."
+          },
+          {
+            "q": "When is kimjang season in Seoul?",
+            "a": "The normal date for Seoul is around Nov 29. Southern Gyeonggi (Suwon) is around Nov 26 and Incheon around Dec 1."
+          },
+          {
+            "q": "What is the guideline?",
+            "a": "KMA considers it kimjang season once the daily mean stays at or below 4°C and the low at or below 0°C. This page starts the season on the first of 3 consecutive days meeting both."
+          },
+          {
+            "q": "Can I make kimchi on a single cold day?",
+            "a": "If it warms up again after a brief cold snap, kimchi can ripen quickly. That is why single days are only marked \"Suitable\" in the daily list, not counted as the start."
+          },
+          {
+            "q": "The forecast and normal date disagree. Which should I trust?",
+            "a": "For the next few days, the forecast is more accurate. For dates beyond about 9 days, use the normal date and check the forecast again 2–3 days before."
+          },
+          {
+            "q": "What about the south and Jeju?",
+            "a": "Normal dates are about Dec 25 for Mokpo, Dec 30 for Yeosu and Jan 2 for Busan. Jeju is not listed because the source table has no normal date for it."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "Normal kimjang dates by region — Weatheri (2019-11-05)",
+            "url": "https://weatheri.co.kr/board/board03_read.php?id=293"
+          },
+          {
+            "label": "Kimjang timing and the KMA guideline — Weatheri",
+            "url": "https://weatheri.co.kr/board/board03_read.php?id=268"
+          },
+          {
+            "label": "Weather forecast — MET Norway Locationforecast (CC BY 4.0)",
+            "url": "https://api.met.no/weatherapi/locationforecast/2.0/documentation"
+          }
+        ],
+        "asOf": "Checked Nov 6, 2026. Forecast data © MET Norway."
+      }
+    }
   }
 }

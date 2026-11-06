@@ -41,6 +41,9 @@ export function normalizeForecast(raw: unknown, now = Date.now()): Forecast {
   return { issuedAt, fetchedAt:new Date(now).toISOString(), slots }
 }
 
+/** Calendar rule only (weekday/holiday), not measured attendance. */
+export const crowdOf = (weekday: number, holiday: boolean): VisitDay['crowd'] => holiday || weekday === 6 || weekday === 0 ? 'high' : weekday === 5 ? 'medium' : 'low'
+
 export function forecastFresh(forecast: Forecast | null, now: number) {
   return !!forecast && now - Date.parse(forecast.issuedAt) <= 24 * hour && now - Date.parse(forecast.fetchedAt) <= 24 * hour
 }
@@ -61,7 +64,7 @@ export function visitDays(forecast: Forecast | null, profile: Profile = 'balance
     const low = Math.min(...slots.map(s=>s.temperature)), high = Math.max(...slots.map(s=>s.temperature)), wind = Math.max(...slots.map(s=>s.wind))
     const rain = slots.reduce((sum,s) => sum + s.rain * Math.max(0,Math.min(end,Date.parse(s.end))-Math.max(start,Date.parse(s.start))) / (Date.parse(s.end)-Date.parse(s.start)),0)
     const weekday = new Date(`${date}T00:00:00Z`).getUTCDay(), holiday = holidayDates.has(date)
-    const crowd = holiday || weekday === 6 || weekday === 0 ? 'high' : weekday === 5 ? 'medium' : 'low'
+    const crowd = crowdOf(weekday, holiday)
     const cold = Math.max(0, (profile === 'family' ? 14 : 10) - low), hot = Math.max(0, high - (profile === 'family' ? 27 : 29))
     const indoor = parks[park].indoor && area==='indoor'
     const storm = slots.some(s => /thunder/.test(s.symbol)), caution = indoor ? storm || rain>=20 || wind>=15 : storm || rain >= 8 || wind >= 9 || low < 0 || high >= 33
