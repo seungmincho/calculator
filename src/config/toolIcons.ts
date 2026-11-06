@@ -73,6 +73,7 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/new-year-sunrise': Sunrise,
   '/manito': Gift,
   '/calendar-2027': CalendarDays,
+  '/wind-chill': ThermometerSnowflake,
   '/dividend-calculator': HandCoins,
   '/holiday-planner': CalendarDays,
   '/everland': Map,

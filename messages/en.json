@@ -2843,7 +2843,8 @@
       "skiResorts": "Ski Resort Openings & Weather",
       "manito": "Secret Santa Draw",
       "calendar2027": "2027 Calendar",
-      "dividendCalculator": "Dividend Calculator"
+      "dividendCalculator": "Dividend Calculator",
+      "windChill": "Wind Chill Calculator"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8592,6 +8593,10 @@
       "dividendCalculator": {
         "title": "Dividend Calculator",
         "description": "After-tax dividends, monthly income target and Korean dividend tax"
+      },
+      "windChill": {
+        "title": "Wind Chill Calculator",
+        "description": "Wind chill from temperature and wind, 48-hour forecast for Korean cities"
       }
     }
   },
@@ -54488,5 +54493,196 @@
       }
     },
     "disclaimer": "For reference only. Actual tax can differ with other income, deductions and payment dates; check with Hometax or a tax professional before filing."
+  },
+  "windChill": {
+    "title": "Wind Chill Calculator",
+    "subtitle": "Work out wind chill from temperature and wind, and check the next 48 hours of wind chill and cold waves for Korean cities",
+    "input": {
+      "title": "Temperature and wind",
+      "temp": "Temperature",
+      "wind": "Wind speed",
+      "celsius": "°C",
+      "ms": "m/s",
+      "windHint": "Enter the forecast wind speed in m/s · {kmh} km/h",
+      "presets": "Wind",
+      "calm": "Light 2",
+      "breeze": "Moderate 5",
+      "strong": "Strong 10",
+      "gale": "Very strong 15"
+    },
+    "result": {
+      "label": "Wind chill",
+      "value": "{v}°C",
+      "colder": "Feels {d}°C colder than the air",
+      "same": "Same as the air temperature",
+      "notApplied": "Wind chill applies only at 10°C or below with wind above 1.3 m/s. Under these conditions it equals the air temperature.",
+      "stage": "{name}",
+      "formula": "KMA winter wind chill · 13.12 + 0.6215T − 11.37V^0.16 + 0.3965V^0.16T (V in km/h)",
+      "share": {
+        "tool": "Wind Chill Calculator",
+        "sub": "{t}°C · wind {v} m/s",
+        "text": "At {t}°C with {v} m/s wind, it feels like {wc}°C ({stage})"
+      }
+    },
+    "stages": {
+      "none": "N/A",
+      "interest": "Watch",
+      "caution": "Caution",
+      "warning": "Warning",
+      "danger": "Danger",
+      "range": {
+        "interest": "−10°C or above",
+        "caution": "−25 to −10°C",
+        "warning": "−45 to −25°C",
+        "danger": "Below −45°C"
+      },
+      "advice": {
+        "interest": "Dress warmly and change out of wet clothes or shoes right away.",
+        "caution": "Cover exposed skin with a hat, gloves and scarf, and limit time outdoors.",
+        "warning": "Frostbite can occur on exposed skin. Cut outdoor activity and wear layers.",
+        "danger": "Frostbite and hypothermia can happen quickly. Go out only when necessary."
+      },
+      "title": "Stages and what to do",
+      "note": "Stage ranges follow the KMA open data portal; advice is based on KDCA cold-illness prevention guidance."
+    },
+    "forecast": {
+      "title": "Wind chill forecast",
+      "cityLabel": "City",
+      "loading": "Loading forecast…",
+      "failed": "Couldn't load the forecast. Please try again later.",
+      "now": "Now in {city}",
+      "nowDetail": "{t}°C · wind {v} m/s",
+      "hourly": "Next 48 hours (every 3 hours)",
+      "time": "Time",
+      "temp": "Temp",
+      "wind": "Wind",
+      "wc": "Feels",
+      "daily": "By day",
+      "date": "Date",
+      "morningMin": "Morning low",
+      "minWc": "Lowest chill",
+      "maxWind": "Max wind",
+      "cold": "Cold wave",
+      "advisory": "Advisory level",
+      "warningLevel": "Warning level",
+      "coldNote": "A morning low of −12°C or below for two days matches the cold wave advisory criterion, −15°C for two days the warning. Check KMA for official alerts.",
+      "ranking": "Coldest today (lowest wind chill)",
+      "issued": "Forecast: MET Norway (CC BY 4.0) · issued {time} · refreshed every 3 hours",
+      "hourFmt": "{d}th {h}:00",
+      "dayFmt": "{m}/{d} ({w})",
+      "weekdays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ]
+    },
+    "table": {
+      "title": "Wind chill chart",
+      "desc": "Wind chill by temperature (columns) and wind speed (rows), computed with the same formula as the KMA chart.",
+      "wind": "Wind",
+      "kmh": "{v} km/h",
+      "ms": "{v} m/s"
+    },
+    "cities": {
+      "seoul": "Seoul",
+      "incheon": "Incheon",
+      "suwon": "Suwon",
+      "cheorwon": "Cheorwon",
+      "chuncheon": "Chuncheon",
+      "daegwallyeong": "Daegwallyeong",
+      "gangneung": "Gangneung",
+      "daejeon": "Daejeon",
+      "cheongju": "Cheongju",
+      "jeonju": "Jeonju",
+      "gwangju": "Gwangju",
+      "andong": "Andong",
+      "daegu": "Daegu",
+      "ulsan": "Ulsan",
+      "busan": "Busan",
+      "jeju": "Jeju"
+    },
+    "guide": {
+      "title": "About wind chill",
+      "whatIs": {
+        "title": "What is wind chill",
+        "items": [
+          "Wind strips heat from the body faster, so it feels colder than the thermometer says. Winter wind chill puts a number on that.",
+          "KMA calculates it only at 10°C or below with wind of 1.3 m/s or more, for the winter season from October to April.",
+          "Formula: 13.12 + 0.6215T − 11.37V^0.16 + 0.3965V^0.16T, with T in °C and V the 10-minute mean wind in km/h (1 m/s = 3.6 km/h)."
+        ]
+      },
+      "coldWave": {
+        "title": "Cold wave alert criteria",
+        "items": [
+          "Advisory: from October to April, when the morning low is expected to drop 10°C or more from the previous day to 3°C or below and 3°C under normal, or stay at −12°C or below for two days or more.",
+          "Warning: a drop of 15°C or more to 3°C or below and 3°C under normal, or −15°C or below for two days or more.",
+          "Alerts are also issued when sudden cold is expected to cause serious damage. The 'Cold wave' column here uses forecast temperatures only and may differ from official alerts."
+        ]
+      },
+      "prevent": {
+        "title": "Preventing cold illness",
+        "items": [
+          "Check wind chill before going out and cut outdoor activity on cold days.",
+          "Wear thin layers and keep warm with a hat, gloves, scarf and mask.",
+          "Change out of wet clothes or shoes right away.",
+          "If you suspect hypothermia (body temperature 35°C or below), call 119. Don't rub frostbitten skin or put it straight into hot water."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How is wind chill calculated?",
+            "a": "Using KMA's winter formula (13.12 + 0.6215T − 11.37V^0.16 + 0.3965V^0.16T) with temperature T in °C and wind V in km/h. At −5°C with 5 m/s wind it feels like about −11°C."
+          },
+          {
+            "q": "What if there's no wind?",
+            "a": "KMA doesn't calculate wind chill when wind is 1.3 m/s or less or the temperature is above 10°C; it's treated as the air temperature."
+          },
+          {
+            "q": "What are the stages?",
+            "a": "−10°C or above: watch; −25 to −10°C: caution; −45 to −25°C: warning; below −45°C: danger (KMA open data portal)."
+          },
+          {
+            "q": "What are the cold wave alert criteria?",
+            "a": "An advisory when the morning low is expected at −12°C or below for two days or more, a warning at −15°C for two days. Also when it drops 10°C (warning 15°C) or more to 3°C or below and 3°C under normal."
+          },
+          {
+            "q": "Where does the forecast come from?",
+            "a": "Hourly temperature and 10 m wind from MET Norway, fetched every 3 hours and run through the KMA formula. Numbers can differ slightly from KMA's own forecast."
+          },
+          {
+            "q": "Is summer 'feels like' the same formula?",
+            "a": "No. Summer (May–September) uses a different formula based on temperature and humidity. This tool covers winter wind chill only."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "KMA open data portal — wind chill (formula, stages, chart)",
+            "url": "https://data.kma.go.kr/climate/windChill/selectWindChillChart.do?pgmNo=111"
+          },
+          {
+            "label": "Seoul Media Hub — cold wave alert criteria (KMA data)",
+            "url": "https://mediahub.seoul.go.kr/archives/1199483"
+          },
+          {
+            "label": "KDCA — cold illness surveillance and prevention",
+            "url": "https://www.kdca.go.kr/bbs/kdca/42/215496/artclView.do"
+          },
+          {
+            "label": "Forecast — MET Norway Locationforecast (CC BY 4.0)",
+            "url": "https://api.met.no/weatherapi/locationforecast/2.0/documentation"
+          }
+        ],
+        "asOf": "Checked Nov 7, 2026"
+      }
+    }
   }
 }

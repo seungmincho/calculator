@@ -265,6 +265,7 @@ export const menuConfig: MenuConfig = {
       { href: '/new-year-sunrise', labelKey: 'footer.links.newYearSunrise', descriptionKey: 'toolsShowcase.tools.newYearSunrise.description', icon: '🌄', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
       { href: '/manito', labelKey: 'footer.links.manito', descriptionKey: 'toolsShowcase.tools.manito.description', icon: '🎁', addedDate: '2026-11-07', subcategory: 'subcategory.decision' },
       { href: '/calendar-2027', labelKey: 'footer.links.calendar2027', descriptionKey: 'toolsShowcase.tools.calendar2027.description', icon: '📅', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
+      { href: '/wind-chill', labelKey: 'footer.links.windChill', descriptionKey: 'toolsShowcase.tools.windChill.description', icon: '🥶', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {
