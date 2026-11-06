@@ -1,10 +1,14 @@
 // Official 2026 basic-livelihood thresholds: https://www.mohw.go.kr/menu.es?mid=a10708010300
 // Housing rates and calculation: https://www.lh.or.kr/menu.es?mid=a10401050100
+import { MEDIAN_INCOME } from './medianIncome.ts'
+
+/** 이 파일의 사업 규칙(선정 비율·기준임대료·청년월세 출생연도 등)이 기준으로 삼는 연도.
+ *  2027 규칙으로 갱신할 때 이 값을 올리면 중위소득도 medianIncome.ts 의 그 해 값으로 바뀐다. */
 export const WELFARE_POLICY_YEAR = 2026
-export const MEDIAN_INCOME_2026: Record<number, number> = {
-  1: 2_564_238, 2: 4_199_292, 3: 5_359_036,
-  4: 6_494_738, 5: 7_556_719, 6: 8_555_952,
-}
+/** 가구원수(1~6) → 기준 중위소득(월). 고시 출처는 medianIncome.ts 단일 관리 */
+export const POLICY_MEDIAN_INCOME: Record<number, number> = Object.fromEntries(
+  MEDIAN_INCOME[String(WELFARE_POLICY_YEAR)].map((v, i) => [i + 1, v]))
+/** 주거급여 기준임대료(국토부 고시). 2027년은 고시안 단계(2026.11) — 최종 고시 후 연도별로 추가 */
 export const HOUSING_RENT_2026 = {
   seoul: [369_000, 414_000, 492_000, 571_000, 591_000, 699_000],
   gyeonggi: [300_000, 335_000, 401_000, 463_000, 479_000, 568_000],
@@ -53,7 +57,7 @@ export interface ProgramResult {
   threshold?: number
 }
 export function getMedianIncome(size: number): number {
-  return MEDIAN_INCOME_2026[Math.min(Math.max(size, 1), 6)]
+  return POLICY_MEDIAN_INCOME[Math.min(Math.max(size, 1), 6)]
 }
 
 // A screening result is never a complete eligibility determination. Unknown facts

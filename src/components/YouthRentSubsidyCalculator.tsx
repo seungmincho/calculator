@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import GuideSectionContent from '@/components/GuideSectionContent'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
-import { MEDIAN_INCOME_2026 } from '@/utils/welfarePolicy'
+import { POLICY_MEDIAN_INCOME } from '@/utils/welfarePolicy'
 
 const MAX_MONTHLY_SUPPORT = 200000 // 월 최대 20만원
 const MAX_PAYMENTS = 24 // 국가사업 생애 누적 지급 한도
@@ -104,8 +104,8 @@ function evaluateYouth({ age, isIndependent, isHomeless, ownIncome, parentIncome
   const sizeNum = parseInt(householdSize) || 1
   const remainingPayments = MAX_PAYMENTS - Number(receivedPayments)
 
-  const ownIncomeLimit = Math.floor((MEDIAN_INCOME_2026[1] || 0) * 0.6)
-  const parentIncomeLimit = MEDIAN_INCOME_2026[Math.min(sizeNum, 6)] || MEDIAN_INCOME_2026[6]
+  const ownIncomeLimit = Math.floor((POLICY_MEDIAN_INCOME[1] || 0) * 0.6)
+  const parentIncomeLimit = POLICY_MEDIAN_INCOME[Math.min(sizeNum, 6)] || POLICY_MEDIAN_INCOME[6]
   const checks: CheckResult = {
     age: ageNum >= MIN_AGE && ageNum <= MAX_AGE,
     independent: isIndependent,
@@ -282,7 +282,7 @@ export default function YouthRentSubsidyCalculator() {
   const checkItems = useMemo(() => {
     if (!result) return []
     const size = parseInt(householdSize) || 1
-    const parentLimit = MEDIAN_INCOME_2026[Math.min(size, 6)] || MEDIAN_INCOME_2026[6]
+    const parentLimit = POLICY_MEDIAN_INCOME[Math.min(size, 6)] || POLICY_MEDIAN_INCOME[6]
     return [
       {
         key: 'age',
@@ -867,7 +867,7 @@ export default function YouthRentSubsidyCalculator() {
                       </tr>
                     </thead>
                     <tbody>
-                      {Object.entries(MEDIAN_INCOME_2026).map(([size, income]) => (
+                      {Object.entries(POLICY_MEDIAN_INCOME).map(([size, income]) => (
                         <tr key={size} className="border-b border-line hover:bg-subtle">
                           <td className="py-2 px-3 text-fg font-medium">{t('medianTable.sizeUnit', { n: size })}</td>
                           <td className="py-2 px-3 text-right text-body">{income.toLocaleString('ko-KR')}{t('wonUnit')}</td>
