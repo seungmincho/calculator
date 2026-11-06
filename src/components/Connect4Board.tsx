@@ -1,6 +1,8 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/connect4'
 
 const ROWS = 6
 const COLS = 7
@@ -47,6 +49,8 @@ export default function Connect4BoardComponent({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
+  const [kbActive, setKbActive] = useState(false) // hoverCol 을 키보드가 옮겼을 때만 커서 열을 읽어 준다
+  const t = useTranslations('connect4')
 
   // Drop animation state
   const animRef = useRef<{
@@ -271,6 +275,7 @@ export default function Connect4BoardComponent({
   // 마우스 이동 처리
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const col = getCol(e)
+    setKbActive(false)
     setHoverCol(col)
   }
 
@@ -286,6 +291,7 @@ export default function Connect4BoardComponent({
     const key = e.key
     if (['ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
       e.preventDefault()
+      setKbActive(true)
 
       if (key === 'ArrowLeft') {
         setHoverCol(prev => prev === null ? 3 : Math.max(0, prev - 1))
@@ -318,15 +324,28 @@ export default function Connect4BoardComponent({
     return null
   }
 
+  // 스크린리더 안내: 마지막 수 · 차례/결과 + (키보드 사용 중) 커서 열
+  const { lastMove, winner, currentTurn, board } = gameState
+  const moveText = lastMove ? t('keyboard.moved', { color: t(lastMove.player), col: lastMove.col + 1 }) : ''
+  const statusText = !myColor ? ''
+    : winner ? (winner === 'draw' ? t('draw') : winner === myColor ? t('youWin') : t('youLose'))
+    : currentTurn === myColor ? t('yourTurn') : t('opponentTurn')
+  let cursorText = ''
+  if (kbActive && hoverCol !== null) {
+    const free = getDropRow(board, hoverCol) + 1
+    cursorText = `${t('keyboard.column', { col: hoverCol + 1 })}, ${free ? t('keyboard.free', { count: free }) : t('keyboard.full')}`
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
+      <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{statusText}</span> <span>{cursorText}</span></p>
       <canvas
         ref={canvasRef}
         width={BOARD_WIDTH}
         height={BOARD_HEIGHT}
         tabIndex={0}
-        aria-label="Connect4 game board"
-        role="grid"
+        aria-label={t('keyboard.board')}
+        role="application"
         style={{
           width: BOARD_WIDTH * scale,
           height: BOARD_HEIGHT * scale,
@@ -340,6 +359,7 @@ export default function Connect4BoardComponent({
         onKeyDown={handleKeyDown}
         onTouchStart={(e) => {
           e.preventDefault()
+          setKbActive(false)
           const col = getTouchCol(e)
           if (col !== null) setHoverCol(col)
         }}

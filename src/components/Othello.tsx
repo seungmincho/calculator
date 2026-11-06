@@ -593,7 +593,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
             </summary>
             <div className="flex items-center justify-center gap-2 mt-2">
               <p className="font-mono text-sm text-fg break-all">{peerId || 'Loading...'}</p>
-              <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all" title="Copy">
+              <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-all" title={tCommon('copy')} aria-label={tCommon('copy')}>
                 {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
               </button>
             </div>
@@ -655,6 +655,8 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
               {/* 채팅 토글 */}
               <button
                 onClick={() => setShowChat(!showChat)}
+                aria-label={unreadCount > 0 ? `${t('chat')} (${unreadCount})` : t('chat')}
+                aria-expanded={showChat}
                 className={`relative p-2 rounded-lg transition-all ${
                   showChat
                     ? 'bg-primary-soft text-primary'
@@ -884,6 +886,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
                   />
                   <button
                     onClick={handleSendChat}
+                    aria-label={t('send')}
                     disabled={!chatInput.trim() || !isConnected}
                     className="p-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-lg transition-all disabled:cursor-not-allowed"
                   >
@@ -902,6 +905,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
           {toasts.map((toast) => (
             <div
               key={toast.id}
+              role="alert"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg animate-in slide-in-from-top-2 fade-in duration-200 ${
                 toast.type === 'error'
                   ? 'bg-red-500 text-white'
@@ -916,6 +920,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
               <span className="font-medium">{toast.message}</span>
               <button
                 onClick={() => removeToast(toast.id)}
+                aria-label={tCommon('close')}
                 className="ml-2 p-1 hover:bg-white/20 rounded-full transition-all"
               >
                 <X className="w-4 h-4" />

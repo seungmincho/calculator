@@ -1,12 +1,16 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/othello'
 
 const BOARD_SIZE = 8
 const CELL_SIZE = 56
 const PADDING = 24
 const STONE_RADIUS = 22
 const BOARD_PIXEL_SIZE = CELL_SIZE * BOARD_SIZE + PADDING * 2
+const COL_LABELS = 'ABCDEFGH'
+const cellName = (x: number, y: number) => COL_LABELS[x] + (y + 1)
 
 export type OthelloCell = 'black' | 'white' | null
 export type OthelloBoard = OthelloCell[][]
@@ -55,6 +59,8 @@ export default function OthelloBoard({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
+  const [kbActive, setKbActive] = useState(false) // hoverPos 를 키보드가 옮겼을 때만 커서 칸을 읽어 준다
+  const t = useTranslations('othello')
 
   // Flip animation state
   const [flipProgress, setFlipProgress] = useState(1) // 0→1, 1 = done
@@ -138,10 +144,9 @@ export default function OthelloBoard({
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
 
-      const letters = 'ABCDEFGH'
       for (let i = 0; i < BOARD_SIZE; i++) {
         // 상단 알파벳
-        ctx.fillText(letters[i], PADDING + i * CELL_SIZE + CELL_SIZE / 2, 12)
+        ctx.fillText(COL_LABELS[i], PADDING + i * CELL_SIZE + CELL_SIZE / 2, 12)
         // 좌측 숫자
         ctx.fillText(String(i + 1), 10, PADDING + i * CELL_SIZE + CELL_SIZE / 2)
       }
@@ -298,6 +303,7 @@ export default function OthelloBoard({
   // 마우스 이동 처리
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const pos = getPosition(e)
+    setKbActive(false)
     setHoverPos(pos)
   }
 
@@ -316,6 +322,7 @@ export default function OthelloBoard({
     const key = e.key
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
       e.preventDefault()
+      setKbActive(true)
 
       const pos = hoverPosRef.current || { x: 3, y: 3 }
 
@@ -360,15 +367,38 @@ export default function OthelloBoard({
     return null
   }
 
+  // 스크린리더 안내: 마지막 수 · 패스/차례/결과 + (키보드 사용 중) 커서 칸
+  const { lastMove, winner, currentTurn, board, validMoves, blackCount, whiteCount } = gameState
+  const moveText = lastMove
+    ? t('keyboard.moved', { color: t(lastMove.player), cell: cellName(lastMove.x, lastMove.y), count: lastMove.flipped.length })
+    : ''
+  let statusText = ''
+  if (myColor && winner) {
+    const result = winner === 'draw' ? t('draw') : winner === myColor ? t('youWin') : t('youLose')
+    statusText = `${result} ${t('black')} ${blackCount}, ${t('white')} ${whiteCount}`
+  } else if (myColor) {
+    // makeMove 는 다음 사람이 둘 곳이 없으면 같은 사람에게 차례를 남긴다 = 패스
+    const passed = lastMove && lastMove.player === currentTurn ? `${lastMove.player === myColor ? t('opponentPassed') : t('noValidMoves')} ` : ''
+    statusText = passed + (currentTurn === myColor ? t('yourTurn') : t('opponentTurn'))
+  }
+  let cursorText = ''
+  if (kbActive && hoverPos) {
+    const stone = board[hoverPos.y][hoverPos.x]
+    const parts = [cellName(hoverPos.x, hoverPos.y), stone ? t(stone) : t('keyboard.empty')]
+    if (isMyTurn && !winner && validMoves.some(m => m.x === hoverPos.x && m.y === hoverPos.y)) parts.push(t('keyboard.canPlace'))
+    cursorText = parts.join(', ')
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
+      <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{statusText}</span> <span>{cursorText}</span></p>
       <canvas
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
         tabIndex={0}
-        aria-label="Othello game board"
-        role="grid"
+        aria-label={t('keyboard.board')}
+        role="application"
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,
@@ -382,6 +412,7 @@ export default function OthelloBoard({
         onKeyDown={handleKeyDown}
         onTouchStart={(e) => {
           e.preventDefault()
+          setKbActive(false)
           const pos = getTouchPosition(e)
           if (pos) setHoverPos(pos)
         }}

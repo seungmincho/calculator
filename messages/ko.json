@@ -5502,6 +5502,12 @@
     "totalGamesPlayed": "총 {count}게임 진행됨"
   },
   "omok": {
+    "send": "보내기",
+    "keyboard": {
+      "board": "오목판 19×19. 방향키로 교차점을 옮기고 Enter로 돌을 놓습니다",
+      "moved": "{color} {cell}에 둠",
+      "empty": "빈 자리"
+    },
     "shareLinkDesc": "초대 링크를 상대에게 공유하세요!",
     "title": "온라인 오목",
     "description": "친구와 실시간으로 오목 대전을 즐기세요. 19x19 바둑판에서 먼저 5개를 연속으로 놓으면 승리!",
@@ -5604,6 +5610,13 @@
     }
   },
   "othello": {
+    "send": "보내기",
+    "keyboard": {
+      "board": "오셀로 보드 8×8. 방향키로 칸을 옮기고 Enter로 돌을 놓습니다",
+      "moved": "{color} {cell}에 둠, {count}개 뒤집음",
+      "empty": "빈 칸",
+      "canPlace": "둘 수 있음"
+    },
     "shareLinkDesc": "초대 링크를 상대에게 공유하세요!",
     "title": "온라인 오셀로",
     "description": "친구와 실시간으로 오셀로(리버시) 대전을 즐기세요. 8x8 보드에서 돌을 뒤집어 더 많은 돌을 차지하세요!",
@@ -5658,6 +5671,14 @@
     "loss": "패배!"
   },
   "connect4": {
+    "send": "보내기",
+    "keyboard": {
+      "board": "커넥트4 보드 7열 6줄. 좌우 방향키로 열을 고르고 Enter로 디스크를 떨어뜨립니다",
+      "moved": "{color} {col}열에 둠",
+      "column": "{col}열",
+      "free": "빈 칸 {count}개",
+      "full": "가득 참"
+    },
     "shareLinkDesc": "초대 링크를 상대에게 공유하세요!",
     "title": "커넥트4",
     "description": "친구와 실시간으로 커넥트4 대전을 즐기세요. 7x6 보드에서 같은 색 디스크 4개를 연결하면 승리!",

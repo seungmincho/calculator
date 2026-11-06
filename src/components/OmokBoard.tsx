@@ -1,6 +1,8 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { useTranslations } from '@/lib/i18n'
+import '@/lib/i18n/ns/omok'
 import { OmokGameState } from '@/utils/webrtc'
 import {
   BOARD_SIZE,
@@ -16,6 +18,8 @@ const CELL_SIZE = 32
 const PADDING = 24
 const STONE_RADIUS = 14
 const BOARD_PIXEL_SIZE = CELL_SIZE * (BOARD_SIZE - 1) + PADDING * 2
+const COL_LABELS = 'ABCDEFGHJKLMNOPQRST' // 바둑판 관례대로 I 제외
+const cellName = (x: number, y: number) => COL_LABELS[x] + (BOARD_SIZE - y)
 
 interface OmokBoardProps {
   gameState: OmokGameState
@@ -38,6 +42,7 @@ export default function OmokBoard({
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
   const [keyboardPos, setKeyboardPos] = useState<{ x: number; y: number } | null>(null)
   const [useKeyboard, setUseKeyboard] = useState(false)
+  const t = useTranslations('omok')
 
   // Pre-generate wood texture positions to avoid flickering on redraw
   const woodTextureRef = useRef<{ x: number; y: number; w: number; h: number }[]>(
@@ -120,9 +125,8 @@ export default function OmokBoard({
       ctx.textBaseline = 'middle'
 
       for (let i = 0; i < BOARD_SIZE; i++) {
-        // 상단 알파벳 (A-S, I 제외)
-        const letters = 'ABCDEFGHJKLMNOPQRST'
-        ctx.fillText(letters[i], PADDING + i * CELL_SIZE, 10)
+        // 상단 알파벳 (A-T, I 제외)
+        ctx.fillText(COL_LABELS[i], PADDING + i * CELL_SIZE, 10)
         // 좌측 숫자
         ctx.fillText(String(BOARD_SIZE - i), 10, PADDING + i * CELL_SIZE)
       }
@@ -306,15 +310,28 @@ export default function OmokBoard({
     return null
   }
 
+  // 스크린리더 안내: 마지막 수 · 차례/결과 + (키보드 사용 중) 커서 자리
+  const { lastMove, winner, currentTurn, board } = gameState
+  const moveText = lastMove ? t('keyboard.moved', { color: t(lastMove.player), cell: cellName(lastMove.x, lastMove.y) }) : ''
+  const statusText = !myColor ? ''
+    : winner ? (winner === 'draw' ? t('draw') : winner === myColor ? t('youWin') : t('youLose'))
+    : currentTurn === myColor ? t('yourTurn') : t('opponentTurn')
+  let cursorText = ''
+  if (useKeyboard && keyboardPos) {
+    const stone = board[keyboardPos.y][keyboardPos.x]
+    cursorText = `${cellName(keyboardPos.x, keyboardPos.y)}, ${stone ? t(stone) : t('keyboard.empty')}`
+  }
+
   return (
     <div ref={containerRef} className="w-full flex justify-center">
+      <p className="sr-only" aria-live="polite"><span>{moveText}</span> <span>{statusText}</span> <span>{cursorText}</span></p>
       <canvas
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
         tabIndex={0}
-        aria-label="Omok game board"
-        role="grid"
+        aria-label={t('keyboard.board')}
+        role="application"
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,

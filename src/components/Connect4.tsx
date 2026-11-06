@@ -48,6 +48,7 @@ interface Connect4Props {
 
 export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, onBack, joinPeerId }: Connect4Props) {
   const t = useTranslations('connect4')
+  const tCommon = useTranslations('common')
 
   const [gamePhase, setGamePhase] = useState<GamePhase>('lobby')
   const [currentRoom, setCurrentRoom] = useState<GameRoom | null>(null)
@@ -577,7 +578,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
             </summary>
             <div className="flex items-center justify-center gap-2 mt-2">
               <p className="font-mono text-sm text-fg break-all">{peerId || 'Loading...'}</p>
-              <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
+              <button onClick={handleCopyPeerId} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg" title={tCommon('copy')} aria-label={tCommon('copy')}>
                 {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5 text-gray-500" />}
               </button>
             </div>
@@ -632,6 +633,8 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowChat(!showChat)}
+                aria-label={unreadCount > 0 ? `${t('chat')} (${unreadCount})` : t('chat')}
+                aria-expanded={showChat}
                 className={`relative p-2 rounded-lg ${showChat ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
               >
                 <MessageCircle className="w-5 h-5" />
@@ -795,6 +798,7 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
                   />
                   <button
                     onClick={handleSendChat}
+                    aria-label={t('send')}
                     disabled={!chatInput.trim() || !isConnected}
                     className="p-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white rounded-lg"
                   >
@@ -811,12 +815,12 @@ export default function Connect4({ initialRoom, isHost: isHostProp, hostPeerId, 
       {toasts.length > 0 && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2">
           {toasts.map((toast) => (
-            <div key={toast.id} className={`flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg ${
+            <div key={toast.id} role="alert" className={`flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg ${
               toast.type === 'error' ? 'bg-red-500 text-white' : toast.type === 'warning' ? 'bg-amber-500 text-white' : 'bg-gray-800 text-white'
             }`}>
               <AlertCircle className="w-5 h-5" />
               <span>{toast.message}</span>
-              <button onClick={() => removeToast(toast.id)} className="p-1 hover:bg-white/20 rounded-full">
+              <button onClick={() => removeToast(toast.id)} aria-label={tCommon('close')} className="p-1 hover:bg-white/20 rounded-full">
                 <X className="w-4 h-4" />
               </button>
             </div>

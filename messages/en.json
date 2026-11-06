@@ -5503,6 +5503,12 @@
     "totalGamesPlayed": "{count} games played"
   },
   "omok": {
+    "send": "Send",
+    "keyboard": {
+      "board": "Omok board, 19 by 19. Arrow keys move between intersections, Enter places a stone",
+      "moved": "{color} played {cell}",
+      "empty": "empty"
+    },
     "shareLinkDesc": "Share the invite link with your opponent!",
     "title": "Online Omok",
     "description": "Play real-time Omok with friends. Place 5 stones in a row on a 19x19 board to win!",
@@ -5605,6 +5611,13 @@
     }
   },
   "othello": {
+    "send": "Send",
+    "keyboard": {
+      "board": "Othello board, 8 by 8. Arrow keys move between squares, Enter places a stone",
+      "moved": "{color} played {cell}, flipped {count}",
+      "empty": "empty",
+      "canPlace": "can play here"
+    },
     "shareLinkDesc": "Share the invite link with your opponent!",
     "title": "Online Othello",
     "description": "Play real-time Othello (Reversi) with friends. Flip your opponent's pieces on an 8x8 board to win!",
@@ -5659,6 +5672,14 @@
     "loss": "You Lose!"
   },
   "connect4": {
+    "send": "Send",
+    "keyboard": {
+      "board": "Connect 4 board, 7 columns by 6 rows. Left and right arrows choose a column, Enter drops a disc",
+      "moved": "{color} dropped in column {col}",
+      "column": "Column {col}",
+      "free": "{count} empty",
+      "full": "full"
+    },
     "shareLinkDesc": "Share the invite link with your opponent!",
     "title": "Connect4",
     "description": "Play real-time Connect4 with friends. Connect 4 discs of your color in a row on a 7x6 board to win!",

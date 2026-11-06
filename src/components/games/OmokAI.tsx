@@ -30,6 +30,7 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
   const t = useTranslations('omok')
   const tHub = useTranslations('gameHub')
   const tSounds = useTranslations('gameSounds')
+  const tCommon = useTranslations('common')
 
   const [gameState, setGameState] = useState<OmokGameState>(createInitialGameState())
   const [playerColor] = useState<'black' | 'white'>('black') // Player is always black (first)
@@ -462,11 +463,12 @@ export default function OmokAI({ difficulty, onBack, onResult, onLevelUp, backLa
       {/* Forbidden Move Toast */}
       {forbiddenToast && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg bg-amber-500 text-white animate-in slide-in-from-top-2 fade-in duration-200">
+          <div role="alert" className="flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg bg-amber-500 text-white animate-in slide-in-from-top-2 fade-in duration-200">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <span className="font-medium">{forbiddenToast}</span>
             <button
               onClick={() => setForbiddenToast(null)}
+              aria-label={tCommon('close')}
               className="ml-2 p-1 hover:bg-white/20 rounded-full transition-all"
             >
               <X className="w-4 h-4" />
