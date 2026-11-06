@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
+import { CALENDAR_YEARS } from '@/utils/yearCalendar'
 import { CalendarPlus, Minus, Plus } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/holidayPlanner'
@@ -259,6 +260,9 @@ export default function HolidayPlanner() {
         <div>
           <h2 id="hp-cal" className="text-lg font-semibold text-fg">{t('cal.title', { year })}</h2>
           <p className="text-sm text-muted mt-1">{t('cal.desc')}</p>
+          {CALENDAR_YEARS.includes(year) && (
+            <Link prefetch={false} href={`/calendar-${year}/`} className="inline-flex items-center min-h-[44px] text-sm text-primary hover:underline">{t('cal.printable', { year })}</Link>
+          )}
         </div>
 
         <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">

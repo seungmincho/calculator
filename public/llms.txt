@@ -36,10 +36,13 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [기준 중위소득 조회](https://toolhub.ai.kr/median-income/): 연도별 가구원수별 중위소득 조회
 - [실업급여 계산기](https://toolhub.ai.kr/unemployment-benefit/): 고용보험 기반 구직급여 수급액·기간·월 예상액 자동계산
 - [나이표](https://toolhub.ai.kr/age-table/): 출생연도별 올해·내년 만 나이와 띠, 초등 입학 연도
+- [2027 달력](https://toolhub.ai.kr/calendar-2027/): 공휴일·대체공휴일·음력·24절기를 넣은 2027년 달력, A4 인쇄
 - [연휴·연차 플래너](https://toolhub.ai.kr/holiday-planner/): 연차 며칠로 가장 긴 연휴를 만드는 날짜 추천
 - [김장 시기 예보](https://toolhub.ai.kr/kimjang-timing/): 지역별 김장 적기를 날씨 예보와 평년 날짜로 확인
 - [새해 해돋이 시간](https://toolhub.ai.kr/new-year-sunrise/): 전국 해돋이 명소의 1월 1일 일출 시각과 구름 예보
 - [스키장 개장일·날씨](https://toolhub.ai.kr/ski-resorts/): 전국 스키장 개장 일정과 9일 날씨로 가기 좋은 날 추천
+- [마니또 뽑기](https://toolhub.ai.kr/manito/): 서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크
+- [배당금 계산기](https://toolhub.ai.kr/dividend-calculator/): 세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세
 
 ## 금융 계산기
 
@@ -124,7 +127,6 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [전세사기 체크리스트](https://toolhub.ai.kr/jeonse-checklist/): 전세 계약 전 필수 확인 항목 20개+, 위험도 점수, 안전 가이드
 - [해외직구 관부가세 계산기](https://toolhub.ai.kr/customs-duty/): 직구 면세 한도와 관세·부가세를 원화로 바로 계산
 - [김장 계산기](https://toolhub.ai.kr/kimjang-calculator/): 배추 포기 수로 양념 재료량과 김장 비용 계산
-- [배당금 계산기](https://toolhub.ai.kr/dividend-calculator/): 세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세
 
 ## 개발 도구
 
@@ -247,8 +249,6 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [경주월드 방문 추천](https://toolhub.ai.kr/gyeongju-world/): 경주월드 날씨와 예상 혼잡도로 방문 날짜를 비교하고 안내도에서 놀이기구를 찾아보세요.
 - [개발자 로드맵](https://toolhub.ai.kr/dev-roadmap/): 프론트엔드·백엔드·풀스택·DevOps — 단계별 학습 경로와 추천 기술 스택
 - [일출·일몰 시간](https://toolhub.ai.kr/sunrise-sunset/): 날짜·도시별 일출·일몰·낮 길이·골든아워
-- [마니또 뽑기](https://toolhub.ai.kr/manito/): 서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크
-- [2027 달력](https://toolhub.ai.kr/calendar-2027/): 공휴일·대체공휴일·음력·24절기를 넣은 2027년 달력, A4 인쇄
 
 ## 이미지/미디어 도구
 

@@ -35,6 +35,7 @@ function rules(year: number): Rule[] {
     { key: 'incomeTax', href: '/freelancer-tax', from: `${year}-05-01`, to: filing, target: filing, event: 'incomeTax' },
     { key: 'carTaxPrepay', href: '/annual-car-tax', from: lump.start, to: lump.due, target: lump.due, event: 'carTaxLumpDue' },
     { key: 'yearEndPre', href: '/year-end-tax', from: `${year}-11-01`, to: `${year}-12-31`, target: `${year}-12-31`, event: 'yearEnd' },
+    { key: 'manito', href: '/manito', from: `${year}-12-01`, to: `${year}-12-18` }, // 송년회·크리스마스 준비 — 수능·김장 카드가 끝난 12/11부터 보이고, 12/19부터는 해돋이에 자리를 내준다
     { key: 'newYearSunrise', href: '/new-year-sunrise', from: `${year}-12-15`, to: `${year + 1}-01-01` },
     { key: 'yearEnd', href: '/year-end-tax', from: `${year}-01-01`, to: `${year}-02-28` },
     { key: 'salaryNewYear', href: '/salary-calculator', from: `${year}-01-01`, to: `${year}-01-31` }, // 새해 4대보험 요율 반영

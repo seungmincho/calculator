@@ -98,7 +98,9 @@ assert.deepEqual(picks('2026-11-19', 0), ['csatToday:0', 'csatGrade:21']) // KST
 assert.deepEqual(picks('2026-12-10'), ['csatGrade:0', 'kimjangTiming:0'])
 assert.deepEqual(picks('2026-12-20'), ['yearEndPre:11', 'newYearSunrise:12'])
 assert.deepEqual(picks('2027-01-01'), ['newYearSunrise:0', 'yearEnd:58'])
-assert.deepEqual(picks('2026-12-11'), ['yearEndPre:20', 'newYear:30'])
+assert.deepEqual(picks('2026-12-11'), ['yearEndPre:20', 'manito:7'])
+assert.deepEqual(picks('2026-12-18'), ['yearEndPre:13', 'manito:0'])
+assert.deepEqual(picks('2026-12-19'), ['yearEndPre:12', 'newYearSunrise:13'])
 assert.deepEqual(picks('2027-01-05'), ['yearEnd:54', 'salaryNewYear:26'])
 assert.deepEqual(picks('2027-01-11'), ['yearEnd:48', 'salaryNewYear:20'])
 assert.deepEqual(picks('2027-01-20'), ['carTaxPrepay:12', 'yearEnd:39']) // 2027-01-31 일요일 → 연납 마감 2/1

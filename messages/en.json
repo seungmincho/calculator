@@ -12648,6 +12648,7 @@
     }
   },
   "lunarConverter": {
+    "calendarLink": "See the {year} calendar with lunar dates and solar terms",
     "share": {
       "cta": "Convert your date →"
     },
@@ -21848,6 +21849,10 @@
       "todo": "Play today"
     },
     "season": {
+      "manito": {
+        "title": "Year-end Secret Santa",
+        "desc": "Draw without mutual pairs, reveal by private link"
+      },
       "cardDeduction": {
         "title": "Preview your card deduction",
         "desc": "Use Jan–Sep spending to pick a card for the rest of the year"
@@ -37665,6 +37670,7 @@
       "us": "US stock after-tax KRW return"
     },
     "notes": {
+      "dividendLink": "Work out dividends and dividend tax with the Dividend Calculator",
       "title": "Assumptions",
       "items": [
         "Securities transaction tax (sales from Jan 1, 2026): KOSPI 0.05% + rural development tax 0.15% = 0.20%, KOSDAQ 0.20%, KONEX 0.10%. Domestic ETFs are exempt.",
@@ -49804,6 +49810,7 @@
       "empty": "No breaks to recommend. Change the year or turn off skipping past dates."
     },
     "cal": {
+      "printable": "Printable {year} calendar (lunar dates, solar terms)",
       "title": "{year} calendar",
       "desc": "Solid blue = suggested leave, light blue = break period. A dot under a red date marks a public holiday.",
       "leave": "Suggested leave",

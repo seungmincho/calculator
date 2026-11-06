@@ -4,7 +4,7 @@ export const curatedRelated: Record<string, string[]> = {
   // 급여·근로
   '/salary-calculator': ['/salary-table', '/four-insurance', '/bonus-calculator', '/year-end-tax', '/salary-rank', '/salary-comparison'],
   '/four-insurance': ['/salary-calculator', '/pay-slip', '/health-insurance', '/national-pension', '/salary-table', '/minimum-wage'],
-  '/changes-2027': ['/minimum-wage', '/four-insurance', '/salary-calculator', '/median-income', '/unemployment-benefit', '/child-benefit'],
+  '/changes-2027': ['/minimum-wage', '/four-insurance', '/salary-calculator', '/calendar-2027', '/median-income', '/unemployment-benefit', '/child-benefit'],
   '/salary-comparison': ['/salary-calculator', '/salary-rank', '/salary-table', '/bonus-calculator', '/hourly-wage', '/year-end-tax'],
   '/salary-table': ['/salary-calculator', '/salary-rank', '/salary-comparison', '/year-end-tax'],
   '/salary-rank': ['/salary-calculator', '/salary-table', '/salary-comparison', '/median-income'],
@@ -15,7 +15,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/work-hours-calculator': ['/hourly-wage', '/weekly-holiday-pay', '/minimum-wage', '/annual-leave', '/pay-slip', '/salary-calculator'],
   '/daily-wage-tax': ['/hourly-wage', '/minimum-wage', '/weekly-holiday-pay', '/work-hours-calculator', '/unemployment-benefit', '/pay-slip'],
   '/annual-leave': ['/holiday-planner', '/retirement-calculator', '/work-hours-calculator', '/salary-calculator', '/dday-calculator', '/parental-leave'],
-  '/holiday-planner': ['/annual-leave', '/dday-calculator', '/lunar-converter', '/exchange-calculator'],
+  '/holiday-planner': ['/calendar-2027', '/annual-leave', '/dday-calculator', '/lunar-converter', '/exchange-calculator'],
   '/parental-leave': ['/child-benefit', '/due-date', '/government-subsidy', '/salary-calculator', '/annual-leave', '/budget-calculator'],
   '/retirement-calculator': ['/unemployment-benefit', '/annual-leave', '/resignation-letter', '/national-pension', '/pension-calculator', '/income-tax'],
   '/unemployment-benefit': ['/retirement-calculator', '/resignation-letter', '/health-insurance', '/national-pension', '/government-subsidy', '/annual-leave'],
@@ -29,7 +29,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/rent-tax-credit': ['/year-end-tax', '/youth-rent-subsidy', '/rent-converter', '/card-deduction', '/medical-tax-credit', '/pension-tax-credit'],
   '/pension-tax-credit': ['/year-end-tax', '/pension-calculator', '/national-pension', '/card-deduction', '/retirement-calculator', '/savings-calculator'],
   '/hometown-donation': ['/year-end-tax', '/card-deduction', '/pension-tax-credit', '/medical-tax-credit', '/rent-tax-credit', '/greeting-generator'],
-  '/income-tax': ['/year-end-tax', '/salary-calculator', '/freelancer-tax', '/tax-season'],
+  '/income-tax': ['/year-end-tax', '/salary-calculator', '/freelancer-tax', '/dividend-calculator', '/tax-season'],
   '/tax-calculator': ['/income-tax', '/year-end-tax', '/vat-calculator', '/freelancer-tax', '/capital-gains-tax', '/inheritance-gift-tax'],
   '/tax-season': ['/income-tax', '/freelancer-tax', '/vat-calculator', '/pension-tax-credit', '/medical-tax-credit', '/health-insurance'],
   '/vat-calculator': ['/freelancer-tax', '/margin-calculator', '/invoice-generator', '/receipt-generator', '/business-number', '/tax-season'],
@@ -40,11 +40,11 @@ export const curatedRelated: Record<string, string[]> = {
   '/customs-duty': ['/exchange-calculator', '/shipping-calculator', '/vat-calculator', '/discount-calculator'],
 
   // 저축·투자·연금
-  '/savings-calculator': ['/compound-calculator', '/investment-calculator', '/budget-calculator', '/pension-tax-credit', '/housing-subscription', '/loan-calculator'],
-  '/compound-calculator': ['/savings-calculator', '/investment-calculator', '/cagr-calculator', '/stock-calculator', '/pension-tax-credit', '/loan-calculator'],
-  '/investment-calculator': ['/cagr-calculator', '/compound-calculator', '/stock-calculator', '/savings-calculator', '/pension-tax-credit', '/rental-yield'],
-  '/cagr-calculator': ['/investment-calculator', '/compound-calculator', '/stock-calculator', '/percent-calculator'],
-  '/stock-calculator': ['/investment-calculator', '/cagr-calculator', '/percent-calculator', '/exchange-calculator', '/compound-calculator', '/pension-tax-credit'],
+  '/savings-calculator': ['/compound-calculator', '/dividend-calculator', '/investment-calculator', '/budget-calculator', '/pension-tax-credit', '/housing-subscription', '/loan-calculator'],
+  '/compound-calculator': ['/savings-calculator', '/dividend-calculator', '/investment-calculator', '/cagr-calculator', '/stock-calculator', '/pension-tax-credit', '/loan-calculator'],
+  '/investment-calculator': ['/dividend-calculator', '/cagr-calculator', '/compound-calculator', '/stock-calculator', '/savings-calculator', '/pension-tax-credit', '/rental-yield'],
+  '/cagr-calculator': ['/investment-calculator', '/compound-calculator', '/stock-calculator', '/dividend-calculator', '/percent-calculator'],
+  '/stock-calculator': ['/dividend-calculator', '/investment-calculator', '/cagr-calculator', '/percent-calculator', '/exchange-calculator', '/compound-calculator', '/pension-tax-credit'],
   '/national-pension': ['/pension-calculator', '/pension-tax-credit', '/retirement-calculator', '/health-insurance', '/investment-calculator', '/salary-calculator'],
   '/pension-calculator': ['/national-pension', '/pension-tax-credit', '/retirement-calculator', '/health-insurance', '/investment-calculator', '/salary-calculator'],
 
@@ -82,7 +82,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/installment-calculator': ['/loan-calculator', '/discount-calculator', '/budget-calculator', '/percent-calculator'],
   '/discount-calculator': ['/percent-calculator', '/installment-calculator', '/customs-duty', '/budget-calculator'],
   '/budget-calculator': ['/salary-calculator', '/savings-calculator', '/installment-calculator', '/electricity-calculator', '/car-maintenance', '/card-deduction'],
-  '/dutch-pay': ['/ladder-game', '/menu-picker', '/taxi-fare', '/roulette', '/budget-calculator', '/alcohol-calculator'],
+  '/dutch-pay': ['/ladder-game', '/manito', '/menu-picker', '/taxi-fare', '/roulette', '/budget-calculator', '/alcohol-calculator'],
   '/wedding-calculator': ['/dday-calculator', '/inheritance-gift-tax', '/jeonse-loan', '/housing-subscription', '/budget-calculator', '/moving-cost'],
   '/electricity-calculator': ['/pc-electricity', '/gas-bill', '/water-bill', '/budget-calculator'],
   '/pc-electricity': ['/electricity-calculator', '/gas-bill', '/water-bill', '/budget-calculator'],
@@ -100,7 +100,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/child-benefit': ['/parental-leave', '/government-subsidy', '/due-date', '/median-income', '/year-end-tax', '/budget-calculator'],
 
   // 날짜·나이
-  '/age-table': ['/age-calculator', '/lunar-converter', '/greeting-generator', '/dday-calculator'],
+  '/age-table': ['/age-calculator', '/calendar-2027', '/lunar-converter', '/greeting-generator', '/dday-calculator'],
   '/age-calculator': ['/lunar-converter', '/dday-calculator', '/health-checkup', '/biorhythm', '/national-pension', '/military-discharge'],
   '/military-discharge': ['/dday-calculator', '/age-calculator', '/minimum-wage', '/gpa-calculator', '/youth-rent-subsidy', '/government-subsidy'],
 
@@ -174,13 +174,13 @@ export const curatedRelated: Record<string, string[]> = {
   '/resident-number': ['/business-number', '/age-calculator', '/lunar-converter', '/password-generator'],
 
   // 날짜·시간·업무
-  '/lunar-converter': ['/age-calculator', '/dday-calculator', '/holiday-planner', '/greeting-generator'],
-  '/dday-calculator': ['/age-calculator', '/holiday-planner', '/lunar-converter', '/csat-dday', '/military-discharge', '/due-date'],
+  '/lunar-converter': ['/calendar-2027', '/age-calculator', '/dday-calculator', '/holiday-planner', '/greeting-generator'],
+  '/dday-calculator': ['/age-calculator', '/calendar-2027', '/holiday-planner', '/lunar-converter', '/csat-dday', '/military-discharge', '/due-date'],
   '/time-converter': ['/world-clock', '/jwt-decoder', '/cron-tester', '/dday-calculator'],
   '/world-clock': ['/time-converter', '/sunrise-sunset', '/exchange-calculator', '/holiday-planner'],
   '/ski-resorts': ['/sunrise-sunset', '/holiday-planner', '/everland', '/fuel-calculator'],
   '/sunrise-sunset': ['/new-year-sunrise', '/world-clock', '/lunar-converter', '/dday-calculator'],
-  '/new-year-sunrise': ['/sunrise-sunset', '/holiday-planner', '/greeting-generator', '/dday-calculator'],
+  '/new-year-sunrise': ['/sunrise-sunset', '/calendar-2027', '/holiday-planner', '/greeting-generator', '/dday-calculator'],
   '/manito': ['/lottery-draw', '/ladder-game', '/team-divider', '/dutch-pay', '/greeting-generator', '/dday-calculator'],
   '/calendar-2027': ['/holiday-planner', '/lunar-converter', '/dday-calculator', '/age-table', '/changes-2027', '/new-year-sunrise'],
   '/dividend-calculator': ['/stock-calculator', '/investment-calculator', '/savings-calculator', '/compound-calculator', '/income-tax', '/cagr-calculator'],

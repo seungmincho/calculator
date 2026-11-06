@@ -17,7 +17,7 @@ const line = (i) => {
 
 // 연말·연초에 많이 찾는 한국 기준(법령·요율) 도구를 맨 앞에. 나머지는 카테고리 순서대로.
 const FEATURED = ['/salary-calculator', '/four-insurance', '/changes-2027', '/minimum-wage', '/year-end-tax', '/salary-table',
-  '/median-income', '/unemployment-benefit', '/age-table', '/holiday-planner', '/kimjang-timing', '/new-year-sunrise', '/ski-resorts']
+  '/median-income', '/unemployment-benefit', '/age-table', '/calendar-2027', '/holiday-planner', '/kimjang-timing', '/new-year-sunrise', '/ski-resorts', '/manito', '/dividend-calculator']
 const all = new Map(categoryKeys.flatMap(k => menuConfig[k].items).map(i => [i.href, i]))
 const featured = FEATURED.map(h => all.get(h)).filter(Boolean)
 

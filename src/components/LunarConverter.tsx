@@ -4,7 +4,9 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/lunarConverter'
 import { ArrowRightLeft, Copy, Check, RotateCcw } from 'lucide-react'
+import Link from 'next/link'
 import ShareResult from '@/components/ShareResult'
+import { CALENDAR_YEARS } from '@/utils/yearCalendar'
 import {
   MIN_YEAR, MAX_YEAR, leapMonth, lunarMonthDays, lunarToSolar, solarToLunar,
   yearGanzi, dayGanzi, weekday, lunarAnniversary, nextLunarAnniversary, daysBetween,
@@ -374,7 +376,8 @@ export default function LunarConverter() {
 
       {/* 가이드 */}
       <div className="ui-card p-6">
-        <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
+        <h2 className="text-xl font-semibold text-fg mb-2">{t('guide.title')}</h2>
+        <Link prefetch={false} href={`/calendar-${CALENDAR_YEARS[CALENDAR_YEARS.length - 1]}/`} className="inline-flex items-center min-h-[44px] mb-4 text-sm text-primary hover:underline">{t('calendarLink', { year: CALENDAR_YEARS[CALENDAR_YEARS.length - 1] })}</Link>
         <div className="space-y-6">
           {(['howToUse', 'tips'] as const).map(section => (
             <div key={section}>

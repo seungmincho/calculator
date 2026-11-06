@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/stockCalculator'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
 import CalculationHistory from '@/components/CalculationHistory'
+import Link from 'next/link'
 import GuideSection from '@/components/GuideSection'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
@@ -453,6 +454,7 @@ export default function StockCalculator() {
       <div className="bg-subtle rounded-2xl p-5 text-sm text-sub space-y-1.5">
         <h2 className="font-semibold text-fg mb-1">{t('notes.title')}</h2>
         {(t.raw('notes.items') as string[]).map((s, i) => <p key={i}>{s}</p>)}
+        <p><Link prefetch={false} href="/dividend-calculator/" className="text-primary hover:underline">{t('notes.dividendLink')}</Link></p>
         <p className="text-xs text-muted pt-1">{t('notes.disclaimer')}</p>
       </div>
 
