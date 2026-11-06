@@ -12,7 +12,7 @@ export interface Resort {
 }
 export const RESORTS = [
   { id: 'yongpyong', region: 'gangwon', lat: 37.645, lon: 128.680, url: 'https://www.yongpyong.co.kr', opening: null, usual: 'lateNov' },
-  { id: 'phoenix', region: 'gangwon', lat: 37.582, lon: 128.321, url: 'https://phoenixhnr.co.kr', opening: { date: '2026-11-27', source: 'https://www.dongriarchive.com/ko/post/ski-resort-opening-dates-2026-2027-season-pass' }, usual: 'lateNov' },
+  { id: 'phoenix', region: 'gangwon', lat: 37.582, lon: 128.321, url: 'https://phoenixhnr.co.kr', opening: { date: '2026-11-27', source: 'https://www.ajunews.com/view/20260723100641522' }, usual: 'lateNov' },
   { id: 'high1', region: 'gangwon', lat: 37.206, lon: 128.830, url: 'https://www.high1.com', opening: null, usual: 'lateNov' },
   { id: 'alpensia', region: 'gangwon', lat: 37.658, lon: 128.671, url: 'https://www.alpensia.com', opening: { date: '2026-11-28', source: 'https://www.ajunews.com/view/20261105173644093' }, usual: 'earlyDec' },
   { id: 'vivaldi', region: 'gangwon', lat: 37.646, lon: 127.683, url: 'https://www.sonohotelsresorts.com', opening: null, usual: 'earlyDec' },
