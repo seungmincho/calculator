@@ -5,13 +5,27 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Fri, 06 Nov 2026 06:59:22 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 08:02:43 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[김장 시기 예보]]></title>
     <link>https://toolhub.ai.kr/kimjang-timing/</link>
     <guid>https://toolhub.ai.kr/kimjang-timing/</guid>
     <description><![CDATA[지역별 김장 적기를 날씨 예보와 평년 날짜로 확인]]></description>
+    <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[새해 해돋이 시간]]></title>
+    <link>https://toolhub.ai.kr/new-year-sunrise/</link>
+    <guid>https://toolhub.ai.kr/new-year-sunrise/</guid>
+    <description><![CDATA[전국 해돋이 명소의 1월 1일 일출 시각과 구름 예보]]></description>
+    <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[일출·일몰 시간]]></title>
+    <link>https://toolhub.ai.kr/sunrise-sunset/</link>
+    <guid>https://toolhub.ai.kr/sunrise-sunset/</guid>
+    <description><![CDATA[날짜·도시별 일출·일몰·낮 길이·골든아워]]></description>
     <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

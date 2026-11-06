@@ -2782,7 +2782,9 @@
       "jeonseChecklist": "Jeonse Safety Checklist",
       "lotteWorldPlanner": "Lotte World visit planner",
       "gyeongjuWorldPlanner": "Gyeongju World visit planner",
-      "kimjangTiming": "Kimjang Timing Forecast"
+      "kimjangTiming": "Kimjang Timing Forecast",
+      "newYearSunrise": "New Year Sunrise Times",
+      "sunriseSunset": "Sunrise & Sunset Times"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8364,6 +8366,14 @@
       "kimjangTiming": {
         "title": "Kimjang Timing",
         "description": "When kimjang season starts in your region, from the forecast and normal dates"
+      },
+      "newYearSunrise": {
+        "title": "New Year Sunrise",
+        "description": "January 1st sunrise times and cloud forecast at famous spots"
+      },
+      "sunriseSunset": {
+        "title": "Sunrise & Sunset Calculator",
+        "description": "Sunrise, sunset, day length and golden hour by date and city"
       }
     }
   },
@@ -52558,5 +52568,297 @@
         "asOf": "Checked Nov 6, 2026. Forecast data © MET Norway."
       }
     }
+  },
+  "newYearSunrise": {
+    "title": "{year} New Year sunrise times — spots and cloud forecast",
+    "subtitle": "Compare January 1st sunrise times at Korea's famous sunrise spots and check the morning cloud forecast.",
+    "regionLabel": "Region",
+    "regions": {
+      "all": "All",
+      "east": "East coast",
+      "south": "South coast, Busan, Ulsan",
+      "jeju": "Jeju",
+      "west": "West coast",
+      "seoul": "Seoul",
+      "mountain": "Summits"
+    },
+    "spots": {
+      "dokdo": "Dokdo",
+      "sokcho": "Sokcho Beach",
+      "naksansa": "Naksansa, Yangyang",
+      "gyeongpo": "Gyeongpo Beach, Gangneung",
+      "jeongdongjin": "Jeongdongjin, Gangneung",
+      "chuam": "Chuam Candlestick Rock, Donghae",
+      "samsa": "Samsa Marine Park, Yeongdeok",
+      "homigot": "Homigot, Pohang",
+      "daewangam": "Daewangam Park, Ulsan",
+      "ganjeolgot": "Ganjeolgot, Ulsan",
+      "haeundae": "Haeundae, Busan",
+      "hyangiram": "Hyangiram, Yeosu",
+      "seongsan": "Seongsan Ilchulbong, Jeju",
+      "waemok": "Waemok Village, Dangjin",
+      "seoul": "Central Seoul",
+      "namsan": "Namsan, Seoul",
+      "achasan": "Achasan, Seoul",
+      "taebaeksan": "Taebaeksan",
+      "cheonwangbong": "Cheonwangbong, Jirisan"
+    },
+    "resultLabel": "{spot} · sunrise on Jan 1, {year}",
+    "vsSeoul": "{min} min earlier than central Seoul",
+    "vsSeoulLater": "{min} min later than central Seoul",
+    "sameAsSeoul": "Same time as central Seoul",
+    "seaLevel": "Sea-level horizon (same basis as KASI)",
+    "elevation": "Counting the summit height ({m} m): {time}, about {min} min earlier. Mountains to the east can delay it.",
+    "earliest": "Earliest: {first} {firstTime}; on the mainland coast, {land} {landTime}.",
+    "skyLabel": "Morning clouds",
+    "sky": {
+      "clear": "Clear — good chance to see the sun",
+      "partly": "Partly cloudy — may see it between clouds",
+      "cloudy": "Cloudy — the sun may be hidden",
+      "rain": "Rain or snow — likely hard to see",
+      "cloud": "Cloud cover {value}%",
+      "coarse": "Forecast value {min} min away from sunrise.",
+      "notYet": "Cloud forecast available from {date} (about 9 days before Jan 1).",
+      "loading": "Checking cloud forecast",
+      "unknown": "Could not load the cloud forecast for this spot.",
+      "issued": "MET Norway forecast issued {time} (KST). Cloud cover is for the whole sky and may differ from low cloud on the eastern horizon."
+    },
+    "table": {
+      "title": "Sunrise by spot",
+      "spot": "Spot",
+      "region": "Region",
+      "time": "Sunrise",
+      "diff": "vs Seoul",
+      "sky": "Clouds",
+      "faster": "{min} min earlier",
+      "slower": "{min} min later",
+      "same": "Same"
+    },
+    "toCalculator": "Sunrise and sunset for other dates and cities",
+    "md": "{m}/{d}",
+    "share": {
+      "text": "First sunrise of {year}: {spot} {time} (ToolHub)",
+      "sub": "Jan 1, {year} · sea-level horizon"
+    },
+    "guide": {
+      "title": "New Year sunrise guide",
+      "definition": {
+        "title": "What \"sunrise\" means",
+        "items": [
+          "Sunrise is when the sun's upper edge touches the horizon. Atmospheric refraction makes it visible while it is still below the horizon.",
+          "Times assume an open sea horizon at sea level, the same basis KASI uses.",
+          "Mountains or buildings to the east delay the moment you actually see the sun by a few minutes."
+        ]
+      },
+      "elevation": {
+        "title": "Higher means earlier",
+        "items": [
+          "From higher ground the horizon sits lower, so the sun appears earlier: roughly 1–2 minutes per 100 m.",
+          "Seongsan Ilchulbong (182 m) faces the open sea, so its summit sees the sun about 2 minutes earlier.",
+          "High peaks such as Cheonwangbong and Taebaeksan gain 8–9 minutes on paper, less when distant ridges block the horizon."
+        ]
+      },
+      "why": {
+        "title": "Why some spots are first",
+        "items": [
+          "The sun rises in the east, so Dokdo, the easternmost point, is first.",
+          "In winter the sun rises in the southeast, so Ganjeolgot in the south beats Homigot; in summer Homigot is earlier.",
+          "Waemok Village in Dangjin faces east, so it is known as a rare west-coast sunrise spot."
+        ]
+      },
+      "tips": {
+        "title": "Before you go",
+        "items": [
+          "The sky starts brightening about 30 minutes before sunrise. Arrive early.",
+          "Early January mornings are often below freezing. Bring gloves, heat packs and a warm coat.",
+          "Popular spots close roads or fill parking lots during New Year events. Check local government notices.",
+          "Cloud forecasts appear about 9 days before and change daily. Check again the night before."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What time is sunrise on January 1, 2027?",
+            "a": "At sea level: Dokdo about 7:26, Ganjeolgot 7:31, Haeundae and Homigot 7:32, Jeongdongjin 7:39 and Seoul 7:47 a.m."
+          },
+          {
+            "q": "Where does the sun rise first in Korea?",
+            "a": "Dokdo. On the winter mainland, Ganjeolgot and Daewangam Park in Ulsan are earliest. High summits see it earlier by their height."
+          },
+          {
+            "q": "Does this differ from KASI?",
+            "a": "It uses the same kind of astronomical calculation and usually matches within a minute. All 7 spots KASI announced for Jan 1, 2026 matched to the minute. KASI announces New Year sunrise times every December."
+          },
+          {
+            "q": "Can I see the sunrise if it is cloudy?",
+            "a": "Low cloud near the eastern horizon can delay or hide the sun. Cloud cover here is for the whole sky, so treat it as a guide."
+          },
+          {
+            "q": "Where can I see the sunrise in Seoul?",
+            "a": "Sunrise in central Seoul is about 7:47 a.m. Higher places with an open view east, such as Namsan or Achasan, show it a little earlier and above the buildings."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "KASI astronomical almanac — sunrise and sunset",
+            "url": "https://astro.kasi.re.kr/life/pageView/9"
+          },
+          {
+            "label": "KASI 2026 New Year sunrise times — Financial News",
+            "url": "https://www.fnnews.com/news/202512301430402958"
+          },
+          {
+            "label": "Weather forecast — MET Norway Locationforecast (CC BY 4.0)",
+            "url": "https://api.met.no/weatherapi/locationforecast/2.0/documentation"
+          }
+        ],
+        "asOf": "Checked Nov 6, 2026. Forecast data © MET Norway."
+      }
+    }
+  },
+  "sunriseSunset": {
+    "title": "Sunrise and sunset calculator — times by city in Korea",
+    "subtitle": "Pick a date and city to see sunrise, sunset, solar noon, day length, twilight and golden hour.",
+    "dateLabel": "Date",
+    "today": "Today",
+    "cityLabel": "City",
+    "cities": {
+      "seoul": "Seoul",
+      "incheon": "Incheon",
+      "suwon": "Suwon",
+      "chuncheon": "Chuncheon",
+      "gangneung": "Gangneung",
+      "daejeon": "Daejeon",
+      "sejong": "Sejong",
+      "cheongju": "Cheongju",
+      "cheonan": "Cheonan",
+      "jeonju": "Jeonju",
+      "gwangju": "Gwangju",
+      "mokpo": "Mokpo",
+      "yeosu": "Yeosu",
+      "daegu": "Daegu",
+      "andong": "Andong",
+      "pohang": "Pohang",
+      "ulsan": "Ulsan",
+      "busan": "Busan",
+      "changwon": "Changwon",
+      "jeju": "Jeju",
+      "seogwipo": "Seogwipo"
+    },
+    "locate": "Use my location",
+    "locating": "Locating",
+    "located": "My location ({lat}, {lon})",
+    "locateFailed": "Could not get your location. Please pick a city.",
+    "outsideKorea": "Times are in Korea Standard Time, so only locations in Korea are supported.",
+    "resultLabel": "{place} · {date}",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "noon": "Solar noon",
+    "dayLength": "Day length",
+    "hm": "{h} h {m} min",
+    "dawn": "Civil dawn",
+    "dusk": "Civil dusk",
+    "goldenMorning": "Morning golden hour",
+    "goldenEvening": "Evening golden hour",
+    "range": "{from}–{to}",
+    "note": "Sea-level, open-horizon basis. Mountains or buildings shift what you see by a few minutes.",
+    "monthTitle": "Sunrise and sunset in month {month}",
+    "table": {
+      "date": "Date",
+      "sunrise": "Sunrise",
+      "sunset": "Sunset",
+      "length": "Day length"
+    },
+    "day": "{d} ({w})",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "yearTitle": "Day length in {year}",
+    "yearSummary": "Shortest around {short} ({shortLen}), longest around {long} ({longLen}).",
+    "md": "{m}/{d}",
+    "hours": "{value} h",
+    "toNewYear": "New Year sunrise by spot",
+    "share": {
+      "text": "{place} {date}: sunrise {sunrise}, sunset {sunset} (ToolHub)",
+      "sub": "Day length {length}"
+    },
+    "guide": {
+      "title": "Sunrise and sunset guide",
+      "terms": {
+        "title": "Terms",
+        "items": [
+          "Sunrise/sunset: when the sun's upper edge touches the horizon, computed with the sun about 0.83° below it to account for refraction.",
+          "Solar noon: when the sun is due south and highest in the sky.",
+          "Civil twilight: while the sun is less than 6° below the horizon, bright enough to be outside without lights.",
+          "Golden hour: while the sun is less than 6° above the horizon, soft warm light for photos."
+        ]
+      },
+      "year": {
+        "title": "Through the year",
+        "items": [
+          "Seoul's shortest day is the winter solstice (about Dec 22), about 9 h 34 min; the longest is the summer solstice (about Jun 21), about 14 h 46 min.",
+          "The latest sunrise comes in early January (about Jan 6 in Seoul, 7:47) and the earliest sunset in early December (about Dec 7, 17:14), because of the equation of time.",
+          "Places further east see the sun earlier: about 4 minutes per degree of longitude, so Busan is more than 10 minutes ahead of Seoul."
+        ]
+      },
+      "method": {
+        "title": "How it is calculated",
+        "items": [
+          "An astronomical formula gives the sun's position. It matched all 7 of KASI's announced Jan 1, 2026 sunrise times to the minute.",
+          "Times are Korea Standard Time, rounded to the nearest minute.",
+          "Cities use coordinates near city hall; far east or west within a city can differ by about a minute."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What time is sunset today?",
+            "a": "The calculator opens on today for Seoul. Change the city to see that area right away."
+          },
+          {
+            "q": "When are the longest and shortest days?",
+            "a": "The summer solstice (about Jun 21) is longest and the winter solstice (about Dec 22) shortest: about 14 h 46 min and 9 h 34 min in Seoul."
+          },
+          {
+            "q": "Why is the latest sunrise not on the solstice?",
+            "a": "Because of the elliptical orbit and axial tilt, solar noon shifts a little each day, so the latest sunrise falls in early January and the earliest sunset in early December."
+          },
+          {
+            "q": "When is golden hour?",
+            "a": "Just after sunrise and before sunset, while the sun is below 6° altitude: usually 30–60 minutes depending on the season."
+          },
+          {
+            "q": "Can it differ from KASI?",
+            "a": "It uses the same kind of calculation and usually matches within a minute; a value near a rounding boundary can differ by one minute."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "KASI astronomical almanac — sunrise and sunset",
+            "url": "https://astro.kasi.re.kr/life/pageView/9"
+          },
+          {
+            "label": "KASI 2026 New Year sunrise times — Financial News",
+            "url": "https://www.fnnews.com/news/202512301430402958"
+          }
+        ],
+        "asOf": "Checked Nov 6, 2026."
+      }
+    },
+    "monthTick": "{m}"
   }
 }

@@ -256,6 +256,8 @@ export const menuConfig: MenuConfig = {
       { href: '/lotte-world', labelKey: 'footer.links.lotteWorldPlanner', descriptionKey: 'toolsShowcase.tools.lotteWorldPlanner.description', icon: '🎡', addedDate: '2026-11-04', subcategory: 'subcategory.otherTools' },
       { href: '/gyeongju-world', labelKey: 'footer.links.gyeongjuWorldPlanner', descriptionKey: 'toolsShowcase.tools.gyeongjuWorldPlanner.description', icon: '🎡', addedDate: '2026-11-04', subcategory: 'subcategory.otherTools' },
       { href: '/dev-roadmap', labelKey: 'footer.links.devRoadmap', descriptionKey: 'toolsShowcase.tools.devRoadmap.description', icon: '🗺️', addedDate: '2026-03-29', subcategory: 'subcategory.education' },
+      { href: '/sunrise-sunset', labelKey: 'footer.links.sunriseSunset', descriptionKey: 'toolsShowcase.tools.sunriseSunset.description', icon: '🌅', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
+      { href: '/new-year-sunrise', labelKey: 'footer.links.newYearSunrise', descriptionKey: 'toolsShowcase.tools.newYearSunrise.description', icon: '🌄', addedDate: '2026-11-06', subcategory: 'subcategory.otherTools' },
     ],
   },
   media: {
