@@ -55330,5 +55330,202 @@
         ]
       }
     }
+  },
+  "childGrowth": {
+    "title": "Child Height Percentile & Adult Height Predictor",
+    "subtitle": "See height, weight and BMI percentiles on the 2017 Korean National Growth Charts, and estimate adult height from the parents' heights.",
+    "input": {
+      "title": "Child details",
+      "sex": "Sex",
+      "male": "Boy",
+      "female": "Girl",
+      "ageMode": "Age input",
+      "byMonths": "Months",
+      "byBirth": "Birth date",
+      "months": "Age (months)",
+      "monthUnit": "mo",
+      "monthsHint": "{y} years {m} months",
+      "monthsRange": "Covers 0–227 months (up to 18 years 11 months)",
+      "birth": "Birth date",
+      "measured": "Measured on",
+      "errBirth": "The measurement date is before the birth date, or a date is invalid.",
+      "errAge": "The growth charts cover 0–227 months (up to 18 years 11 months).",
+      "height": "Height",
+      "weight": "Weight",
+      "errBody": "Enter a height of 30–220 cm and a weight of 1–200 kg.",
+      "parents": "Parents' heights (adult height)",
+      "father": "Father's height",
+      "mother": "Mother's height",
+      "parentsHint": "Leave blank to skip the parent-based estimate."
+    },
+    "result": {
+      "heightLabel": "Height percentile",
+      "needAge": "Enter the age to compare with peers",
+      "age": "{sex} · {y} years {m} months ({n} months)",
+      "pValue": "{p}th percentile",
+      "pBelow": "Below the 0.1th percentile",
+      "pAbove": "Above the 99.9th percentile",
+      "cm": "{v} cm",
+      "kg": "{v} kg",
+      "height": "Height",
+      "weight": "Weight",
+      "bmi": "BMI",
+      "bmiClass": {
+        "thin": "Wasting range",
+        "normal": "Normal range",
+        "over": "Overweight range",
+        "obese": "Obesity range"
+      },
+      "bmiUnder2": "From age 2",
+      "rank": {
+        "height": "Out of 100 peers, about {n} are this height or shorter",
+        "weight": "Out of 100 peers, about {n} weigh this much or less",
+        "bmi": "Out of 100 peers, about {n} have this BMI or lower"
+      },
+      "disclaimer": "A reference for monitoring growth, not a medical diagnosis. Growth over 6–12 months matters more than a single measurement. If you are worried, ask a pediatrician."
+    },
+    "notes": {
+      "heightLow": "Height is below the 3rd percentile, the 2017 charts' screening cutoff for short stature. Don't judge from one measurement; check growth velocity with a pediatrician.",
+      "heightHigh": "Height is above the 97th percentile. This is often normal with tall parents, but see a pediatrician if growth suddenly sped up or puberty signs appear early.",
+      "weightLow": "Weight is below the 5th percentile, the 2017 charts' screening cutoff for underweight. Talk to a pediatrician about intake and health.",
+      "weightHigh": "Weight is above the 97th percentile. Under age 2, overweight is judged by weight-for-length, so check at the infant health checkup.",
+      "bmi": {
+        "thin": "BMI is below the 5th percentile (the 2017 charts' wasting cutoff). The child is thin for their height; a pediatric consultation is recommended.",
+        "over": "BMI is between the 85th and 95th percentiles, the overweight range. Review eating habits and activity.",
+        "obese": "BMI is at or above the 95th percentile, the obesity range. Consider talking to a pediatrician."
+      }
+    },
+    "predict": {
+      "title": "Predicted adult height",
+      "mph": "From parents' heights",
+      "range": "{lo}–{hi} cm (±{r} cm)",
+      "mphPct": "That is the {p} at age 18.",
+      "needParents": "Enter both parents' heights to calculate.",
+      "track": "If the current percentile holds (age 18)",
+      "trackNote": "Assumes today's height percentile stays the same until age 18. Percentiles often shift with the timing of puberty.",
+      "trackAdult": "At 18 or older, current height is close to adult height.",
+      "trackNeed": "Enter the age and height to calculate.",
+      "formulaM": "Boys: (father + mother + 13) ÷ 2, range ±10 cm.",
+      "formulaF": "Girls: (father + mother − 13) ÷ 2, range ±8.5 cm.",
+      "limits": "This is only a genetic target height; nutrition, sleep, illness and puberty timing change the real adult height (KDCA Health Portal, Asan Medical Center)."
+    },
+    "share": {
+      "tool": "Child Growth Percentile",
+      "label": "Height percentile, {sex} aged {y}y {m}m",
+      "text": "My {y}y {m}m old ({sex}) is {h} cm tall: {p}, about {n} out of 100 peers are this height or shorter."
+    },
+    "chart": {
+      "title": "Height growth curves ({sex})",
+      "desc": "The 3rd, 50th and 97th percentile curves of the 2017 Korean National Growth Charts. The dark dot is your child.",
+      "year": "{y}y",
+      "age": "{y} years {m} months",
+      "p97": "97th percentile",
+      "p50": "50th percentile (median)",
+      "p3": "3rd percentile",
+      "child": "Dot: {y} years {m} months, {h} cm.",
+      "noChild": "Enter the age and height to show the dot.",
+      "note": "The small step at age 2 is the switch from lying length to standing height (about 0.7 cm); age 3 is where the charts switch from WHO standards to Korean data."
+    },
+    "guide": {
+      "title": "How to read growth chart percentiles",
+      "how": {
+        "title": "How percentiles are calculated",
+        "items": [
+          "A percentile tells you where a child ranks when 100 children of the same sex and age line up by height, from shortest. The 50th percentile is the middle (median).",
+          "Using the chart's LMS values (L skewness, M median, S spread), z = ((value ÷ M)^L − 1) ÷ (L × S), and the percentile is the normal cumulative probability of z.",
+          "Age is counted in completed months, rounding down by date like the KDCA calculator, and that month's reference is used.",
+          "Under age 3 the charts use the WHO Child Growth Standards; from 3 to 18 they use Korean measurement data (1997 and 2005 surveys).",
+          "BMI is weight (kg) ÷ height (m)², rounded to one decimal, and is used from age 2."
+        ]
+      },
+      "criteria": {
+        "title": "Screening cutoffs (2017 charts)",
+        "items": [
+          "Short stature: height-for-age below the 3rd percentile",
+          "Underweight: weight-for-age below the 5th percentile",
+          "Wasting: BMI-for-age below the 5th percentile (age 2+)",
+          "Overweight: BMI from the 85th to below the 95th percentile; obesity: 95th percentile or above (age 2+)",
+          "Under age 2, overweight and wasting are judged by weight-for-length (not included here)."
+        ]
+      },
+      "tips": {
+        "title": "Measuring tips",
+        "items": [
+          "Measure lying down before age 2 and standing after that. Remove shoes and keep heels, buttocks and the back of the head against the wall, looking straight ahead.",
+          "Height changes slightly during the day, so always measure at the same time of day.",
+          "Weigh before a meal in light clothing.",
+          "Whether measurements every 6–12 months follow the same percentile curve matters more than one percentile. If the child drops across two or more major percentile lines, get checked.",
+          "Infant health checkups in Korea also assess height and weight on the growth charts, so compare with those results."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Is the 50th percentile the average?",
+            "a": "The 50th percentile is the median, the exact middle when peers line up by height. Height at or above the 3rd percentile is in the normal range, and the growth trend matters more than a single number."
+          },
+          {
+            "q": "Is height below the 3rd percentile short stature?",
+            "a": "The 2017 charts use below the 3rd percentile as the screening cutoff for short stature. It is a screening cutoff, not a diagnosis. Familial short stature and constitutional growth delay (late puberty) are common, so a pediatrician also checks growth velocity and bone age."
+          },
+          {
+            "q": "How is height predicted from the parents?",
+            "a": "Boys: (father + mother + 13) ÷ 2; girls: (father + mother − 13) ÷ 2 (KDCA National Health Information Portal, 'Short stature'). Asan Medical Center's pediatric endocrinology team notes a variation of about ±10 cm for boys and ±8.5 cm for girls."
+          },
+          {
+            "q": "Why WHO standards under age 3?",
+            "a": "The 2017 charts adopt the WHO Child Growth Standards for children under 3. They are based on healthy breastfed children from several countries. From age 3 the Korean data take over, so percentiles can shift a little around that age."
+          },
+          {
+            "q": "My result differs slightly from the KDCA calculator.",
+            "a": "Under age 3 this tool uses the WHO LMS values directly and matches the KDCA calculator. From age 3 it uses LMS values computed from the percentile curves the official calculator shows, so results can differ by up to about 0.5 (height), 1 (weight) or 2 (BMI) percentile points. If a result is near a cutoff, confirm with the KDCA calculator or a doctor."
+          },
+          {
+            "q": "Does it work for age 19 and over?",
+            "a": "The 2017 charts end at 18 years 11 months (227 months). After that, adult references such as adult BMI apply."
+          },
+          {
+            "q": "Will the reference change with new charts?",
+            "a": "KDCA plans to publish new growth charts in December 2027 and uses the 2017 charts until then. With new charts, the same height may map to a different percentile."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "KDCA & Korean Pediatric Society — 2017 Korean National Growth Charts",
+            "url": "https://knhanes.kdca.go.kr/knhanes/grtcht/main.do"
+          },
+          {
+            "label": "KDCA — official growth chart calculator",
+            "url": "https://knhanes.kdca.go.kr/knhanes/grtcht/clclt/measClclt.do"
+          },
+          {
+            "label": "Kim JH et al., The 2017 Korean National Growth Charts (Korean J Pediatr 2018;61:135-149)",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5976563/"
+          },
+          {
+            "label": "WHO Child Growth Standards — LMS tables under age 3",
+            "url": "https://www.who.int/tools/child-growth-standards/standards"
+          },
+          {
+            "label": "KDCA National Health Information Portal — Short stature (target height formula)",
+            "url": "https://health.kdca.go.kr/healthinfo/biz/health/gnrlzHealthInfo/gnrlzHealthInfo/gnrlzHealthInfoView.do?cntnts_sn=5415"
+          },
+          {
+            "label": "Asan Medical Center, Pediatric Endocrinology — predicted height range",
+            "url": "https://www.amc.seoul.kr/asan/depts/child/K/bbsDetail.do?menuId=4342&contentId=259885"
+          },
+          {
+            "label": "KDCA press note (2026-10-21) — 2027 growth chart revision hearing",
+            "url": "https://www.kdca.go.kr/bbs/kdca/42/313000/artclView.do"
+          }
+        ],
+        "method": "Under age 3 the WHO LMS tables are used as published (checked against the official calculator's curves). From age 3, LMS values were computed to pass through the monthly percentile curves the official calculator shows (height 3/50/97, weight and BMI 5/50/95). In 20 cases compared with the official calculator, differences were within 0.4 (height), 0.7 (weight) and 1.5 (BMI) percentile points.",
+        "asOf": "Reference: 2017 Korean National Growth Charts (in use until the revision due in December 2027) · checked 2026-11-07"
+      }
+    }
   }
 }
