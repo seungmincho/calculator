@@ -5,12 +5,10 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { DH_API, DH_HEADERS, parseDhList } from '../src/utils/lottoRemote.ts' // Pages Function /api/lotto-latest 와 같은 파서
 
 const FILE = fileURLToPath(new URL('../public/lottoData.ts', import.meta.url))
 const CHECK = fileURLToPath(new URL('./check-lotto-data.ts', import.meta.url))
-// srchDir=latest&srchCursorLtEpsd=N → N 다음 회차부터 최대 10건(최신순). 더 없으면 빈 list.
-const API = 'https://www.dhlottery.co.kr/lt645/selectPstLt645InfoNew.do?srchDir=latest&srchCursorLtEpsd='
-const HEADERS = { 'User-Agent': 'toolhub-data-update', Accept: 'application/json', AJAX: 'true' }
 
 const src = readFileSync(FILE, 'utf8')
 const end = src.lastIndexOf('}')
@@ -19,40 +17,31 @@ let last = Math.max(...Object.keys(data).map(Number))
 const added = []
 
 for (;;) {
-  const res = await fetch(API + last, { headers: HEADERS, redirect: 'manual' })
+  const res = await fetch(DH_API + last, { headers: DH_HEADERS, redirect: 'manual' })
   const type = res.headers.get('content-type') ?? ''
   if (res.status !== 200 || !type.includes('json')) {
     console.error(`응답 이상: ${res.status} ${type} ${res.headers.get('location') ?? ''} — 동행복권 엔드포인트가 바뀌었는지 확인`)
     break
   }
-  const list = ((await res.json()).data?.list ?? [])
-    .filter(x => x.ltEpsd > last)
-    .sort((a, b) => a.ltEpsd - b.ltEpsd)
+  const list = parseDhList(await res.json(), last) // 끊기거나 번호가 이상한 회차에서 멈춤
   if (!list.length) break
-  for (const x of list) {
-    if (x.ltEpsd !== last + 1) throw new Error(`${last}회 다음이 ${x.ltEpsd}회로 왔다`)
-    const d = String(x.ltRflYmd)
-    added.push({
-      drwNo: x.ltEpsd, drwNoDate: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`,
-      drwtNo1: x.tm1WnNo, drwtNo2: x.tm2WnNo, drwtNo3: x.tm3WnNo,
-      drwtNo4: x.tm4WnNo, drwtNo5: x.tm5WnNo, drwtNo6: x.tm6WnNo, bnusNo: x.bnsWnNo,
-    })
-    last = x.ltEpsd
-  }
+  added.push(...list)
+  last = list.at(-1).drwNo
   await new Promise(r => setTimeout(r, 500))
 }
 
+// process.exit() 은 쓰지 않는다 — Windows Node 24 에서 fetch 소켓이 닫히는 중에 부르면 libuv assert 로 죽는다
 if (!added.length) {
   console.log(`새 회차 없음 (마지막 ${last}회)`)
-  process.exit(0)
+} else {
+  const tail = added.map(x => `,"${x.drwNo}":${JSON.stringify(x)}`).join('')
+  writeFileSync(FILE, src.slice(0, end) + tail + src.slice(end))
+  const check = spawnSync(process.execPath, [CHECK], { stdio: 'inherit' })
+  if (check.status !== 0) {
+    writeFileSync(FILE, src)
+    console.error('검사 실패 — public/lottoData.ts 를 원래대로 되돌렸다')
+    process.exitCode = 1
+  } else {
+    console.log(`${added[0].drwNo}~${last}회 ${added.length}개 추가 (마지막 ${added.at(-1).drwNoDate})`)
+  }
 }
-
-const tail = added.map(x => `,"${x.drwNo}":${JSON.stringify(x)}`).join('')
-writeFileSync(FILE, src.slice(0, end) + tail + src.slice(end))
-const check = spawnSync(process.execPath, [CHECK], { stdio: 'inherit' })
-if (check.status !== 0) {
-  writeFileSync(FILE, src)
-  console.error('검사 실패 — public/lottoData.ts 를 원래대로 되돌렸다')
-  process.exit(1)
-}
-console.log(`${added[0].drwNo}~${last}회 ${added.length}개 추가 (마지막 ${added.at(-1).drwNoDate})`)

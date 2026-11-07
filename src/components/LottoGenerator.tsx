@@ -13,6 +13,7 @@ import '@/lib/i18n/ns/lotto'
 import dynamic from 'next/dynamic'
 const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false })
 import { useLottoData } from '@/hooks/useLottoData'
+import { getLottoData } from '@/utils/lottoDataLoader'
 
 interface LottoResult {
   numbers: number[]
@@ -466,12 +467,11 @@ export default function LottoGenerator() {
     }
   }, [searchParams])
 
-  // 과거 당첨번호 이력 로드 (lottoData에서 직접 로드)
+  // 과거 당첨번호 이력 로드 (정적 데이터 + 배포 뒤 새 회차, useLottoData 와 같은 로더 — 요청은 한 번)
   const loadWinningHistory = async () => {
     try {
-      // lottoData.ts에서 직접 모든 데이터 가져오기
-      const { lottoData } = await import('../../public/lottoData')
-      
+      const lottoData = await getLottoData()
+
       // 모든 당첨번호를 WinningNumber 형태로 변환
       const winningData: WinningNumber[] = Object.values(lottoData).map((data) => ({
         round: data.drwNo,

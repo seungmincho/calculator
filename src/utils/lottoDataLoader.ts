@@ -14,76 +14,37 @@ interface LottoDrawData {
 
 type LottoDataMap = Record<string, LottoDrawData>;
 
-let cachedLottoData: LottoDataMap | null = null;
-let lastLoadTime = 0;
-
-// 기존 lottoData.ts에서 데이터 로드
+// 정적 데이터(public/lottoData.ts, 배포 때 scripts/update-lotto-data.mjs 로 갱신)
 const loadStaticLottoData = async (): Promise<LottoDataMap> => {
   try {
-    // Next.js 13+ App Router에서 정적 파일 가져오기
-    const module = await import('../../public/lottoData');
-    return module.lottoData || {};
+    const mod = await import('../../public/lottoData');
+    return mod.lottoData || {};
   } catch {
     return {};
   }
 };
 
-// 메모리 캐시를 포함한 로또 데이터 로더
-export const getLottoData = async (forceReload = false): Promise<LottoDataMap> => {
-  const now = Date.now();
-  const cacheExpiry = 60 * 60 * 1000; // 1시간 캐시
-  
-  // 캐시가 유효하고 강제 새로고침이 아닌 경우
-  if (!forceReload && cachedLottoData && (now - lastLoadTime) < cacheExpiry) {
-    return cachedLottoData;
-  }
-  
+// 배포 이후 새 회차: 같은 도메인 Pages Function(functions/api/lotto-latest.ts, 엣지 캐시).
+// next dev 처럼 Function 이 없거나 실패하면 정적 데이터만 쓴다. 저장하지 않고 메모리에서만 합친다.
+const loadNewDraws = async (after: number): Promise<LottoDataMap> => {
+  if (!after) return {};
   try {
-    // 정적 데이터 로드
-    const staticData = await loadStaticLottoData();
-    
-    // localStorage에서 추가된 데이터 가져오기
-    const additionalDataStr = localStorage.getItem('additionalLottoData');
-    const additionalData: LottoDataMap = additionalDataStr 
-      ? JSON.parse(additionalDataStr) 
-      : {};
-    
-    // 정적 데이터와 추가 데이터 합치기
-    const combinedData = { ...staticData, ...additionalData };
-    
-    cachedLottoData = combinedData;
-    lastLoadTime = now;
-    
-    return combinedData;
-  } catch (error) {
-    console.error('Failed to load lotto data:', error);
-    return cachedLottoData || {};
+    const res = await fetch(`/api/lotto-latest?after=${after}`);
+    if (!res.ok) return {};
+    const { draws } = (await res.json()) as { draws?: LottoDrawData[] };
+    return Object.fromEntries((draws ?? []).map((d) => [String(d.drwNo), d]));
+  } catch {
+    return {};
   }
 };
 
-// 새로운 로또 데이터를 localStorage에 추가
-export const addNewLottoData = (newDraws: LottoDrawData[]): void => {
-  if (newDraws.length === 0) return;
-  
-  try {
-    const existingDataStr = localStorage.getItem('additionalLottoData');
-    const existingData: LottoDataMap = existingDataStr 
-      ? JSON.parse(existingDataStr) 
-      : {};
-    
-    // 새 데이터 추가
-    newDraws.forEach(draw => {
-      existingData[draw.drwNo.toString()] = draw;
-    });
-    
-    localStorage.setItem('additionalLottoData', JSON.stringify(existingData));
+let loading: Promise<LottoDataMap> | null = null;
 
-    // 캐시 무효화
-    cachedLottoData = null;
-  } catch (error) {
-    console.error('Failed to save new lotto data:', error);
-  }
-};
+/** 정적 + 새 회차. 페이지당 한 번만 불러온다(여러 곳에서 동시에 불러도 요청은 하나). */
+export const getLottoData = (): Promise<LottoDataMap> => (loading ??= (async () => {
+  const staticData = await loadStaticLottoData();
+  return { ...staticData, ...(await loadNewDraws(getLatestDrawNumberFromData(staticData))) };
+})());
 
 // 최신 회차 번호 가져오기
 export const getLatestDrawNumberFromData = (data: LottoDataMap): number => {
@@ -153,13 +114,13 @@ export const getNumberStatistics = async (recentCount: number = 50): Promise<{
 };
 
 // 데이터 통계 정보
-export const getDataStatistics = async (forceReload = false): Promise<{
+export const getDataStatistics = async (): Promise<{
   totalDraws: number;
   latestDraw: number;
   latestDate: string;
   dataUpToDate: boolean;
 }> => {
-  const data = await getLottoData(forceReload);
+  const data = await getLottoData();
   const latestDrawNo = getLatestDrawNumberFromData(data);
   const latestDrawData = data[latestDrawNo.toString()];
   
