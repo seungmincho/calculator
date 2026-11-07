@@ -443,7 +443,7 @@ function Timeline() {
   const now = useNow(60_000)
   const today = now == null ? null : kstParts(now).date
   const when = (x: TimelineItem) =>
-    x.approx ? t('timeline.lateFeb') : x.until ? t('timeline.until', { date: fmt(x.start) }) : x.end ? `${fmt(x.start)} ~ ${fmt(x.end)}` : fmt(x.start)
+    x.until ? t('timeline.until', { date: fmt(x.start) }) : x.end ? `${fmt(x.start)} ~ ${fmt(x.end)}` : fmt(x.start)
 
   return (
     <div id="csat-timeline" className="ui-card p-6 space-y-4 scroll-mt-20">
@@ -454,7 +454,7 @@ function Timeline() {
       <ol className="space-y-1">
         {TIMELINE.map((x) => {
           const status = today ? timelineStatus(x, today) : 'future'
-          const tag = !today || x.approx ? '' : status === 'past' ? t('timeline.past') : status === 'now' ? t('timeline.ongoing') : ddayText(daysUntil(today, x.start))
+          const tag = !today ? '' : status === 'past' ? t('timeline.past') : status === 'now' ? t('timeline.ongoing') : ddayText(daysUntil(today, x.start))
           return (
             <li key={x.key} className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 ${status === 'now' ? 'bg-primary-soft' : ''} ${status === 'past' ? 'opacity-50' : ''}`}>
               <div className="min-w-0">
@@ -470,7 +470,7 @@ function Timeline() {
       <div className="flex flex-wrap gap-2">
         <Link href="/csat-grade/" className="ui-btn-soft px-4 py-2 text-sm">{t('timeline.linkGrade')}</Link>
         <Link href="/dday-calculator/" className="ui-btn-soft px-4 py-2 text-sm">{t('timeline.linkDday')}</Link>
-        <AddToCalendar file="csat-2027-schedule.ics" events={TIMELINE.filter((x) => !x.approx && (!today || (x.end ?? x.start) >= today)).map((x) => ({
+        <AddToCalendar file="csat-2027-schedule.ics" events={TIMELINE.filter((x) => !today || (x.end ?? x.start) >= today).map((x) => ({
           uid: `csat-${x.key}-${x.start}`, date: x.start, end: x.end, alarmDays: 1,
           title: x.until ? `${t(`timeline.items.${x.key}`)} (${when(x)})` : t(`timeline.items.${x.key}`),
           description: 'https://toolhub.ai.kr/csat-dday/',

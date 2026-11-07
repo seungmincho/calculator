@@ -6,6 +6,8 @@ import { getKoreanHolidays } from './koreanHolidays.ts'
 import { nextFiling } from './freelancerTax.ts'
 import { nextLumpWindow } from './annualCarTax.ts'
 import { jongbuDates } from './propertyHoldingTax.ts'
+import { APPLY } from './jeongsi.ts'
+import { APPLY_PERIOD as EV_APPLY } from './energyVoucher.ts'
 
 /** due = 카드에 붙는 캘린더 일정 (key = homePage.deadline.<key>) */
 export interface SeasonPick { key: string; href: string; n: number; due?: { key: string; date: string } }
@@ -36,8 +38,11 @@ function rules(year: number): Rule[] {
     { key: 'carTaxPrepay', href: '/annual-car-tax', from: lump.start, to: lump.due, target: lump.due, event: 'carTaxLumpDue' },
     { key: 'yearEndPre', href: '/year-end-tax', from: `${year}-11-01`, to: `${year}-12-31`, target: `${year}-12-31`, event: 'yearEnd' },
     { key: 'manito', href: '/manito', from: `${year}-12-01`, to: `${year}-12-18` }, // 송년회·크리스마스 준비 — 수능·김장 카드가 끝난 12/11부터 보이고, 12/19부터는 해돋이에 자리를 내준다
+    { key: 'toastSpeech', href: '/toast-speech', from: `${year}-12-19`, to: `${year}-12-24` }, // 마니또(~12/18) 다음, 해돋이 검색이 몰리기 전 송년회 주간
     { key: 'newYearSunrise', href: '/new-year-sunrise', from: `${year}-12-15`, to: `${year + 1}-01-01` },
+    { key: 'jeongsi', href: '/jeongsi-2027', from: '2027-01-02', to: APPLY.end!, target: APPLY.end, event: 'jeongsiApplyEnd' }, // 2027학년도 한 번뿐 — 내년엔 jeongsi-2028 로
     { key: 'yearEnd', href: '/year-end-tax', from: `${year}-01-01`, to: `${year}-02-28` },
+    { key: 'winterFestivals', href: '/winter-festivals', from: `${year}-01-08`, to: `${year}-02-10` }, // 얼음축제 개막 무렵(연납·설 카드가 뜨기 전 주)
     { key: 'salaryNewYear', href: '/salary-calculator', from: `${year}-01-01`, to: `${year}-01-31` }, // 새해 4대보험 요율 반영
     { key: 'newYear', href: '/greeting-generator', from: `${year}-12-01`, to: `${year + 1}-01-10` },
   ]
@@ -68,6 +73,7 @@ export function upcomingDeadlines(now: Date, picks: SeasonPick[] = [], within = 
   const lump = nextLumpWindow(today)
   const list = [
     { key: 'csat', href: '/csat-dday', date: CSAT_EXAM_DATE },
+    { key: 'jeongsiApplyEnd', href: '/jeongsi-2027', date: APPLY.end! },
     { key: lump.open ? 'carTaxLumpDue' : 'carTaxLumpStart', href: '/annual-car-tax', date: lump.open ? lump.due : lump.start },
     { key: 'incomeTax', href: '/freelancer-tax', date: nextFiling(new Date(`${today}T00:00`)).dateStr },
     ...[y, y + 1].flatMap(yy => [
@@ -76,6 +82,7 @@ export function upcomingDeadlines(now: Date, picks: SeasonPick[] = [], within = 
       { key: 'simplified', href: '/year-end-tax', date: `${yy}-01-15` },
       { key: 'hometown', href: '/hometown-donation', date: `${yy}-12-31` }, // 고향사랑기부 그해 공제 마감
     ]),
+    { key: 'energyVoucher', href: '/energy-voucher', date: EV_APPLY.end }, // 연도별 공고(지나면 n<0 으로 빠짐). 같은 날 마감이면 위 항목이 먼저
   ]
   return list
     .map(d => ({ ...d, n: daysUntil(today, d.date) }))

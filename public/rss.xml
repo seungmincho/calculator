@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sat, 07 Nov 2026 07:12:21 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Nov 2026 08:24:16 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[기초연금 계산기]]></title>
@@ -47,6 +47,20 @@
     <link>https://toolhub.ai.kr/dividend-calculator/</link>
     <guid>https://toolhub.ai.kr/dividend-calculator/</guid>
     <description><![CDATA[세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[근로장려금 계산기]]></title>
+    <link>https://toolhub.ai.kr/eitc/</link>
+    <guid>https://toolhub.ai.kr/eitc/</guid>
+    <description><![CDATA[가구 유형·총소득·재산으로 근로장려금과 자녀장려금 예상액, 재산 감액까지]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[에너지바우처 대상·금액]]></title>
+    <link>https://toolhub.ai.kr/energy-voucher/</link>
+    <guid>https://toolhub.ai.kr/energy-voucher/</guid>
+    <description><![CDATA[수급 종류·세대원 특성·인원으로 대상 여부와 연간 지원금, 12월 31일 신청 마감]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

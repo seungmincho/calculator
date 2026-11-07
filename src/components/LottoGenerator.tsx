@@ -72,20 +72,8 @@ export default function LottoGenerator() {
 
   const { histories, saveCalculation, removeHistory, clearHistories, loadFromHistory } = useCalculationHistory('lotto')
   
-  // 새로운 로또 데이터 자동 업데이트 시스템
-  const {
-    lottoData,
-    latestDrawData,
-    recentDraws,
-    numberStats: autoNumberStats,
-    isLoading: dataLoading,
-    isUpdating,
-    updateStatus,
-    dataStats,
-    refreshData,
-    checkForUpdates,
-    getDrawByNumber
-  } = useLottoData()
+  // 당첨번호: public/lottoData.ts (갱신 = node scripts/update-lotto-data.mjs)
+  const { latestDrawData, dataStats, getDrawByNumber, isLoading: dataLoading } = useLottoData()
 
   // 당첨번호 조회 (로컬 데이터 우선, 없으면 API 호출)
   const searchWinningNumber = async (round: string) => {
@@ -116,28 +104,7 @@ export default function LottoGenerator() {
         }
         setSearchResult(result)
       } else {
-        // 2. 로컬에 없으면 API로 직접 조회
-        const { fetchLottoData } = await import('@/utils/lottoUpdater')
-        const apiData = await fetchLottoData(roundNo)
-
-        if (apiData) {
-          const result: WinningNumber = {
-            round: apiData.drwNo,
-            drawDate: apiData.drwNoDate,
-            numbers: [
-              apiData.drwtNo1,
-              apiData.drwtNo2,
-              apiData.drwtNo3,
-              apiData.drwtNo4,
-              apiData.drwtNo5,
-              apiData.drwtNo6
-            ].sort((a, b) => a - b),
-            bonusNumber: apiData.bnusNo
-          }
-          setSearchResult(result)
-        } else {
-          setSearchResult(null)
-        }
+        setSearchResult(null) // 아직 반영 안 된 회차(정적 데이터 밖)
       }
     } catch (error) {
       console.error('당첨번호 조회 실패:', error)
@@ -179,9 +146,8 @@ export default function LottoGenerator() {
       stats[i] = { count: 0, lastRound: 0 }
     }
     
-    // 실제 당첨번호 이력이 있으면 사용, 없으면 목 데이터 사용
-    const dataToUse = winningHistory.length > 0 ? winningHistory : mockWinningNumbers
-    
+    const dataToUse = winningHistory // 로드 전에는 빈 배열 → 통계 0 (가짜 데이터로 채우지 않음)
+
     // 당첨번호 집계
     dataToUse.forEach(winning => {
       winning.numbers.forEach(num => {
@@ -253,14 +219,6 @@ export default function LottoGenerator() {
     router.replace(`?${params.toString()}`, { scroll: false })
   }
 
-  // 모의 당첨번호 데이터 (실제 로또 API 연동 시 교체)
-  const mockWinningNumbers: WinningNumber[] = [
-    { round: 1100, drawDate: '2024-12-21', numbers: [5, 12, 18, 25, 31, 42], bonusNumber: 7 },
-    { round: 1099, drawDate: '2024-12-14', numbers: [3, 15, 22, 28, 35, 44], bonusNumber: 11 },
-    { round: 1098, drawDate: '2024-12-07', numbers: [8, 14, 21, 29, 36, 43], bonusNumber: 16 },
-    { round: 1097, drawDate: '2024-11-30', numbers: [2, 17, 24, 31, 38, 45], bonusNumber: 9 },
-    { round: 1096, drawDate: '2024-11-23', numbers: [6, 13, 19, 26, 33, 41], bonusNumber: 4 }
-  ]
 
   // 통계 기반 가중치 (실제 로또 데이터 기반 시뮬레이션)
   const numberFrequency: { [key: number]: number } = {
@@ -543,9 +501,8 @@ export default function LottoGenerator() {
     setNumberStats(calculateNumberStats())
   }, [winningHistory])
 
-  // 초기 데이터 로드 (fetchLatestWinning 제거, 새로운 시스템에서 자동 처리)
+  // 초기 데이터 로드
   useEffect(() => {
-    setWinningHistory(mockWinningNumbers)
     loadWinningHistory() // 과거 당첨번호 이력 로드
   }, [])
 
@@ -1152,29 +1109,9 @@ export default function LottoGenerator() {
                     </span>
                   </div>
                 )}
-                
-                {/* 업데이트 버튼 */}
-                <button
-                  onClick={checkForUpdates}
-                  disabled={isUpdating}
-                  className="p-1.5 text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title={t('a11y.checkLatest')}
-                >
-                  <RefreshCw className={`w-4 h-4 ${isUpdating ? 'animate-spin' : ''}`} />
-                </button>
               </div>
             </div>
-            
-            {/* 업데이트 상태 표시 */}
-            {updateStatus && (
-              <div className="mb-3 p-2 bg-subtle rounded-lg">
-                <div className="flex items-center space-x-2">
-                  {isUpdating && <RefreshCw className="w-4 h-4 animate-spin text-blue-600" />}
-                  <span className="text-sm text-fg">{updateStatus}</span>
-                </div>
-              </div>
-            )}
-            
+
             <div className="bg-subtle rounded-lg p-4">
               {latestWinning ? (
                 <>

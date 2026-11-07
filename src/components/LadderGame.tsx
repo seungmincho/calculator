@@ -1508,7 +1508,10 @@ export default function LadderGame() {
                       key={name}
                       onClick={reveal}
                       role={shouldHide ? 'button' : undefined}
-                      tabIndex={shouldHide ? 0 : undefined}
+                      // 공개 뒤에도 -1 로 남겨 포커스가 body 로 빠지지 않게 한다(Tab 은 다음 숨은 행으로)
+                      tabIndex={shouldHide ? 0 : isManualRevealed ? -1 : undefined}
+                      // 공개되면 바뀐 결과만이 아니라 "이름 → 결과" 행 전체를 읽게
+                      aria-atomic="true"
                       onKeyDown={shouldHide ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal() } } : undefined}
                       aria-label={shouldHide ? t('result.revealAria', { name }) : undefined}
                       className={`flex items-center justify-between p-3 bg-surface rounded-xl border border-line shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-500 ${

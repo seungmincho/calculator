@@ -84,8 +84,8 @@ export function countdown(nowMs: number, exam = CSAT_EXAM_DATE): Countdown {
   return { phase, dday, d: Math.floor(left / 86400), h: Math.floor(left / 3600) % 24, m: Math.floor(left / 60) % 60, s: left % 60 }
 }
 
-/** until: 해당 날짜'까지' (마감일), approx: 날짜 미확정 — D-N 표시 안 함 */
-export interface TimelineItem { key: string; start: string; end?: string; until?: boolean; approx?: boolean }
+/** until: 해당 날짜'까지' (마감일) */
+export interface TimelineItem { key: string; start: string; end?: string; until?: boolean }
 
 /** 2027학년도 수능 이후 대입 일정 (대교협 대입전형 시행계획) */
 export const TIMELINE: TimelineItem[] = [

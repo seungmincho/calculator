@@ -366,7 +366,8 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     const label = spinResult.length > 10 ? spinResult.slice(0, 10) + '…' : spinResult
     ctx.fillText(label, W / 2, H / 2 + 10)
     ctx.fillStyle = '#818cf8'; ctx.font = '15px system-ui, sans-serif'
-    ctx.fillText(t('roulette.imageFooter'), W / 2, H - 38)
+    // 메뉴 룰렛과 돌림판이 이 컴포넌트를 같이 쓴다 → 바닥글 도구 이름을 모드에 맞춘다
+    ctx.fillText(menuMode ? t('roulette.imageFooter') : `toolhub.ai.kr · ${t('header.rouletteTitle')}`, W / 2, H - 38)
     const link = document.createElement('a')
     link.download = `roulette-${spinResult}.png`
     link.href = canvas.toDataURL('image/png')

@@ -266,7 +266,7 @@ export default function GreetingGenerator({ defaultSituation, embedded = false }
         <div className="lg:col-span-2 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold text-fg">{t('resultsTitle', { count: messages.length })}</h2>
+              <h2 className="text-lg font-semibold text-fg">{t(isToast ? 'resultsTitleToast' : 'resultsTitle', { count: messages.length })}</h2>
               {yearInfo && <p className="text-sm text-muted mt-0.5">{yearInfo}</p>}
             </div>
             <div className="flex flex-wrap gap-2">

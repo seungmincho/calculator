@@ -86,7 +86,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/wedding-calculator': ['/dday-calculator', '/inheritance-gift-tax', '/jeonse-loan', '/housing-subscription', '/budget-calculator', '/moving-cost'],
   '/electricity-calculator': ['/pc-electricity', '/gas-bill', '/water-bill', '/budget-calculator'],
   '/pc-electricity': ['/electricity-calculator', '/gas-bill', '/water-bill', '/budget-calculator'],
-  '/gas-bill': ['/electricity-calculator', '/water-bill', '/wind-chill', '/budget-calculator'],
+  '/gas-bill': ['/electricity-calculator', '/energy-voucher', '/water-bill', '/wind-chill', '/budget-calculator', '/pc-electricity'],
   '/water-bill': ['/electricity-calculator', '/gas-bill', '/pc-electricity', '/budget-calculator'],
   '/kimjang-calculator': ['/kimjang-timing', '/seasonal-food', '/budget-calculator', '/dutch-pay', '/discount-calculator', '/nutrition-calculator'],
   '/kimjang-timing': ['/kimjang-calculator', '/seasonal-food', '/wind-chill', '/holiday-planner', '/sunrise-sunset', '/calendar-2027'],
@@ -94,7 +94,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/percent-calculator': ['/discount-calculator', '/average-calculator', '/margin-calculator', '/vat-calculator', '/cagr-calculator', '/stock-calculator'],
 
   // 정부지원·복지
-  '/government-subsidy': ['/median-income', '/basic-pension', '/youth-rent-subsidy', '/youth-future-savings', '/child-benefit', '/parental-leave'],
+  '/government-subsidy': ['/median-income', '/eitc', '/energy-voucher', '/basic-pension', '/youth-rent-subsidy', '/child-benefit'],
   '/median-income': ['/basic-pension', '/government-subsidy', '/youth-rent-subsidy', '/youth-future-savings', '/child-benefit', '/salary-rank'],
   '/youth-rent-subsidy': ['/rent-tax-credit', '/median-income', '/government-subsidy', '/rent-converter', '/jeonse-loan', '/lease-contract'],
   '/child-benefit': ['/parental-leave', '/government-subsidy', '/due-date', '/median-income', '/year-end-tax', '/budget-calculator'],
@@ -190,6 +190,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/seasonal-food': ['/kimjang-calculator', '/kimjang-timing', '/nutrition-calculator', '/meal-diary', '/calorie-calculator', '/menu-picker'],
   '/winter-festivals': ['/ski-resorts', '/wind-chill', '/new-year-sunrise', '/calendar-2027', '/holiday-planner', '/fuel-calculator'],
   '/toast-speech': ['/greeting-generator', '/manito', '/dutch-pay', '/calendar-2027'],
+  '/energy-voucher': ['/gas-bill', '/electricity-calculator', '/basic-pension', '/median-income', '/government-subsidy', '/wind-chill'],
+  '/eitc': ['/salary-calculator', '/median-income', '/government-subsidy', '/basic-pension', '/year-end-tax', '/child-benefit'],
   '/json-to-typescript': ['/json-formatter', '/json-csv-converter', '/yaml-json-converter', '/json-xml-converter', '/jwt-decoder', '/api-tester'],
   '/child-growth': ['/bmi-calculator', '/due-date', '/calorie-calculator', '/age-calculator', '/child-benefit', '/nutrition-calculator'],
   '/yut-nori': ['/omok', '/othello', '/dice-roller', '/ladder-game', '/greeting-generator', '/calendar-2027'],

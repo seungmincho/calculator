@@ -132,6 +132,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [기초연금 계산기](https://toolhub.ai.kr/basic-pension/): 소득인정액으로 수급 자격 판정, 예상 수령액(부부·국민연금 연계 감액)
 - [공무원 봉급표·실수령액](https://toolhub.ai.kr/civil-servant-pay/): 2026 직급·호봉별 봉급과 2027 예상(정부안 3.9%), 공제 후 실수령액
 - [2027 정시 일정](https://toolhub.ai.kr/jeongsi-2027/): 수능 성적 발표부터 원서접수·가나다군·합격 발표·추가모집까지 D-day
+- [에너지바우처 대상·금액](https://toolhub.ai.kr/energy-voucher/): 수급 종류·세대원 특성·인원으로 대상 여부와 연간 지원금, 12월 31일 신청 마감
+- [근로장려금 계산기](https://toolhub.ai.kr/eitc/): 가구 유형·총소득·재산으로 근로장려금과 자녀장려금 예상액, 재산 감액까지
 
 ## 개발 도구
 

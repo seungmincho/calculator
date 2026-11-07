@@ -2855,7 +2855,9 @@
       "jeongsi2027": "2027 Regular Admission Dates",
       "seasonalFood": "Seasonal Food by Month",
       "winterFestivals": "Winter Festivals",
-      "toastSpeech": "Toast Speeches"
+      "toastSpeech": "Toast Speeches",
+      "energyVoucher": "Energy Voucher",
+      "eitc": "EITC Calculator"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -6115,8 +6117,7 @@
     "pdfTitle": "Lotto number results",
     "a11y": {
       "checkNumber": "My number {n}",
-      "clearCheck": "Clear entered numbers",
-      "checkLatest": "Check for the latest draw"
+      "clearCheck": "Clear entered numbers"
     },
     "title": "Lotto Number Generator",
     "description": "Generate lottery 6/45 numbers automatically and create better number combinations with past winning number analysis",
@@ -8652,6 +8653,14 @@
       "toastSpeech": {
         "title": "Korean Toast Speeches",
         "description": "Generate a toast for year-end parties and gatherings, plus short toast chants with meanings"
+      },
+      "energyVoucher": {
+        "title": "2026 Energy Voucher Eligibility",
+        "description": "Check eligibility and the yearly voucher amount by benefit type and household; apply by Dec 31"
+      },
+      "eitc": {
+        "title": "Earned Income & Child Tax Credit",
+        "description": "Estimate Korea's earned income and child tax credits by household type, income and assets"
       }
     }
   },
@@ -21899,7 +21908,9 @@
       "simplified": "Year-end tax simplified service opens",
       "carTaxLumpStart": "Annual car tax prepayment opens",
       "carTaxLumpDue": "Annual car tax prepayment due",
-      "incomeTax": "Comprehensive income tax filing due"
+      "incomeTax": "Comprehensive income tax filing due",
+      "energyVoucher": "Energy voucher application deadline",
+      "jeongsiApplyEnd": "Regular admission applications close"
     },
     "dailyPuzzles": {
       "title": "Today's Puzzles",
@@ -21969,6 +21980,18 @@
       "salaryNewYear": {
         "title": "Take-home pay this year",
         "desc": "Recalculate with this year's social insurance rates"
+      },
+      "jeongsi": {
+        "title": "Admission applications close in {n} days",
+        "desc": "Group A/B/C screening dates through results"
+      },
+      "winterFestivals": {
+        "title": "Winter festivals",
+        "desc": "Ice fishing, snow and light festivals this season"
+      },
+      "toastSpeech": {
+        "title": "Year-end toasts",
+        "desc": "Toasts for any table and 31 short toast chants"
       }
     },
     "hero": {
@@ -46176,7 +46199,6 @@
     "timeline": {
       "title": "After the CSAT",
       "desc": "Key 2027 admissions dates, from score release to additional recruitment.",
-      "lateFeb": "Late February",
       "until": "by {date}",
       "past": "Past",
       "ongoing": "Now",
@@ -49174,7 +49196,8 @@
           }
         ]
       }
-    }
+    },
+    "resultsTitleToast": "{count} toasts"
   },
   "kimjangCalculator": {
     "title": "Kimjang Calculator",
@@ -57726,6 +57749,583 @@
           "gwangbok2026": "Break News Busan: 2025 Gwangbok-ro tree festival Dec 5–Feb 22, 2026 (Nov 29, 2025)",
           "cancel2026": "TWIG24: Mild weather delays and cancels winter festivals (Andong, Inje, Pyeongchang; Jan 7, 2026)"
         }
+      }
+    }
+  },
+  "energyVoucher": {
+    "title": "2026 Energy Voucher Eligibility & Amount",
+    "subtitle": "Pick your benefit type, household traits and household size to see whether you qualify for this year's energy voucher, the yearly amount and how many days are left to apply.",
+    "input": {
+      "title": "Your household",
+      "benefit": "Basic livelihood benefit",
+      "benefitHint": "Select every benefit you receive. If none (near-poverty or general households), you are not eligible.",
+      "benefits": {
+        "livelihood": "Livelihood",
+        "medical": "Medical",
+        "housing": "Housing",
+        "education": "Education"
+      },
+      "trait": "Household traits",
+      "traitHint": "It is enough if the recipient or any member on the resident registration applies. With none, you are not eligible.",
+      "traits": {
+        "senior": "Senior",
+        "infant": "Infant or toddler",
+        "disabled": "Person with a disability",
+        "pregnant": "Pregnant or postpartum",
+        "illness": "Severe, rare or intractable disease",
+        "singleParent": "Single-parent family",
+        "childHead": "Child-headed household",
+        "multiChild": "Multi-child household"
+      },
+      "traitHints": {
+        "senior": "Born on or before Dec 31, 1961 (resident registration)",
+        "infant": "Born on or after Jan 1, 2019, age 7 or under and not yet in school",
+        "disabled": "Registered under the Act on Welfare of Persons with Disabilities",
+        "pregnant": "Pregnant, or less than 6 months after giving birth",
+        "illness": "Has a severe, rare or intractable disease eligible for the health insurance special co-pay rate",
+        "singleParent": "Eligible under the Single-Parent Family Support Act",
+        "childHead": "Eligible child-headed household (including foster children)",
+        "multiChild": "A parent with two or more children under 19 (including foster children)"
+      },
+      "size": "Household size",
+      "sizeHint": "Everyone on the resident registration, including family members who are not recipients.",
+      "sizes": {
+        "1": "1-person",
+        "2": "2-person",
+        "3": "3-person",
+        "4": "4+ person"
+      },
+      "winter": "Other winter heating support",
+      "winterHint": "If you receive any of these, you cannot also get the winter energy voucher.",
+      "winters": {
+        "none": "None",
+        "emergency": "Emergency welfare winter fuel aid",
+        "coalCoupon": "Briquette coupon (KOMIR)",
+        "coalSwitch": "Briquette-switch energy voucher"
+      },
+      "fuel": "Main heating energy",
+      "fuelHint": "Used to recommend bill deduction or the Kookmin Happiness Card.",
+      "fuels": {
+        "electric": "Electricity",
+        "gas": "City gas",
+        "district": "District heating",
+        "kerosene": "Kerosene",
+        "lpg": "LPG",
+        "coal": "Briquettes"
+      },
+      "facility": "All members live in a welfare facility and receive benefits there",
+      "facilityHint": "Households whose members all receive benefits in a facility under the National Basic Living Security Act are excluded."
+    },
+    "fmt": {
+      "date": "{m}/{d}/{y}",
+      "short": "{m}/{d}/{y}",
+      "range": "{a} – {b}"
+    },
+    "unit": {
+      "won": "₩{v}"
+    },
+    "result": {
+      "label": "{year} energy voucher",
+      "notEligible": "Not eligible",
+      "badge": {
+        "eligible": "Eligible",
+        "summerOnly": "Summer only",
+        "ineligible": "Not eligible"
+      },
+      "amountNote": {
+        "eligible": "Yearly amount for a {size} household (not a monthly amount).",
+        "summerOnly": "Summer amount for a {size} household."
+      },
+      "reason": {
+        "eligible": "You meet both the income criterion (basic livelihood recipient) and the household-trait criterion. The amount depends only on household size, and one voucher is issued per household even if several members qualify.",
+        "summerOnly": "With other winter support ({program}), you cannot also get the winter energy voucher. You receive the summer portion only.",
+        "noIncome": "You must receive at least one of the livelihood, medical, housing or education benefits. Near-poverty and general households are not eligible.",
+        "noTrait": "Even recipients need at least one member who is a senior, infant, person with a disability or another listed trait.",
+        "facility": "Households whose members all receive benefits in a welfare facility are excluded."
+      },
+      "summerOver": "The summer period ended on {date}. Applying now gives no voucher amount; winter heating comes from the support you chose.",
+      "compare": "If you take the energy voucher through winter instead of the other support, you get {v} a year.",
+      "disclaimer": "An estimate based on the official notice. Actual support is decided after the local community center reviews your eligibility."
+    },
+    "table": {
+      "title": "Amount by household size",
+      "caption": "{year} energy voucher amount by household size",
+      "size": "Household",
+      "total": "Yearly total",
+      "summerOnly": "Summer only",
+      "note": "Summer only: households receiving a briquette coupon, briquette-switch voucher or emergency fuel aid. All figures are 2026 yearly totals, not monthly amounts."
+    },
+    "period": {
+      "title": "When to use it",
+      "summer": "Summer (electricity bill deduction)",
+      "winterVirtual": "Winter bill deduction",
+      "winterCard": "Winter Happiness Card",
+      "summerOnly": "The summer portion is deducted from electricity bills until {date}; anything left after that expires.",
+      "free": "This year the amount is not split into summer and winter portions. Use the total freely during the period; to save it all for winter, ask to skip the summer bill deduction.",
+      "useLeft": "Use by {date}: {d}"
+    },
+    "apply": {
+      "title": "How to apply",
+      "period": "Application period {range}",
+      "before": "Applications have not opened yet.",
+      "closed": "This year's applications are closed. The next program is usually announced in May or June.",
+      "late": "As long as you apply within the period, you get the full amount even if you apply late.",
+      "pause": "Applications pause for 2–3 days in late December for processing, so apply early.",
+      "where": "Where",
+      "whereItems": [
+        "Visit the community center (eup·myeon·dong) of your registered address (yourself, or a household member or relative with a power of attorney)",
+        "Apply online at Bokjiro (bokjiro.go.kr)",
+        "If you cannot get around, an official can apply on your behalf with your consent"
+      ],
+      "bring": "What to bring",
+      "bringItems": [
+        "Energy voucher application form (filled in at the center)",
+        "For bill deduction: your latest electricity, city gas or district heating bill (apartment management fee bill if you live in an apartment)",
+        "For a proxy: the recipient's power of attorney and the proxy's ID"
+      ],
+      "auto": "If you received it last year and nothing changed, you are enrolled automatically. If you moved or your household size changed, apply again.",
+      "contact": "Help line: Energy Voucher Center 1600-3190."
+    },
+    "calendar": {
+      "apply": "{year} energy voucher application deadline",
+      "use": "{year} energy voucher usage deadline",
+      "note": "Check eligibility and amount on ToolHub: {url}"
+    },
+    "method": {
+      "title": "How to use it",
+      "recommend": "Recommended",
+      "summerOnly": "The summer portion is deducted from your electricity bill automatically. Winter heating comes from the support you chose.",
+      "virtual": {
+        "name": "Bill deduction (virtual card)",
+        "desc": "Deducted from your bill automatically. No card needed.",
+        "items": [
+          "Summer: electricity bill",
+          "Winter: one of city gas, electricity or district heating",
+          "Starts from the next month's bill after you apply with a recent bill",
+          "Covers bills issued by May 31, 2027"
+        ]
+      },
+      "card": {
+        "name": "Kookmin Happiness Card (physical card)",
+        "desc": "Pay directly with the card. The only way to buy kerosene, LPG or briquettes.",
+        "items": [
+          "Winter only (from Oct 3)",
+          "Electricity, city gas, kerosene, LPG and briquettes",
+          "Buy kerosene, LPG and briquettes at partner stores (delivery fee included)",
+          "Issued by BC, Lotte, Samsung, KB Kookmin, Shinhan and Hyundai Card"
+        ]
+      },
+      "why": {
+        "electric": "With electric heating, bill deduction is easiest: it comes off your electricity bill in summer and winter.",
+        "gas": "With city gas, bill deduction is easiest: it comes off your winter gas bill and no card is needed.",
+        "district": "District heating is supported through bill deduction; it is not on the Happiness Card's list.",
+        "kerosene": "Kerosene must be bought with the Happiness Card at a partner store. Delivery fees can be paid by card too.",
+        "lpg": "LPG must be bought with the Happiness Card at a partner store. Delivery fees can be paid by card too.",
+        "coal": "Briquettes must be bought with the Happiness Card at a partner store. If you get a briquette coupon, choose it under other winter heating support."
+      }
+    },
+    "share": {
+      "tool": "Energy Voucher Check",
+      "none": "None",
+      "sub": "{size} household · {benefit} · {trait}",
+      "period": "Usage period",
+      "deadline": "Apply by",
+      "text": "Energy voucher: a {size} household can get {amount} a year. Apply by {date}.",
+      "textSummer": "With other winter support ({program}), a {size} household gets only the summer energy voucher of {amount}.",
+      "textNo": "Our household does not qualify for this year's energy voucher. Check the criteria."
+    },
+    "guide": {
+      "title": "About the energy voucher",
+      "eligibility": {
+        "title": "Who qualifies",
+        "items": [
+          "Income: recipients of the livelihood, medical, housing or education benefit under the National Basic Living Security Act. Near-poverty and general households do not qualify.",
+          "Household traits: the recipient or a member on the resident registration is a senior (born on or before Dec 31, 1961), an infant (born on or after Jan 1, 2019, age 7 or under, not yet in school), a person with a disability, pregnant or postpartum, a person with a severe, rare or intractable disease, a single-parent family, a child-headed household or a multi-child household.",
+          "Both criteria must be met, and only a basic livelihood recipient in the household can be the beneficiary.",
+          "Households whose members all receive benefits in a facility are excluded. If you receive emergency winter fuel aid, a briquette coupon or the briquette-switch voucher, you cannot also get the winter energy voucher."
+        ]
+      },
+      "amount": {
+        "title": "How the amount is set",
+        "items": [
+          "Only by household size: ₩295,200 for 1 person, ₩407,500 for 2, ₩532,700 for 3 and ₩701,300 for 4 or more (2026 yearly totals).",
+          "Household size counts everyone on the resident registration. One voucher per household, however many members qualify.",
+          "Households receiving other winter support get only the summer portion (₩40,700–₩102,000), usable on electricity bills until Sep 30.",
+          "If your registered household grows, you can request the change by May 31, 2027 to get the amount for the new size.",
+          "The voucher is not counted as income for basic livelihood benefits."
+        ]
+      },
+      "use": {
+        "title": "Using it and checking the balance",
+        "items": [
+          "Summer (Jul 1–Sep 30) is electricity bill deduction only. In winter (Oct 1, 2026–May 31, 2027) choose either bill deduction or the Happiness Card.",
+          "Bill deduction covers bills issued by May 31, 2027, and card payments must be completed by May 31.",
+          "Check the balance on Bokjiro under Welfare Wallet > My Welfare Wallet after logging in, or ask the energy supplier (bill deduction), the card company (card) or the help line (1600-3190). Balances can be checked only during the usage period.",
+          "If you move while using bill deduction, the voucher stops automatically. Re-apply at the community center of your new address with a recent bill."
+        ]
+      },
+      "other": {
+        "title": "Other heating support",
+        "items": [
+          "Emergency winter fuel aid (Oct 2026–Mar 2027): fuel money for households in crisis under the Emergency Welfare Support Act. It cannot be combined with the winter energy voucher.",
+          "Briquette coupon (KOMIR): coupons for households heating with briquettes. With it, you get only the summer energy voucher.",
+          "Briquette-switch energy voucher (new in 2026): replaces a briquette boiler and supports the new fuel (Korea Energy Foundation 1877-5488). It cannot be combined with the winter energy voucher.",
+          "Advance exception payment (new in 2026): cash for recipients whose energy costs are included in rent and who cannot pay with the voucher. Ask your community center whether it applies."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "I got it last year. Do I need to apply again?",
+            "a": "If nothing changed during last year's period and you still qualify, you are enrolled automatically. If you moved or your household size changed, you must apply again. You can check your status at your community center or the Energy Voucher Center (1600-3190)."
+          },
+          {
+            "q": "Do I get the full amount if I apply in November or December?",
+            "a": "Yes. If you apply between Jun 15 and Dec 31, 2026, you get the full amount to use until May 31, 2027. Applications pause for 2–3 days in late December, so apply early. You cannot get support after the period ends. Households receiving other winter support get only the summer portion, so applying after Sep 30 gives them nothing."
+          },
+          {
+            "q": "How is the amount decided?",
+            "a": "By the number of people on the resident registration. The 2026 yearly totals are ₩295,200 for 1 person, ₩407,500 for 2, ₩532,700 for 3 and ₩701,300 for 4 or more. It is not a monthly amount."
+          },
+          {
+            "q": "If a senior and a person with a disability live together, do we get double?",
+            "a": "No. The voucher is issued per registered household, so you get one voucher however many members qualify."
+          },
+          {
+            "q": "Where can I check my balance?",
+            "a": "Log in to Bokjiro and open Welfare Wallet > My Welfare Wallet. You can also ask the energy supplier (bill deduction), the card company (Happiness Card), the help line (1600-3190) or your community center. Balances can be checked only during the usage period."
+          },
+          {
+            "q": "What happens to an unused balance?",
+            "a": "The 2026 voucher must be used by May 31, 2027. Bill deduction covers bills issued by then and card payments made by then; after that the remaining amount cannot be used. For summer-only households it expires after Sep 30."
+          },
+          {
+            "q": "What if I move?",
+            "a": "If you use bill deduction, the voucher stops automatically after 18:05 the day after you register your move. Re-apply at the community center of your new address with a bill to keep using it. If you moved on or after Oct 1, 2026 and use the Happiness Card, you do not need to re-apply, but updating your address is recommended for next year's automatic enrollment."
+          },
+          {
+            "q": "Bill deduction or the Happiness Card?",
+            "a": "For city gas, electricity or district heating, bill deduction is easiest because it comes off your bill automatically; district heating is supported through bill deduction. Kerosene, LPG and briquettes must be bought with the Happiness Card at partner stores. In summer both options use electricity bill deduction."
+          },
+          {
+            "q": "I get a briquette coupon. Can I also get the energy voucher?",
+            "a": "If you apply during the summer period (Jul 1–Sep 30), you can get the summer portion (₩40,700 for 1 person to ₩102,000 for 4 or more), but you cannot get both in winter. The same applies to emergency winter fuel aid and the briquette-switch voucher."
+          },
+          {
+            "q": "Does the voucher reduce my basic livelihood benefits?",
+            "a": "No. The energy voucher is not counted as income when benefits are calculated."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": {
+          "support": "Energy Voucher portal (Korea Energy Agency): eligibility, amounts and periods",
+          "apply": "Energy Voucher portal: how to apply (automatic enrollment, documents)",
+          "use": "Energy Voucher portal: how to use (bill deduction, Happiness Card)",
+          "balance": "Energy Voucher portal: balance inquiry",
+          "faqDup": "Energy Voucher FAQ: combining with a briquette coupon",
+          "faqMove": "Energy Voucher FAQ: re-applying after a move",
+          "policy": "Korea.kr (Jun 17, 2026, Ministry of Climate, Energy and Environment): applications from Jun 15",
+          "bokjiro": "Bokjiro (Jun 14, 2026): 2026 energy voucher applications, automatic enrollment, advance payment"
+        },
+        "asOf": "Checked Nov 7, 2026, for the 2026 program (apply Jun 15–Dec 31, 2026; use Jul 1, 2026–May 31, 2027). Actual support is decided by the community center's eligibility review (help line 1600-3190)."
+      }
+    }
+  },
+  "eitc": {
+    "title": "Earned Income & Child Tax Credit Calculator",
+    "subtitle": "Estimates Korea's earned income tax credit (EITC) and child tax credit for {a}–{b} income under the current law, following the official decree tables, including the property cut, late-filing cut, minimum payments and the child tax credit offset.",
+    "input": {
+      "title": "Household, income and assets",
+      "household": "Household type",
+      "households": {
+        "single": "Single",
+        "one": "Single-earner",
+        "two": "Dual-earner"
+      },
+      "householdHint": {
+        "single": "No spouse, no dependent child under 18 and no supported parent aged 70+.",
+        "one": "Your spouse earns under ₩3,000,000, or you have no spouse but support a child under 18 or a parent aged 70+ (income ≤ ₩1,000,000, living with you).",
+        "two": "You and your spouse each earn ₩3,000,000 or more."
+      },
+      "incomeTitle": "Income (one year, couple combined)",
+      "wage": "Gross wages",
+      "wageCouple": "Gross wages (couple combined)",
+      "wageHint": "Total salary on your withholding receipt, excluding tax-free pay. Include daily-work wages. Exclude pay received from parents, children or other lineal relatives.",
+      "business": "Business revenue",
+      "businessHint": "Freelance (3.3%), delivery or self-employed revenue. Only revenue × the industry adjustment rate counts. Exclude unregistered business income (withheld personal services still count) and real-estate rental income.",
+      "rate": "Industry (adjustment rate)",
+      "rates": {
+        "wholesale": "Wholesale {p}%",
+        "agriRetail": "Farming, forestry, fishing, retail {p}%",
+        "etc": "Mining, car & parts sales, other industries {p}%",
+        "manufacturing": "Manufacturing, restaurants (not bars), property sales {p}%",
+        "construction": "Utilities, construction {p}%",
+        "lodging": "Bars, lodging, transport, publishing & broadcasting {p}%",
+        "brokerage": "Commodity brokerage, IT services, insurance & pensions {p}%",
+        "finance": "Finance, arts & leisure, repair & personal services {p}%",
+        "professional": "Real-estate services, professional & technical, business support, education, health & welfare {p}%",
+        "personal": "Personal services (freelance, delivery), non-property rental, household work {p}%"
+      },
+      "rateHint": "Amount counted in your earnings: {v}",
+      "other": "Other income",
+      "otherHint": "Interest, dividends and pension income (gross), other income, and 90% of rental revenue. Used only to test the total-income limit; it does not change the credit amount.",
+      "familyTitle": "Assets and children",
+      "property": "Household assets",
+      "propertyHint": "Sum as of June 1 of the income year: homes, land and buildings (official standard value), cars, rental deposits, savings and stocks. Debts are not subtracted.",
+      "children": "Dependent children under 18",
+      "childrenHint": "Annual income of ₩1,000,000 or less and under 18 at any time that year. No age limit for severe disability.",
+      "childrenSingle": "A single household has no dependent children, so the child tax credit does not apply. A parent with children but no spouse counts as single-earner.",
+      "childCredit": "Child tax credit actually received",
+      "childCreditHint": "The tax reduction you got from the child tax credit in year-end settlement or your tax return. It is subtracted from the child credit. Enter 0 if you had no tax to reduce.",
+      "minus": "Fewer children",
+      "plus": "More children",
+      "method": "Filing method",
+      "methods": {
+        "regular": "May",
+        "late": "Late",
+        "half": "Half-year"
+      },
+      "methodHint": {
+        "regular": "File in May on the full year's income. Wages and business income both qualify.",
+        "late": "Filing within 6 months after the May window pays {p}% of the amount.",
+        "half": "With wages only, file for each half (September and March) and get {h}% of the annual amount in December."
+      }
+    },
+    "unit": {
+      "won": "₩{v}",
+      "wonShort": "KRW",
+      "man": "×10k KRW",
+      "people": ""
+    },
+    "fmt": {
+      "eokMan": "₩{won}",
+      "eok": "₩{won}",
+      "man": "₩{won}",
+      "won": "₩{won}"
+    },
+    "result": {
+      "eitcLabel": "Estimated EITC",
+      "ctcLabel": "Child tax credit",
+      "sumLabel": "EITC + child credit",
+      "basis": "{a}–{b} income · {hh}",
+      "disclaimer": "This is an estimate. The National Tax Service decides the actual amount from payroll and asset records, and rounding may differ from the Hometax simulator. Exclusions such as nationality, licensed professionals and full-time workers averaging ₩5,000,000+ a month, and religious-worker income are not modeled."
+    },
+    "phase": {
+      "name": {
+        "rising": "Phase-in",
+        "flat": "Plateau",
+        "falling": "Phase-out"
+      },
+      "text": {
+        "rising": "Earnings of {x} are in the phase-in range (under {up}). The credit grows with income and reaches {max} at {up}.",
+        "flat": "Earnings of {x} are on the plateau ({up}–{flat}), so you get the maximum {max}.",
+        "falling": "Earnings of {x} are in the phase-out range ({flat}–{limit}). The credit drops about ₩{slope} for every ₩1,000,000 more income."
+      }
+    },
+    "reason": {
+      "property": "Household assets are {cap} or more, so neither credit is available.",
+      "income": "Total income of {total} is not under the {hh} limit of {limit}, so no EITC.",
+      "noIncome": "Earnings under ₩40,000 are below the first row of the table, so no credit.",
+      "tiny": "The amount is under ₩15,000, so no EITC is paid."
+    },
+    "ctcReason": {
+      "income": "Total income of {total} is not under the child credit limit of {limit}, so no child credit.",
+      "credit": "The child tax credit you received exceeds the child credit, so nothing is left.",
+      "noChildren": "Add dependent children under 18 to see the child credit."
+    },
+    "warn": {
+      "downgraded": "Dual-earner status needs each spouse to earn ₩3,000,000+. Combined earnings are under {v}, so this is calculated as single-earner.",
+      "propertyHalf": "Assets are between {half} and {cap}, so both credits are cut to 50%.",
+      "halfInvalid": "Half-year filing is for wage earners only. With business income it is treated as May filing.",
+      "late": "Late filing pays {p}% of both credits."
+    },
+    "note": {
+      "eitcMin": "The reduced amount of {from} is below the minimum, so you get {to} (₩100,000 in phase-in, ₩30,000 in phase-out).",
+      "ctcMin": "Less than {v} remains after the child tax credit offset, so you get {v}."
+    },
+    "breakdown": {
+      "title": "EITC calculation",
+      "wage": "Gross wages",
+      "business": "Business revenue × {p}%",
+      "earned": "Earnings",
+      "other": "Other income",
+      "total": "Total income",
+      "limit": "{hh} limit",
+      "under": "under {v}",
+      "table": "Table amount",
+      "half": "Assets ₩170M+ cut",
+      "late": "Late filing",
+      "min": "Minimum payment",
+      "ctcTitle": "Child credit calculation",
+      "perChild": "Table amount per child",
+      "kids": "× {n}",
+      "reduced": "After asset / late cuts",
+      "credit": "Child tax credit offset",
+      "ctcNone": "No dependent children, or not eligible for the child credit."
+    },
+    "limits": {
+      "eitc": "EITC maximum: single {s} · single-earner {o} · dual-earner {t}",
+      "ctc": "Child credit: {c}–{v} per child, total income under {l}",
+      "property": "Assets {half}+ halve the credit; {cap}+ makes you ineligible (debts not subtracted)."
+    },
+    "pay": {
+      "title": "Filing and payment",
+      "first": "December advance ({p}% of annual)",
+      "second": "June settlement next year",
+      "deferred": "If the first-half amount is under ₩150,000, nothing is paid in December and it is all settled in June.",
+      "regular": "File May 1–31 (next business day if the last day is a holiday); payment by the end of September. In 2026 it was paid on August 27.",
+      "late": "File within 6 months after the May window (until December 1, 2026 for 2025 income); paid within 4 months of filing.",
+      "half": "File the first half on September 1–15 for December payment (December 17 planned in 2026) and the second half on March 1–15 next year for June settlement. The split assumes income evenly spread over the year. The child credit is decided with the May filing."
+    },
+    "chart": {
+      "title": "EITC by income ({hh})",
+      "summary": "The credit rises up to {up}, stays at {max} from {up} to {flat}, then falls to ₩0 at {limit}. You are at {x}: {v}.",
+      "aria": "EITC curve for {hh}. At earnings of {x}: {v}.",
+      "x": "Earnings {v}",
+      "axes": "Horizontal: earnings (×₩10k). Vertical: EITC (×₩10k). Table amounts with your assets, filing method and other income applied."
+    },
+    "compare": {
+      "title": "Compare household types and income",
+      "caption": "EITC and child credit by household type at earnings of {x}",
+      "type": "Household",
+      "sum": "Total",
+      "note": "Same earnings, assets and filing method, with {n} dependent children (KRW).",
+      "downgraded": "*Dual-earner below {v} combined is calculated as single-earner.",
+      "delta": "If income rises by {d} (earnings {x})"
+    },
+    "share": {
+      "tool": "EITC & Child Credit Calculator",
+      "sub": "{a}–{b} income · {hh}",
+      "text": "{hh}, earnings {x} → EITC {e} + child credit {c} = {s} (estimate)",
+      "textNone": "{hh}, earnings {x}: not eligible for EITC or child credit"
+    },
+    "guide": {
+      "title": "EITC & child credit guide",
+      "next": {
+        "title": "Changes may start with 2027 income",
+        "body": "The government's 2026 tax reform plan (announced August 3, 2026, pending in the National Assembly) raises the income limits to ₩26M single, ₩37M single-earner and ₩52M dual-earner, the maximums to ₩1.8M, ₩3.1M and ₩3.6M, and widens the dual-earner plateau to ₩8M–₩18M. If passed it applies from 2027 income (September 2027 half-year filing). 2026 income (May 2027 filing) uses the rules in this calculator, and 2025 income can still be filed late (95%) until December 1, 2026."
+      },
+      "calc": {
+        "title": "How the amount is set",
+        "items": [
+          "The EITC has three ranges by earnings: phase-in, plateau and phase-out. Single households phase in below ₩4M, get the maximum ₩1.65M from ₩4M to ₩9M, and phase out from ₩9M to ₩22M.",
+          "Single-earner: phase-in below ₩7M, maximum ₩2.85M from ₩7M to ₩14M, phase-out to ₩32M. Dual-earner: phase-in below ₩8M, maximum ₩3.3M from ₩8M to ₩17M, phase-out to ₩44M.",
+          "Earnings = gross wages + business revenue × industry adjustment rate (20–90%) + religious-worker income, combined for the couple.",
+          "The actual amount comes from the decree's Appendix 11 table in ₩100k bands, not the raw formula. This calculator follows the table, so it can differ from the formula by about ₩40k. Below ₩4M the table never gives single-earners less than single households.",
+          "Amounts under ₩15,000 are not paid. In phase-in, ₩15,000–₩100,000 becomes ₩100,000; in phase-out, ₩15,000–₩30,000 becomes ₩30,000."
+        ]
+      },
+      "apply": {
+        "title": "When to file and get paid",
+        "items": [
+          "May filing: May 1–31 of the following year (next business day if the last day is a holiday). Paid by the end of September; in 2026 it was paid on August 27.",
+          "Half-year filing: wage-only households file the first half on September 1–15 and the second half on March 1–15. 35% of the annual amount is paid in December and the rest is settled in June. Filing the first half counts as filing the second.",
+          "If the first-half amount is under ₩150,000 it is paid at the June settlement instead. Overpayments found at settlement may have to be returned.",
+          "Late filing: within 6 months after the May window, paying 95% within 4 months of filing.",
+          "How to file: the QR code on the NTS notice or the mobile notice, ARS 1544-9944, or Hometax (PC or mobile). Without a notice, file directly on Hometax. Help line: 1566-3636.",
+          "Consenting to automatic filing lets the NTS file for you in later years. Unpaid taxes can absorb up to 30% of the payment."
+        ]
+      },
+      "household": {
+        "title": "Household type",
+        "items": [
+          "Single: no spouse, no dependent child under 18 and no supported parent aged 70+.",
+          "Single-earner: your spouse earns under ₩3,000,000, or you have no spouse but a dependent child or a parent aged 70+ (income ≤ ₩1,000,000, registered and living with you).",
+          "Dual-earner: you and your spouse each earn ₩3,000,000 or more, so combined earnings under ₩6,000,000 cannot be dual-earner.",
+          "Marital status is judged by the family register on December 31 of that year; half-year filing uses December 31 of the previous year.",
+          "Non-citizens cannot apply unless married to a Korean citizen or supporting a child with Korean nationality. People who are another person's dependent and licensed professionals (including spouses) are excluded."
+        ]
+      },
+      "property": {
+        "title": "Asset test",
+        "items": [
+          "All household members' assets must total under ₩240M, and ₩170M or more halves the credit. Assets are measured on June 1 of the income year (June 1, 2025 for 2025 income).",
+          "Homes, land and buildings at official standard value, cars at standard value (business cars excluded), deposits, savings, insurance, stocks and bonds at balance, memberships, and rights to acquire property all count.",
+          "A rental deposit counts at the lower of the contract amount and the deemed deposit (55% of the home's standard price for 2025 income). Homes rented from lineal relatives count at 100% of the standard price.",
+          "Mortgages and deposit loans are not subtracted. A home bought with a loan counts at its full value."
+        ]
+      },
+      "child": {
+        "title": "Child tax credit",
+        "items": [
+          "Single-earner and dual-earner households with dependent children under 18 qualify, with total income under ₩70M and assets under ₩240M, even above the EITC income limit.",
+          "Up to ₩1M per child. Single-earners get ₩1M below ₩21M of earnings and dual-earners below ₩25M; above that it falls to just over ₩500k per child near ₩70M.",
+          "You can apply even if you claimed the child tax credit at year-end; that credit is subtracted, and if less than ₩30,000 remains you get ₩30,000.",
+          "The 50% asset cut and the 95% late-filing rate apply just as for the EITC."
+        ]
+      },
+      "tips": {
+        "title": "Good to know",
+        "items": [
+          "The total-income limit counts interest, dividends, pensions and other income too, but the credit amount uses earnings only.",
+          "The ₩44M dual-earner limit is combined. When marriage turns single households into a dual-earner one, the maximum and ranges change, so check the household comparison.",
+          "Daily workers who apply are treated as having filed an income tax return.",
+          "False claims must be repaid with penalty interest and bar you from the credit for 2 years (intent or gross negligence) or 5 years (fraud)."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is the maximum EITC?",
+            "a": "₩1.65M for single, ₩2.85M for single-earner and ₩3.3M for dual-earner households, with total income under ₩22M, ₩32M and ₩44M respectively. The maximum applies at earnings of ₩4M–₩9M (single), ₩7M–₩14M (single-earner) and ₩8M–₩17M (dual-earner)."
+          },
+          {
+            "q": "How are single-earner and dual-earner told apart?",
+            "a": "If you and your spouse each earn ₩3,000,000 or more, you are dual-earner; if your spouse earns less, single-earner. Without a spouse, a dependent child under 18 or a parent aged 70+ (income ≤ ₩1,000,000, living with you) also makes you single-earner."
+          },
+          {
+            "q": "How much in assets disqualifies me?",
+            "a": "₩240M or more in household assets disqualifies you; ₩170M to under ₩240M halves the credit. Debts are not subtracted, and a rental deposit counts at the lower of the contract amount and the deemed deposit (55% of standard price). The reference date is June 1 of the income year."
+          },
+          {
+            "q": "May filing vs half-year filing?",
+            "a": "May filing uses the full year's income and pays by the end of September. Half-year filing, for wage-only households, is filed in September and the following March; 35% of the annual amount is paid in December and the rest is settled in June. Business income rules out half-year filing."
+          },
+          {
+            "q": "What if I miss the deadline?",
+            "a": "Filing within 6 months after the May window pays 95% of the amount. 2025 income can be filed until December 1, 2026, with payment within 4 months."
+          },
+          {
+            "q": "How much is the child tax credit?",
+            "a": "₩500k–₩1M per dependent child under 18. Single-earners get ₩1M per child below ₩21M of earnings and dual-earners below ₩25M, decreasing up to total income under ₩70M. Single households have no dependent children, so they do not qualify."
+          },
+          {
+            "q": "I got the child tax credit at year-end. Can I still get this?",
+            "a": "Yes, but you cannot get both in full: the child tax credit you actually received is subtracted. If less than ₩30,000 remains, you get ₩30,000."
+          },
+          {
+            "q": "Is there a minimum payment?",
+            "a": "Amounts under ₩15,000 are not paid. In the low-income phase-in range ₩15,000–₩100,000 becomes ₩100,000, and in the phase-out range ₩15,000–₩30,000 becomes ₩30,000."
+          },
+          {
+            "q": "How do I apply?",
+            "a": "Use the QR code on the NTS notice, the mobile notice, ARS (1544-9944), or Hometax. Without a notice you can still apply on Hometax if you qualify. Help line: 1566-3636."
+          },
+          {
+            "q": "Will amounts rise from 2027?",
+            "a": "If the government's plan passes, from 2027 income the limits become ₩26M single, ₩37M single-earner and ₩52M dual-earner, and the maximums ₩1.8M, ₩3.1M and ₩3.6M. 2026 income (filed May 2027) uses the current rules."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": {
+          "act": "Restriction of Special Taxation Act Art. 100-2 to 100-13 (EITC; Art. 100-5 amount, Art. 100-7 late filing 95%)",
+          "actChild": "Same Act Art. 100-27 to 100-31 (child credit; Art. 100-30 no overlap with child tax credit)",
+          "decree": "Enforcement Decree Art. 100-2 to 100-14 and 100-28 to 100-31 (income, adjustment rates, assets)",
+          "table": "Decree Appendix 11: EITC table (amended 2025-02-28)",
+          "tableChild": "Decree Appendix 11-2: child credit table (amended 2024-02-29)",
+          "ntsEligibility": "National Tax Service: eligibility (2025 income)",
+          "ntsPayment": "National Tax Service: review and payment",
+          "press2026": "Korea.kr (2026-04-30): May 2026 filing, paid August 27",
+          "pressHalf": "Korea.kr (2026-09-03): first-half 2026 filing, December 17 payment planned",
+          "reform2027": "Korea.kr (2026-08-07): EITC changes from September 2027 filing (government plan)"
+        },
+        "asOf": "Checked 2026-11-07 against the Act and Decree in force from 2026-09-18. The EITC provisions are unchanged since the 2024-12-31 amendment, so 2025 and 2026 income follow the same rules. Confirm with the Hometax simulator or the NTS call center (126)."
       }
     }
   }

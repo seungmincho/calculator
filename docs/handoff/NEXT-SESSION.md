@@ -1,8 +1,17 @@
-# NEXT-SESSION (2026-11-07 — 정보형 신규 5종 로컬 커밋 2개, 미배포)
+# NEXT-SESSION (2026-11-07 — 신규 7종 + 개선 묶음, 로컬 커밋 3개, 미배포)
 
-## 지금 상태 (2026-11-07 오후)
+## 지금 상태 (2026-11-07 저녁)
 
-운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬에 정보형 신규 5종 커밋 2개(75dcde69 + 다음 커밋, 미푸시·미배포, SW v4.35.13 — 한 번에 배포하면 추가로 올릴 필요 없음). 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`.
+운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬 커밋 3개(75dcde69·62d02004·다음 커밋, 미푸시·미배포, SW v4.35.13 — 한 번에 배포하면 추가로 올릴 필요 없음). 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`. **배포 직전 `node scripts/update-lotto-data.mjs`(1249회 11/7 추첨분부터).**
+
+### 0-2. 2026-11-07 묶음 (신규 2 + 개선 7, 사용자 승인)
+
+- **`/energy-voucher/`**: `src/utils/energyVoucher.ts`(누리집 원문: 1인 295,200·2인 407,500·3인 532,700·4인+ 701,300, 하절기 몫만 40,700~102,000, 신청 6/15~12/31, 사용 ~2027-05-31, 노인 1961-12-31 이전·영유아 2019-01-01 이후). **해마다 5~6월 새 공고 → 금액·기간·출생일 기준·`EV_YEAR`·`APPLY_PERIOD`.** 잔액 이월 문구는 원문에 없어 안 씀.
+- **`/eitc/`**: `src/utils/eitc.ts` — 금액은 법 공식이 아니라 **시행령 별표 11 산정표 규칙**(10만원 구간, 점증=미만·점감=이상 값, 천원 올림, 4만원 미만 0, 끝 경계 행)으로 재현, 원문 표 4,023지점 일치(`check-eitc.ts`). 2026 소득분까지 같은 기준. **세제개편안(2027 소득분: 2,600/3,700/5,200만·최대 180/310/360만) 12월 국회 통과 시 상수·`INCOME_YEARS` 갱신**, 번역 날짜(8/27·12/17·12/1)·간주전세금 55%·`sources.asOf`·별표 링크 시행일.
+- **로또**: `public/lottoData.ts` 1188~1248회 추가(동행복권 새 경로 `lt645/selectPstLt645InfoNew.do`, 구 API 는 HTML 302). 갱신 `node scripts/update-lotto-data.mjs`(검사 자동, 실패 시 원복), 검사 `check-lotto-data.ts`. **방문자 브라우저가 제3자 CORS 프록시(allorigins·corsproxy)로 구 API 를 매번 부르던 자동 업데이트·버튼·`lottoUpdater.ts`·가짜 1100회 목 데이터 삭제.** 매주 자동 반영은 미구현 — 후보: Pages Function `/api/lotto-latest`(엣지 캐시, 해외 IP 차단 여부 확인 필요) 또는 이 PC 주간 예약 작업. LottoGenerator 하드코딩 색(purple·green·yellow) 남음.
+- **홈 시즌 카드**(`seasonalPicks.ts`, `check-daily-puzzles.ts` 갱신): 건배사 12/19~24, 정시 1/2~1/7(원서 마감 D-n), 겨울 축제 1/8~2/10. 다가오는 일정에 정시 원서 마감(1/7)·에너지바우처 마감(12/31, 같은 날이면 고향사랑기부가 먼저). 2슬롯 경쟁 때문에 1월엔 salaryNewYear 카드가 가려짐.
+- 작은 것: 건배사 결과 제목 "건배사 N개"(`greetingGenerator.resultsTitleToast`), 결정 도구 바 영어 UI(`DecisionToolsBar` 클라이언트화 — 한국어 HTML 동일, aria-label 만 "랜덤/결정"), `/roulette` 저장 이미지 "돌림판", 사다리 하나씩 공개 후 포커스 유지, 수능 D-day approx·lateFeb 삭제, `lotto.a11y.checkLatest` 삭제.
+- 검증: 전체 tsc 0, lint 0 errors, audit 미해결 0, check 9종 PASS, dev 375px·라이트/다크·영어 바·로또 프록시 요청 0.
 
 ### 0-1. 2026-11-07 신규 2종 (사용자 기획 승인)
 

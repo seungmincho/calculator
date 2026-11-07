@@ -142,6 +142,8 @@ export const menuConfig: MenuConfig = {
       { href: '/basic-pension', labelKey: 'footer.links.basicPension', descriptionKey: 'toolsShowcase.tools.basicPension.description', icon: '🧓', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
       { href: '/civil-servant-pay', labelKey: 'footer.links.civilServantPay', descriptionKey: 'toolsShowcase.tools.civilServantPay.description', icon: '🏛️', addedDate: '2026-11-07', subcategory: 'subcategory.salaryWork' },
       { href: '/jeongsi-2027', labelKey: 'footer.links.jeongsi2027', descriptionKey: 'toolsShowcase.tools.jeongsi2027.description', icon: '🎓', addedDate: '2026-11-07', subcategory: 'subcategory.others' },
+      { href: '/energy-voucher', labelKey: 'footer.links.energyVoucher', descriptionKey: 'toolsShowcase.tools.energyVoucher.description', icon: '🔥', addedDate: '2026-11-07', subcategory: 'subcategory.livingCost' },
+      { href: '/eitc', labelKey: 'footer.links.eitc', descriptionKey: 'toolsShowcase.tools.eitc.description', icon: '💵', addedDate: '2026-11-07', subcategory: 'subcategory.tax' },
     ],
   },
   tools: {

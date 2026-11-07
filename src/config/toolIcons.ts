@@ -82,6 +82,8 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/seasonal-food': Apple,
   '/winter-festivals': PartyPopper,
   '/toast-speech': Wine,
+  '/energy-voucher': Ticket,
+  '/eitc': Coins,
   '/json-to-typescript': FileCode,
   '/child-growth': Ruler,
   '/yut-nori': Dices,

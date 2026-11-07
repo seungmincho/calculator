@@ -96,16 +96,17 @@ assert.deepEqual(picks('2026-08-11'), ['csatDday:100'])
 assert.deepEqual(picks('2026-11-18', 23), ['csatDday:1', 'kimjangTiming:22'])
 assert.deepEqual(picks('2026-11-19', 0), ['csatToday:0', 'csatGrade:21']) // KST 자정 직후
 assert.deepEqual(picks('2026-12-10'), ['csatGrade:0', 'kimjangTiming:0'])
-assert.deepEqual(picks('2026-12-20'), ['yearEndPre:11', 'newYearSunrise:12'])
+assert.deepEqual(picks('2026-12-20'), ['yearEndPre:11', 'toastSpeech:4'])
 assert.deepEqual(picks('2027-01-01'), ['newYearSunrise:0', 'yearEnd:58'])
 assert.deepEqual(picks('2026-12-11'), ['yearEndPre:20', 'manito:7'])
 assert.deepEqual(picks('2026-12-18'), ['yearEndPre:13', 'manito:0'])
-assert.deepEqual(picks('2026-12-19'), ['yearEndPre:12', 'newYearSunrise:13'])
-assert.deepEqual(picks('2027-01-05'), ['yearEnd:54', 'salaryNewYear:26'])
-assert.deepEqual(picks('2027-01-11'), ['yearEnd:48', 'salaryNewYear:20'])
+assert.deepEqual(picks('2026-12-19'), ['yearEndPre:12', 'toastSpeech:5'])
+assert.deepEqual(picks('2026-12-25'), ['yearEndPre:6', 'newYearSunrise:7'])
+assert.deepEqual(picks('2027-01-05'), ['jeongsi:2', 'yearEnd:54'])
+assert.deepEqual(picks('2027-01-11'), ['yearEnd:48', 'winterFestivals:30'])
 assert.deepEqual(picks('2027-01-20'), ['carTaxPrepay:12', 'yearEnd:39']) // 2027-01-31 일요일 → 연납 마감 2/1
 assert.deepEqual(picks('2027-01-28'), ['seollal:11', 'carTaxPrepay:4'])  // 설 2027-02-07
-assert.deepEqual(picks('2027-02-09'), ['yearEnd:19'])
+assert.deepEqual(picks('2027-02-09'), ['yearEnd:19', 'winterFestivals:1'])
 assert.deepEqual(picks('2027-05-20'), ['incomeTax:11'])
 assert.deepEqual(picks('2027-07-01'), [])
 assert.deepEqual(picks('2026-09-20'), ['chuseok:6', 'csatDday:60']) // 추석(09-25)이 수능보다 우선
