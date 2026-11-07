@@ -140,6 +140,8 @@ export const menuConfig: MenuConfig = {
       { href: '/dependent-eligibility', labelKey: 'footer.links.dependentEligibility', descriptionKey: 'toolsShowcase.tools.dependentEligibility.description', icon: '👪', addedDate: '2026-11-07', subcategory: 'subcategory.tax' },
       { href: '/youth-future-savings', labelKey: 'footer.links.youthFutureSavings', descriptionKey: 'toolsShowcase.tools.youthFutureSavings.description', icon: '🌱', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
       { href: '/basic-pension', labelKey: 'footer.links.basicPension', descriptionKey: 'toolsShowcase.tools.basicPension.description', icon: '🧓', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
+      { href: '/civil-servant-pay', labelKey: 'footer.links.civilServantPay', descriptionKey: 'toolsShowcase.tools.civilServantPay.description', icon: '🏛️', addedDate: '2026-11-07', subcategory: 'subcategory.salaryWork' },
+      { href: '/jeongsi-2027', labelKey: 'footer.links.jeongsi2027', descriptionKey: 'toolsShowcase.tools.jeongsi2027.description', icon: '🎓', addedDate: '2026-11-07', subcategory: 'subcategory.others' },
     ],
   },
   tools: {
@@ -324,6 +326,7 @@ export const menuConfig: MenuConfig = {
       { href: '/enneagram', labelKey: 'footer.links.enneagram', descriptionKey: 'toolsShowcase.tools.enneagram.description', icon: '🔯', addedDate: '2026-03-21' },
       { href: '/health-checkup', labelKey: 'footer.links.healthCheckup', descriptionKey: 'toolsShowcase.tools.healthCheckup.description', icon: '🩺', addedDate: '2026-10-04' },
       { href: '/child-growth', labelKey: 'footer.links.childGrowth', descriptionKey: 'toolsShowcase.tools.childGrowth.description', icon: '📏', addedDate: '2026-11-07' },
+      { href: '/seasonal-food', labelKey: 'footer.links.seasonalFood', descriptionKey: 'toolsShowcase.tools.seasonalFood.description', icon: '🥬', addedDate: '2026-11-07' },
     ],
   },
   games: {

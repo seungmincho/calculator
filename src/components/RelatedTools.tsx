@@ -25,9 +25,10 @@ function seededShuffle<T>(arr: T[], seed: string): T[] {
 
 const itemByHref = new Map(categoryKeys.flatMap((k) => menuConfig[k].items).map((item) => [item.href, item]))
 
-export default function RelatedTools() {
+/** href: 메뉴에 없는 하위 경로(예 /seasonal-food/11)에서 부모 도구 기준으로 추천할 때 */
+export default function RelatedTools({ href }: { href?: string } = {}) {
   const rawPathname = usePathname()
-  const pathname = rawPathname.replace(/\/$/, '') || '/'
+  const pathname = href ?? (rawPathname.replace(/\/$/, '') || '/')
   const t = useTranslations()
 
   // 1) 큐레이션(함께 쓰면 좋은 도구) → 2) 같은 서브카테고리 → 3) 같은 카테고리. 다른 카테고리 랜덤 추천은 없음.

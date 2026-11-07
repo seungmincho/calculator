@@ -98,7 +98,7 @@ export const TIMELINE: TimelineItem[] = [
   { key: 'jeongsiResult', start: '2027-02-05', until: true },
   { key: 'jeongsiReg', start: '2027-02-10', end: '2027-02-12' },
   { key: 'jeongsiExtra', start: '2027-02-13', end: '2027-02-17' },
-  { key: 'addRecruit', start: '2027-02-28', approx: true },
+  { key: 'addRecruit', start: '2027-02-19', end: '2027-02-26' },
 ]
 
 /** 오늘 기준 일정 상태 (YYYY-MM-DD 문자열 비교) */

@@ -2850,7 +2850,10 @@
       "basicPension": "Basic Pension Calculator",
       "jsonToTypescript": "JSON to TypeScript",
       "childGrowth": "Child Growth Percentile",
-      "yutNori": "Yut Nori"
+      "yutNori": "Yut Nori",
+      "civilServantPay": "Civil Servant Pay Table",
+      "jeongsi2027": "2027 Regular Admission Dates",
+      "seasonalFood": "Seasonal Food by Month"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8627,6 +8630,18 @@
       "yutNori": {
         "title": "Yut Nori",
         "description": "Traditional Korean board game vs AI or 2–4 players on one device"
+      },
+      "civilServantPay": {
+        "title": "Korean Civil Servant Pay Table",
+        "description": "2026 monthly pay by grade and step, 2027 estimate (+3.9% proposal), and take-home pay"
+      },
+      "jeongsi2027": {
+        "title": "2027 Regular Admission Schedule",
+        "description": "CSAT scores, application window, group A/B/C screening, results and extra rounds with D-day"
+      },
+      "seasonalFood": {
+        "title": "Seasonal Food by Month",
+        "description": "Vegetables, fruit and seafood in season each month, with buying and storage tips"
       }
     }
   },
@@ -56040,6 +56055,1116 @@
       "eok": "₩{won}",
       "man": "₩{won}",
       "won": "₩{won}"
+    }
+  },
+  "jeongsi2027": {
+    "title": "2027 Regular Admission Schedule (Korea)",
+    "subtitle": "From CSAT score release to regular applications, group A/B/C screening, results, registration and additional recruitment, with a D-day count from today.",
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "date": "{m} {d}, {y} ({w})",
+    "dateShort": "{m} {d} ({w})",
+    "until": "by {a}",
+    "untilTime": "by {a}, {time}",
+    "range": "{a} – {b}",
+    "rangeTime": "{a} – {b}, {time}",
+    "status": {
+      "past": "Done",
+      "now": "Ongoing",
+      "future": "D-{n}"
+    },
+    "headline": {
+      "future": "{name}: D-{n}",
+      "futureUntil": "{name} deadline: D-{n}",
+      "ongoing": "{name}: D-{n} to close",
+      "lastDay": "{name}: last day",
+      "today": "{name}: today",
+      "done": "All 2027 admission rounds are over"
+    },
+    "top": {
+      "labelStatic": "2027 regular admission applications",
+      "staticSub": "Each university takes applications on at least 3 of these days",
+      "labelNext": "Next regular admission step",
+      "labelNow": "Regular admission step in progress",
+      "labelDone": "2027 regular admission",
+      "todo": "What to do now",
+      "tipBefore": "Focus on your condition until the CSAT. If you are aiming for regular admission, use your self-scored results right after the exam to see which universities are within reach.",
+      "tipDone": "Early, regular and additional rounds for 2027 are all over. The next year's schedule will be added once KCUE announces it.",
+      "upcoming": "Coming up"
+    },
+    "steps": {
+      "csat": {
+        "name": "CSAT exam day",
+        "note": "Based on KICE's 2027 CSAT administration plan (announced March 31, 2026).",
+        "tip": "Use your self-scored results to gauge your regular admission range, and keep track of any remaining early admission exams. Scores come out on December 11."
+      },
+      "score": {
+        "name": "CSAT score release",
+        "note": "Score reports reach test takers on this day, with standard scores, percentiles and grades.",
+        "tip": "Convert your standard scores and percentiles with each university's formula and shortlist candidates for each group. Early admission results are due by December 18."
+      },
+      "susiResult": {
+        "name": "Early admission results",
+        "note": "First-round early admission results are announced by this date. If you are admitted, you cannot apply in the regular or additional rounds, even without registering.",
+        "tip": "If you were admitted in early admission, including from the waitlist, you cannot apply in the regular round whether or not you register. If you have several offers, choose the one to register at."
+      },
+      "susiReg": {
+        "name": "Early admission registration",
+        "note": "Admitted early applicants register at one university only within these 3 days (document registration or deposit).",
+        "tip": "Early admission registration at a single university closes December 23. If you are preparing for regular admission, check each target university's guide for dates and score weighting."
+      },
+      "susiExtra": {
+        "name": "Early admission waitlist offers",
+        "note": "Unfilled seats go to waitlisted applicants in order. Website announcements run until 2 p.m.; from 2 to 6 p.m. offers are made individually, for example by phone.",
+        "tip": "Waitlist offers are going out. If you are on a waitlist, answer your phone. A waitlist admission still counts as admission, so you cannot apply in the regular round."
+      },
+      "susiExtraReg": {
+        "name": "Early waitlist registration",
+        "note": "Registration deadline for early admission waitlist offers. The early round ends on this day.",
+        "tip": "The early round is over. Sign up for an integrated account with an application service (UWAY Apply or Jinhak Apply) and fill in the common application and refund account in advance."
+      },
+      "apply": {
+        "name": "Regular admission applications",
+        "note": "Each university takes applications on at least 3 of these days, and closing dates and times differ by university. You can apply to up to 3 universities, one per group.",
+        "tip": "This is the application window and the days right after it. Check each university's closing time and apply early; once done, check your receipt with the exam number and the group A exam schedule."
+      },
+      "groupA": {
+        "name": "Group A screening",
+        "note": "Seven days when group A universities hold interviews, practical exams and other screening. Check the exact dates and times in each admission guide.",
+        "tip": "Group A interviews and practical exams take place this week. Double-check the venue, time and what to bring in the admission guide."
+      },
+      "groupB": {
+        "name": "Group B screening",
+        "note": "Seven days when group B universities hold interviews, practical exams and other screening. Check the exact dates and times in each admission guide.",
+        "tip": "Group B interviews and practical exams take place this week. Double-check the venue, time and what to bring in the admission guide."
+      },
+      "groupC": {
+        "name": "Group C screening",
+        "note": "Seven days when group C universities hold interviews, practical exams and other screening. Check the exact dates and times in each admission guide.",
+        "tip": "Group C screening runs until January 31, and universities announce results by February 5. Note each announcement time and how to check it."
+      },
+      "result": {
+        "name": "Regular admission results",
+        "note": "Deadline for first-round results. Universities may announce earlier, so check the announcement date in each guide.",
+        "tip": "First-round results are out. If you have several offers, register at only one during February 10–12, and check your waitlist rank too."
+      },
+      "reg": {
+        "name": "Regular admission registration",
+        "note": "Pay tuition and register at only one of the universities that admitted you. Closing times differ by university (e.g., Korea University: February 12, 2 p.m.).",
+        "tip": "Registration is open. Closing times differ, so check yours and register at one university only. Not registering in time counts as declining."
+      },
+      "extra": {
+        "name": "Regular waitlist offers",
+        "note": "Unfilled seats go to waitlisted applicants in order. Website announcements run until 2 p.m.; from 2 to 6 p.m. offers are made individually, for example by phone.",
+        "tip": "Waitlist offers are going out. To switch universities, withdraw your registration at the first university before registering at the new one."
+      },
+      "extraReg": {
+        "name": "Regular waitlist registration",
+        "note": "Registration deadline for regular waitlist offers. To apply for additional recruitment, you must withdraw your regular registration by 4 p.m. on this day.",
+        "tip": "Today is the regular waitlist registration deadline. To apply for additional recruitment, withdraw your regular registration by 4 p.m. Additional recruitment notices appear after 6 p.m."
+      },
+      "addRecruit": {
+        "name": "Additional recruitment",
+        "note": "Universities fill seats left after the regular round. Applications, offers (by 6 p.m. on the 26th) and registration (by 10 p.m. on the 26th) all happen within 8 days.",
+        "tip": "Additional recruitment runs until February 26. Applications and announcements move quickly, so check notices as soon as they are posted."
+      }
+    },
+    "ics": {
+      "deadline": "{name} deadline",
+      "timeUntil": "(by {time})",
+      "timeEnd": "(last day by {time})"
+    },
+    "timeline": {
+      "title": "2027 university admission schedule",
+      "desc": "The common KCUE schedule from the CSAT to additional recruitment. Tap a calendar button to download an event with a reminder 3 days before.",
+      "note": "This is the common KCUE schedule; actual application, announcement and registration times differ by university. Each university's admission guide takes precedence."
+    },
+    "rules": {
+      "title": "Regular admission rules",
+      "items": [
+        "You can apply to up to 3 universities, one in each of groups A, B and C. Applying to two or more in the same group (including departments of the same university in the same group) voids your admission.",
+        "If you were admitted in early admission (first round or waitlist), you cannot apply in the regular or additional rounds, even if you did not register.",
+        "Even with several offers, you may register at only one university (no double registration). Violations lead to cancelled admission.",
+        "Anyone registered in the regular round cannot apply for additional recruitment, unless they withdraw by 4 p.m. on the regular waitlist registration deadline (February 18).",
+        "Industrial universities and junior colleges have no group limit. The multiple-application and double-registration bans do not apply between regular universities and special-act institutions such as the military academies, Korean National Police University, KAIST and Korea National University of Arts.",
+        "Once submitted (an exam number is issued), an application cannot be cancelled and the fee is generally non-refundable."
+      ],
+      "warn": "January 4–7 is the common window set by KCUE. Actual application days (at least 3 of these) and closing times differ by university. For example, Korea University (Seoul) accepts applications from January 4, 10 a.m. to January 6, 6 p.m. Always check your target university's admission guide."
+    },
+    "links": {
+      "title": "Quick links",
+      "newTab": "(opens in a new tab)",
+      "items": {
+        "adiga": {
+          "name": "Adiga admission portal",
+          "desc": "Run by KCUE. Admission guides and past results for each university."
+        },
+        "uway": {
+          "name": "UWAY Apply",
+          "desc": "Online application service · Help desk 1588-8988"
+        },
+        "jinhak": {
+          "name": "Jinhak Apply",
+          "desc": "Online application service · Help desk 1544-7715"
+        }
+      }
+    },
+    "share": {
+      "tool": "2027 Regular Admission Schedule",
+      "text": "{headline} · 2027 regular admission applications, group A/B/C, results and additional recruitment at a glance"
+    },
+    "guide": {
+      "title": "Regular admission guide",
+      "groups": {
+        "title": "What are groups A, B and C (Ga, Na, Da)?",
+        "items": [
+          "The regular screening period is split into group A (January 11–17), group B (January 18–24) and group C (January 25–31). Universities pick one group for each department.",
+          "A department recruits in only one group, so departments of the same university can be in different groups.",
+          "Applicants submit one application per group, up to three in total. Interviews and practical exams take place within that group's period.",
+          "All applications, regardless of group, are submitted between January 4 and 7."
+        ]
+      },
+      "afterScore": {
+        "title": "After scores come out",
+        "items": [
+          "Check your standard scores, percentiles and grades, and calculate converted scores using each university's subject weighting and how it reflects English and Korean history grades.",
+          "Check early admission results first: first-round results by December 18 and waitlist offers by December 29. If you are admitted early, you cannot apply in the regular round.",
+          "Build three applications by group, mixing safe, target and reach choices. Past admission results are available on Adiga and each university's admissions site.",
+          "Signing up for an integrated account with one application service (UWAY Apply or Jinhak Apply) lets you apply to universities on either service. Enter a refund account you actually use."
+        ]
+      },
+      "afterResult": {
+        "title": "After results: registering, withdrawing and refunds",
+        "items": [
+          "First-round results come out by February 5, and registration runs February 10–12. Not registering in time counts as declining.",
+          "Waitlist offers go out February 13–17 in rank order. Website announcements run until 2 p.m.; from 2 to 6 p.m. offers are made individually, for example by phone, so answer your phone.",
+          "To switch to another university after a waitlist offer, first withdraw (request a refund) at the university where you registered, then register at the new one. Withdrawing promptly from places you will not take gives the next applicant a chance.",
+          "If you withdraw before the semester starts, your tuition is refunded in full (under the Regulation on University Tuition). Follow each admissions office's notice for how and when to withdraw."
+        ]
+      },
+      "addRecruit": {
+        "title": "Additional recruitment",
+        "items": [
+          "Seats left after the regular waitlist are filled February 19–26. Notices appear after 6 p.m. on February 18, and applications, screening, offers and registration finish within 8 days.",
+          "Early admission admits and regular registrants cannot apply, unless they withdrew their regular registration by 4 p.m. on February 18.",
+          "Offers are due by 6 p.m. on February 26 and registration closes at 10 p.m. the same day. The schedule is short, so check notices right away."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How many regular admission applications can I submit?",
+            "a": "One per group (A, B and C), up to three. Applying to two or more universities in the same group voids your admission. Industrial universities and junior colleges have no group limit, and special-act institutions such as the military academies, Korean National Police University and KAIST can be applied to separately."
+          },
+          {
+            "q": "If I was admitted in early admission but do not register, can I apply in the regular round?",
+            "a": "No. Early admission admits, whether first round or waitlist, cannot apply in the regular or additional rounds regardless of registration. You also cannot give up an early admission waitlist rank."
+          },
+          {
+            "q": "When and what time do 2027 regular applications close?",
+            "a": "The common window is January 4 (Mon) to 7 (Thu), 2027, and each university uses at least 3 of these days. Closing dates and times differ: Korea University (Seoul) closes January 6 at 6 p.m. Servers get busy on closing days, so apply early."
+          },
+          {
+            "q": "When are regular admission results and registration?",
+            "a": "First-round results come out by February 5 (Fri), 2027, and registration runs February 10 (Wed) – 12 (Fri). Waitlist offers run February 13 (Sat) – 17 (Wed) until 6 p.m., and waitlist registration closes February 18 (Thu) at 10 p.m."
+          },
+          {
+            "q": "Do I get my tuition back if I withdraw?",
+            "a": "If you withdraw before the semester starts, tuition is refunded in full. Request withdrawal (refund) on the admissions website, and when switching to another university after a waitlist offer, withdraw first and then register so it does not count as double registration."
+          },
+          {
+            "q": "Who can apply for additional recruitment?",
+            "a": "Anyone except early admission admits and regular registrants. Regular registrants who withdrew by 4 p.m. on February 18 can apply. Additional recruitment runs February 19 (Fri) – 26 (Fri)."
+          },
+          {
+            "q": "When do 2027 CSAT scores come out?",
+            "a": "On December 11 (Fri), 2026. Once you have your scores, calculate converted scores for each university, shortlist candidates by group, and check early admission results (due by December 18) first."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": {
+          "kcuePlan": "KCUE, Key points of the 2027 university admission plans (April 30, 2025)",
+          "kcueBasic": "KCUE, 2027 basic matters for university admission (revised July 31, 2026)",
+          "kice": "KICE, 2027 CSAT administration plan announcement (March 31, 2026, Korea.kr)",
+          "korea": "Korea University, 2027 regular admission guide (Seoul campus) · example of university-specific times",
+          "adiga": "Adiga admission portal"
+        },
+        "asOf": "Checked on November 7, 2026. Follow each university's admission guide for application, announcement and registration times."
+      }
+    }
+  },
+  "civilServantPay": {
+    "title": "2027 Korean Civil Servant Pay Table & Take-home Pay",
+    "subtitle": "Monthly base pay by grade and step for general, police/fire and teacher tracks in 2026, a 2027 estimate (+3.9% government proposal), and take-home pay after the civil service pension contribution, health insurance and tax.",
+    "input": {
+      "title": "Your details",
+      "track": "Track",
+      "trackHint": {
+        "general": "General service and equivalent positions (Public Officials Remuneration Regulation, Table 3)",
+        "police": "Police and fire officials (Table 10). Police and fire ranks in the same column earn the same pay.",
+        "teacher": "Kindergarten, elementary and secondary teachers (Table 11). Pay depends only on the step."
+      },
+      "grade": "Grade / rank",
+      "step": "Step (hobong)",
+      "stepHint": {
+        "general": "With no recognized experience you start at step 1. Mandatory military service (up to 3 years) counts as years of service.",
+        "police": "With no recognized experience you start at step 1. Mandatory military service (up to 3 years) counts as years of service.",
+        "teacher": "A grade-2 certified teacher from a 4-year teacher-training program starts at step 9 with no experience; other graduates start at step 8."
+      },
+      "family": "Dependents for tax",
+      "children": "Children aged 8-20",
+      "familyHint": "Count includes yourself. Used for the simplified withholding tax table.",
+      "allowances": "Include fixed monthly allowances",
+      "allowancesHint": "Adds the meal allowance of ₩{meal} (tax-free) and the position allowance of ₩{grade} (taxable).",
+      "allowancesHintTeacher": "Adds the meal allowance of ₩{meal} (tax-free). Classroom teachers do not receive the position allowance."
+    },
+    "track": {
+      "general": "General",
+      "police": "Police/Fire",
+      "teacher": "Teacher"
+    },
+    "grades": {
+      "general": [
+        "Grade 1",
+        "Grade 2",
+        "Grade 3",
+        "Grade 4",
+        "Grade 5",
+        "Grade 6",
+        "Grade 7",
+        "Grade 8",
+        "Grade 9"
+      ],
+      "police": [
+        "Chief Supt. General / Fire equiv.",
+        "Senior Supt. General / Fire equiv.",
+        "Supt. General / Fire equiv.",
+        "Senior Superintendent / Fire equiv.",
+        "Superintendent / Fire equiv.",
+        "Senior Inspector / Fire Captain",
+        "Inspector / Fire Lieutenant",
+        "Assistant Inspector / Fire Sergeant",
+        "Senior Officer / Senior Firefighter",
+        "Police Officer / Firefighter"
+      ],
+      "teacher": [
+        "Teacher"
+      ]
+    },
+    "who": "{grade}, step {step}",
+    "stepN": "Step {n}",
+    "people": "{n}",
+    "unit": {
+      "won": "₩{v}",
+      "plus": "+₩{v}"
+    },
+    "result": {
+      "label": "{who} · {year} monthly take-home",
+      "summary": "Gross {gross} minus deductions of {ded}."
+    },
+    "y2027": {
+      "title": "2027 estimate",
+      "badge": "Estimate: proposed {p}% applied uniformly",
+      "pay": "2027 base pay (est.)",
+      "net": "2027 take-home (est.)",
+      "note": "The government's 2027 budget proposal raises civil service pay by {p}%. We multiply every cell of the 2026 table by that rate and round to the nearest ₩100. The confirmed table follows the National Assembly vote and the January amendment of the regulation. If junior grades 7-9 get an extra raise as in 2026, actual pay will be higher. Health and long-term care use 2027 rates; allowances use 2026 amounts."
+    },
+    "detail": {
+      "summary": "Show pay and deductions",
+      "total": "Deductions ₩{v}",
+      "payTitle": "Pay",
+      "pay": "Base pay",
+      "meal": "Meal allowance (tax-free)",
+      "grade": "Position allowance",
+      "gross": "Gross total",
+      "taxable": "Taxable pay (basis for contributions and tax)",
+      "dedTitle": "Deductions",
+      "pension": "Civil service pension ({p}%)",
+      "health": "Health insurance ({p})",
+      "ltc": "Long-term care ({p} of health premium)",
+      "incomeTax": "Income tax (withholding table, {f} dependents, {c} children)",
+      "localTax": "Local income tax (10% of income tax)",
+      "dedTotal": "Total deductions",
+      "noNps": "Civil servants pay the civil service pension instead of the National Pension and are not covered by employment insurance."
+    },
+    "notes": {
+      "base": "Pension contributions and health premiums are normally based on last year's income. Here we approximate them with this month's taxable pay. The real basis includes bonuses and holiday allowances, so actual deductions are often higher.",
+      "cap": "The pension income cap (160% of the all-civil-servant average) is not applied because we could not confirm the 2026 amount from the official notice. It only matters for the highest steps of the top grades.",
+      "excluded": "Family allowance, overtime pay, the long-service add-on (₩30,000 a month under 5 years of service) and job-specific allowances vary by person and are not included.",
+      "teacher": "Classroom teachers are not listed in the position allowance table (Allowance Regulation, Table 15), so only the meal allowance is added."
+    },
+    "share": {
+      "tool": "Civil Servant Pay Table",
+      "sub": "Gross {gross} · after deductions",
+      "pay": "2026 base pay",
+      "pay2027": "2027 base pay (est.)",
+      "text": "{who}: 2026 monthly take-home {net}, 2027 estimate {net27} (proposed 3.9% applied uniformly)"
+    },
+    "steps": {
+      "title": "{grade} pay by step",
+      "desc": "Confirmed 2026 pay and the 2027 estimate (+{p}%). Your step is highlighted."
+    },
+    "table": {
+      "step": "Step",
+      "y2026": "2026 pay",
+      "y2027": "2027 est.",
+      "diff": "Change",
+      "grade": "Grade",
+      "net": "Take-home (2026)"
+    },
+    "entry": {
+      "title": "Starting pay (step 1), general track",
+      "desc": "Base pay and take-home pay at step 1 for grades 9, 8, 7, 6 and 5.",
+      "noteOn": "Take-home pay uses your dependents and includes the fixed allowances (meal and position).",
+      "noteOff": "Take-home pay uses your dependents and base pay only."
+    },
+    "full": {
+      "title": "Full civil servant pay tables",
+      "yearLabel": "Pay table year",
+      "year2026": "2026 confirmed",
+      "year2027": "2027 estimate",
+      "note2026": "2026 pay tables published by the Ministry of Personnel Management (Remuneration Regulation, Tables 3, 10 and 11). Monthly amounts in won.",
+      "note2027": "The 2026 table multiplied by the proposed {p}% and rounded to the nearest ₩100. The confirmed table follows the January 2027 amendment.",
+      "general": "General service, grades 1-9 (Table 3)",
+      "police": "Police and fire (Table 10)",
+      "teacher": "Kindergarten, elementary and secondary teachers (Table 11)"
+    },
+    "sources": {
+      "title": "Sources",
+      "items": {
+        "payTable": "Ministry of Personnel Management: 2026 civil servant pay tables",
+        "payRule": "Public Officials Remuneration Regulation: pay tables (3, 10, 11), starting-step rules (15), teacher base steps (25)",
+        "allowanceRule": "Regulation on Allowances for Public Officials: long-service allowance (Art. 7), meal allowance (Art. 18), holiday allowance (Art. 18-3), position allowance (Table 15)",
+        "pensionAct": "Public Officials Pension Act Art. 67: contribution is 9% of standard monthly income",
+        "taxAct": "Income Tax Act Art. 12: meal allowance tax-free up to ₩200,000 a month",
+        "taxDecree": "Enforcement Decree of the Income Tax Act Art. 38: position allowance is earned income",
+        "employmentAct": "Employment Insurance Act Art. 10: civil servants excluded",
+        "health": "National Health Insurance Service: 2026 health and long-term care rates",
+        "press2026": "Korea.kr (2025-12-30): 2026 pay +3.5%, junior grades 7-9 starting pay +6.6%",
+        "budget2027": "SBS Biz (2026-09-01): 2027 budget proposal, civil service pay +3.9%"
+      },
+      "asOf": "Checked 2026-11-07. 2026 pay is confirmed; 2027 is an estimate. Income tax uses the current withholding table and premiums drop amounts under ₩10, so the last digits may differ from a pay slip."
+    },
+    "guide": {
+      "title": "Civil servant pay guide",
+      "whatIs": {
+        "title": "What is the civil servant pay table?",
+        "description": "The pay table sets the monthly base pay for each track in the Public Officials Remuneration Regulation. Within one table, the same grade and step means the same pay. A new table with that year's raise takes effect each January, and the Ministry of Personnel Management publishes it. This tool calculates take-home pay from the confirmed 2026 table and shows a 2027 estimate using the proposed 3.9% raise."
+      },
+      "howToUse": {
+        "title": "How to use",
+        "items": [
+          "Pick a track (general, police/fire or teacher). Grade 9, step 1 of the general track is shown first.",
+          "Pick your grade and step. If you do not know your step, see 'How is the starting step set?' below.",
+          "Set the number of dependents (including yourself) and children aged 8-20 to apply the withholding tax table.",
+          "Turn off 'Include fixed monthly allowances' to calculate with base pay only.",
+          "Compare pay by step and starting pay for grades 9-5 in the tables, and copy the link to share the same settings."
+        ]
+      },
+      "howItWorks": {
+        "title": "How it works",
+        "items": [
+          "Gross = base pay + meal allowance ₩160,000 + position allowance (₩175,000-₩750,000 by grade)",
+          "Taxable pay = gross − meal allowance (meal allowance is tax-free up to ₩200,000 a month)",
+          "Pension contribution = taxable pay × 9% (Public Officials Pension Act Art. 67)",
+          "Health insurance = taxable pay × 3.595%, long-term care = health premium × 13.14% (2026, amounts under ₩10 dropped)",
+          "Income tax = simplified withholding table (dependents and children aged 8-20), local income tax = income tax × 10%",
+          "2027 estimated pay = 2026 pay × 1.039, rounded to the nearest ₩100"
+        ]
+      },
+      "realWorld": {
+        "title": "Why a pay slip may differ",
+        "items": [
+          "Contribution and premium bases come from last year's income, so people with large bonuses and holiday allowances pay more than shown here.",
+          "Family allowance, overtime pay, the long-service add-on (from ₩30,000 a month under 5 years) and job-specific allowances are not included.",
+          "Gross pay and income tax jump in months with the long-service allowance (January, July) and holiday allowance (Lunar New Year, Chuseok).",
+          "Some offices also deduct association or union fees."
+        ]
+      },
+      "comparison": {
+        "title": "Civil service pension vs. National Pension",
+        "items": [
+          "Civil servants contribute 9% of standard monthly income; the government also pays 9% of the pay budget.",
+          "Private employees pay 4.75% to the National Pension in 2026 and 5% in 2027, so the pension deduction is larger for civil servants on the same pay.",
+          "Civil servants are not covered by employment insurance, so there is no employment insurance premium.",
+          "Health and long-term care insurance use the same rates as private employees, split half and half with the government."
+        ]
+      },
+      "tips": {
+        "title": "Good to know",
+        "items": [
+          "The 2027 table is confirmed only after the National Assembly passes the budget and the regulation is amended. We will replace the table then.",
+          "In 2026, pay rose 3.5% overall and starting pay for junior grades 7-9 rose an extra 3.1% (6.6% in total). Check the confirmed table for any extra raise in 2027.",
+          "Mandatory military service of up to 3 years counts toward your starting step.",
+          "The long-service allowance is paid in January and July: 10% (under 2 years) to 50% (10 years or more) of monthly base pay."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How is the starting step set?",
+            "a": "General, police and fire officials with no recognized experience start at step 1 of their grade. If you only have mandatory military service, that period (up to 3 years) counts as years of service plus one. For example, 1 year 6 months of service gives step 2, and the remaining 6 months count toward the next step. Teachers start from a base step by certificate (grade-2 teacher 8, grade-1 teacher 9) plus education and experience adjustments, so a grade-2 teacher from a 4-year teacher-training program with no experience starts at step 9 (Remuneration Regulation Tables 15, 23, 25)."
+          },
+          {
+            "q": "What is the difference between base pay and total pay?",
+            "a": "Base pay is the monthly amount set in the pay table by grade and step. Total pay adds allowances: monthly ones such as the meal and position allowances, ones paid in set months such as the long-service and holiday allowances, and personal ones such as family allowance and overtime. The long-service and holiday allowances are percentages of base pay, so they rise with it."
+          },
+          {
+            "q": "How much more is the civil service pension contribution than the National Pension?",
+            "a": "The civil service pension contribution is 9% of standard monthly income. Private employees pay 4.75% to the National Pension in 2026, so on ₩3,000,000 of taxable pay a civil servant pays ₩270,000 and a private employee ₩142,500. Civil servants do not pay employment insurance (0.9% for private employees)."
+          },
+          {
+            "q": "Why is my result below the '₩3 million for grade 9 starters' headline?",
+            "a": "The government figure is the monthly average of base pay plus all allowances before deductions. For 2026, total pay for grade 9, step 1 was announced at ₩34.28 million a year (₩2.86 million a month), while base pay is ₩2,133,000. Fixed monthly pay is ₩2,498,000: base pay plus the ₩160,000 meal allowance, ₩175,000 position allowance and ₩30,000 long-service add-on. The rest comes from allowances paid in set months, such as holiday and long-service allowances, spread over 12 months. Take-home pay is lower still after contributions, premiums and tax. The ₩3 million target for 2027 uses the same basis."
+          },
+          {
+            "q": "When are the long-service and holiday allowances paid?",
+            "a": "The long-service allowance is paid on the January and July paydays: 10% (under 2 years) to 50% (10 years or more) of monthly base pay. The holiday allowance is 60% of monthly base pay at Lunar New Year and Chuseok for those in service. Neither is included in the monthly take-home pay here."
+          },
+          {
+            "q": "When will the 2027 pay table be confirmed?",
+            "a": "The 2027 budget proposal approved by the Cabinet on 1 September 2026 includes a 3.9% raise. After the National Assembly passes the budget and the regulation is amended, the Ministry of Personnel Management publishes the new table. The 2026 table took effect on 1 January. The 2027 figures here apply 3.9% to every cell and will be replaced by the confirmed table."
+          },
+          {
+            "q": "Can I see the military pay table?",
+            "a": "The military table (Remuneration Regulation Table 13) uses different ranks, steps and allowances, so it is not included yet. We plan to add it in January with the confirmed 2027 tables."
+          },
+          {
+            "q": "Do civil servants pay employment insurance or the National Pension?",
+            "a": "Neither. National and local civil servants are excluded from the Employment Insurance Act (special and fixed-term officials may opt in to unemployment benefits), and they pay the civil service pension instead of the National Pension. Health and long-term care insurance use the same rates as private employees."
+          }
+        ]
+      }
+    }
+  },
+  "seasonalFood": {
+    "title": "Seasonal Food of the Month",
+    "titleMonth": "Seasonal Food in {m}",
+    "description": "See which Korean vegetables, fruits and seafood are in season each month, with tips on choosing, storing and cooking them from Korea's Rural Development Administration and Ministry of Oceans and Fisheries.",
+    "descriptionMonth": "In {m}, {veg} vegetables, {fruit} fruits and {sea} kinds of seafood are in season. Check how to pick and store them before you shop.",
+    "nav": {
+      "label": "Choose a month",
+      "year": "All year",
+      "thisMonth": "This month",
+      "thisMonthLink": "See this month ({m})"
+    },
+    "cat": {
+      "label": "Type",
+      "all": "All",
+      "veg": "Vegetables",
+      "fruit": "Fruit",
+      "seafood": "Seafood"
+    },
+    "monthNames": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "monthLabel": "{m}",
+    "range": {
+      "single": "{a}",
+      "span": "{a}–{b}",
+      "sep": ", ",
+      "wrap": "{r}",
+      "all": "Year-round"
+    },
+    "summary": {
+      "count": "{n}",
+      "unit": "items"
+    },
+    "mofPick": {
+      "label": "Seafood of the Month (Ministry of Oceans and Fisheries)",
+      "m1": "January 2026 picks: maesaengi seaweed and freshwater eel",
+      "m2": "February 2026 picks: red sea bream and laver",
+      "m3": "March 2026 picks: marbled flounder and sea squirt",
+      "m4": "April 2026 picks: flatfish and skate",
+      "m5": "May 2026 picks: kelp and black rockfish",
+      "m6": "June 2026 picks: pen shell and horse mackerel",
+      "m7": "July 2026 picks: brown croaker and abalone",
+      "m8": "August 2026 picks: shrimp and eels",
+      "m9": "September 2026 picks: gizzard shad and Israeli carp",
+      "m10": "October 2026 picks: loach and anchovy",
+      "m11": "November 2026 picks: Spanish mackerel and scallops",
+      "m12": "December 2025 picks: snow crab and cod (updated when the December 2026 picks are announced)"
+    },
+    "card": {
+      "season": "In season",
+      "pick": "How to pick",
+      "keep": "How to store",
+      "dish": "Try it in",
+      "mofBadge": "{year} Seafood of the Month"
+    },
+    "seafoodTip": "Keep seafood at 5°C or below in the fridge or -18°C or below in the freezer, rinse it 2–3 times under running water before cooking, and cook it through where possible (Ministry of Oceans and Fisheries).",
+    "calendar": {
+      "title": "Year-round seasonal calendar",
+      "caption": "In-season months by item. A bar marks a month when the item is in season.",
+      "item": "Item",
+      "inSeason": "In season in {m}",
+      "scrollHint": "Swipe the table sideways to see every month."
+    },
+    "overview": {
+      "title": "All 12 months",
+      "count": "{n} items"
+    },
+    "share": {
+      "tool": "Seasonal Food of the Month",
+      "label": "Seasonal food",
+      "headline": "Seasonal food in {m}",
+      "text": "In season in {m}: {list}"
+    },
+    "items": {
+      "deodeok": {
+        "name": "Deodeok (bonnet bellflower root)",
+        "pick": "White, thick, straight roots with a strong aroma",
+        "keep": "Wrap in damp newspaper and keep in the vegetable drawer (around 10°C) so it doesn't freeze",
+        "dish": "Grilled deodeok, deodeok seafood salad"
+      },
+      "minari": {
+        "name": "Minari (water dropwort)",
+        "pick": "Bright green, stems not too thick, leaves of even length",
+        "keep": "Wrap in newspaper, put in a bag and store upright in the fridge",
+        "dish": "Seasoned minari, steamed pork belly with minari"
+      },
+      "doraji": {
+        "name": "Doraji (balloon flower root)",
+        "pick": "Soil and fine roots still attached, strong aroma; Korean roots are white once peeled",
+        "keep": "Unpeeled, wrapped in newspaper, in a cool airy place",
+        "dish": "Sautéed doraji, spicy doraji salad"
+      },
+      "bomdong": {
+        "name": "Bomdong (spring cabbage)",
+        "pick": "Fresh leaves, not too large, with a yellow heart",
+        "keep": "Seal in a plastic bag and refrigerate so it doesn't dry out",
+        "dish": "Fresh bomdong kimchi, seasoned bomdong"
+      },
+      "naengi": {
+        "name": "Shepherd's purse (naengi)",
+        "pick": "Dark green leaves and a strong scent; avoid thick, tough roots",
+        "keep": "Wrap in cling film and refrigerate for 2–3 days; blanch any leftovers",
+        "dish": "Naengi doenjang soup, seasoned naengi"
+      },
+      "cabbage": {
+        "name": "Cabbage",
+        "pick": "Firm and heavy with glossy pale-green outer leaves; avoid heads that give when pressed",
+        "keep": "Cut out the core, fill it with damp paper towel, wrap in film and refrigerate",
+        "dish": "Cabbage wraps, cabbage fried rice"
+      },
+      "dallae": {
+        "name": "Wild chive (dallae)",
+        "pick": "Fresh stems and neat bulbs; very large bulbs are less flavourful",
+        "keep": "Roll in newspaper, put in a bag or box and refrigerate",
+        "dish": "Dallae soy dipping sauce, seasoned dallae"
+      },
+      "mugwort": {
+        "name": "Mugwort (ssuk)",
+        "pick": "Young, tender leaves; plump with a reddish base",
+        "keep": "Blanch and freeze, or dry well and keep in an airy place",
+        "dish": "Mugwort soup, mugwort knife-cut noodles"
+      },
+      "dureup": {
+        "name": "Fatsia shoots (dureup)",
+        "pick": "About 12–15 cm, fragrant, tender shoots with leaves not yet open",
+        "keep": "Don't wash; mist lightly, wrap in newspaper and refrigerate in a sealed box. Blanch and freeze to keep longer",
+        "dish": "Blanched dureup with chojang, dureup skewers"
+      },
+      "bambooShoot": {
+        "name": "Bamboo shoots",
+        "pick": "Green, tightly attached husks; brown husks mean it was dug long ago",
+        "keep": "Flavour fades fast after harvest, so boil before storing",
+        "dish": "Bamboo shoot salad, bamboo shoot rice"
+      },
+      "spinach": {
+        "name": "Spinach",
+        "pick": "Thick, glossy dark-green leaves and bright red roots",
+        "keep": "Wrap unwashed in paper towel and store upright in the fridge, away from apples and kiwis",
+        "dish": "Seasoned spinach, spinach doenjang soup"
+      },
+      "tomato": {
+        "name": "Tomato",
+        "pick": "Fresh green stem, firm and heavy for its size",
+        "keep": "At room temperature out of sunlight in an airy place",
+        "dish": "Stir-fried tomato and eggplant, tomato salad"
+      },
+      "gondre": {
+        "name": "Gondre (thistle greens)",
+        "pick": "Dark green leaves with no damage or insect holes; dried gondre should be evenly greenish brown",
+        "keep": "About 2 days in the fridge; blanch and freeze, or dry it, to keep longer",
+        "dish": "Gondre rice, seasoned gondre"
+      },
+      "onion": {
+        "name": "Onion",
+        "pick": "Firm, heavy, with dry papery skin; avoid sprouting onions",
+        "keep": "Don't seal; hang in a mesh bag in a cool airy place",
+        "dish": "Pickled onions, onion kimchi"
+      },
+      "potato": {
+        "name": "Potato",
+        "pick": "Smooth with few blemishes, heavy and firm; avoid sprouted or green potatoes",
+        "keep": "In a box or newspaper away from light in an airy place; an apple in the box slows sprouting",
+        "dish": "Potato pancakes, braised potatoes"
+      },
+      "eggplant": {
+        "name": "Eggplant",
+        "pick": "Deep glossy purple, firm and straight",
+        "keep": "Seal and refrigerate",
+        "dish": "Seasoned eggplant, stuffed eggplant (gajiseon)"
+      },
+      "corn": {
+        "name": "Corn",
+        "pick": "Bright green husks that aren't dry, with full dark-brown silk",
+        "keep": "Sweetness fades after picking, so steam once and freeze in portions",
+        "dish": "Steamed corn, corn rice"
+      },
+      "yeolmu": {
+        "name": "Young radish greens (yeolmu)",
+        "pick": "Fresh light-green leaves; short, young plants with plump stems",
+        "keep": "Wrap in newspaper and refrigerate base-down for 2–3 days; blanch and freeze to keep longer",
+        "dish": "Yeolmu kimchi, yeolmu bibimbap"
+      },
+      "zucchini": {
+        "name": "Korean zucchini (aehobak)",
+        "pick": "Even thickness end to end, bright pale green and glossy",
+        "keep": "Wrap in newspaper and refrigerate; slice and dry, or blanch and freeze, to keep longer",
+        "dish": "Zucchini pancakes, zucchini and shrimp pancakes"
+      },
+      "pepper": {
+        "name": "Green chili pepper",
+        "pick": "Dark green, smooth and springy when pressed; avoid dried stems",
+        "keep": "Best around 7°C; colder makes the inside turn black. Slice and keep in a container for longer storage",
+        "dish": "Braised green chilies, stuffed chili kimchi"
+      },
+      "lotusRoot": {
+        "name": "Lotus root",
+        "pick": "Straight and heavy, not dry outside, white inside with evenly sized holes",
+        "keep": "Peeled lotus root browns quickly, so soak it in vinegar water and refrigerate",
+        "dish": "Braised lotus root, lotus root pancakes"
+      },
+      "shiitake": {
+        "name": "Shiitake mushroom",
+        "pick": "Caps moderately open, gills underneath intact, stems short and plump",
+        "keep": "Don't wash; wipe with a dry cloth, wrap in film and freeze",
+        "dish": "Shiitake pancakes, stir-fried shiitake"
+      },
+      "taro": {
+        "name": "Taro",
+        "pick": "Long oval shape, white once peeled",
+        "keep": "Not in the fridge: wrap with soil on in damp newspaper and keep somewhere cool (10–15°C)",
+        "dish": "Taro soup, taro and perilla soup"
+      },
+      "oldPumpkin": {
+        "name": "Ripe pumpkin (neulgeun hobak)",
+        "pick": "Deep yellowish brown with a white bloom, round with deep ridges",
+        "keep": "Out of direct sun in an airy place below 10°C; it keeps well at room temperature",
+        "dish": "Pumpkin porridge, pumpkin pancakes"
+      },
+      "napaCabbage": {
+        "name": "Napa cabbage",
+        "pick": "Thin, tender leaves, firm white ribs and a full yellow heart when cut",
+        "keep": "Somewhere cool; in the fridge, wrap in paper and store upright",
+        "dish": "Napa cabbage kimchi, cabbage soup"
+      },
+      "radish": {
+        "name": "Korean radish (mu)",
+        "pick": "White, smooth, firm and heavy; avoid split radishes or ones with many fine roots",
+        "keep": "With soil on, wrapped in newspaper, out of sunlight; cut off the greens before refrigerating",
+        "dish": "Cubed radish kimchi, spicy radish salad"
+      },
+      "broccoli": {
+        "name": "Broccoli",
+        "pick": "Tight, domed florets of deep green",
+        "keep": "It can flower at room temperature, so blanch lightly and refrigerate",
+        "dish": "Blanched broccoli with chojang, stir-fried broccoli"
+      },
+      "ginger": {
+        "name": "Ginger",
+        "pick": "Firm, large knobs with few wrinkles and a strong scent",
+        "keep": "Wrap in a damp cloth and refrigerate for use within 2–3 days; for longer, wrap unwashed in newspaper",
+        "dish": "Ginger tea, ginger syrup"
+      },
+      "tangerine": {
+        "name": "Mandarin (gyul)",
+        "pick": "Thin skin hugging the flesh, flat shape, green stem; avoid overly shiny fruit",
+        "keep": "Spread on newspaper so they don't touch, in a cool airy place",
+        "dish": "Mandarin dressing salad, mandarin white kimchi"
+      },
+      "hallabong": {
+        "name": "Hallabong",
+        "pick": "Skin that isn't puffy or heavily wrinkled; puffy fruit tends to be bland or sour",
+        "keep": "At cool room temperature in an airy place",
+        "dish": "Fresh, hallabong and octopus salad"
+      },
+      "strawberry": {
+        "name": "Strawberry",
+        "pick": "Fresh green caps, glossy red all the way to the stem",
+        "keep": "Leave the caps on, cover with film and refrigerate; eat soon, as they mould easily",
+        "dish": "Strawberry jam, strawberry salad"
+      },
+      "chamoe": {
+        "name": "Korean melon (chamoe)",
+        "pick": "Deep yellow, deep grooves and firm",
+        "keep": "About 3 days somewhere cool, or about 7 days washed and wrapped in the fridge",
+        "dish": "Chamoe pickles, stuffed chamoe kimchi"
+      },
+      "raspberry": {
+        "name": "Wild raspberry",
+        "pick": "Red, large and not mushy",
+        "keep": "Refrigerate and eat as soon as possible",
+        "dish": "Raspberry punch, raspberry jam"
+      },
+      "mulberry": {
+        "name": "Mulberry (odi)",
+        "pick": "Black, plump, not mushy, with fresh stems",
+        "keep": "They soften fast, so seal unwashed and freeze",
+        "dish": "Mulberry jam, mulberry water kimchi"
+      },
+      "watermelon": {
+        "name": "Watermelon",
+        "pick": "Large, thin springy rind and clear dark stripes",
+        "keep": "Wrap cut melon fully in film over a plate and refrigerate; eat soon",
+        "dish": "Watermelon punch, watermelon rind namul"
+      },
+      "peach": {
+        "name": "Peach",
+        "pick": "Evenly coloured, unblemished, fuzzy all over with a sweet scent",
+        "keep": "Wrap in newspaper somewhere cool; white peaches like 8–10°C, yellow peaches 3–5°C",
+        "dish": "Peach punch, peach salad"
+      },
+      "melon": {
+        "name": "Melon",
+        "pick": "Fine, even netting; the heavier of two same-sized melons",
+        "keep": "Long refrigeration dulls the sweetness, so keep it at room temperature (20–25°C) for a few days",
+        "dish": "Melon punch, melon salad"
+      },
+      "grape": {
+        "name": "Grapes",
+        "pick": "Dark colour, plump berries and white bloom intact; loose berries mean old fruit",
+        "keep": "Refrigerate in the original wrapping",
+        "dish": "Grape juice, grape jelly"
+      },
+      "blueberry": {
+        "name": "Blueberry",
+        "pick": "Deep blue, taut berries of even size with a white bloom",
+        "keep": "Dry well and keep in an airtight box in the fridge or freezer",
+        "dish": "Blueberry yogurt, blueberry jam"
+      },
+      "pear": {
+        "name": "Korean pear",
+        "pick": "Clear yellow skin, smooth, with no bulge opposite the stem",
+        "keep": "Wrap and refrigerate, away from apples",
+        "dish": "Steamed pear with honey, pear salad"
+      },
+      "fig": {
+        "name": "Fig",
+        "pick": "Uncracked, evenly reddish brown, slightly soft when pressed, fresh stem",
+        "keep": "Best eaten right away; otherwise seal and refrigerate at 1–5°C, or make jam",
+        "dish": "Fig salad, fig jam"
+      },
+      "plum": {
+        "name": "Plum",
+        "pick": "Firm, glossy skin and a stem that isn't dry",
+        "keep": "Refrigerate, as they soften easily",
+        "dish": "Plum syrup, plum water kimchi"
+      },
+      "apple": {
+        "name": "Apple",
+        "pick": "Medium size, springy skin, even colour and a gentle scent",
+        "keep": "Apples soften other fruit, so wrap separately and keep cool or refrigerated",
+        "dish": "Stewed apples, apple salad"
+      },
+      "kiwi": {
+        "name": "Kiwi (chamdarae)",
+        "pick": "Dark brown skin and even shape; if slightly soft when pressed, it's ready to eat",
+        "keep": "Ripen hard kiwis at room temperature for a few days (faster with an apple), then refrigerate",
+        "dish": "Kiwi salad, kiwi soy bulgogi"
+      },
+      "persimmon": {
+        "name": "Persimmon",
+        "pick": "Sweet persimmons with no gap between calyx and fruit, unblemished and firm",
+        "keep": "Best at 0–2°C, so bag and refrigerate; wrap astringent ones in paper and keep somewhere cool for 2–3 weeks",
+        "dish": "Persimmon pickles, ripe persimmon rice cake"
+      },
+      "jujube": {
+        "name": "Jujube",
+        "pick": "Dried jujubes that are glossy, clean, evenly wrinkled and don't rattle when shaken",
+        "keep": "Wash, dry, pit, then seal in portions and freeze",
+        "dish": "Jujube tea, jujube rice"
+      },
+      "yuzu": {
+        "name": "Yuzu",
+        "pick": "Unblemished, firm, bumpy skin with a strong scent and colour",
+        "keep": "Wrap whole in newspaper and refrigerate; use glass rather than metal containers for preserves",
+        "dish": "Yuzu tea, yuzu syrup"
+      },
+      "oyster": {
+        "name": "Oyster",
+        "dish": "Oyster pancakes, maesaengi and oyster soup"
+      },
+      "maesaengi": {
+        "name": "Maesaengi seaweed",
+        "dish": "Maesaengi and oyster soup, maesaengi pancakes"
+      },
+      "laver": {
+        "name": "Laver (gim)",
+        "pick": "Dark, glossy sheets",
+        "dish": "Laver chips (gimbugak), laver soup"
+      },
+      "yellowtail": {
+        "name": "Yellowtail (bangeo)",
+        "dish": "Yellowtail sashimi, grilled yellowtail"
+      },
+      "cod": {
+        "name": "Pacific cod",
+        "dish": "Cod soup, braised cod cheeks"
+      },
+      "snowCrab": {
+        "name": "Snow crab (daege)",
+        "dish": "Steamed snow crab"
+      },
+      "cockle": {
+        "name": "Cockle (kkomak)",
+        "dish": "Steamed cockles, seasoned cockles"
+      },
+      "flounder": {
+        "name": "Marbled flounder (dodari)",
+        "dish": "Flounder and mugwort soup, flounder sashimi"
+      },
+      "flatfish": {
+        "name": "Flatfish (gajami)",
+        "dish": "Grilled flatfish, braised flatfish"
+      },
+      "seaSquirt": {
+        "name": "Sea squirt (meongge)",
+        "dish": "Sea squirt bibimbap, sea squirt sashimi"
+      },
+      "webfoot": {
+        "name": "Webfoot octopus (jukkumi)",
+        "dish": "Seasoned webfoot octopus, stir-fried webfoot octopus"
+      },
+      "clam": {
+        "name": "Manila clam (bajirak)",
+        "dish": "Clam porridge, spicy clam salad"
+      },
+      "anchovy": {
+        "name": "Anchovy",
+        "dish": "Anchovy ssambap, spicy raw anchovy salad"
+      },
+      "skate": {
+        "name": "Skate (hongeo)",
+        "dish": "Hongeo samhap, spicy skate salad"
+      },
+      "penShell": {
+        "name": "Pen shell (kijogae)",
+        "dish": "Grilled pen shell scallops"
+      },
+      "blueCrab": {
+        "name": "Blue crab (kkotge)",
+        "dish": "Spicy crab stew, steamed blue crab"
+      },
+      "butterfish": {
+        "name": "Butterfish (byeongeo)",
+        "dish": "Braised butterfish, spicy steamed butterfish"
+      },
+      "kelp": {
+        "name": "Kelp (dasima)",
+        "dish": "Kelp wraps, fried kelp chips"
+      },
+      "rockfish": {
+        "name": "Black rockfish (ureok)",
+        "dish": "Rockfish sashimi, spicy rockfish stew"
+      },
+      "abalone": {
+        "name": "Abalone",
+        "dish": "Abalone porridge, abalone in soy sauce"
+      },
+      "seabass": {
+        "name": "Sea bass (nongeo)",
+        "dish": "Sea bass sashimi, grilled sea bass"
+      },
+      "horseMackerel": {
+        "name": "Horse mackerel (jeongaengi)",
+        "dish": "Grilled horse mackerel, braised horse mackerel"
+      },
+      "croaker": {
+        "name": "Brown croaker (mineo)",
+        "keep": "For sashimi, aging it 2–3 days in the fridge brings out its flavour and texture",
+        "dish": "Croaker soup, croaker sashimi"
+      },
+      "eel": {
+        "name": "Conger and pike eel",
+        "dish": "Grilled eel, eel soup"
+      },
+      "octopus": {
+        "name": "Octopus",
+        "dish": "Blanched octopus with chojang"
+      },
+      "shrimp": {
+        "name": "Shrimp (fleshy prawn, whiteleg shrimp)",
+        "dish": "Salt-grilled prawns, soy-marinated shrimp"
+      },
+      "gizzardShad": {
+        "name": "Gizzard shad (jeoneo)",
+        "dish": "Salt-grilled gizzard shad, spicy gizzard shad salad"
+      },
+      "hairtail": {
+        "name": "Hairtail (galchi)",
+        "dish": "Grilled hairtail, braised hairtail"
+      },
+      "mackerel": {
+        "name": "Mackerel",
+        "dish": "Braised mackerel, grilled mackerel"
+      },
+      "spanishMackerel": {
+        "name": "Spanish mackerel (samchi)",
+        "dish": "Salt-grilled Spanish mackerel, braised Spanish mackerel"
+      },
+      "scallop": {
+        "name": "Scallop",
+        "dish": "Steamed scallops, grilled scallops"
+      },
+      "loach": {
+        "name": "Loach (mikkuraji)",
+        "dish": "Loach soup (chueotang)"
+      }
+    },
+    "guide": {
+      "title": "Seasonal food guide",
+      "why": {
+        "title": "Why seasonal food is cheaper and tastier",
+        "items": [
+          "In season, crops are harvested and fish are caught in large volumes, so markets are well stocked and prices tend to fall.",
+          "Food harvested at full growth or peak fat has more flavour. The Ministry of Oceans and Fisheries notes that Spanish mackerel builds fat from autumn and is at its best from November through winter.",
+          "The same food tastes different by season. Nongsaro explains that radish harvested in autumn is crisper and sweeter than spring or summer radish.",
+          "It doesn't need long storage or long-distance shipping, so it reaches the table fresher."
+        ]
+      },
+      "house": {
+        "title": "Greenhouses, fish farms and seasons",
+        "items": [
+          "Greenhouse crops such as strawberries and tomatoes are available most of the year. Even so, Nongsaro notes that strawberries grown in cold winter are sweeter and less sour than spring ones.",
+          "Spinach comes as 'winter spinach' grown in autumn and winter and 'summer spinach' grown in spring and summer. This page treats winter to early spring as its season.",
+          "Heavily farmed seafood such as abalone and black rockfish is sold all year, so cards also flag the ministry's pick for that month.",
+          "Kiwi, apples and pears are stored and shipped over a long period. Hayward kiwis are on sale from November to April."
+        ]
+      },
+      "shopping": {
+        "title": "Shopping tips for the month",
+        "items": [
+          "Check 'How to pick' on each card while you shop. Heavy, firm and brightly coloured is usually best.",
+          "Greens you can't finish can be blanched, squeezed dry and frozen in single portions.",
+          "Apples give off a lot of ethylene, which softens nearby fruit and vegetables. Keep them away from quick-wilting greens like spinach.",
+          "Keep seafood at 5°C or below in the fridge or -18°C or below in the freezer and rinse it 2–3 times under running water. Cooking it through is safer than eating it raw (Ministry of Oceans and Fisheries).",
+          "In kimchi-making season (November–December), napa cabbage, radish and ginger are all in season together."
+        ]
+      },
+      "closed": {
+        "title": "Closed fishing seasons",
+        "intro": "During a closed season the species may not be caught. Frozen, farmed and imported products are still sold, but anglers and anyone catching their own must follow the rules.",
+        "items": [
+          "Japanese flying squid: April 1 – May 31",
+          "Webfoot octopus: May 11 – August 31",
+          "Fleshy prawn: May 1 – June 30",
+          "Spanish mackerel: May 1 – May 31",
+          "Gizzard shad: May 1 – July 15 (except Gangwon and Gyeongbuk)",
+          "Mottled skate: June 1 – July 15",
+          "Blue crab: June 21 – August 20 (varies by sea area)",
+          "Hairtail: July 1 – July 31",
+          "Pen shell: July 1 – August 31",
+          "Abalone: September 1 – October 31 (Jeju: October 1 – December 31)",
+          "Marbled flounder: December 1 – January 31"
+        ],
+        "note": "Based on Incheon City's guide to the Enforcement Decree of the Fishery Resources Management Act. Exceptions apply by sea area and fishing method, so check the National Law Information Center and local notices for exact dates."
+      },
+      "method": {
+        "title": "How seasons are set on this page",
+        "items": [
+          "Vegetables and fruit: months they appear in Nongsaro's 'Ingredient of the Month' (Rural Development Administration), plus harvest and shipping periods in Nongsaro's item notes.",
+          "Seafood: months chosen as the Ministry of Oceans and Fisheries' 'Seafood of the Month' (2017–2026) and months listed in Nongsaro's 'Seafood of the Month'. A single isolated pick is left out, and every 2026 pick is included.",
+          "Gaps of two months or less between those months are filled in. Seasons can shift a month or two with region, weather and variety.",
+          "Mushrooms (shiitake) are listed with vegetables. Picking and storage tips are shortened from Nongsaro's item notes."
+        ]
+      },
+      "links": {
+        "title": "Tools that go well with this",
+        "kimjangCalculator": "Kimjang Calculator — seasoning amounts by number of cabbages",
+        "kimjangTiming": "Kimjang Timing — the best time to make kimchi by region",
+        "nutrition": "Nutrient Calculator — daily nutrient intake standards"
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "q": "What's in season in November?",
+            "a": "Napa cabbage, radish, ripe pumpkin, lotus root and ginger for vegetables; persimmon, yuzu, kiwi and jujube for fruit; and Spanish mackerel, scallops, cod, cockles and mackerel for seafood. The Ministry of Oceans and Fisheries chose Spanish mackerel and scallops as its November 2026 Seafood of the Month."
+          },
+          {
+            "q": "How were the seasons decided?",
+            "a": "We combined the months each item appears in Nongsaro's 'Ingredient of the Month' and 'Seafood of the Month', the ministry's 'Seafood of the Month' picks (2017–2026) and harvest periods in Nongsaro's item notes. Region and weather can shift them by a month or two."
+          },
+          {
+            "q": "Are greenhouse strawberries seasonal?",
+            "a": "Strawberries are mostly harvested in greenhouses from winter to spring. Nongsaro notes that winter strawberries are sweeter and less sour than spring ones, so December–May is marked as their season."
+          },
+          {
+            "q": "When are oysters in season?",
+            "a": "The ministry picked oysters for December every year from 2019 to 2023, and Nongsaro features oyster pancakes as a January seafood dish, so December–January is marked as their season."
+          },
+          {
+            "q": "Can I eat a fish during its closed season?",
+            "a": "Closed seasons restrict catching, so buying frozen, farmed or imported fish at the market is fine. If you fish or gather it yourself, you must follow the closed season and minimum size rules."
+          },
+          {
+            "q": "How do I keep greens longer?",
+            "a": "Quick-wilting greens such as fatsia shoots, gondre and young radish greens can be blanched, squeezed dry and frozen in single portions. Gondre can also be boiled and dried in the shade to keep as dried greens."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": {
+          "nongsaro": "Rural Development Administration, Nongsaro — Ingredient of the Month",
+          "nongsaroSea": "Rural Development Administration, Nongsaro — Seafood of the Month",
+          "mof": "Ministry of Oceans and Fisheries Seafood of the Month archive — Incheon Fisheries Resources Research Institute",
+          "mofPress": "Ministry of Oceans and Fisheries press releases",
+          "seafoodSafety": "Ministry of Oceans and Fisheries — Eating seafood safely in summer (Korea.kr)",
+          "closedSeason": "Closed fishing seasons — Incheon Metropolitan City",
+          "law": "Enforcement Decree of the Fishery Resources Management Act (National Law Information Center)"
+        },
+        "asOf": "As of November 2026. The ministry's December 2026 pick will be added once announced."
+      }
     }
   }
 }

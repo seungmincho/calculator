@@ -130,6 +130,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [피부양자 자격 계산기](https://toolhub.ai.kr/dependent-eligibility/): 건강보험 피부양자 소득·재산 요건 판정과 탈락 시 예상 지역보험료
 - [청년미래적금 계산기](https://toolhub.ai.kr/youth-future-savings/): 만기 수령액·정부기여금·비과세 효과, 일반 적금과 비교
 - [기초연금 계산기](https://toolhub.ai.kr/basic-pension/): 소득인정액으로 수급 자격 판정, 예상 수령액(부부·국민연금 연계 감액)
+- [공무원 봉급표·실수령액](https://toolhub.ai.kr/civil-servant-pay/): 2026 직급·호봉별 봉급과 2027 예상(정부안 3.9%), 공제 후 실수령액
+- [2027 정시 일정](https://toolhub.ai.kr/jeongsi-2027/): 수능 성적 발표부터 원서접수·가나다군·합격 발표·추가모집까지 D-day
 
 ## 개발 도구
 
@@ -304,6 +306,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [에니어그램 테스트](https://toolhub.ai.kr/enneagram/): 36문항으로 9가지 성격 유형 분석, 레이더 차트, MBTI 연계
 - [건강검진 대상 조회](https://toolhub.ai.kr/health-checkup/): 출생연도로 올해 국가건강검진·암검진 대상 확인
 - [아이 키 성장 백분위](https://toolhub.ai.kr/child-growth/): 성장도표로 키·몸무게 백분위와 부모 키로 예상 키 계산
+- [이달의 제철 음식](https://toolhub.ai.kr/seasonal-food/): 월별 제철 채소·과일·수산물과 고르는 법·보관법, 연중 제철 달력
 
 ## 간단 게임
 

@@ -103,6 +103,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entries.push({ url: `https://toolhub.ai.kr/salary-table/${b}/`, lastModified: '2026-09-17', changeFrequency: 'monthly', priority: 0.8 })
   }
 
+  // 이달의 제철 음식 월별 페이지 (/seasonal-food/1/ ~ /12/)
+  for (let m = 1; m <= 12; m++) {
+    entries.push({ url: `https://toolhub.ai.kr/seasonal-food/${m}/`, lastModified: '2026-11-07', changeFrequency: 'yearly', priority: 0.7 })
+  }
+
   // menuConfig 기반 자동 생성
   for (const key of categoryKeys) {
     const category = menuConfig[key]

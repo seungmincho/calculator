@@ -88,8 +88,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/pc-electricity': ['/electricity-calculator', '/gas-bill', '/water-bill', '/budget-calculator'],
   '/gas-bill': ['/electricity-calculator', '/water-bill', '/wind-chill', '/budget-calculator'],
   '/water-bill': ['/electricity-calculator', '/gas-bill', '/pc-electricity', '/budget-calculator'],
-  '/kimjang-calculator': ['/kimjang-timing', '/budget-calculator', '/dutch-pay', '/discount-calculator'],
-  '/kimjang-timing': ['/kimjang-calculator', '/wind-chill', '/holiday-planner', '/sunrise-sunset'],
+  '/kimjang-calculator': ['/kimjang-timing', '/seasonal-food', '/budget-calculator', '/dutch-pay', '/discount-calculator', '/nutrition-calculator'],
+  '/kimjang-timing': ['/kimjang-calculator', '/seasonal-food', '/wind-chill', '/holiday-planner', '/sunrise-sunset', '/calendar-2027'],
   '/exchange-calculator': ['/customs-duty', '/shipping-calculator', '/world-clock', '/stock-calculator', '/percent-calculator', '/holiday-planner'],
   '/percent-calculator': ['/discount-calculator', '/average-calculator', '/margin-calculator', '/vat-calculator', '/cagr-calculator', '/stock-calculator'],
 
@@ -109,8 +109,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/gpa-converter': ['/gpa-calculator', '/grade-calculator', '/average-calculator', '/percent-calculator'],
   '/grade-calculator': ['/gpa-calculator', '/gpa-converter', '/average-calculator', '/csat-grade'],
   '/average-calculator': ['/grade-calculator', '/gpa-calculator', '/percent-calculator', '/csat-grade'],
-  '/csat-grade': ['/csat-dday', '/grade-calculator', '/average-calculator', '/gpa-converter'],
-  '/csat-dday': ['/csat-grade', '/dday-calculator', '/timer', '/pomodoro'],
+  '/csat-grade': ['/csat-dday', '/jeongsi-2027', '/grade-calculator', '/average-calculator', '/gpa-converter', '/dday-calculator'],
+  '/csat-dday': ['/csat-grade', '/jeongsi-2027', '/dday-calculator', '/timer', '/pomodoro', '/calendar-2027'],
 
   // 건강 — 체중·식단·운동
   '/health-checkup': ['/bmi-calculator', '/blood-pressure', '/blood-sugar', '/body-fat-calculator', '/calorie-calculator', '/age-calculator'],
@@ -185,6 +185,9 @@ export const curatedRelated: Record<string, string[]> = {
   '/dependent-eligibility': ['/health-insurance', '/dividend-calculator', '/national-pension', '/basic-pension', '/four-insurance', '/income-tax'],
   '/youth-future-savings': ['/savings-calculator', '/compound-calculator', '/youth-rent-subsidy', '/salary-calculator', '/dividend-calculator', '/government-subsidy'],
   '/basic-pension': ['/national-pension', '/median-income', '/government-subsidy', '/dependent-eligibility', '/pension-calculator', '/health-insurance'],
+  '/civil-servant-pay': ['/salary-calculator', '/year-end-tax', '/salary-table', '/changes-2027', '/health-insurance', '/income-tax'],
+  '/jeongsi-2027': ['/csat-grade', '/csat-dday', '/gpa-converter', '/dday-calculator'],
+  '/seasonal-food': ['/kimjang-calculator', '/kimjang-timing', '/nutrition-calculator', '/meal-diary', '/calorie-calculator', '/menu-picker'],
   '/json-to-typescript': ['/json-formatter', '/json-csv-converter', '/yaml-json-converter', '/json-xml-converter', '/jwt-decoder', '/api-tester'],
   '/child-growth': ['/bmi-calculator', '/due-date', '/calorie-calculator', '/age-calculator', '/child-benefit', '/nutrition-calculator'],
   '/yut-nori': ['/omok', '/othello', '/dice-roller', '/ladder-game', '/greeting-generator', '/calendar-2027'],

@@ -111,6 +111,7 @@
 /child-benefit  /child-benefit/  301
 /child-growth  /child-growth/  301
 /chmod-calculator  /chmod-calculator/  301
+/civil-servant-pay  /civil-servant-pay/  301
 /code-screenshot  /code-screenshot/  301
 /coding-patterns  /coding-patterns/  301
 /coin-flip  /coin-flip/  301
@@ -211,6 +212,7 @@
 /invoice-generator  /invoice-generator/  301
 /iou-generator  /iou-generator/  301
 /ip-checker  /ip-checker/  301
+/jeongsi-2027  /jeongsi-2027/  301
 /jeonse-checklist  /jeonse-checklist/  301
 /jeonse-loan  /jeonse-loan/  301
 /json-csv-converter  /json-csv-converter/  301
@@ -338,6 +340,7 @@
 /screen-compare  /screen-compare/  301
 /screen-info  /screen-info/  301
 /screen-recorder  /screen-recorder/  301
+/seasonal-food  /seasonal-food/  301
 /shipping-calculator  /shipping-calculator/  301
 /signature-generator  /signature-generator/  301
 /ski-resorts  /ski-resorts/  301

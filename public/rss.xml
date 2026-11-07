@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sat, 07 Nov 2026 04:59:17 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Nov 2026 06:41:13 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[기초연금 계산기]]></title>
@@ -29,6 +29,13 @@
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[공무원 봉급표·실수령액]]></title>
+    <link>https://toolhub.ai.kr/civil-servant-pay/</link>
+    <guid>https://toolhub.ai.kr/civil-servant-pay/</guid>
+    <description><![CDATA[2026 직급·호봉별 봉급과 2027 예상(정부안 3.9%), 공제 후 실수령액]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[피부양자 자격 계산기]]></title>
     <link>https://toolhub.ai.kr/dependent-eligibility/</link>
     <guid>https://toolhub.ai.kr/dependent-eligibility/</guid>
@@ -43,6 +50,13 @@
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[2027 정시 일정]]></title>
+    <link>https://toolhub.ai.kr/jeongsi-2027/</link>
+    <guid>https://toolhub.ai.kr/jeongsi-2027/</guid>
+    <description><![CDATA[수능 성적 발표부터 원서접수·가나다군·합격 발표·추가모집까지 D-day]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[JSON → TypeScript 변환기]]></title>
     <link>https://toolhub.ai.kr/json-to-typescript/</link>
     <guid>https://toolhub.ai.kr/json-to-typescript/</guid>
@@ -54,6 +68,13 @@
     <link>https://toolhub.ai.kr/manito/</link>
     <guid>https://toolhub.ai.kr/manito/</guid>
     <description><![CDATA[서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[이달의 제철 음식]]></title>
+    <link>https://toolhub.ai.kr/seasonal-food/</link>
+    <guid>https://toolhub.ai.kr/seasonal-food/</guid>
+    <description><![CDATA[월별 제철 채소·과일·수산물과 고르는 법·보관법, 연중 제철 달력]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
