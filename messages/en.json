@@ -55799,5 +55799,247 @@
         "asOf": "Checked as of November 7, 2026. The 2027 budget proposal (Preferred 15%, etc.) and round 3 dates are not final and will be updated when announced."
       }
     }
+  },
+  "basicPension": {
+    "title": "Basic Pension Calculator",
+    "subtitle": "Estimate your 2026 recognized income from income and assets, compare it with the selection threshold, and see the expected monthly amount after couple, income-reversal and National Pension reductions.",
+    "input": {
+      "title": "Household, income and assets",
+      "household": "Household type",
+      "households": {
+        "single": "Single",
+        "couple2": "Couple, both receive",
+        "couple1": "Couple, one receives"
+      },
+      "householdHint": {
+        "single": "Aged 65+ without a spouse. Threshold KRW 2,470,000 a month.",
+        "couple2": "Both spouses are 65+ and both receive it. Each amount is cut by 20%. Threshold KRW 3,952,000 a month.",
+        "couple1": "The spouse is under 65 or does not apply. Income and assets are combined, with no 20% cut."
+      },
+      "region": "Where you live (basic asset deduction)",
+      "regions": {
+        "metro": "Large city",
+        "city": "Mid-size city",
+        "rural": "Rural area"
+      },
+      "regionHint": {
+        "metro": "Districts of Seoul and metropolitan cities (including urban-rural counties) and special cities. Deduction KRW 135 million.",
+        "city": "Cities in provinces and Sejong. Deduction KRW 85 million.",
+        "rural": "Counties in provinces. Deduction KRW 72.5 million."
+      },
+      "incomeTitle": "Income (monthly)",
+      "work": "Earned income",
+      "workSelf": "Your earned income",
+      "workSpouse": "Spouse's earned income",
+      "workHint": "Gross monthly pay. KRW {d} is deducted and 70% of the rest counts (separately for each spouse). Leave out daily, senior public job and self-support work income.",
+      "nps": "National Pension (old-age)",
+      "npsSelf": "Your National Pension (old-age)",
+      "npsSpouse": "Spouse's National Pension (old-age)",
+      "npsHint": "Monthly amount incl. split pension, excl. dependant supplement. It also counts as income. No linked reduction up to KRW {v}. Survivor or disability pension only: enter 0 here and add it to other income.",
+      "npsSpouseHint": "The spouse does not receive the basic pension, so this counts only as income.",
+      "a": "Your A benefit (redistributive portion)",
+      "aSpouse": "Spouse's A benefit (redistributive portion)",
+      "aHint": "Set by your contribution history; ask the National Pension Service (1355). Leave blank to see the possible range.",
+      "aPlaceholder": "Leave blank if unknown",
+      "other": "Other income (household)",
+      "otherHint": "Business or rental income, private pensions, survivor or disability pensions, industrial accident benefits. Exclude livelihood benefits, disability pension and EITC.",
+      "interest": "Interest and dividends (household)",
+      "interestHint": "Monthly total. KRW {d} a month is deducted.",
+      "propertyTitle": "Assets (you and spouse)",
+      "property": "Homes, land and buildings",
+      "propertyHint": "Use the official standard (assessed) value, not the market price.",
+      "deposit": "Rental deposit you paid",
+      "depositHint": "Jeonse or monthly-rent deposit per the lease. Added to general assets.",
+      "financial": "Financial assets",
+      "financialHint": "Deposits, savings, stocks, insurance. {d} is deducted.",
+      "debt": "Debt",
+      "debtHint": "Loans and unpaid card balances. Deposits you received as a landlord count only up to 50% of the published house price.",
+      "car": "Car value",
+      "carHint": "At {v} or more the full value counts as monthly income. Below that it is a general asset.",
+      "carExempt": "Exempt car (10+ years old, used for a living, truck, etc.)",
+      "extraTitle": "If applicable",
+      "freeRent": "Living rent-free in a child's home (standard value)",
+      "freeRentHint": "Standard value of a home owned by your child. From KRW 600 million, 0.78% a year counts as income.",
+      "jikyeok": "You or your spouse is entitled to a civil servant, military, private school teacher or special post office pension",
+      "jikyeokHint": "These pension holders and their spouses, and those who took a lump-sum retirement pension, cannot receive the basic pension."
+    },
+    "unit": {
+      "won": "₩{v}",
+      "range": "₩{lo}–{hi}",
+      "wonShort": "KRW",
+      "man": "×10k KRW"
+    },
+    "result": {
+      "label": "Expected monthly basic pension",
+      "status": {
+        "eligible": "Eligible",
+        "over": "Over the threshold",
+        "jikyeok": "Not eligible"
+      },
+      "badge": {
+        "eligible": "Eligible",
+        "over": "Over threshold",
+        "jikyeok": "Occupational pension"
+      },
+      "rangeNote": "Your National Pension is above 150% of the standard amount, so the amount depends on your A benefit. Enter it for a single figure.",
+      "recognized": "Recognized income",
+      "threshold": "{year} threshold ({hh})",
+      "gauge": "Recognized income is {p}% of the threshold",
+      "margin": "KRW {v} a month below the threshold, roughly {p} more in assets after deductions.",
+      "over": "KRW {v} a month over the threshold, roughly {p} less in assets after deductions would bring you under it.",
+      "reversalNote": "Recognized income plus the pension exceeds the threshold, so the income-reversal reduction applies. You receive the threshold minus recognized income, with at least 10% of the standard amount per person (20% combined for a couple).",
+      "disclaimer": "This is an estimate. Eligibility and the amount are decided by the local office using public records (assessed values, financial data, NPS A benefit). Gifted or sold assets, memberships and veterans' compensation are not modelled."
+    },
+    "warn": {
+      "jikyeok": "Holders of civil servant, military, private school teacher or special post office pensions and their spouses cannot receive the basic pension regardless of income (Basic Pension Act art. 3(3)).",
+      "luxury": "A car worth {v} or more counts in full as monthly income with no deduction. Tick the box if it is exempt (10+ years old, used for a living, etc.).",
+      "range": "Above KRW {v} a month of National Pension, the linked reduction applies. The exact amount needs the A benefit calculated by the NPS, so a possible range (minimum to standard amount) is shown."
+    },
+    "breakdown": {
+      "title": "Recognized income",
+      "work": "Earned income (after deduction)",
+      "nps": "National Pension",
+      "other": "Other income",
+      "interest": "Interest (after KRW 40,000)",
+      "freeRent": "Rent-free housing income",
+      "income": "Assessed income",
+      "general": "General assets (home, deposit, car)",
+      "basic": "Basic asset deduction ({region})",
+      "financial": "Financial assets (after {d})",
+      "debt": "Debt",
+      "net": "Assets to convert",
+      "converted": "× {p}% a year ÷ 12",
+      "luxury": "Luxury car (full value)",
+      "property": "Income from assets",
+      "total": "Recognized income"
+    },
+    "steps": {
+      "title": "Basic pension amount",
+      "base": "Standard amount (2026)",
+      "linked": "After National Pension link",
+      "couple": "After couple cut (20%)",
+      "reversal": "After income-reversal cut",
+      "final": "Monthly basic pension",
+      "finalCouple": "Monthly basic pension (couple total)",
+      "pair": "You {a} · Spouse {b}",
+      "none": {
+        "over": "Recognized income is above the threshold. You can reapply if income or assets fall, and registering for eligibility tracking gets you notified.",
+        "jikyeok": "Households with an occupational pension holder are not eligible."
+      }
+    },
+    "limits": {
+      "max": "Maximum: ₩{v} per person; ₩{c} for a couple who both receive it (₩{e} each)",
+      "min": "Minimum after the income-reversal cut: ₩{v} per person, ₩{c} combined for a couple",
+      "nps": "No linked reduction up to ₩{v} of National Pension; at least ₩{a} after it (before couple and reversal cuts)"
+    },
+    "share": {
+      "tool": "Basic Pension Calculator",
+      "sub": "{year} rules · {hh}",
+      "threshold": "Threshold",
+      "text": "{hh}: expected basic pension {amount} a month (recognized income {recognized})",
+      "textOver": "{hh}: recognized income {recognized}, above the {threshold} threshold",
+      "textJikyeok": "{hh}: not eligible (occupational pension holder in the household)"
+    },
+    "guide": {
+      "title": "Basic pension guide",
+      "next": {
+        "title": "When will the 2027 figures come out?",
+        "body": "The 2027 threshold must be announced by 31 December 2026, and the standard amount is usually set in January after inflation is known. The 2027 budget proposal (September 2026) includes larger payments for low-income seniors and a smaller couple cut, but these need an amendment to the Basic Pension Act and are not final as of 2026-11-07. This calculator will be updated when they are announced."
+      },
+      "calc": {
+        "title": "How recognized income is calculated",
+        "items": [
+          "Recognized income = assessed income + income from assets, for you and your spouse combined.",
+          "Assessed income = (earned income − KRW 1.16 million) × 70% + other income. The earned income deduction applies to each spouse.",
+          "Other income includes business and rental income, interest (minus KRW 40,000) and private pensions, public transfers such as National Pension and industrial accident benefits, and rent-free housing in a child's home worth KRW 600 million or more.",
+          "Income from assets = {(general assets − basic deduction) + (financial assets − KRW 20 million) − debt} × 4% ÷ 12 + the value of luxury cars and memberships.",
+          "The basic deduction is KRW 135 million in large cities, 85 million in mid-size cities and 72.5 million in rural areas. Any unused part is not taken off financial assets.",
+          "Homes and land use the standard (assessed) value, not market price; rental deposits use the lease amount."
+        ]
+      },
+      "eligibility": {
+        "title": "Eligibility",
+        "items": [
+          "You qualify at 65+ when recognized income is at or below the threshold: KRW 2,470,000 a month for singles and 3,952,000 for couples in 2026.",
+          "The threshold is set every year so that about 70% of people aged 65+ qualify. It was KRW 2,280,000 for singles in 2025.",
+          "Civil servant, military, private school teacher and special post office pension holders and their spouses are excluded. National Pension recipients can qualify.",
+          "A single person in a large city with only a home qualifies up to a standard value of about KRW 876 million; with only earned income, up to KRW 4,688,571 a month.",
+          "Apply from one month before the month you turn 65 at the local community centre, an NPS branch or Bokjiro. Payment starts from the month you apply."
+        ]
+      },
+      "reduction": {
+        "title": "Three reductions",
+        "items": [
+          "National Pension link: no cut if your old-age pension is up to 150% of the standard amount (KRW 524,550). Above that, the amount is standard − ⅔ × A benefit + add-on (KRW 174,850); between 150% and 200%, the larger of that and KRW 874,250 − your pension is paid. The minimum is KRW 174,850.",
+          "Couple cut: when both spouses receive it, each amount is cut by 20%, to at most KRW 279,760 each and 559,520 combined in 2026. No cut when only one receives it.",
+          "Income-reversal cut: if recognized income plus the pension exceeds the threshold, the excess is removed, but at least KRW 34,970 per person (69,940 combined for a couple) is paid.",
+          "The order is National Pension link, couple cut, then income-reversal cut. Amounts under KRW 10 are dropped.",
+          "Survivor or disability pension recipients only, livelihood benefit recipients and disability pension recipients start from the full standard amount."
+        ]
+      },
+      "tips": {
+        "title": "Good to know",
+        "items": [
+          "If rejected, register for eligibility tracking: changes are checked for five years. From 30 July 2026 you are treated as having applied on the day you are found likely eligible.",
+          "Assets gifted or sold since 1 July 2011 still count, minus proven spending and a natural consumption allowance (KRW 2,679,518 a month for singles, 3,247,369 for couples, times months elapsed).",
+          "Cars worth KRW 40 million or more and golf or condo memberships count in full as monthly income, which usually rules you out. Cars 10+ years old or used for a living are exempt.",
+          "Earned income gets the KRW 1.16 million deduction plus 30% off the rest, so working raises recognized income less than you might expect.",
+          "The basic pension is paid on the 25th of each month and cannot be seized."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much is the basic pension in 2026?",
+            "a": "The standard amount is KRW 349,700 a month, up 2.1% from KRW 342,510 in 2025. A couple who both receive it get KRW 279,760 each (559,520 combined), and at least KRW 34,970 per person is paid even after the income-reversal cut."
+          },
+          {
+            "q": "What is the 2026 selection threshold?",
+            "a": "KRW 2,470,000 a month for singles and KRW 3,952,000 for couples. It is compared with recognized income, which combines income and converted assets."
+          },
+          {
+            "q": "Does National Pension reduce the basic pension?",
+            "a": "Not if your old-age pension is KRW 524,550 a month (150% of the standard amount) or less. Above that it depends on your A benefit, but you get at least KRW 174,850. National Pension also counts as income."
+          },
+          {
+            "q": "Can I qualify if I own a home?",
+            "a": "Homes are counted at the standard value minus the basic deduction (KRW 135 million in large cities, 85 million in mid-size cities, 72.5 million in rural areas), and 4% a year is treated as income. A single person in a large city with no other income or savings qualifies up to about KRW 876 million."
+          },
+          {
+            "q": "Does working reduce it?",
+            "a": "Only 70% of earned income above KRW 1.16 million a month counts, so KRW 2 million of pay adds KRW 588,000. Near the threshold the income-reversal cut can lower the amount."
+          },
+          {
+            "q": "What if only one spouse is 65 or older?",
+            "a": "The couple threshold (KRW 3,952,000) applies to the couple's combined income and assets. With only one recipient there is no 20% couple cut."
+          },
+          {
+            "q": "Can I qualify by gifting assets to my children?",
+            "a": "Assets gifted or sold since 1 July 2011 still count, minus proven spending such as buying other assets, repaying debt or medical bills, and a natural consumption allowance (KRW 2,679,518 a month for singles, times months elapsed)."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": {
+          "notice": "MOHW Notice 2026-156: threshold, standard amount and recognized income rules",
+          "act": "Basic Pension Act (law.go.kr)",
+          "decree": "Enforcement Decree of the Basic Pension Act",
+          "rule": "Enforcement Rule of the Basic Pension Act",
+          "pressThreshold": "MOHW press release (2026-01-01): 2026 threshold",
+          "pressBase": "MOHW press release (2026-01-09): 2.1% increase",
+          "portal": "Basic pension portal: how the amount is set",
+          "budget2027": "Korea.kr (2026-09-04): 2027 MOHW budget proposal"
+        },
+        "asOf": "Checked 2026-11-07; rules for January–December 2026. Eligibility and amounts are decided by the local office (MOHW 129, NPS 1355)."
+      }
+    },
+    "fmt": {
+      "eokMan": "₩{won}",
+      "eok": "₩{won}",
+      "man": "₩{won}",
+      "won": "₩{won}"
+    }
   }
 }

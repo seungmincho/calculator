@@ -41,7 +41,7 @@ export const PROGRAM_SOURCES = {
   education: 'https://pool.cbe.go.kr/dept-15/cm/cntnts/cntntsView.do?cntntsId=36430&mi=15983',
   childCredit: 'https://kids.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7783&mi=2452',
   eitc: 'https://kids.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7783&mi=2452',
-  basicPension: 'https://www.gwangjin.go.kr/portal/main/contents.do?menuNo=200369',
+  basicPension: 'https://basicpension.mohw.go.kr/menu.es?mid=a10102020000', // 보건복지부 기초연금 누리집(소득인정액 산정방식), 2026-11-07
   youthRent: 'https://www.bokjiro.go.kr/ssis-tbu/cms/pc/customer/notice/1309500_1141.html',
   singleParent: 'https://www.mogef.go.kr/sp/fam/sp_fam_f006.do',
   youthSavings: 'https://www.bokjiro.go.kr/ssis-tbu/cms/pc/customer/notice/1309680_1141.html',
