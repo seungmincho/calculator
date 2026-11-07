@@ -1,6 +1,6 @@
 # NEXT-SESSION (2026-10-12 — 개선 루프 배치 17~34 인계)
 
-## 2026-11-06 10연속 개선 배치 (커밋, 미배포)
+## 2026-11-06 10연속 개선 배치 (2026-11-07 운영 배포)
 
 - **김장 계산기**: aT 2026 김장비용 조사 아직 미발표(11/6). 2024는 11.19, 2025는 11.18 보도 → **11/17~20께 재확인**. 총액만 나오면 `AT_TOTAL_2025` 참고 총액만 교체(품목별은 2024.11.21 유지). 11.3 농식품부 대책 기사의 238,280원은 10월 하순 기준·조사기관 미확인이라 안 씀.
 - **스키장**: 11/6 기준 휘닉스 11/27·알펜시아 11/28 외 공지 없음. 용평·하이원 "11월 말", 곤지암 "12월 중"(11/17 제설 시작). 지산 얼리버드 공지 본문은 사람이 확인.
@@ -10,7 +10,7 @@
 - **`/manito/` 마니또 뽑기(db5cb66c)**: 배정·링크 로직 `src/utils/manito.ts`(검사 `scripts/check-manito.ts`). 링크 = `#1`+가린 JSON(XOR+base64url, 암호 아님 — 화면 문구도 그렇게 안내). 받는 쪽은 hash 를 useSyncExternalStore 로 읽어 정적 HTML·첫 렌더는 진행자 화면. 첫 화면 예시는 시드 1 고정이라 명단을 고치면 무작위 시드로 바꾼다(같은 명단을 넣어 배정을 재현하는 부정 방지). 12월 홈 시즌 카드에 넣을지 검토.
 - **`/calendar-2027/` 2027 달력(cd32e1fa)**: `src/utils/yearCalendar.ts`(24절기·명절은 천문연 달력자료 2027을 그대로 — 검사 `scripts/check-year-calendar.ts`). **해마다 11월 초**: 천문연 calendarData?year=다음해 로 SOLAR_TERMS·CUSTOM_DAYS 추가 → `src/app/calendar-2027` 폴더를 `calendar-2028` 로 복사(YEAR·TITLE 리터럴·DESC·FAQ 숫자) → menuConfig·번역·OG. 천문연 2026 페이지는 2026.4 공휴일 규정 개정 전 자료라 노동절·제헌절이 없음(사이트 데이터가 맞음).
 - **`/dividend-calculator/` 배당금 계산기(cd32e1fa)**: `src/utils/dividend.ts` 조문 주석(소득세법 §129·§14, 조특법 §104의27 고배당 분리과세 2026~2028 사업연도, ISA §91의18, 건보 시행규칙 §44). 미국 조약세율 15%는 국세청 원문 미확인(입력칸 기본값). 종합과세 추가 세액은 계산하지 않고 안내만. 검사 `scripts/check-dividend.ts`.
-- **2026-11-07 신규 7종(사용자 기획 승인, 커밋만·미배포)**: `/wind-chill`(24573a7d) · `/dependent-eligibility`·`/json-to-typescript`(41cab118) · `/yut-nori`(464041e7) · `/child-growth`(94952cce) · `/youth-future-savings`(96cceebc) · `/basic-pension`(f1a69ba5).
+- **2026-11-07 신규 7종(사용자 기획 승인, 2026-11-07 운영 배포 — 10개 새 페이지 200·h1 확인, /api/wind-chill 16곳 응답 확인, IndexNow 21+32 URL 전송 200)**: `/wind-chill`(24573a7d) · `/dependent-eligibility`·`/json-to-typescript`(41cab118) · `/yut-nori`(464041e7) · `/child-growth`(94952cce) · `/youth-future-savings`(96cceebc) · `/basic-pension`(f1a69ba5).
   - 체감온도: 새 Pages Function `/api/wind-chill`(MET 16곳, 캐시 3h) — **배포 후 응답 확인**(next dev 에서는 안 돌아서 실데이터 임시 파일로만 확인함). 식·단계는 기상청 기상자료개방포털, 기상청 체감온도 생활지수는 2026-05-01 서비스 종료.
   - 피부양자: 시행규칙 별표1·1의2(2025.4.23 개정). 금융소득 1천만원 제외가 피부양자 판정에도 쓰이는지 **확인 필요**(결과 갈릴 때만 경고).
   - 아이 키: 36~227개월 LMS는 질병관리청 공식 계산기 곡선에서 L·S 역산(원본 xls 미확보, 차이 ≤1.5백분위수). 사용자가 「성장도표 데이터 테이블.xls」를 주면 교체. **2027년 12월 성장도표 개정판 공표 → 교체**.
@@ -19,7 +19,7 @@
   - 윷놀이: 게임 허브에서 AI 전용 게임은 온라인 대전 버튼을 숨김(GameHub). 관련 도구 목록은 4·6개 규칙(check-related-tools) — 새 링크 넣을 때 개수 확인.
 - **남은 것**: DecisionToolsBar(15페이지 공용 서버 컴포넌트) 한국어 하드코딩, 돌림판 저장 이미지 문구가 /roulette 에서도 "메뉴 룰렛", 사다리 결과 공개 후 포커스가 행에서 빠짐, 건강보험 상·하한·점수당 금액은 12월 2027 고시 후 갱신.
 
-## 2026-11-06 AI 검색·에이전트 대응 (커밋, 미배포)
+## 2026-11-06 AI 검색·에이전트 대응 (2026-11-07 운영 배포 — /mcp 도구 8개·/api/tools·/api/calc 7종 운영 응답 확인)
 
 - **`public/llms.txt`**(llmstxt.org 형식): `scripts/generate-llms-txt.cjs`가 menuConfig·ko 번역으로 만들고, `generate-redirects-rss.js` 끝에서 함께 돈다(도구 추가 때 자동 갱신). 맨 위에 연말·연초 핵심 13개와 계산 API 안내. robots.txt 주석으로 위치 표시.
 - **`/api/calc/{salary|four-insurance|age|sun|retirement|unemployment|minimum-wage}`**: 페이지와 같은 utils로 계산한 JSON(CORS *, 캐시 1시간, noindex). 정적 HTML은 기본값 결과라 에이전트가 쿼리 값을 정확히 받으려면 이 API가 필요. 명세 `public/openapi.json`, 테스트 `scripts/check-agent-api.ts`(esbuild 번들 후 실행, 잘못된 입력 14종 400).
@@ -28,12 +28,12 @@
 - **원격 MCP 서버 `/mcp`**(`functions/mcp.ts` → `src/lib/mcpServer.ts`): Streamable HTTP, 상태 없음, 인증 없음, POST JSON-RPC만(GET 405, 알림 202). 도구 8개 search_tools·net_salary·social_insurance·korean_age·sun_times·severance_pay·unemployment_benefit·minimum_wage — 계산은 `handleCalc` 재사용. 프로토콜 2025-06-18·03-26·2024-11-05 협상.
 - **도구 검색 `/api/tools?q=`**(`src/lib/toolSearch.ts`): menuConfig + 공용 번역 ko·en 이름·설명 점수(이름 3·경로 2·설명 1, 흔한 말 0.2, 한 글자 낱말 제외). 테스트 `scripts/check-mcp.ts`(esbuild 번들 후 실행). 배포 후 `curl -X POST https://toolhub.ai.kr/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'` 로 확인. MCP 레지스트리 등록은 나중에(사용자 판단).
 
-## 2026-11-06 스키장 개장일·날씨 (커밋, 미배포)
+## 2026-11-06 스키장 개장일·날씨 (2026-11-07 운영 배포)
 
 - **`/ski-resorts/`**: 12곳(`src/lib/ski/resorts.ts`). 2026/27 개장 목표가 나온 곳은 휘닉스 11/27·알펜시아 11/28뿐(11/6 기준), 나머지 `opening: null` → "공지 전 · 예년 시기" 표시, 추천은 예년 시기 첫날(11/21·12/1·12/11) 전 날짜를 "개장 전(예상)"으로 뺀다. **리조트 공지가 나오면 `opening`에 날짜·출처를 채운다(11월 중하순).**
 - `/api/ski-forecast`: MET 12곳, 엣지 캐시 3시간. 09~17시 요약(`skiDays`)과 점수(`skiScore`: 날씨 60%·요일 혼잡 40%, 비 3mm·바람 14m/s 이상은 45점 상한). `scripts/check-ski.ts`. SW v4.35.10, 빌드 782p.
 
-## 2026-11-06 나이표 · 2027년 달라지는 것 (커밋, 미배포 — 사용자가 일괄 배포 예정)
+## 2026-11-06 나이표 · 2027년 달라지는 것 (2026-11-07 운영 배포)
 
 - **`/age-table/`**: 1930년생~내년생, 올해·내년 만 나이·연 나이·띠(간지·색)·초등 입학(빠른년생 2002년 1~2월생까지), 띠별 나이, 설날 경계 안내(`lunarToSolar`로 1900~2050). 제목 연도는 빌드 시점. **FAQ의 2027 문구(정미년·양띠 나이)는 해마다 갱신.** `scripts/check-age-table.ts`.
 - **`/changes-2027/`**: 13개 항목 시행일 순(2026.12.10 휴게 생략 ~ 2027.7 국민연금 상·하한), 숫자는 각 utils에서 계산(최저임금·4대보험·중위소득·실업급여 하한·아동수당 연령). 상단 요약: 월급 300만원 4대보험 +7,770원, 연봉 5,000만원 실수령 −11,000원. **12월 말 정부 「2027년부터 이렇게 달라집니다」 나오면 항목 보강**, 고용보험 2.0% 확정 시 eiRate 확정 처리·FAQ 숫자 갱신.
