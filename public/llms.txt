@@ -127,6 +127,9 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [전세사기 체크리스트](https://toolhub.ai.kr/jeonse-checklist/): 전세 계약 전 필수 확인 항목 20개+, 위험도 점수, 안전 가이드
 - [해외직구 관부가세 계산기](https://toolhub.ai.kr/customs-duty/): 직구 면세 한도와 관세·부가세를 원화로 바로 계산
 - [김장 계산기](https://toolhub.ai.kr/kimjang-calculator/): 배추 포기 수로 양념 재료량과 김장 비용 계산
+- [피부양자 자격 계산기](https://toolhub.ai.kr/dependent-eligibility/): 건강보험 피부양자 소득·재산 요건 판정과 탈락 시 예상 지역보험료
+- [청년미래적금 계산기](https://toolhub.ai.kr/youth-future-savings/): 만기 수령액·정부기여금·비과세 효과, 일반 적금과 비교
+- [기초연금 계산기](https://toolhub.ai.kr/basic-pension/): 소득인정액으로 수급 자격 판정, 예상 수령액(부부·국민연금 연계 감액)
 
 ## 개발 도구
 
@@ -250,6 +253,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [개발자 로드맵](https://toolhub.ai.kr/dev-roadmap/): 프론트엔드·백엔드·풀스택·DevOps — 단계별 학습 경로와 추천 기술 스택
 - [일출·일몰 시간](https://toolhub.ai.kr/sunrise-sunset/): 날짜·도시별 일출·일몰·낮 길이·골든아워
 - [체감온도 계산기](https://toolhub.ai.kr/wind-chill/): 기온·바람으로 체감온도 계산, 우리 동네 48시간 체감온도와 한파
+- [JSON → TypeScript 변환기](https://toolhub.ai.kr/json-to-typescript/): JSON을 interface·type으로 변환, 선택 필드·배열 타입 추론
 
 ## 이미지/미디어 도구
 
@@ -299,6 +303,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [배란일 계산기](https://toolhub.ai.kr/ovulation-calculator/): 생리주기 기반 배란일·가임기 예측, 3개월 달력, 출산예정일 연계
 - [에니어그램 테스트](https://toolhub.ai.kr/enneagram/): 36문항으로 9가지 성격 유형 분석, 레이더 차트, MBTI 연계
 - [건강검진 대상 조회](https://toolhub.ai.kr/health-checkup/): 출생연도로 올해 국가건강검진·암검진 대상 확인
+- [아이 키 성장 백분위](https://toolhub.ai.kr/child-growth/): 성장도표로 키·몸무게 백분위와 부모 키로 예상 키 계산
 
 ## 간단 게임
 
@@ -332,6 +337,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [네모로직](https://toolhub.ai.kr/picross/): 숫자 힌트로 그림을 완성하는 논리 퍼즐 게임
 - [마작 솔리테어](https://toolhub.ai.kr/mahjong-solitaire/): 같은 패를 찾아 짝을 맞추는 타일 매칭 퍼즐 게임
 - [십자말풀이](https://toolhub.ai.kr/crossword/): 가로세로 힌트로 단어를 채우는 한국어 십자말풀이
+- [윷놀이](https://toolhub.ai.kr/yut-nori/): 온라인 윷놀이 — AI 대전, 한 기기에서 2~4명
 
 ## Optional
 

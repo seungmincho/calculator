@@ -2844,7 +2844,13 @@
       "manito": "Secret Santa Draw",
       "calendar2027": "2027 Calendar",
       "dividendCalculator": "Dividend Calculator",
-      "windChill": "Wind Chill Calculator"
+      "windChill": "Wind Chill Calculator",
+      "dependentEligibility": "Health Insurance Dependent Check",
+      "youthFutureSavings": "Youth Future Savings Calculator",
+      "basicPension": "Basic Pension Calculator",
+      "jsonToTypescript": "JSON to TypeScript",
+      "childGrowth": "Child Growth Percentile",
+      "yutNori": "Yut Nori"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8597,6 +8603,30 @@
       "windChill": {
         "title": "Wind Chill Calculator",
         "description": "Wind chill from temperature and wind, 48-hour forecast for Korean cities"
+      },
+      "dependentEligibility": {
+        "title": "Health Insurance Dependent Check",
+        "description": "Korean NHI dependent income/property test and expected premium"
+      },
+      "youthFutureSavings": {
+        "title": "Youth Future Savings Calculator",
+        "description": "Maturity amount with government match and tax-free interest"
+      },
+      "basicPension": {
+        "title": "Basic Pension Calculator",
+        "description": "Korean basic pension eligibility and expected amount"
+      },
+      "jsonToTypescript": {
+        "title": "JSON to TypeScript",
+        "description": "Convert JSON to interfaces or types with optional fields and arrays"
+      },
+      "childGrowth": {
+        "title": "Child Growth Percentile",
+        "description": "Height and weight percentiles from Korean growth charts, predicted adult height"
+      },
+      "yutNori": {
+        "title": "Yut Nori",
+        "description": "Traditional Korean board game vs AI or 2–4 players on one device"
       }
     }
   },
@@ -54682,6 +54712,381 @@
           }
         ],
         "asOf": "Checked Nov 7, 2026"
+      }
+    }
+  },
+  "jsonToTypescript": {
+    "title": "JSON to TypeScript Converter",
+    "subtitle": "Paste JSON and get TypeScript interface or type declarations instantly. Optional fields (?), null unions, array element types and nested object names are inferred automatically.",
+    "options": {
+      "rootName": "Root type name",
+      "style": "Declaration style",
+      "interface": "interface",
+      "type": "type",
+      "keywords": "Keywords",
+      "exportKw": "export",
+      "readonly": "readonly"
+    },
+    "input": {
+      "label": "JSON input",
+      "placeholder": "Paste JSON here",
+      "sample": "Load sample",
+      "clear": "Clear",
+      "privacy": "Converted in your browser only. Your JSON is never sent to a server."
+    },
+    "output": {
+      "label": "TypeScript output",
+      "count": "{n} declarations",
+      "copy": "Copy",
+      "copied": "Copied",
+      "download": "Download .ts",
+      "empty": "Paste JSON and the TypeScript types will appear here.",
+      "invalid": "Fix the JSON syntax error and it converts again right away."
+    },
+    "error": {
+      "title": "JSON syntax error",
+      "at": "line {line}, column {column}"
+    },
+    "guide": {
+      "title": "JSON to TypeScript guide",
+      "rules": {
+        "title": "How types are inferred",
+        "items": [
+          "Strings, numbers and booleans become string, number and boolean. Numbers are always number, with no integer/float split.",
+          "A value that is only ever null becomes null; mixed with other values it becomes a union such as string | null.",
+          "In arrays of objects, keys present in only some items become optional (?), and differing value types are merged into a union.",
+          "Arrays collect their element types, e.g. number[] or (string | number)[]. An empty array becomes unknown[], and nested arrays become number[][].",
+          "An empty object {} has no known shape, so it becomes Record<string, unknown>.",
+          "Date-like values are still strings in JSON, so they stay string."
+        ]
+      },
+      "naming": {
+        "title": "How types are named",
+        "items": [
+          "Nested objects get their own declaration named after the key in PascalCase: user_profile becomes UserProfile.",
+          "Array elements singularize simple English plurals: items becomes Item, categories becomes Category. Non-plural keys get an Item suffix, e.g. data becomes DataItem.",
+          "Name clashes get a number suffix such as User2. Built-in type names like Date, Record or Promise are avoided the same way, and with export off, browser (DOM) names like Location or Comment are avoided too so they do not merge with global declarations.",
+          "Objects with exactly the same shape are declared once and the name is reused.",
+          "Keys with hyphens or spaces, or starting with a digit, are quoted, e.g. \"first-name\".",
+          "A top-level array or primitive becomes a type alias such as type Root = Item[]."
+        ]
+      },
+      "tips": {
+        "title": "Practical tips",
+        "items": [
+          "For API responses, paste several records as an array rather than one. Keys missing in some records become optional, which is closer to the real response.",
+          "Cases missing from the sample cannot be inferred. Fields that only ever arrived as null need their real type written by hand (e.g. string | null).",
+          "TypeScript types are only checked at compile time. To be sure a server response really has this shape, validate it at runtime with a library such as zod or valibot.",
+          "Fields with a fixed set of values, like status, are more precise as literal unions such as 'active' | 'inactive'.",
+          "interface suits declaration merging and extends; type suits unions and intersections. Pick whichever matches your team convention."
+        ]
+      },
+      "privacy": "Everything runs in your browser. The JSON you paste is never sent to a server; only your last input is kept in this device's browser (localStorage) so you can pick up where you left off.",
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How do I convert JSON to a TypeScript interface?",
+            "a": "Paste JSON into the input box and the interfaces are generated right away. Choose the root type name, interface or type, and export or readonly, then copy the result or download it as a .ts file."
+          },
+          {
+            "q": "Should I use interface or type?",
+            "a": "For object shapes they are nearly identical. Interfaces merge when declared again under the same name and extend easily; type aliases are better for combining unions and intersections. A top-level array or primitive cannot be an interface, so it is always a type."
+          },
+          {
+            "q": "When is a field marked optional (?)?",
+            "a": "When a key appears in only some items of an array of objects. A single object treats every key as required, so paste several records as an array if you want optional fields detected."
+          },
+          {
+            "q": "What type do null values get?",
+            "a": "A value that is null in every sample becomes null; mixed with other values it becomes a union such as string | null. A null-only field has no known real type, so fix it by hand after converting."
+          },
+          {
+            "q": "Are dates or integers detected?",
+            "a": "JSON has no date or integer type, so dates stay string and all numbers become number. Change them to Date or a branded type after converting if you need to."
+          },
+          {
+            "q": "Is my JSON sent to a server?",
+            "a": "No. Conversion runs only in your browser and nothing is uploaded. Only your last input is saved in this device's localStorage so you can continue on your next visit."
+          },
+          {
+            "q": "Why is no error position shown?",
+            "a": "The position is read from the browser's error message. Chrome, Edge and Firefox usually report a line and column, but Safari gives no position, so only the message is shown. Common causes are trailing commas, single quotes, unquoted keys and comments."
+          }
+        ]
+      }
+    }
+  },
+  "dependentEligibility": {
+    "title": "Health Insurance Dependent Eligibility Calculator",
+    "subtitle": "Checks the support, income and property requirements one by one under Korean law, and estimates the regional premium you would pay if you don't qualify.",
+    "won": "KRW",
+    "met": "Met",
+    "unmet": "Not met",
+    "fmt": {
+      "eokMan": "₩{won}",
+      "eok": "₩{won}",
+      "man": "₩{won}",
+      "won": "₩{won}"
+    },
+    "in": {
+      "title": "Person to be a dependent",
+      "relation": "Relationship to the employee member",
+      "relations": {
+        "spouse": "Spouse (incl. common-law)",
+        "parent": "Parent (incl. spouse's parent)",
+        "grandparent": "Grandparent or above (incl. spouse's side)",
+        "child": "Child",
+        "stepchild": "Spouse's child (not your own)",
+        "grandchild": "Grandchild",
+        "childSpouse": "Child's spouse (son/daughter-in-law)",
+        "sibling": "Sibling",
+        "other": "Other relative (spouse's sibling, nephew, etc.)"
+      },
+      "relShort": {
+        "spouse": "Spouse",
+        "parent": "Parent",
+        "grandparent": "Grandparent",
+        "child": "Child",
+        "stepchild": "Spouse's child",
+        "grandchild": "Grandchild",
+        "childSpouse": "Child's spouse",
+        "sibling": "Sibling",
+        "other": "Relative"
+      },
+      "together": "Do they live with the employee member?",
+      "togetherYes": "Together",
+      "togetherNo": "Separately",
+      "age": "Age (full years)",
+      "ageUnit": "yrs",
+      "ageHint": "A sibling must be under 30 or 65 or older. Age doesn't matter if they are registered disabled or have a disability grade.",
+      "marital": "Marital status",
+      "maritals": {
+        "single": "Never married",
+        "divorced": "Divorced/widowed",
+        "married": "Married"
+      },
+      "kidsIncome": "Does any of this person's children have wages or income?",
+      "blocker": {
+        "parentApart": "Does any sibling living with the parent (for a spouse's parent: the spouse's sibling) have wages or income?",
+        "grandparentApart": "Does any child or grandchild living with the grandparent have wages or income?",
+        "grandchildTogether": "Does the grandchild's father or mother have wages or income? (Answer 'No' if neither is alive)",
+        "grandchildApart": "Is the grandchild's father or mother alive?",
+        "siblingTogether": "Does either parent have wages or income? (Answer 'No' if no parent is alive)",
+        "siblingApart": "Do the parents, or any other sibling living with this sibling, have wages or income?"
+      },
+      "yes": "Yes",
+      "no": "No",
+      "disabled": "Registered disabled, or a national merit/veteran recipient with a disability grade?",
+      "incomeTitle": "Annual income",
+      "incomeHint": "Enter income for the year used in the review (see 'When it applies' below). Exclude tax-free income.",
+      "business": "Business income (incl. rental)",
+      "businessHint": "Revenue minus necessary expenses",
+      "bizRegistered": "Is there a business registration?",
+      "housingRental": "Does this business income include housing rental income?",
+      "financial": "Interest & dividends",
+      "pension": "Public pension (National, civil service, teachers', military)",
+      "pensionHint": "Full amount received. Private pensions (pension savings, IRP) are not covered here",
+      "wage": "Employment income",
+      "wageHint": "Gross pay minus tax-free items",
+      "other": "Other income",
+      "otherHint": "Lecture fees, royalties, etc. minus necessary expenses",
+      "propertyTaxBase": "Total property tax base",
+      "propertyHint": "Sum of the property tax bases of land, buildings, houses, ships and aircraft (not the published price). Check your property tax bill. Rental deposits are not included"
+    },
+    "result": {
+      "label": "{rel}: dependent eligibility",
+      "ok": "Eligible as a dependent",
+      "no": "Not eligible as a dependent",
+      "okDesc": "All support, income and property requirements are met.",
+      "noDesc": "Requirements not met: {failed}",
+      "disclaimer": "This is an estimate based on the rules. The NHIS makes the actual decision with tax and local government data — confirm with the NHIS online dependent check or call 1577-1000."
+    },
+    "req": {
+      "support": "Support requirement",
+      "income": "Income requirement",
+      "property": "Property requirement"
+    },
+    "support": {
+      "spouse": "A spouse qualifies whether living together or not.",
+      "together": "Qualifies when living together.",
+      "noEarner": "Qualifies because no family member in the question above has wages or income.",
+      "single": "Qualifies because they have never married.",
+      "divorcedOk": "Divorced or widowed, but none of their children has wages or income, so they qualify.",
+      "noParents": "Qualifies as never married with no living parents.",
+      "earner": "Does not qualify when a family member in the question above has wages or income.",
+      "parentsAlive": "A grandchild living separately qualifies only if never married and with no living parents.",
+      "married": "This relationship does not qualify if married.",
+      "divorcedKids": "If divorced or widowed, they don't qualify when any of their children has wages or income.",
+      "apart": "This relationship qualifies only when living together.",
+      "siblingStatus": "A sibling qualifies only if under 30, 65 or older, registered disabled, or a merit/veteran recipient with a disability grade.",
+      "other": "Only a spouse, lineal ascendants and descendants (and their spouses), and siblings can be dependents."
+    },
+    "income": {
+      "totalOk": "Total income {total} — within the {limit} limit.",
+      "totalNo": "Total income {total} — over the {limit} limit.",
+      "room": "{room} left before the income limit.",
+      "married": "If married, their spouse must also meet the income requirement. Check the spouse's income separately."
+    },
+    "business": {
+      "none": "No business income.",
+      "small": "Business income is {limit} or less and they are exempt (no business registration, or a disability grade), so it counts as none.",
+      "registered": "With a business registration, any business income fails the requirement (disability grade exempt).",
+      "housingRental": "With housing rental income, the no-registration exemption does not apply (disability grade exempt).",
+      "over": "Business income exceeds {limit} a year."
+    },
+    "property": {
+      "low": "Tax base {base} — at or below ₩540 million, so it is met.",
+      "midOk": "Tax base {base} — between ₩540 million and ₩900 million, total income must be ₩10 million or less; it is {total}, so it is met.",
+      "midNo": "Tax base {base} — between ₩540 million and ₩900 million, total income must be ₩10 million or less, but it is {total}.",
+      "high": "Tax base {base} — above ₩900 million never qualifies, regardless of income.",
+      "siblingOk": "Tax base {base} — at or below the ₩180 million sibling limit, so it is met.",
+      "siblingNo": "Tax base {base} — a sibling must be at or below ₩180 million."
+    },
+    "warn": {
+      "financial": "Excluding the financial income of {fin} changes the result ({alt}). Premium calculations skip interest and dividends of ₩10 million or less (Enforcement Rule Art. 44), but whether the dependent test does the same is not confirmed by the rules or NHIS guidance. Please check with the NHIS (1577-1000)."
+    },
+    "premium": {
+      "title": "Estimated premium as a regional member",
+      "value": "₩{v} / month",
+      "won": "₩{v}",
+      "short": "Estimated regional premium",
+      "income": "Health premium on income",
+      "property": "Health premium on property",
+      "ltc": "Long-term care premium",
+      "min": "Income is low, so the minimum premium applies to the income part.",
+      "note": "A rough estimate at {year} rates using only this person's income and property. Regional premiums are per household, so other members' income or property and rental deposits change it.",
+      "link": "Calculate in detail with the health insurance calculator"
+    },
+    "timing": {
+      "late": "As of {m}/{y}, the review uses {income} income and property as of June 1, {property}.",
+      "early": "As of {m}/{y}, the review uses {income} income ({pension} for pensions) and property as of June 1, {property}. From November, each moves one year later."
+    },
+    "share": {
+      "tool": "Dependent Eligibility Calculator",
+      "sub": "Total income {total} · Property tax base {prop}",
+      "text": "{rel} health insurance dependent check: {verdict} (total income {total}, property tax base {prop})"
+    },
+    "guide": {
+      "title": "How dependent eligibility is decided",
+      "criteria": {
+        "title": "Requirements",
+        "items": [
+          "A dependent must meet the support, income and property requirements (National Health Insurance Act Enforcement Rule Art. 2).",
+          "Support: a spouse always qualifies. Parents, grandparents and children qualify when living together; living apart adds conditions by relationship. A child's spouse and a spouse's child qualify only when living together (Annex 1).",
+          "Income: total income must be ₩20 million a year or less. There must be no business income, but up to ₩5 million counts as none if there is no business registration or they have a disability grade. Housing rental income removes the no-registration exemption (Annex 1-2).",
+          "Property: a total property tax base of ₩540 million or less is fine. Between ₩540 million and ₩900 million, total income must be ₩10 million or less; above ₩900 million never qualifies. Siblings must be at or below ₩180 million (Annex 1-2).",
+          "Siblings qualify only if under 30, 65 or older, registered disabled, or merit/veteran recipients with a disability grade, and never married (divorced or widowed counts).",
+          "If the person is married, both spouses must meet the income requirement."
+        ]
+      },
+      "income": {
+        "title": "How income is counted",
+        "items": [
+          "Interest, dividends, business, employment, pension and other income are added up; tax-free income is excluded (Enforcement Decree Art. 41(1)).",
+          "Public pensions (National, civil service, teachers', military) count in full (Decree Art. 41(1)5).",
+          "Employment income is gross pay minus tax-free items; business and other income are revenue minus necessary expenses (Enforcement Rule Art. 44(1)).",
+          "Financial income: premium calculations skip interest and dividends totalling ₩10 million or less (Rule Art. 44(1) proviso). It is not confirmed whether the dependent test does the same, so this calculator includes it and flags when excluding it would change the result.",
+          "Whether private pensions (pension savings, IRP) count is not covered here. Please check with the NHIS."
+        ]
+      },
+      "timing": {
+        "title": "When it applies",
+        "items": [
+          "In November and December, the review uses the previous year's income. For example, November 2026 uses 2025 income (Decree Art. 41(3)).",
+          "From January to October, it uses income from two years before, except pensions, which use the previous year.",
+          "Property uses that year's June 1 property tax data from November to the following October (NHIS Articles of Association Art. 43-4).",
+          "If the requirements are not met, dependent status ends the day after the NHIS confirms it (Rule Art. 2(3)).",
+          "If the dependent is reported within 90 days of the employee member's enrolment or change date, it is recognised from that date (Rule Art. 2(2))."
+        ]
+      },
+      "reform": {
+        "title": "What changed in September 2022",
+        "items": [
+          "The second-stage premium reform (effective Sept 1, 2022) lowered the income limit for dependents from ₩34 million to ₩20 million a year.",
+          "The plan to tighten the property limit to ₩360 million was dropped; the ₩540 million limit (₩540–900 million with income of ₩10 million or less) stayed.",
+          "About 273,000 dependents (1.5%) were expected to become regional members; their temporary premium reduction (80% in year one down to 20% in year four) ran until August 2026."
+        ]
+      },
+      "tips": {
+        "title": "Worth checking",
+        "items": [
+          "If pensions, interest and other income are close to ₩20 million, add them up before the November review.",
+          "Above a ₩540 million property tax base, the income limit drops to ₩10 million. Look at property and income together.",
+          "With a business registration, even a little business income fails the business income requirement.",
+          "The NHIS website's dependent eligibility check (simulation) shows the result based on NHIS data."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What is the income limit for a dependent?",
+            "a": "Interest, dividends, business, employment, pension and other income together must be ₩20 million a year or less. There should be no business income, but up to ₩5 million counts as none without a business registration. Housing rental income removes that exemption, while registered disabled people and merit/veteran recipients with a disability grade get the ₩5 million allowance regardless of registration (Enforcement Rule Annex 1-2)."
+          },
+          {
+            "q": "Can someone lose dependent status with only a National Pension?",
+            "a": "Yes. Public pensions such as the National Pension count in full as income (Enforcement Decree Art. 41(1)5). If total income exceeds ₩20 million a year (about ₩1.66 million a month), the income requirement fails. Above a ₩540 million property tax base, the limit drops to ₩10 million."
+          },
+          {
+            "q": "Is the property tax base different from the published price?",
+            "a": "Yes. The property tax base for land, buildings and houses is the standard value (published price) multiplied by the fair market value ratio, so it is lower than the published price (Local Tax Act Art. 110). The dependent test uses the sum for land, buildings, houses, ships and aircraft; rental deposits are not included. Your tax base is on your property tax bill."
+          },
+          {
+            "q": "When can status be lost, and which year's income counts?",
+            "a": "From November, the review uses the previous year's income and that year's June 1 property data. From January to October, income from two years before is used (pensions: the previous year) (Decree Art. 41(3), NHIS Articles Art. 43-4). If the requirements are not met, status ends the day after the NHIS confirms it (Rule Art. 2(3))."
+          },
+          {
+            "q": "Can a sibling be a dependent?",
+            "a": "Only siblings under 30, 65 or older, registered disabled, or merit/veteran recipients with a disability grade. They must be never married (divorced or widowed counts), and the specified family members, such as parents, must have no wages or income. The property limit is stricter at a ₩180 million tax base (Rule Annexes 1 and 1-2)."
+          },
+          {
+            "q": "Is financial income of ₩10 million or less excluded for dependents?",
+            "a": "For premium calculations, interest and dividends totalling ₩10 million or less are not added (Rule Art. 44(1) proviso). Whether the dependent income test uses the same rule is not clearly confirmed in the rules or NHIS guidance. This calculator includes financial income and tells you when excluding it would change the result. Please confirm with the NHIS (1577-1000)."
+          },
+          {
+            "q": "If income drops after closing a business, can they become a dependent again?",
+            "a": "If income falls for reasons set by the NHIS, such as closing a business, you can submit proof and apply for an income adjustment (Decree Art. 41-2). According to the NHIS, reporting the dependent within 90 days of the adjustment application makes it effective from the application date."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Legal basis & sources",
+        "items": [
+          {
+            "label": "Korea Law Information Center — Enforcement Rule Annex 1 (support requirement)",
+            "url": "https://www.law.go.kr/LSW/lsBylInfoPLinkR.do?lsNm=%EA%B5%AD%EB%AF%BC%EA%B1%B4%EA%B0%95%EB%B3%B4%ED%97%98%EB%B2%95+%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99&bylNo=0001&bylBrNo=00&bylCls=BE&bylEfYd=&bylEfYdYn=Y"
+          },
+          {
+            "label": "Korea Law Information Center — Enforcement Rule Annex 1-2 (income & property, amended Apr 23, 2025)",
+            "url": "https://www.law.go.kr/LSW/lsBylInfoPLinkR.do?lsNm=%EA%B5%AD%EB%AF%BC%EA%B1%B4%EA%B0%95%EB%B3%B4%ED%97%98%EB%B2%95+%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99&bylNo=0001&bylBrNo=02&bylCls=BE&bylEfYd=&bylEfYdYn=Y"
+          },
+          {
+            "label": "Korea Law Information Center — National Health Insurance Act Enforcement Rule (Arts. 2, 44)",
+            "url": "https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EA%B5%AD%EB%AF%BC%EA%B1%B4%EA%B0%95%EB%B3%B4%ED%97%98%EB%B2%95%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99"
+          },
+          {
+            "label": "Korea Law Information Center — Enforcement Decree (Art. 41 income types and timing)",
+            "url": "https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EA%B5%AD%EB%AF%BC%EA%B1%B4%EA%B0%95%EB%B3%B4%ED%97%98%EB%B2%95%EC%8B%9C%ED%96%89%EB%A0%B9"
+          },
+          {
+            "label": "NHIS — Income and property requirements for dependents",
+            "url": "https://www.nhis.or.kr/nhis/policy/wbhada07400m01.do"
+          },
+          {
+            "label": "NHIS — Registering a dependent",
+            "url": "https://www.nhis.or.kr/nhis/policy/wbhada07300m01.do"
+          },
+          {
+            "label": "NHIS — Dependent eligibility check (simulation)",
+            "url": "https://www.nhis.or.kr/nhis/minwon/retrievePibuChwidukPsblYn.do"
+          },
+          {
+            "label": "Ministry of Health and Welfare press release (June 29, 2022) — second-stage premium reform",
+            "url": "https://www.mohw.go.kr/board.es?act=view&bid=0027&list_no=371956&mid=a10503000000"
+          }
+        ],
+        "asOf": "Checked Nov 7, 2026 · Enforcement Rule in force from Sept 28, 2026 (Annex 1-2 as amended Apr 23, 2025)"
       }
     }
   }

@@ -137,6 +137,9 @@ export const menuConfig: MenuConfig = {
       { href: '/age-table', labelKey: 'footer.links.ageTable', descriptionKey: 'toolsShowcase.tools.ageTable.description', icon: '🎂', addedDate: '2026-11-06', subcategory: 'subcategory.others' },
       { href: '/changes-2027', labelKey: 'footer.links.changes2027', descriptionKey: 'toolsShowcase.tools.changes2027.description', icon: '📰', addedDate: '2026-11-06', subcategory: 'subcategory.others' },
       { href: '/dividend-calculator', labelKey: 'footer.links.dividendCalculator', descriptionKey: 'toolsShowcase.tools.dividendCalculator.description', icon: '💰', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
+      { href: '/dependent-eligibility', labelKey: 'footer.links.dependentEligibility', descriptionKey: 'toolsShowcase.tools.dependentEligibility.description', icon: '👪', addedDate: '2026-11-07', subcategory: 'subcategory.tax' },
+      { href: '/youth-future-savings', labelKey: 'footer.links.youthFutureSavings', descriptionKey: 'toolsShowcase.tools.youthFutureSavings.description', icon: '🌱', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
+      { href: '/basic-pension', labelKey: 'footer.links.basicPension', descriptionKey: 'toolsShowcase.tools.basicPension.description', icon: '🧓', addedDate: '2026-11-07', subcategory: 'subcategory.investSavings' },
     ],
   },
   tools: {
@@ -266,6 +269,7 @@ export const menuConfig: MenuConfig = {
       { href: '/manito', labelKey: 'footer.links.manito', descriptionKey: 'toolsShowcase.tools.manito.description', icon: '🎁', addedDate: '2026-11-07', subcategory: 'subcategory.decision' },
       { href: '/calendar-2027', labelKey: 'footer.links.calendar2027', descriptionKey: 'toolsShowcase.tools.calendar2027.description', icon: '📅', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
       { href: '/wind-chill', labelKey: 'footer.links.windChill', descriptionKey: 'toolsShowcase.tools.windChill.description', icon: '🥶', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
+      { href: '/json-to-typescript', labelKey: 'footer.links.jsonToTypescript', descriptionKey: 'toolsShowcase.tools.jsonToTypescript.description', icon: '🧩', addedDate: '2026-11-07', subcategory: 'subcategory.devTools' },
     ],
   },
   media: {
@@ -319,6 +323,7 @@ export const menuConfig: MenuConfig = {
       { href: '/ovulation-calculator', labelKey: 'footer.links.ovulationCalculator', descriptionKey: 'toolsShowcase.tools.ovulationCalculator.description', icon: '🌸', addedDate: '2026-03-21' },
       { href: '/enneagram', labelKey: 'footer.links.enneagram', descriptionKey: 'toolsShowcase.tools.enneagram.description', icon: '🔯', addedDate: '2026-03-21' },
       { href: '/health-checkup', labelKey: 'footer.links.healthCheckup', descriptionKey: 'toolsShowcase.tools.healthCheckup.description', icon: '🩺', addedDate: '2026-10-04' },
+      { href: '/child-growth', labelKey: 'footer.links.childGrowth', descriptionKey: 'toolsShowcase.tools.childGrowth.description', icon: '📏', addedDate: '2026-11-07' },
     ],
   },
   games: {
@@ -354,6 +359,7 @@ export const menuConfig: MenuConfig = {
       { href: '/picross', labelKey: 'footer.links.picross', descriptionKey: 'toolsShowcase.tools.picross.description', icon: '🟦', addedDate: '2026-03-21', modes: ['solo'] },
       { href: '/mahjong-solitaire', labelKey: 'footer.links.mahjongSolitaire', descriptionKey: 'toolsShowcase.tools.mahjongSolitaire.description', icon: '🀄', addedDate: '2026-03-21', modes: ['solo'] },
       { href: '/crossword', labelKey: 'footer.links.crossword', descriptionKey: 'toolsShowcase.tools.crossword.description', icon: '📝', addedDate: '2026-03-21', modes: ['solo'] },
+      { href: '/yut-nori', labelKey: 'footer.links.yutNori', descriptionKey: 'toolsShowcase.tools.yutNori.description', icon: '🎲', addedDate: '2026-11-07', modes: ['ai'] },
     ],
   },
 };

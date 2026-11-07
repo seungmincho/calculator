@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Fri, 06 Nov 2026 17:54:37 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Nov 2026 04:38:42 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[기초연금 계산기]]></title>
+    <link>https://toolhub.ai.kr/basic-pension/</link>
+    <guid>https://toolhub.ai.kr/basic-pension/</guid>
+    <description><![CDATA[소득인정액으로 수급 자격 판정, 예상 수령액(부부·국민연금 연계 감액)]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[2027 달력]]></title>
     <link>https://toolhub.ai.kr/calendar-2027/</link>
@@ -15,10 +22,31 @@
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[아이 키 성장 백분위]]></title>
+    <link>https://toolhub.ai.kr/child-growth/</link>
+    <guid>https://toolhub.ai.kr/child-growth/</guid>
+    <description><![CDATA[성장도표로 키·몸무게 백분위와 부모 키로 예상 키 계산]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[피부양자 자격 계산기]]></title>
+    <link>https://toolhub.ai.kr/dependent-eligibility/</link>
+    <guid>https://toolhub.ai.kr/dependent-eligibility/</guid>
+    <description><![CDATA[건강보험 피부양자 소득·재산 요건 판정과 탈락 시 예상 지역보험료]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[배당금 계산기]]></title>
     <link>https://toolhub.ai.kr/dividend-calculator/</link>
     <guid>https://toolhub.ai.kr/dividend-calculator/</guid>
     <description><![CDATA[세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[JSON → TypeScript 변환기]]></title>
+    <link>https://toolhub.ai.kr/json-to-typescript/</link>
+    <guid>https://toolhub.ai.kr/json-to-typescript/</guid>
+    <description><![CDATA[JSON을 interface·type으로 변환, 선택 필드·배열 타입 추론]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -33,6 +61,20 @@
     <link>https://toolhub.ai.kr/wind-chill/</link>
     <guid>https://toolhub.ai.kr/wind-chill/</guid>
     <description><![CDATA[기온·바람으로 체감온도 계산, 우리 동네 48시간 체감온도와 한파]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[청년미래적금 계산기]]></title>
+    <link>https://toolhub.ai.kr/youth-future-savings/</link>
+    <guid>https://toolhub.ai.kr/youth-future-savings/</guid>
+    <description><![CDATA[만기 수령액·정부기여금·비과세 효과, 일반 적금과 비교]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[윷놀이]]></title>
+    <link>https://toolhub.ai.kr/yut-nori/</link>
+    <guid>https://toolhub.ai.kr/yut-nori/</guid>
+    <description><![CDATA[온라인 윷놀이 — AI 대전, 한 기기에서 2~4명]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

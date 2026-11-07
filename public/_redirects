@@ -77,6 +77,7 @@
 /barcode-generator  /barcode-generator/  301
 /base-converter  /base-converter/  301
 /base64-converter  /base64-converter/  301
+/basic-pension  /basic-pension/  301
 /battleship  /battleship/  301
 /biorhythm  /biorhythm/  301
 /blood-pressure  /blood-pressure/  301
@@ -108,6 +109,7 @@
 /checkers  /checkers/  301
 /chess  /chess/  301
 /child-benefit  /child-benefit/  301
+/child-growth  /child-growth/  301
 /chmod-calculator  /chmod-calculator/  301
 /code-screenshot  /code-screenshot/  301
 /coding-patterns  /coding-patterns/  301
@@ -140,6 +142,7 @@
 /daily-wage-tax  /daily-wage-tax/  301
 /dday-calculator  /dday-calculator/  301
 /decision-tree  /decision-tree/  301
+/dependent-eligibility  /dependent-eligibility/  301
 /dev-cheatsheet  /dev-cheatsheet/  301
 /dev-roadmap  /dev-roadmap/  301
 /dice-roller  /dice-roller/  301
@@ -212,6 +215,7 @@
 /jeonse-loan  /jeonse-loan/  301
 /json-csv-converter  /json-csv-converter/  301
 /json-formatter  /json-formatter/  301
+/json-to-typescript  /json-to-typescript/  301
 /json-xml-converter  /json-xml-converter/  301
 /jwt-decoder  /jwt-decoder/  301
 /kanban-board  /kanban-board/  301
@@ -381,4 +385,6 @@
 /yaml-json-converter  /yaml-json-converter/  301
 /year-end-tax  /year-end-tax/  301
 /yes-no  /yes-no/  301
+/youth-future-savings  /youth-future-savings/  301
 /youth-rent-subsidy  /youth-rent-subsidy/  301
+/yut-nori  /yut-nori/  301

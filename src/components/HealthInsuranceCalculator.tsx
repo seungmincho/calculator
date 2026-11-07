@@ -372,7 +372,7 @@ export default function HealthInsuranceCalculator() {
         <p>{t('sources')}</p>
         <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
           <a href="https://www.nhis.or.kr" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkNhis')}</a>
-          <a href="https://www.nhis.or.kr/nhis/policy/wbhada07500m01.do" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkDependent')}</a>
+          <a href="https://www.nhis.or.kr/nhis/policy/wbhada07400m01.do" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkDependent')}</a>
           <a href="https://www.law.go.kr/법령/국민건강보험법시행령" target="_blank" rel="noopener noreferrer" className="text-primary font-medium">{t('linkLaw')}</a>
         </div>
         <p className="text-xs text-muted mt-2">{t('sourcesAsOf')}</p>
