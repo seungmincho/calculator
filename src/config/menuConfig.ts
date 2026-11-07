@@ -272,6 +272,8 @@ export const menuConfig: MenuConfig = {
       { href: '/calendar-2027', labelKey: 'footer.links.calendar2027', descriptionKey: 'toolsShowcase.tools.calendar2027.description', icon: '📅', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
       { href: '/wind-chill', labelKey: 'footer.links.windChill', descriptionKey: 'toolsShowcase.tools.windChill.description', icon: '🥶', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
       { href: '/json-to-typescript', labelKey: 'footer.links.jsonToTypescript', descriptionKey: 'toolsShowcase.tools.jsonToTypescript.description', icon: '🧩', addedDate: '2026-11-07', subcategory: 'subcategory.devTools' },
+      { href: '/winter-festivals', labelKey: 'footer.links.winterFestivals', descriptionKey: 'toolsShowcase.tools.winterFestivals.description', icon: '❄️', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
+      { href: '/toast-speech', labelKey: 'footer.links.toastSpeech', descriptionKey: 'toolsShowcase.tools.toastSpeech.description', icon: '🥂', addedDate: '2026-11-07', subcategory: 'subcategory.generators' },
     ],
   },
   media: {

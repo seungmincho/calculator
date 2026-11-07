@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sat, 07 Nov 2026 06:41:13 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 07 Nov 2026 07:12:21 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[기초연금 계산기]]></title>
@@ -78,10 +78,24 @@
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[건배사 모음]]></title>
+    <link>https://toolhub.ai.kr/toast-speech/</link>
+    <guid>https://toolhub.ai.kr/toast-speech/</guid>
+    <description><![CDATA[송년회·회식·모임 자리별 건배사 만들기와 짧은 건배 구호 뜻·선창 후창]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[체감온도 계산기]]></title>
     <link>https://toolhub.ai.kr/wind-chill/</link>
     <guid>https://toolhub.ai.kr/wind-chill/</guid>
     <description><![CDATA[기온·바람으로 체감온도 계산, 우리 동네 48시간 체감온도와 한파]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[겨울 축제 일정]]></title>
+    <link>https://toolhub.ai.kr/winter-festivals/</link>
+    <guid>https://toolhub.ai.kr/winter-festivals/</guid>
+    <description><![CDATA[산천어·송어 얼음축제, 태백산·대관령 눈축제, 빛축제의 이번 시즌 일정과 예년 시기]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

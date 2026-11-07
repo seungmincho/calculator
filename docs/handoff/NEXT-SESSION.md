@@ -1,8 +1,15 @@
-# NEXT-SESSION (2026-11-07 — 정보형 신규 3종 로컬 커밋, 미배포)
+# NEXT-SESSION (2026-11-07 — 정보형 신규 5종 로컬 커밋 2개, 미배포)
 
 ## 지금 상태 (2026-11-07 오후)
 
-운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬에 정보형 신규 3종 커밋(미푸시·미배포, SW v4.35.13). 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`.
+운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬에 정보형 신규 5종 커밋 2개(75dcde69 + 다음 커밋, 미푸시·미배포, SW v4.35.13 — 한 번에 배포하면 추가로 올릴 필요 없음). 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`.
+
+### 0-1. 2026-11-07 신규 2종 (사용자 기획 승인)
+
+- **`/winter-festivals/` 2026-27 겨울 축제 일정**: `src/lib/festivals.ts` 12곳(확정 4: 화천 산천어 1/9~31·서울빛초롱 12/11~1/31·아침고요 12/4~3/14·해운대 11/29~1/18, 나머지 8곳은 지난 시즌 실제 기간으로 "예년"). **공지 나오면 갱신**: 평창송어·홍천강 꽁꽁·철원 한탄강·포천 동장군·태백산 눈·대관령 눈꽃·함평 겨울빛·광복로 트리 → `SOURCES` 에 `<id>2027` + `dates` + 번역 `guide.sources.items.<키>` → `node scripts/check-winter-festivals.ts`. 아침고요·해운대는 관광공사에만 날짜 — 주최 측 누리집 갱신되면 대조. 인제 빙어(3년 연속 취소)·안동 암산(2026 취소)·보성차밭 등은 근거 부족으로 뺐음.
+- **`/toast-speech/` 건배사 모음**: 인사말 생성기 재사용(`GreetingGenerator` 에 `defaultSituation`·`embedded` prop — 기존 /greeting-generator 동작 그대로 확인) + 건배 구호 31개(`src/utils/toastChants.ts`, greetings.ts toast 구호와 선창·후창 일치를 `check-toast-chants.ts` 가 검사). 생성기 결과 제목이 건배사에서도 "인사말 5개"(기존과 같음) — 바꾸려면 greetingGenerator 키 추가.
+- 2027 시험 일정은 보류: 큐넷 2027 시행계획 공고 전(작년 11/27·12/4), 한능검 2027 은 국사편찬위 사이트에 아직 없음. **11월 말 재확인 후 기획.**
+- 검증: 전체 tsc 0, 새 파일 lint 0, audit 미해결 0, check 2종 PASS, dev 375px 넘침 0·라이트/다크·h1 하나·번역 키 노출 0.
 
 ### 0. 2026-11-07 정보형 신규 3종 (사용자 기획 승인, 서브에이전트 3개 병렬)
 

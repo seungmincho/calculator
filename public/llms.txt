@@ -256,6 +256,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [일출·일몰 시간](https://toolhub.ai.kr/sunrise-sunset/): 날짜·도시별 일출·일몰·낮 길이·골든아워
 - [체감온도 계산기](https://toolhub.ai.kr/wind-chill/): 기온·바람으로 체감온도 계산, 우리 동네 48시간 체감온도와 한파
 - [JSON → TypeScript 변환기](https://toolhub.ai.kr/json-to-typescript/): JSON을 interface·type으로 변환, 선택 필드·배열 타입 추론
+- [겨울 축제 일정](https://toolhub.ai.kr/winter-festivals/): 산천어·송어 얼음축제, 태백산·대관령 눈축제, 빛축제의 이번 시즌 일정과 예년 시기
+- [건배사 모음](https://toolhub.ai.kr/toast-speech/): 송년회·회식·모임 자리별 건배사 만들기와 짧은 건배 구호 뜻·선창 후창
 
 ## 이미지/미디어 도구
 

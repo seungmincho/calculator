@@ -106,7 +106,12 @@ async function renderGreetingCard(tool: string, label: string, text: string): Pr
   return new Promise((res, rej) => canvas.toBlob((b) => (b ? res(b) : rej(new Error('toBlob failed'))), 'image/png'))
 }
 
-export default function GreetingGenerator() {
+export default function GreetingGenerator({ defaultSituation, embedded = false }: {
+  /** URL에 ?s= 가 없을 때의 상황 (없으면 시즌 기본값) */
+  defaultSituation?: Situation
+  /** 다른 페이지 안에 넣을 때: 머리말(h1)과 가이드를 숨긴다 (/toast-speech) */
+  embedded?: boolean
+}) {
   const t = useTranslations('greetingGenerator')
   const sp = useSearchParams()
 
@@ -122,7 +127,7 @@ export default function GreetingGenerator() {
   const situationOrder = useMemo(() => [...new Set([...season, ...SITUATIONS])], [season])
 
   // URL이 상태의 원본 (이름은 넣지 않음). 상황이 URL에 없으면 시즌 기본값
-  const situation = pick(sp.get('s'), SITUATIONS, season[0] ?? 'yearEnd')
+  const situation = pick(sp.get('s'), SITUATIONS, defaultSituation ?? season[0] ?? 'yearEnd')
   const recipients = recipientsFor(situation)
   const customRecipients = recipients !== RECIPIENTS // 건배사 = 자리, 수능 = 수험생과의 관계
   const recipient = pick(sp.get('r'), recipients, customRecipients ? recipients[0] : 'client')
@@ -213,11 +218,11 @@ export default function GreetingGenerator() {
 
   return (
     <div className="space-y-8">
-      <div>
+      {!embedded && <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <p className="text-sm text-muted mt-1">{t('koreanNote')}</p>
-      </div>
+      </div>}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1">
@@ -339,7 +344,7 @@ export default function GreetingGenerator() {
         </section>
       )}
 
-      <GuideSection namespace="greetingGenerator" defaultOpen />
+      {!embedded && <GuideSection namespace="greetingGenerator" defaultOpen />}
 
       <p className="sr-only" aria-live="polite">{announce}</p>
     </div>

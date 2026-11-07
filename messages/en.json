@@ -2853,7 +2853,9 @@
       "yutNori": "Yut Nori",
       "civilServantPay": "Civil Servant Pay Table",
       "jeongsi2027": "2027 Regular Admission Dates",
-      "seasonalFood": "Seasonal Food by Month"
+      "seasonalFood": "Seasonal Food by Month",
+      "winterFestivals": "Winter Festivals",
+      "toastSpeech": "Toast Speeches"
     },
     "copyright": "© 2025-2026 ToolHub. All rights reserved."
   },
@@ -8642,6 +8644,14 @@
       "seasonalFood": {
         "title": "Seasonal Food by Month",
         "description": "Vegetables, fruit and seafood in season each month, with buying and storage tips"
+      },
+      "winterFestivals": {
+        "title": "2026-27 Korean Winter Festivals",
+        "description": "Ice, snow and light festivals this season, with dates and usual timing"
+      },
+      "toastSpeech": {
+        "title": "Korean Toast Speeches",
+        "description": "Generate a toast for year-end parties and gatherings, plus short toast chants with meanings"
       }
     }
   },
@@ -57164,6 +57174,558 @@
           "law": "Enforcement Decree of the Fishery Resources Management Act (National Law Information Center)"
         },
         "asOf": "As of November 2026. The ministry's December 2026 pick will be added once announced."
+      }
+    }
+  },
+  "toastSpeech": {
+    "title": "Korean Toast Speeches",
+    "description": "Make a toast for year-end parties, team dinners, New Year gatherings and farewells, and browse short Korean toast chants with their meanings and call-and-response lines.",
+    "jumpToChants": "Jump to {count} short toast chants",
+    "make": {
+      "title": "Make a toast",
+      "description": "Pick the occasion, tone and length to get a toast that flows from an opener to a few words to the chant. Toasts are written in Korean from hand-written sentences. Press 'Show other messages' for a new mix."
+    },
+    "chants": {
+      "title": "{count} short toast chants",
+      "description": "Popular Korean acronym chants and four-character idioms, each with its meaning and call-and-response lines. The leader calls the first line and everyone answers with the second.",
+      "filterLabel": "What's the occasion?",
+      "shown": "{count} chants",
+      "lead": "Lead",
+      "reply": "Response",
+      "split": "Leader and group say different lines",
+      "echo": "Everyone repeats the leader",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyAria": "Copy the {chant} chant",
+      "copiedAnnounce": "Copied the {chant} chant",
+      "copyText": "{chant} — {meaning}\nLead: {lead}\nResponse: {reply}"
+    },
+    "places": {
+      "all": "All",
+      "company": "Work team",
+      "client": "Clients",
+      "friends": "Friends & classmates",
+      "family": "Family",
+      "any": "Any occasion"
+    },
+    "list": {
+      "sohwaje": {
+        "chant": "소화제 (sohwaje)",
+        "meaning": "Short for 소통과 화합이 제일, “communication and harmony come first.” A safe pick for team dinners and client gatherings.",
+        "lead": "소통과 화합이! (Communication and harmony!)",
+        "reply": "제일! (Come first!)"
+      },
+      "mamuri": {
+        "chant": "마무리 (mamuri)",
+        "meaning": "From 마음먹은 대로 무엇이든 이루자, “may we achieve whatever we set our minds to.” The word itself means “wrapping up,” so it suits year-end parties.",
+        "lead": "마음먹은 대로! (Whatever we set our minds to!)",
+        "reply": "무엇이든 이루자! (Let’s achieve it!)"
+      },
+      "byeonsatto": {
+        "chant": "변사또 (byeonsatto)",
+        "meaning": "Short for 변함없는 사랑으로 또 만나자, “let’s meet again with unchanging love.” Good for reunions with friends or family.",
+        "lead": "변함없는 사랑으로! (With unchanging love!)",
+        "reply": "또 만나자! (Let’s meet again!)"
+      },
+      "cheongbaji": {
+        "chant": "청바지 (cheongbaji)",
+        "meaning": "Means 청춘은 바로 지금부터, “youth starts right now” (the word also means “blue jeans”). It lifts the mood when ages and ranks are mixed.",
+        "lead": "청춘은! (Youth is…)",
+        "reply": "바로 지금부터! (…right now!)"
+      },
+      "ojingeo": {
+        "chant": "오징어 (ojingeo)",
+        "meaning": "Short for 오래도록 징그럽게 어울리자, “let’s stick together for ages, almost too much” (the word means “squid”). Always gets a laugh among close friends.",
+        "lead": "오래도록! (For ages!)",
+        "reply": "징그럽게 어울리자! (Let’s stick together!)"
+      },
+      "dangnagwi": {
+        "chant": "당나귀 (dangnagwi)",
+        "meaning": "Short for 당신과 나의 귀한 만남을 위하여, “to the precious meeting of you and me” (the word means “donkey”). Works well with new clients or newcomers.",
+        "lead": "당신과 나의! (You and me!)",
+        "reply": "귀한 만남을 위하여! (To our precious meeting!)"
+      },
+      "nagaja": {
+        "chant": "나가자 (nagaja)",
+        "meaning": "Short for 나라와 가정과 자신의 발전을 위하여, “to the growth of our country, our families and ourselves.” Fits formal company events with many seniors.",
+        "lead": "나라와 가정과 자신의! (Country, family and self!)",
+        "reply": "발전을 위하여! (To our growth!)"
+      },
+      "jaegeonchuk": {
+        "chant": "재건축 (jaegeonchuk)",
+        "meaning": "Means 재미있고 건강하게 축복받으며 살자, “let’s live with fun, health and blessings” (the word means “rebuilding”). Good for family and old friends.",
+        "lead": "재미있고 건강하게! (With fun and health!)",
+        "reply": "축복받으며 살자! (Let’s live blessed!)"
+      },
+      "sauna": {
+        "chant": "사우나 (sauna)",
+        "meaning": "Short for 사랑과 우정을 나누자, “let’s share love and friendship.” Suits relaxed clubs and peer gatherings.",
+        "lead": "사랑과 우정을! (Love and friendship!)",
+        "reply": "나누자! (Let’s share!)"
+      },
+      "usaengsun": {
+        "chant": "우생순 (usaengsun)",
+        "meaning": "Short for 우리 생애 최고의 순간, “the best moment of our lives.” Great after a finished project or a good year.",
+        "lead": "우리 생애! (Of our lives!)",
+        "reply": "최고의 순간! (The best moment!)"
+      },
+      "wonderful": {
+        "chant": "원더풀 (wonderful)",
+        "meaning": "Packs 원하는 것보다 더 잘 풀리자, “may things go even better than we hope,” into the English word. Easy to use anywhere.",
+        "lead": "원하는 것보다! (Better than we hope!)",
+        "reply": "더 잘 풀리자! (May it all go well!)"
+      },
+      "dangsinMeotjyeo": {
+        "chant": "당신 멋져 (dangsin meotjyeo)",
+        "meaning": "The first syllables of 당당하게, 신나게, 멋지게, 져 주며 살자, “live proudly, joyfully, stylishly, and be willing to give in.” It also reads as “you’re awesome,” so it lands at any gathering.",
+        "lead": "당신! (You!)",
+        "reply": "멋져! (Are awesome!)"
+      },
+      "madangbal": {
+        "chant": "마당발 (madangbal)",
+        "meaning": "Short for 마주 앉은 당신의 발전을 위하여, “to the success of you across the table” (the word means a well-connected person). Honors clients and partners.",
+        "lead": "마주 앉은 당신의! (To you across the table!)",
+        "reply": "발전을 위하여! (To your success!)"
+      },
+      "tongtongtong": {
+        "chant": "통통통 (tongtongtong)",
+        "meaning": "Wishes for three kinds of 통: 의사소통 (communication), 운수대통 (great luck) and 만사형통 (everything going well). Good for project kickoffs and client dinners.",
+        "lead": "의사소통! 운수대통! (Communication! Great luck!)",
+        "reply": "만사형통! (Everything goes well!)"
+      },
+      "jujeonja": {
+        "chant": "주전자 (jujeonja)",
+        "meaning": "The first syllables of 주인의식 (ownership), 전문성 (expertise) and 자신감 (confidence); the word means “kettle.” Fits welcome parties and workshops.",
+        "lead": "주인의식! 전문성! (Ownership! Expertise!)",
+        "reply": "자신감! (Confidence!)"
+      },
+      "remember": {
+        "chant": "이 멤버 리멤버 (i member rimember)",
+        "meaning": "A pun on “remember this member”: let’s remember this group just as it is. Perfect for a last gathering before a team splits up or graduates.",
+        "lead": "이 멤버! (This member!)",
+        "reply": "리멤버! (Remember!)"
+      },
+      "ppappitta": {
+        "chant": "빠삐따 (ppappitta)",
+        "meaning": "Short for 빠지지 말고, 삐지지 말고, 따지지 말자, “don’t skip, don’t sulk, don’t nitpick.” A fun one for clubs that meet often.",
+        "lead": "빠지지 말고! 삐지지 말고! (Don’t skip! Don’t sulk!)",
+        "reply": "따지지 말자! (Don’t nitpick!)"
+      },
+      "naiyagara": {
+        "chant": "나이야가라 (naiyagara)",
+        "meaning": "Sounds like Niagara and means 나이야, 가라, “age, go away”: forget your age and stay young. Popular at reunions and with older guests.",
+        "lead": "나이야! (Age!)",
+        "reply": "가라! (Go away!)"
+      },
+      "gugupalpal": {
+        "chant": "구구팔팔 (gugupalpal)",
+        "meaning": "Means “to 99, full of life” (팔팔 = lively). Suits family gatherings with elders and birthday dinners.",
+        "lead": "구구! (Ninety-nine!)",
+        "reply": "팔팔! (Full of life!)"
+      },
+      "gahwamansaseong": {
+        "chant": "가화만사성 (gahwa mansaseong)",
+        "meaning": "An old saying: when the home is at peace, everything goes well. Good for holidays and family year-end dinners.",
+        "lead": "가화! (A peaceful home!)",
+        "reply": "만사성! (Makes everything go well!)"
+      },
+      "ilchwiwoljang": {
+        "chant": "일취월장 (ilchwi woljang)",
+        "meaning": "A four-character idiom for growing day by day, month by month. Good at New Year dinners and new team kickoffs.",
+        "lead": "일취! (Day by day!)",
+        "reply": "월장! (Month by month!)"
+      },
+      "gojingamnae": {
+        "chant": "고진감래 (gojin gamnae)",
+        "meaning": "A four-character idiom: after hardship comes joy. Fits a year-end party for a team that got through a tough year.",
+        "lead": "고진! (After hardship…)",
+        "reply": "감래! (…comes joy!)"
+      },
+      "songguyeongsin": {
+        "chant": "송구영신 (songgu yeongsin)",
+        "meaning": "A four-character idiom: see off the old year and welcome the new. Works from late-December parties to early-January dinners.",
+        "lead": "송구! (Farewell, old year!)",
+        "reply": "영신! (Welcome, new year!)"
+      },
+      "dongbanseongjang": {
+        "chant": "동반성장 (dongban seongjang)",
+        "meaning": "Means growing together by helping each other. A good chant for wrapping up the year with clients and partners.",
+        "lead": "동반! (Together!)",
+        "reply": "성장! (We grow!)"
+      },
+      "jihwaja": {
+        "chant": "지화자 (jihwaja)",
+        "meaning": "A traditional cheer that lifts the mood. The leader calls “지화자!” and everyone answers “좋다!”; elders especially love it.",
+        "lead": "지화자! (Jihwaja!)",
+        "reply": "좋다! (Wonderful!)"
+      },
+      "wihayeo": {
+        "chant": "위하여 (wihayeo)",
+        "meaning": "The most basic Korean toast, meaning “to…”. Swap 우리의 내일을 in the lead for the occasion, such as 우리 팀의 내년을 (our team’s next year) or 두 분의 앞날을 (the couple’s future).",
+        "lead": "우리의 내일을 위하여! (To our tomorrow!)",
+        "reply": "위하여! (Cheers to that!)"
+      },
+      "geonbae": {
+        "chant": "건배 (geonbae)",
+        "meaning": "The hanja literally means “empty the cup,” but today it simply means “cheers.” You don’t have to finish your drink, and it’s the safest choice when nothing else comes to mind.",
+        "lead": "건배! (Cheers!)",
+        "reply": "건배! (Cheers!)"
+      },
+      "yearEnd": {
+        "chant": "올 한 해도 고생 많았습니다 (year-end)",
+        "meaning": "A year-end chant thanking everyone for the year’s hard work. It’s in polite form, so it works with seniors present.",
+        "lead": "올 한 해도! (For this whole year!)",
+        "reply": "고생 많았습니다! (Thank you for your hard work!)"
+      },
+      "newYear": {
+        "chant": "새해 복 많이 (New Year)",
+        "meaning": "A first-toast chant for New Year dinners, wishing everyone good fortune. Natural until mid-January and around Seollal.",
+        "lead": "새해에는! (In the new year!)",
+        "reply": "복 많이 받자! (Let’s be blessed!)"
+      },
+      "farewell": {
+        "chant": "꽃길만 걷자 (farewell)",
+        "meaning": "Cheers on someone leaving at a farewell party: “walk only on paths of flowers.” Add the person’s name before the lead to make it personal.",
+        "lead": "가는 길마다! (Wherever you go!)",
+        "reply": "꽃길만 걷자! (Only paths of flowers!)"
+      },
+      "friendship": {
+        "chant": "우리 우정 영원히 (friendship)",
+        "meaning": "For reunions and longtime friends. If it’s been years, follow it with 변사또.",
+        "lead": "우리 우정! (Our friendship!)",
+        "reply": "영원히! (Forever!)"
+      }
+    },
+    "share": {
+      "label": "Ready for year-end parties and team dinners",
+      "headline": "{count} toast chants",
+      "cta": "See the toasts →"
+    },
+    "guide": {
+      "title": "How to give a good toast",
+      "whatIs": {
+        "title": "What is a Korean toast speech?",
+        "description": "A Korean toast speech (건배사) briefly says why everyone is gathered before glasses go up, then brings the room together with a chant everyone shouts. A short, easy-to-follow chant is remembered longer than a long, polished speech. On this page you can make a toast for your occasion and pick from short chants commonly used at Korean dinners and gatherings."
+      },
+      "howToUse": {
+        "title": "Toast order: opener → a few words → chant",
+        "items": [
+          "Opener: get attention with something like “Could everyone fill their glasses?” and wait until all glasses are raised.",
+          "A few words: sum up the year or today’s reason for gathering in one or two sentences. Mentioning a name or something you went through together makes it sincere.",
+          "Teach the chant: tell people the response first, such as “When I say 소통과 화합이!, please answer 제일!”.",
+          "Chant: call the lead loudly, let everyone answer with the response, then clink glasses.",
+          "Keep the whole thing under 30 seconds. About 150 Korean characters read aloud, three sentences and one chant, is plenty."
+        ]
+      },
+      "tips": {
+        "title": "Getting the call and response right",
+        "items": [
+          "Always announce the response once before you start. Nobody can follow a chant they’ve never heard.",
+          "Shorter responses work better. Two- or three-syllable answers like 제일! or 멋져! come back loud and together.",
+          "Call the lead louder and slower than usual, rising at the end, so everyone knows when to answer.",
+          "With a big group, count “one, two, three” and raise your glass as a signal so the response doesn’t scatter.",
+          "Asked out of the blue? A quick 위하여 or 건배 is perfectly fine."
+        ]
+      },
+      "realWorld": {
+        "title": "Tips by occasion",
+        "items": [
+          "Year-end party: thank everyone for the year first, then end with a wish for next year. 마무리, 고진감래 and 송구영신 fit well.",
+          "New Year dinner: keep last year short and focus on resolutions. 일취월장, 통통통 and 새해 복 많이 are common.",
+          "Farewell party: name one thing you did with the person leaving and cheer on their future. Support comes before regret. 꽃길만 걷자 and 이 멤버 리멤버 work well.",
+          "With clients: thank the other company first, then talk about the year ahead together. 마당발, 동반성장 and 당나귀 are safe picks.",
+          "Family gatherings: wishes for health and harmony get the warmest response. Try 구구팔팔, 가화만사성 or 지화자."
+        ]
+      },
+      "comparison": {
+        "title": "What to avoid in front of clients and bosses",
+        "items": [
+          "Leave out anything that pushes drinking, such as “bottoms up.” Raising a glass is enough.",
+          "Jokes about someone’s looks, age, marriage or mistakes can hurt even when meant in fun.",
+          "Don’t bring up sales pressure, complaints about the company, politics or religion.",
+          "Avoid acronym chants that can be read sexually, no matter how popular they are.",
+          "At a client dinner, a long boast about your own company is rude. Thank the other side first.",
+          "With bosses present, give the opener and your few words in polite speech, and pick a chant whose meaning is obvious, like 위하여, over a casual joke chant."
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "q": "How long should a toast be?",
+            "a": "Under 30 seconds. One sentence of greeting, one or two about why you’re gathered, and one chant is plenty. Any longer and people holding their glasses get tired and the chant loses energy."
+          },
+          {
+            "q": "What are the lead and the response?",
+            "a": "The lead (선창) is what the person proposing the toast calls first, and the response (후창) is what everyone else shouts back together. For 소화제, the lead is 소통과 화합이! and the response is 제일!. Announcing the response once before you start keeps everyone in sync."
+          },
+          {
+            "q": "What about people who don’t drink?",
+            "a": "They can raise a glass of water or a soft drink. A toast is about raising glasses together, not about drinking. If the person proposing adds “Feel free to join with any drink,” everyone can take part comfortably."
+          },
+          {
+            "q": "What should I say if I’m suddenly asked to give a toast?",
+            "a": "Two sentences, “Thank you all for your hard work this year. I hope we gather again next year with smiles,” plus 위하여! is enough. Choose “Short” in the toast maker on this page for a line you can read right away."
+          },
+          {
+            "q": "Which chants work with clients?",
+            "a": "Chants that honor the other side or wish shared success are safe: 마당발 (to the success of you across the table), 동반성장 (growing together) and 당나귀 (to our precious meeting). A chant whose meaning comes across right away beats a playful one."
+          },
+          {
+            "q": "How do year-end and New Year toasts differ?",
+            "a": "A year-end toast thanks everyone for the past year first and ends with a wish for the next, while a New Year toast centers on resolutions and goals. Between late December and early January, a chant like 송구영신 fits both."
+          }
+        ]
+      }
+    }
+  },
+  "winterFestivals": {
+    "title": "2026-27 Korean Winter Festival Calendar",
+    "subtitle": "Dates for 12 winter festivals this season, from trout ice fishing to snow and light festivals. Where dates aren't out yet, we show the usual timing based on when the festival actually ran last season.",
+    "filters": {
+      "type": "Type",
+      "region": "Region",
+      "sort": "Sort"
+    },
+    "types": {
+      "all": "All",
+      "ice": "Ice",
+      "snow": "Snow",
+      "light": "Light"
+    },
+    "regions": {
+      "all": "All",
+      "gangwon": "Gangwon",
+      "capital": "Seoul·Gyeonggi",
+      "other": "Elsewhere"
+    },
+    "sort": {
+      "date": "By opening date",
+      "region": "By region"
+    },
+    "listTitle": "{n} festivals",
+    "summary": "{confirmed} confirmed · {tba} not announced",
+    "empty": "No festivals match. Try another type or region.",
+    "status": {
+      "confirmed": "Confirmed",
+      "tba": "Not announced",
+      "ongoing": "On now",
+      "ended": "Ended"
+    },
+    "labels": {
+      "place": "Venue",
+      "program": "Highlights",
+      "last": "Last season"
+    },
+    "officialSite": "Official site",
+    "officialSiteFor": "{name} official site (new window)",
+    "calendarNote": "{place}. Dates can change with the weather, so check the official notice before you go. {url}",
+    "md": "{m}/{d}",
+    "mdw": "{m}/{d} ({w})",
+    "range": "{from}–{to}",
+    "usual": "Usually {from} – {to}",
+    "monthPart": "{part} {mon}",
+    "parts": {
+      "early": "early",
+      "mid": "mid",
+      "late": "late"
+    },
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "warning": "Ice festivals can open late, pause on-ice activities or be cancelled outright depending on ice thickness and temperature. Always check the official website or social media before you set off.",
+    "timeline": {
+      "title": "Season at a glance",
+      "caption": "Festival periods on a weekly grid. Solid bars are announced dates for this season; dashed bars are expected timing based on last season.",
+      "festival": "Festival",
+      "period": "Period",
+      "confirmed": "Announced dates",
+      "estimated": "Expected (based on last season)",
+      "today": "Today",
+      "srConfirmed": "Confirmed {range}",
+      "srEstimated": "Not announced, expected {range} (based on last season)"
+    },
+    "share": {
+      "label": "{season} winter festivals · {filter}",
+      "headline": "{n} winter festivals this season",
+      "text": "{n} Korean winter festivals this season at a glance (ToolHub)"
+    },
+    "links": {
+      "windChill": "Wind chill calculator",
+      "skiResorts": "Ski resort openings & weather"
+    },
+    "festivals": {
+      "hwacheon": {
+        "name": "Hwacheon Sancheoneo Ice Festival",
+        "place": "Hwacheoncheon Stream, Hwacheon, Gangwon",
+        "program": "Trout ice fishing, bare-hand catching and night fishing, sledding and an indoor ice sculpture plaza"
+      },
+      "pyeongchang": {
+        "name": "Pyeongchang Trout Festival",
+        "place": "Odaecheon Stream, Jinbu-myeon, Pyeongchang, Gangwon",
+        "program": "Trout ice fishing, tent fishing and bare-hand catching, snow sledding and snow rafting"
+      },
+      "hongcheon": {
+        "name": "Hongcheongang Kkongkkong Festival",
+        "place": "Hongcheon River, Hongcheon, Gangwon",
+        "program": "Ice fishing and bare-hand catching for ginseng-fed trout, indoor fishing, ice and snow sledding"
+      },
+      "cheorwon": {
+        "name": "Cheorwon Hantangang River Ice Trekking Festival",
+        "place": "Hantangang River Mulwit-gil, Cheorwon, Gangwon",
+        "program": "About 8 km of trekking on the frozen Hantangang River, snow sculptures and a sled slope"
+      },
+      "pocheon": {
+        "name": "Pocheon Baegun Valley Dongjanggun Festival",
+        "place": "Baegun Valley, Pocheon, Gyeonggi",
+        "program": "Ice tree photo zone, ice fishing, sledding and igloos"
+      },
+      "taebaek": {
+        "name": "Taebaeksan Snow Festival",
+        "place": "Taebaeksan National Park, Taebaek, Gangwon",
+        "program": "Giant snow sculptures, snow and ice sledding, an igloo café"
+      },
+      "daegwallyeong": {
+        "name": "Daegwallyeong Snow Festival",
+        "place": "Songcheon Stream, Daegwallyeong-myeon, Pyeongchang, Gangwon",
+        "program": "Snow and ice sculptures, sledding and local food"
+      },
+      "morningcalm": {
+        "name": "Lighting Festival at The Garden of Morning Calm",
+        "place": "Garden of Morning Calm, Gapyeong, Gyeonggi",
+        "program": "Winter night opening with the gardens lit in colored bulbs (garden admission applies)"
+      },
+      "seoulLantern": {
+        "name": "Seoul Lantern Festival",
+        "place": "Cheonggyecheon Stream, Seoul (Cheonggye Plaza–Samilgyo Bridge)",
+        "program": "A free walk past hanji lanterns and media art along the stream"
+      },
+      "haeundae": {
+        "name": "Haeundae Light Festival",
+        "place": "Haeundae Beach and Gunam-ro, Busan",
+        "program": "Free light installations from the beach to Gunam-ro"
+      },
+      "hampyeong": {
+        "name": "Hampyeong Winter Light Festival",
+        "place": "Hampyeong EXPO Park, Jeonnam",
+        "program": "Light sculptures and a light maze, fire-falling show and carol performances"
+      },
+      "gwangbok": {
+        "name": "Gwangbok-ro Winter Light Tree Festival",
+        "place": "Gwangbok-ro, Jung-gu, Busan",
+        "program": "Free giant tree and about 1.8 km of street lights"
+      }
+    },
+    "guide": {
+      "title": "Winter festival guide",
+      "prep": {
+        "title": "What to bring for ice fishing",
+        "items": [
+          "Nothing blocks the wind on the ice, so it feels far colder than the thermometer says. Bring a hat, scarf and gloves and dress in layers. Check the wind chill calculator before you leave.",
+          "Waterproof winter boots, spare socks and gloves and hand warmers help you last longer. The ice is slippery, so wear low-heeled shoes.",
+          "Many venues sell rods and bait on site. A folding stool or cushion makes long sessions easier."
+        ]
+      },
+      "tickets": {
+        "title": "Booking and tickets",
+        "items": [
+          "Ticket booths at popular ice fishing festivals get busy from early morning on weekends. If advance booking for fishing spots is offered, book ahead.",
+          "Some festivals refund part of the entry fee as local gift certificates or food vouchers. Fees and refund rules change every year, so check the official site.",
+          "Most light festivals are free, but some, like the Garden of Morning Calm, charge admission. Lights usually come on around sunset."
+        ]
+      },
+      "safety": {
+        "title": "Ice thickness and cancellations",
+        "items": [
+          "On-ice activities only run when the ice is thick enough. Andong said its Amsan Ice Festival needs at least 20–25 cm of ice; in 2026 some sections were under 3 cm and the festival was cancelled.",
+          "Last winter, mild weather pushed the Pyeongchang Trout Festival's opening from January 1 to January 9, and the Inje Smelt Festival was called off for a third straight year since 2024.",
+          "Delays, cancellations and early closings appear first on the organizer's website and social media. Check again on the morning you leave.",
+          "Never walk on river or reservoir ice outside the festival grounds. Safety checks only cover the designated areas inside the venue."
+        ]
+      },
+      "kids": {
+        "title": "With kids",
+        "items": [
+          "Most ice and snow festivals, including Hwacheon, Pyeongchang, Hongcheon, Cheorwon, Pocheon and Taebaek, have sled slopes. Keep it short for young children and focus on sledding and snow play.",
+          "If the cold worries you, pick a venue with indoor areas (Hwacheon's indoor ice sculpture plaza, Hongcheon's indoor fishing) or a light festival for a short evening walk.",
+          "Strollers are hard to push on ice and snow, so a baby carrier is easier."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Are the 2026-27 winter festival dates out?",
+            "a": "As of November 7, dates are out for the Haeundae Light Festival (Nov 29, 2026–Jan 18, 2027), the Garden of Morning Calm Lighting Festival (Dec 4, 2026–Mar 14, 2027), the Seoul Lantern Festival (Dec 11, 2026–Jan 31, 2027) and the Hwacheon Sancheoneo Ice Festival (Jan 9–31, 2027). The other eight haven't announced yet, so we show their usual timing from last season."
+          },
+          {
+            "q": "What does \"Not announced\" mean?",
+            "a": "The organizer hasn't published this season's dates yet. We show the usual timing (early, mid or late month) based on when the festival actually ran last season and switch to real dates once they're announced. Even announced dates for ice festivals can change with the weather."
+          },
+          {
+            "q": "When is the 2027 Hwacheon Sancheoneo Ice Festival?",
+            "a": "The official website lists January 9 (Sat) to January 31 (Sun), 2027, 23 days along Hwacheoncheon Stream. Last season it ran from January 10 to February 1, 2026."
+          },
+          {
+            "q": "Is the 2027 Pyeongchang Trout Festival January 9 to February 9?",
+            "a": "As of November 7, those dates appear only as tentative dates on tour and listing sites; the organizer hasn't announced anything. Last season (Jan 9–Feb 9, 2026) was originally set to open on January 1 and was pushed back because of the weather."
+          },
+          {
+            "q": "How thick does the ice need to be for ice fishing?",
+            "a": "It varies by festival. Andong said its Amsan Ice Festival needs at least 20–25 cm of ice. Some festivals, like Pyeongchang, measure the ice daily and stop ice fishing when it falls short. Never go onto ice outside the festival grounds."
+          },
+          {
+            "q": "Which winter festivals are good with kids?",
+            "a": "Hwacheon and Hongcheon have sled slopes and indoor areas, and the Taebaeksan and Daegwallyeong snow festivals have snow sculptures and sledding. If the cold is a concern, a short evening walk at the Seoul Lantern Festival or Haeundae Light Festival works well."
+          },
+          {
+            "q": "Are light festivals free?",
+            "a": "The Seoul Lantern Festival, Haeundae Light Festival, Gwangbok-ro Winter Light Tree Festival and Hampyeong Winter Light Festival were free last season. The Garden of Morning Calm requires garden admission."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "asOf": "Checked November 7, 2026. This season's dates come from organizers' official websites and the Korea Tourism Organization; last season's dates from official announcements and news reports.",
+        "items": {
+          "hwacheon2027": "Hwacheon Sancheoneo Ice Festival official site (Jan 9–31, 2027)",
+          "hwacheon2026": "Asia Economy: 2026 festival held Jan 10–Feb 1 (Jan 6, 2026)",
+          "pyeongchang2026": "Herald Economy: Pyeongchang Trout Festival Jan 9–Feb 9, 2026 (Jan 6, 2026)",
+          "hongcheon2026": "TWIG24: Hongcheongang Kkongkkong Festival Jan 9–25 (Jan 8, 2026)",
+          "cheorwon2026": "Asia Economy: Cheorwon ice trekking festival Jan 17–25 (Jan 17, 2026)",
+          "pocheon2026": "Herald Economy: Pocheon Dongjanggun Festival Dec 20, 2025–Feb 22, 2026 (Dec 22, 2025)",
+          "taebaek2026": "TWIG24: Taebaeksan Snow Festival Jan 31–Feb 8 (Jan 29, 2026)",
+          "daegwallyeong2026": "Kyungbuk Maeil: Daegwallyeong Snow Festival Feb 13–22 (Feb 12, 2026)",
+          "morningcalm2027": "Korea Tourism Organization: Lighting Festival Dec 4, 2026–Mar 14, 2027",
+          "morningcalm2026": "Gyeonggi Province magazine: Lighting Festival Dec 5–Mar 15 (Dec 2025 issue)",
+          "seoulLantern2027": "Seoul Lantern Festival official site (Dec 11, 2026–Jan 31, 2027)",
+          "seoulLantern2026": "Seoul Media Hub: 2025 Seoul Lantern Festival Dec 12–Jan 18",
+          "haeundae2027": "Korea Tourism Organization: Haeundae Light Festival Nov 29, 2026–Jan 18, 2027",
+          "haeundae2026": "Busan City: 12th Haeundae Light Festival Nov 29, 2025–Jan 18, 2026",
+          "hampyeong2026": "Seoul Shinmun: 2025 Hampyeong Winter Light Festival Nov 28–Jan 11, 2026 (Nov 30, 2025)",
+          "gwangbok2026": "Break News Busan: 2025 Gwangbok-ro tree festival Dec 5–Feb 22, 2026 (Nov 29, 2025)",
+          "cancel2026": "TWIG24: Mild weather delays and cancels winter festivals (Andong, Inje, Pyeongchang; Jan 7, 2026)"
+        }
       }
     }
   }
