@@ -55089,5 +55089,246 @@
         "asOf": "Checked Nov 7, 2026 · Enforcement Rule in force from Sept 28, 2026 (Annex 1-2 as amended Apr 23, 2025)"
       }
     }
+  },
+  "yutNori": {
+    "title": "Yut Nori",
+    "subtitle": "Play Korea's traditional board game online — against 1–3 AI players or with 2–4 people on one device. Backdo, stacking, capturing and shortcuts included.",
+    "back": "Game list",
+    "sound": "Sound effects",
+    "names": {
+      "you": "You",
+      "ai": "AI {n}",
+      "player": "P{n}"
+    },
+    "colors": [
+      "Blue",
+      "Red",
+      "Green",
+      "Yellow"
+    ],
+    "stations": [
+      "Finish (Chammeogi)",
+      "Do",
+      "Gae",
+      "Geol",
+      "Yut",
+      "Mo corner",
+      "Dwit-do",
+      "Dwit-gae",
+      "Dwit-geol",
+      "Dwit-yut",
+      "Dwit-mo corner",
+      "Jji-do",
+      "Jji-gae",
+      "Jji-geol",
+      "Jji-yut",
+      "Jji-mo corner",
+      "Nal-do",
+      "Nal-gae",
+      "Nal-geol",
+      "Nal-yut",
+      "Mo-do",
+      "Mo-gae",
+      "Center (Bang)",
+      "Center to Jji-mo 1",
+      "Center to Jji-mo 2",
+      "Dwit-mo-do",
+      "Dwit-mo-gae",
+      "Center to Finish 1",
+      "Center to Finish 2"
+    ],
+    "throws": {
+      "backdo": "Backdo",
+      "do": "Do",
+      "gae": "Gae",
+      "geol": "Geol",
+      "yut": "Yut",
+      "mo": "Mo"
+    },
+    "result": {
+      "forward": "{name}! {n} steps",
+      "backdo": "Backdo! One step back",
+      "extra": "Throw again!"
+    },
+    "status": {
+      "ready": "Throw the sticks",
+      "throwing": "Throwing…",
+      "yourTurn": "Your turn",
+      "aiTurn": "{name}'s turn",
+      "turn": "{name}'s turn",
+      "over": "Game over",
+      "aiThrowing": "{name} is throwing…",
+      "aiMoving": "{name} is choosing a piece…"
+    },
+    "action": {
+      "throw": "Throw yut",
+      "throwAgain": "Throw again",
+      "pool": "To use",
+      "enter": "Enter a new piece · {count} waiting",
+      "pickPiece": "Pick a piece. Tap a piece on the board or 'Enter a new piece' to see where it can go.",
+      "pickDest": "Pick where to go",
+      "option": "{throw} → {to}",
+      "finish": "Finish",
+      "capture": "capture",
+      "stack": "stack",
+      "cancel": "Cancel"
+    },
+    "announce": {
+      "entered": "{name}: a new piece lands on {to}.",
+      "moved": "{name}: piece lands on {to}.",
+      "movedGroup": "{name}: {count} stacked pieces land on {to}.",
+      "finished": "{name}: {count} piece(s) finished.",
+      "stacked": "Stacked ({count} pieces).",
+      "shortcut": "Takes the shortcut next.",
+      "captured": "Captured {count} of {name}'s pieces! Throw again.",
+      "skip": "No piece can use this throw, so it is discarded.",
+      "turn": "{name}'s turn.",
+      "win": "{name} wins!",
+      "yourTurn": "Your turn."
+    },
+    "board": {
+      "label": "Yut board. Space or Enter to throw, arrow keys to pick a piece",
+      "hint": "Keyboard: Space/Enter throw · Arrows/Tab pick · Enter move · Esc cancel",
+      "piece": "{color} ({name}) {count} piece(s), {at}",
+      "dest": "{throw}: move to {to}"
+    },
+    "panel": {
+      "label": "Play"
+    },
+    "players": {
+      "label": "Pieces by player",
+      "summary": "Waiting {home} · On board {board} · Home {done}/{total}"
+    },
+    "win": {
+      "you": "You win!",
+      "other": "{name} wins",
+      "moves": "Your moves: {n}",
+      "again": "Play again"
+    },
+    "setup": {
+      "title": "New game",
+      "mode": "Mode",
+      "modeAi": "vs AI",
+      "modeLocal": "Pass and play",
+      "aiCount": "AI players",
+      "aiN": "{n} AI",
+      "players": "Players",
+      "playersN": "{n} players",
+      "pieces": "Pieces",
+      "piecesN": "{n} each",
+      "backdo": "Backdo",
+      "backdoHint": "If only the stick with the red dot lands flat side up, it is Backdo (one step back). When off, that counts as Do.",
+      "on": "On",
+      "off": "Off",
+      "level": "AI level",
+      "levels": {
+        "easy": "Easy",
+        "normal": "Normal",
+        "hard": "Hard"
+      },
+      "start": "Start new game"
+    },
+    "guide": {
+      "title": "Yut Nori rules and how to play",
+      "howToPlay": {
+        "title": "How to play",
+        "items": [
+          "Take turns throwing four sticks and move a piece by the result. Pieces start outside the start/finish corner (bottom right) and travel counterclockwise.",
+          "One stick flat side up is Do (1), two is Gae (2), three is Geol (3), four is Yut (4), and none is Mo (5).",
+          "Yut or Mo earns another throw. When you are done throwing, split the collected results among your pieces in any order.",
+          "Land exactly on an opponent to capture and throw again. Land on your own piece to stack and move together.",
+          "A piece finishes by passing the start/finish corner. The first player to bring every piece home wins.",
+          "'vs AI' is you against 1–3 AI players; 'Pass and play' is 2–4 people sharing a device. Play with 4 pieces (default) or 2."
+        ]
+      },
+      "board": {
+        "title": "The board and shortcuts",
+        "items": [
+          "The board has 29 spots: 20 around the square and 9 on the two diagonals crossing in the center.",
+          "A piece that stops exactly on the top-right (Mo) or top-left (Dwit-mo) corner takes the diagonal shortcut next time. Passing by keeps it on the outer path.",
+          "Stopping exactly on the center (Bang) sends the piece down the diagonal straight to the finish. Passing through the center from Mo continues toward the bottom-left corner.",
+          "Because you must pass the finish, the outer path takes 21 steps; stopping on Mo and then the center is the fastest route at 12 steps.",
+          "Arriving on Mo, Dwit-mo or the center by Backdo also counts as stopping there."
+        ]
+      },
+      "backdo": {
+        "title": "Backdo",
+        "items": [
+          "One stick is marked. If only that stick lands flat side up, it is Backdo: move one step back. Here it is the stick with the red dot.",
+          "Going back follows the path the piece came along. Backdo from the first diagonal spot returns to Mo, which then takes the shortcut again.",
+          "Backdo from Do moves to the finish corner; from there any throw finishes the piece.",
+          "With no piece on the board, Backdo cannot be used and is discarded. Thrown together with Yut or Mo, use those first to enter a piece and then Backdo.",
+          "Backdo can capture an opponent right behind you. Turn Backdo off in settings to count the marked stick as Do."
+        ]
+      },
+      "stackCapture": {
+        "title": "Stacking and capturing",
+        "items": [
+          "Your pieces on the same spot stack and move as one. It is faster, but a capture sends the whole stack back.",
+          "Land exactly on an opponent to capture. Captured pieces go back to waiting and you throw again.",
+          "Pieces you only pass over are not captured; only the landing spot counts.",
+          "Extra throws from Yut, Mo or a capture are thrown before you use the rest of your results.",
+          "Stacked pieces finish together, so stacking near the finish can bring several home at once."
+        ]
+      },
+      "throws": {
+        "title": "Throw results and odds",
+        "cols": {
+          "result": "Result",
+          "flats": "Flat sides up",
+          "steps": "Steps",
+          "prob": "Probability"
+        },
+        "flats": {
+          "do": "1 (not the marked one)",
+          "gae": "2",
+          "geol": "3",
+          "yut": "4",
+          "mo": "0 (all round side up)",
+          "backdo": "Only the marked one"
+        },
+        "back": "1 back",
+        "stepsN": "{n}",
+        "prob": "{k}/16 ({pct})",
+        "items": [
+          "Each stick is assumed to land flat side up with probability 1/2, counting all 16 outcomes (Backdo on). The game throws with these odds.",
+          "Gae is most common at 6/16 (37.5%); Yut and Mo are 1/16 (6.25%) each. With Backdo off, Do is 4/16 (25%).",
+          "Real sticks are not exactly 50/50 because of their shape and how they are thrown, so real-life odds differ a little."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Does a piece finish if it lands exactly on the finish corner?",
+            "a": "Here a piece must pass the finish corner. Landing exactly on it keeps it on the board, and any later throw takes it out — opponents can capture it meanwhile. Some families count landing there as finishing."
+          },
+          {
+            "q": "What are the odds in Yut Nori?",
+            "a": "With 50/50 sticks: Do 4/16 (25%), Gae 6/16 (37.5%), Geol 4/16 (25%), Yut 1/16 (6.25%), Mo 1/16 (6.25%). With Backdo, 1/16 of Do becomes Backdo. Gae is the most common."
+          },
+          {
+            "q": "When is Backdo, and what if no piece is on the board?",
+            "a": "Backdo happens when only the marked stick lands flat side up; the piece moves one step back along its path. With no piece on the board it is discarded. Backdo from Do moves to the finish corner."
+          },
+          {
+            "q": "Must a piece on Mo or the center take the shortcut?",
+            "a": "Yes, a piece that stops on Mo, Dwit-mo or the center always takes the diagonal next. The shortcut is always shorter (from Mo: 16 steps outside vs 12 on the shortcut)."
+          },
+          {
+            "q": "Do multiple throws have to be used in order?",
+            "a": "No. Results collected from Yut or Mo can be used in any order on any pieces — e.g. use Do first to capture, throw again, then use the two Yuts."
+          },
+          {
+            "q": "What happens when a stack is captured?",
+            "a": "Every piece in the stack goes back to waiting. Stacking is fast but risky; capturing an opponent's stack sends them all back and earns another throw."
+          },
+          {
+            "q": "When and with how many people is Yut Nori played?",
+            "a": "It is a folk game families play from Seollal (Lunar New Year) to the first full moon — in 2027 Seollal is February 7, with the holiday from February 6 to 9. This game supports vs AI (you plus 1–3 AI) and 2–4 people on one device."
+          }
+        ]
+      }
+    }
   }
 }

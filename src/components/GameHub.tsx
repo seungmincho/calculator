@@ -164,6 +164,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
     if (isBoardGame) {
       const gameId = hrefToGameId(game.href)
       setSelectedGame(prev => prev === gameId ? null : gameId)
+      if (!game.modes?.includes('online')) setPlayMode('computer') // AI 전용 게임(윷놀이 등)은 온라인 모드가 없다
       // 모드 선택 패널이 열릴 때 스크롤
       setTimeout(() => {
         document.getElementById('mode-panel')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -497,6 +498,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   </div>
                   <p className="text-xs text-gray-500">{t('vsComputerDesc')}</p>
                 </button>
+                {selectedGameInfo.modes?.includes('online') && (
                 <button
                   onClick={() => setPlayMode('online')}
                   className={`p-3 rounded-xl border-2 transition-all text-left ${
@@ -513,6 +515,7 @@ export default function GameHub({ onStartGame, onJoinRoom, onCreateRoom }: GameH
                   </div>
                   <p className="text-xs text-gray-500">{t('vsOnlineDesc')}</p>
                 </button>
+                )}
               </div>
 
               {/* 난이도 (AI 모드) */}

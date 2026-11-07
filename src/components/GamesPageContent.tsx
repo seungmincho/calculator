@@ -25,12 +25,13 @@ const MancalaAI = dynamic(() => import('@/components/games/MancalaAI'), { ssr: f
 const BattleshipAI = dynamic(() => import('@/components/games/BattleshipAI'), { ssr: false })
 const DotsAndBoxesAI = dynamic(() => import('@/components/games/DotsAndBoxesAI'), { ssr: false })
 const ChessAI = dynamic(() => import('@/components/games/ChessAI'), { ssr: false })
+const YutNoriAI = dynamic(() => import('@/components/games/YutNoriAI'), { ssr: false })
 
 import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { GameRoom } from '@/utils/webrtc'
 
-type GameType = 'omok' | 'othello' | 'connect4' | 'checkers' | 'mancala' | 'battleship' | 'dotsandboxes' | 'chess'
+type GameType = 'omok' | 'othello' | 'connect4' | 'checkers' | 'mancala' | 'battleship' | 'dotsandboxes' | 'chess' | 'yutnori'
 type PlayMode = 'computer' | 'online'
 type Difficulty = 'easy' | 'normal' | 'hard'
 
@@ -153,7 +154,8 @@ function GamesContent() {
     mancala: MancalaAI,
     battleship: BattleshipAI,
     dotsandboxes: DotsAndBoxesAI,
-    chess: ChessAI
+    chess: ChessAI,
+    yutnori: YutNoriAI
   }
 
   const AIGameComponent = AIGameComponents[gameState.game]

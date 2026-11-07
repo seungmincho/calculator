@@ -47,6 +47,7 @@ export type GameType =
   | 'battleship'
   | 'dotsandboxes'
   | 'chess'
+  | 'yutnori'
   | 'koreanWordle'
   | 'picross'
   | 'mahjongSolitaire'
@@ -75,6 +76,7 @@ const ALL_GAME_TYPES: GameType[] = [
   'battleship',
   'dotsandboxes',
   'chess',
+  'yutnori',
   'koreanWordle',
   'picross',
   'mahjongSolitaire',
