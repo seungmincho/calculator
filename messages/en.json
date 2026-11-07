@@ -55527,5 +55527,277 @@
         "asOf": "Reference: 2017 Korean National Growth Charts (in use until the revision due in December 2027) · checked 2026-11-07"
       }
     }
+  },
+  "youthFutureSavings": {
+    "title": "Youth Future Savings Calculator",
+    "subtitle": "Enter your monthly deposit, rate and type to see the 3-year maturity amount, government contribution and tax-free benefit, compared with a regular savings account",
+    "won": " KRW",
+    "fmt": {
+      "man": "KRW {m}M",
+      "eok": "KRW {m}M"
+    },
+    "tiers": {
+      "general": "General",
+      "preferred": "Preferred",
+      "taxOnly": "Tax-free only"
+    },
+    "tierRate": {
+      "general": "6% match",
+      "preferred": "12% match",
+      "taxOnly": "No match"
+    },
+    "tierDesc": {
+      "general": "Total pay up to KRW 60M (comprehensive income KRW 48M), or a small business owner with sales up to KRW 300M. The government adds 6% of each deposit (up to KRW 30,000 a month).",
+      "preferred": "SME employees with total pay up to KRW 36M, new SME hires, and small business owners with sales up to KRW 100M. The government adds 12% (up to KRW 60,000 a month).",
+      "taxOnly": "Total pay over KRW 60M up to KRW 75M. No government contribution, but interest is tax-free."
+    },
+    "types": {
+      "employee": "Employee",
+      "smeEmployee": "SME employee",
+      "smeNewHire": "New SME hire",
+      "smallBiz": "Small business"
+    },
+    "typeDesc": {
+      "employee": "A regular earner who is not an SME employee, new SME hire or small business owner.",
+      "smeEmployee": "Working at an SME when applying. Preferred if total pay is up to KRW 36M (comprehensive income KRW 26M).",
+      "smeNewHire": "First job in your life last year and working at an SME when applying. Preferred if total pay is up to KRW 60M.",
+      "smallBiz": "A business owner with a small business certificate. Enter annual sales below: up to KRW 100M is Preferred, up to KRW 300M is General."
+    },
+    "input": {
+      "title": "Deposit and rate",
+      "monthly": "Monthly deposit",
+      "monthlyHint": "Up to {max} KRW a month (KRW 6M a year). Deposits are flexible, so you can change the amount each month.",
+      "monthlyOver": "The monthly limit is {max} KRW. The excess is ignored and {max} KRW is used.",
+      "presets": "Quick monthly amounts",
+      "preset": "{v}0k",
+      "term": "Term",
+      "termValue": "Fixed {n} months (3 years)",
+      "tier": "Contribution type",
+      "findTier": "Find my type",
+      "baseRate": "Base rate",
+      "bonusRate": "Bonus rate",
+      "rateHint": "The base rate is {base}% a year at every bank (fixed for 3 years); bonus rates depend on each bank's conditions, up to {max}%p. The 2%p default follows the Financial Services Commission example (7%).",
+      "bonusOver": "Bonus rate is capped at {max}%p.",
+      "totalRate": "Applied rate {r}% a year"
+    },
+    "result": {
+      "label": "Estimated maturity amount",
+      "summary": "Principal {p} + interest {i} + government contribution {c} KRW",
+      "equivalent": "Equal to a regular savings rate of {r}% a year",
+      "equivalentDesc": "A taxed (15.4%) simple-interest installment savings account would need this rate to pay the same amount.",
+      "zero": "Enter a monthly deposit to calculate.",
+      "rows": {
+        "principal": "Principal",
+        "principalSub": "{m} KRW × {n} months",
+        "interest": "Bank interest (tax-free)",
+        "interestSub": "{r}% simple interest",
+        "contribution": "Government contribution",
+        "contributionSub": "{m} KRW ({p}%) × {n} months",
+        "contributionInterest": "Interest on contribution (tax-free)",
+        "contributionInterestSub": "Base rate {r}% only",
+        "taxSaved": "Tax saved",
+        "taxSavedSub": "Total interest × 15.4%, already included in the maturity amount"
+      },
+      "proposed": "If the 2027 budget proposal raises the Preferred match to 15%, maturity would be about {v} KRW (+{d} KRW). Not yet passed by the National Assembly — to be confirmed.",
+      "taxOnlyNote": "The tax-free-only tier gets no government contribution. The gap over a regular account is the interest tax you don't pay.",
+      "early": "Closing early for a regular reason forfeits the government contribution, the tax exemption and bonus rates. See special early termination reasons (retirement, business closure, etc.) below.",
+      "assumption": "Assumes the same amount deposited 36 times and monthly-basis interest. Banks count actual days, so results can differ by a few hundred to a few thousand KRW, and the contribution is assumed to be credited in the month you deposit (actual crediting date to be confirmed). This method matches all four FSC maturity examples to the nearest KRW 10,000.",
+      "share": {
+        "tool": "Youth Future Savings Calculator",
+        "sub": "{m} KRW/month · {n} months · {r}% · {tier}",
+        "eqLabel": "Regular savings equivalent",
+        "eqValue": "{r}% a year",
+        "text": "Youth Future Savings: {m} KRW a month for 3 years pays {v} KRW at maturity ({tier}, {r}%). That's like a regular savings rate of {eq}%."
+      }
+    },
+    "compare": {
+      "title": "Versus a regular savings account at the same rate ({r}%)",
+      "item": "Item",
+      "ours": "Youth Future",
+      "regular": "Regular",
+      "principal": "Principal",
+      "interest": "Pre-tax interest",
+      "tax": "Interest tax 15.4%",
+      "contribution": "Contribution + interest",
+      "maturity": "Maturity amount",
+      "diff": "Youth Future Savings pays {v} KRW more."
+    },
+    "elig": {
+      "title": "Check eligibility",
+      "desc": "Find your likely type from your age and last year's (2025) personal income. Household income and financial income comprehensive taxation are checked separately by the Korea Inclusive Finance Agency.",
+      "age": "Age (international)",
+      "ageUnit": "yrs",
+      "military": "Military service",
+      "monthUnit": "mo",
+      "militaryHint": "Up to 6 years (72 months) of military service is subtracted from your age.",
+      "type": "Income type",
+      "income": "Last year's total pay",
+      "sales": "Last year's annual sales",
+      "manwon": "×10k",
+      "result": {
+        "enterAge": "Enter your age.",
+        "ageNo": "You don't meet the age rule. After subtracting service, your age counts as {c} (only ages 19–34 can join).",
+        "incomeNo": "Your personal income exceeds the limit (total pay KRW 75M, comprehensive income KRW 63M, or sales KRW 300M for small businesses).",
+        "expected": "Likely type",
+        "household": {
+          "general": "Household income must also be at or below 200% of the standard median income (250% for dual-income couples).",
+          "preferred": "Preferred also needs household income at or below 150% of the standard median income (200% for dual-income couples). If higher, check the General rules."
+        },
+        "tenure": "You must work at an SME for at least 29 months in total from opening until one month before maturity (up to 2 job changes). Otherwise the General rate (6%) applies to the whole term.",
+        "counted": "After subtracting service, you are reviewed as age {c}.",
+        "apply": "Use this type",
+        "applied": "Applied to the calculation",
+        "note": "For reference only. The agency decides eligibility using your birth date, income and household information."
+      },
+      "table": {
+        "title": "Criteria by type",
+        "personal": "Personal income",
+        "householdLabel": "Household",
+        "salary": "Total pay up to {s} (comprehensive income {c})",
+        "sales": "Annual sales up to {s}",
+        "taxOnlyIncome": "Total pay over {a} up to {b} (comprehensive income over {c} up to {d})",
+        "household": "Up to {p}% of the standard median income ({d}% for dual-income couples)",
+        "anyone": "Above the contribution income limit"
+      },
+      "common": {
+        "title": "For every type",
+        "items": [
+          "Ages 19–34 on the account-opening date. Up to 6 years of military service is subtracted from your age.",
+          "Personal income is last year's (2025) income confirmed by the National Tax Service. Even with only tax-free income such as parental leave pay or conscript pay, you can join.",
+          "If you were subject to financial income comprehensive taxation in any of the last 3 years, you cannot join.",
+          "You cannot hold this and the Youth Leap Account at the same time. Foreigners are not eligible for the government contribution.",
+          "Your type is fixed when you join. From round 2 you pick general earner, SME employee or small business owner when applying; small business owners need a small business certificate first (about 7 days to issue on average)."
+        ]
+      }
+    },
+    "early": {
+      "title": "If you close early",
+      "normal": {
+        "title": "Regular early termination",
+        "items": [
+          "No government contribution.",
+          "No tax exemption: 15.4% is withheld from interest.",
+          "The bank's early-termination rate (a share of the base rate depending on how long you saved) applies instead of the contract rate, and bonus rates are dropped."
+        ]
+      },
+      "special": {
+        "title": "Special early termination (benefits kept)",
+        "items": [
+          "Death or emigration of the account holder",
+          "Within 6 months before closing: retirement, business closure, natural disaster, injury or illness needing 3+ months of hospital treatment or care, suspension or bankruptcy of the bank, etc.",
+          "You get base-rate interest, the tax exemption and the government contribution. If a Preferred SME employee quits voluntarily, the contribution uses the General rate (6%).",
+          "Submit a special termination form and supporting documents to the bank."
+        ]
+      },
+      "rejoin": "After any early termination (including special), you can apply again from 2 months after the month you closed. If you rejoin, the contribution rate is multiplied by (36 months − previous months enrolled) ÷ 36 months."
+    },
+    "schedule": {
+      "title": "Application schedule",
+      "round": "Round {n}",
+      "apply": "Apply",
+      "review": "Review",
+      "notice": "Results",
+      "open": "Open account",
+      "range": "{a}–{b}",
+      "check": "To be confirmed",
+      "third": "No date yet. The Financial Services Commission said round 3 will follow once the 2027 budget passes the National Assembly and the system is updated.",
+      "birth": "Round 2 was open to people born {a}–{b} (up to 6 more years for military service).",
+      "notes": [
+        "Apply online in a bank app on weekdays only (no weekends or holidays). It's not first-come, first-served: everyone who applies in time is reviewed.",
+        "The first few days are split by the last digit of your birth year (round 1 by five groups, round 2 odd/even).",
+        "Even after passing review, you lose your chance if you don't open the account within the account-opening period.",
+        "Dates may be extended or postponed depending on the review."
+      ]
+    },
+    "guide": {
+      "title": "How the Youth Future Savings is calculated",
+      "how": {
+        "title": "How we calculate",
+        "items": [
+          "Bank interest is simple installment interest: monthly deposit × annual rate ÷ 12 × (36 × 37 ÷ 2). The first deposit earns 36 months of interest, the last one 1 month.",
+          "The government contribution is each monthly deposit (up to KRW 500,000) × 6% (General) or 12% (Preferred): up to KRW 1.08M or 2.16M over 3 years.",
+          "The contribution earns only the base rate (5%), without bonus rates.",
+          "Under Article 91-25 of the Restriction of Special Taxation Act, no interest income tax (15.4%) is withheld on interest earned until maturity.",
+          "The regular-savings equivalent rate is the rate a 15.4%-taxed simple installment account would need to turn your deposits into the same maturity amount — the same method as the FSC's '13.2% simple savings effect'."
+        ]
+      },
+      "tips": {
+        "title": "Good to know",
+        "items": [
+          "The contribution follows what you actually deposit. Skip a month and there's no contribution for that month.",
+          "Rates are fixed for 3 years. The 5% base rate is the same at every bank; bonus-rate conditions (up to 2–3%p) differ. You must keep the account to maturity to get bonus rates.",
+          "14 institutions offer it: NongHyup, Shinhan, Woori, Hana, IBK, KB Kookmin, Suhyup, iM, Busan, Kwangju, Jeonbuk, Kyongnam, KakaoBank and Korea Post. Toss Bank joins from round 3.",
+          "Interest after maturity is taxed and the rate drops sharply, so withdraw on the maturity date.",
+          "Preferred SME employees may change jobs (up to twice) but need 29+ months at SMEs in total to keep 12% to the end."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much do I get at maturity?",
+            "a": "Depositing KRW 500,000 a month for 3 years (KRW 18M principal) at 7% gives about KRW 21.10M (General) or 22.27M (Preferred). At 8% it's about KRW 21.38M or 22.55M (FSC, June 22, 2026). Enter your own numbers above for an exact figure."
+          },
+          {
+            "q": "How much is the government contribution and when is it paid?",
+            "a": "6% of deposits (General, up to KRW 30,000 a month) or 12% (Preferred, up to KRW 60,000), so up to KRW 1.08M or 2.16M over 3 years. It's paid at maturity or on special early termination, and it earns tax-free base-rate interest. Regular early termination forfeits it."
+          },
+          {
+            "q": "How are General and Preferred decided?",
+            "a": "General (6%): last year's total pay up to KRW 60M (comprehensive income KRW 48M) or a small business with sales up to KRW 300M, with household income up to 200% of the standard median (250% for dual-income couples). Preferred (12%): SME employees with total pay up to KRW 36M (comprehensive KRW 26M) and small businesses with sales up to KRW 100M (household 150%, dual-income 200%), plus new SME hires meeting the General income rule. Total pay over KRW 60M up to 75M gets only the tax exemption."
+          },
+          {
+            "q": "What if I close early?",
+            "a": "Regular early termination forfeits the contribution and tax exemption, and the bank's early-termination rate applies. For special reasons — death, emigration, or retirement, business closure or an illness needing 3+ months of hospital care within 6 months before closing — you keep base-rate interest, the tax exemption and the contribution. You can reapply 2 months after the month you closed, but the contribution rate is reduced by your previous enrollment period."
+          },
+          {
+            "q": "Can I hold it with, or switch from, the Youth Leap Account?",
+            "a": "You can't hold both, and new Youth Leap Account sign-ups ended on December 31, 2025 (Restriction of Special Taxation Act Art. 91-22). Existing holders can switch by passing the Youth Future Savings review, opening the account, then closing the Youth Leap Account by 'special early termination to join Youth Future Savings'; contributions and the tax exemption already earned there are kept. Switching was also allowed in round 2."
+          },
+          {
+            "q": "When is round 3?",
+            "a": "No date has been announced (to be confirmed). The FSC said round 3 will follow once the 2027 budget is passed. The proposal opens eligibility to all young people and raises the Preferred match to 15% (25% for SME employees outside the capital region); if passed, the higher Preferred match is to be paid retroactively to existing holders."
+          },
+          {
+            "q": "Do rates differ by bank?",
+            "a": "The base rate is 5% (fixed for 3 years) at all 14 institutions; bonus rates of up to 2–3%p differ, for a maximum of 7–8%. Check each bank's product description for bonus conditions (salary transfer, card spending, youth financial counseling, etc.). The government contribution earns only the base rate."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "FSC press release (Sep 30, 2026): round 2 process, schedule, eligibility",
+            "url": "https://www.fsc.go.kr/no010101/87820"
+          },
+          {
+            "label": "FSC press release (Sep 16, 2026): round 2 applications, 2027 budget proposal",
+            "url": "https://www.fsc.go.kr/no010101/87726"
+          },
+          {
+            "label": "FSC (Jun 22, 2026): launch, round 1 applications, maturity examples",
+            "url": "https://www.fsc.go.kr/po010101/87158"
+          },
+          {
+            "label": "FSC press release (Apr 23, 2026): launch preparation, special early termination",
+            "url": "https://www.fsc.go.kr/no010101/86767"
+          },
+          {
+            "label": "Korea Inclusive Finance Agency: Youth Future Savings",
+            "url": "https://www.kinfa.or.kr/fill4young/financeCommercial/youthFutureSaving.do"
+          },
+          {
+            "label": "Restriction of Special Taxation Act Art. 91-25 (tax exemption)",
+            "url": "https://www.law.go.kr/법령/조세특례제한법/제91조의25"
+          },
+          {
+            "label": "Bank product description example (Shinhan): contribution interest, special termination",
+            "url": "https://img.shinhan.com/sbank2016/seol/20260602000000540001LC000030.PDF"
+          }
+        ],
+        "asOf": "Checked as of November 7, 2026. The 2027 budget proposal (Preferred 15%, etc.) and round 3 dates are not final and will be updated when announced."
+      }
+    }
   }
 }
