@@ -1,5 +1,5 @@
 // 오픈마켓 건당 수수료 (순수 함수). 회귀 체크: node scripts/check-sales-commission.ts
-// 금액 단위: 원. 요율 단위: %. 요율 확인일: 2026-10-05.
+// 금액 단위: 원. 요율 단위: %. 요율 확인일: 2026-10-05 (11번가 부가세·배송비 기준 2026-11-08).
 
 export type CategoryKey = 'fashion' | 'fashionAcc' | 'beauty' | 'food' | 'living' | 'electronics' | 'sports' | 'books' | 'baby' | 'furniture'
 export type PlatformKey = 'coupang' | 'smartstore' | 'elevenst'
@@ -26,14 +26,19 @@ export type NaverInflow = 'normal' | 'marketing'
 //      2026-10 현재 로켓그로스 요금 페이지 https://marketplace.coupang.com/rocket-growth/en-us/fee-page 에서 링크)
 //    - https://marketplace.coupang.com/information-center/almyeon-alsurog-deo-joheun-kupang-susuryo-2 (4~10.9%,
 //      월 매출(배송비 제외) 100만원 이상 시 서비스 이용료 월 55,000원 VAT 포함)
-//  · 판매수수료 부가세 별도, 배송비 수수료 3%(+부가세): 쿠팡 공식 문서엔 명시 없음 — 판매자 정산 예시 2차 자료 기준.
+//  · 판매수수료 부가세 별도, 배송비 수수료 3%(+부가세): 쿠팡 공식 공개 문서엔 명시 없음 — 판매자 정산 예시 2차 자료 기준.
+//    2026-11-08 재확인: 위 두 페이지·Fee-Table 에 없고, 판매자 헬프센터(helpseller.coupangcorp.com)는 로그인 필요 → 확인 불가.
 //
-// [11번가] 카테고리별 요율표는 셀러오피스 로그인 후에만 공개 → 카테고리별 값 미검증.
+// [11번가] 카테고리별 요율표는 셀러오피스 로그인 후 [카테고리별 서비스이용료]에서만 공개 → 카테고리별 값 미검증.
 //    11번가가 밝힌 명목 수수료 범위 7~13%(2024.1, 20% 3개 카테고리는 2025.4.1 13%로 인하).
 //    - https://mobile.newsis.com/view/NISX20240116_0002593587 (11번가 입장: 180개 카테고리 평균 7~13%)
 //    - https://www.news1.kr/industry/distribution/5735328 (2025.4 85개 카테고리 인하)
-//    기본값 13%는 범위 상단의 '대표값'(사용자가 입력해 바꿈). 입력 요율은 부가세 포함으로 보고 그대로 적용.
-//    선결제 배송비 수수료 3.3%(부가세 포함) — 2차 자료(https://www.windly.cc/blog/11st-onboarding-fee-settlement-guide).
+//    기본값 13%는 범위 상단의 '대표값'(사용자가 입력해 바꿈).
+//    11번가 판매자 고객센터 FAQ(공개, 2026-11-08 확인):
+//    - https://cs.11st.co.kr/page/seller/faq/contents/1495 "11번가 수수료는 부가세 포함 금액" → 입력 요율 그대로, VAT 가산 없음
+//    - https://cs.11st.co.kr/page/seller/faq/contents/361 정산식 "선결제 배송비의 서비스이용료(3.3%)"
+//    - https://cs.11st.co.kr/page/seller/faq/contents/2035 서비스이용료는 할인 전 판매가(+옵션가) 기준
+//    - https://cs.11st.co.kr/page/seller/faq/contents/1519 제휴마케팅 대행비 (판매가+선결제 배송비)×2%, 1440 서버이용료 월 77,000원(VAT 포함) — 미반영
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const NAVER_ORDER_MGMT: Record<NaverTier, number> = { micro: 1.77, small1: 2.33, small2: 2.48, small3: 2.73, general: 3.3 }
@@ -53,7 +58,7 @@ export const COUPANG_SALES: Record<CategoryKey, number> = {
 }
 export const COUPANG_SHIPPING = 3       // 배송비 × 3% (+부가세)
 export const ELEVENST_DEFAULT = 13      // 대표값(공개 범위 7~13% 상단)
-export const ELEVENST_SHIPPING = 3.3    // 부가세 포함
+export const ELEVENST_SHIPPING = 3.3    // 부가세 포함 (11번가 FAQ 361·1495)
 export const VAT_RATE = 0.1
 
 export const CATEGORY_KEYS = Object.keys(COUPANG_SALES) as CategoryKey[]

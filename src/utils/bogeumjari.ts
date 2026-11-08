@@ -4,7 +4,13 @@
 // - 금리: https://www.hf.go.kr/ko/sub01/sub01_01_04.do (2026-11-09 공시, 2026-11-06 확인)
 // - 규제지역 정책모기지 LTV·DTI: 금융위 10.15 대책 FAQ https://www.fsc.go.kr/po020201/85466
 // - 수도권·규제지역 생애최초 LTV 80→70%: 금융위 6.27 대책 https://www.fsc.go.kr/no010101/84824
-// - CB점수 271점 이상·271~614점 LTV 10%p 차감, 전세사기피해자 특례: sub01_01_01.do · sub01_01_02.do (2026-10-04 확인)
+// - CB점수 271점 이상, 전세사기피해자 특례: sub01_01_01.do · sub01_01_02.do (2026-10-04 확인)
+// - LTV 세부: 보금자리론 업무처리기준(2026.07.20 개정) https://www.hf.go.kr/_res/hf/ko/etc/01_06_01_260731.pdf (2026-11-08 확인)
+//   · 제7장 1: 아파트 70%·기타 65%, 규제지역 10%p 차감(실수요자·생애최초·전세사기피해자 배제).
+//     t-보금자리론 CB 271~614점 / 공사 사전심사 MSS 별도 점수 / 인정소득 산정(근로소득자 제외)은 "60% 이내로 제한",
+//     규제지역이면 Min(60%, 규제지역 LTV) — 누적 차감 아님. 상품안내 웹페이지의 "10%p씩 차감"(기타주택 55%)은 요약이라 기준서를 따름
+//   · 제11장 3: 생애최초 80%(수도권·규제지역 70%) — 제7장 LTV 초과분은 생애최초 특례구입자금보증 → CB 60% 제한 미적용
+//   · 제14장 7: 전세사기피해자 80%(주택유형 무관), 경매·공매로 피해주택 취득 시 낙찰가(최초 감정가 이내) 100%
 
 export type LoanType = 'general' | 'first' | 'newlywed' | 'multichild'
 export type Owned = '0' | '1' | '2'
@@ -12,7 +18,7 @@ export type HouseKind = 'apt' | 'other'
 /** 담보주택 소재지: 지방(비수도권) / 수도권(규제지역 외) / 규제지역(조정대상·투기과열·투기지역) */
 export type Region = 'local' | 'capital' | 'regulated'
 export const REGIONS: Region[] = ['local', 'capital', 'regulated']
-/** NICE CB점수: high 615점 이상 / mid 271~614점(LTV 10%p 차감) / low 270점 이하(취급 불가) — hf sub01_01_01 (2026-10-04 확인) */
+/** NICE CB점수: high 615점 이상 / mid 271~614점(LTV 60% 이내, 생애최초·전세사기피해자 제외) / low 270점 이하(취급 불가) — 업무처리기준 제7장 1 */
 export type Credit = 'high' | 'mid' | 'low'
 export const CREDITS: Credit[] = ['high', 'mid', 'low']
 
@@ -85,7 +91,8 @@ export const MAX_LOAN: Record<LoanType, number> = {
 }
 /**
  * 전세사기피해자 보금자리론 (결정문 정본 확인): 9억 이하 주택·소득상한 없음·한도 4억,
- * 신규주택 LTV 80%(낙찰주택 100%는 미반영)·DTI 100%, 규제지역 가산 없음.
+ * 신규주택 LTV 80%·DTI 100%, 규제지역 가산 없음.
+ * 피해주택 경매·공매 낙찰은 낙찰가 100%(업무처리기준 제14장 7, 2026-11-08 확인) — 입력이 없어 안내 문구만.
  * 출처: https://www.hf.go.kr/ko/sub01/sub01_01_02.do (2026-10-04 확인)
  */
 export const FRAUD = { priceLimit: 90_000 * M, ltv: 0.80, dti: 100, maxLoan: 40_000 * M }
@@ -170,14 +177,17 @@ export const fmtKRW = (n: number, tr?: (key: string, vars: Record<string, unknow
 /**
  * LTV. 생애최초 80%(수도권·규제지역 70%), 그 외 아파트 70%·기타 65%.
  * 규제지역은 10%p 차감 — 생애최초·전세사기피해자·실수요자는 미차감.
- * CB점수 271~614점 10%p 추가 차감은 calcBogeumjari에서 적용.
- * ponytail: 소득추정방법 사용 시 10%p 차감은 미반영(안내 문구만)
+ * CB점수 271~614점 60% 제한은 calcBogeumjari에서 적용.
+ * ponytail: 인정소득(소득추정) 산정 시 60% 제한은 입력이 없어 미반영(안내 문구만)
  */
 export function getLtv(type: LoanType, kind: HouseKind, region: Region, exempt: boolean): number {
   if (type === 'first') return region === 'local' ? 0.80 : 0.70
   const base = kind === 'apt' ? 0.70 : 0.65
   return region === 'regulated' && !exempt ? Math.round((base - 0.10) * 100) / 100 : base
 }
+
+/** CB 271~614점·인정소득 산정 시 LTV 상한 (업무처리기준 제7장 1-2). 규제지역 LTV가 더 낮으면 그 값 */
+export const CB_LTV_CAP = 0.60
 
 export const rateFor = (base: number, discount: number, surcharge: number) =>
   Number((base - discount + surcharge).toFixed(2))
@@ -191,9 +201,8 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const realDemand = i.owned === '0' && i.income <= REAL_DEMAND_INCOME && i.price <= HOUSE_PRICE_LIMIT
   const exempt = i.type === 'first' || fraud || realDemand // 규제지역 LTV·DTI 미차감
   const credit = i.credit ?? 'high'
-  // CB 271~614점 차감: hf 원문상 미차감 예외는 '규제지역' 차감에만 명시 → 생애최초도 차감.
-  // 전세사기피해자는 별도 LTV(신규주택 80%) 기준이라 미적용 (공사 확인 필요)
-  const cbDeducted = credit === 'mid' && !fraud
+  // CB 271~614점 → LTV 60% 이내. 생애최초(제11장)·전세사기피해자(제14장)는 기본 LTV 초과분을 특례구입자금보증이 받쳐 미적용
+  const cbCapped = credit === 'mid' && !fraud && i.type !== 'first'
   const priceLimit = fraud ? FRAUD.priceLimit : HOUSE_PRICE_LIMIT
 
   // ── 우대금리 ──
@@ -213,7 +222,8 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const rate = rateFor(baseRate, totalDiscount, surcharge)
 
   // ── 한도: LTV / 상품 상한 / DTI 중 가장 작은 값 ──
-  const ltv = fraud ? FRAUD.ltv : Math.round((getLtv(i.type, i.kind, i.region, exempt) - (cbDeducted ? 0.10 : 0)) * 100) / 100
+  const baseLtv = fraud ? FRAUD.ltv : getLtv(i.type, i.kind, i.region, exempt)
+  const ltv = cbCapped ? Math.min(CB_LTV_CAP, baseLtv) : baseLtv
   const ltvDeducted = regulated && !exempt
   const ltvLimit = Math.floor(i.price * ltv)
   const capLimit = fraud ? Math.max(MAX_LOAN[i.type], FRAUD.maxLoan) : MAX_LOAN[i.type]
@@ -224,7 +234,7 @@ export function calcBogeumjari(i: BogeumjariInput) {
   const dtiLimit = monthlyBudget > 0 ? Math.floor(monthlyBudget / annuity(1, rate, months)) : 0
   // LTV 근거. 화면 문구는 messages bogeumjariLoan.limits.ltvNote.<id>
   const ltvNote = fraud ? 'fraud'
-    : ltvDeducted && cbDeducted ? 'both' : ltvDeducted ? 'regulated' : cbDeducted ? 'credit'
+    : ltvDeducted && cbCapped ? 'both' : ltvDeducted ? 'regulated' : cbCapped ? 'credit'
     : i.type === 'first' && i.region !== 'local' ? 'firstCapital' : 'price'
   const limits = [
     { key: 'ltv' as const, amount: ltvLimit },
@@ -251,7 +261,8 @@ export function calcBogeumjari(i: BogeumjariInput) {
     ? { id: 'price', label: '주택가격', status: 'pass', msg: 'pass', vars: priceVars }
     : { id: 'price', label: '주택가격', status: 'fail', msg: 'fail', vars: priceVars })
   if (credit === 'low') checks.push({ id: 'credit', label: '신용점수', status: 'fail', msg: 'low' })
-  else if (cbDeducted) checks.push({ id: 'credit', label: '신용점수', status: 'warn', msg: 'mid' })
+  else if (cbCapped) checks.push({ id: 'credit', label: '신용점수', status: 'warn', msg: 'mid' })
+  else if (credit === 'mid') checks.push({ id: 'credit', label: '신용점수', status: 'pass', msg: 'midExempt' })
   if (i.owned === '2') checks.push({ id: 'owned', label: '주택 보유', status: 'fail', msg: 'two' })
   else if (i.owned === '1' && i.type === 'first') checks.push({ id: 'owned', label: '주택 보유', status: 'fail', msg: 'oneFirst' })
   else if (i.owned === '1') checks.push({ id: 'owned', label: '주택 보유', status: 'warn', msg: 'one' })

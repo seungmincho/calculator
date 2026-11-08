@@ -2550,6 +2550,9 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "childTaxCredit": "Child Tax Credit Calculator",
+      "smeTaxExemption": "SME Employee Income Tax Exemption Calculator",
+      "yearEndChecklist": "Year-End Tax Settlement Checklist",
       "educationTaxCredit": "Education Tax Credit Calculator",
       "donationTaxCredit": "Donation Tax Credit Calculator",
       "dependentDeduction": "Dependent Deduction Checker",
@@ -3938,10 +3941,10 @@
     "limits": {
       "ltv": "LTV {pct}% ({note})",
       "ltvNote": {
-        "fraud": "new home, jeonse fraud victim",
+        "fraud": "new home, jeonse fraud victim; 100% of the winning bid for an auctioned victim home",
         "regulated": "regulated area −10%p",
-        "credit": "credit score −10%p",
-        "both": "regulated area & credit score −10%p each",
+        "credit": "credit score 271–614, max 60%",
+        "both": "lower of regulated-area cut and 60% credit cap",
         "firstCapital": "first-time buyer, capital/regulated area",
         "price": "based on home price"
       },
@@ -3961,9 +3964,10 @@
         "fail": "{price} — homes over {limit} aren't eligible"
       },
       "credit": {
+        "midExempt": "NICE 271–614 — LTV unchanged for first-time buyers and jeonse fraud victims (the part above the base LTV goes through HF's special purchase guarantee)",
         "label": "Credit score",
         "low": "Only NICE scores of 271 or higher can apply",
-        "mid": "NICE 271–614 — LTV reduced by 10%p"
+        "mid": "NICE 271–614 — LTV capped at 60%"
       },
       "owned": {
         "label": "Homes owned",
@@ -4055,10 +4059,10 @@
       "credit": "Credit score (NICE)",
       "creditOption": {
         "high": "615 or higher",
-        "mid": "271–614 (LTV −10%p)",
+        "mid": "271–614 (LTV max 60%)",
         "low": "270 or lower (not eligible)"
       },
-      "creditHint": "Only NICE scores of 271 or higher may apply; 271–614 cuts LTV by 10%p",
+      "creditHint": "Only NICE scores of 271 or higher may apply; 271–614 caps LTV at 60% (not for first-time buyers or jeonse fraud victims). This is the bank-channel (t-Bogeumjari) rule; HF-screened applications (Akkim-e, u) use HF's own credit score (MSS)",
       "age": "Age (borrower)",
       "ageHint": "Used to check 40/50-year terms and graduated repayment",
       "period": "Loan term",
@@ -4133,7 +4137,7 @@
       "totalInterest": "Total interest",
       "dti": "DTI (incl. existing loans)",
       "checks": "Eligibility check",
-      "disclaimer": "If income is assessed by the estimation method, LTV is cut by another 10%p; actual limits and rates depend on appraisal and underwriting.",
+      "disclaimer": "If annual income is assessed as recognised (estimated) income (wage earners excepted), LTV is capped at 60% (not for first-time buyers or jeonse fraud victims); actual limits and rates depend on appraisal and underwriting.",
       "save": "Save"
     },
     "copy": {
@@ -4227,7 +4231,7 @@
         "2 or more minor children",
         "0.5%p discount (0.7%p for 3+)"
       ],
-      "note": "Common to all: home price ₩600M or less (₩900M for jeonse fraud victims), no home or one home to be sold within 3 years. NICE credit score must be 271 or higher; 271–614 cuts LTV by 10%p. Regulated areas add 0.2%p to the rate, and capital/regulated areas require moving in within 6 months. Rates change monthly, so check the latest rates with HF."
+      "note": "Common to all: home price ₩600M or less (₩900M for jeonse fraud victims), no home or one home to be sold within 3 years. NICE credit score must be 271 or higher; 271–614 caps LTV at 60% (not for first-time buyers or jeonse fraud victims). Regulated areas add 0.2%p to the rate, and capital/regulated areas require moving in within 6 months. Rates change monthly, so check the latest rates with HF."
     },
     "share": {
       "label": "Max {type} Bogeumjari loan",
@@ -7437,6 +7441,18 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "childTaxCredit": {
+        "title": "Child Tax Credit Calculator",
+        "description": "Whether each child qualifies this year by birth year, the credit amount, birth/adoption credit, and which spouse should claim"
+      },
+      "smeTaxExemption": {
+        "title": "SME Employee Income Tax Exemption Calculator",
+        "description": "Eligibility for the 90% (up to ₩2M a year) exemption, when it ends, this year's tax saved, and effects of job changes or military service"
+      },
+      "yearEndChecklist": {
+        "title": "Year-End Tax Settlement Checklist",
+        "description": "Your to-dos from the 31 December deadline through the 15 January simplified service to submitting to your employer, plus documents it won't show"
+      },
       "educationTaxCredit": {
         "title": "Education Tax Credit Calculator",
         "description": "Per-person education expense limits (₩3M / ₩9M) and the actual tax saved, including arts and sports academy fees for 1st–2nd graders from 2026"
@@ -31337,9 +31353,9 @@
       "title": "Notes",
       "items": [
         "SmartStore: not category-based. The order-management fee (by annual sales: micro 1.77%, SME1 2.33%, SME2 2.48%, SME3 2.73%, general 3.30%; same for all payment methods; cut on Oct 1, 2025) applies to the payment including shipping, and the sales fee (2.73% regular, 0.91% via marketing link; introduced Jun 2, 2025) applies to the item price. Both are plus 10% VAT. Brand Store rates (3.64%/1.82%) and new-seller fee waivers are not modelled.",
-        "Coupang: top-level default rates from Coupang's official category fee table (4–10.9% overall), charged on the final price the customer paid (after discounts). Sub-categories differ (e.g. TV, fridge, air conditioner 5.8%; computer, tablet 5%; monitor 4.5%; formula, diapers 6.4%; noodles 10.9%). Shipping is charged a 3% fee based on seller settlement examples, and fees are calculated plus VAT. A monthly service fee of ₩55,000 (incl. VAT) applies when monthly sales excluding shipping reach ₩1M.",
-        "11st: the category fee table is only visible after logging in to Seller Office, so no per-category values are used. 11st's published range is 7–13%; the default 13% is the top of that range. The entered rate and the 3.3% prepaid-shipping fee are treated as VAT-inclusive and applied as is. The 2% affiliate fee for price-comparison traffic and the ₩77,000/month server fee (when last month's confirmed sales reach ₩5M) are excluded.",
-        "Rates checked on 2026-10-05. Platform policies change often, so confirm in SmartStore Center, Coupang Wing or 11st Seller Office before listing."
+        "Coupang: top-level default rates from Coupang's official category fee table (4–10.9% overall), charged on the final price the customer paid (after discounts). Sub-categories differ (e.g. TV, fridge, air conditioner 5.8%; computer, tablet 5%; monitor 4.5%; formula, diapers 6.4%; noodles 10.9%). The 3% shipping fee and fees being plus VAT are not in Coupang's public documents, so they follow seller settlement examples (check in Wing after logging in). A monthly service fee of ₩55,000 (incl. VAT) applies when monthly sales excluding shipping reach ₩1M.",
+        "11st: the category fee table is only visible in Seller Office after logging in (Category service fees), so no per-category values are used. 11st's published range is 7–13%; the default 13% is the top of that range. 11st's seller help center states its fees include VAT, so the entered rate and the 3.3% fee on prepaid shipping are applied as is, with no VAT added. The service fee is charged on the pre-discount price (plus options), so if you sell at a discount the actual fee is higher than shown. The affiliate marketing fee for orders from price-comparison sites (2% of price plus prepaid shipping) and the ₩77,000/month server fee (incl. VAT, when last month's confirmed sales reach ₩5M) are excluded.",
+        "Rates checked on 2026-10-05 (11st VAT and shipping rules checked against 11st's seller help center FAQ on 2026-11-08). Platform policies change often, so confirm in SmartStore Center, Coupang Wing or 11st Seller Office before listing."
       ]
     },
     "guide": {
@@ -32730,6 +32746,8 @@
   "yearEndTaxCalc": {
     "yt": {
       "detail": {
+        "child": "Child tax credit in detail (by birth year)",
+        "sme": "SME employee exemption in detail (period, job changes, military)",
         "dependent": "Check dependent eligibility (per person, couples)",
         "education": "Education credit in detail (per-person limits, academies)",
         "donation": "Donation credit in detail (religious, political, carry-forward)",
@@ -32766,6 +32784,7 @@
         "rowSpend": "Annual card spending (projected)"
       },
       "todo": {
+        "checklistLink": "Checklist for my situation",
         "cardLink": "Card deduction in detail",
         "title": "Before December 31",
         "desc": "These can't be changed once the year ends. Amounts are the extra refund (incl. local tax) based on your inputs.",

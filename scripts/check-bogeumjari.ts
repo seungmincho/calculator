@@ -1,5 +1,6 @@
 // 보금자리론 회귀 체크: node scripts/check-bogeumjari.ts
-// 기준: hf.go.kr 상품안내(sub01_01_01/02, 2026-10-04 확인)·금리안내(2026-11-09 공시), 금융위 10.15 FAQ, 6.27 대책
+// 기준: hf.go.kr 상품안내(sub01_01_01/02, 2026-10-04 확인)·금리안내(2026-11-09 공시)·업무처리기준(2026.07.20 개정, 2026-11-08 확인),
+// 금융위 10.15 FAQ, 6.27 대책
 import assert from 'node:assert/strict'
 import { calcBogeumjari, didimdolHint, getLtv, getIncomeLimit, PERIOD_RATES, PREV_PERIOD_RATES, MIN_RATE, rateChange, type BogeumjariInput } from '../src/utils/bogeumjari.ts'
 
@@ -66,14 +67,20 @@ assert.deepEqual([r.eligible, r.ltv, r.dtiCap, r.maxLoan, r.surcharge], [true, 0
 assert.equal(run({ perks: ['fraud'], price: 950_000_000 }).checks.find((c) => c.label === '주택가격')!.status, 'fail')
 assert.equal(run({ price: 650_000_000 }).eligible, false) // 일반은 6억 초과 불가
 
-// NICE CB점수 (hf sub01_01_01, 2026-10-04): 271점 미만 불가, 271~614점 LTV 10%p 차감(규제지역 차감과 누적)
+// NICE CB점수: 271점 미만 불가(hf sub01_01_01). 271~614점은 LTV "60% 이내로 제한", 규제지역이면 Min(60%, 규제지역 LTV)
+// — 누적 차감 아님. 생애최초(80/70%)·전세사기피해자(80%)는 초과분을 특례구입자금보증이 받쳐 미적용
+// (보금자리론 업무처리기준 2026.07.20 개정 제7장 1·제11장 3·제14장 7, 2026-11-08 확인)
 assert.equal(run({ credit: 'low' }).eligible, false)
-assert.deepEqual([run({ credit: 'mid' }).ltv, run({ credit: 'mid', kind: 'other' }).ltv], [0.6, 0.55])
-assert.equal(run({ credit: 'mid', region: 'regulated', owned: '1' }).ltv, 0.5)
-assert.deepEqual([run({ credit: 'mid', type: 'first' }).ltv, run({ credit: 'mid', type: 'first', region: 'capital' }).ltv], [0.7, 0.6])
+assert.equal(run({ credit: 'low', type: 'first' }).eligible, false)
+assert.deepEqual([run({ credit: 'mid' }).ltv, run({ credit: 'mid', kind: 'other' }).ltv], [0.6, 0.6]) // 기타주택 65 → 60
+assert.deepEqual([run({ credit: 'mid', region: 'regulated', owned: '1' }).ltv, run({ credit: 'mid', region: 'regulated', owned: '1', kind: 'other' }).ltv], [0.6, 0.55])
+assert.deepEqual([run({ credit: 'mid', type: 'first' }).ltv, run({ credit: 'mid', type: 'first', region: 'capital' }).ltv], [0.8, 0.7])
 assert.equal(run({ credit: 'mid', perks: ['fraud'] }).ltv, 0.8)
-assert.ok(run({ credit: 'mid' }).checks.some((c) => c.label === '신용점수' && c.status === 'warn'))
+assert.ok(run({ credit: 'mid' }).checks.some((c) => c.label === '신용점수' && c.status === 'warn' && c.msg === 'mid'))
+assert.ok(run({ credit: 'mid', type: 'first' }).checks.some((c) => c.label === '신용점수' && c.status === 'pass' && c.msg === 'midExempt'))
+assert.deepEqual([run({ credit: 'mid' }).ltvNote, run({ credit: 'mid', region: 'regulated', owned: '1' }).ltvNote], ['credit', 'both'])
 assert.equal(run({ credit: 'mid' }).maxLoan, 240_000_000) // 4억 × 60%
+assert.equal(run({ credit: 'mid', type: 'first' }).maxLoan, 320_000_000) // 4억 × 80%
 
 // 신혼가구·신생아 중복 불가
 assert.deepEqual(run({ type: 'newlywed', perks: ['newborn'] }).discounts.map((d) => d.label), ['신혼가구'])

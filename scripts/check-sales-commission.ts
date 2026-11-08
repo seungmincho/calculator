@@ -5,7 +5,7 @@ import {
   encodePlan, decodePlan, DEFAULT_TIERS, PLAN_A, PLAN_B, type Plan,
 } from '../src/utils/salesCommission.ts'
 import {
-  marketFees, NAVER_ORDER_MGMT, NAVER_SALES, COUPANG_SALES, ELEVENST_DEFAULT, CATEGORY_KEYS, type MarketInput,
+  marketFees, NAVER_ORDER_MGMT, NAVER_SALES, COUPANG_SALES, ELEVENST_DEFAULT, ELEVENST_SHIPPING, CATEGORY_KEYS, type MarketInput,
 } from '../src/utils/marketplaceFees.ts'
 
 const T = DEFAULT_TIERS // 0~1천만 3%, 1천만~3천만 5%, 3천만 이상 7%
@@ -114,7 +114,9 @@ assert.equal(cp.total, 3_564)
 assert.equal(cp.settlement, 29_436)
 assert.equal(marketFees('coupang', { ...mk, category: 'electronics' }).total, Math.round((2_340 + 90) * 1.1)) // 2,673
 
-// 11번가: 입력 요율 × 판매가 + 배송비 × 3.3% (둘 다 부가세 포함으로 보고 그대로)
+// 11번가: 입력 요율 × 판매가 + 배송비 × 3.3%, 둘 다 부가세 포함이라 VAT 가산 없음
+// (11번가 판매자 고객센터 FAQ 1495 "수수료는 부가세 포함 금액"·361 "선결제 배송비의 서비스이용료(3.3%)", 2026-11-08 확인)
+assert.equal(ELEVENST_SHIPPING, 3.3)
 const es = marketFees('elevenst', mk)
 assert.equal(es.vat, 0)
 assert.equal(es.total, 3_900 + 99)
