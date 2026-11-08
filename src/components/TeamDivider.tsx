@@ -6,6 +6,9 @@ import '@/lib/i18n/ns/teamDivider'
 import { Copy, Check, Users, Shuffle, Plus, Trash2 } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { balanceTeams } from '@/utils/teamBalance'
+
+const DEFAULT_SKILL = 3
 
 const TEAM_COLORS = ['#EF4444', '#3B82F6', '#22C55E', '#F59E0B', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316']
 const TEAM_BG = [
@@ -42,6 +45,10 @@ export default function TeamDivider() {
   const [showBulk, setShowBulk] = useState(false)
   const [teamCount, setTeamCount] = useState(2)
   const [mode, setMode] = useState<Mode>('random')
+  const [skills, setSkills] = useState<Record<string, number>>({})
+  const skillOf = (name: string) => skills[name] ?? DEFAULT_SKILL
+  // 결과를 만든 방식(나눈 뒤 방식을 바꿔도 결과 카드 표시는 그대로)
+  const [resultMode, setResultMode] = useState<Mode>('random')
   const [teams, setTeams] = useState<string[][]>([])
   const [isDividing, setIsDividing] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -69,6 +76,7 @@ export default function TeamDivider() {
 
   const handleDivide = useCallback(async () => {
     if (validNames.length < teamCount) return
+    setResultMode(mode)
     if (mode === 'captain') {
       const captains = validNames.slice(0, teamCount)
       const pool = shuffle(validNames.slice(teamCount))
@@ -82,10 +90,12 @@ export default function TeamDivider() {
     }
     setIsDividing(true)
     await new Promise(r => setTimeout(r, 400))
-    setTeams(assignTeams(validNames, teamCount))
+    setTeams(mode === 'balanced'
+      ? balanceTeams(validNames.map(name => ({ name, skill: skills[name] ?? DEFAULT_SKILL })), teamCount)
+      : assignTeams(validNames, teamCount))
     setIsDividing(false)
     setIsDrafting(false)
-  }, [validNames, teamCount, mode, assignTeams])
+  }, [validNames, teamCount, mode, skills, assignTeams])
 
   const handleDraftPick = useCallback((name: string) => {
     const next = teams.map((team, i) => i === currentCaptainTeam ? [...team, name] : team)
@@ -120,9 +130,12 @@ export default function TeamDivider() {
 
   const copyResult = useCallback(async () => {
     if (!teams.length) return
-    const text = teams.map((team, i) =>
-      `${t('teamLabel')} ${i + 1} (${team.length}${t('memberUnit')})\n${team.join(', ')}`
-    ).join('\n\n')
+    const balanced = resultMode === 'balanced'
+    const text = teams.map((team, i) => {
+      const sum = balanced ? ` · ${t('skillSum', { sum: team.reduce((s, n) => s + (skills[n] ?? DEFAULT_SKILL), 0) })}` : ''
+      const members = balanced ? team.map(n => `${n}(${skills[n] ?? DEFAULT_SKILL})`) : team
+      return `${t('teamLabel')} ${i + 1} (${team.length}${t('memberUnit')}${sum})\n${members.join(', ')}`
+    }).join('\n\n')
     try {
       await navigator.clipboard.writeText(text)
     } catch {
@@ -137,7 +150,7 @@ export default function TeamDivider() {
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-  }, [teams, t])
+  }, [teams, t, resultMode, skills])
 
   return (
     <div className="space-y-6">
@@ -146,7 +159,7 @@ export default function TeamDivider() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Presets */}
@@ -208,21 +221,39 @@ export default function TeamDivider() {
               />
               <button
                 onClick={handleAddName}
+                aria-label={t('add')}
                 className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
-            <ul className="space-y-1 max-h-48 overflow-y-auto">
+            {mode === 'balanced' && (
+              <p className="text-xs text-sub bg-subtle rounded-lg px-3 py-2">{t('skillHint')}</p>
+            )}
+
+            <ul className={`space-y-1 overflow-y-auto ${mode === 'balanced' ? 'max-h-72' : 'max-h-48'}`}>
               {names.map((name, i) => (
-                <li key={i} className="flex items-center justify-between px-2 py-1 rounded bg-subtle">
-                  <span className="text-sm text-body truncate">{name}</span>
+                <li key={i} className="flex items-center justify-between gap-2 px-2 py-1 rounded bg-subtle">
+                  <span className="text-sm text-body truncate flex-1">{name}</span>
+                  {mode === 'balanced' && name.trim() && (
+                    <select
+                      value={skillOf(name)}
+                      onChange={e => setSkills(prev => ({ ...prev, [name]: Number(e.target.value) }))}
+                      aria-label={t('skillFor', { name })}
+                      className="ui-field w-auto px-2 py-1 text-sm tabular-nums shrink-0"
+                    >
+                      {[5, 4, 3, 2, 1].map(s => (
+                        <option key={s} value={s}>{t('skillOption', { level: s })}</option>
+                      ))}
+                    </select>
+                  )}
                   <button
                     onClick={() => setNames(prev => prev.filter((_, idx) => idx !== i))}
-                    className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
+                    aria-label={t('removeName', { name })}
+                    className="text-faint hover:text-red-500 shrink-0 p-1"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
                 </li>
               ))}
@@ -332,13 +363,21 @@ export default function TeamDivider() {
                           {team.length}{t('memberUnit')}
                         </span>
                       </div>
+                      {resultMode === 'balanced' && (
+                        <p className="text-xs text-sub mb-2 tabular-nums">
+                          {t('skillSum', { sum: team.reduce((s, n) => s + skillOf(n), 0) })}
+                        </p>
+                      )}
                       <ul className="space-y-1">
                         {team.map((member, j) => (
                           <li key={j} className="text-sm text-body flex items-center gap-1.5">
-                            {j === 0 && mode === 'captain' && (
+                            {j === 0 && resultMode === 'captain' && (
                               <span className="text-yellow-500 text-xs">★</span>
                             )}
                             {member}
+                            {resultMode === 'balanced' && (
+                              <span className="text-xs text-muted tabular-nums">{skillOf(member)}</span>
+                            )}
                           </li>
                         ))}
                       </ul>

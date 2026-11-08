@@ -28150,6 +28150,12 @@
     "notEnough": "Need more participants than teams",
     "empty": "Click Divide Teams to get started",
     "draftTurn": "Team {team}'s turn to pick",
+    "add": "Add participant",
+    "removeName": "Remove {name}",
+    "skillHint": "Pick a skill level (1-5) for each participant. Stronger players go first to the team with the lowest skill total, so totals and team sizes stay even. Unset players count as 3.",
+    "skillFor": "Skill of {name}",
+    "skillOption": "Skill {level}",
+    "skillSum": "Skill total {sum}",
     "mode": {
       "label": "Distribution Mode",
       "random": "Random",
@@ -28220,7 +28226,7 @@
         "items": [
           "Enter participant names (comma or line-break separated).",
           "Set the number of teams (2-8).",
-          "Choose a distribution mode (Random/Balanced/Captain Draft).",
+          "Choose a distribution mode (Random/Balanced/Captain Draft). For Balanced, set each participant's skill (1-5) in the list.",
           "Click 'Divide Teams' to see results."
         ]
       },
@@ -28228,6 +28234,7 @@
         "title": "Tips",
         "items": [
           "Captain draft mode is the fairest as each captain picks alternately.",
+          "For games with big skill gaps like futsal or basketball, use Balanced mode so strong players don't end up on one team. Check each team's skill total on the result cards.",
           "Copy results to share in group chats.",
           "Click 'Redivide' for a new random split."
         ]
@@ -28241,7 +28248,11 @@
           },
           {
             "q": "Uneven numbers?",
-            "a": "Extra members are distributed to earlier teams. E.g., 7 people → 3 teams = 3/2/2."
+            "a": "Team sizes differ by at most one. E.g., 7 people → 3 teams = 3/2/2. Random mode gives the extra members to earlier teams."
+          },
+          {
+            "q": "Can I split teams by skill?",
+            "a": "Choose Balanced and set each participant's skill (1-5). Stronger players are assigned first to the team with the lowest skill total, which keeps totals close. Players with the same skill are shuffled, so redividing gives a new mix."
           }
         ]
       }
