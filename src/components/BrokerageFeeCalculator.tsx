@@ -59,7 +59,9 @@ export default function BrokerageFeeCalculator() {
     if (deal === 'monthly') q.set('r', String(rent))
     if (vat !== 'general') q.set('v', vat)
     if (nego !== null) q.set('n', String(+(nego * 100).toFixed(3)))
-    window.history.replaceState(null, '', `?${q}`)
+    // 기본값(주택 매매 6억, 나머지 기본)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = q.toString() === `a=${DEFAULTS.sale[0]}`
+    window.history.replaceState(null, '', isDef ? window.location.pathname : `?${q}`)
   }, [deal, prop, amt, rent, vat, nego])
 
   const changeDeal = (d: Deal) => {

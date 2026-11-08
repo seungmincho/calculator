@@ -67,7 +67,9 @@ export default function NationalPensionCalculator() {
     if (life !== 86) q.set('le', String(life))
     if (growth !== 0.02) q.set('g', String(Math.round(growth * 100)))
     if (extra !== 3) q.set('x', String(extra))
-    window.history.replaceState(null, '', `?${q}`)
+    // 기본값(1975년생·2002년부터 30년·월 300만, 나머지 기본)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = q.toString() === 'b=1975&s=2002&y=30&i=3000000'
+    window.history.replaceState(null, '', isDef ? window.location.pathname : `?${q}`)
   }, [birth, s, y, income, employee, children, childNew, military, spouse, depChildren, depParents, work, life, growth, extra])
 
   const input = { birthYear: birth, startYear: s, years: y, income, employee, children, childNewRule: childNew, militaryMonths: military, spouse, depChildren, depParents }

@@ -80,7 +80,9 @@ export default function ComprehensivePropertyTax() {
       if (v > 0) q.set(k, String(v))
     }
     if (newAcq) { q.set('nd', newAcq); if (bothAdj) q.set('adj', '1'); if (askContract && contract) q.set('nc', contract) }
-    window.history.replaceState(null, '', `?${q}`)
+    // 기본값(15억 1채·55세·7년, 나머지 기본)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = q.toString() === `p=${15 * EOK}&age=55&yrs=7`
+    window.history.replaceState(null, '', isDef ? window.location.pathname : `?${q}`)
   }, [houses, oneHouse, joint, share, age, years, urban, prev, view, bill, newAcq, bothAdj, contract]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const single = houses.filter((h) => h.price > 0).length === 1

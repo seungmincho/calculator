@@ -80,6 +80,9 @@ export default function BonusCalculator() {
       if (dependents !== 1) p.set('dependents', String(dependents))
       if (children !== 0) p.set('children', String(children))
       if (nonTaxable.replace(/,/g, '') !== '200000') p.set('nonTaxable', nonTaxable.replace(/,/g, ''))
+      // 기본값 그대로면 쿼리를 붙이지 않음 (첫 방문 URL 깔끔하게) — 키가 없으면 받는 쪽도 같은 기본값
+      if (salary === DEFAULTS.salary && method === DEFAULTS.method && percent === DEFAULTS.percent && bonusType === 'ps' && period === 1
+        && dependents === 1 && children === 0 && nonTaxable.replace(/,/g, '') === '200000') url.search = ''
       window.history.replaceState({}, '', url.toString())
     }, 300)
     return () => clearTimeout(timer)

@@ -96,7 +96,9 @@ export default function ElectricityCalculator() {
     if (prev > 0) p.set('p', String(prev))
     if (acWatt !== 1000) p.set('aw', String(acWatt))
     if (acHours !== 4) p.set('ah', String(acHours))
-    window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
+    // 기본값(이번 달·사용량 350kWh, 나머지 기본)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = p.toString() === `mo=${new Date().getMonth() + 1}&k=350`
+    window.history.replaceState(null, '', `${window.location.pathname}${isDef ? '' : `?${p}`}`)
   }, [mode, kwh, baseKwh, appliances, month, voltage, welfare, prev, acWatt, acHours])
 
   const season = seasonOf(month)

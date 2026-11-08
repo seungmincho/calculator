@@ -87,6 +87,11 @@ export default function ParentalLeaveCalculator() {
       sp.set('order', order); sp.set('fwage', String(dadWage)); sp.set('fduration', String(dadMonths)); sp.set('birth', birth)
     } else ['order', 'fwage', 'fduration', 'birth'].forEach((k) => sp.delete(k))
     sp.set('rb', String(rhBefore)); sp.set('ra', String(rhAfter))
+    // 기본값(둘 다·엄마 먼저·오늘 시작·출산 3개월 전·월급 300만 12개월/350만 6개월·40→30시간)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    if (who === 'both' && order === 'mom' && start === todayKST() && birth === addMonths(start, -3) && momWage === 3_000_000 && momMonths === 12
+      && dadWage === 3_500_000 && dadMonths === 6 && rhBefore === 40 && rhAfter === 30) {
+      ;['who', 'wage', 'duration', 'start', 'order', 'fwage', 'fduration', 'birth', 'rb', 'ra'].forEach((k) => sp.delete(k))
+    }
     window.history.replaceState({}, '', url)
   }, [ready, who, order, start, birth, momWage, momMonths, dadWage, dadMonths, rhBefore, rhAfter])
 

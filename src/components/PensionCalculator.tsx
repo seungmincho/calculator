@@ -44,7 +44,9 @@ export default function PensionCalculator() {
   // 입력 → URL
   useEffect(() => {
     const params = new URLSearchParams({ age: String(currentAge), income: String(monthlyIncome), start: String(startAge), retire: String(retirementAge) })
-    window.history.replaceState({}, '', `${window.location.pathname}?${params}`)
+    // 기본값 그대로면 쿼리를 붙이지 않음 (첫 방문 URL 깔끔하게) — 키가 없으면 받는 쪽도 DEFAULTS
+    const isDef = currentAge === DEFAULTS.age && monthlyIncome === DEFAULTS.income && startAge === DEFAULTS.start && retirementAge === DEFAULTS.retire
+    window.history.replaceState({}, '', `${window.location.pathname}${isDef ? '' : `?${params}`}`)
   }, [currentAge, monthlyIncome, startAge, retirementAge])
 
   const reset = () => {

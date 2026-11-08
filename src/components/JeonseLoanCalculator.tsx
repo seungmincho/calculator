@@ -74,6 +74,11 @@ export default function JeonseLoanCalculator() {
     url.searchParams.set('prod', s.prod)
     url.searchParams.set('rp', s.rp)
     url.searchParams.set('ht', s.ht)
+    // 기본값 그대로면 쿼리를 붙이지 않음 (첫 방문 URL 깔끔하게) — 키가 없으면 decode 가 DEFAULTS
+    if (s.loc === 'capital' && s.prod === 'auto' && s.rp === 'bullet' && s.ht === 'other'
+      && (Object.keys(DEFAULTS) as NumKey[]).every((k) => s[k] === DEFAULTS[k])) {
+      for (const k of ['loc', 'prod', 'rp', 'ht', ...Object.keys(DEFAULTS)]) url.searchParams.delete(k)
+    }
     window.history.replaceState({}, '', url)
   }, [s])
 

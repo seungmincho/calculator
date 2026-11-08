@@ -128,6 +128,7 @@ const DdayCalculator = () => {
   }, [searchParams, t])
 
   // ── URL 동기화 (현재 모드의 값만) ──
+  const csatTitle = t('presets.csat')
   useEffect(() => {
     if (!today) return
     const params = new URLSearchParams({ mode })
@@ -139,8 +140,10 @@ const DdayCalculator = () => {
       if (subtract) params.set('dir', 'subtract')
       if (businessOnly && addUnit === 'days') params.set('biz', '1')
     }
-    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}`)
-  }, [today, mode, title, target, annivStart, annivType, includeStart, start, end, base, addValue, addUnit, subtract, businessOnly])
+    // 기본값(D-day 모드·그 시점 다음 수능)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 다음 수능(고정한 D-day 는 기기마다 달라 제외)
+    const isDef = mode === 'dday' && title === csatTitle && target === getPresets(today, H).find(x => x.key === 'csat')?.date
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${isDef ? '' : `?${params}`}`)
+  }, [today, mode, title, csatTitle, target, annivStart, annivType, includeStart, start, end, base, addValue, addUnit, subtract, businessOnly])
 
   useEffect(() => {
     if (today && isValidDate(annivStart)) writeLS(ANNIV_KEY, { start: annivStart, type: annivType, inc: includeStart })

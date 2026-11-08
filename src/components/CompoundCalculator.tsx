@@ -110,7 +110,10 @@ export default function CompoundCalculator() {
     p.set('inf', infText)
     if (isGoal) { p.set('g', String(goal)); p.set('gs', solve) }
     if (scenarios.join('~') !== DEFAULT_SC.join('~')) p.set('sc', scenarios.join('~'))
-    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    // 기본값(거치식 1천만·5%·10년·연복리·일반과세·물가 2%)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = mode === 'lump' && principal === 10000000 && rateText === '5' && periodText === '10' && unit === 'years' && freq === 'yearly'
+      && timing === 'begin' && tax === 'normal' && taxTiming === 'maturity' && infText === '2' && !p.has('sc')
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}${isDef ? '' : `?${p}`}`), 300)
     return () => clearTimeout(id)
   }, [mode, principal, showMonthly, monthlyInput, rateText, periodText, unit, freq, timing, tax, taxTiming, infText, isGoal, goal, solve, scenarios])
 

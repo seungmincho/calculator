@@ -90,8 +90,12 @@ export default function SavingsCalculator() {
     if (compound) p.set('c', '1')
     if (tax !== 'normal') p.set('tax', tax)
     p.set('dr', cmpRateText); p.set('g', String(goal))
-    p.set('cmp', products.map((x) => `${x.rate}_${x.months}_${x.tax}_${x.compound ? 1 : 0}`).join('~'))
-    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    const enc = (l: Product[]) => l.map((x) => `${x.rate}_${x.months}_${x.tax}_${x.compound ? 1 : 0}`).join('~')
+    p.set('cmp', enc(products))
+    // 기본값(적금 월 50만·3.5%·12개월·단리·일반과세·비교 3%·목표 1천만·기본 비교 상품)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = isSaving && amount === 500000 && rateText === '3.5' && months === 12 && !compound && tax === 'normal'
+      && cmpRateText === '3' && goal === 10000000 && enc(products) === enc(DEFAULT_CMP)
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}${isDef ? '' : `?${p}`}`), 300)
     return () => clearTimeout(id)
   }, [isSaving, amount, rateText, months, compound, tax, cmpRateText, goal, products])
 
