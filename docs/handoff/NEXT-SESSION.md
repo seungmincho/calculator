@@ -14,7 +14,7 @@
 - **날짜 안전화(4fe7d4eb)**: 중위소득·아동수당·프리랜서·연휴 플래너·세금 일정은 page 가 `todayKST()` 빌드 날짜를 넘겨 첫 렌더 고정, 홈·허브 NEW 배지·크론탭은 마운트 후. 남은 것: `insuranceRates` INSURANCE 모듈 상수 → **1/1 재빌드 필수 그대로**.
 - **정리(62c8837f)**: 연말정산 허브 '달라진 점'에 교육비 소득 제한 폐지, MobileResultLink → `@/lib/i18n/shared`(check-scoped-translations 통과), check-agent-api·mcp·everland(-planner)·theme-parks 는 머리 주석의 esbuild 명령으로 실행(전부 PASS), 사다리·로또 남은 색.
 - 검증: 전체 tsc 0, audit 0, check-*.ts 전부(esbuild 5개 제외) 통과, dev 375px 넘침 0(자녀세액공제 표 sr-only 넘침 → 스크롤 래퍼 `relative` 로 수정), 날짜 바꾼 페이지 hydration 경고 0.
-- **예약 작업 2개(11/19 aT 김장비용, 11/26 금통위 → rentConvert BASE_RATE)는 권한 거부로 못 만듦** — 사용자가 허용하면 다시 만들거나 그날 수동 확인.
+- **예약 작업 2개 등록됨(2026-11-08, Auto 모드)**: `kimjang-at-2026-cost-update`(11/19 10:00 aT 김장비용 → kimjang.ts), `bok-base-rate-1126-update`(11/26 15:00 금통위 → rentConvert BASE_RATE). 둘 다 로컬 커밋까지만, 결과 확인 후 배포는 사용자.
 
 ### 0-3. 2026-11-08 연말정산 랜딩 3종 + 작은 개선 (사용자 기획 승인, 서브에이전트 병렬)
 
