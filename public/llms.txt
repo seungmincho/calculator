@@ -140,6 +140,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [자녀세액공제 계산기](https://toolhub.ai.kr/child-tax-credit/): 자녀 출생연도로 올해 자녀세액공제 대상 여부와 금액, 출산·입양 공제, 맞벌이 누구 앞으로 받을지
 - [중소기업 취업자 소득세 감면 계산기](https://toolhub.ai.kr/sme-tax-exemption/): 청년 90%·연 200만원 감면 대상 여부, 감면 기간 종료일, 올해 줄어드는 세금과 이직·병역 기간 반영
 - [연말정산 준비 체크리스트](https://toolhub.ai.kr/year-end-checklist/): 12월 31일 마감부터 1월 15일 간소화, 회사 제출까지 내 상황에 맞는 할 일과 간소화에 안 나오는 서류
+- [퇴사하면 받는 돈 계산기](https://toolhub.ai.kr/resignation-pay/): 퇴사일만 정하면 퇴직금·미사용 연차수당·실업급여·중도퇴사 연말정산까지 받을 돈 합계와 퇴사 후 할 일
+- [난방기구 전기세 계산기](https://toolhub.ai.kr/heater-electricity-cost/): 전기장판·온풍기·라디에이터를 하루 몇 시간 쓰면 누진 구간까지 반영해 이번 달 전기요금이 얼마나 오르는지
 
 ## 개발 도구
 

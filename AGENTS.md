@@ -35,7 +35,8 @@ npm run wrangler:dev         # out/ 을 Cloudflare Pages 로컬로 띄운다
 - `src/config/menuConfig.ts` — 메뉴의 정본. Header·ToolsShowcase·SearchDialog·GameHub·`sitemap.ts` 가 여기서
   읽는다. 카테고리는 `calculators | tools | media | health | games`.
   - 필수: `href`·`labelKey`·`descriptionKey`·`icon`. 선택: `addedDate`('YYYY-MM-DD', 30일 안이면 NEW 배지),
-    `updatedDate`(sitemap lastmod·RSS pubDate), `subcategory`(번역 키), `modes`(게임 전용 `ai | online | solo`).
+    `updatedDate`(sitemap lastmod·RSS pubDate·홈 '새 도구·업데이트' — 기존 도구를 눈에 띄게 고치면 갱신), `subcategory`(번역 키),
+    `modes`(게임 전용 `ai | online | solo`).
 - `src/config/toolIcons.ts` — 화면에 쓰는 라인 아이콘(`<ToolIcon href=... />`). menuConfig 의 emoji `icon` 은 화면에 쓰지 않는다.
 - `src/app/globals.css` — 색·모서리·그림자 토큰. 바꾸면 전 페이지에 반영된다.
 - `src/utils/insuranceRates.ts` — 4대보험 요율·국민연금 상한(2026). 요율이 바뀌면 여기만 고친다.

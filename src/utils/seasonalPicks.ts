@@ -79,7 +79,7 @@ export function upcomingDeadlines(now: Date, picks: SeasonPick[] = [], within = 
     ...[y, y + 1].flatMap(yy => [
       { key: 'jongbu', href: '/comprehensive-property-tax', date: jongbuDates(yy).due },
       { key: 'yearEnd', href: '/pension-tax-credit', date: `${yy}-12-31` }, // 연금저축·IRP 납입 마감 → 전용 페이지
-      { key: 'simplified', href: '/year-end-tax', date: `${yy}-01-15` },
+      { key: 'simplified', href: '/year-end-checklist', date: `${yy}-01-15` }, // 간소화 개통일 → 할 일·빠진 서류 체크리스트
       { key: 'hometown', href: '/hometown-donation', date: `${yy}-12-31` }, // 고향사랑기부 그해 공제 마감
     ]),
     { key: 'energyVoucher', href: '/energy-voucher', date: EV_APPLY.end }, // 연도별 공고(지나면 n<0 으로 빠짐). 같은 날 마감이면 위 항목이 먼저

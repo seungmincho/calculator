@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 08 Nov 2026 05:01:19 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2026 05:49:13 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[보금자리론 계산기]]></title>
+    <link>https://toolhub.ai.kr/bogeumjari-loan/</link>
+    <guid>https://toolhub.ai.kr/bogeumjari-loan/</guid>
+    <description><![CDATA[생애최초 우대대출 한도·금리]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[자녀세액공제 계산기]]></title>
     <link>https://toolhub.ai.kr/child-tax-credit/</link>
@@ -36,6 +43,27 @@
     <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[난방기구 전기세 계산기]]></title>
+    <link>https://toolhub.ai.kr/heater-electricity-cost/</link>
+    <guid>https://toolhub.ai.kr/heater-electricity-cost/</guid>
+    <description><![CDATA[전기장판·온풍기·라디에이터를 하루 몇 시간 쓰면 누진 구간까지 반영해 이번 달 전기요금이 얼마나 오르는지]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[종합소득세 계산기]]></title>
+    <link>https://toolhub.ai.kr/income-tax/</link>
+    <guid>https://toolhub.ai.kr/income-tax/</guid>
+    <description><![CDATA[프리랜서·사업자 종합소득세 자동 계산, 업종별 경비율·세액공제 반영]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[퇴사하면 받는 돈 계산기]]></title>
+    <link>https://toolhub.ai.kr/resignation-pay/</link>
+    <guid>https://toolhub.ai.kr/resignation-pay/</guid>
+    <description><![CDATA[퇴사일만 정하면 퇴직금·미사용 연차수당·실업급여·중도퇴사 연말정산까지 받을 돈 합계와 퇴사 후 할 일]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[중소기업 취업자 소득세 감면 계산기]]></title>
     <link>https://toolhub.ai.kr/sme-tax-exemption/</link>
     <guid>https://toolhub.ai.kr/sme-tax-exemption/</guid>
@@ -47,6 +75,13 @@
     <link>https://toolhub.ai.kr/year-end-checklist/</link>
     <guid>https://toolhub.ai.kr/year-end-checklist/</guid>
     <description><![CDATA[12월 31일 마감부터 1월 15일 간소화, 회사 제출까지 내 상황에 맞는 할 일과 간소화에 안 나오는 서류]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[연말정산 계산기]]></title>
+    <link>https://toolhub.ai.kr/year-end-tax/</link>
+    <guid>https://toolhub.ai.kr/year-end-tax/</guid>
+    <description><![CDATA[2026년 귀속 연말정산 환급액·결정세액 자동 계산, 1~9월 사용액으로 미리보기와 12월 31일까지 할 일]]></description>
     <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -117,6 +152,13 @@
     <link>https://toolhub.ai.kr/json-to-typescript/</link>
     <guid>https://toolhub.ai.kr/json-to-typescript/</guid>
     <description><![CDATA[JSON을 interface·type으로 변환, 선택 필드·배열 타입 추론]]></description>
+    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[로또번호 생성기]]></title>
+    <link>https://toolhub.ai.kr/lotto-generator/</link>
+    <guid>https://toolhub.ai.kr/lotto-generator/</guid>
+    <description><![CDATA[로또 번호 자동 생성]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -201,6 +243,13 @@
     <link>https://toolhub.ai.kr/new-year-sunrise/</link>
     <guid>https://toolhub.ai.kr/new-year-sunrise/</guid>
     <description><![CDATA[전국 해돋이 명소의 1월 1일 일출 시각과 구름 예보]]></description>
+    <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[연봉 계산기]]></title>
+    <link>https://toolhub.ai.kr/salary-calculator/</link>
+    <guid>https://toolhub.ai.kr/salary-calculator/</guid>
+    <description><![CDATA[실수령액과 4대보험 계산]]></description>
     <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -635,13 +684,6 @@
     <link>https://toolhub.ai.kr/body-fat-calculator/</link>
     <guid>https://toolhub.ai.kr/body-fat-calculator/</guid>
     <description><![CDATA[체지방률과 근육량]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[보금자리론 계산기]]></title>
-    <link>https://toolhub.ai.kr/bogeumjari-loan/</link>
-    <guid>https://toolhub.ai.kr/bogeumjari-loan/</guid>
-    <description><![CDATA[생애최초 우대대출 한도·금리]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -1198,13 +1240,6 @@
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
-    <title><![CDATA[로또번호 생성기]]></title>
-    <link>https://toolhub.ai.kr/lotto-generator/</link>
-    <guid>https://toolhub.ai.kr/lotto-generator/</guid>
-    <description><![CDATA[로또 번호 자동 생성]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
     <title><![CDATA[음력 양력 변환기]]></title>
     <link>https://toolhub.ai.kr/lunar-converter/</link>
     <guid>https://toolhub.ai.kr/lunar-converter/</guid>
@@ -1482,13 +1517,6 @@
     <link>https://toolhub.ai.kr/roman-numeral/</link>
     <guid>https://toolhub.ai.kr/roman-numeral/</guid>
     <description><![CDATA[아라비아↔로마 숫자 변환]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[연봉 계산기]]></title>
-    <link>https://toolhub.ai.kr/salary-calculator/</link>
-    <guid>https://toolhub.ai.kr/salary-calculator/</guid>
-    <description><![CDATA[실수령액과 4대보험 계산]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -2094,13 +2122,6 @@
     <pubDate>Thu, 19 Mar 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
-    <title><![CDATA[종합소득세 계산기]]></title>
-    <link>https://toolhub.ai.kr/income-tax/</link>
-    <guid>https://toolhub.ai.kr/income-tax/</guid>
-    <description><![CDATA[프리랜서·사업자 종합소득세 자동 계산, 업종별 경비율·세액공제 반영]]></description>
-    <pubDate>Thu, 19 Mar 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
     <title><![CDATA[전세대출 계산기]]></title>
     <link>https://toolhub.ai.kr/jeonse-loan/</link>
     <guid>https://toolhub.ai.kr/jeonse-loan/</guid>
@@ -2140,13 +2161,6 @@
     <link>https://toolhub.ai.kr/sales-commission/</link>
     <guid>https://toolhub.ai.kr/sales-commission/</guid>
     <description><![CDATA[쿠팡·스마트스토어·11번가 카테고리별 판매수수료 비교 계산]]></description>
-    <pubDate>Thu, 19 Mar 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[연말정산 계산기]]></title>
-    <link>https://toolhub.ai.kr/year-end-tax/</link>
-    <guid>https://toolhub.ai.kr/year-end-tax/</guid>
-    <description><![CDATA[2026년 귀속 연말정산 환급액·결정세액 자동 계산, 1~9월 사용액으로 미리보기와 12월 31일까지 할 일]]></description>
     <pubDate>Thu, 19 Mar 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

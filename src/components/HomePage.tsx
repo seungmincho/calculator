@@ -127,10 +127,14 @@ export default function HomePage() {
 
   const puzzleItems = useMemo(() => DAILY_PUZZLES.map(findItem).filter((i): i is MenuItem => !!i), [])
 
-  // 새로 나온 도구: addedDate 최신순(같은 날은 메뉴 순서). 오늘 날짜와 무관해 정적 HTML 에도 그대로 — 새 페이지 내부 링크
+  // 새로 나온 도구·업데이트: addedDate / updatedDate(추가일보다 나중일 때) 최신순, 같은 날은 메뉴 순서.
+  // 오늘 날짜와 무관해 정적 HTML 에도 그대로 — 새 페이지 내부 링크
   const newTools = useMemo(
-    () => categoryKeys.flatMap(k => menuConfig[k].items).filter(i => i.addedDate)
-      .sort((a, b) => b.addedDate!.localeCompare(a.addedDate!)),
+    () => categoryKeys.flatMap(k => menuConfig[k].items).flatMap(item => {
+      const updated = !!item.updatedDate && (!item.addedDate || item.updatedDate > item.addedDate)
+      const date = updated ? item.updatedDate : item.addedDate
+      return date ? [{ item, date, updated }] : []
+    }).sort((a, b) => b.date.localeCompare(a.date)),
     [],
   )
   const [showMoreNew, setShowMoreNew] = useState(false)
@@ -334,8 +338,8 @@ export default function HomePage() {
           {t('homePage.newTools.title')}
         </SectionTitle>
         <ul className="ui-card p-1.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {newTools.slice(0, showMoreNew ? 18 : 6).map(item => {
-            const [, m, d] = item.addedDate!.split('-').map(Number)
+          {newTools.slice(0, showMoreNew ? 18 : 6).map(({ item, date, updated }) => {
+            const [, m, d] = date.split('-').map(Number)
             return (
               <li key={item.href} className="min-w-0">
                 <Link prefetch={false} href={item.href} className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors">
@@ -343,7 +347,9 @@ export default function HomePage() {
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline gap-2">
                       <span className="text-[15px] font-semibold text-fg truncate">{t(item.labelKey)}</span>
-                      <span className="shrink-0 text-xs text-primary tabular-nums">{t('homePage.newTools.date', { m, d })}</span>
+                      <span className={`shrink-0 text-xs tabular-nums ${updated ? 'text-sub' : 'text-primary'}`}>
+                        {updated ? t('homePage.newTools.updated', { m, d }) : t('homePage.newTools.date', { m, d })}
+                      </span>
                     </span>
                     <span className="block text-[13px] text-muted truncate">{t(item.descriptionKey)}</span>
                   </span>

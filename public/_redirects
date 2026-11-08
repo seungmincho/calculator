@@ -196,6 +196,7 @@
 /health  /health/  301
 /health-checkup  /health-checkup/  301
 /health-insurance  /health-insurance/  301
+/heater-electricity-cost  /heater-electricity-cost/  301
 /holiday-planner  /holiday-planner/  301
 /hometown-donation  /hometown-donation/  301
 /hourly-wage  /hourly-wage/  301
@@ -317,6 +318,7 @@
 /rental-yield  /rental-yield/  301
 /resident-number  /resident-number/  301
 /resignation-letter  /resignation-letter/  301
+/resignation-pay  /resignation-pay/  301
 /retirement-calculator  /retirement-calculator/  301
 /rock-paper-scissors  /rock-paper-scissors/  301
 /roman-numeral  /roman-numeral/  301

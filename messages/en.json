@@ -59505,5 +59505,310 @@
       "text": "The government's August 2026 tax reform proposal reportedly expands the exemption for SME employees outside the capital region (youth periods of up to 10 years depending on region, and up to 90% for age 60+, disabled and career-break workers) and extends the deadline. Nothing changes until the National Assembly passes it, so this calculator uses current law (hired by December 31, 2026; youth 90% for 5 years, others 70% for 3 years)."
     },
     "source": "Sources: Restriction of Special Taxation Act Art. 30 and its Enforcement Decree Art. 27 · laws in force as of November 2026. The final month counts the period from the start date inclusive."
+  },
+  "heaterElectricityCost": {
+    "title": "Heater Electricity Cost Calculator",
+    "subtitle": "How much an electric mat, fan heater or radiator adds to this month's electricity bill, including progressive rate tiers",
+    "won": " KRW",
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "kinds": {
+      "mat": "Electric mat",
+      "blanket": "Electric blanket",
+      "waterMat": "Hot-water mat",
+      "fanHeater": "Fan heater",
+      "radiator": "Oil radiator",
+      "heater": "Electric heater",
+      "carbon": "Carbon heater",
+      "stove": "Electric stove"
+    },
+    "tier": {
+      "n": "Tier {n}",
+      "super": "Super user"
+    },
+    "input": {
+      "base": "Usual monthly usage",
+      "baseHint": "Usage (kWh) on your bill or the KEPCO ON app for a month before you started heating",
+      "devices": "Heaters",
+      "devicesHint": "Wattages are typical rated power examples. Products and power settings differ, so enter the rated power (W) from your product label or manual.",
+      "watt": "Power (W)",
+      "hours": "Hours/day",
+      "days": "Days/month",
+      "remove": "Remove {name}",
+      "presetNote": "Typical rated example: {watt}W.",
+      "thermo": "The thermostat cycles the heater on and off, so actual use is below the rating (calculated at the rating here).",
+      "empty": "Add a heater below.",
+      "add": "Add a heater",
+      "addAria": "Add {name} ({watt}W)",
+      "maxRows": "You can add up to {n} heaters.",
+      "month": "Month",
+      "voltage": "Contract type",
+      "low": "Residential low voltage",
+      "high": "Residential high voltage",
+      "voltageHint": "Most houses and apartment units are low voltage. Some apartment complexes supplied at high voltage use the high-voltage rate."
+    },
+    "seasonHint": {
+      "normal": "Regular season: tiers at {l1}/{l2} kWh",
+      "summer": "Summer (Jul–Aug): tiers relaxed to {l1}/{l2} kWh, super-user rate above {kwh} kWh",
+      "winter": "Winter (Dec–Feb): tiers at {l1}/{l2} kWh, super-user rate above {kwh} kWh"
+    },
+    "result": {
+      "label": "Extra electricity cost from heating ({month})",
+      "sub": "Usual {before} KRW → {after} KRW with heating",
+      "empty": "Add a heater to see how much your bill goes up.",
+      "extraKwh": "Extra usage",
+      "extraKwhNote": "On top of {base} kWh",
+      "perDay": "Per day",
+      "perDayNote": "Over {days} heating days",
+      "before": "Usual bill",
+      "after": "Bill with heating",
+      "kwhTier": "{kwh} kWh · {tier}",
+      "tierUp": "Heating pushes you into a higher tier: {from} → {to}"
+    },
+    "tip": {
+      "above": "You are {over} kWh over the {limit} kWh tier boundary. Using just {over} kWh less drops you to tier {tier} and saves about {save} KRW this month.",
+      "cut": "That is {h} fewer hours a day of the {name}.",
+      "below": "{left} more kWh puts you in tier {tier}, where the unit rate becomes {rate} KRW/kWh and the base fee {base} KRW.",
+      "super": "Usage above {kwh} kWh is charged the super-user rate of {rate} KRW/kWh."
+    },
+    "table": {
+      "caption": "Usage and cost share by heater",
+      "device": "Heater",
+      "kwh": "kWh",
+      "share": "Share",
+      "cost": "Cost share",
+      "usage": "{watt}W · {hours} h/day · {days} days",
+      "note": "With progressive tiers the cost cannot be split exactly, so it is divided by each heater's share of kWh."
+    },
+    "share": {
+      "label": "Heater electricity cost ({month})",
+      "sub": "Usual {before} KRW → {after} KRW · heating {kwh} kWh",
+      "row": "{hours} h/day · {kwh} kWh",
+      "text": "Heaters add {extra} KRW to my {month} electricity bill (usual {before} KRW → {after} KRW)"
+    },
+    "toElectricity": "See {kwh} kWh in detail in the Electricity Bill calculator",
+    "toElectricityNote": "Shows the base fee, energy charge and VAT breakdown, plus welfare discounts.",
+    "sim": {
+      "title": "Same hours, which heater costs more?",
+      "desc": "Extra {month} cost of using each heater {h} hours a day for 30 days on top of {base} kWh",
+      "hours": "Hours per day",
+      "hoursValue": "{h} h",
+      "caption": "Extra monthly cost by heater at {h} hours a day",
+      "kwh": "kWh/month",
+      "extra": "Extra cost",
+      "perHour": "Per hour",
+      "watt": "Example {watt}W",
+      "note": "Calculated with typical rated power examples. Per hour = extra cost ÷ hours used, so it grows as you move into higher tiers."
+    },
+    "tips": {
+      "title": "How to cut heater electricity costs",
+      "items": [
+        "Set a timer so the heater switches off after you fall asleep; daily hours drop accordingly.",
+        "Use high-power heaters such as fan heaters and electric stoves only to warm the air briefly, and use an electric mat or blanket that warms you directly when you stay put for long.",
+        "Weather strips, window insulation film and thick curtains keep heat in, so thermostat-controlled heaters run for less time.",
+        "Cover electric and hot-water mats with a blanket to keep the heat in, and turn the temperature down once warm.",
+        "If your usage is just over a tier boundary (200/400 kWh), a small cut drops you to the lower tier and lowers both the base fee and the unit rate.",
+        "Check this month's usage in the KEPCO ON app to see which tier you are heading for."
+      ]
+    },
+    "next": {
+      "title": "Calculate next",
+      "electricity": {
+        "title": "Electricity Bill",
+        "desc": "Bill breakdown, welfare discounts, month-on-month"
+      },
+      "gasBill": {
+        "title": "Gas Bill Calc",
+        "desc": "City gas heating cost for your boiler"
+      },
+      "energyVoucher": {
+        "title": "Energy Voucher",
+        "desc": "Heating and cooling support for basic livelihood households, deducted from bills"
+      }
+    },
+    "source": "Rates as of {date} · KEPCO residential tariff (effective 2023-11-09) · climate & environment charge {climate} KRW/kWh · fuel cost adjustment +{fuel} KRW/kWh · power industry fund {fund}%. Estimate excluding pro-rating by meter reading date, TV license fee and welfare discounts."
+  },
+  "resignationPay": {
+    "title": "Resignation Payout Calculator",
+    "subtitle": "Pick your last working day to see severance pay, unused annual leave pay, unemployment benefits and the year-end tax settlement in one place.",
+    "won": " KRW",
+    "dayUnit": "days",
+    "in": {
+      "start": "Start date",
+      "last": "Last working day",
+      "lastHint": "The last day you actually work. Your separation date is the next day; for unemployment benefits this day is the separation day.",
+      "pay": "Monthly pay, last 3 months (pre-tax)",
+      "payHint": "Base pay plus monthly allowances before tax. If it varied, enter the 3-month average.",
+      "bonus": "Annual bonus (optional)",
+      "bonusHint": "Total bonuses received in the last 12 months. 3/12 of it counts toward average wage.",
+      "leave": {
+        "label": "Unused annual leave",
+        "available": "You can use {days} days of leave on your last day (calculated from your start date).",
+        "none": "No annual leave has accrued by your last day.",
+        "remaining": "Days left",
+        "used": "Days used"
+      },
+      "reason": "Reason for leaving",
+      "age": "Age at resignation",
+      "dependents": "Dependents",
+      "dependentsHint": "Family members eligible for the basic deduction, excluding you (income of 1 million KRW or less). Leave 0 if unsure.",
+      "disabled": "I have a registered disability (same benefit days as age 50+)",
+      "invalid": "Your last working day is before your start date. Please check the dates."
+    },
+    "reasons": {
+      "advised": {
+        "label": "Recommended resignation (company reasons)",
+        "hint": "The company asked you to leave for business reasons. Check that the separation certificate states this, not personal reasons."
+      },
+      "contract": {
+        "label": "Fixed-term contract ended",
+        "hint": "Leaving at contract end qualifies for unemployment benefits. If the company offered a renewal and you declined, it may count as voluntary."
+      },
+      "closure": {
+        "label": "Business closure or bankruptcy",
+        "hint": "Leaving because the company closed or went bankrupt qualifies for unemployment benefits."
+      },
+      "dismissal": {
+        "label": "Dismissal",
+        "hint": "Dismissal qualifies for benefits, but not if dismissed for serious misconduct such as a prison sentence, major damage to the business or long unauthorized absence (Employment Insurance Act Art. 58)."
+      },
+      "voluntary": {
+        "label": "Voluntary (new job, personal reasons)",
+        "hint": "Leaving for your own reasons normally disqualifies you from benefits, unless there is a justified reason such as unpaid wages, harassment or a 3-hour round-trip commute."
+      },
+      "exceptionsLink": "See exceptions"
+    },
+    "total": {
+      "label": "Money you get when you leave (est.)",
+      "withUe": "{sure} from the company + {ue} unemployment benefits (if you apply and qualify)",
+      "noUe": "{sure} from the company. Unemployment benefits are excluded under these conditions.",
+      "payBy": "Your final pay, severance and leave pay must be paid within 14 days of separation (by {date}) under Labor Standards Act Art. 36. The deadline can be extended only by agreement in special circumstances."
+    },
+    "sev": {
+      "title": "Severance pay",
+      "net": "Severance (after tax)",
+      "avg": "Average daily wage",
+      "days": "Days employed",
+      "daysValue": "{days} days",
+      "gross": "Severance (pre-tax)",
+      "tax": "Retirement income tax (incl. local)",
+      "irp": "Moved to an IRP and taken as a pension, the tax drops to {tax} (30% off for the first 10 years of payouts).",
+      "none": "No severance pay because you have worked less than a year. Work until {date} ({days} more days) to qualify.",
+      "link": "Detailed severance calculator"
+    },
+    "leave": {
+      "title": "Unused leave pay",
+      "daily": "Daily ordinary wage",
+      "days": "Leave days left",
+      "daysValue": "{days} days",
+      "note": "Calculated as monthly pay ÷ 209 hours × 8 hours. If your pay includes allowances that change monthly, the actual ordinary wage may be lower. Leave pay is employment income, so it is included in the tax settlement below.",
+      "link": "Detailed annual leave calculator"
+    },
+    "ue": {
+      "title": "Unemployment benefits",
+      "ifEligible": "Unemployment benefits (if eligible)",
+      "notEligibleShort": "Unemployment benefits (not eligible)",
+      "voluntary": "Voluntary resignation is normally not eligible (Employment Insurance Act Art. 58). With a recognized justified reason you could receive the amount below ({total}).",
+      "short": "Counting only this job, your insured days are about {unit}, short of {min}. You may still qualify if insured days at other employers within 18 months before leaving bring the total to {min} or more.",
+      "daily": "Daily benefit",
+      "days": "Benefit days",
+      "daysValue": "{days} days",
+      "total": "Total",
+      "totalIf": "Total (if eligible)",
+      "applied": {
+        "cap": "60% of your average wage exceeds the cap for {year} separations, so the cap of {cap} applies.",
+        "floor": "The {year} minimum of {floor} (minimum wage × 80% × 8 hours) applies.",
+        "none": "60% of your average wage."
+      },
+      "applyUntil": "Benefits must be received within 12 months from the day after you leave (by {date}), so apply right away.",
+      "link": "Detailed unemployment benefit calculator"
+    },
+    "tax": {
+      "title": "Year-end tax settlement on leaving",
+      "refund": "Tax refund",
+      "extra": "Additional tax",
+      "salary": "{year} total pay (est.)",
+      "prepaid": "Income tax already withheld (est.)",
+      "determined": "Final tax",
+      "note": "On resignation the company settles with only basic deductions and the standard tax credit. Withholding is estimated from the simplified tax table assuming all pay is taxable. Card, medical and pension savings deductions can be claimed in the May {year} income tax return.",
+      "link": "Detailed year-end tax calculator"
+    },
+    "share": {
+      "label": "Money I get if I leave on {last}",
+      "sub": "Incl. {ue} unemployment benefits",
+      "subNoUe": "Severance, leave pay and tax settlement",
+      "text": "If I leave on {last}, I get {total}."
+    },
+    "sim": {
+      "title": "Try another last day",
+      "desc": "A few days can decide whether severance or new leave accrues, and the year you leave changes unemployment benefit limits.",
+      "cols": {
+        "last": "Last day",
+        "sev": "Severance (net)",
+        "leave": "Leave pay",
+        "ue": "Unemployment",
+        "sum": "Total"
+      },
+      "rows": {
+        "now": "Your chosen day",
+        "oneYear": "One year of service",
+        "nextLeave": "New leave accrues (+{added} days)",
+        "nextMonth": "One month later"
+      },
+      "none": "None",
+      "note": "Totals add severance, leave pay and unemployment benefits (when eligible) only. Salary for the extra days and the tax settlement are excluded, and new leave is assumed unused.",
+      "ueYear": "Leaving in {year} changes the daily benefit to {daily} (based on that year's minimum wage and cap)."
+    },
+    "todo": {
+      "title": "What to do after you leave",
+      "pay": {
+        "title": "Check final payments by {date}",
+        "desc": "Make sure your final pay, severance and leave pay arrived, and that you received withholding receipts for employment and retirement income. If they are still unpaid after the deadline, you can file a wage complaint with the Ministry of Employment and Labor (call 1350)."
+      },
+      "ue": {
+        "title": "Check the separation certificate, then apply on Work24",
+        "desc": "Confirm the company filed your insurance loss report and separation certificate, then register as a job seeker and apply for benefits on Work24 from {from}. After {until} you lose any remaining days."
+      },
+      "health": {
+        "title": "Compare health insurance continuation",
+        "desc": "The day after you leave you become a regional subscriber. If the regional premium is higher, you can apply to keep paying your employee premium (at least 1 year as an employee subscriber, apply within 2 months of the first regional premium due date, up to 36 months)."
+      },
+      "irp": {
+        "title": "Receive severance into an IRP",
+        "desc": "Severance is generally paid into your own IRP account (exceptions such as leaving at 55 or older). Tax is deferred while it stays in the IRP and cut by 30–50% if taken as a pension. Open an account before you leave and tell the company."
+      },
+      "may": {
+        "title": "File income tax in May {year}",
+        "desc": "If you did not take a new job that year, file your income tax return on Hometax in May to claim card, medical and pension savings deductions left out at resignation. If you were rehired that year, give your new employer the previous withholding receipt for its year-end settlement."
+      }
+    },
+    "exceptions": {
+      "title": "When voluntary resignation still qualifies",
+      "desc": "Even if you leave for your own reasons, you can receive benefits with a justified reason set by Ministry ordinance (Employment Insurance Act Art. 58, Enforcement Rule Annex 2). Keep evidence such as pay records, medical certificates or complaint records.",
+      "items": [
+        "Unpaid wages: within the year before leaving, all wages or 30% or more unpaid for 2+ months, or pay below minimum wage",
+        "Working conditions worse than promised at hiring",
+        "The 52-hour weekly limit was exceeded in 2+ months within the year before leaving",
+        "Workplace harassment, sexual harassment or sexual assault",
+        "Commute of 3+ hours round trip due to office relocation, transfer or moving to live with a spouse",
+        "Illness or injury makes work difficult and the company refused leave or reassignment (medical certificate needed)",
+        "Leave was refused for family care (30+ days), pregnancy, childbirth or raising a child aged 8 or under",
+        "The company's bankruptcy or closure is certain, or mass layoffs are planned"
+      ],
+      "link": "Calculate benefits with a justified reason"
+    },
+    "source": "Sources: Labor Standards Act Art. 36 and 60, Employee Retirement Benefit Security Act Art. 8 and 9, Employment Insurance Act Art. 40, 45, 46, 48, 50 and 58, National Health Insurance Act Art. 110, Income Tax Act Art. 48, 55 and 59. Estimates based on laws in force as of November 2026."
   }
 }
