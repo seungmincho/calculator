@@ -270,6 +270,7 @@ export default function YearEndTaxCalculator() {
               </label>
             </div>
             {detail('/dependent-deduction/', t('yt.detail.dependent'), {})}
+            {detail('/child-tax-credit/', t('yt.detail.child'), {})}
             <p className="text-xs text-muted">{t('yt.in.familyHint')}</p>
           </Section>
 
@@ -354,6 +355,7 @@ export default function YearEndTaxCalculator() {
             {detail('/donation-tax-credit/', t('yt.detail.donation'), { dn: inp.donation })}
             {toggle('marriage', t('yt.in.marriage'), t('yt.in.marriageHint'))}
             {toggle('sme', t('yt.in.sme'), t('yt.in.smeHint'))}
+            {detail('/sme-tax-exemption/', t('yt.detail.sme'), {})}
             {optMoney('pension', t('yt.in.pension'), t('yt.in.autoHint'), auto.pension)}
             {optMoney('healthEmp', t('yt.in.healthEmp'), t('yt.in.autoHint'), auto.healthEmp)}
           </Section>
@@ -426,6 +428,7 @@ export default function YearEndTaxCalculator() {
                 s: String(salary), ...(inp.children ? { ch: String(Math.min(2, inp.children)) } : {}), ...(pv ? {} : { p: 'y' }),
                 ...Object.fromEntries(CARD_KEYS.filter((k) => (pv ? ytd : inp)[k]).map((k) => [CODE[k], String((pv ? ytd : inp)[k])])),
               })}`}>{t('yt.todo.cardLink')}</Link>
+              <Link prefetch={false} className="ui-btn-soft inline-flex items-center min-h-11 px-4 py-2 text-sm" href="/year-end-checklist/">{t('yt.todo.checklistLink')}</Link>
             </div>
           </div>
 

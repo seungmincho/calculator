@@ -58993,5 +58993,500 @@
       }
     },
     "source": "Basis: Income Tax Act Art. 59-4(3) (amended Dec 23, 2025), Enforcement Decree Art. 118-6 (amended Feb 27, 2026) and Art. 216-3, Restriction of Special Taxation Act Enforcement Decree Art. 121-2(6) · tax year {year}"
+  },
+  "yearEndChecklist": {
+    "title": "Year-End Tax Settlement Checklist",
+    "subtitle": "Tax year {year} — tick off what you need to do, in order, from the 31 December deadline through the 15 January simplified service to submitting to your employer.",
+    "progress": {
+      "title": "Tax year {year} progress",
+      "count": "{done} / {total} done",
+      "left": "{n} left",
+      "allDone": "All done. Check the settlement on your February pay.",
+      "saved": "Your ticks are saved in this browser only.",
+      "clear": "Clear all ticks",
+      "clearConfirm": "Clear all ticked items? This can't be undone."
+    },
+    "situations": {
+      "title": "My situation",
+      "desc": "Pick what applies and only the items you need are added to the list.",
+      "items": {
+        "rent": "I pay monthly rent",
+        "kids": "I have children (academies, uniforms)",
+        "parents": "I support my parents",
+        "dual": "We're a dual-income couple",
+        "religious": "I donate to a religious group",
+        "glasses": "I bought glasses or contacts",
+        "disabled": "A family member has a disability",
+        "sme": "Young employee at an SME",
+        "married": "I got married this year",
+        "housing": "Homeless household head with a housing subscription"
+      }
+    },
+    "groups": {
+      "dec": {
+        "title": "By 31 December {year}",
+        "desc": "Deductions count in the year you actually pay. Anything paid after the new year moves to next year.",
+        "past": "Passed"
+      },
+      "jan": {
+        "title": "After the simplified service opens on 15 January {next}",
+        "desc": "Check and download your data in Hometax or Sontax under 'Year-end settlement simplified service'.",
+        "past": "Open",
+        "basis": "Dates follow the National Tax Service schedule from previous years (tax year 2025). The tax year {year} schedule may change once announced.",
+        "source": "NTS notice (14 Jan 2026)"
+      },
+      "docs": {
+        "title": "Documents the simplified service won't show",
+        "desc": "Places with no duty to report may be missing. Get a receipt and hand it to your employer yourself."
+      },
+      "submit": {
+        "title": "Submitting and settlement",
+        "desc": "Your employer sets the deadline. If you miss it, you can still claim through the May filing or a refund request."
+      }
+    },
+    "items": {
+      "pension": {
+        "title": "Top up your pension savings and IRP",
+        "desc": "Pension savings up to ₩6M, or ₩9M combined with an IRP, earn a tax credit (16.5% incl. local tax if total salary is ₩55M or less, 13.2% above). Only payments by 31 December count, so check your provider's cut-off time."
+      },
+      "card": {
+        "title": "Check how you split card spending",
+        "desc": "Only spending above 25% of total salary is deducted. If you're already past it, debit cards and cash receipts (30%) beat credit cards (15%) for the rest of the year."
+      },
+      "medical": {
+        "title": "Time your medical payments",
+        "desc": "Medical costs count in the year you pay, and only above 3% of total salary. For a large bill, compare paying in December versus January."
+      },
+      "donation": {
+        "title": "Make donations and political contributions",
+        "desc": "Only donations paid by 31 December count this year. Political contributions up to ₩100,000 are credited almost in full (100/110)."
+      },
+      "hometown": {
+        "title": "Make a hometown love donation",
+        "desc": "Up to ₩100,000 comes back to you in tax and you get a thank-you gift. This year's credit covers donations by 31 December."
+      },
+      "marriage": {
+        "title": "Register your marriage",
+        "desc": "Register your marriage by 31 December 2026 and each spouse gets a ₩500,000 tax credit for that year (once in a lifetime, Restriction of Special Taxation Act Art. 92)."
+      },
+      "rentHome": {
+        "title": "Meet the rent credit conditions",
+        "desc": "You must be a homeless household head as of 31 December, with your resident registration at the lease address. Only total salary of ₩80M or less qualifies."
+      },
+      "housing": {
+        "title": "Check subscription deposits and no-home certificate",
+        "desc": "Homeless household heads with total salary of ₩70M or less deduct 40% of housing subscription deposits up to ₩3M a year. Deposits by 31 December count, and you must give your bank a no-home certificate by the end of February next year."
+      },
+      "dependents": {
+        "title": "Check dependent conditions",
+        "desc": "Dependents need annual income of ₩1M or less (₩5M total salary if they only have wages), parents must be 60 or older and children 20 or younger. There is no age limit for people with disabilities."
+      },
+      "dual": {
+        "title": "Split deductions between spouses",
+        "desc": "Each family member can be claimed by only one spouse. Compare which side gains more, and remember a working spouse's card spending can't be combined with yours."
+      },
+      "child": {
+        "title": "Check the child tax credit",
+        "desc": "The credit depends on how many children aged 8 or older you have and any birth or adoption this year. For dual-income couples, only the parent claiming the child gets it."
+      },
+      "education": {
+        "title": "Check when tuition is paid",
+        "desc": "Only tuition paid this year counts: ₩3M per preschool or school child and ₩9M per university student. From payments in 2026, arts and sports academies for 1st and 2nd graders count too."
+      },
+      "download": {
+        "title": "View and download simplified data",
+        "desc": "From 15 January, view it in Hometax or Sontax and download the PDF. If your employer uses bulk delivery, in previous years it went straight to them from 17 or 20 January."
+      },
+      "consent": {
+        "title": "Get dependents' data-sharing consent",
+        "desc": "Adult dependents such as your spouse or parents must give 'dependent data-sharing consent' in Hometax or Sontax before their data shows on your screen."
+      },
+      "fix": {
+        "title": "Re-check the final data",
+        "desc": "From 15 to 18 January hospitals and institutions may still be correcting data. In previous years, final data was available from 20 January. Report missing medical costs to the missing medical expense centre from 15 to 17 January."
+      },
+      "missing": {
+        "title": "Find spending the service missed",
+        "desc": "The service only shows what institutions report. Compare it with the medical, education and donation costs you paid and get receipts for anything missing."
+      },
+      "glasses": {
+        "title": "Glasses and contact lens receipts",
+        "desc": "Optical shops don't have to report, so purchases may not show. Get a receipt for vision correction with the user's name (up to ₩500,000 per person a year)."
+      },
+      "uniform": {
+        "title": "School uniform and field trip receipts",
+        "desc": "Middle and high school uniforms count up to ₩500,000 per child and field trips up to ₩300,000. If they're missing, get receipts from the shop or school."
+      },
+      "academy": {
+        "title": "Academy fee payment certificates",
+        "desc": "Academies and sports facilities for preschoolers, and arts and sports academies for children under 9 or in 1st–2nd grade (from payments in 2026), don't have to report, so you may need a payment certificate from the academy."
+      },
+      "religious": {
+        "title": "Religious donation receipts",
+        "desc": "Donations to churches, cathedrals, temples and other religious groups often don't show. Get a donation receipt with the group's ID number and the amount."
+      },
+      "rentDocs": {
+        "title": "Rent documents",
+        "desc": "Submit a copy of the lease, your resident registration certificate and proof of payment such as bank transfer receipts. The service only shows public rental housing and some card payments."
+      },
+      "disabledCert": {
+        "title": "Disability certificate",
+        "desc": "People registered under the Act on Welfare of Persons with Disabilities and national merit recipients show in the service. Patients with serious illnesses needing constant treatment need a certificate from the hospital."
+      },
+      "smeForm": {
+        "title": "SME employee tax reduction application",
+        "desc": "The 90% income tax reduction for young SME employees (up to ₩2M a year) only applies once you give your employer the application. If you haven't, submit it before settlement; if you missed it, you can file a refund request."
+      },
+      "company": {
+        "title": "Check your employer's deadline and submit",
+        "desc": "Deadlines vary by employer (usually mid-January to early February). Check the notice and hand in the simplified PDF with the documents above."
+      },
+      "february": {
+        "title": "Check the settlement on February pay",
+        "desc": "Your employer settles when paying February salary. If you owe more than ₩100,000, you can ask to split it over February to April pay."
+      },
+      "missed": {
+        "title": "Claim deductions you missed",
+        "desc": "Add missed deductions in the May {next} income tax filing, or file a refund request within 5 years after the settlement tax due date (10 March of the following year)."
+      }
+    }
+  },
+  "childTaxCredit": {
+    "title": "Child Tax Credit Calculator",
+    "subtitle": "Tax year {year} (settled the following January) · enter each child's birth year to see whether they qualify this year and how much tax you save. For tax year {year}, children born in {bornBy} or earlier qualify",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Gross pay (annual salary)",
+    "salaryHint": "Annual pay excluding non-taxable allowances. Assumes no deductions other than your children.",
+    "kids": {
+      "title": "Children and grandchildren",
+      "hint": "Add only children you claim (or will claim) as dependents. Ages are calendar-year ages for {year} (tax year − birth year).",
+      "empty": "Add a child to see eligibility and the credit.",
+      "add": "+ Add child",
+      "addLabel": "Add child (one more)"
+    },
+    "row": {
+      "title": "Child {n}",
+      "name": "{rel} {n} · born {born}",
+      "remove": "Remove {name}",
+      "removeShort": "Remove",
+      "born": "Birth year",
+      "year": "{y} (age {age})",
+      "rel": "Relationship",
+      "disabled": "Has a disability (stays a dependent after age 20)"
+    },
+    "rel": {
+      "child": "Child",
+      "grandchild": "Grandchild",
+      "foster": "Foster child"
+    },
+    "chip": {
+      "ok": "Eligible",
+      "no": "Not eligible"
+    },
+    "birth": {
+      "label": "Birth or adoption in {year}",
+      "options": [
+        "None",
+        "1st",
+        "2nd",
+        "3rd+"
+      ],
+      "hint": "Pick the birth order of a child born or adopted this year. It is claimed once, in that year only, and does not apply to grandchildren.",
+      "remind": "You have a child born in {year}. Pick the birth order to add the birth/adoption credit."
+    },
+    "result": {
+      "label": "Tax saved by the child tax credit"
+    },
+    "status": {
+      "none": "No child qualifies this year. Check the year table below to see when the credit starts.",
+      "noTax": "Your tax is already 0 KRW, so the credit has nothing to reduce.",
+      "partial": "Your tax is only {tax} KRW, so it falls by that much. Unused child credit is not carried forward — if you both work, try moving children to your spouse below.",
+      "full": "The {credit} KRW credit plus 10% local income tax comes straight off your tax."
+    },
+    "credits": {
+      "child": "Child tax credit ({n} eligible)",
+      "birth": "Birth/adoption credit",
+      "total": "Total",
+      "rule": "250,000 KRW for one child, 550,000 KRW for two, plus 400,000 KRW for each child from the third. Birth/adoption: 300,000 KRW for a first child, 500,000 KRW for a second, 700,000 KRW for a third or later (Income Tax Act Art. 59-2)."
+    },
+    "reason": {
+      "ok": "Age {age} — eligible for tax year {year} (born in {bornBy} or earlier).",
+      "young": "Age {age} — for tax year {year} only children born in {bornBy} or earlier qualify. The eligible age went up as the child allowance was extended to older children. Eligible from tax year {from}.",
+      "y2017": "Born in {excluded} — eligible for tax year 2025, but the 2026 amendment's transitional rule excludes tax years 2026–2029 (child allowance extension). Eligible again from tax year {from} (age 13).",
+      "newborn": "Born this year — the child tax credit starts in tax year {from}. This year you get the birth/adoption credit instead.",
+      "over": "Age {age} — over 20, so not a basic dependent and not eligible for the credit. There is no age limit for a child with a disability."
+    },
+    "span": {
+      "range": "Eligible for tax years {from}–{to} ({n} years, until age 20)",
+      "open": "Eligible from tax year {from} onward (no dependent age limit with a disability)"
+    },
+    "relNote": {
+      "grandchild": "A grandchild cannot be claimed if a parent or another relative already claims them as a dependent. Grandchildren do not get the birth/adoption credit.",
+      "foster": "A foster child must meet the conditions set by the enforcement decree (such as how long you raised them) for the dependent deduction and the credit."
+    },
+    "basicNote": "Separately from this credit, each of the {n} dependent children gives a 1.5M KRW income deduction ({amount} KRW in total). That is not included above.",
+    "share": {
+      "label": "Gross pay {salaryM}M KRW · {n} children",
+      "headline": "{saving} KRW less tax",
+      "headlineZero": "No child tax credit this year",
+      "sub": "Child tax credit {credit} KRW ({eligible} eligible)",
+      "text": "With gross pay of {salaryM}M KRW, {eligible} of {n} children qualify for the child tax credit this year — a {credit} KRW credit and {saving} KRW less tax."
+    },
+    "actions": {
+      "full": "Open in the year-end tax calculator",
+      "fullNote": "Opens with your number of children, excluded children and birth order filled in. Add cards, pensions and medical costs to see your total refund."
+    },
+    "couple": {
+      "title": "Dual income: who should claim the children?",
+      "desc": "Each child is claimed by only one spouse, and the 1.5M KRW dependent deduction goes with the child tax credit. Every split is compared to find the lowest combined tax.",
+      "spouse": "Spouse's gross pay",
+      "hint": "Enter it if you both work. Leave it blank for a single income.",
+      "empty": "Enter your spouse's gross pay to compare who should claim the children.",
+      "noKids": "There are no dependent children to split.",
+      "keep": "Keeping all children on your return is best. Moving them all to your spouse would raise your combined tax by {diff} KRW.",
+      "same": "Your combined tax is the same whoever claims the children.",
+      "moveAll": "Moving all children to your spouse lowers your combined tax by {gain} KRW.",
+      "split": "Splitting the children as below lowers your combined tax by {gain} KRW compared with claiming them all yourself.",
+      "caption": "Combined tax by split (including local income tax)",
+      "cols": {
+        "plan": "Split",
+        "me": "You",
+        "spouse": "Spouse",
+        "total": "Total"
+      },
+      "plans": {
+        "allMe": "All to you",
+        "allSpouse": "All to spouse",
+        "best": "Split"
+      },
+      "bestTag": "· best",
+      "toMe": "You",
+      "toSpouse": "Spouse",
+      "note": "Tax is the annual determined tax including local income tax. This is an estimate that assumes no deductions other than salary for each of you, and puts the birth/adoption credit with whoever claims the youngest child. To split parents and other relatives too, use the dependent deduction checker."
+    },
+    "years": {
+      "title": "Year table by child",
+      "desc": "Filled cells are the tax years in which the child tax credit applies. For tax years 2026–2029 the transitional rule raises the eligible age by one each year, and from tax year 2030 it is 13 or older. It ends after age 20 (except for a disability).",
+      "kid": "Child"
+    },
+    "rules": {
+      "title": "Eligible age by tax year",
+      "year": "Tax year",
+      "age": "Eligible age",
+      "born": "Eligible birth years",
+      "basic": "Dependent (age 20 or under)",
+      "yearCell": "{y}",
+      "ageCell": "{age} or older",
+      "bornCell": "{b} or earlier",
+      "bornCellEx": "{b} or earlier (except {excluded})",
+      "basicCell": "{b} or later",
+      "note": "An age counts if it applies on any day of the year (Income Tax Act Art. 53(5)), so it is judged by birth year. Tax year 2025 used the old rule of 8 or older; from tax year 2026 this follows the Income Tax Act as amended on April 21, 2026 and Article 2 of its addenda."
+    },
+    "tips": {
+      "title": "Good to know",
+      "items": [
+        "The child tax credit is applied when you register the child as a dependent in your employer's year-end settlement. No extra documents are needed.",
+        "A child born this year is too young for the child tax credit, but you get the birth/adoption credit. It is claimed once, in that year only.",
+        "Children born in 2017 were eligible for tax year 2025 but are excluded for 2026–2029. They become eligible again from tax year 2030 (settled in early 2031).",
+        "With two incomes the higher earner usually benefits more, but if one spouse has little tax, splitting can be better. Check the comparison above.",
+        "If a child has income such as a part-time job (income over 1M KRW a year, or gross pay over 5M KRW if it is only wages), they are no longer a dependent and the credit is lost too.",
+        "From the year a child turns 21, both the dependent deduction and the child tax credit end. A child with a disability stays eligible at any age."
+      ]
+    },
+    "next": {
+      "title": "Keep calculating",
+      "yearEnd": {
+        "title": "Year-end tax calculator",
+        "desc": "Add cards, pensions and medical costs for your total refund"
+      },
+      "dependent": {
+        "title": "Dependent deduction checker",
+        "desc": "Which family members qualify, including a child's income or a parent's pension"
+      },
+      "benefit": {
+        "title": "Child benefit calculator",
+        "desc": "Parent pay and child allowance by your child's age"
+      },
+      "education": {
+        "title": "Education tax credit calculator",
+        "desc": "School fees, uniforms and field trips, and the tax you save"
+      }
+    },
+    "source": "Basis: Income Tax Act Art. 59-2, Addenda (Act No. 21548, Apr. 21, 2026) Art. 2, Art. 50(1), Art. 53(5) · tax year {year} (law in force as of November 2026)"
+  },
+  "smeTaxExemption": {
+    "title": "SME Employee Income Tax Exemption Calculator",
+    "subtitle": "Youth 90% for 5 years; age 60+, disabled and career-break workers 70% for 3 years; up to ₩2M a year — eligibility, end date and tax saved in {year}",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "monthsUnit": "months",
+    "date": "{iso}",
+    "in": {
+      "kind": "Category",
+      "start": "Start date at current company",
+      "startHint": "The day you signed the employment contract and started work. You must be hired by {deadline} to qualify.",
+      "birth": "Date of birth",
+      "military": "Military service",
+      "militaryHint": "Active-duty soldier, regular reservist, auxiliary police or firefighter, social service agent, or active-duty officer/NCO. Up to 6 years ({cap} months) is subtracted from your age.",
+      "salary": "Annual salary (gross pay)",
+      "salaryHint": "One year of taxable pay, excluding non-taxable items such as the ₩200,000 monthly meal allowance.",
+      "excluded": "My company's industry is not an eligible industry",
+      "excludedHint": "Hospitals and clinics, banks and insurers, legal, accounting and tax services, general cram schools, bars and cafés, and similar businesses do not qualify.",
+      "excludedLink": "See the list",
+      "moved": "I already received this exemption at a previous company",
+      "prev": "Start date at the first company where the exemption applied",
+      "prevHint": "The exemption period and your age are counted from this date.",
+      "prevInvalid": "Enter a date earlier than your current start date. Until then, the current start date is used."
+    },
+    "kinds": {
+      "youth": {
+        "label": "Youth",
+        "hint": "Age 15–34 on the contract date (military service subtracted)"
+      },
+      "senior": {
+        "label": "Age 60+",
+        "hint": "Age 60 or older on the contract date"
+      },
+      "disabled": {
+        "label": "Disabled",
+        "hint": "Registered disabled person, wounded national merit holder, 5·18 injured person, or Agent Orange patient with a disability grade"
+      },
+      "careerBreak": {
+        "label": "Career break",
+        "hint": "Left a job held for 1+ year due to marriage, pregnancy, childbirth, childcare, children's education or family care, and returned to work 2 to under 15 years later"
+      }
+    },
+    "result": {
+      "label": "Tax saved in {year}",
+      "ok": "You qualify for the {kind} {pct}% exemption. It applies to pay earned through {end}.",
+      "ended": "You qualified for the {kind} {pct}% exemption, but the period ended on {end}.",
+      "later": "You qualify for the {kind} {pct}% exemption. It starts on {first}.",
+      "no": "You do not qualify for the exemption.",
+      "rate": "Exemption rate",
+      "rateValue": "{pct}% of income tax (up to ₩2M a year)",
+      "period": "Exemption period",
+      "periodValue": "{years} years from {first}",
+      "end": "Exemption ends",
+      "months": "Exempt months in {year}",
+      "monthsValue": "{months} of {work} months",
+      "before": "Tax before exemption",
+      "reduction": "Exemption (income tax)",
+      "earnedCut": "Reduction in earned income tax credit",
+      "after": "Tax after exemption",
+      "saving": "Tax saved",
+      "remaining": "Total from {year} until it ends",
+      "past": "Exemption for past years",
+      "pastNote": "If you did not receive the exemption in past years, you can claim it back through a Hometax correction request within 5 years.",
+      "note": "Tax includes the 10% local income tax. This estimate assumes no deductions other than social insurance and your own basic deduction, equal monthly pay and an unchanged salary. The earned income tax credit shrinks in proportion to the exemption (Enforcement Decree Art. 27(9)), so the tax saved can be less than the exemption itself."
+    },
+    "reasons": {
+      "early": "The {kind} exemption applies only to people hired on or after {from}.",
+      "deadline": "Current law covers only people hired by {deadline}. Proposals to extend the deadline are before the National Assembly.",
+      "young": "You are {age} on the contract date, below the youth minimum age of 15.",
+      "old": "You are {age} on the contract date and still {adj} after subtracting military service, above the youth maximum of 34. A contract signed by {until} would count as youth.",
+      "senior": "You are {age} on the contract date, so you are not in the 60+ category.",
+      "industry": "The exemption does not apply if your company's main business is not an eligible industry."
+    },
+    "table": {
+      "caption": "Exemption and tax saved by year",
+      "year": "Year",
+      "months": "Exempt months",
+      "monthsValue": "{months}/{work}",
+      "reduction": "Exemption",
+      "saving": "Tax saved",
+      "past": "Claim by correction"
+    },
+    "sim": {
+      "title": "If you change jobs or served in the military",
+      "moveTitle": "Moving to another SME",
+      "moved": "The period continues from {first}, when you first received the exemption, and ends on {end}. Starting fresh from your current start date ({start}) would have meant {endIfNew}, but the law counts from the first start date regardless of job changes. Submit the application again to your new company.",
+      "stay": "If you move to another SME, the period does not restart: it continues from {first} and ends on {end}. If the new company is also an eligible SME, submit the application again and keep the exemption for the remaining period.",
+      "armyTitle": "Subtracting military service",
+      "army": "You are {age} on the contract date, or {adj} after subtracting {military} months of military service. A contract signed by {until} counts as youth. Without subtracting service, the cutoff would be {untilNoMil}.",
+      "armyNone": "You are {age} on the contract date. A contract signed by {untilNoMil} counts as youth. Military service (up to 6 years) pushes this date back.",
+      "armyOther": "Categories other than youth have no upper age limit, so military service is not used."
+    },
+    "share": {
+      "label": "{kind} {pct}% exemption · salary {salaryM}M KRW",
+      "headline": "Tax down {saving} KRW in {year}",
+      "headlineZero": "Tax saved in {year}: 0 KRW",
+      "sub": "Ends {end} · remaining total {remaining} KRW",
+      "text": "The SME employee income tax exemption ({kind} {pct}%) cuts my {year} tax by {saving} KRW, {remaining} KRW in total through {end}.",
+      "textZero": "Check whether you qualify for the SME employee income tax exemption, when it ends and how much it saves."
+    },
+    "actions": {
+      "full": "Open in the year-end tax calculator",
+      "fullNote": "The year-end tax calculator assumes a full-year 90% exemption. If you are in a 70% category or the exemption ends this year, the numbers on this page are more accurate."
+    },
+    "industries": {
+      "title": "Eligible industries",
+      "desc": "The company must be an SME under the Framework Act on SMEs (including non-profits) whose main business is one of the industries below (Enforcement Decree of the Restriction of Special Taxation Act, Art. 27(3)). Central and local governments, public institutions and local public enterprises are excluded regardless of industry.",
+      "eligibleTitle": "Eligible",
+      "eligible": [
+        "Agriculture, forestry and fishing",
+        "Mining",
+        "Manufacturing",
+        "Electricity, gas, steam and air conditioning supply",
+        "Water supply, sewage, waste management and materials recovery",
+        "Construction",
+        "Wholesale and retail trade",
+        "Transportation and storage (excluding customs clearance)",
+        "Accommodation and food services (excluding bars, cafés and other non-alcoholic beverage outlets)",
+        "Information and communication (excluding video viewing rooms and virtual asset trading/brokerage)",
+        "Real estate (excluding real estate leasing)",
+        "Research and development",
+        "Advertising",
+        "Market research and public opinion polling",
+        "Architectural, engineering and other scientific and technical services",
+        "Other professional, scientific and technical services (excluding veterinary)",
+        "Business facilities management, business support and rental services",
+        "Technical and vocational training institutes, computer academies",
+        "Social welfare services",
+        "Repair of personal and household goods",
+        "Creative and arts services",
+        "Libraries, historical sites and similar recreation services",
+        "Sports services"
+      ],
+      "excludedTitle": "Examples not on the list",
+      "excluded": [
+        "Finance and insurance (banks, insurers, securities firms, card companies)",
+        "Health care (hospitals, clinics, dentists, oriental medicine clinics)",
+        "Legal, accounting and tax services, management consulting",
+        "Schools and general cram, tutoring and language academies (technical/vocational and computer academies qualify)",
+        "Bars, cafés and other non-alcoholic beverage outlets",
+        "Real estate leasing",
+        "Veterinary clinics",
+        "Amusement services such as PC rooms, karaoke and amusement parks",
+        "Other personal services such as beauty, laundry and funeral services",
+        "Associations and organizations, public administration"
+      ]
+    },
+    "people": {
+      "title": "Who cannot receive it even at an eligible company",
+      "items": [
+        "Executives (as defined in Art. 40(1) of the Enforcement Decree of the Corporate Tax Act)",
+        "The company's largest shareholder or investor (the owner for sole proprietorships), their spouse, their lineal relatives (and spouses) and other relatives",
+        "Daily workers — contract and fixed-term workers are not excluded and can qualify if they meet the other requirements",
+        "People whose National Pension and employee health insurance contributions cannot be confirmed (unless they are not required to join)",
+        "People working for central or local governments, public institutions or local public enterprises (civil servants, public corporation staff, etc.)",
+        "People working for companies that are not SMEs (mid-sized or large companies)"
+      ]
+    },
+    "apply": {
+      "title": "How to apply",
+      "items": [
+        "Submit the SME employee income tax exemption application to your employer (the withholding agent) by the end of the month after the month you were hired. Youth applicants attach proof of military service.",
+        "Your employer can apply the exemption to withholding from the month after it receives your application, and files the list of exempt employees with the tax office by the 10th of that month.",
+        "If you change jobs, submit the application again to your new company. The period continues from your first start date.",
+        "If you missed a year, you can claim it back through a Hometax correction request within 5 years. If you have left the company, apply directly to the tax office for your address.",
+        "If you receive the exemption without meeting the requirements, you must repay 105% of the underpaid tax (Restriction of Special Taxation Act, Art. 30(5))."
+      ]
+    },
+    "reform": {
+      "title": "2026 tax reform proposal (before the National Assembly, not reflected)",
+      "text": "The government's August 2026 tax reform proposal reportedly expands the exemption for SME employees outside the capital region (youth periods of up to 10 years depending on region, and up to 90% for age 60+, disabled and career-break workers) and extends the deadline. Nothing changes until the National Assembly passes it, so this calculator uses current law (hired by December 31, 2026; youth 90% for 5 years, others 70% for 3 years)."
+    },
+    "source": "Sources: Restriction of Special Taxation Act Art. 30 and its Enforcement Decree Art. 27 · laws in force as of November 2026. The final month counts the period from the start date inclusive."
   }
 }

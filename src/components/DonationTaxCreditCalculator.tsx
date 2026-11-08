@@ -163,7 +163,7 @@ export default function DonationTaxCreditCalculator() {
               </div>
             )}
 
-            <div className="overflow-x-auto">
+            <div className="relative overflow-x-auto">
               <table className="w-full text-sm tabular-nums">
                 <caption className="sr-only">{t('table.caption')}</caption>
                 <thead>
@@ -231,7 +231,7 @@ export default function DonationTaxCreditCalculator() {
       {/* 기부처 종류 */}
       <section aria-labelledby="dt-kinds" className="ui-card p-6 space-y-4">
         <h2 id="dt-kinds" className="text-lg font-semibold text-fg">{t('guide.title')}</h2>
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full text-sm">
             <caption className="sr-only">{t('guide.title')}</caption>
             <thead>

@@ -251,7 +251,7 @@ export default function EducationTaxCreditCalculator() {
       {/* 포함·제외 */}
       <section aria-labelledby="et-list" className="ui-card p-6 space-y-4">
         <h2 id="et-list" className="text-lg font-semibold text-fg">{t('list.title')}</h2>
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full text-sm">
             <caption className="sr-only">{t('list.title')}</caption>
             <thead>

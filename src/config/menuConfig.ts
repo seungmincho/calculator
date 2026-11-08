@@ -147,6 +147,9 @@ export const menuConfig: MenuConfig = {
       { href: '/education-tax-credit', labelKey: 'footer.links.educationTaxCredit', descriptionKey: 'toolsShowcase.tools.educationTaxCredit.description', icon: '📚', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
       { href: '/donation-tax-credit', labelKey: 'footer.links.donationTaxCredit', descriptionKey: 'toolsShowcase.tools.donationTaxCredit.description', icon: '🤝', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
       { href: '/dependent-deduction', labelKey: 'footer.links.dependentDeduction', descriptionKey: 'toolsShowcase.tools.dependentDeduction.description', icon: '👨‍👩‍👧', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
+      { href: '/child-tax-credit', labelKey: 'footer.links.childTaxCredit', descriptionKey: 'toolsShowcase.tools.childTaxCredit.description', icon: '🧒', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
+      { href: '/sme-tax-exemption', labelKey: 'footer.links.smeTaxExemption', descriptionKey: 'toolsShowcase.tools.smeTaxExemption.description', icon: '🏭', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
+      { href: '/year-end-checklist', labelKey: 'footer.links.yearEndChecklist', descriptionKey: 'toolsShowcase.tools.yearEndChecklist.description', icon: '✅', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
     ],
   },
   tools: {

@@ -110,6 +110,7 @@
 /chess  /chess/  301
 /child-benefit  /child-benefit/  301
 /child-growth  /child-growth/  301
+/child-tax-credit  /child-tax-credit/  301
 /chmod-calculator  /chmod-calculator/  301
 /civil-servant-pay  /civil-servant-pay/  301
 /code-screenshot  /code-screenshot/  301
@@ -350,6 +351,7 @@
 /signature-generator  /signature-generator/  301
 /ski-resorts  /ski-resorts/  301
 /sleep-calculator  /sleep-calculator/  301
+/sme-tax-exemption  /sme-tax-exemption/  301
 /snake-game  /snake-game/  301
 /solitaire  /solitaire/  301
 /speed-test  /speed-test/  301
@@ -393,6 +395,7 @@
 /work-hours-calculator  /work-hours-calculator/  301
 /world-clock  /world-clock/  301
 /yaml-json-converter  /yaml-json-converter/  301
+/year-end-checklist  /year-end-checklist/  301
 /year-end-tax  /year-end-tax/  301
 /yes-no  /yes-no/  301
 /youth-future-savings  /youth-future-savings/  301

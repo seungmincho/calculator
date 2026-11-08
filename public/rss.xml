@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 08 Nov 2026 02:54:03 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2026 05:01:19 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[자녀세액공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/child-tax-credit/</link>
+    <guid>https://toolhub.ai.kr/child-tax-credit/</guid>
+    <description><![CDATA[자녀 출생연도로 올해 자녀세액공제 대상 여부와 금액, 출산·입양 공제, 맞벌이 누구 앞으로 받을지]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[연말정산 부양가족 공제 판정]]></title>
     <link>https://toolhub.ai.kr/dependent-deduction/</link>
@@ -26,6 +33,20 @@
     <link>https://toolhub.ai.kr/education-tax-credit/</link>
     <guid>https://toolhub.ai.kr/education-tax-credit/</guid>
     <description><![CDATA[가족별 교육비 한도(300만·900만)와 실제로 줄어드는 세금, 2026년부터 초등 1·2학년 예체능 학원비까지]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[중소기업 취업자 소득세 감면 계산기]]></title>
+    <link>https://toolhub.ai.kr/sme-tax-exemption/</link>
+    <guid>https://toolhub.ai.kr/sme-tax-exemption/</guid>
+    <description><![CDATA[청년 90%·연 200만원 감면 대상 여부, 감면 기간 종료일, 올해 줄어드는 세금과 이직·병역 기간 반영]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[연말정산 준비 체크리스트]]></title>
+    <link>https://toolhub.ai.kr/year-end-checklist/</link>
+    <guid>https://toolhub.ai.kr/year-end-checklist/</guid>
+    <description><![CDATA[12월 31일 마감부터 1월 15일 간소화, 회사 제출까지 내 상황에 맞는 할 일과 간소화에 안 나오는 서류]]></description>
     <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
