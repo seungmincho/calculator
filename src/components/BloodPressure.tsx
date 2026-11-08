@@ -17,7 +17,7 @@ interface BloodPressureRecord {
   classification: string
 }
 
-type Classification = 'normal' | 'elevated' | 'high1' | 'high2' | 'crisis'
+type Classification = 'normal' | 'elevated' | 'pre' | 'high1' | 'high2' | 'crisis'
 
 export default function BloodPressure() {
   const t = useTranslations('bloodPressure')
@@ -60,10 +60,13 @@ export default function BloodPressure() {
 
   // Classify blood pressure
   const classifyBloodPressure = useCallback((sys: number, dia: number): Classification => {
+    // 대한고혈압학회 진료지침 분류(2018~, 2026 제6판도 진단 기준 140/90 유지): 정상 <120/<80, 주의 120~129/<80,
+    // 고혈압 전단계 130~139 또는 80~89, 1기 140~159 또는 90~99, 2기 ≥160 또는 ≥100. 위기는 ACC/AHA 2017 기준(>180 또는 >120)
     if (sys > 180 || dia > 120) return 'crisis'
-    if (sys >= 140 || dia >= 90) return 'high2'
-    if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) return 'high1'
-    if (sys >= 120 && sys <= 129 && dia < 80) return 'elevated'
+    if (sys >= 160 || dia >= 100) return 'high2'
+    if (sys >= 140 || dia >= 90) return 'high1'
+    if (sys >= 130 || dia >= 80) return 'pre'
+    if (sys >= 120) return 'elevated'
     return 'normal'
   }, [])
 
@@ -76,7 +79,8 @@ export default function BloodPressure() {
     switch (classification) {
       case 'normal': return 'text-green-600 dark:text-green-400 bg-subtle'
       case 'elevated': return 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950'
-      case 'high1': return 'text-orange-600 dark:text-orange-400 bg-subtle'
+      case 'pre': return 'text-orange-600 dark:text-orange-400 bg-subtle'
+      case 'high1': return 'text-red-600 dark:text-red-400 bg-subtle'
       case 'high2': return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950'
       case 'crisis': return 'text-purple-600 dark:text-purple-400 bg-subtle'
       default: return 'text-sub bg-subtle'
@@ -296,6 +300,10 @@ export default function BloodPressure() {
                 <span className="text-sm">{t('ranges.elevated')}</span>
               </div>
               <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-sub">
+                <span className="font-medium">{t('classification.pre')}</span>
+                <span className="text-sm">{t('ranges.pre')}</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle text-sub">
                 <span className="font-medium">{t('classification.high1')}</span>
                 <span className="text-sm">{t('ranges.high1')}</span>
               </div>
@@ -370,8 +378,8 @@ export default function BloodPressure() {
                       {record.pulse > 0 ? `${record.pulse} bpm` : '-'}
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getClassificationColor(record.classification as Classification)}`}>
-                        {t(`classification.${record.classification}`)}
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getClassificationColor(classifyBloodPressure(record.systolic, record.diastolic))}`}>
+                        {t(`classification.${classifyBloodPressure(record.systolic, record.diastolic)}`)}
                       </span>
                     </td>
                     <td className="py-3 px-4 text-sm text-sub">

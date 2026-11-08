@@ -103,6 +103,14 @@ export default function BloodSugarPage() {
             <li><strong>식사와 혈당 상관관계:</strong> 식후 혈당이 높은 식품(흰쌀, 빵, 설탕)을 파악하고 식단을 조정하는 데 기록 데이터가 중요한 근거가 됩니다.</li>
             <li><strong>CSV 내보내기 활용:</strong> 주기적으로 CSV로 내보내어 엑셀에서 분석하거나 진료 시 의사에게 제출하면 맞춤형 치료 계획 수립에 도움이 됩니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://www.diabetes.or.kr/bbs/?code=guide&mode=view&number=2099" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">대한당뇨병학회 2025 당뇨병 진료지침(요약)</a> — 공복 100·126, 당부하 2시간 140·200, 당화혈색소 5.7·6.5%, 저혈당 70·54mg/dL, 연속혈당 목표범위 70~180mg/dL</li>
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/18540046/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Nathan 외, Diabetes Care 2008(ADAG)</a> — 당화혈색소 → 추정 평균혈당(28.7 × A1c − 46.7)</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 대한당뇨병학회 2025 진료지침(9판) 기준이며, 판정에 쓰는 수치는 2023판과 같습니다. 진단은 의료기관 검사로 합니다.</p>
+          </div>
         </div>
       </section>
     </>

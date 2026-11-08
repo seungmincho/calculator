@@ -48,6 +48,14 @@ export default function DueDatePage() {
             <li><strong>삼분기별 일정:</strong> 1분기(엽산 섭취·기형아 검사), 2분기(정밀 초음파·임신성 당뇨 검사), 3분기(출산 준비·태아 감시) 일정을 미리 파악하세요.</li>
             <li><strong>출산 예정일의 의미:</strong> 예정일은 추정치이며 대부분 예정일 전후로 출산합니다. 37주 0일~41주 6일 출산이 정상 범위이며, 예정일은 병원 진료 시 의료진과 확인하세요.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/28426621/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">ACOG Committee Opinion No. 700(2017) 출산 예정일 추정 방법</a> — LMP·초음파·시험관 이식일(5일 배아 +261일, 3일 배아 +263일)로 40주 0일 계산, 분기 구분</li>
+              <li><a href="https://www.law.go.kr/법령/근로기준법/제74조" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">근로기준법 제74조(임산부의 보호)</a> — 출산전후휴가 90일(다태아 120일), 출산 후 45일(다태아 60일) 이상, 임신기 근로시간 단축</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 검사 시기는 권고 범위이며 병원마다 다를 수 있습니다.</p>
+          </div>
         </div>
       </section>
     </>

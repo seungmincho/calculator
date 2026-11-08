@@ -39,7 +39,7 @@ export default function BloodPressurePage() {
             혈압 기록기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            혈압 기록기는 수축기·이완기 혈압과 맥박 수치를 날짜별로 기록하고 추이 차트와 통계를 제공하는 무료 온라인 혈압 관리 도구입니다. WHO 및 대한고혈압학회 기준에 따라 정상·주의·고혈압 전단계·고혈압을 자동으로 분류하며, 측정 평균값과 추세를 한눈에 파악할 수 있습니다. 고혈압 환자와 혈압 관리가 필요한 분들이 병원 방문 전 혈압 수첩 대신 사용하기에 적합합니다.
+            혈압 기록기는 수축기·이완기 혈압과 맥박 수치를 날짜별로 기록하고 추이 차트와 통계를 제공하는 무료 온라인 혈압 관리 도구입니다. 대한고혈압학회 진료지침 기준으로 정상·주의 혈압·고혈압 전단계·고혈압 1기·2기를 자동으로 분류하며, 측정 평균값과 추세를 한눈에 파악할 수 있습니다. 고혈압 환자와 혈압 관리가 필요한 분들이 병원 방문 전 혈압 수첩 대신 사용하기에 적합합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             올바른 혈압 측정 및 관리 팁
@@ -51,6 +51,14 @@ export default function BloodPressurePage() {
             <li><strong>백의 고혈압 주의:</strong> 병원에서만 혈압이 높다면 긴장에 의한 백의 고혈압일 수 있으므로, 가정에서의 자가 측정 기록을 의사에게 제시하세요.</li>
             <li><strong>생활습관 개선:</strong> 소금 섭취 줄이기(하루 6g 이하), 규칙적 유산소 운동, 적정 체중 유지만으로도 수축기 혈압을 5~15mmHg 낮출 수 있습니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://www.koreanhypertension.org/reference/guide?mode=read&idno=10446" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">대한고혈압학회 2026년 제6판 고혈압 진료지침</a> — 고혈압 진단 기준 140/90mmHg(2022년 제5판과 같음). 이 기록기의 단계: 정상 120/80 미만, 주의 혈압 120~129이면서 80 미만, 고혈압 전단계 130~139 또는 80~89, 1기 140~159 또는 90~99, 2기 160 또는 100 이상</li>
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/29133356/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">2017 ACC/AHA 성인 고혈압 진료지침(Whelton 외, Hypertension 2018)</a> — 고혈압 위기(180 또는 120 초과) 구간</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 고혈압 진단은 의료진이 여러 번 잰 혈압으로 합니다. 2026년 제6판에서 새로 나눈 이완기 단독 고혈압 등 세부 유형은 반영하지 않았습니다.</p>
+          </div>
         </div>
       </section>
     </>

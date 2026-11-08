@@ -4,8 +4,8 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import messages from '../../../messages/generated/ko/ns/jsonToTypescript.json'
 
-const TITLE = 'JSON to TypeScript 변환기 - interface 자동 생성 | 툴허브'
-const DESC = 'JSON을 붙여넣으면 TypeScript interface·type 선언을 바로 만들어요. 객체 배열의 선택 필드(?)·null 합집합·배열 원소 타입·중첩 객체 이름까지 자동 추론하고, export·readonly 옵션과 복사·.ts 내려받기를 지원해요. 브라우저 안에서만 변환해 서버로 전송하지 않아요.'
+const TITLE = 'JSON → TypeScript 변환기 - interface 생성 | 툴허브'
+const DESC = 'JSON을 붙여넣으면 TypeScript interface·type 선언을 바로 만들어요. 선택 필드(?)·null 합집합·배열 원소·중첩 객체 이름까지 추론하고, 브라우저 안에서만 변환해 서버로 보내지 않아요.'
 
 export const metadata: Metadata = {
   title: TITLE,

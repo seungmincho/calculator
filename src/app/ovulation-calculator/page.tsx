@@ -65,6 +65,15 @@ export default function OvulationCalculatorPage() {
             <I18nWrapper>
               <OvulationCalculator />
               <ToolFaq items={faq} />
+              <section className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+                <p className="font-medium text-body">근거·출처</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li><a href="https://pubmed.ncbi.nlm.nih.gov/7477165/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Wilcox 외, N Engl J Med 1995</a> — 임신 가능 기간은 배란일로 끝나는 6일, 가능성이 가장 높은 날은 배란 2일 전~배란일</li>
+                  <li><a href="https://pubmed.ncbi.nlm.nih.gov/30198563/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">FIGO 2018 월경 정상 범위(Munro 외, Int J Gynaecol Obstet)</a> — 주기 변동이 큰지 판단하는 기준</li>
+                  <li>배란일은 다음 생리 예정일에서 황체기(기본 14일)를 빼서 구하고, 가임기는 배란 5일 전~배란 1일 후로 표시합니다.</li>
+                </ul>
+                <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 달력 계산 추정치라 피임 목적으로 쓰면 안 됩니다.</p>
+              </section>
               <div className="mt-8">
                 <RelatedTools />
               </div>

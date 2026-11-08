@@ -104,6 +104,14 @@ export default function BMICalculatorPage() {
             <li><strong>어린이 BMI:</strong> 만 19세 미만은 2017 소아청소년 성장도표의 성별·연령별 백분위수로 판정해야 하며, 성인 기준 BMI 수치를 그대로 적용해서는 안 됩니다.</li>
             <li><strong>복부비만 함께 확인:</strong> BMI와 함께 허리둘레(남성 90cm, 여성 85cm 이상 복부비만)를 체크하면 심혈관 질환 위험을 더 정확히 평가할 수 있습니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://general.kosso.or.kr/html/?pmode=BBBS0001300003" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">대한비만학회 비만 진료지침 2022(8판)</a> — 한국 기준 BMI 단계(18.5·23·25·30·35)와 복부비만 허리둘레(남 90cm·여 85cm 이상)</li>
+              <li><a href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">WHO 비만·과체중 팩트시트</a> — WHO 기준을 고르면 과체중 25, 비만 30 이상</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 대한비만학회 2022 진료지침(학회 누리집에 공개된 최신판)과 WHO 성인 기준을 적용합니다.</p>
+          </div>
         </div>
       </section>
     </>

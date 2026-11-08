@@ -103,6 +103,15 @@ export default function SleepCalculatorPage() {
             <li><strong>일관된 기상 시간 유지:</strong> 주말에도 평일과 같은 시간에 일어나면 일주기 리듬(서카디언 리듬)이 안정되어 취침 시간에 자연스럽게 졸음이 옵니다.</li>
             <li><strong>취침 전 습관 관리:</strong> 취침 1시간 전 스마트폰·TV의 블루라이트를 줄이고, 18~20°C의 서늘한 환경을 만들면 깊은 수면 진입이 빨라집니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/29073412/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">미국수면재단 권장 수면시간(Hirshkowitz 외, Sleep Health 2015)</a> — 연령별 권장 수면(성인 7~9시간, 65세 이상 7~8시간, 14~17세 8~10시간 등)</li>
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/24235903/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Drake 외, J Clin Sleep Med 2013</a> — 취침 6시간 전 카페인도 수면을 줄임(카페인 마감 시각 안내)</li>
+              <li>수면 주기 90분은 평균값이며 사람과 주기에 따라 80~110분으로 달라집니다.</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 미국수면재단 2015 권고 기준입니다.</p>
+          </div>
         </div>
       </section>
     </>

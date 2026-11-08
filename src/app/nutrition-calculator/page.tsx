@@ -71,10 +71,18 @@ export default function NutritionCalculatorPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>탄단지 비율 확인:</strong> 균형 잡힌 식단의 권장 탄단지 비율은 탄수화물 50~65%, 단백질 10~20%, 지방 15~30%입니다(2025 한국인 영양소 섭취기준). 계산기로 실제 비율을 확인하세요.</li>
-            <li><strong>다이어트 식단 설계:</strong> 한국인 에너지필요추정량(19~64세 기준 여성 1,700~2,000kcal, 남성 2,200~2,600kcal — 2020 한국인 영양소 섭취기준)은 기준 체격의 체중 유지 열량입니다. 감량하려면 칼로리 계산기로 내 유지 칼로리를 구한 뒤 그보다 조금 적게 세 끼 식단을 계획하세요.</li>
+            <li><strong>다이어트 식단 설계:</strong> 한국인 에너지필요추정량(19~64세 기준 여성 1,700~2,000kcal, 남성 2,200~2,600kcal — 2025 한국인 영양소 섭취기준)은 기준 체격의 체중 유지 열량입니다. 감량하려면 칼로리 계산기로 내 유지 칼로리를 구한 뒤 그보다 조금 적게 세 끼 식단을 계획하세요.</li>
             <li><strong>단백질 섭취 점검:</strong> 근육 증가를 목표로 한다면 체중(kg) × 1.5~2g의 단백질 섭취를 권장합니다. 닭가슴살, 두부, 계란이 단백질 대표 식품입니다.</li>
             <li><strong>식단 기록 습관:</strong> 매 끼 식사 후 영양소를 기록하는 습관을 들이면 열량 섭취 패턴을 파악하고 건강한 식습관을 형성하는 데 도움이 됩니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://www.mohw.go.kr/board.es?mid=a10411010200&bid=0019&act=view&list_no=1488446" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">보건복지부 2025 한국인 영양소 섭취기준</a> — 성인 에너지 적정비율 탄수화물 50~65%, 단백질 10~20%, 지방 15~30%</li>
+              <li><a href="https://various.foodsafetykorea.go.kr/nutrient/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">식품의약품안전처 식품영양성분 데이터베이스</a> — 음식별 1인분 값은 이 DB와 외식 영양성분 공개자료를 참고한 대표값(근사치)입니다</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 2025 한국인 영양소 섭취기준(2025년 12월 발표) 적용. 브랜드·조리법에 따라 실제 값은 달라집니다.</p>
+          </div>
         </div>
       </section>
     </>

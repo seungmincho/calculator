@@ -125,6 +125,17 @@ export default function BodyFatCalculatorPage() {
             <li><strong>체지방 감소 전략:</strong> 칼로리 적자(TDEE보다 300~500kcal 감소)와 근력 운동을 병행하면 근육을 유지하면서 체지방을 효과적으로 줄일 수 있습니다.</li>
             <li><strong>주기적 측정:</strong> 한 달에 한 번 같은 조건(아침, 공복, 동일 자세)에서 측정하면 체성분 변화 추이를 정확하게 추적할 수 있습니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/30030479/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Woolcott·Bergman, Sci Rep 2018</a> — RFM(상대지방량) 공식</li>
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/2043597/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Deurenberg 외, Br J Nutr 1991</a> — BMI·나이·성별 기반 체지방률 공식</li>
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/10966886/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Gallagher 외, Am J Clin Nutr 2000</a> — 연령대별 건강 체지방률 범위</li>
+              <li><a href="https://general.kosso.or.kr/html/?pmode=BBBS0001300003" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">대한비만학회 비만 진료지침 2022(8판)</a> — 복부비만 허리둘레(남 90cm·여 85cm 이상)</li>
+              <li>미 해군 공식은 Hodgdon·Beckett 1984(미 해군보건연구센터 보고서), 체지방 분류는 ACE(미국운동협회) 기준입니다.</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 모든 공식은 추정식이라 DEXA·체성분 검사 결과와 다를 수 있습니다.</p>
+          </div>
         </div>
       </section>
     </>

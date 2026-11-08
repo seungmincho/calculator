@@ -51,6 +51,15 @@ export default function AlcoholCalculatorPage() {
             <li><strong>숙취 해소 오해:</strong> 커피, 사우나, 찬물은 BAC를 낮추지 않습니다. 시간이 지나는 것만이 유일한 방법입니다.</li>
             <li><strong>음주운전 기준:</strong> 도로교통법상 0.03% 이상 면허 정지, 0.08% 이상 면허 취소, 0.2% 이상은 가중처벌됩니다. 조금이라도 마셨다면 운전하지 마세요.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://www.law.go.kr/법령/도로교통법/제44조" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">도로교통법 제44조</a> — 혈중알코올농도 0.03% 이상이면 술에 취한 상태로 운전 금지(면허 정지 0.03~0.08%, 취소 0.08% 이상은 시행규칙 별표 28)</li>
+              <li><a href="https://www.law.go.kr/법령/도로교통법/제148조의2" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">도로교통법 제148조의2</a> — 음주운전 벌칙, 0.2% 이상 가중처벌</li>
+              <li>BAC 추정은 위드마크 공식(분포계수 남 0.68·여 0.55, 시간당 감소 평균 0.015%, 0% 도달 시각은 느린 0.010% 기준)입니다.</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 현행 도로교통법 기준. 계산값은 추정치이며 실제 측정값과 다를 수 있습니다.</p>
+          </div>
         </div>
       </section>
     </>

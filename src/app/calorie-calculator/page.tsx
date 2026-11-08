@@ -125,6 +125,15 @@ export default function CalorieCalculatorPage() {
             <li><strong>최소 칼로리 준수:</strong> 여성 1,200kcal, 남성 1,500kcal(또는 기초대사량) 아래로 내려가면 근손실과 영양결핍 위험이 커집니다. 일반적인 권고이며 의학적 기준은 아닙니다.</li>
             <li><strong>주간 단위 관리:</strong> 일일 칼로리보다 7일 합계로 관리하면 하루 폭식해도 전략적으로 조절할 수 있습니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Mifflin·St Jeor 외, Am J Clin Nutr 1990</a> — 기본 기초대사량 공식</li>
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/6741850/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Roza·Shizgal, Am J Clin Nutr 1984</a> — Harris-Benedict 개정식</li>
+              <li><a href="https://www.mohw.go.kr/board.es?mid=a10411010200&bid=0019&act=view&list_no=1488446" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">보건복지부 2025 한국인 영양소 섭취기준</a> — 연령대별 에너지필요추정량(성인 값은 2020년판과 같음), 탄단지 에너지 적정비율</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 2025 한국인 영양소 섭취기준(2025년 12월 발표) 적용. 공식값은 개인차가 있는 추정치입니다.</p>
+          </div>
         </div>
       </section>
     </>

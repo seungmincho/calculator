@@ -18099,18 +18099,20 @@
     "record": "Record",
     "reset": "Reset",
     "classification": {
+      "pre": "Prehypertension",
       "title": "BP Classification",
       "normal": "Normal",
       "elevated": "Elevated",
-      "high1": "Hypertension Stage 1",
-      "high2": "Hypertension Stage 2",
+      "high1": "Hypertension stage 1",
+      "high2": "Hypertension stage 2",
       "crisis": "Hypertensive Crisis"
     },
     "ranges": {
+      "pre": "Systolic 130-139 OR Diastolic 80-89",
       "normal": "Systolic < 120 AND Diastolic < 80",
       "elevated": "Systolic 120-129 AND Diastolic < 80",
-      "high1": "Systolic 130-139 OR Diastolic 80-89",
-      "high2": "Systolic ≥ 140 OR Diastolic ≥ 90",
+      "high1": "Systolic 140-159 OR Diastolic 90-99",
+      "high2": "Systolic ≥ 160 OR Diastolic ≥ 100",
       "crisis": "Systolic > 180 OR Diastolic > 120"
     },
     "history": {

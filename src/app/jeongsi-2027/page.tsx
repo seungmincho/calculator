@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 import messages from '../../../messages/generated/ko/ns/jeongsi2027.json'
 
 const TITLE = '2027 정시 일정 - 원서접수·가나다군 전형 기간 | 툴허브'
-const DESC = '2027학년도 정시 원서접수(2027년 1월 4~7일 중 대학별 3일 이상), 가군 1월 11~17일·나군 18~24일·다군 25~31일, 합격자 발표 2월 5일까지, 등록 2월 10~12일, 충원 2월 17일까지, 추가모집 2월 19~26일. 수능 성적 통지(12월 11일)부터 오늘 기준 D-day와 지원 규칙을 대교협 원문으로 정리했어요.'
+const DESC = '2027학년도 정시 원서접수(2027년 1월 4~7일), 가군 1월 11~17일·나군 18~24일·다군 25~31일, 합격자 발표·등록·충원·추가모집 일정과 D-day를 대교협 원문으로 정리했어요.'
 const PAGE_URL = 'https://toolhub.ai.kr/jeongsi-2027/'
 const OG = 'https://toolhub.ai.kr/og/jeongsi-2027.png'
 

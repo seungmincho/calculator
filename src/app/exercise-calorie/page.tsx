@@ -97,6 +97,13 @@ export default function ExerciseCaloriePage() {
             <li><strong>음식 역산:</strong> 라면·치킨·소주 등 음식을 고르면 운동별로 몇 분을 해야 태울 수 있는지 비교할 수 있습니다.</li>
             <li><strong>실제 칼로리 보정:</strong> MET 기반 계산은 평균값이므로 개인 체력 수준, 운동 강도, 체형에 따라 실제 값은 ±20% 차이가 날 수 있습니다.</li>
           </ul>
+          <div className="mt-6 bg-subtle rounded-2xl p-5 text-sm text-sub space-y-2">
+            <p className="font-medium text-body">근거·출처</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><a href="https://pubmed.ncbi.nlm.nih.gov/38242596/" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">2024 Adult Compendium of Physical Activities(Herrmann 외, J Sport Health Sci 2024)</a> — 운동별 MET 값, 소모 kcal = MET × 체중(kg) × 시간(h)</li>
+            </ul>
+            <p className="text-xs text-muted">기준: 2026년 11월 8일 확인 · 2024 Compendium(현재 최신판) MET 값을 적용합니다.</p>
+          </div>
         </div>
       </section>
     </>
