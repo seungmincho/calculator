@@ -4,6 +4,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  /* 네이티브 입력(날짜 달력 아이콘·select·스크롤바)을 OS가 아니라 사이트 테마에 맞춘다.
+     없으면 OS 다크 + 사이트 라이트에서 흰 입력칸에 흰 달력 아이콘이 그려져 안 보임 */
+  color-scheme: light;
   /* ── Semantic tokens (light) — 디자인 변경은 이 블록과 .dark 블록만 수정 ── */
   --canvas: #ffffff;
   --surface: #ffffff;
@@ -29,6 +32,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --canvas: #0f1012;
   --surface: #16171b;
   --field: #1f2126;

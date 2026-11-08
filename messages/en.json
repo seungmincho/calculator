@@ -59714,7 +59714,7 @@
       "net": "Severance (after tax)",
       "avg": "Average daily wage",
       "days": "Days employed",
-      "daysValue": "{days} days",
+      "daysValue": "{days} days (~{years} yr)",
       "gross": "Severance (pre-tax)",
       "tax": "Retirement income tax (incl. local)",
       "irp": "Moved to an IRP and taken as a pension, the tax drops to {tax} (30% off for the first 10 years of payouts).",

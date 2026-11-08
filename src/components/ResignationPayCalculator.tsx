@@ -250,7 +250,7 @@ export default function ResignationPayCalculator() {
                     <>
                       <Rows rows={[
                         [t('sev.avg'), money(Math.floor(r.sev.avgDaily))],
-                        [t('sev.days'), t('sev.daysValue', { days: won(r.sev.days) })],
+                        [t('sev.days'), t('sev.daysValue', { days: won(r.sev.days), years: Math.round(r.sev.days / 36.5) / 10 })],
                         [t('sev.gross'), money(r.sev.pay)],
                         [t('sev.tax'), money(r.sev.totalTax)],
                         [t('sev.net'), money(r.sev.net), true],
