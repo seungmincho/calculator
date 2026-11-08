@@ -68,12 +68,18 @@ export default function TaxiFare() {
   // URL 동기화 (공유 링크)
   useEffect(() => {
     if (!urlRestored) return
-    const params = new URLSearchParams({
-      distance, region, type: taxiType, hour: String(hour), out: outOfCity ? '1' : '0', traffic,
-    })
+    // 받는 쪽은 키가 없으면 같은 기본값(5km·서울·일반·14시·시내·보통)을 쓰므로 기본값과 다른 것만 적는다
+    const params = new URLSearchParams()
+    if (distance !== '5') params.set('distance', distance)
+    if (region !== 'seoul') params.set('region', region)
+    if (taxiType !== 'regular') params.set('type', taxiType)
+    if (hour !== 14) params.set('hour', String(hour))
+    if (outOfCity) params.set('out', '1')
+    if (traffic !== 'normal') params.set('traffic', traffic)
     if (!timeAuto) params.set('time', time)
     if (people > 1) params.set('n', String(people))
-    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}${window.location.hash}`)
+    const qs = params.toString()
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`)
   }, [distance, time, timeAuto, traffic, region, taxiType, hour, outOfCity, people, urlRestored])
 
   const timeNum = Math.max(0, parseFloat(displayedTime) || 0)
@@ -97,6 +103,14 @@ export default function TaxiFare() {
     rk, total: computeFare(distanceNum, timeNum, hour, rk, 'regular', outOfCity).total,
   })), [distanceNum, timeNum, hour, outOfCity])
   const selectedRegular = regionFares.find((r) => r.rk === region)!.total
+
+  // 같은 조건에서 탑승 시각만 바꾼 요금 (0~23시)
+  const hourlyFares = useMemo(
+    () => HOURS.map((h) => computeFare(distanceNum, timeNum, h, region, taxiType, outOfCity)),
+    [distanceNum, timeNum, region, taxiType, outOfCity]
+  )
+  const hourlyMin = Math.min(...hourlyFares.map((f) => f.total))
+  const hourlyMax = Math.max(...hourlyFares.map((f) => f.total))
 
   const regionRate = REGION_RATES[region]
   const won = t('result.won')
@@ -416,6 +430,59 @@ export default function TaxiFare() {
             <p className="text-xs text-muted mt-4">{t('result.note')}</p>
           </div>
 
+          {/* 시간대별 요금 */}
+          <div className="ui-card p-4 sm:p-6">
+            <h2 className="text-lg font-semibold text-fg">{t('hourly.title')}</h2>
+            <p className="text-sm text-muted mt-1">{t('hourly.subtitle')}</p>
+            {hourlyMax > hourlyMin && (
+              <p className="text-body font-medium mt-3">
+                {fare.total > hourlyMin
+                  ? t('hourly.save', { start: hh(schedule.nightStart), end: hh(schedule.nightEnd), diff: (fare.total - hourlyMin).toLocaleString() })
+                  : t('hourly.rise', { start: hh(schedule.nightStart), max: hourlyMax.toLocaleString(), diff: (hourlyMax - hourlyMin).toLocaleString() })}
+              </p>
+            )}
+            <div aria-hidden="true" className="mt-4">
+              <div className="flex items-end gap-0.5 h-28">
+                {hourlyFares.map((f, h) => (
+                  <div
+                    key={h}
+                    title={`${hh(h)}${t('hourUnit')} ${f.total.toLocaleString()}${won}`}
+                    className={`flex-1 min-w-0 rounded-t ${h === hour ? 'bg-primary' : f.nightRate > 0 ? 'bg-primary/35' : 'bg-line-strong'}`}
+                    style={{ height: `${hourlyMax > 0 ? Math.max(4, Math.round((f.total / hourlyMax) * 100)) : 4}%` }}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-0.5 mt-1 h-3 text-[10px] leading-none text-muted tabular-nums">
+                {/* 막대 폭(375px에서 약 10px)보다 두 자리 숫자가 넓어 줄바꿈되므로 막대 가운데에 겹쳐 띄운다 */}
+                {HOURS.map((h) => (
+                  <span key={h} className="flex-1 min-w-0 relative">
+                    {h % 3 === 0 && <span className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap">{h}</span>}
+                  </span>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-sub">
+                <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-primary" />{t('hourly.legendSelected')}</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-primary/35" />{t('hourly.legendNight')}</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-line-strong" />{t('hourly.legendDay')}</span>
+              </div>
+            </div>
+            <table className="sr-only">
+              <caption>{t('hourly.title')}</caption>
+              <thead>
+                <tr><th scope="col">{t('boardingTime')}</th><th scope="col">{t('hourly.fare')}</th><th scope="col">{t('result.nightSurcharge')}</th></tr>
+              </thead>
+              <tbody>
+                {hourlyFares.map((f, h) => (
+                  <tr key={h}>
+                    <th scope="row">{hh(h)}{t('hourUnit')}{h === hour ? ` (${t('hourly.legendSelected')})` : ''}</th>
+                    <td>{f.total.toLocaleString()}{won}</td>
+                    <td>{f.nightRate > 0 ? `+${Math.round(f.nightRate * 100)}%` : '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           {/* 더치페이 */}
           <div className="ui-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-fg mb-3">{t('split.title')}</h2>
@@ -509,7 +576,7 @@ export default function TaxiFare() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
               <div className="bg-surface rounded-xl p-4 space-y-1">
                 <p className="font-semibold text-fg mb-1">{t('types.regular')}</p>
-                <p className="text-body">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{won} ({(regionRate.baseDist / 1000).toFixed(1)}km)</p>
+                <p className="text-body">{t('fareInfo.base')}: {regionRate.base.toLocaleString()}{won} ({regionRate.baseDist / 1000}km)</p>
                 <p className="text-body">{t('fareInfo.distance')}: {regionRate.unitDist}{t('fareInfo.perMeter')} {regionRate.unitFare}{won}</p>
                 <p className="text-body">{t('fareInfo.time')}: {regionRate.timeUnit}{t('fareInfo.perSec')} {regionRate.timeFare}{won}</p>
                 {regionRate.longFrom != null && regionRate.longFare != null && (
@@ -523,7 +590,7 @@ export default function TaxiFare() {
                   {regionRate.deepStart != null && ` (${hh(regionRate.deepStart)}~${hh(regionRate.deepEnd)}${t('hourUnit')} ${Math.round(regionRate.deepRate * 100)}%)`}
                 </p>
                 <p className="text-body">{t('fareInfo.outOfCity')}: {Math.round(regionRate.outRate * 100)}%</p>
-                <p className="text-body">{t('fareInfo.premium')}: {premiumRate.base.toLocaleString()}{won} ({(premiumRate.baseDist / 1000).toFixed(1)}km)</p>
+                <p className="text-body">{t('fareInfo.premium')}: {premiumRate.base.toLocaleString()}{won} ({premiumRate.baseDist / 1000}km)</p>
               </div>
             </div>
             <p className="text-xs text-muted mt-3">{t('fareInfo.sourceNote')}</p>

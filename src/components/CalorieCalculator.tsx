@@ -106,7 +106,10 @@ export default function CalorieCalculator() {
     // 목표 체중은 계산에 쓰는 값(25~300)으로 — 빈칸(0)을 그대로 쓰면 받는 쪽이 기본 70kg 으로 읽는다
     if (goal !== 'maintain') { p.set('pace', String(pace)); p.set('targetWeight', String(clampNum(target, 25, 300, DEF.tw))) }
     if (bodyFat) p.set('bf', String(bodyFat))
-    window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
+    // 첫 화면 기본값 그대로면 쿼리 없이(받는 쪽도 키가 없으면 같은 기본값)
+    const isDef = sex === 'male' && age === DEF.age && height === DEF.h && weight === DEF.w && !bodyFat && activity === 'light'
+      && formula === 'mifflin' && goal === 'lose' && pace === DEF.pace && target === DEF.tw
+    window.history.replaceState(null, '', isDef ? window.location.pathname : `${window.location.pathname}?${p}`)
     setSaved(false)
   }, [sex, age, height, weight, bodyFat, activity, formula, goal, pace, target])
 

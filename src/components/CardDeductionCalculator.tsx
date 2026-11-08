@@ -76,8 +76,9 @@ export default function CardDeductionCalculator() {
   }
   useEffect(() => {
     if (!loaded.current) return
+    const isDef = salary === DEF.salary && period === 'ytd' && children === DEF.children && CARD_KEYS.every((k) => spend[k] === DEF.spend[k])
     const q = query(period === 'year' ? { p: 'y' } : {})
-    window.history.replaceState(window.history.state, '', `?${q}`)
+    window.history.replaceState(window.history.state, '', isDef ? window.location.pathname : `?${q}`)
   }, [salary, period, children, spend]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const ytd = period === 'ytd'

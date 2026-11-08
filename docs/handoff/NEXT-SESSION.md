@@ -41,7 +41,7 @@
 - **기본값이면 URL 쿼리 없음 18종(e2e83616·88c396e0)**. 남은 후보: BMI·카드공제·마진 등(아래 백로그 #55).
 - 검증: tsc 0, audit 0, check 전부(esbuild 5개 제외), 빌드본 wrangler pages dev 375px·hydration 0, check-static-html 팁 400 외 0, 운영 curl.
 
-**12월 할 일(국회·고시)**: 세제개편안 통과 시 ① 부양가족 소득 300만/750만(dependentDeduction) ② 중기 감면 기한 연장(smeTaxExemption) ③ 부가세 카드 1.2%·500만(vat.ts, 공급일 기준 분기) ④ 전기차 취득세 70만(carAcquisitionTax·evSubsidy·carLoan, 취득일 기준 분기). **국민연금 A값**(nationalPension.ts `A_VALUE` 3,193,511원은 2025.12~2026.11 적용 — 12월 새 A값 고시 → pension-calculator 기준 줄 함께). 건보 상·하한·2027 기초연금 선정기준액.
+**12월 할 일(국회·고시)** — 6차 추가: 자동차세 2027년 1월 연납 공제율(2026은 시행령 개정으로 5% 유지, 2027 미발표 — 화면은 "5% 유지 가정" 표기, annualCarTax LUMP_RATE), 카드 세액공제 2027 개편안 → cardFee·vat, 택시 전남·대구 고시, 해외주식 연말 매도 마감일(백로그 #62). 기존: 세제개편안 통과 시 ① 부양가족 소득 300만/750만(dependentDeduction) ② 중기 감면 기한 연장(smeTaxExemption) ③ 부가세 카드 1.2%·500만(vat.ts, 공급일 기준 분기) ④ 전기차 취득세 70만(carAcquisitionTax·evSubsidy·carLoan, 취득일 기준 분기). **국민연금 A값**(nationalPension.ts `A_VALUE` 3,193,511원은 2025.12~2026.11 적용 — 12월 새 A값 고시 → pension-calculator 기준 줄 함께). 건보 상·하한·2027 기초연금 선정기준액.
 
 ### 0-4. 2026-11-08 2차 묶음 (신규 3 사용자 기획 승인 + 개선 6)
 

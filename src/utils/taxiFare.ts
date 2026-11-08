@@ -28,21 +28,24 @@ export interface RegionRate {
   premium?: Partial<Omit<RegionRate, 'premium'>> // 모범·대형이 전국 기본(PREMIUM)과 다른 지역
 }
 
-// 2026-10-04 기준 시도별 중형택시 요율. 도 지역은 시·군마다 달라 도청 소재지·대표 시 값 (실제 요율은 관할 시·군 확인)
+// 2026-11-08 기준 시도별 중형택시 요율. 도 지역은 시·군마다 달라 도청 소재지·대표 시 값 (실제 요율은 관할 시·군 확인)
 // 출처(지자체 고시·보도자료): 서울 news.seoul.go.kr/traffic/archives/1659 · 경기(고양) goyang.go.kr · 인천 incheon.go.kr/traffic/TR010201
-//   부산 busan.go.kr/nbtnewsBU/1565618(2023.6.1) · 대구 뉴스룸 aid=269959(2025.2.22) · 대전 daejeon.go.kr menuSeq=3308 + 2026.3.16 할증 개편
+//   부산 busan.go.kr/nbtnewsBU/1565618(2023.6.1) · 대구 뉴스룸 aid=269959(2025.2.22)
+//   대전 2026.11.1 기본요금 인상(2026.10.26 시 발표 — 서울경제·뉴스1·대전일보 보도, 시 누리집 menuSeq=3308 은 아직 옛 요금)
+//     + 2026.3.16 할증 개편·모범·대형 111m/27초(daejeon.go.kr 시정카드뉴스 ntatcSeq=1508657872)
 //   광주 gwangju.go.kr seq=20841(2025.10.22) · 울산 ulsan.go.kr(2025.3.10) · 세종 보도자료(2024.8.1, 기본거리 1.5km는 2022 보도자료)
 //   강원(원주 2024.8.5) · 충남(천안, transport.chungnam.go.kr 2025.7 표) · 전북(전주 2023.8.1) · 전남(여수·나주 2023.11.1)
 //   경북(구미, 128m) · 경남(창원 2026.7.1) · 제주 jeju.go.kr/traffic/bus/taxifee.htm(2024.7.1)
 // 미확인(기존 값 유지): 충북 기본거리·단위·심야, 대구 시간요금·중복할증 상한, 충남 심야 시간대, 경북·강원·제주 시계외
-// 예정: 전남 4,800/1.7km(2026.11~12 확정 예정), 대전 기본요금 하반기 결정, 충북 4,500~4,800 검토
+// 예정(날짜별 전환 없음 — 고시되면 값 교체): 옛 전남 22개 시·군 4,800/1.7km 기준안(1안 127m·27초, 심야 23~04시 최대 30%)
+//   시·군별 심의 후 2026.11~12 고시 · 대구 업계안 5,200~5,600/1.5km 검증 후 연말 결정(2027년 초 적용)
 export const REGION_RATES: Record<RegionKey, RegionRate> = {
   seoul:     { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.2 },
   gyeonggi:  { base: 4800, baseDist: 1600, unitDist: 131, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.2, premium: { unitDist: 144, timeUnit: 35, outRate: 0 } },
   incheon:   { base: 4800, baseDist: 1600, unitDist: 135, unitFare: 100, timeUnit: 33, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: 23, deepEnd: 2, nightRate: 0.2, deepRate: 0.4, outRate: 0.3 },
   busan:     { base: 4800, baseDist: 2000, unitDist: 132, unitFare: 100, timeUnit: 33, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3, premium: { base: 7500, unitDist: 140, timeUnit: 33 } },
   daegu:     { base: 4500, baseDist: 1700, unitDist: 125, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.35 },
-  daejeon:   { base: 4300, baseDist: 1800, unitDist: 132, unitFare: 100, timeUnit: 33, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3, comboCap: 0.5 },
+  daejeon:   { base: 4800, baseDist: 1650, unitDist: 125, unitFare: 100, timeUnit: 29, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.3, comboCap: 0.5, premium: { base: 6000, unitDist: 111, timeUnit: 27, deepStart: 0, deepEnd: 2, deepRate: 0.3, outRate: 0.3, comboCap: 0.5 } },
   gwangju:   { base: 4800, baseDist: 1700, unitDist: 132, unitFare: 100, timeUnit: 32, timeFare: 100, nightStart: 23, nightEnd: 4, deepStart: 0, deepEnd: 2, nightRate: 0.2, deepRate: 0.3, outRate: 0.35, premium: { base: 5400, baseDist: 1700, unitDist: 149 } },
   ulsan:     { base: 4500, baseDist: 2000, unitDist: 125, unitFare: 100, timeUnit: 30, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.2, deepRate: 0.2, outRate: 0.3 },
   sejong:    { base: 4000, baseDist: 1500, unitDist: 97, unitFare: 100, timeUnit: 29, timeFare: 100, nightStart: 22, nightEnd: 4, deepStart: null, deepEnd: null, nightRate: 0.3, deepRate: 0.3, outRate: 0.3 },

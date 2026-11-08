@@ -1053,12 +1053,14 @@
         "normal": "Standard",
         "pref": "Preferential",
         "coop": "Co-op",
+        "coop26": "Co-op low rate",
         "free": "Tax-free"
       },
       "taxHint": {
         "normal": "Income tax 14% + local income tax 1.4%. Applies to most bank deposits and savings.",
         "pref": "Income tax 9% + rural special tax 0.5%. Applies to legacy tax-preferred accounts.",
-        "coop": "Co-op deposits (Nonghyup, Suhyup, forestry co-ops, Shinhyup, MG) up to KRW 30M per person: income tax exempt, only 1.4% rural special tax. For deposits opened from 2026, the exemption applies only to members of agricultural, fisheries and forestry co-ops or people with total salary up to KRW 70M (other income up to KRW 60M); others pay 5% on deposits opened in 2026 and 9% on deposits opened from 2027.",
+        "coop": "Co-op deposits (Nonghyup, Suhyup, forestry co-ops, Shinhyup, MG) up to KRW 30M per person: income tax exempt, only 1.4% rural special tax. For deposits opened from 2026, the exemption applies only to members of agricultural, fisheries and forestry co-ops or people with total salary up to KRW 70M (other income up to KRW 60M); others pay 5% on deposits opened in 2026 (5.9% with rural special tax, Co-op low rate) and 9% from 2027 (9.5%, same as Preferential).",
+        "coop26": "Co-op deposit (up to KRW 30M per person) opened in 2026 when you are not exempt (not a farm/fisheries/forestry co-op member and total salary over KRW 70M or other income over KRW 60M): 5% income tax + 0.9% rural special tax = 5.9%, no local income tax (RSTA Art. 89-3(1)). For deposits opened from 2027 the rate is 9.5% — pick Preferential.",
         "free": "Tax-free savings (KRW 50M limit), Youth Future Savings, Youth Leap Account, etc. No tax."
       },
       "res": {
@@ -1135,7 +1137,7 @@
         "title": "Tax on interest",
         "items": [
           "Standard 15.4% = income tax 14% (Income Tax Act Art. 129) + local income tax 1.4%, withheld by the bank.",
-          "Co-op deposits (up to KRW 30M per person): deposits opened through 2025 are income tax exempt (1.4% rural special tax only). For deposits opened in 2026-2028, only members of agricultural, fisheries and forestry co-ops and people with total salary up to KRW 70M (other income up to KRW 60M) stay exempt (5% for 2029, 9% from 2030); everyone else (higher-income associate members, Shinhyup/MG members, etc.) pays 5% separate tax on deposits opened in 2026 and 9% from 2027 (RSTA Art. 89-3).",
+          "Co-op deposits (up to KRW 30M per person): deposits opened through 2025 are income tax exempt (1.4% rural special tax only). For deposits opened in 2026-2028, only members of agricultural, fisheries and forestry co-ops and people with total salary up to KRW 70M (other income up to KRW 60M) stay exempt (5% for 2029, 9% from 2030); everyone else (higher-income associate members, Shinhyup/MG members, etc.) pays 5% separate tax on deposits opened in 2026 and 9% from 2027 (RSTA Art. 89-3). With the rural special tax (10% of the tax relief) the actual rates are 5.9% and 9.5%, with no local income tax.",
           "Preferential 9.5% = income tax 9% + rural special tax 0.5%; new general tax-preferred accounts are no longer offered.",
           "Interest and dividends above KRW 20M a year are subject to comprehensive financial income taxation."
         ]
@@ -1163,7 +1165,7 @@
           "Savings, simple: pre-tax interest = monthly × rate/12 × n(n+1)/2, the method used by the FSS comparison site and bank apps.",
           "Savings, monthly compound: each payment grows by (1 + rate/12)^k for its remaining k months.",
           "Deposit, simple: principal × rate × months/12; monthly compound: principal × ((1 + rate/12)^months − 1).",
-          "Tax = pre-tax interest × tax rate (truncated to the won). Standard 15.4%, preferential 9.5%, co-op 1.4%, tax-free 0%.",
+          "Tax = pre-tax interest × tax rate (truncated to the won). Standard 15.4%, preferential 9.5%, co-op 1.4%, co-op low rate (opened in 2026, not exempt) 5.9%, tax-free 0%.",
           "Effective yield = after-tax interest ÷ total principal ÷ years. A savings rate r equals a deposit rate of r × (n+1)/(2n) (about 0.54× for 12 months)."
         ]
       },
@@ -1226,7 +1228,7 @@
           },
           {
             "q": "How much tax on co-op (Nonghyup, Shinhyup) deposits?",
-            "a": "Up to KRW 30M per person, interest is income tax exempt and only 1.4% rural special tax applies. For deposits opened from 2026, the exemption (through 2028 sign-ups) requires membership of an agricultural, fisheries or forestry co-op or total salary up to KRW 70M (other income KRW 60M); others pay 5% on 2026 deposits and 9% from 2027 (RSTA Art. 89-3)."
+            "a": "Up to KRW 30M per person, interest is income tax exempt and only 1.4% rural special tax applies. For deposits opened from 2026, the exemption (through 2028 sign-ups) requires membership of an agricultural, fisheries or forestry co-op or total salary up to KRW 70M (other income KRW 60M); others pay 5% on 2026 deposits and 9% from 2027 (RSTA Art. 89-3) — 5.9% and 9.5% including the rural special tax."
           }
         ]
       }
@@ -2852,6 +2854,9 @@
       "manito": "Secret Santa Draw",
       "calendar2027": "2027 Calendar",
       "dividendCalculator": "Dividend Calculator",
+      "overseasStockTax": "Overseas Stock Tax Calculator",
+      "cardFeeCalculator": "Card Fee Calculator",
+      "prepaymentFee": "Prepayment Fee Calculator",
       "windChill": "Wind Chill Calculator",
       "dependentEligibility": "Health Insurance Dependent Check",
       "youthFutureSavings": "Youth Future Savings Calculator",
@@ -8647,6 +8652,18 @@
       "dividendCalculator": {
         "title": "Dividend Calculator",
         "description": "After-tax dividends, monthly income target and Korean dividend tax"
+      },
+      "overseasStockTax": {
+        "title": "Overseas Stock Tax Calculator",
+        "description": "Korean capital gains tax on foreign stocks (₩2.5M deduction, 22%) and year-end tax-loss planning"
+      },
+      "cardFeeCalculator": {
+        "title": "Card Fee Calculator",
+        "description": "Korean merchant card fee rates by annual sales, monthly/annual fees and net cost after VAT credit"
+      },
+      "prepaymentFee": {
+        "title": "Prepayment Fee Calculator",
+        "description": "Early loan repayment fee and whether refinancing pays off"
       },
       "windChill": {
         "title": "Wind Chill Calculator",
@@ -16984,7 +17001,7 @@
     },
     "fareInfo": {
       "long": "Long distance: {fare} KRW per {m} m beyond {km} km",
-      "title": "Fare Basis (Oct 2026)",
+      "title": "Fare Basis (Nov 2026)",
       "base": "Base fare",
       "distance": "Distance",
       "time": "Time",
@@ -16994,7 +17011,7 @@
       "night": "Night surcharge",
       "outOfCity": "Out-of-city",
       "premium": "Deluxe·Jumbo base",
-      "sourceNote": "Based on each city/province notice as of 2026-10-04 (provinces use a representative city's rates) · Rates can differ by city/county; verify with your local government or taxi association."
+      "sourceNote": "Based on each city/province notice or announcement as of 2026-11-08 (provinces use a representative city's rates) · Rates can differ by city/county; verify with your local government or taxi association."
     },
     "comparison": {
       "title": "Fare Comparison by Taxi Type",
@@ -17047,7 +17064,7 @@
           },
           {
             "q": "Is the base fare different by region?",
-            "a": "Yes. As of Oct 2026, Seoul/Gyeonggi/Incheon/Busan/Gwangju are ₩4,800 (1.6–2km), Gangwon/Gyeongnam ₩4,600, Daegu/Ulsan/Gyeongbuk ₩4,500, Daejeon/Jeonbuk/Jeonnam/Jeju ₩4,300, and Sejong/Chungbuk/Chungnam ₩4,000. Jeonnam plans ₩4,800 (1.7km) in Nov–Dec 2026, and Daejeon decides on a base-fare increase in the second half. Distance units and base distance also differ; selecting a region applies its rates automatically."
+            "a": "Yes. As of Nov 2026, Seoul/Gyeonggi/Incheon/Busan/Gwangju/Daejeon are ₩4,800 (1.6–2km), Gangwon/Gyeongnam ₩4,600, Daegu/Ulsan/Gyeongbuk ₩4,500, Jeonbuk/Jeonnam/Jeju ₩4,300, and Sejong/Chungbuk/Chungnam ₩4,000. Daejeon rose from ₩4,300 (1.8km) to ₩4,800 (1.65km) on Nov 1, 2026. The 22 cities and counties of former Jeonnam are reviewing a ₩4,800 (1.7km) standard, with final fares due in Nov–Dec 2026, and Daegu decides on an increase at year-end. Distance units and base distance also differ; selecting a region applies its rates automatically."
           },
           {
             "q": "How is the out-of-city surcharge applied?",
@@ -17059,10 +17076,20 @@
           },
           {
             "q": "Can the estimate differ from the actual fare?",
-            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on Oct 2026 rates."
+            "a": "Yes, due to route, stop time, meter variance and rate revisions. This calculator is a reference estimate based on Nov 2026 rates."
           }
         ]
       }
+    },
+    "hourly": {
+      "title": "Fare by Boarding Hour",
+      "subtitle": "Same distance, duration, taxi type and out-of-city setting; only the boarding hour changes.",
+      "save": "Board before {start}:00 (or after {end}:00) to save {diff} KRW.",
+      "rise": "With these inputs the night surcharge starts at {start}:00, raising the fare to up to {max} KRW (+{diff} KRW).",
+      "legendSelected": "Selected hour",
+      "legendNight": "Night surcharge",
+      "legendDay": "No surcharge",
+      "fare": "Estimated fare"
     }
   },
   "installmentCalc": {
@@ -59823,5 +59850,482 @@
       "link": "Calculate benefits with a justified reason"
     },
     "source": "Sources: Labor Standards Act Art. 36 and 60, Employee Retirement Benefit Security Act Art. 8 and 9, Employment Insurance Act Art. 40, 45, 46, 48, 50 and 58, National Health Insurance Act Art. 110, Income Tax Act Art. 48, 55 and 59. Estimates based on laws in force as of November 2026."
+  },
+  "cardFeeCalculator": {
+    "title": "Card Fee Calculator",
+    "subtitle": "Korean preferential merchant fee rates for H2 2026 (from Aug 14, 2026) · estimate card fees from your annual sales bracket and monthly card sales, and your net cost after the VAT credit",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "brackets": {
+      "small": {
+        "name": "Micro",
+        "range": "≤ 300M",
+        "upper": "300M KRW"
+      },
+      "mid1": {
+        "name": "SME 1",
+        "range": "300M–500M",
+        "upper": "500M KRW"
+      },
+      "mid2": {
+        "name": "SME 2",
+        "range": "500M–1B",
+        "upper": "1B KRW"
+      },
+      "mid3": {
+        "name": "SME 3",
+        "range": "1B–3B",
+        "upper": "3B KRW"
+      },
+      "general": {
+        "name": "General",
+        "range": "> 3B",
+        "upper": "-"
+      }
+    },
+    "bracket": {
+      "label": "Annual sales bracket",
+      "hint": "Based on total annual sales (card and cash, from National Tax Service records). Brackets are reassessed every half-year, and the Credit Finance Association mails notices to eligible merchants."
+    },
+    "annual": {
+      "label": "Find bracket by annual sales (optional)",
+      "hint": "Enter annual sales to pick the bracket automatically.",
+      "placeholder": "e.g. 250,000,000"
+    },
+    "monthly": {
+      "label": "Monthly card sales",
+      "hint": "Amount paid by credit and check cards in one month (VAT included)",
+      "over": "Card sales alone come to {card} KRW a year, above the {bracket} bracket limit. Please check your sales bracket."
+    },
+    "checkShare": {
+      "label": "Check card share",
+      "hint": "Per month: credit {credit} KRW · check {check} KRW (debit and prepaid cards use the check card rate)"
+    },
+    "rates": {
+      "credit": "Credit card rate",
+      "check": "Check card rate",
+      "hint": "Picking a bracket fills in the H2 2026 preferential rates. If your card company's notice differs, edit them.",
+      "hintGeneral": "General merchant rates are set per contract by each card company. The default is the published prior-year industry average (annual sales 3B–10B: credit 2.10%, check 1.44%) for reference only, so enter your own rate.",
+      "reset": "Reset to {bracket} default rates"
+    },
+    "type": {
+      "label": "Business type",
+      "individual": "Sole proprietor",
+      "corp": "Corporation"
+    },
+    "result": {
+      "label": "Annual card fees",
+      "sub": "{monthlyFee} KRW per month · effective rate {effective}%",
+      "creditRow": "Credit {sales} KRW × {rate}%",
+      "checkRow": "Check {sales} KRW × {rate}%",
+      "monthly": "Monthly card fees"
+    },
+    "vat": {
+      "title": "VAT credit for card sales (1.3% on 2026 supplies, up to 10M KRW a year)",
+      "credit": "Annual VAT credit (card sales × 1.3%)",
+      "net": "Annual net cost after credit",
+      "netNegative": "The VAT credit exceeds your card fees by {n} KRW. The credit can’t exceed the VAT you owe for the period (VAT Act Art. 46(1)).",
+      "netPositive": "Even after the VAT credit, card fees cost you {n} KRW.",
+      "capped": "The 10M KRW annual cap applies.",
+      "proposal": "From 2027 supplies, if the government's tax reform bill (1.2%, 5M KRW annual cap, pending in the National Assembly) passes, the credit becomes {credit} KRW and the net cost {net} KRW.",
+      "noneCorp": "Corporations can't claim this VAT credit (VAT Act Art. 46). Card fees are a straight cost.",
+      "noneLarge": "Sole proprietors whose prior-year supply value exceeds 1B KRW aren't eligible (VAT Act Art. 46). Pick a bracket of 1B KRW or less to see the credit.",
+      "note": "Applies to sole proprietors that mainly sell to consumers, such as retail, restaurants and lodging (simplified taxpayers included). Cash receipt sales count too, and any credit above the VAT you owe is not refunded."
+    },
+    "share": {
+      "label": "Monthly card sales {monthlyM}M KRW · {bracket} merchant",
+      "headline": "Annual card fees {fee} KRW",
+      "sub": "VAT credit {credit} KRW → net cost {net} KRW",
+      "subNone": "Monthly card fees {monthlyFee} KRW",
+      "text": "With {monthlyM}M KRW in monthly card sales ({bracket} merchant), card fees are {monthlyFee} KRW a month and {fee} KRW a year."
+    },
+    "actions": {
+      "vat": "Estimate your VAT return",
+      "vatNote": "Opens the VAT calculator's return tab with six months of card sales. Adjust non-card sales and purchases there."
+    },
+    "compare": {
+      "title": "If your sales bracket changes",
+      "desc": "Annual fees by bracket for the same {monthlyM}M KRW monthly card sales and check card share.",
+      "cols": {
+        "bracket": "Bracket",
+        "rates": "Credit / Check",
+        "fee": "Annual fees",
+        "diff": "vs now"
+      },
+      "current": "Now",
+      "up": "If annual sales pass {upper} and you become a {next} merchant, you pay {diff} KRW more a year on the same card sales.",
+      "top": "General is the top bracket. Rates depend on your contract with each card company.",
+      "loseCredit": "If your prior-year supply value also exceeds 1B KRW, you lose the VAT credit ({credit} KRW a year) as well.",
+      "note": "The General row uses the industry average as a reference. In December 2024, card companies agreed to freeze for three years the rates of general merchants with annual sales up to 100B KRW whose rates would otherwise rise after the cost review."
+    },
+    "newMerchant": {
+      "title": "Refunds for new merchants",
+      "desc": "A new card merchant pays the general merchant rate until its sales are confirmed. If the next half-yearly review confirms it as a micro or SME merchant, the preferential rate is applied retroactively and the difference is refunded to its card settlement account. Merchants that closed in the meantime are included.",
+      "estimate": "With {monthlyM}M KRW in monthly card sales, you get back about {refund} KRW per month compared with the general rate (reference: credit {credit}%, check {check}%).",
+      "note": "The Financial Services Commission announced (Aug 11, 2026) that about 159,000 credit card merchants opened in H1 2026 will be refunded about 61.47B KRW (about 387,000 KRW each on average) by Sep 28, 2026. Check eligibility on the Credit Finance Association's merchant sales lookup (cardsales.or.kr) or with your card company."
+    },
+    "tips": {
+      "title": "Good to know",
+      "items": [
+        "Preferential brackets are reassessed every half-year. Notices arrive around February and August, and if your sales grow, your rate can rise from the next half-year.",
+        "Check the rate currently applied to you on cardsales.or.kr (merchant fee rate lookup) or by calling the Credit Finance Association (02-2011-0700).",
+        "Sub-merchants of payment gateways (PG), such as online shops, and taxi operators also get preferential rates by sales bracket. Ask your PG or transit settlement provider for your rate.",
+        "Preferential check card rates are 0.25–0.30%p lower than credit card rates in the same bracket. A higher check card share lowers your effective rate.",
+        "Card fees are a business expense, so you can include them as necessary expenses when calculating income tax.",
+        "The VAT credit for card sales is 1.3% (up to 10M KRW a year) on supplies through Dec 31, 2026. From 2027 it depends on the tax law the National Assembly passes, so check the year-end amendment."
+      ]
+    },
+    "next": {
+      "title": "Keep calculating",
+      "vat": {
+        "title": "VAT Calculator",
+        "desc": "Estimate your VAT return including the card sales credit"
+      },
+      "margin": {
+        "title": "Margin Calculator",
+        "desc": "Your real margin after card fees"
+      },
+      "income": {
+        "title": "Income Tax Calculator",
+        "desc": "Add fees as expenses and calculate income tax"
+      }
+    },
+    "source": "Sources: Financial Services Commission press releases (Aug 11, 2026; Feb 12, 2026; Feb 13, 2025; Dec 17, 2024), Specialized Credit Finance Business Act Art. 18-3, VAT Act Art. 46 · checked Nov 8, 2026"
+  },
+  "prepaymentFee": {
+    "title": "Prepayment Fee Calculator",
+    "subtitle": "Work out the fee for paying a loan off early in Korea, and what you actually keep if you refinance. Reflects the rates revised on January 13, 2025.",
+    "won": " KRW",
+    "manUnit": "₩{m}M",
+    "all": "All",
+    "loan": {
+      "title": "Current loan",
+      "kind": "Loan type",
+      "groupBank": "Bank average rates",
+      "groupPolicy": "Government-backed loans",
+      "kinds": {
+        "mortgageFixed": "Mortgage · fixed rate",
+        "mortgageVariable": "Mortgage · variable rate",
+        "jeonseFixed": "Jeonse / guarantee-backed loan · fixed rate",
+        "jeonseVariable": "Jeonse / guarantee-backed loan · variable rate",
+        "creditFixed": "Personal (credit) loan · fixed rate",
+        "creditVariable": "Personal (credit) loan · variable rate",
+        "bogeumjari": "Bogeumjari loan (HF)",
+        "didimdol": "Didimdol home-purchase loan"
+      },
+      "start": "Loan start date",
+      "repay": "Repayment date",
+      "balance": "Outstanding balance",
+      "rate": "Interest rate",
+      "years": "Remaining term",
+      "yearsUnit": "yr",
+      "method": "Repayment method",
+      "methods": {
+        "equalPayment": "Equal installments",
+        "equalPrincipal": "Equal principal",
+        "bullet": "Interest only (bullet)"
+      },
+      "feeRate": "Prepayment fee rate",
+      "rateHint": {
+        "before": "Contracts signed before January 13, 2025 keep the old rates, so the pre-reform bank average of {rate}% is filled in. Replace it with the rate in your loan agreement.",
+        "after": "Filled in with the bank average of {rate}% for contracts from January 13, 2025 (Financial Services Commission). Rates differ by bank, so use the one in your agreement or banking app.",
+        "bogeumjari": "Cap of {rate}% per the Korea Housing Finance Corporation. Older loans keep the rate in their agreement. Waived for borrowers on the social-care or 3+ children preferential rate and for jeonse fraud victims.",
+        "didimdol": "Cap of {rate}% per the Housing and Urban Fund. Principal repaid from August 12, 2024 to December 31, 2026 is fee-free.",
+        "custom": "Rate entered by you."
+      },
+      "reset": "Use average"
+    },
+    "pay": {
+      "title": "Amount to repay",
+      "amount": "Amount to repay early",
+      "free": "Amount you can repay fee-free (optional)",
+      "freeHint": "Some products waive the fee on up to 10% of the original loan each year (e.g. KB Kookmin Bank real-estate secured loans). If your agreement has such a clause, enter that amount."
+    },
+    "result": {
+      "label": "Prepayment fee",
+      "formula": "{amount} KRW × {rate}% × {left} days left ÷ {base} days",
+      "status": {
+        "charged": "Day {elapsed} of the loan · {left} days left in the fee period. From {freeDate} the fee is 0.",
+        "free": "The fee period (up to 3 years from the loan date) has ended, so there is no fee.",
+        "waived": "Didimdol loans waive the fee on principal repaid by December 31, 2026.",
+        "zero": "Nothing to charge (within the fee-free amount, or the rate is 0%).",
+        "invalid": "The repayment date is before the loan start date. Please check the dates."
+      },
+      "rows": {
+        "chargeable": "Amount subject to fee",
+        "feeRate": "Fee rate",
+        "days": "Days left / fee period",
+        "freeDate": "Fee becomes 0 on"
+      },
+      "daysValue": "{left} / {base} days",
+      "shortTerm": "The loan matures within 3 years, so the fee period is the loan term ({base} days).",
+      "effect": "Repaying {amount} KRW cuts the remaining interest by {saved} KRW and the monthly payment from {before} KRW to {after} KRW (same maturity, same rate).",
+      "effectNet": "Even after the fee you come out {net} KRW ahead.",
+      "effectBullet": "Repaying {amount} KRW cuts the interest until maturity by {saved} KRW, and monthly interest goes from {before} KRW to {after} KRW.",
+      "detail": "To see month-by-month figures, including shortening the term, use the",
+      "detailLink": "loan repayment schedule"
+    },
+    "when": {
+      "title": "How much is the fee if you repay later?",
+      "desc": "The later you repay the same amount, the smaller the fee, and it reaches 0 when the fee period ends.",
+      "cols": {
+        "date": "Repayment date",
+        "left": "Days left",
+        "fee": "Fee"
+      },
+      "now": "Now ({date})",
+      "after": "In {n} months ({date})",
+      "free": "Fee-free from ({date})"
+    },
+    "refi": {
+      "title": "Is refinancing worth it?",
+      "desc": "Assumes the whole balance is moved to a new loan with the same repayment method, then subtracts the prepayment fee and other costs from the interest saved.",
+      "newRate": "New loan rate",
+      "newYears": "New loan term",
+      "costs": "Other costs (optional)",
+      "costsHint": "Add costs you pay yourself, such as releasing the old mortgage lien, the discount on mandatory housing bonds or guarantee fees. For bank mortgages the lien registration costs (registration tax, legal fees) and appraisal fee are usually paid by the bank.",
+      "stampNote": "Stamp duty on a {amount} KRW loan is {total} KRW, split evenly with the bank. Loans of 50 million KRW or less are exempt.",
+      "gain": "Net gain from refinancing",
+      "loss": "Net loss from refinancing",
+      "rows": {
+        "curInterest": "Remaining interest on current loan",
+        "newInterest": "Interest on new loan",
+        "saving": "Interest saved",
+        "fee": "Prepayment fee (full balance)",
+        "stamp": "Stamp duty",
+        "costs": "Other costs",
+        "net": "Net gain"
+      },
+      "pay": "First monthly payment {cur} KRW → {next} KRW",
+      "breakEven": "After {n} months the interest saved exceeds the costs.",
+      "noBreakEven": "The interest saved never covers the fee and costs.",
+      "longer": "A longer term lowers the monthly payment but can raise total interest. Compare with the new term equal to the remaining term too.",
+      "wait": {
+        "title": "What if you wait until the fee disappears?",
+        "now": "Refinance now",
+        "later": "Refinance on {date} (in {n} months)",
+        "nowBetter": "Refinancing now leaves you {diff} KRW more: the extra interest while waiting is larger than the fee.",
+        "laterBetter": "Waiting leaves you {diff} KRW more: the fee is larger than the extra interest while waiting.",
+        "note": "Assumes both rates stay the same and the maturity is unchanged if you wait."
+      },
+      "note": "A new loan goes through LTV and DSR screening again. Use rates you actually got quoted in a banking app or a loan-switching comparison service."
+    },
+    "share": {
+      "label": "Prepaying {amount} · fee rate {rate}%",
+      "headline": "Prepayment fee {fee} KRW",
+      "headlineZero": "Prepayment fee 0 KRW",
+      "refi": "Net gain from refinancing",
+      "text": "Repaying {amount} early costs a {fee} KRW prepayment fee ({rate}%, {left} days left in the fee period)."
+    },
+    "rates": {
+      "title": "Prepayment fee rates by loan type",
+      "desc": "Bank averages are the figures the Financial Services Commission published with the January 2025 reform. Actual rates vary by bank and product and are recalculated every year.",
+      "cols": {
+        "kind": "Loan type",
+        "before": "Signed before 2025-01-13",
+        "after": "Signed from 2025-01-13"
+      },
+      "none": "—",
+      "cap": "Up to {rate}%"
+    },
+    "tips": {
+      "title": "Good to know",
+      "items": [
+        "A prepayment fee can only be charged if you repay within 3 years of the loan date (Financial Consumer Protection Act, Article 20). After 3 years it is 0 whenever you repay.",
+        "Loans signed from January 13, 2025 may only charge actual costs (lost returns on funds plus administrative and origination costs). Older contracts keep their original rates.",
+        "The fee shrinks a little every day. If only a few months of the fee period remain, waiting may pay off.",
+        "When refinancing, weigh not only the rate gap but also the prepayment fee, stamp duty, lien release and registration costs, and the new loan's own 3-year fee period.",
+        "Withdrawing a loan contract (Financial Consumer Protection Act, Article 46, within 14 days of receiving the contract documents, etc.) waives the prepayment fee. There is a cap on the loan amount that can be withdrawn, so check with your bank."
+      ]
+    },
+    "next": {
+      "title": "Continue with",
+      "schedule": {
+        "title": "Loan repayment schedule",
+        "desc": "Principal and interest by month after prepaying, shorter term vs lower payment"
+      },
+      "loan": {
+        "title": "Loan interest calculator",
+        "desc": "Monthly payment, total interest, repayment methods compared"
+      },
+      "dsr": {
+        "title": "DSR calculator",
+        "desc": "Whether the new loan fits within the DSR limit"
+      },
+      "bogeumjari": {
+        "title": "Bogeumjari loan calculator",
+        "desc": "Bogeumjari rates, limits and refinancing conditions"
+      }
+    },
+    "source": "Checked November 8, 2026 — Financial Services Commission reform of January 13, 2025, Korea Housing Finance Corporation and Housing and Urban Fund product guides, Stamp Tax Act. Results are estimates; actual amounts follow your loan agreement and lender."
+  },
+  "overseasStockTax": {
+    "title": "Overseas Stock Tax Calculator",
+    "subtitle": "Work out Korean capital gains tax (22% including local tax) on the foreign stocks you sold in 2026, and see how much a year-end loss sale or filling the ₩2.5M deduction could save.",
+    "won": " KRW",
+    "rows": {
+      "title": "Gains and losses by stock",
+      "hint": "Enter the KRW buy amount and sell amount (market value for stocks you still hold) shown in your brokerage app. Sold stocks set this year's tax; held stocks are used for the year-end tax-saving plan.",
+      "unnamed": "Stock {n}",
+      "unnamedShort": "Unnamed stock",
+      "name": "Stock {n} name",
+      "namePlaceholder": "Stock name",
+      "remove": "Remove {name}",
+      "status": "Whether {name} was sold",
+      "sold": "Sold this year",
+      "held": "Still held",
+      "soldShort": "sold",
+      "heldShort": "held",
+      "cost": "Buy amount",
+      "sellValue": "Sell amount",
+      "heldValue": "Market value",
+      "gainSold": "Realized gain (after fees)",
+      "gainHeld": "Gain if sold now",
+      "addSold": "Add sold stock",
+      "addHeld": "Add held stock"
+    },
+    "fee": {
+      "label": "Trading fee rate",
+      "hint": "Buy and sell fees are deductible expenses. 0.25% is a typical online rate for foreign stocks; promotional rates vary by broker."
+    },
+    "result": {
+      "label": "Overseas stock tax due this year",
+      "deduction": "₩2.5M basic deduction used",
+      "deductionOf": "{usedM}M / 2.5M KRW",
+      "realized": "Total gain on stocks sold",
+      "minusDeduction": "Basic deduction",
+      "base": "Taxable amount",
+      "income": "Capital gains tax 20%",
+      "local": "Local income tax 2%",
+      "total": "Total",
+      "note": "Covers trades settled 1 Jan–31 Dec 2026; amounts under 1 KRW are cut. The return converts each buy and sell at the base exchange rate on its settlement date, so figures may differ slightly from your app. Gains on taxable Korean shares (major-shareholder or unlisted) are netted in too."
+    },
+    "status": {
+      "loss": "Your stocks sold this year net to zero or a loss, so no tax is due. Unused losses do not carry over to next year.",
+      "within": "You are within the ₩2.5M basic deduction, so no tax is due. You can realize another {left} KRW of gains tax-free.",
+      "taxed": "22% applies to the {base} KRW above ₩2.5M."
+    },
+    "share": {
+      "label": "Overseas stock gains sold this year: {realizedM}M KRW",
+      "headline": "Overseas stock tax: {tax} KRW",
+      "subLoss": "Selling losers saves {saving} KRW",
+      "subRoom": "{room} KRW more can be realized tax-free",
+      "text": "With {realizedM}M KRW of overseas stock gains sold this year, the capital gains tax (incl. local tax) is {tax} KRW."
+    },
+    "loss": {
+      "title": "Sell losers to offset gains",
+      "desc": "All overseas stock gains and losses settled in the same year are netted. Selling a losing position so it settles this year offsets your gains and cuts the tax.",
+      "noNeed": "Your realized gains are within the ₩2.5M deduction, so there is no need to realize losses. See \"Fill the ₩2.5M deduction\".",
+      "noLoss": "You have no losing positions. Add a losing stock as \"Still held\" to see how much to sell.",
+      "result": "Selling your losing positions cuts the tax from {before} KRW to {after} KRW, saving {saving} KRW.",
+      "itemAll": "Sell all ({sell} KRW) → {use} KRW loss",
+      "itemPart": "Sell about {sell} KRW → {use} KRW loss",
+      "short": "Even after realizing every loss, {left} KRW of gains stays above the deduction.",
+      "note": "Losses do not carry over, so realize only enough to bring your gains down to ₩2.5M. You can buy back and keep the stock, but the lower cost basis means a bigger gain when you sell later. Weigh fees and FX costs too."
+    },
+    "fill": {
+      "title": "Fill the ₩2.5M deduction",
+      "desc": "The ₩2.5M basic deduction is lost if unused. Selling winners up to the unused amount and buying them back raises your cost basis tax-free.",
+      "noRoom": "Your realized gains already exceed ₩2.5M, so no deduction is left to fill.",
+      "noGain": "You can realize {room} KRW of gains tax-free, but you have no winning positions. Add a winning stock as \"Still held\".",
+      "result": "You can realize up to {room} KRW of gains tax-free. Selling and buying back the amounts below locks in {filled} KRW of tax-free gain and can cut future tax by up to {future} KRW.",
+      "itemAll": "Sell all ({sell} KRW) and buy back → {gain} KRW gain",
+      "itemPart": "Sell about {sell} KRW and buy back → {gain} KRW gain",
+      "fees": "Fees for selling and buying back: about {fees} KRW (FX costs and price moves not included)",
+      "note": "\"Up to\" assumes that gain would otherwise be realized in a later year when you are above ₩2.5M. Prices can move between the sale and the buy-back, and the actual gain uses the settlement-date exchange rate."
+    },
+    "compare": {
+      "title": "Tax by scenario",
+      "case": "Scenario",
+      "gain": "Taxable gain (KRW)",
+      "tax": "Tax (KRW)",
+      "now": "Stocks sold so far",
+      "loss": "After selling losers",
+      "all": "If you sell everything",
+      "note": "Held stocks are assumed sold at today's market value, net of buy and sell fees. Tax includes local income tax."
+    },
+    "when": {
+      "title": "Year-end and filing dates",
+      "deadline": {
+        "title": "To count in this year",
+        "text": "The sale date is the settlement date, not the trade date. US stocks settle one business day after the trade (T+1), so a sale must settle by 31 December to count in 2026. The last trading day and cut-off time vary by broker, so check your broker's December notice and leave a margin."
+      },
+      "filing": {
+        "title": "File and pay: May 2027",
+        "text": "Overseas stocks need no interim return: file and pay between 1 and 31 May of the following year (online via Hometax). Local income tax (10% of the capital gains tax) is filed and paid on Wetax right after the Hometax return. Missing the deadline adds penalties for non-filing and late payment."
+      },
+      "agent": {
+        "title": "Broker filing service",
+        "text": "Many brokers take applications around March–April and file the overseas stock tax return for you (often free; dates and terms vary). If you use several brokers, all gains and losses must be combined into one return with a single ₩2.5M deduction."
+      }
+    },
+    "rules": {
+      "title": "Overseas stock tax rules at a glance",
+      "rows": [
+        {
+          "k": "What is taxed",
+          "v": "Shares of foreign companies and shares listed on foreign exchanges (including corporate-type funds). Foreign-investing ETFs listed in Korea are not covered by this tax."
+        },
+        {
+          "k": "Rate",
+          "v": "20% of the taxable amount + 2% local income tax = 22%. Shares of Korean SMEs listed abroad: 10%."
+        },
+        {
+          "k": "Basic deduction",
+          "v": "₩2.5M per person per year, applied once across taxable Korean shares and all brokers."
+        },
+        {
+          "k": "Netting",
+          "v": "All overseas stock gains and losses settled in the same year are combined, together with Korean major-shareholder listed shares and unlisted shares. Korean listed shares sold on-exchange by minority shareholders are not taxable and are not netted. Unused losses do not carry over."
+        },
+        {
+          "k": "KRW conversion",
+          "v": "Sale proceeds use the base or arbitrage rate on the day they are paid in; purchase cost and fees use the rate on the day they are paid out (each settlement date)."
+        },
+        {
+          "k": "Expenses",
+          "v": "Buy and sell fees and other costs paid directly for the sale are deducted. Tax paid abroad is credited as foreign tax or deducted as an expense."
+        },
+        {
+          "k": "Cost basis",
+          "v": "If you bought the same stock several times, the earliest shares are treated as sold first (FIFO). Moving-average figures applied consistently by your broker are also accepted."
+        },
+        {
+          "k": "Filing",
+          "v": "No interim return; file between 1 and 31 May of the following year. Trades settled in 2026 are due by 31 May 2027."
+        }
+      ]
+    },
+    "tips": {
+      "title": "Good to know",
+      "items": [
+        "Even if the share price is flat, a stronger dollar than when you bought creates a KRW gain that can be taxed. Likewise a dollar gain can be a KRW loss if the dollar weakens.",
+        "Brokers compute cost basis differently (FIFO or moving average), so the same trades can show different gains. Get your broker's capital gains statement before filing.",
+        "If you sell shares received as a gift from a spouse, parent or child within one year, the gain is computed from the giver's purchase price (Income Tax Act Art. 97-2). To step up the basis by gifting, the recipient must wait more than a year before selling.",
+        "If a family member's overseas stock gain (before the basic deduction) exceeds ₩1M in a year, you cannot claim them as a dependant in that year's year-end settlement (Income Tax Act Art. 50).",
+        "For foreign shares held since before 23 Dec 2025 and sold in 2026 through a Domestic Market Return Account (RIA) whose money stays in for a year, sales from August onward can deduct up to 50% of the gain (Restriction of Special Taxation Act Art. 91-26, ₩50M deposit limit). This calculator does not apply it — ask your broker.",
+        "Dividends from overseas stocks are dividend income, not capital gains, and are taxed separately from this calculation."
+      ]
+    },
+    "next": {
+      "title": "Keep calculating",
+      "stock": {
+        "title": "Stock Return Calculator",
+        "desc": "Net profit after fees and transaction tax, FX gain and tax on a single US stock"
+      },
+      "exchange": {
+        "title": "Exchange Rate Calculator",
+        "desc": "Convert dollar amounts to KRW"
+      },
+      "dividend": {
+        "title": "Dividend Calculator",
+        "desc": "Dividends and what you keep after tax"
+      },
+      "dependent": {
+        "title": "Dependant Eligibility Check",
+        "desc": "The ₩1M family income test"
+      }
+    },
+    "source": "Basis: Income Tax Act Arts. 94(1)3, 97-2, 102, 103, 105, 110; Enforcement Decree Art. 162; Local Tax Act Art. 103-3; Restriction of Special Taxation Act Art. 91-26; NTS guide \"Overseas Stocks and Tax (2025)\" · Checked 8 Nov 2026"
   }
 }

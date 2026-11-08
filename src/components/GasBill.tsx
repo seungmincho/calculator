@@ -69,7 +69,10 @@ export default function GasBill() {
     if (region === 'custom') { p.set('cu', String(customUnit)); p.set('cb', String(customBasic)) }
     if (prev > 0) p.set('prev', String(prev))
     if (lastYear > 0) p.set('ly', String(lastYear))
-    window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
+    // 첫 화면 기본값 그대로면 쿼리 없이(받는 쪽도 키가 없으면 같은 기본값)
+    const isDef = mode === 'estimate' && region === 'seoul' && pyeong === 30 && insulation === 'average' && hours === 8 && temp === 22
+      && month === 1 && !prev && !lastYear
+    window.history.replaceState(null, '', isDef ? window.location.pathname : `${window.location.pathname}?${p}`)
   }, [mode, region, customUnit, customBasic, usage, unit, pyeong, insulation, hours, temp, month, prev, lastYear])
 
   const rate = region === 'custom'

@@ -13,6 +13,8 @@ eq('saving maturity', r.maturity, 12_274_950); eq('saving principal', r.principa
 // 세금우대 9.5% / 조합 1.4% / 비과세
 eq('pref tax', calc({ kind: 'saving', amount: 1_000_000, rate: 5, months: 12, compound: false, tax: 'pref' }).tax, 30_875)
 eq('coop tax', calc({ kind: 'saving', amount: 1_000_000, rate: 5, months: 12, compound: false, tax: 'coop' }).tax, 4_550)
+// 세전 이자 325,000원 × 5.9% = 19,175원(2026 가입 저율: 소득세 5% + 농특세 0.9%)
+eq('coop26 tax', calc({ kind: 'saving', amount: 1_000_000, rate: 5, months: 12, compound: false, tax: 'coop26' }).tax, 19_175)
 eq('free net', calc({ kind: 'saving', amount: 1_000_000, rate: 5, months: 12, compound: false, tax: 'free' }).net, 325_000)
 // 월 50만원 24개월 3.5% 단리: 500000 × 0.035/12 × 300 = 437,500
 eq('24m gross', calc({ kind: 'saving', amount: 500_000, rate: 3.5, months: 24, compound: false, tax: 'normal' }).gross, 437_500)

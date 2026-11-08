@@ -96,7 +96,8 @@ export default function VatCalculator() {
     if (!ready.current) return
     const p = new URLSearchParams()
     if (tab !== 'quick') p.set('tab', tab)
-    if (tab === 'quick') { p.set('type', mode); p.set('amount', String(amount)) }
+    // 받는 쪽은 키가 없으면 같은 기본값을 쓰므로 기본값과 다른 것만 적는다
+    if (tab === 'quick') { if (mode !== 'fromSupply') p.set('type', mode); if (amount !== DEFAULT_AMOUNT) p.set('amount', String(amount)) }
     if (tab === 'items') { p.set('items', encodeLines(lines)); if (inclusive) p.set('incl', '1') }
     if (tab !== 'report' && rounding === 'round') p.set('rnd', 'round')
     if (tab === 'report') {
@@ -105,7 +106,7 @@ export default function VatCalculator() {
       if (payer === 'general' && !cardEligible) p.set('elig', '0')
       if (!eFiling) p.set('ef', '0')
     }
-    window.history.replaceState(null, '', `${window.location.pathname}?${p}`)
+    window.history.replaceState(null, '', p.toString() ? `${window.location.pathname}?${p}` : window.location.pathname)
   }, [tab, mode, amount, rounding, lines, inclusive, payer, sales, purchases, cardSales, cardEligible, eFiling, industry])
 
   const copy = useCallback(async (text: string, id: string) => {

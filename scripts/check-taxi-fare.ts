@@ -66,6 +66,20 @@ eq('ulsan 22h', nightRateFor(22, getSchedule('ulsan', 'regular')), 0.2)
 const dj = computeFare(5, 10, 1, 'daejeon', 'regular', true)
 eq('daejeon 1h night', dj.nightRate, 0.3)
 eq('daejeon combo 50', dj.nightRate + dj.outRate, 0.5)
+// 대전 2026.11.1: 중형 4,800원/1.65km, 125m·29초당 100원 / 모범·대형 6,000원/3km, 111m·27초당 200원, 심야 3단계
+eq('daejeon base', computeFare(1.65, 3, 14, 'daejeon', 'regular', false).total, 4800)
+eq('daejeon 2km', computeFare(2, 3, 14, 'daejeon', 'regular', false).distanceFare, 200)
+// 5km/15분: 거리 3350/125=26 → 2600, 저속 900-600=300s/29=10 → 1000
+eq('daejeon 5km', computeFare(5, 15, 14, 'daejeon', 'regular', false).total, 8400)
+eq('daejeon deluxe base', computeFare(3, 5, 14, 'daejeon', 'deluxe', false).total, 6000)
+eq('daejeon deluxe 4km', computeFare(4, 5, 14, 'daejeon', 'deluxe', false).distanceFare, Math.floor(1000 / 111) * 200)
+eq('daejeon deluxe 1h', nightRateFor(1, getSchedule('daejeon', 'deluxe')), 0.3)
+eq('daejeon deluxe combo', computeFare(5, 10, 1, 'daejeon', 'jumbo', true).outRate, 0.2)
+// 시간대별 차트: 서울 5km/15분 — 주간 최저 8,300, 23시 40% 최고
+const seoulHourly = Array.from({ length: 24 }, (_, h) => computeFare(5, 15, h, 'seoul', 'regular', false).total)
+eq('hourly min', Math.min(...seoulHourly), 8300)
+eq('hourly max', Math.max(...seoulHourly), seoulHourly[23])
+eq('hourly 22h', seoulHourly[22] - seoulHourly[21], Math.floor(8300 * 0.2))
 // 모범·대형 지역 요금: 부산 7,500원, 광주 5,400원/1.7km, 경기 시계외 없음
 eq('busan deluxe base', getSchedule('busan', 'deluxe').base, 7500)
 eq('gwangju deluxe base', computeFare(1.7, 3, 14, 'gwangju', 'deluxe', false).total, 5400)

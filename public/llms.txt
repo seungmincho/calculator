@@ -142,6 +142,9 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [연말정산 준비 체크리스트](https://toolhub.ai.kr/year-end-checklist/): 12월 31일 마감부터 1월 15일 간소화, 회사 제출까지 내 상황에 맞는 할 일과 간소화에 안 나오는 서류
 - [퇴사하면 받는 돈 계산기](https://toolhub.ai.kr/resignation-pay/): 퇴사일만 정하면 퇴직금·미사용 연차수당·실업급여·중도퇴사 연말정산까지 받을 돈 합계와 퇴사 후 할 일
 - [난방기구 전기세 계산기](https://toolhub.ai.kr/heater-electricity-cost/): 전기장판·온풍기·라디에이터를 하루 몇 시간 쓰면 누진 구간까지 반영해 이번 달 전기요금이 얼마나 오르는지
+- [해외주식 양도세 계산기](https://toolhub.ai.kr/overseas-stock-tax/): 250만원 공제·22% 양도세, 연말 손실 상계·공제 채우기 절세
+- [카드 수수료 계산기](https://toolhub.ai.kr/card-fee-calculator/): 연매출 구간별 우대수수료율, 월·연 카드 수수료와 세액공제 후 실부담
+- [중도상환수수료 계산기](https://toolhub.ai.kr/prepayment-fee/): 중도상환수수료와 대출 갈아타기 이득 여부(이자 절감 − 수수료)
 
 ## 개발 도구
 

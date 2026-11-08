@@ -4,11 +4,13 @@
 // 예금 단리: 원금 × 연이율 × n/12, 예금 월복리: 원금 × ((1+i)^n − 1)
 
 export type Kind = 'saving' | 'deposit'
-export type TaxKey = 'normal' | 'pref' | 'coop' | 'free'
+export type TaxKey = 'normal' | 'pref' | 'coop' | 'coop26' | 'free'
 
 // 일반 15.4%(소득세 14% + 지방소득세 1.4%), 세금우대 9.5%(9% + 농특세 0.5%),
 // 상호금융 조합예탁금 1.4%(소득세 비과세, 농특세만), 비과세 0%
-export const TAX_RATES: Record<TaxKey, number> = { normal: 0.154, pref: 0.095, coop: 0.014, free: 0 }
+// 상호금융 저율(조특법 §89의3①, 비과세 대상이 아닌 사람의 2026년 가입분): 소득세 5% + 농특세 (14%−5%)×10% = 5.9%,
+// 지방소득세 없음. 2027년 이후 가입분은 9% + 0.5% = 9.5%로 세금우대(pref)와 같다(농특세법 §5①2호).
+export const TAX_RATES: Record<TaxKey, number> = { normal: 0.154, pref: 0.095, coop: 0.014, coop26: 0.059, free: 0 }
 export const TAX_KEYS = Object.keys(TAX_RATES) as TaxKey[]
 
 export interface Plan {

@@ -57,7 +57,9 @@ export default function BMICalculator() {
 
   useEffect(() => {
     const url = new URL(window.location.href)
-    const set = (k: string, v: string | null) => (v ? url.searchParams.set(k, v) : url.searchParams.delete(k))
+    // 첫 화면 기본값 그대로면 쿼리를 붙이지 않는다(받는 쪽도 키가 없으면 같은 기본값)
+    const def = sex === 'male' && height === '170' && weight === '65' && !age && !waist && std !== 'who'
+    const set = (k: string, v: string | null) => (v && !def ? url.searchParams.set(k, v) : url.searchParams.delete(k))
     set('height', height)
     set('weight', weight)
     set('gender', sex)

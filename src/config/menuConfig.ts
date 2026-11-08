@@ -78,7 +78,7 @@ export const menuConfig: MenuConfig = {
       { href: '/retirement-calculator', labelKey: 'footer.links.retirementCalculator', descriptionKey: 'toolsShowcase.tools.retirement.description', icon: '💼', subcategory: 'subcategory.salaryWork' },
       { href: '/annual-leave', labelKey: 'footer.links.annualLeave', descriptionKey: 'toolsShowcase.tools.annualLeave.description', icon: '🏖️', subcategory: 'subcategory.salaryWork' },
       { href: '/gas-bill', labelKey: 'footer.links.gasBill', descriptionKey: 'toolsShowcase.tools.gasBill.description', icon: '🔥', subcategory: 'subcategory.livingCost' },
-      { href: '/taxi-fare', labelKey: 'footer.links.taxiFare', descriptionKey: 'toolsShowcase.tools.taxiFare.description', icon: '🚕', subcategory: 'subcategory.livingCost', updatedDate: '2026-10-25' },
+      { href: '/taxi-fare', labelKey: 'footer.links.taxiFare', descriptionKey: 'toolsShowcase.tools.taxiFare.description', icon: '🚕', subcategory: 'subcategory.livingCost', updatedDate: '2026-11-08' },
       { href: '/installment-calculator', labelKey: 'footer.links.installmentCalc', descriptionKey: 'toolsShowcase.tools.installmentCalc.description', icon: '💳', subcategory: 'subcategory.livingCost' },
       { href: '/shipping-calculator', labelKey: 'footer.links.shippingCalc', descriptionKey: 'toolsShowcase.tools.shippingCalc.description', icon: '📦', subcategory: 'subcategory.livingCost', updatedDate: '2026-10-25' },
       { href: '/parking-fee', labelKey: 'footer.links.parkingFee', descriptionKey: 'toolsShowcase.tools.parkingFee.description', icon: '🅿️', subcategory: 'subcategory.livingCost' },
@@ -152,6 +152,9 @@ export const menuConfig: MenuConfig = {
       { href: '/year-end-checklist', labelKey: 'footer.links.yearEndChecklist', descriptionKey: 'toolsShowcase.tools.yearEndChecklist.description', icon: '✅', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
       { href: '/resignation-pay', labelKey: 'footer.links.resignationPay', descriptionKey: 'toolsShowcase.tools.resignationPay.description', icon: '🚪', addedDate: '2026-11-08', subcategory: 'subcategory.salaryWork' },
       { href: '/heater-electricity-cost', labelKey: 'footer.links.heaterElectricityCost', descriptionKey: 'toolsShowcase.tools.heaterElectricityCost.description', icon: '🔌', addedDate: '2026-11-08', subcategory: 'subcategory.livingCost' },
+      { href: '/overseas-stock-tax', labelKey: 'footer.links.overseasStockTax', descriptionKey: 'toolsShowcase.tools.overseasStockTax.description', icon: '🌎', addedDate: '2026-11-08', subcategory: 'subcategory.investSavings' },
+      { href: '/card-fee-calculator', labelKey: 'footer.links.cardFeeCalculator', descriptionKey: 'toolsShowcase.tools.cardFeeCalculator.description', icon: '💳', addedDate: '2026-11-08', subcategory: 'subcategory.others' },
+      { href: '/prepayment-fee', labelKey: 'footer.links.prepaymentFee', descriptionKey: 'toolsShowcase.tools.prepaymentFee.description', icon: '🏦', addedDate: '2026-11-08', subcategory: 'subcategory.loanFinance' },
     ],
   },
   tools: {

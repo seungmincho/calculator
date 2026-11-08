@@ -145,6 +145,9 @@ export default function RootLayout({
             Navigation API navigate 이벤트를 페이지뷰로 센다. 같은 경로 안의 이동은 beacon 리스너보다 먼저 막는다
             (주소 변경 자체는 그대로 일어난다). beacon 은 body 끝에 있으므로 이 리스너가 먼저 등록된다. */}
         <script dangerouslySetInnerHTML={{ __html: `try{navigation.addEventListener('navigate',function(e){if(e.destination.sameDocument&&new URL(e.destination.url).pathname===location.pathname)e.stopImmediatePropagation()})}catch(e){}` }} />
+        {/* 날짜 입력(type=date)은 데스크톱 크롬에서 달력 아이콘을 눌러야만 열린다 → 칸 어디를 눌러도 열리게.
+            마우스 환경만(터치는 이미 OS 선택기가 뜬다). 키보드 직접 입력은 그대로 된다. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{if(matchMedia('(pointer: fine)').matches)document.addEventListener('click',function(e){var t=e.target;if(t&&t.tagName==='INPUT'&&(t.type==='date'||t.type==='month'||t.type==='datetime-local')&&!t.readOnly&&!t.disabled&&t.showPicker)try{t.showPicker()}catch(_){}})}catch(e){}` }} />
         {/* Axeptio Cookie Consent Script with Google Consent Mode */}
         <Script
           id="axeptio-settings"

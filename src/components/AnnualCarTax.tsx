@@ -56,11 +56,12 @@ export default function AnnualCarTax() {
     if (year !== thisYear) q.set('y', String(year))
     if (kind !== 'car') q.set('k', kind)
     if (use === 'business') q.set('u', 'b')
-    if (kind === 'car') { q.set('cc', String(cc)); q.set('ry', String(regYear)); q.set('rm', String(regMonth)) }
+    // 받는 쪽은 키가 없으면 같은 기본값(1999cc·2022년 3월)을 쓰므로 기본값과 다른 것만 적는다
+    if (kind === 'car') { if (cc !== 1999) q.set('cc', String(cc)); if (regYear !== 2022) q.set('ry', String(regYear)); if (regMonth !== 3) q.set('rm', String(regMonth)) }
     if (kind === 'van') q.set('van', van)
     if (kind === 'truck') q.set('ton', String(ton))
     if (sp.get('sd')) q.set('sd', saleDate)
-    window.history.replaceState(null, '', `?${q}`)
+    window.history.replaceState(null, '', q.toString() ? `?${q}` : window.location.pathname)
   }, [year, thisYear, kind, use, cc, regYear, regMonth, van, ton, saleDate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const ry = Math.min(regYear, year)

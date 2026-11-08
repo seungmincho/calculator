@@ -230,6 +230,12 @@ export default function MarginCalculator() {
   }, [])
 
   useEffect(() => {
+    // 첫 화면 기본값 그대로면 쿼리를 붙이지 않는다
+    if (mode === 'calculate' && !sellingPrice && !costPrice && platformKey === 'coupang' && !customRate && !shippingCost
+      && !packagingCost && !adCost && taxType === 'general' && targetMargin === 30 && monthlySales === 100) {
+      if (window.location.search) window.history.replaceState({}, '', window.location.pathname)
+      return
+    }
     updateURL({
       mode,
       sp: sellingPrice,

@@ -102,6 +102,7 @@
 /car-maintenance  /car-maintenance/  301
 /car-tax-calculator  /car-tax-calculator/  301
 /card-deduction  /card-deduction/  301
+/card-fee-calculator  /card-fee-calculator/  301
 /certified-letter  /certified-letter/  301
 /changes-2027  /changes-2027/  301
 /character-counter  /character-counter/  301
@@ -283,6 +284,7 @@
 /one-rep-max  /one-rep-max/  301
 /order-picker  /order-picker/  301
 /othello  /othello/  301
+/overseas-stock-tax  /overseas-stock-tax/  301
 /ovulation-calculator  /ovulation-calculator/  301
 /pac-man  /pac-man/  301
 /parental-leave  /parental-leave/  301
@@ -300,6 +302,7 @@
 /pomodoro  /pomodoro/  301
 /port-reference  /port-reference/  301
 /power-of-attorney  /power-of-attorney/  301
+/prepayment-fee  /prepayment-fee/  301
 /presentation-timer  /presentation-timer/  301
 /prompt-generator  /prompt-generator/  301
 /pyeong-calculator  /pyeong-calculator/  301
