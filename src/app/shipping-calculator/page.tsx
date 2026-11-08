@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
 const TITLE = '택배비 계산기 - 우체국·편의점 요금 비교 | 툴허브'
-const DESC = '무게와 상자 크기를 입력해 우체국·일반택배·편의점 택배비를 비교하세요. 제주·도서산간 추가요금과 접수·수령 조건을 함께 확인할 수 있습니다.'
+const DESC = '편의점 반값택배 1,800원부터, 우체국 소포 4,000원부터. 무게와 상자 크기(세 변 합)를 넣으면 우체국·일반택배·편의점 택배비를 한 번에 비교합니다. 제주·도서산간 추가요금도 함께 확인하세요.'
 
 export const metadata: Metadata = {
   title: TITLE,

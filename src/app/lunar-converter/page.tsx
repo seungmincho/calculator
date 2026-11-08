@@ -3,10 +3,30 @@ import LunarConverter from '@/components/LunarConverter'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { leapMonth, lunarMonthDays, lunarToSolar, weekday, type SolarDate } from '@/utils/lunarCalendar'
+import { todayKST } from '@/utils/dday'
+
+// 빌드한 해와 다음 해(정적 HTML — 연초 재빌드 때 넘어감). "음력 10월 18일 양력" 같은 검색에 답하는 표
+const YEAR = Number(todayKST().slice(0, 4))
+const YEARS = [YEAR, YEAR + 1]
+const WD = ['일', '월', '화', '수', '목', '금', '토']
+const fmt = (s: SolarDate) => `${s.year}.${s.month}.${s.day}(${WD[weekday(s)]})`
+
+function lunarMonths(year: number) {
+  const lm = leapMonth(year)
+  return Array.from({ length: 12 }, (_, i) => i + 1).flatMap((m) =>
+    (lm === m ? [false, true] : [false]).map((leap) => ({
+      label: `${leap ? '윤' : ''}${m}월`,
+      first: lunarToSolar(year, m, 1, leap)!,
+      mid: lunarToSolar(year, m, 15, leap)!,
+      days: lunarMonthDays(year, m, leap),
+    })),
+  )
+}
 
 export const metadata: Metadata = {
   title: '음력 양력 변환기 - 음력 날짜 변환, 띠, 간지 | 툴허브',
-  description: '음력↔양력 날짜를 바로 변환하고 띠·간지(60갑자)·일진까지 확인하세요. 음력 생일이나 제삿날을 넣으면 올해부터 10년 뒤까지 양력 날짜와 다음 기념일 D-day를 보여 줍니다. 1900~2050년, 윤달까지 지원합니다.',
+  description: `음력 생일·제삿날이 올해 양력 며칠인지 바로 확인하세요. ${YEARS[0]}·${YEARS[1]}년 음력 월별 양력 대조표, 10년치 양력 날짜와 D-day, 띠·간지까지. 1900~2050년 한국천문연구원 기준, 윤달 지원.`,
   keywords: '음력 양력 변환, 음력 변환기, 양력 음력 변환, 음력 생일, 음력 날짜, lunar calendar converter',
   openGraph: { title: '음력 양력 변환기 | 툴허브', description: '음력 ↔ 양력 날짜 변환, 띠, 간지 정보', url: 'https://toolhub.ai.kr/lunar-converter/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/lunar-converter.png', width: 1200, height: 630, alt: '음력 양력 변환기' }] },
   twitter: { card: 'summary_large_image', title: '음력 양력 변환기 | 툴허브', description: '음력 ↔ 양력 날짜 변환', images: ['https://toolhub.ai.kr/og/lunar-converter.png'] },
@@ -52,6 +72,47 @@ export default function LunarConverterPage() {
               <li><strong>윤달 주의:</strong> 윤달이 있는 해는 같은 음력 날짜가 두 번 등장할 수 있으므로 윤달 여부를 반드시 확인하세요.</li>
               <li><strong>띠·간지 확인:</strong> 출생 연도의 띠와 60갑자 간지를 함께 조회할 수 있습니다. 이 도구의 띠·연 간지는 설날 기준이라, 입춘 기준을 쓰는 사주와는 1~2월생에서 다를 수 있습니다.</li>
             </ul>
+
+            <h2 className="text-xl font-bold text-fg mt-10 mb-2">
+              {YEARS[0]}·{YEARS[1]}년 음력 월별 양력 날짜 대조표
+            </h2>
+            <p className="text-body leading-relaxed mb-4">
+              음력 매달 1일과 15일이 양력으로 며칠인지 정리했습니다. 음력 N일은 그 달 1일의 양력 날짜에서 N−1일 뒤입니다(예: 음력 18일 = 1일 + 17일). 정확한 날짜와 요일은 위 변환기에 넣어 확인하세요.
+            </p>
+            {YEARS.map((y) => {
+              const rows = lunarMonths(y)
+              return (
+                <div key={y} className="mb-8">
+                  <h3 className="text-lg font-semibold text-fg mb-1">음력 {y}년</h3>
+                  <p className="text-sm text-sub mb-3">
+                    설날(음력 1월 1일) {fmt(rows[0].first)} · 추석(음력 8월 15일) {fmt(lunarToSolar(y, 8, 15)!)}
+                  </p>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm tabular-nums">
+                      <caption className="sr-only">음력 {y}년 월별 1일·15일의 양력 날짜</caption>
+                      <thead>
+                        <tr className="border-b border-line text-left text-sub">
+                          <th scope="col" className="py-2 pr-3 font-medium">음력</th>
+                          <th scope="col" className="py-2 pr-3 font-medium">1일 → 양력</th>
+                          <th scope="col" className="py-2 pr-3 font-medium">15일 → 양력</th>
+                          <th scope="col" className="py-2 font-medium">일수</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rows.map((r) => (
+                          <tr key={r.label} className="border-b border-line last:border-0 text-body">
+                            <th scope="row" className="py-2 pr-3 text-left font-medium text-fg">{r.label}</th>
+                            <td className="py-2 pr-3 whitespace-nowrap">{fmt(r.first)}</td>
+                            <td className="py-2 pr-3 whitespace-nowrap">{fmt(r.mid)}</td>
+                            <td className="py-2">{r.days}일</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </section>
     </>

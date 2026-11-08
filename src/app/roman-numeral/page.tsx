@@ -7,7 +7,7 @@ import romanNumeralMessages from '../../../messages/generated/ko/ns/romanNumeral
 
 export const metadata: Metadata = {
   title: '로마 숫자 변환기 - 아라비아↔로마 숫자 변환 | 툴허브',
-  description: '로마 숫자 변환기 - 아라비아 숫자를 로마 숫자로, 로마 숫자를 아라비아 숫자로 변환합니다. I, V, X, L, C, D, M 기호 학습.',
+  description: '2026은 MMXXVI, 4는 IV, 9는 IX. 아라비아 숫자와 로마 숫자(I·V·X·L·C·D·M, Ⅰ~Ⅻ)를 서로 바꾸고 1~100·연도 표에서 바로 찾아보세요. 시계·영화 연도·챕터 번호 읽기에 씁니다.',
   keywords: '로마 숫자 변환, 로마 숫자 변환기, roman numeral converter, 로마 숫자 표, 로마자 변환, 2026 로마숫자, 로마숫자 날짜, Ⅻ 뜻',
   openGraph: { title: '로마 숫자 변환기 | 툴허브', description: '아라비아↔로마 숫자 변환', url: 'https://toolhub.ai.kr/roman-numeral/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/roman-numeral.png', width: 1200, height: 630, alt: '로마 숫자 변환기' }] },
   twitter: { card: 'summary_large_image', title: '로마 숫자 변환기 | 툴허브', description: '로마 숫자 변환', images: ['https://toolhub.ai.kr/og/roman-numeral.png'] },

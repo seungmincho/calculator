@@ -190,7 +190,7 @@ export const menuConfig: MenuConfig = {
       { href: '/notepad', labelKey: 'footer.links.notepad', descriptionKey: 'toolsShowcase.tools.notepad.description', icon: '📒', subcategory: 'subcategory.otherTools' },
       { href: '/screen-info', labelKey: 'footer.links.screenInfo', descriptionKey: 'toolsShowcase.tools.screenInfo.description', icon: '🖥️', subcategory: 'subcategory.otherTools' },
       { href: '/emoji-picker', labelKey: 'footer.links.emojiPicker', descriptionKey: 'toolsShowcase.tools.emojiPicker.description', icon: '😀', subcategory: 'subcategory.otherTools' },
-      { href: '/lunar-converter', labelKey: 'footer.links.lunarConverter', descriptionKey: 'toolsShowcase.tools.lunarConverter.description', icon: '🌙', subcategory: 'subcategory.convertEncode' },
+      { href: '/lunar-converter', labelKey: 'footer.links.lunarConverter', descriptionKey: 'toolsShowcase.tools.lunarConverter.description', icon: '🌙', subcategory: 'subcategory.convertEncode', updatedDate: '2026-11-08' },
       { href: '/ip-checker', labelKey: 'footer.links.ipChecker', descriptionKey: 'toolsShowcase.tools.ipChecker.description', icon: '🌐', subcategory: 'subcategory.otherTools' },
       { href: '/typing-test', labelKey: 'footer.links.typingTest', descriptionKey: 'toolsShowcase.tools.typingTest.description', icon: '⌨️', subcategory: 'subcategory.otherTools' },
       { href: '/number-to-korean', labelKey: 'footer.links.numberToKorean', descriptionKey: 'toolsShowcase.tools.numberToKorean.description', icon: '🔢', subcategory: 'subcategory.convertEncode' },
