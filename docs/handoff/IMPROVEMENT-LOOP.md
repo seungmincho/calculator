@@ -95,6 +95,10 @@
 | 37 | P1 | 연말정산 시즌 롱테일 랜딩 추가 후보: 의료비 세액공제·월세 세액공제·연금저축 세액공제(yearEndTax 함수 재사용, /card-deduction 방식) | 완료(배치11, 사용자 기획 승인): /medical-tax-credit·/rent-tax-credit·/pension-tax-credit + 연말정산 허브(섹션별 딥링크·항목별 카드), yearEndTax.itemTaxSaving. 남은 것: 월세 배우자 별도 세대 합산(2026~) 계산 미반영(안내만), 연말 연금 납입 마감 시각(금융사별) 미확정 |
 | 47 | P1 | SEO 정적 감사 남은 것(scripts/audit-seo-static.cjs out — 빌드본만 읽음): 연봉 실수령액 표 15p 문구 100% 동일(숫자만 다름) → 금액별 고유 정보(백분위·중위소득 대비 등), YMYL 계산기 공식 출처 링크·기준일 표기(가이드 노출 후 재측정), HowTo JSON-LD 35p(리치결과 폐지, 무해), 마크다운 에디터 h1 2개(미리보기 예시) | 완료(2026-11-06): 연봉 표 15p 금액별 정보(4a8a3e6c), YMYL 30p 점검 → 18곳 근거 링크·기준일(b2a0f752), 로또 JSON-LD script(0b491bad). 그대로 둔 것: HowTo JSON-LD(무해), 마크다운 에디터 h1 2개(미리보기 예시 — 구글은 h1 여러 개 허용, 예시를 바꾸면 품질 저하) |
 | 48 | P2 | 성능(CWV): PageSpeed 키 없는 할당량이 소진돼 미측정 — PSI API 키(무료) 받거나 pagespeed.web.dev 에서 홈·상위 2~3p 수동 | 대기 |
+| 49 | P1 | 연말정산 롱테일 랜딩 2차: 교육비·기부금 세액공제, 부양가족 공제 판정 | 완료(2026-11-08, 64903faf). 남은 것: 12월 국회 세제개편안(부양가족 소득 300만·총급여 750만) 통과 시 적용 연도 확인 후 dependentDeduction 갱신 |
+| 50 | P3 | 영어 UI: 번역 레지스트리(`src/lib/i18n.ts`)가 ko 만 로드 → 일반 도구 ~370개가 영어 선택 시에도 한국어. 연봉·대출·유류비·러닝·지원금 5개만 영어 지연 로드(f9c5fde8, `createLazyEnTranslations`). 레지스트리에 같은 방식 적용 여부는 실사용(한국 방문 대부분) 대비 효과로 판단 | 후순위 |
+| 51 | — | 검사 정리: `check-scoped-translations.mjs` 가 MobileResultLink 의 레지스트리 import(70b99942~)로 실패, check-agent-api·check-mcp·check-everland(-planner)·check-theme-parks 는 node 직접 실행 시 모듈 로딩 오류(esbuild 번들 실행용 — 실행법을 파일 머리 주석에) | 후순위 |
+| 52 | — | 사다리 남은 하드코딩 색: 참가자 추가(초록)·삭제(빨강) 버튼, 로또 "TOP 6" 영문 고정 | 후순위 |
 
 조사 근거(2026-10-04 시즌 수요 조사): 2027 수치(최저임금 10,700원·국민연금 10%·건보 7.19% 동결·고용보험 1.0%)는 2차 출처 기준 — 반영 전 공식 고시 확인.
 
