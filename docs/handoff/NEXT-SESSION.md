@@ -1,8 +1,22 @@
-# NEXT-SESSION (2026-11-08 — 연말정산 랜딩 6종 + 개선 2묶음 배포 완료, 홈 '새로 나온 도구' 미배포)
+# NEXT-SESSION (2026-11-08 밤 — 3차 묶음까지 배포·푸시 완료)
 
 ## 지금 상태 (2026-11-08 밤)
 
-**운영 배포 완료(사용자, SW v4.35.13)·원격 푸시 완료(1407c98f)** — 새 페이지 6개 200·h1 확인, `/api/lotto-latest?after=1245` 가 1246~1249 반환(CF 에서 동행복권 차단 없음), IndexNow 34 URL(api.indexnow.org·네이버 200). 그 뒤 로컬 커밋: 홈 '새로 나온 도구' 섹션(addedDate 최신 6개, 더 보기 18개) + **SW v4.35.14 올려 둠** — 다음 배포 때 그대로. **dev 서버를 띄웠으므로 빌드 전에 끄고 `out/dev` 삭제.** 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`. **배포 직전 `node scripts/update-lotto-data.mjs`(1249회 11/7 추첨분부터).**
+**운영 배포 완료(Claude, df3f98ce, SW v4.35.14)·푸시 완료(3f38d297)·IndexNow 41 URL(200).** 다음 배포는 SW v4.35.15. 원격과 로컬이 같다.
+
+### 0-5. 2026-11-08 3차 묶음 (신규 2 사용자 기획 승인 + 개선)
+
+- **`/resignation-pay/` 퇴사하면 받는 돈**(f23e3c56): retirementPay·annualLeave·unemploymentBenefit·yearEndTax 재사용. 기납부 소득세는 간이세액표×재직 개월 근사, 피보험 단위기간은 재직일×6/7 근사(다른 회사 합산 미반영 — ponytail 주석). 정당한 이직 사유(시행규칙 별표 2) 원문 미확인 — 기존 실업급여 문구 재사용.
+- **`/heater-electricity-cost/` 난방기구 전기세**(f23e3c56): calcBill(평소+난방) − calcBill(평소). 기구 정격 W 는 출처 없는 '흔한 예시'로 표기(사용자가 수정). 출처가 한전(.co.kr)뿐이라 SEO 감사 ymyl 경고 남음.
+- **홈 '새 도구·업데이트'**: addedDate + updatedDate(추가일보다 나중) 최신순. **도구를 눈에 띄게 고치면 menuConfig `updatedDate` 갱신**(AGENTS.md 규칙). 1/15 간소화 일정 → /year-end-checklist.
+- **혈압 기록기 정정(5e70bd6f)**: 분류가 ACC/AHA(130~139 = 1단계)인데 본문·FAQ 는 대한고혈압학회라 어긋났음 → 국내(정상·주의·전단계 130~139/80~89·1기 140/90·2기 160/100, 위기만 ACC/AHA). 2026 제6판 진단 140/90 유지 확인(보도), 6판 신설 이완기 단독 고혈압 등은 미반영(화면에 명시). 저장 기록도 표시할 때 다시 분류.
+- **근거·출처 50곳(5e70bd6f·a76b9fab)**: 건강 11·세금노동 19·금융생활 20 page.tsx 에 공식 링크와 '기준: 2026년 …'. SEO 감사 noOfficialSourceLink 58→26, noBasisDate 73→25(남은 것은 대부분 순수 계산 도구). audit 정규식이 'YYYY년 M월 D일 기준/확인'도 인식.
+- **마진 계산기 간이과세**: 판매가×15%×10% − 매입 공급대가×0.5%(부가세법 §63③, 음수 0).
+- **일몰 조항(1ba54f13)**: 전기차 취득세 140만 ~2026.12.31(정부안 의안 2221925: 2029년까지 70만, 국회 심의) — 수소차는 2027.12.31. 부가세 카드 1.3% ~2026.12.31(개편안 1.2%·500만). DSR 지방 0.75% 2027 미발표. 계산은 현행, 문구만.
+- **기본값이면 URL 쿼리 없음 18종(e2e83616·88c396e0)**. 남은 후보: BMI·카드공제·마진 등(아래 백로그 #55).
+- 검증: tsc 0, audit 0, check 전부(esbuild 5개 제외), 빌드본 wrangler pages dev 375px·hydration 0, check-static-html 팁 400 외 0, 운영 curl.
+
+**12월 할 일(국회·고시)**: 세제개편안 통과 시 ① 부양가족 소득 300만/750만(dependentDeduction) ② 중기 감면 기한 연장(smeTaxExemption) ③ 부가세 카드 1.2%·500만(vat.ts, 공급일 기준 분기) ④ 전기차 취득세 70만(carAcquisitionTax·evSubsidy·carLoan, 취득일 기준 분기). **국민연금 A값**(nationalPension.ts `A_VALUE` 3,193,511원은 2025.12~2026.11 적용 — 12월 새 A값 고시 → pension-calculator 기준 줄 함께). 건보 상·하한·2027 기초연금 선정기준액.
 
 ### 0-4. 2026-11-08 2차 묶음 (신규 3 사용자 기획 승인 + 개선 6)
 
