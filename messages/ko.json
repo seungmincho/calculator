@@ -21930,6 +21930,12 @@
     }
   },
   "homePage": {
+    "newTools": {
+      "title": "새로 나온 도구",
+      "date": "{m}월 {d}일",
+      "more": "더 보기",
+      "less": "접기"
+    },
     "deadline": {
       "hometown": "고향사랑기부 올해 세액공제 마감",
       "cardYearEnd": "카드 사용액 연말정산 반영 마감",

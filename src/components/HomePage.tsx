@@ -127,6 +127,14 @@ export default function HomePage() {
 
   const puzzleItems = useMemo(() => DAILY_PUZZLES.map(findItem).filter((i): i is MenuItem => !!i), [])
 
+  // 새로 나온 도구: addedDate 최신순(같은 날은 메뉴 순서). 오늘 날짜와 무관해 정적 HTML 에도 그대로 — 새 페이지 내부 링크
+  const newTools = useMemo(
+    () => categoryKeys.flatMap(k => menuConfig[k].items).filter(i => i.addedDate)
+      .sort((a, b) => b.addedDate!.localeCompare(a.addedDate!)),
+    [],
+  )
+  const [showMoreNew, setShowMoreNew] = useState(false)
+
   const puzzleStatus = (s?: PuzzleStatus) => {
     if (!s) return ' ' // 상태 줄 높이 유지 (CLS 방지)
     const n = s.streak ?? 0
@@ -312,6 +320,39 @@ export default function HomePage() {
 
         {seasonCards('season-mobile', 'lg:hidden')}
       </div>
+
+      {/* ===== 새로 나온 도구 ===== */}
+      <section aria-labelledby="new-tools-title" className="mb-14">
+        <SectionTitle
+          id="new-tools-title"
+          action={
+            <button onClick={() => setShowMoreNew(v => !v)} aria-expanded={showMoreNew} className="text-sm text-muted hover:text-fg">
+              {showMoreNew ? t('homePage.newTools.less') : t('homePage.newTools.more')}
+            </button>
+          }
+        >
+          {t('homePage.newTools.title')}
+        </SectionTitle>
+        <ul className="ui-card p-1.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {newTools.slice(0, showMoreNew ? 18 : 6).map(item => {
+            const [, m, d] = item.addedDate!.split('-').map(Number)
+            return (
+              <li key={item.href} className="min-w-0">
+                <Link prefetch={false} href={item.href} className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors">
+                  <ToolIcon href={item.href} />
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-baseline gap-2">
+                      <span className="text-[15px] font-semibold text-fg truncate">{t(item.labelKey)}</span>
+                      <span className="shrink-0 text-xs text-primary tabular-nums">{t('homePage.newTools.date', { m, d })}</span>
+                    </span>
+                    <span className="block text-[13px] text-muted truncate">{t(item.descriptionKey)}</span>
+                  </span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
 
       {/* ===== ALL TOOLS ===== */}
       <section id="tools-grid" className="pb-16">

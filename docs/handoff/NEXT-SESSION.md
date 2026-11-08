@@ -1,8 +1,8 @@
-# NEXT-SESSION (2026-11-08 — 연말정산 랜딩 6종 + 개선 2묶음, 로컬 커밋 13개, 미배포)
+# NEXT-SESSION (2026-11-08 — 연말정산 랜딩 6종 + 개선 2묶음 배포 완료, 홈 '새로 나온 도구' 미배포)
 
 ## 지금 상태 (2026-11-08 밤)
 
-운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬 커밋 13개(be85fab7~f41a3d58, 미푸시·미배포, SW v4.35.13 — 한 번에 배포하면 추가로 올릴 필요 없음). **dev 서버를 띄웠으므로 빌드 전에 끄고 `out/dev` 삭제.** 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`. **배포 직전 `node scripts/update-lotto-data.mjs`(1249회 11/7 추첨분부터).**
+**운영 배포 완료(사용자, SW v4.35.13)·원격 푸시 완료(1407c98f)** — 새 페이지 6개 200·h1 확인, `/api/lotto-latest?after=1245` 가 1246~1249 반환(CF 에서 동행복권 차단 없음), IndexNow 34 URL(api.indexnow.org·네이버 200). 그 뒤 로컬 커밋: 홈 '새로 나온 도구' 섹션(addedDate 최신 6개, 더 보기 18개) + **SW v4.35.14 올려 둠** — 다음 배포 때 그대로. **dev 서버를 띄웠으므로 빌드 전에 끄고 `out/dev` 삭제.** 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`. **배포 직전 `node scripts/update-lotto-data.mjs`(1249회 11/7 추첨분부터).**
 
 ### 0-4. 2026-11-08 2차 묶음 (신규 3 사용자 기획 승인 + 개선 6)
 

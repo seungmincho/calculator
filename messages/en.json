@@ -21929,6 +21929,12 @@
     }
   },
   "homePage": {
+    "newTools": {
+      "title": "New tools",
+      "date": "{m}/{d}",
+      "more": "Show more",
+      "less": "Show less"
+    },
     "deadline": {
       "hometown": "Hometown donation tax credit cutoff",
       "cardYearEnd": "Card spending cutoff for year-end tax settlement",
