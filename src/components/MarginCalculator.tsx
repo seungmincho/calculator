@@ -125,8 +125,10 @@ const PLATFORMS: PlatformInfo[] = [
   { key: 'custom', rate: 0 },
 ]
 
-// 간이과세자 부가가치율 (소매업 기준)
+// 간이과세자 부가가치율 (소매업 기준, 부가가치세법 시행령 §111②)
 const SIMPLIFIED_TAX_RATIO = 0.15
+// 간이과세자 매입세금계산서 등 수취 세액공제: 매입 공급대가 × 0.5% (부가가치세법 §63③). 원가를 세금계산서로 산 매입으로 본다
+const SIMPLIFIED_PURCHASE_CREDIT = 0.005
 
 // ── 비용 바 색상 ──
 const COST_COLORS: Record<string, string> = {
@@ -254,8 +256,8 @@ export default function MarginCalculator() {
   const calcVAT = useCallback((sp: number, cp: number, tt: TaxType): number => {
     if (tt === 'exempt') return 0
     if (tt === 'simplified') {
-      // 간이과세자: 공급대가 × 부가가치율 × 10%
-      return sp * SIMPLIFIED_TAX_RATIO * 0.1
+      // 간이과세자: 공급대가 × 부가가치율 × 10% − 매입 공급대가 × 0.5% (납부세액 한도, 음수면 0)
+      return Math.max(0, sp * SIMPLIFIED_TAX_RATIO * 0.1 - cp * SIMPLIFIED_PURCHASE_CREDIT)
     }
     // 일반과세자: (판매가 - 원가) × 10/110
     const margin = sp - cp
@@ -264,7 +266,7 @@ export default function MarginCalculator() {
   }, [])
 
   // ── 역산: 목표 마진율에서 판매가 산출 ──
-  // 순이익 = 목표율 × 판매가 를 판매가로 바로 푼다. 부가세는 판매가에 선형(일반 (판매가−원가)×10/110, 간이 판매가×1.5%).
+  // 순이익 = 목표율 × 판매가 를 판매가로 바로 푼다. 부가세는 판매가에 선형(일반 (판매가−원가)×10/110, 간이 판매가×1.5% − 원가×0.5%).
   // 예전 반복 20회는 수수료+부가세+목표율이 100%에 가까우면 덜 수렴하고(목표 80%·쿠팡 → 마진 79%, 판매가 1/3),
   // 100%를 넘으면(목표 85%·쿠팡) 수억 원으로 발산했다 → 불가능한 조합은 0(결과 없음)
   const calcReverseSellingPrice = useCallback((): number => {
@@ -273,7 +275,8 @@ export default function MarginCalculator() {
     const vatRate = taxType === 'exempt' ? 0 : taxType === 'simplified' ? SIMPLIFIED_TAX_RATIO * 0.1 : 10 / 110
     const denom = 1 - commissionRate - targetRate - vatRate
     if (denom <= 0) return 0
-    return (baseCost - (taxType === 'general' ? costPrice * vatRate : 0)) / denom
+    const purchaseCredit = taxType === 'general' ? vatRate : taxType === 'simplified' ? SIMPLIFIED_PURCHASE_CREDIT : 0
+    return (baseCost - costPrice * purchaseCredit) / denom
   }, [costPrice, shippingCost, packagingCost, adCost, commissionRate, targetMargin, taxType])
 
   // ── 메인 계산 결과 ──

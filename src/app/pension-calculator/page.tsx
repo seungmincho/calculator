@@ -7,6 +7,15 @@ import { INSURANCE, pct } from '@/utils/insuranceRates'
 import { A_VALUE } from '@/utils/nationalPension'
 import ToolFaq from '@/components/ToolFaq'
 
+// 계산 근거: src/utils/nationalPension.ts·insuranceRates.ts 주석의 조문·출처
+const sources = [
+  { label: '국민연금법 제51조 (기본연금액 — 계수 × (A값 + B값))', url: 'https://www.law.go.kr/법령/국민연금법/제51조' },
+  { label: '국민연금법 제63조 (노령연금액 — 가입기간 10~20년 감액)', url: 'https://www.law.go.kr/법령/국민연금법/제63조' },
+  { label: '국민연금법 제88조 (연금보험료)', url: 'https://www.law.go.kr/법령/국민연금법/제88조' },
+  { label: '국민연금공단 — A값·부양가족연금액 안내', url: 'https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0048M0.do' },
+  { label: '정책브리핑 — 국민연금 기준소득월액 상·하한 (2026년 7월~2027년 6월)', url: 'https://www.korea.kr/news/policyNewsView.do?newsId=148957832' },
+]
+
 // 간편 계산(나이·월 소득 → 예상 연금 + 월 보험료). 조기·연기·크레딧 상세는 /national-pension
 const DESC = `나이와 월 소득만 넣으면 국민연금 예상 수령액과 매달 내는 보험료(본인 ${pct(INSURANCE.pensionRate)}·회사 ${pct(INSURANCE.pensionRate)}), 소득대체율을 바로 계산합니다. ${INSURANCE.year}년 연금개혁(보험료율 ${pct(INSURANCE.pensionRateTotal)})·A값 ${A_VALUE.toLocaleString('ko-KR')}원 반영.`
 
@@ -105,6 +114,16 @@ export default function PensionCalculatorPage() {
             <li><strong>연금 수령 시기 조절:</strong> 65세 이후로 수령을 연기하면 매 1년마다 7.2%씩 연금액이 증가합니다. 5년 연기 시 36% 증가 효과가 있습니다.</li>
             <li><strong>추납 제도 활용:</strong> 과거 미납 기간이 있다면 추후납부(추납) 제도를 통해 납부하고 가입 기간을 채워 수령액을 높일 수 있습니다.</li>
           </ul>
+
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처</h3>
+          <ul className="space-y-1.5 text-sm text-sub">
+            {sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{`기준: ${INSURANCE.year}년 국민연금법(보험료율 ${pct(INSURANCE.pensionRateTotal)}), A값 ${A_VALUE.toLocaleString('ko-KR')}원(2025년 12월~2026년 11월 적용), 요율은 2026년 11월 6일 재확인.`}</p>
         </div>
       </section>
     </>

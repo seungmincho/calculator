@@ -32208,7 +32208,7 @@
         "title": "VAT Handling",
         "items": [
           "General: ~10% of margin (sales price - cost)",
-          "Simplified: Price × sector value-added rate × 10%",
+          "Simplified taxpayer: selling price × industry value-added ratio × 10% (retail 15%), minus 0.5% of purchases with tax invoices",
           "Exempt: No VAT (agricultural products, basic necessities)",
           "Simplified status available if annual sales <104M"
         ]

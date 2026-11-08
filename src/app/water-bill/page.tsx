@@ -3,6 +3,12 @@ import WaterBillCalculator from '@/components/WaterBillCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { REGIONS } from '@/utils/waterBill'
+
+const sources = [
+  { label: '서울아리수본부 — 가정용 수도요금 계산', url: REGIONS.seoul.source },
+  { label: '부산광역시 상수도사업본부 — 수도요금 산정표', url: REGIONS.busan.source },
+]
 
 export const metadata: Metadata = {
   title: '수도요금 계산기 2026 - 서울·부산 수도세 | 툴허브',
@@ -50,6 +56,17 @@ export default function WaterBillPage() {
             <li><strong>양치컵 사용:</strong> 물을 틀어 놓고 양치하는 대신 컵을 쓰면 1회 수 리터를 아낄 수 있습니다.</li>
             <li><strong>누수 점검:</strong> 모든 수도꼭지를 잠그고 계량기 바늘이 돌면 누수입니다. 변기·수도꼭지의 미세 누수는 한 달에 수 ㎥를 낭비합니다.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">요금 근거·출처</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: 2026년 서울 요금(하수도 1㎥당 {REGIONS.seoul.sewer[0].rate}원은 2026년 1월 1일부터)과 부산 2026년 2월 부과분부터의 요금표. 계량기 15mm 가정용 기준이며, 다른 구경·업종은 고지서 단가를 직접 입력하세요.</p>
+          </div>
         </div>
       </section>
     </>

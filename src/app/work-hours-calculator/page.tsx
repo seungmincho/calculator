@@ -3,6 +3,17 @@ import WorkHoursCalculator from '@/components/WorkHoursCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { MIN_WAGE_2026 } from '@/utils/minimumWage'
+
+// 근거: 본문·FAQ가 인용한 조문 + src/utils/minimumWage.ts 고시 출처
+const sources = [
+  { label: '근로기준법 제50조 (법정근로시간 1일 8시간·1주 40시간)', url: 'https://www.law.go.kr/법령/근로기준법/제50조' },
+  { label: '근로기준법 제54조 (휴게 — 4시간 30분, 8시간 1시간)', url: 'https://www.law.go.kr/법령/근로기준법/제54조' },
+  { label: '근로기준법 제55조 (유급 주휴일)', url: 'https://www.law.go.kr/법령/근로기준법/제55조' },
+  { label: '근로기준법 제56조 (연장·야간·휴일근로 가산수당)', url: 'https://www.law.go.kr/법령/근로기준법/제56조' },
+  { label: '최저임금법 제6조 (최저임금의 효력)', url: 'https://www.law.go.kr/법령/최저임금법/제6조' },
+  { label: '고용노동부 — 2026년 적용 최저임금 고시', url: 'https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=18144' },
+]
 
 export const metadata: Metadata = {
   title: '근무시간 계산기 - 알바비·수당 계산 | 툴허브',
@@ -119,6 +130,16 @@ export default function WorkHoursCalculatorPage() {
             <li><strong>휴게시간 공제:</strong> 4시간 근무 시 30분, 8시간 근무 시 1시간의 휴게시간이 법적으로 보장되며, 해당 시간은 급여 계산에서 제외됩니다. 2026년 12월 10일부터는 근로시간이 4시간인 경우 근로자가 명시적으로 요청하면 휴게를 생략할 수 있습니다(근로기준법 제54조① 단서).</li>
             <li><strong>월급 환산:</strong> 주당 근무 일수와 시급을 입력하면 주휴수당 포함 월 예상 급여를 환산하여 취업 전 수입을 미리 계획할 수 있습니다.</li>
           </ul>
+
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처</h3>
+          <ul className="space-y-1.5 text-sm text-sub">
+            {sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{`기준: 2026년 최저임금 시간급 ${MIN_WAGE_2026.toLocaleString('ko-KR')}원(2025년 8월 5일 고시)과 2026년 11월 현행 근로기준법.`}</p>
         </div>
       </section>
     </>

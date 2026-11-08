@@ -4,6 +4,13 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const sources = [
+  { label: '오피넷(한국석유공사) — 시·도별 주유소 평균 판매가격', url: 'https://www.opinet.co.kr/user/dopospdrg/dopOsPdrgSelect.do' },
+  { label: '법인세법 시행령 제50조의2 — 업무용승용차 운행기록부·감가상각비 연 800만원 한도', url: 'https://www.law.go.kr/법령/법인세법시행령/제50조의2' },
+  { label: '소득세법 시행령 제78조의3 — 개인사업자 업무용승용차 관련비용', url: 'https://www.law.go.kr/법령/소득세법시행령/제78조의3' },
+  { label: '소득세법 시행령 제12조 — 자가운전보조금 월 20만원 비과세', url: 'https://www.law.go.kr/법령/소득세법시행령/제12조' },
+]
+
 export const metadata: Metadata = {
   title: '유류비 계산기 - 업무용 차량 정산 | 툴허브',
   description: '업무용 차량 유류비를 주행거리·연비·유가로 계산하고 감가상각비와 경비 처리 기준까지 확인하세요. 오피넷 시·도별 유가(지난 날짜 포함)를 불러오고, 편도·왕복 출장 정산서 복사, 주행일지, 결과 이미지·링크 공유를 지원합니다.',
@@ -98,6 +105,17 @@ export default function FuelCalculatorPage() {
             <li><strong>유종별 비용 비교:</strong> 휘발유·경유·LPG·전기 등 유종별 연료비를 비교하면 장기적으로 유지비가 낮은 차종을 선택하는 데 도움이 됩니다.</li>
             <li><strong>연비 향상 방법:</strong> 급가속·급제동 자제, 적정 타이어 공기압 유지, 에어컨 절제 사용으로 실연비를 10~20% 향상시킬 수 있습니다.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">유가·경비 처리 근거</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: 2026년 현행 법인세법·소득세법 시행령. 유가는 오피넷 시·도 평균이며 적용한 날짜가 계산 결과에 함께 표시됩니다. 차종별 연비와 km당 감가상각비는 참고용 추정치라 회사 정산 규정이 있으면 그 값을 우선하세요.</p>
+          </div>
         </div>
       </section>
     </>

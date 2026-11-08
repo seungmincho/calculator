@@ -5,6 +5,12 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import investmentCalculatorMessages from '../../../messages/generated/ko/ns/investmentCalculator.json'
 
+const sources = [
+  { label: '소득세법 제129조 — 이자·배당소득 원천징수세율 14%(지방소득세 포함 15.4%)', url: 'https://www.law.go.kr/법령/소득세법/제129조' },
+  { label: '조세특례제한법 제91조의18 — ISA 비과세 200만원(서민형 400만원)·초과분 9.9% 분리과세', url: 'https://www.law.go.kr/법령/조세특례제한법/제91조의18' },
+  { label: '소득세법 제59조의3 — 연금저축·IRP 세액공제(13.2%·16.5%)', url: 'https://www.law.go.kr/법령/소득세법/제59조의3' },
+]
+
 export const metadata: Metadata = {
   title: '투자 수익률 계산기 - CAGR, 적립식·거치식 비교 | 툴허브',
   description: '월 적립식·거치식 투자의 미래 가치, 목표 금액 역산(필요 월 적립액·수익률·기간), 보수·중립·공격 시나리오, 일반·ISA·연금저축 계좌 세후 비교, 물가 반영 실질 가치를 계산하세요.',
@@ -90,6 +96,17 @@ export default function InvestmentCalculatorPage() {
             <li><strong>72의 법칙:</strong> 원금이 2배 되는 기간 = 72 ÷ 수익률(%). 예: 연 6% 투자 시 약 12년 후 2배.</li>
             <li><strong>현실적 수익률 설정:</strong> 과거 수익률은 미래를 보장하지 않습니다. 예금 금리 수준(2~3%)부터 주식형 기대수익률까지 보수·중립·공격 시나리오로 폭을 두고 보세요.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">계좌별 세금 근거</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: 2026년 현행 소득세법·조세특례제한법. 국회에서 심사 중인 세법 개정안은 반영하지 않았습니다.</p>
+          </div>
         </div>
       </section>
     </>

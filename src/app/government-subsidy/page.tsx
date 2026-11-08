@@ -2,6 +2,21 @@ import { Metadata } from 'next'
 import GovernmentSubsidyCalculator from '@/components/GovernmentSubsidyCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import ToolFaq from '@/components/ToolFaq'
+import { PROGRAM_SOURCES, WELFARE_POLICY_YEAR } from '@/utils/welfarePolicy'
+
+// 화면의 사업별 공식 링크(PROGRAM_SOURCES)는 결과를 본 뒤에만 나오므로 정적 본문에도 둔다. URL은 같은 상수에서 읽는다.
+const sources = [
+  { label: '국민기초생활 보장법 제6조의2 (기준 중위소득)', url: 'https://www.law.go.kr/법령/국민기초생활보장법/제6조의2' },
+  { label: '보건복지부 — 기초생활보장 수급자 선정기준 (생계·의료급여, 기준 중위소득)', url: PROGRAM_SOURCES.livelihood },
+  { label: 'LH — 주거급여 기준임대료·지원 기준', url: PROGRAM_SOURCES.housing },
+  { label: '충북교육청 — 기초생활보장 교육급여 안내', url: PROGRAM_SOURCES.education },
+  { label: '국세청 — 근로장려금·자녀장려금 신청자격', url: PROGRAM_SOURCES.eitc },
+  { label: '보건복지부 기초연금 — 소득인정액 산정방식', url: PROGRAM_SOURCES.basicPension },
+  { label: '복지로 — 청년월세 한시 특별지원 공고', url: PROGRAM_SOURCES.youthRent },
+  { label: '복지로 — 청년내일저축계좌 공고', url: PROGRAM_SOURCES.youthSavings },
+  { label: '성평등가족부 — 한부모가족 아동양육비', url: PROGRAM_SOURCES.singleParent },
+  { label: '보건복지부 — 긴급복지지원', url: PROGRAM_SOURCES.emergency },
+]
 
 export const metadata: Metadata = {
   title: '정부지원금 계산기 - 2026년 12개 사업 간이 확인 | 툴허브',
@@ -92,6 +107,17 @@ export default function GovernmentSubsidyPage() {
               <GovernmentSubsidyCalculator />
               <ToolFaq items={faq} />
             </I18nWrapper>
+            <section className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              <h2 className="font-semibold text-fg mb-2">근거 법령·출처</h2>
+              <ul className="space-y-1.5">
+                {sources.map((s) => (
+                  <li key={s.url}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-muted mt-3">{`기준: ${WELFARE_POLICY_YEAR}년 기준 중위소득(보건복지부 고시)과 사업별 ${WELFARE_POLICY_YEAR}년 공식 안내. 선정은 각 기관의 소득인정액·재산 조사로 확정됩니다.`}</p>
+            </section>
         </div>
       </div>
     </>

@@ -26,6 +26,15 @@ export const metadata: Metadata = {
   },
 }
 
+// 계산 근거: src/components/LottoTaxCalculator.tsx (과세최저한 200만원, 20%·3억 초과 30%, 지방소득세 10%)
+const sources = [
+  { label: '소득세법 제21조 (기타소득 — 복권 당첨금)', url: 'https://www.law.go.kr/법령/소득세법/제21조' },
+  { label: '소득세법 제84조 (기타소득 과세최저한 — 건별 200만원 이하)', url: 'https://www.law.go.kr/법령/소득세법/제84조' },
+  { label: '소득세법 제129조 (원천징수세율 — 20%, 3억원 초과분 30%)', url: 'https://www.law.go.kr/법령/소득세법/제129조' },
+  { label: '소득세법 제14조 (분리과세 — 복권 당첨금은 종합소득에 합산하지 않음)', url: 'https://www.law.go.kr/법령/소득세법/제14조' },
+  { label: '지방세법 제103조의13 (개인지방소득세 특별징수 — 소득세의 10%)', url: 'https://www.law.go.kr/법령/지방세법/제103조의13' },
+]
+
 export default function LottoTaxPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -54,6 +63,17 @@ export default function LottoTaxPage() {
             <I18nWrapper>
               <LottoTaxCalculator />
             </I18nWrapper>
+            <section className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              <h2 className="font-semibold text-fg mb-2">근거 법령·출처</h2>
+              <ul className="space-y-1.5">
+                {sources.map((s) => (
+                  <li key={s.url}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-muted mt-3">기준: 2026년 11월 현재 시행 중인 소득세법·지방세법. 과세최저한 200만원은 2023년 1월 1일 이후 지급분부터 적용됩니다.</p>
+            </section>
         </div>
       </div>
     </>

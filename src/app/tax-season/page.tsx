@@ -8,6 +8,16 @@ import taxSeasonMessages from '../../../messages/generated/ko/ns/taxSeason.json'
 // 정적 HTML 은 빌드 날짜(KST) 기준으로 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다 (hydration 불일치 방지)
 const buildDate = todayKST()
 
+// 근거: src/utils/freelancerTax.ts 주석과 taxSeason 번역의 조문 (세율 §55, 분납 §77, 기한 국세기본법 §5)
+const sources = [
+  { label: '소득세법 제55조 (종합소득세 기본세율 6~45%)', url: 'https://www.law.go.kr/법령/소득세법/제55조' },
+  { label: '소득세법 제70조 (종합소득 과세표준 확정신고 — 5월 1일~31일)', url: 'https://www.law.go.kr/법령/소득세법/제70조' },
+  { label: '소득세법 제70조의2 (성실신고확인서 제출 — 6월 30일까지)', url: 'https://www.law.go.kr/법령/소득세법/제70조의2' },
+  { label: '소득세법 제77조 (분할납부 — 1천만원 초과, 2개월 안)', url: 'https://www.law.go.kr/법령/소득세법/제77조' },
+  { label: '국세기본법 제5조 (기한이 토·일·공휴일이면 다음 날)', url: 'https://www.law.go.kr/법령/국세기본법/제5조' },
+  { label: '국세청 홈택스 (종합소득세 신고·모두채움)', url: 'https://www.hometax.go.kr' },
+]
+
 export const metadata: Metadata = {
   title: '5월 종합소득세 신고 가이드 | 툴허브',
   description:
@@ -129,6 +139,17 @@ export default function TaxSeasonPage() {
             <I18nWrapper>
               <TaxSeason buildDate={buildDate} />
             </I18nWrapper>
+            <section className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              <h2 className="font-semibold text-fg mb-2">근거 법령·출처</h2>
+              <ul className="space-y-1.5">
+                {sources.map((s) => (
+                  <li key={s.url}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-muted mt-3">기준: 2026년 11월 현재 시행 중인 소득세법·국세기본법. 세율표는 2023년 귀속부터 바뀌지 않았습니다.</p>
+            </section>
         </div>
       </div>
     </>

@@ -47,6 +47,7 @@ export default function AnnualLeavePage() {
             <li><strong>장기 근속 추가 연차:</strong> 3년 이상 근무 시 매 2년마다 1일씩 추가되어 최대 25일까지 늘어납니다.</li>
             <li><strong>사용 촉진 제도 주의:</strong> 회사가 연차 사용을 촉구했는데도 사용하지 않으면 연차수당 지급 의무가 면제될 수 있습니다.</li>
           </ul>
+          <p className="text-xs text-muted mt-6">기준: 2026년 10월 현행 근로기준법(제60조 연차 유급휴가, 제61조 연차 사용 촉진)과 대법원 2021다227100 판결.</p>
         </div>
       </section>
     </>

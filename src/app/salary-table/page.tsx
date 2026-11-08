@@ -17,6 +17,16 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE}/salary-table/` },
 }
 
+// 계산 근거: src/utils/netSalary.ts → insuranceRates.ts(요율)·wageTaxTable.ts(간이세액표) 주석의 출처
+const SOURCES = [
+  { label: '국세청 — 근로소득 간이세액표 (2026년 2월 27일 개정)', url: 'https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6583&cntntsId=7862' },
+  { label: '소득세법 시행령 [별표 2] 근로소득 간이세액표', url: 'https://www.law.go.kr/법령/소득세법시행령' },
+  { label: '국민건강보험공단 — 2026년 달라지는 건강·장기요양 보험료율', url: 'https://www.nhis.or.kr/renewal_popup/poster/20260204_poster_longdesc_1.html' },
+  { label: '정책브리핑 — 국민연금 기준소득월액 상·하한 (2026년 7월~2027년 6월)', url: 'https://www.korea.kr/news/policyNewsView.do?newsId=148957832' },
+  { label: '국민연금법 제88조 (연금보험료)', url: 'https://www.law.go.kr/법령/국민연금법/제88조' },
+  { label: '고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률 시행령 제12조 (고용보험료율)', url: 'https://www.law.go.kr/법령/고용보험및산업재해보상보험의보험료징수등에관한법률시행령/제12조' },
+]
+
 const next = COMPARE_YEAR && COMPARE_YEAR > YEAR ? insuranceFor(COMPARE_YEAR) : null
 const FAQ = [
   ...(next ? [{
@@ -116,6 +126,15 @@ export default function SalaryTablePage() {
               <li>비과세 식대 월 {won(BASE.nonTaxableMonthly)} 제외 후 보험료·세금 산정. 연말정산 특별공제(보험료·의료비·카드 등)는 미반영</li>
               <li>표의 월 금액은 연간 합계 ÷ 12. 실제 급여명세서의 원천징수액과는 차이가 있을 수 있음</li>
             </ul>
+            <h3 className="text-sm font-semibold text-fg pt-2">근거 법령·출처</h3>
+            <ul className="text-sm text-sub space-y-1.5">
+              {SOURCES.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted">요율은 2026년 11월 6일 재확인, 간이세액표는 2026년 2월 27일 개정본입니다.</p>
           </section>
 
           <section className={`${glassCard} p-6`}>

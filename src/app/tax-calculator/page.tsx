@@ -3,6 +3,19 @@ import I18nWrapper from '@/components/I18nWrapper'
 import TaxCalculator from '@/components/TaxCalculator'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { TAX_YEAR } from '@/utils/yearEndTax'
+
+// 계산 근거: 근로소득세 src/utils/yearEndTax.ts, 양도소득세 src/utils/capitalGainsTax.ts 주석의 조문
+const sources = [
+  { label: '소득세법 제55조 (종합소득 기본세율 6~45%)', url: 'https://www.law.go.kr/법령/소득세법/제55조' },
+  { label: '소득세법 제47조 (근로소득공제)', url: 'https://www.law.go.kr/법령/소득세법/제47조' },
+  { label: '소득세법 제59조 (근로소득세액공제)', url: 'https://www.law.go.kr/법령/소득세법/제59조' },
+  { label: '부가가치세법 제30조 (부가가치세 세율 10%)', url: 'https://www.law.go.kr/법령/부가가치세법/제30조' },
+  { label: '소득세법 제89조 (1세대 1주택 양도소득 비과세·12억원 고가주택)', url: 'https://www.law.go.kr/법령/소득세법/제89조' },
+  { label: '소득세법 제95조 (양도소득금액·장기보유특별공제)', url: 'https://www.law.go.kr/법령/소득세법/제95조' },
+  { label: '소득세법 제103조 (양도소득 기본공제 250만원)', url: 'https://www.law.go.kr/법령/소득세법/제103조' },
+  { label: '소득세법 제104조 (양도소득세 세율)', url: 'https://www.law.go.kr/법령/소득세법/제104조' },
+]
 
 export const metadata: Metadata = {
   title: '세금 계산기 - 소득세·부가세·양도세 | 툴허브',
@@ -110,6 +123,16 @@ export default function TaxCalculatorPage() {
             <li><strong>양도소득세 절세:</strong> 보유 기간이 길수록 장기보유특별공제율이 높아집니다. 1세대 1주택은 2년 이상 보유(취득 당시 조정대상지역이었다면 2년 거주도 필요)하면 양도가액 12억원까지 비과세됩니다.</li>
             <li><strong>신고 기간 확인:</strong> 종합소득세는 매년 5월, 부가가치세는 1월과 7월이 신고·납부 기간으로, 기간을 놓치면 가산세가 부과됩니다.</li>
           </ul>
+
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처</h3>
+          <ul className="space-y-1.5 text-sm text-sub">
+            {sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{`기준: ${TAX_YEAR}년 귀속 소득세(2026년 10월 4일 확인)와 2026년 10월 1일 시행 소득세법 시행령의 양도소득세 규정. 국회 심의 중인 세법 개정안은 반영하지 않았습니다.`}</p>
         </div>
       </section>
     </>

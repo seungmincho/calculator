@@ -1,6 +1,14 @@
 import { Metadata } from 'next'
 import StockCalculator from '@/components/StockCalculator'
 import ToolFaq from '@/components/ToolFaq'
+import { SELL_TAX, US_TAX_RATE, US_DEDUCTION } from '@/utils/stock'
+
+const pct = (r: number) => +(r * 100).toFixed(2)
+const sources = [
+  { label: '증권거래세법 시행령 — 시장별 증권거래세율', url: 'https://www.law.go.kr/법령/증권거래세법시행령' },
+  { label: '농어촌특별세법 — 코스피 주식 양도 시 농어촌특별세', url: 'https://www.law.go.kr/법령/농어촌특별세법' },
+  { label: `소득세법 — 해외주식 양도소득세 ${pct(US_TAX_RATE)}%(지방소득세 포함 ${pct(US_TAX_RATE * 1.1)}%), 기본공제 연 ${US_DEDUCTION / 10_000}만원`, url: 'https://www.law.go.kr/법령/소득세법' },
+]
 
 export const metadata: Metadata = {
   title: '주식 수익률 계산기 | 툴허브 - 매수가 대비 수익률 및 손익 계산',
@@ -85,6 +93,19 @@ export default function StockCalculatorPage() {
             <li><strong>분할 매수 평균 단가:</strong> 여러 번에 나눠 매수했다면 총 투자 금액을 총 수량으로 나눠 평균 매수 단가를 계산한 뒤 수익률을 산출하세요.</li>
             <li><strong>해외 주식 세금:</strong> 해외 주식은 연간 250만원 초과 수익에 대해 양도소득세 22%(지방세 포함)가 부과되므로 세후 수익률도 함께 확인하세요.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">세금 근거·출처</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">
+              기준: 2026년 1월 1일 양도분부터 적용되는 세율 — 코스피 증권거래세 {pct(SELL_TAX.kospi.tx)}% + 농어촌특별세 {pct(SELL_TAX.kospi.farm)}%, 코스닥 {pct(SELL_TAX.kosdaq.tx)}%, 코넥스 {pct(SELL_TAX.konex.tx)}%, 국내 상장 ETF는 면제. 증권사 매매 수수료는 입력값으로 계산합니다.
+            </p>
+          </div>
         </div>
         <ToolFaq items={faq} />
       </section>

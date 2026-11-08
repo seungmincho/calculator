@@ -4,6 +4,9 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import csatDdayMessages from '../../../messages/generated/ko/ns/csatDday.json'
+import { CSAT_EXAM_DATE, CSAT_YEAR } from '@/utils/csatGrade'
+
+const [examY, examM, examD] = CSAT_EXAM_DATE.split('-').map(Number)
 
 export const metadata: Metadata = {
   title: '수능 D-day 2027 - 시간표·준비물·가채점표 | 툴허브',
@@ -51,6 +54,9 @@ export default function CsatDdayPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <CsatDday />
+            <p className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              기준: {CSAT_YEAR}학년도 대학수학능력시험 시행기본계획(<a href="https://www.suneung.re.kr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">한국교육과정평가원</a> 공고) — 시험일 {examY}년 {examM}월 {examD}일. D-day는 한국시간 기준으로 셉니다.
+            </p>
             <div className="mt-8">
               <RelatedTools />
             </div>

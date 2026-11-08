@@ -4,6 +4,15 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import electricityCalculatorMessages from '../../../messages/generated/ko/ns/electricityCalculator.json'
+import { RATE_DATE, CLIMATE, FUEL, VAT, FUND } from '@/utils/electricityBill'
+
+const sources = [
+  { label: '한국전력공사 — 주택용 전력 요금표(저압·고압, 계절별 누진 구간)', url: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp' },
+  { label: '한국전력공사 — 기후환경요금', url: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00211.jsp' },
+  { label: '한국전력공사 — 연료비조정요금', url: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00210.jsp' },
+  { label: '한국전력공사 — 복지할인 요금 감면 한도', url: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00208.jsp' },
+  { label: '전기사업법 제51조 — 전력산업기반기금 부담금', url: 'https://www.law.go.kr/법령/전기사업법/제51조' },
+]
 
 export const metadata: Metadata = {
   title: '전기요금 계산기 - 한국 주택용 누진제 전기세 계산 | 툴허브',
@@ -59,6 +68,17 @@ export default function ElectricityCalculatorPage() {
             <li><strong>대기전력 차단:</strong> TV, 셋톱박스, 컴퓨터의 대기전력은 가정 전기 사용량의 약 11%를 차지합니다. 멀티탭 스위치로 차단하면 연간 수만 원을 절약할 수 있습니다.</li>
             <li><strong>에너지효율 가전 선택:</strong> 1등급 에어컨은 5등급 대비 최대 40% 전기를 덜 씁니다. 가전 구입 시 에너지 소비효율 등급을 반드시 확인하세요.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">요금 근거·출처</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: {RATE_DATE} 적용 한전 주택용 요금 — 기후환경요금 kWh당 {CLIMATE}원, 연료비조정요금 kWh당 {FUEL}원, 부가가치세 {VAT * 100}%, 전력산업기반기금 {+(FUND * 100).toFixed(1)}%.</p>
+          </div>
         </div>
       </section>
     </>

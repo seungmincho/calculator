@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 import messages from '../../../messages/generated/ko/ns/energyVoucher.json'
 
 const TITLE = '2026 에너지바우처 - 대상·지원금액·신청 마감 | 툴허브'
-const DESC = '기초생활 수급 종류와 세대원 특성(노인·영유아·장애인 등), 세대원 수를 고르면 2026년 에너지바우처 대상인지와 연간 지원 금액(1인 295,200원~4인 이상 701,300원)을 알려 줘요. 연탄쿠폰 등 중복 지원, 사용 기간, 요금차감·국민행복카드 차이, 12월 31일 신청 마감까지 정리했습니다.'
+const DESC = '2026년 에너지바우처 대상인지와 연간 지원 금액(1인 295,200원~4인 이상 701,300원)을 수급 종류·세대원 특성으로 알려 줘요. 사용 기간, 요금차감·국민행복카드 차이, 12월 31일 신청 마감까지.'
 
 export const metadata: Metadata = {
   title: TITLE,

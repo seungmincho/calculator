@@ -39,6 +39,9 @@ export default function SalesCommissionPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <SalesCommissionCalculator />
+            <p className="max-w-4xl mx-auto mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              기준: 2026년 현행 소득세법 — 프리랜서(사업소득) 커미션은 지급액의 3%를 소득세로, 그 10%를 지방소득세로 떼어 합계 3.3%를 원천징수합니다. 오픈마켓 판매수수료는 2026년 10월 5일 확인한 네이버·쿠팡·11번가 공지 기준입니다.
+            </p>
             <div className="mt-8">
               <RelatedTools />
             </div>

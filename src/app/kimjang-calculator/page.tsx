@@ -72,6 +72,9 @@ export default function KimjangCalculatorPage() {
             <li><strong>배추 10포기(1~2인 가구):</strong> 재료량과 비용이 모두 절반이 되어 고춧가루 1kg, 깐마늘 650g 정도면 됩니다.</li>
             <li><strong>2025년 조사:</strong> aT가 2025년 11월 17일 조사한 4인 가족 김장비용은 201,151원으로 1년 전보다 5.6% 낮았습니다.</li>
           </ul>
+          <p className="bg-subtle rounded-2xl p-5 text-sm text-sub mt-6">
+            기준: 2024년 11월 21일 aT 김장비용 조사의 품목별 수량·단가(4인 가족 배추 20포기, 14개 품목). 2025년 11월 17일 조사는 총액만 공개돼 참고로 표시합니다. 찹쌀풀·설탕 비율은 농사로(농촌진흥청) 배추김치 레시피, 실제 시세는 KAMIS(aT 농산물유통정보)에서 확인할 수 있습니다.
+          </p>
         </div>
       </section>
     </>

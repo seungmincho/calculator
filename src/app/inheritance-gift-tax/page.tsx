@@ -87,6 +87,7 @@ export default function InheritanceGiftTaxPage() {
             <li><strong>부담부 증여 검토:</strong> 부채가 있는 재산을 증여하면 부채 부분은 증여자에게 양도세, 나머지는 수증자에게 증여세가 적용됩니다. 양도세 부담에 따라 오히려 불리할 수 있으니 두 세금을 합쳐 비교하세요.</li>
             <li><strong>전문가 상담 권장:</strong> 실제 세금 신고는 세무사와 상담하세요. 이 계산기는 참고용으로만 사용하시기 바랍니다.</li>
           </ul>
+          <p className="text-xs text-muted mt-6">기준: 2026년 10월 현재 시행 중인 상속세 및 증여세법. 국회에 제출된 정부 개정안은 확정 전이라 반영하지 않았습니다.</p>
         </div>
       </section>
     </>

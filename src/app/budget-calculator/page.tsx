@@ -5,6 +5,12 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import budgetCalculatorMessages from '../../../messages/generated/ko/ns/budgetCalculator.json'
 
+const sources = [
+  { label: '국세청 — 근로소득 원천징수(간이세액표)', url: 'https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6583&cntntsId=7862' },
+  { label: '소득세법 시행령 [별표 2] — 근로소득 간이세액표', url: 'https://www.law.go.kr/법령/소득세법시행령' },
+  { label: '국민건강보험공단 — 2026년 건강·장기요양보험료율', url: 'https://www.nhis.or.kr/renewal_popup/poster/20260204_poster_longdesc_1.html' },
+]
+
 export const metadata: Metadata = {
   title: '생활비 계산기 - 월간 예산 관리 | 툴허브',
   description: '생활비 계산기 - 카테고리별 월간 지출을 관리하고 예산을 계획하세요. 50/30/20 규칙, 시각적 분석, 절약 추천을 제공합니다.',
@@ -96,6 +102,17 @@ export default function BudgetCalculatorPage() {
               <li><strong>프리셋 저장:</strong> 현재 예산 구성을 저장해두면 다음 달 빠르게 불러와 비교할 수 있습니다.</li>
               <li><strong>월별 기록:</strong> 매달 실제 지출을 입력하면 계획 대비 어느 항목이 넘쳤는지와 남은 하루 예산을 바로 확인할 수 있습니다.</li>
             </ul>
+            <h3 className="text-lg font-semibold text-fg mt-8 mb-3">실수령액 계산 근거</h3>
+            <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+              <ul className="space-y-1.5">
+                {sources.map((s) => (
+                  <li key={s.url}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3">기준: 2026년 2월 27일 개정 근로소득 간이세액표와 2026년 4대보험 요율. 연봉을 입력했을 때 월 실수령액을 구하는 데만 쓰이고, 50/30/20 같은 예산 배분 규칙은 공식 기준이 아닌 일반적인 가계 관리 방법입니다.</p>
+            </div>
           </div>
         </section>
     </>

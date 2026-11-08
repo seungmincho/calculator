@@ -3,6 +3,11 @@ import JeonseChecklist from '@/components/JeonseChecklist'
 import I18nWrapper from '@/components/I18nWrapper'
 import ToolFaq from '@/components/ToolFaq'
 
+const sources = [
+  { label: '주택도시보증공사(HUG) — 전세보증금반환보증 가입 요건', url: 'https://www.khug.or.kr/hug/web/ig/dr/igdr000001.jsp' },
+  { label: '주택임대차보호법 — 대항력(제3조)·우선변제권(제3조의2)·소액임차인 최우선변제(제8조)', url: 'https://www.law.go.kr/법령/주택임대차보호법' },
+]
+
 export const metadata: Metadata = {
   title: '전세사기 체크리스트 - 전세 계약 전 필수 확인 | 툴허브',
   description: '전세 계약 전 반드시 확인해야 할 16가지 체크리스트. 등기부등본, 임대인 확인, 전세가율, 전세보증보험 등 전세사기 예방을 위한 단계별 안전 점검.',
@@ -111,6 +116,17 @@ export default function JeonseChecklistPage() {
             <I18nWrapper>
               <JeonseChecklist />
               <ToolFaq items={faq} />
+              <section className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+                <h2 className="text-base font-semibold text-fg mb-3">근거·출처</h2>
+                <ul className="space-y-1.5">
+                  {sources.map((s) => (
+                    <li key={s.url}>
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3">기준: 2026년 11월 8일 확인한 HUG 전세보증금반환보증 요건(보증금과 선순위채권 합계가 주택가격의 90% 이내, 공시가격으로 산정하면 공시가격의 140%)과 현행 주택임대차보호법. 전세가율 80%·근저당 60% 같은 위험 신호 기준은 법정 기준이 아닌 점검용 참고값입니다.</p>
+              </section>
             </I18nWrapper>
         </div>
       </div>

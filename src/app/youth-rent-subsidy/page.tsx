@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import YouthRentSubsidyCalculator from '@/components/YouthRentSubsidyCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import ToolFaq from '@/components/ToolFaq'
+import { WELFARE_POLICY_YEAR } from '@/utils/welfarePolicy'
 
 export const metadata: Metadata = {
   title: '청년월세지원 자격 계산기 - 월 20만원 지원 확인 | 툴허브',
@@ -92,6 +93,7 @@ export default function YouthRentSubsidyPage() {
             <I18nWrapper>
               <YouthRentSubsidyCalculator />
               <ToolFaq items={faq} />
+              <p className="text-xs text-muted mt-4">{`기준: ${WELFARE_POLICY_YEAR}년 국가사업 청년월세 한시 특별지원 공고(복지로)와 ${WELFARE_POLICY_YEAR}년 기준 중위소득(보건복지부 고시).`}</p>
             </I18nWrapper>
         </div>
       </div>

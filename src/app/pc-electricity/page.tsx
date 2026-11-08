@@ -3,6 +3,13 @@ import PcElectricityCalculator from '@/components/PcElectricityCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { TARIFF } from '@/utils/pcElectricity'
+
+const sources = [
+  { label: '한국전력공사 — 주택용 전력 요금표(저압, 계절별 누진 구간)', url: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/E/E/CYEEHP00101.jsp' },
+  { label: '한국전력공사 — 연료비조정요금', url: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00210.jsp' },
+  { label: '전기사업법 제51조 — 전력산업기반기금 부담금', url: 'https://www.law.go.kr/법령/전기사업법/제51조' },
+]
 
 export const metadata: Metadata = {
   title: '컴퓨터 소비전력 계산기 - PC 전기세·월 전기요금 | 툴허브',
@@ -38,6 +45,17 @@ export default function PcElectricityPage() {
             <I18nWrapper>
               <PcElectricityCalculator />
               <ToolFaq items={faq} />
+              <section className="max-w-4xl mx-auto mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+                <h2 className="text-base font-semibold text-fg mb-3">요금 근거·출처</h2>
+                <ul className="space-y-1.5">
+                  {sources.map((s) => (
+                    <li key={s.url}>
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3">기준: 2026년 4분기 한전 주택용 저압 요금(2023년 11월 9일 이후 동결) — 기후환경요금 kWh당 {TARIFF.climate}원, 연료비조정요금 kWh당 {TARIFF.fuel}원, 부가가치세 {TARIFF.vat * 100}%, 전력산업기반기금 {+(TARIFF.fund * 100).toFixed(1)}%. 부품 소비전력은 제조사 정격값을 바탕으로 한 추정치입니다.</p>
+              </section>
               <div className="mt-8">
 
                 <RelatedTools />

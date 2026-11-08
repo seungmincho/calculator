@@ -2,6 +2,9 @@ import { Metadata } from 'next'
 import EvSubsidyCalculator from '@/components/EvSubsidyCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import ToolFaq from '@/components/ToolFaq'
+import { DATA_DATE, GUIDE_YEAR } from '@/utils/evSubsidy'
+
+const day = (s: string) => `${Number(s.slice(0, 4))}년 ${Number(s.slice(5, 7))}월 ${Number(s.slice(8, 10))}일`
 
 export const metadata: Metadata = {
   title: '전기차 보조금 계산기 - 국비·지방비 보조금 계산 | 툴허브',
@@ -106,6 +109,7 @@ export default function EvSubsidyPage() {
             <I18nWrapper>
               <EvSubsidyCalculator />
               <ToolFaq items={faq} />
+              <p className="text-xs text-muted mt-4">{`기준: ${GUIDE_YEAR}년 전기자동차 보급사업 보조금 업무처리지침(기후에너지환경부), 지자체별 차종·모델 보조금은 ${day(DATA_DATE)} 무공해차 통합누리집 조회.`}</p>
             </I18nWrapper>
         </div>
       </div>

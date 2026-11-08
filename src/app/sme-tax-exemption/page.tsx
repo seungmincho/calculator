@@ -110,7 +110,7 @@ export default function SmeTaxExemptionPage() {
               </li>
             ))}
           </ul>
-          <p className="text-xs text-muted mt-3">2026년 11월 현재 시행 중인 법령 기준입니다. 국회 심의 중인 세법 개정안은 반영하지 않았습니다.</p>
+          <p className="text-xs text-muted mt-3">기준: 2026년 11월 8일 확인한 현행 조세특례제한법과 시행령(2026년 9월 18일 시행). 국회 심의 중인 세법 개정안은 반영하지 않았습니다.</p>
         </div>
       </section>
     </>

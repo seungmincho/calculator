@@ -5,6 +5,7 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import rankMessages from '../../../messages/generated/ko/ns/salaryRank.json'
+import { NTS_SOURCE_YEAR } from '@/utils/salaryInsights'
 
 const NEXT_STEPS = [
   { href: '/salary-calculator/', label: '연봉 실수령액 계산기', desc: '4대보험과 소득세를 뺀 월 실수령액을 정확히 계산합니다.' },
@@ -110,6 +111,14 @@ export default function SalaryRankPage() {
             <li><strong>근로소득만 비교:</strong> 자영업·프리랜서의 사업소득은 별도 통계라서 이 순위와 바로 비교하기 어렵습니다.</li>
             <li><strong>커뮤니티 통계:</strong> 참여자가 익명으로 직접 입력한 값이라 공식 통계와 다를 수 있습니다.</li>
           </ul>
+
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">출처</h3>
+          <ul className="space-y-1.5 text-sm text-sub">
+            <li>
+              <a href="https://www.data.go.kr/data/15082063/fileData.do" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">공공데이터포털 — 국세청 근로소득 백분위(천분위) 자료</a>
+            </li>
+          </ul>
+          <p className="text-xs text-muted mt-3">{`기준: ${NTS_SOURCE_YEAR}년 귀속 국세청 근로소득 백분위(공공데이터포털 2026년 5월 8일 수정본).`}</p>
         </div>
       </section>
     </>

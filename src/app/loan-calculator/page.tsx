@@ -4,6 +4,7 @@ import LoanCalculator from '@/components/LoanCalculator'
 import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import loanMessages from '../../../messages/generated/ko/ns/loan.json'
+import { DSR_CAP, DSR_APPLY_OVER } from '@/utils/dsr'
 
 export const metadata: Metadata = {
   title: '대출 계산기 | 툴허브 - 원리금균등상환, 원금균등상환 비교',
@@ -108,6 +109,9 @@ export default function LoanCalculatorPage() {
               <li><strong>거치기간 주의:</strong> 거치기간 중 이자만 내면 초기 부담은 줄지만 총 이자가 증가하므로 신중하게 선택하세요.</li>
               <li><strong>중도상환 계획:</strong> 여윳돈이 생기면 중도상환으로 이자 절감 효과를 미리 계산해보세요.</li>
             </ul>
+            <p className="bg-subtle rounded-2xl p-5 text-sm text-sub mt-6">
+              기준: 2026년 10월 4일 확인한 금융위원회 차주 단위 DSR 규제 — 총대출 {DSR_APPLY_OVER / 100_000_000}억원 초과 시 은행권 {DSR_CAP.bank}%, 2금융권 {DSR_CAP.nonbank}% 이내. 월 상환액은 입력한 금리 그대로 계산하며, 은행이 한도 심사에 더하는 스트레스 금리는 반영하지 않습니다.
+            </p>
           </div>
         </section>
     </>

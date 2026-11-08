@@ -4,6 +4,12 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import csatGradeMessages from '../../../messages/generated/ko/ns/csatGrade.json'
+import { CUT_YEAR, CSAT_YEAR } from '@/utils/csatGrade'
+
+const sources = [
+  { label: '한국교육과정평가원 대학수학능력시험 — 시행 계획·채점 결과 발표', url: 'https://www.suneung.re.kr' },
+  { label: '한국교육과정평가원', url: 'https://www.kice.re.kr' },
+]
 
 export const metadata: Metadata = {
   title: '수능 등급컷 계산기 - 과목별 등급 판정 | 툴허브',
@@ -56,6 +62,17 @@ export default function CsatGradePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <CsatGrade />
+              <section className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+                <h2 className="text-base font-semibold text-fg mb-3">등급컷 기준·출처</h2>
+                <ul className="space-y-1.5">
+                  {sources.map((s) => (
+                    <li key={s.url}>
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3">기준: {CUT_YEAR}학년도 수능 채점 결과로 평가원이 발표한 등급 구분 표준점수. 평가원은 원점수 등급컷을 발표하지 않아 원점수 컷은 입시기관이 표준점수에서 역산한 추정치이고, 영어·한국사는 절대평가 고정 기준입니다. {CSAT_YEAR}학년도 컷은 12월 채점 결과 발표 뒤 반영합니다.</p>
+              </section>
               <div className="mt-8">
                 <RelatedTools />
               </div>

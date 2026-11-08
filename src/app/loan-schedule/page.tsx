@@ -97,6 +97,9 @@ export default function LoanSchedulePage() {
             <p className="text-body leading-relaxed mt-6">
               월 상환액만 빠르게 확인하려면 <a href="/loan-calculator/" className="text-primary underline">대출 계산기</a>를, 원리금균등과 원금균등의 차이가 궁금하면 이 페이지의 상환 방식별 비교표를 활용하세요.
             </p>
+            <p className="bg-subtle rounded-2xl p-5 text-sm text-sub mt-6">
+              기준: 2025년 1월 13일 신규 대출부터 시행된 중도상환수수료 개편(<a href="https://www.fsc.go.kr/edu/news/83839" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">금융위원회 보도자료</a>). 금융소비자보호법상 중도상환수수료는 대출일부터 3년 안에 갚을 때만, 실제 비용 안에서 받을 수 있습니다. 수수료율은 대출 약정서의 값을 넣으세요.
+            </p>
           </div>
         </section>
     </>

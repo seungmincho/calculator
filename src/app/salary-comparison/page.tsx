@@ -3,6 +3,7 @@ import SalaryComparison from '@/components/SalaryComparison'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { INSURANCE } from '@/utils/insuranceRates'
 
 export const metadata: Metadata = {
   title: '연봉 실수령액 비교기 - 이직 연봉 비교, 4대보험 차이 계산 | 툴허브',
@@ -41,6 +42,16 @@ const faqData = [
     question: '최대 몇 개까지 비교할 수 있나요?',
     answer: '최대 4개의 연봉 시나리오를 동시에 비교할 수 있습니다. 현재 직장, 이직 제안 A, 이직 제안 B 등 여러 옵션을 한눈에 비교해보세요.',
   },
+]
+
+// 계산 근거: src/utils/netSalary.ts → insuranceRates.ts(요율)·wageTaxTable.ts(간이세액표) 주석의 출처
+const sources = [
+  { label: '국세청 — 근로소득 간이세액표 (2026년 2월 27일 개정)', url: 'https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=6583&cntntsId=7862' },
+  { label: '소득세법 시행령 [별표 2] 근로소득 간이세액표', url: 'https://www.law.go.kr/법령/소득세법시행령' },
+  { label: '국민건강보험공단 — 2026년 달라지는 건강·장기요양 보험료율', url: 'https://www.nhis.or.kr/renewal_popup/poster/20260204_poster_longdesc_1.html' },
+  { label: '정책브리핑 — 국민연금 기준소득월액 상·하한 (2026년 7월~2027년 6월)', url: 'https://www.korea.kr/news/policyNewsView.do?newsId=148957832' },
+  { label: '국민연금법 제88조 (연금보험료)', url: 'https://www.law.go.kr/법령/국민연금법/제88조' },
+  { label: '고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률 시행령 제12조 (고용보험료율)', url: 'https://www.law.go.kr/법령/고용보험및산업재해보상보험의보험료징수등에관한법률시행령/제12조' },
 ]
 
 export default function SalaryComparisonPage() {
@@ -96,6 +107,16 @@ export default function SalaryComparisonPage() {
             <li><strong>이직 손익 분기점 계산:</strong> 이직 시 발생하는 퇴직금 정산, 복리후생 변화 등을 감안하면 실질 이익이 달라집니다. 연봉 차이와 함께 종합적으로 검토하세요.</li>
             <li><strong>부양가족 수 동일 조건 설정:</strong> 공정한 비교를 위해 모든 시나리오에서 부양가족 수와 비과세 항목을 동일하게 설정하면 순수한 연봉 차이의 세후 영향을 확인할 수 있습니다.</li>
           </ul>
+
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처</h3>
+          <ul className="space-y-1.5 text-sm text-sub">
+            {sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{`기준: ${INSURANCE.year}년 4대보험 요율(2026년 11월 6일 재확인)과 국세청 근로소득 간이세액표(2026년 2월 27일 개정).`}</p>
         </div>
       </section>
     </>

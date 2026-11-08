@@ -4,6 +4,12 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const sources = [
+  { label: '부가가치세법 제30조 — 부가가치세율 10%', url: 'https://www.law.go.kr/법령/부가가치세법/제30조' },
+  { label: '부가가치세법 제63조 — 간이과세자 납부세액(공급대가 × 업종별 부가가치율 × 10%)', url: 'https://www.law.go.kr/법령/부가가치세법/제63조' },
+  { label: '부가가치세법 시행령 제111조 — 업종별 부가가치율(소매업 15%)', url: 'https://www.law.go.kr/법령/부가가치세법시행령/제111조' },
+]
+
 export const metadata: Metadata = {
   title: '마진 계산기 - 온라인 셀러 순이익·마진율 계산 | 툴허브',
   description: '온라인 셀러를 위한 마진 계산기. 쿠팡·스마트스토어·11번가 수수료, 배송비, 포장비, 부가세를 반영한 실제 순이익과 마진율을 계산하세요.',
@@ -42,7 +48,7 @@ export default function MarginCalculatorPage() {
   const faq = [
     { q: '마진율과 마크업률의 차이는?', a: '마진율은 판매가 대비 이익 비율(순이익/판매가×100), 마크업률은 원가 대비 이익 비율(순이익/원가×100)입니다. 같은 상품이라도 마크업률이 항상 더 높게 나옵니다.' },
     { q: '쿠팡 판매 수수료는 얼마인가요?', a: '쿠팡 판매 수수료는 카테고리별로 4%~10.9%입니다. 최종 결제금액(배송비 포함) 기준으로 부과되며, 월 서비스 이용료 55,000원이 별도로 있습니다(월매출 100만원 초과 시).' },
-    { q: '부가세는 어떻게 계산하나요?', a: '일반과세자는 매출세액(판매가의 10%)에서 매입세액(원가의 10%)을 뺀 차액을 납부합니다. 실질적으로 마진(판매가-원가)의 약 10%가 부가세입니다. 간이과세자는 낮은 부가가치율이 적용됩니다.' },
+    { q: '부가세는 어떻게 계산하나요?', a: '일반과세자는 매출세액(판매가의 10%)에서 매입세액(원가의 10%)을 뺀 차액을 납부합니다. 실질적으로 마진(판매가-원가)의 약 10%가 부가세입니다. 간이과세자는 판매가 × 업종별 부가가치율(소매 15%) × 10%에서 매입액의 0.5%를 뺀 금액을 냅니다.' },
   ]
   return (
     <>
@@ -51,6 +57,17 @@ export default function MarginCalculatorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper><MarginCalculator />  <div className="mt-8">
     <ToolFaq items={faq} />
+    <section className="max-w-4xl mx-auto my-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+      <h2 className="text-base font-semibold text-fg mb-3">부가세 근거·출처</h2>
+      <ul className="space-y-1.5">
+        {sources.map((s) => (
+          <li key={s.url}>
+            <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3">기준: 2026년 현행 부가가치세법. 간이과세자는 소매업 부가가치율 15%로 계산하고, 원가를 세금계산서로 산 매입으로 보아 매입 공급대가의 0.5%를 공제합니다(부가가치세법 제63조제3항). 플랫폼 판매 수수료는 2026년 10월 5일 확인한 네이버·쿠팡·11번가 공지 기준이며, 계약 조건에 따라 다르면 직접 입력하세요.</p>
+    </section>
     <RelatedTools />
   </div>
 </I18nWrapper>

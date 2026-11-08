@@ -20,6 +20,10 @@ export const metadata: Metadata = {
 }
 
 const faqs = messages.kimjangTiming.guide.faq.items
+const sources = [
+  { label: '기상청 보도자료 「2010년 김장시기 예상」 — 김장 적기 기온 기준', url: 'https://www.kma.go.kr/kma/flexer/html/press2/2010/11/12/ATC201011121007051_159f4576-cd97-491f-b8f7-10318deb0e9c.hwp.files/Sections1.html' },
+  { label: '웨더아이 — 지역별 평년 김장 시기(2019년 11월 5일)', url: 'https://weatheri.co.kr/board/board03_read.php?id=293' },
+]
 
 export default function KimjangTimingPage() {
   const jsonLd = {
@@ -44,6 +48,17 @@ export default function KimjangTimingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
             <KimjangTiming />
+            <section className="max-w-4xl mx-auto mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
+              <h2 className="text-base font-semibold text-fg mb-3">기준·출처</h2>
+              <ul className="space-y-1.5">
+                {sources.map((s) => (
+                  <li key={s.url}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3">기준: 2010년 11월 12일 기상청 보도자료의 김장 적기 정의(하루 최저기온 0℃ 이하, 하루 평균기온 4℃ 이하가 이어질 때)를 MET Norway 예보에 적용합니다. 평년 날짜는 웨더아이 자료이며, 예보가 바뀌면 적기 시작일도 달라집니다.</p>
+            </section>
             <div className="mt-8">
               <RelatedTools />
             </div>

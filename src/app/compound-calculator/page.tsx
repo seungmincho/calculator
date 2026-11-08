@@ -4,6 +4,11 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const sources = [
+  { label: '소득세법 제129조 — 이자·배당소득 원천징수세율 14%', url: 'https://www.law.go.kr/법령/소득세법/제129조' },
+  { label: '지방세법 제103조의13 — 지방소득세 특별징수(소득세의 10%, 1.4%)', url: 'https://www.law.go.kr/법령/지방세법/제103조의13' },
+]
+
 export const metadata: Metadata = {
   title: '복리 계산기 - 복리 이자, 투자 수익률 계산 | 툴허브',
   description: '복리 계산기 - 원금, 이율, 기간을 입력해 세후 복리 이자를 계산하세요. 거치식·적립식·목표 역산(월 적립액·필요 수익률), 72의 법칙, 단리 vs 복리 비교, 연도별 성장 그래프를 제공합니다.',
@@ -90,6 +95,17 @@ export default function CompoundCalculatorPage() {
             <li><strong>단리 vs 복리 비교:</strong> 단기(1~3년)에는 차이가 미미하지만 10년 이상 장기 투자에서는 복리가 압도적으로 유리합니다. 단리 vs 복리 카드에서 그 차이를 확인하세요.</li>
             <li><strong>인플레이션 고려:</strong> 명목 수익률에서 물가상승률(연 2~3%)을 빼면 대략의 실질 수익률이 됩니다(정확히는 (1+명목)÷(1+물가)−1). 실질 수익률을 기준으로 장기 계획을 세우는 것이 정확합니다.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">이자 과세 근거</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: 2026년 현행 소득세법·지방세법. 일반과세 15.4%는 소득세 14%에 지방소득세 1.4%를 더한 세율입니다. 복리 계산 자체는 입력한 수익률로 하는 수학 계산입니다.</p>
+          </div>
         </div>
       </section>
     </>

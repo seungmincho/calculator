@@ -4,6 +4,13 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const sources = [
+  { label: '서울특별시 — 서울 택시요금', url: 'https://news.seoul.go.kr/traffic/archives/1659' },
+  { label: '인천광역시 — 택시요금표', url: 'https://www.incheon.go.kr/traffic/TR010201' },
+  { label: '부산광역시 — 택시요금 인상 보도자료(2023년 6월 1일 시행)', url: 'https://www.busan.go.kr/nbtnewsBU/1565618' },
+  { label: '제주특별자치도 — 택시 요금(2024년 7월 1일 시행)', url: 'https://www.jeju.go.kr/traffic/bus/taxifee.htm' },
+]
+
 const TITLE = '택시 요금 계산기 - 심야·시외할증 계산 | 툴허브'
 const DESC = '지역과 이동거리를 입력해 예상 택시비를 계산하세요. 심야·시외할증을 반영하고 일반·모범·대형 택시 요금을 비교할 수 있습니다.'
 
@@ -84,6 +91,17 @@ export default function TaxiFarePage() {
             <li><strong>택시 종류 선택:</strong> 4명 이하는 일반택시가 가장 저렴하고, 5명 이상이거나 짐이 많으면 대형택시를 고려하세요. 모범·대형택시는 기본요금과 거리요금이 높아 심야에도 대부분 일반택시보다 비쌉니다.</li>
             <li><strong>앱 호출료 비교:</strong> 카카오T 일반 호출은 미터 요금만 부과되지만 블루·블랙은 호출료가 추가됩니다. 출퇴근 탄력요금도 확인하세요.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">요금 근거·출처</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: 2026년 10월 4일 확인한 시·도 요금 고시·보도자료. 도 지역은 도청 소재지나 대표 시의 요율이라 시·군마다 다를 수 있으니 탑승 지역 시·군청 고시를 함께 확인하세요.</p>
+          </div>
         </div>
       </section>
     </>

@@ -86,7 +86,8 @@ for (const p of idx) {
   if (ymyl.has(p.url)) {
     const gov = p.extLinks.filter(h => /\.(go|or|re)\.kr|law\.go\.kr|who\.int|\.gov\b/.test(h))
     if (!gov.length) add('ymyl.noOfficialSourceLink', p.url)
-    if (!/(20\d\d)\s*(년|\.|-)\s*\d{0,2}[^가-힣]{0,6}(기준|시행|개정|업데이트|갱신|적용)|(기준|시행|개정|업데이트|갱신)[^가-힣]{0,3}20\d\d/.test(p.mainText)) add('ymyl.noBasisDate', p.url)
+    // 'YYYY년 M월 D일 기준/확인'·'YYYY년 11월 현재 기준'도 기준일로 본다('2026년 12월 31일까지'·'2026년 최저임금 기준'은 아님)
+    if (!/(20\d\d)\s*(년|\.|-)\s*(\d{1,2}\s*(월|\.|-)\s*(\d{1,2}\s*(일|\.)?)?)?[^가-힣]{0,6}(현재\s*)?(기준|시행|개정|업데이트|갱신|적용|확인)|(기준|시행|개정|업데이트|갱신)[^가-힣]{0,3}20\d\d/.test(p.mainText)) add('ymyl.noBasisDate', p.url)
   }
 }
 for (const [t, us] of Object.entries(byTitle)) if (t && us.length > 1) add('title.duplicate', `${t} ← ${us.join(', ')}`)

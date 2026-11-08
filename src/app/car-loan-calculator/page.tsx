@@ -3,6 +3,14 @@ import CarLoanCalculator from '@/components/CarLoanCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { LIGHT_RELIEF_CAP } from '@/utils/carLoan'
+import { ACQ_RELIEF_CAP } from '@/utils/evSubsidy'
+
+const sources = [
+  { label: '지방세법 제12조 — 자동차 취득세율(비영업용 승용 7%, 경자동차 4%)', url: 'https://www.law.go.kr/법령/지방세법/제12조' },
+  { label: `지방세특례제한법 제66조 — 전기자동차 취득세 감면(한도 ${ACQ_RELIEF_CAP / 10_000}만원)`, url: 'https://www.law.go.kr/법령/지방세특례제한법/제66조' },
+  { label: `지방세특례제한법 제67조 — 경형자동차 취득세 감면(한도 ${LIGHT_RELIEF_CAP / 10_000}만원)`, url: 'https://www.law.go.kr/법령/지방세특례제한법/제67조' },
+]
 
 export const metadata: Metadata = {
   title: '자동차 할부 계산기 - 월 납입금 계산 | 툴허브',
@@ -115,6 +123,17 @@ export default function CarLoanCalculatorPage() {
             <li><strong>금리 협상:</strong> 같은 캐피털사도 영업점별로 금리가 다를 수 있으니 2~3곳 견적을 비교하세요.</li>
             <li><strong>중도상환 계획:</strong> 조기 상환 수수료를 확인하고, 여유 자금 생기면 원금을 빠르게 줄이는 전략이 유리합니다.</li>
           </ul>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">취득세 근거·출처</h3>
+          <div className="bg-subtle rounded-2xl p-5 text-sm text-sub">
+            <ul className="space-y-1.5">
+              {sources.map((s) => (
+                <li key={s.url}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">기준: 2026년 11월 현재 시행 중인 지방세법·지방세특례제한법. 전기차 감면은 2026년 12월 31일 취득분까지이며, 기한을 늘리고 한도를 70만원으로 낮추는 개정안이 국회에서 심사 중입니다. 할부 금리는 입력값으로 계산합니다.</p>
+          </div>
         </div>
       </section>
     </>

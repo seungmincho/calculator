@@ -92,7 +92,7 @@ export default function PensionTaxCreditPage() {
             <li><a href="/medical-tax-credit/" className="text-primary hover:underline">의료비 세액공제 계산기</a> · <a href="/rent-tax-credit/" className="text-primary hover:underline">월세 세액공제 계산기</a></li>
             <li><a href="/pension-calculator/" className="text-primary hover:underline">연금 계산기</a> — 연금 수령액 시뮬레이션</li>
           </ul>
-          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처 (2026년 10월 기준)</h3>
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처 (기준: 2026년 10월 시행 법령)</h3>
           <ul className="list-disc list-inside space-y-1.5 text-sm text-sub">
             {sources.map(([label, url]) => (
               <li key={url}><a href={url} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">{label}</a></li>

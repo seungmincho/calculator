@@ -3,6 +3,7 @@ import CardDeductionCalculator from '@/components/CardDeductionCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import { TAX_YEAR } from '@/utils/yearEndTax'
 
 export const metadata: Metadata = {
   title: '신용카드 소득공제 계산기 2026 - 25% 문턱·절세액 | 툴허브',
@@ -27,6 +28,13 @@ const faqs = [
   { q: '가족이 쓴 카드 사용액도 합산되나요?', a: '연간 소득금액 100만원 이하(근로소득만 있으면 총급여 500만원 이하)인 배우자와 직계존비속이 쓴 금액은 나이와 관계없이 합산할 수 있습니다. 형제자매가 쓴 금액은 합산되지 않습니다.' },
   { q: '카드로 결제했는데 공제되지 않는 항목은 무엇인가요?', a: '보험료, 국세·지방세와 공과금, 전기·수도·가스요금, 통신요금, 아파트 관리비, 상품권 구입, 해외 사용분, 현금서비스, 신차 구입은 사용액에서 빠집니다. 중고차는 구입금액의 10%만 사용액에 포함됩니다.' },
   { q: '카드 사용액은 언제까지 반영되나요?', a: '12월 31일 결제분까지 그해 연말정산에 반영됩니다. 다음 해 1월 15일 홈택스 연말정산 간소화 서비스가 열리면 카드사별 실제 사용액을 확인할 수 있습니다.' },
+]
+
+// 계산 근거: src/utils/yearEndTax.ts (cardDeduction·cardLimits 주석의 조문)
+const sources = [
+  { label: '조세특례제한법 제126조의2 (신용카드 등 사용금액 소득공제 — 공제율·총급여 25% 최저사용금액·기본·추가 한도)', url: 'https://www.law.go.kr/법령/조세특례제한법/제126조의2' },
+  { label: '조세특례제한법 시행령 제121조의2 (최저사용금액 차감 순서·사용액에서 빠지는 항목)', url: 'https://www.law.go.kr/법령/조세특례제한법시행령/제121조의2' },
+  { label: '국세청 홈택스 (연말정산 미리보기·간소화 서비스)', url: 'https://www.hometax.go.kr' },
 ]
 
 export default function CardDeductionPage() {
@@ -69,6 +77,16 @@ export default function CardDeductionPage() {
           <p className="text-sm text-muted mt-6">
             전체 환급액은 <a href="/year-end-tax/" className="text-primary hover:underline">연말정산 계산기</a>에서 인적공제·연금저축·의료비 등과 함께 계산할 수 있습니다.
           </p>
+
+          <h3 className="text-lg font-semibold text-fg mt-8 mb-3">근거 법령·출처</h3>
+          <ul className="space-y-1.5 text-sm text-sub">
+            {sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">{`기준: ${TAX_YEAR}년 귀속, 2026년 10월 4일 확인한 현행 조세특례제한법(2025년 12월 개정). 국회 심의 중인 2026년 세제개편안은 반영하지 않았습니다.`}</p>
         </div>
       </section>
     </>
