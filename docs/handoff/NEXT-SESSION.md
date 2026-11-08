@@ -2,7 +2,7 @@
 
 ## 지금 상태 (2026-11-08 밤)
 
-운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬 커밋 13개(be85fab7~db1cc5c8, 미푸시·미배포, SW v4.35.13 — 한 번에 배포하면 추가로 올릴 필요 없음). **dev 서버를 띄웠으므로 빌드 전에 끄고 `out/dev` 삭제.** 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`. **배포 직전 `node scripts/update-lotto-data.mjs`(1249회 11/7 추첨분부터).**
+운영·원격은 f62cda31(SW v4.35.12) 그대로. 로컬 커밋 13개(be85fab7~f41a3d58, 미푸시·미배포, SW v4.35.13 — 한 번에 배포하면 추가로 올릴 필요 없음). **dev 서버를 띄웠으므로 빌드 전에 끄고 `out/dev` 삭제.** 배포는 사용자가 한다 — 빌드 후 `check-static-html`, 배포 뒤 `node scripts/indexnow.mjs --recent 7`. **배포 직전 `node scripts/update-lotto-data.mjs`(1249회 11/7 추첨분부터).**
 
 ### 0-4. 2026-11-08 2차 묶음 (신규 3 사용자 기획 승인 + 개선 6)
 
