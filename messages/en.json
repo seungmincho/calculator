@@ -2550,6 +2550,8 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "resignationPay": "Resignation Payout Calculator",
+      "heaterElectricityCost": "Heater Electricity Cost Calculator",
       "childTaxCredit": "Child Tax Credit Calculator",
       "smeTaxExemption": "SME Employee Income Tax Exemption Calculator",
       "yearEndChecklist": "Year-End Tax Settlement Checklist",
@@ -3410,7 +3412,7 @@
         "ev": "EV / hydrogen",
         "normalHint": "Non-commercial passenger car acquisition tax 7% on the supply value (purchase price ÷ 1.1)",
         "lightHint": "Compact passenger car: 4%, with up to ₩750,000 exempted",
-        "evHint": "7% with up to ₩1,400,000 exempted (until Dec 31, 2026)"
+        "evHint": "7% with up to ₩1,400,000 exempted (EVs acquired through Dec 31, 2026; hydrogen through Dec 31, 2027)"
       },
       "loan": {
         "title": "Installment terms",
@@ -3606,7 +3608,7 @@
           },
           {
             "q": "How much is acquisition tax?",
-            "a": "Non-commercial passenger cars: 7% of the supply value (purchase price ÷ 1.1); compact cars: 4%. Compact cars get up to ₩750,000 exempted, EV/hydrogen cars up to ₩1,400,000 until Dec 31, 2026. Regional bonds, plates and stamp duty are extra."
+            "a": "Non-commercial passenger cars: 7% of the supply value (purchase price ÷ 1.1); compact cars: 4%. Compact cars get up to ₩750,000 exempted, EVs up to ₩1,400,000 for acquisitions through Dec 31, 2026 and hydrogen cars through Dec 31, 2027 (a government bill before the National Assembly would cut the EV cap to ₩700,000 from 2027). Regional bonds, plates and stamp duty are extra."
           },
           {
             "q": "What is a typical car installment rate?",
@@ -3755,9 +3757,9 @@
         "stakeLabel": "Relief for this car",
         "electric": {
           "title": "EV acquisition tax relief: acquisitions through Dec 31, 2026",
-          "stake": "Under current law (Restriction of Special Local Taxation Act, Art. 66④) the relief covers acquisitions this year only. Unless it is extended, acquiring in 2027 would cost this much more, so check your delivery and registration dates.",
+          "stake": "Under current law (Restriction of Special Local Taxation Act, Art. 66④) the relief covers acquisitions this year only. A government bill before the National Assembly would cut the cap to 0.7M KRW for acquisitions from 2027; if it does not pass, the relief ends. Check your delivery and registration dates.",
           "noStake": "Another relief (multi-child, disability, etc.) is larger, so the end of the EV relief does not raise the tax for this car.",
-          "ended": "The EV relief deadline (Dec 31, 2026) has passed. The result above still includes it, so check whether the law was extended."
+          "ended": "The EV relief deadline (Dec 31, 2026) has passed. The result above still applies the 1.4M KRW cap; under the government bill the cap is 0.7M KRW for acquisitions from 2027, so check what the law now says."
         },
         "compact": {
           "title": "Light car relief: acquisitions through Dec 31, 2027",
@@ -7441,6 +7443,14 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "resignationPay": {
+        "title": "Resignation Payout Calculator",
+        "description": "Pick your last day to see severance, unused leave pay, unemployment benefits and the year-end tax settlement in one total, plus what to do after you leave"
+      },
+      "heaterElectricityCost": {
+        "title": "Heater Electricity Cost Calculator",
+        "description": "How much an electric blanket, fan heater or radiator adds to this month's bill, including progressive rate tiers"
+      },
       "childTaxCredit": {
         "title": "Child Tax Credit Calculator",
         "description": "Whether each child qualifies this year by birth year, the credit amount, birth/adoption credit, and which spouse should claim"
@@ -21930,7 +21940,8 @@
   },
   "homePage": {
     "newTools": {
-      "title": "New tools",
+      "updated": "Updated {m}/{d}",
+      "title": "New & updated",
       "date": "{m}/{d}",
       "more": "Show more",
       "less": "Show less"
@@ -31880,7 +31891,7 @@
       },
       "stressHint": "Stress add-on +{add}%p → the limit is tested at {rate}% a year.",
       "creditStress": "For credit loans the add-on applies only when total credit balances (incl. overdraft limits) exceed KRW 100M.",
-      "localStress": "The 0.75%p regional mortgage rate is a grace level that applies through 2026-12-31."
+      "localStress": "The 0.75%p regional mortgage rate is a grace level that applies through 2026-12-31. The level from 2027 has not been announced yet (as of Nov 2026), so this value is used."
     },
     "ex": {
       "title": "Existing loans",
@@ -44659,7 +44670,7 @@
         "tax": "Acquisition tax (before relief)",
         "relief": "EV relief",
         "pay": "Tax payable",
-        "note": "Restriction of Special Local Taxation Act §66: cap 1.4M KRW for registrations through Dec 31, 2026. A bill to cut the cap to 0.7M KRW from 2027 (extended to 2029) is in pre-announcement. Bonds, plates and delivery fees not included."
+        "note": "Restriction of Special Local Taxation Act §66④: cap 1.4M KRW for acquisitions through Dec 31, 2026. A government bill to cut the cap to 0.7M KRW from 2027 and extend it to 2029 is before the National Assembly (submitted Oct 2026). Bonds, plates and delivery fees not included."
       },
       "cmpRegion": {
         "title": "Compare areas in {sido}",
@@ -44751,7 +44762,7 @@
           },
           {
             "q": "What changes in 2027?",
-            "a": "Price thresholds are expected to drop to ₩50M (100%) and ₩80M (50%), and a bill to cut the EV acquisition tax relief cap from ₩1.4M to ₩0.7M is in pre-announcement."
+            "a": "Price thresholds are expected to drop to ₩50M (100%) and ₩80M (50%), and a bill to cut the EV acquisition tax relief cap from ₩1.4M to ₩0.7M and extend it to 2029 is before the National Assembly."
           }
         ]
       }

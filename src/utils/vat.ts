@@ -96,6 +96,7 @@ export function decodeLines(s: string): Line[] {
 // ── 부가세 신고 예상 ──
 export const SIMPLE_THRESHOLD = 104_000_000 // 간이과세 기준(직전 연도 공급대가, 2024.7.1~) — 시행령 제109조
 export const SIMPLE_EXEMPT = 48_000_000     // 해당 과세기간 공급대가 미만이면 납부의무 면제 — 법 제69조
+// 2027.1.1 공급분부터: 2026 세제개편안(정부안, 국회 심의 중) 1.2%·연 500만원(~2029.12.31). 통과되면 공급일 기준으로 나눌 것
 export const CARD_RATE = 0.013              // 2026.12.31 공급분까지 1.3% (원칙 1%) — 법 제46조
 export const CARD_LIMIT = 10_000_000        // 연간 한도
 export const E_FILING_CREDIT = 10_000       // 확정신고 전자신고세액공제 — 조특법 제104조의8
