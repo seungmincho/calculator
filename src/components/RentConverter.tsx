@@ -50,6 +50,10 @@ export default function RentConverter() {
     for (const old of ['rwd', 'rcr']) url.searchParams.delete(old)
     url.searchParams.set('mode', s.mode)
     for (const k of Object.keys(DEFAULTS) as NumKey[]) url.searchParams.set(k, String(s[k]))
+    // 기본값 그대로면 쿼리를 붙이지 않음 (첫 방문 URL 깔끔하게) — 키가 없으면 decode 가 DEFAULTS
+    if (s.mode === 'jeonseToWolse' && (Object.keys(DEFAULTS) as NumKey[]).every((k) => s[k] === DEFAULTS[k])) {
+      for (const k of ['mode', ...Object.keys(DEFAULTS)]) url.searchParams.delete(k)
+    }
     window.history.replaceState({}, '', url)
   }, [s])
 

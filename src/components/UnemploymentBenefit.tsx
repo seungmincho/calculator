@@ -81,6 +81,9 @@ export default function UnemploymentBenefit() {
     sp.set('reason', reason); sp.set('leave', leave)
     if (hours !== 8) sp.set('h', String(hours)); else sp.delete('h')
     if (!insured) sp.set('ins', '0'); else sp.delete('ins')
+    // 기본값(월급 300만·50세 미만·1~3년·비자발·오늘 퇴사)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    if (mode === 'month' && amount === DEFAULT_AMOUNT.month && age === 'under50' && period === '1to3' && reason === 'involuntary'
+      && leave === todayKST() && hours === 8 && insured) ['mode', 'amt', 'age', 'period', 'reason', 'leave'].forEach((k) => sp.delete(k))
     window.history.replaceState({}, '', url)
   }, [ready, mode, amount, age, period, reason, leave, hours, insured])
 

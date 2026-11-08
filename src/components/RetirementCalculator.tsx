@@ -79,7 +79,10 @@ export default function RetirementCalculator() {
     for (const k of ['salary', 'years', 'months', 'start', 'end']) url.searchParams.delete(k)
     const detail = mode === 'detail'
     const q = { s: start, e: end, mode: detail ? 'detail' : '', pay, m1: detail ? m1 : '', m2: detail ? m2 : '', m3: detail ? m3 : '', ord: detail ? ord : '', bonus: bonus || '0', leave: leave || '0' } // 빈칸(=0)을 빼면 받는 쪽이 기본값(400만·50만)으로 계산
-    for (const [k, v] of Object.entries(q)) { if (v) url.searchParams.set(k, v); else url.searchParams.delete(k) }
+    // 기본값(오늘 기준 5년 근속·월 350만·상여 400만·연차 50만)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const end0 = today()
+    const isDef = !detail && pay === '3500000' && bonus === '4000000' && leave === '500000' && end === end0 && start === addMonths(end0, -60)
+    for (const [k, v] of Object.entries(q)) { if (v && !isDef) url.searchParams.set(k, v); else url.searchParams.delete(k) }
     window.history.replaceState(window.history.state, '', url)
     setSaved(false)
   }, [start, end, mode, pay, m1, m2, m3, ord, bonus, leave])

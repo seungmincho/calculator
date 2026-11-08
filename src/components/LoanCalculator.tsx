@@ -55,8 +55,11 @@ export default function LoanCalculator() {
   useEffect(() => {
     const url = new URL(window.location.href)
     for (const old of ['amount', 'rate', 'term', 'types']) url.searchParams.delete(old)
+    const hidden = s.mode === 'rev' ? 'am' : 'pay'
+    // 기본값 그대로면 쿼리를 붙이지 않음 (첫 방문 URL 깔끔하게) — 키가 없으면 decode 가 DEFAULTS
+    const isDef = (Object.keys(s) as (keyof State)[]).every((k) => k === hidden || s[k] === DEFAULTS[k])
     for (const [k, v] of Object.entries(s)) {
-      if (k === (s.mode === 'rev' ? 'am' : 'pay')) url.searchParams.delete(k)
+      if (isDef || k === hidden) url.searchParams.delete(k)
       else url.searchParams.set(k, String(v))
     }
     window.history.replaceState({}, '', url)

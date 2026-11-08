@@ -33,7 +33,8 @@ export default function HolidayPlanner({ buildDate }: { buildDate: string }) {
 
   const urlYear = Number(sp.get('y'))
   const [picked, setYear] = useState<number | null>(null)
-  const year = picked ?? (years.includes(urlYear) ? urlYear : now.getMonth() >= 9 ? thisYear + 1 : thisYear)
+  const defYear = now.getMonth() >= 9 ? thisYear + 1 : thisYear
+  const year = picked ?? (years.includes(urlYear) ? urlYear : defYear)
   const [k, setK] = useState(() => {
     const n = Math.floor(Number(sp.get('k')))
     return n >= 1 && n <= MAX_LEAVE ? n : 5
@@ -46,8 +47,10 @@ export default function HolidayPlanner({ buildDate }: { buildDate: string }) {
     const q = new URLSearchParams({ y: String(year), k: String(k) })
     if (mode === 'long') q.set('m', 'long')
     if (!skipPast) q.set('p', '0')
-    window.history.replaceState(null, '', `?${q}`)
-  }, [hydrated, year, k, mode, skipPast])
+    // 기본값(그 시점 기본 연도·5일·총 휴일·지난 날 제외)이면 쿼리를 붙이지 않음
+    const isDef = year === defYear && k === 5 && mode === 'total' && skipPast
+    window.history.replaceState(null, '', isDef ? window.location.pathname : `?${q}`)
+  }, [hydrated, year, defYear, k, mode, skipPast])
 
   const from = year === thisYear && skipPast && today ? today : ''
   const p = useMemo(() => makePlan(year, k, mode, from), [year, k, mode, from])

@@ -126,7 +126,12 @@ export default function BogeumjariLoanCalculator() {
     if (digits(debt)) params.set('debt', String(digits(debt)));
     if (digits(want)) params.set('want', String(digits(want)));
     if (perks.length) params.set('perks', perks.join(','));
-    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}`);
+    // 기본값 그대로면 쿼리를 붙이지 않음 (첫 방문 URL 깔끔하게) — 키가 없으면 받는 쪽도 DEFAULTS
+    const isDef = incomeNum === digits(DEFAULTS.income) && priceNum === digits(DEFAULTS.price) && loanType === DEFAULTS.type
+      && children === DEFAULTS.children && period === DEFAULTS.period && age === DEFAULTS.age && owned === DEFAULTS.owned
+      && kind === DEFAULTS.kind && region === DEFAULTS.region && method === DEFAULTS.method && credit === DEFAULTS.credit
+      && !digits(debt) && !digits(want) && !perks.length;
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${isDef ? '' : `?${params}`}`);
   }, [urlLoaded, incomeNum, priceNum, loanType, children, period, age, owned, kind, region, credit, method, debt, want, perks]);
 
   const won = (n: number) => t('won', { n: Math.round(n).toLocaleString() });

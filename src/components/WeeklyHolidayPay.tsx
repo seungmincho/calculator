@@ -76,9 +76,11 @@ export default function WeeklyHolidayPay() {
     else { p.set('days', String(days)); p.set('hours', String(hours)) }
     if (brk) p.set('brk', String(brk))
     if (deduct !== 'none') p.set('ded', deduct)
-    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}?${p}`), 300)
+    // 기본값(올해 최저시급·주 5일·하루 4시간)이면 쿼리를 붙이지 않음 — 키가 없으면 받는 쪽도 같은 기본값
+    const isDef = wage === mw.wage && mode === 'even' && days === 5 && hours === 4 && !brk && deduct === 'none'
+    const id = setTimeout(() => window.history.replaceState(null, '', `${window.location.pathname}${isDef ? '' : `?${p}`}`), 300)
     return () => clearTimeout(id)
-  }, [wage, mode, days, hours, perDay, brk, deduct])
+  }, [wage, mw.wage, mode, days, hours, perDay, brk, deduct])
 
   const ded = monthlyDeduction(r.monthlyTotal, deduct)
   const incomeTax = useMemo(() => {
