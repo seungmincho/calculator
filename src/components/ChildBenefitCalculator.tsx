@@ -18,6 +18,7 @@ import {
   ComposedChart,
 } from 'recharts'
 import GuideSection from '@/components/GuideSection'
+import { useHydrated } from '@/hooks/useHydrated'
 
 import { calcBenefits, timeline, cumulative, type BenefitBreakdown } from '@/utils/childBenefit'
 
@@ -57,7 +58,7 @@ const COLORS = {
   childcareAllowance: '#f59e0b',
 }
 
-export default function ChildBenefitCalculator() {
+export default function ChildBenefitCalculator({ buildDate }: { buildDate: string }) {
   const t = useTranslations('childBenefit')
 
   const [children, setChildren] = useState<ChildEntry[]>([
@@ -126,7 +127,8 @@ export default function ChildBenefitCalculator() {
   const monthlyTotal = useMemo(() => results.reduce((s, r) => s + r.total, 0), [results])
   const yearlyTotal = useMemo(() => monthlyTotal * 12, [monthlyTotal])
 
-  const thisYear = new Date().getFullYear()
+  // 정적 HTML·첫 렌더는 빌드 연도, 마운트 후 올해 (1월 1일 전후 hydration 불일치 방지)
+  const thisYear = useHydrated() ? new Date().getFullYear() : Number(buildDate.slice(0, 4))
   const timelineData = useMemo(() => buildTimelineData(thisYear), [thisYear])
 
   const cumulativeNoDay = useMemo(() => cumulative(thisYear, false), [thisYear])
@@ -139,8 +141,7 @@ export default function ChildBenefitCalculator() {
     }
   }, [t])
 
-  const currentYear = new Date().getFullYear()
-  const yearOptions = Array.from({ length: 9 }, (_, i) => currentYear - i)
+  const yearOptions = Array.from({ length: 9 }, (_, i) => thisYear - i)
   const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1)
 
   const allValid = children.every(c => c.birthYear && c.birthMonth)

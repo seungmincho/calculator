@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/freelancerTax'
 import { AlertCircle, ExternalLink } from 'lucide-react'
@@ -22,7 +23,7 @@ const approxMan = (n: number) => Math.round(Math.abs(n) / 10_000)
 const METHODS: Method[] = ['simple', 'standard', 'book']
 const M_CODE: Record<Method, string> = { simple: 's', standard: 'd', book: 'b' }
 
-export default function FreelancerTax() {
+export default function FreelancerTax({ buildDate }: { buildDate: string }) {
   const t = useTranslations('freelancerTax')
   const searchParams = useSearchParams()
 
@@ -82,10 +83,10 @@ export default function FreelancerTax() {
   const base = { revenue: rev, prev: prv, industry, major: num(major), bookExpense: num(book), persons, children, pension: num(pension), yellow: num(yellow) }
   const all = METHODS.map((m) => calc({ ...base, method: m }))
   const res = all[METHODS.indexOf(active)]
-  // 날짜 의존 값은 마운트 후 계산 (정적 빌드 시점 날짜로 hydration 불일치 방지)
-  const [filing, setFiling] = useState<ReturnType<typeof nextFiling> | null>(null)
-  useEffect(() => setFiling(nextFiling(new Date())), [])
-  const taxYear = filing?.taxYear ?? new Date().getFullYear() - 1
+  // 날짜 의존 값: 정적 HTML·첫 렌더는 빌드 날짜, 마운트 후 오늘 (hydration 불일치 방지). D-day 는 마운트 후에만
+  const hydrated = useHydrated()
+  const filing = useMemo(() => nextFiling(hydrated ? new Date() : new Date(`${buildDate}T00:00`)), [hydrated, buildDate])
+  const taxYear = filing.taxYear
 
   const refundKind = res.refund > 0 ? 'refund' : res.refund < 0 ? 'pay' : 'zero'
   const headline = refundKind === 'zero' ? t('ft.hero.zero') : t(`ft.hero.${refundKind}`, { amount: won(approxMan(res.refund)), amountWon: won(approxMan(res.refund) * 10_000) })
@@ -185,7 +186,7 @@ export default function FreelancerTax() {
             <div className="flex flex-wrap gap-2 mt-4">
               <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{methodName(active)}</span>
               <span className="rounded-full bg-white/15 px-3 py-1 text-sm">{t('ft.hero.eff', { rate: res.effRate.toFixed(1) })}</span>
-              {filing && (
+              {hydrated && (
                 <span className="rounded-full bg-white/15 px-3 py-1 text-sm">
                   {filing.days === 0 ? t('ft.hero.ddayToday') : t('ft.hero.dday', { days: filing.days, date: filing.dateStr })}
                 </span>

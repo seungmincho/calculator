@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
 import TaxSeason from '@/components/TaxSeason'
+import { todayKST } from '@/utils/dday'
 import I18nWrapper from '@/components/I18nWrapper'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import taxSeasonMessages from '../../../messages/generated/ko/ns/taxSeason.json'
+
+// 정적 HTML 은 빌드 날짜(KST) 기준으로 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다 (hydration 불일치 방지)
+const buildDate = todayKST()
 
 export const metadata: Metadata = {
   title: '5월 종합소득세 신고 가이드 | 툴허브',
@@ -123,7 +127,7 @@ export default function TaxSeasonPage() {
       <div className="min-h-screen py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
-              <TaxSeason />
+              <TaxSeason buildDate={buildDate} />
             </I18nWrapper>
         </div>
       </div>

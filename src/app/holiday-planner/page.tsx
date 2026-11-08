@@ -1,8 +1,12 @@
 import { Metadata } from 'next'
 import HolidayPlanner from '@/components/HolidayPlanner'
+import { todayKST } from '@/utils/dday'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { getKoreanHolidays } from '@/utils/koreanHolidays'
+
+// 정적 HTML 은 빌드 날짜(KST) 기준으로 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다 (hydration 불일치 방지)
+const buildDate = todayKST()
 
 export const metadata: Metadata = {
   title: '연휴 플래너 - 2027 공휴일·연차 붙이기 추천 | 툴허브',
@@ -59,7 +63,7 @@ export default function HolidayPlannerPage() {
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
-            <HolidayPlanner />
+            <HolidayPlanner buildDate={buildDate} />
             <div className="mt-8">
               <RelatedTools />
             </div>

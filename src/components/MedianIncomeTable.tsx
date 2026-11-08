@@ -7,6 +7,7 @@ import { glassCard, glassInset, glassInput } from '@/lib/glass';
 import { useTranslations } from '@/lib/i18n';
 import '@/lib/i18n/ns/medianIncome';
 import { MEDIAN_INCOME, MEDIAN_YEARS, yearInForce } from '@/utils/medianIncome';
+import { useHydrated } from '@/hooks/useHydrated';
 
 // 중위소득 데이터 (월/원) - [1인, 2인, 3인, 4인, 5인, 6인 가구] — 고시 출처는 utils/medianIncome.ts
 const medianIncomeData = MEDIAN_INCOME;
@@ -486,10 +487,13 @@ const IncomeEligibilityChecker = ({ medianIncomeData, formatCurrency }: IncomeEl
   );
 };
 
-const MedianIncomeTable = () => {
+const MedianIncomeTable = ({ buildDate }: { buildDate: string }) => {
   const t = useTranslations('medianIncome');
-  const currentYear = yearInForce();
-  const [selectedYear, setSelectedYear] = useState<YearType>(currentYear);
+  // 정적 HTML·첫 렌더는 빌드 날짜 기준 연도, 마운트 후 오늘 기준 (1월 1일 전후 hydration 불일치 방지)
+  const hydrated = useHydrated();
+  const currentYear = yearInForce(hydrated ? undefined : new Date(`${buildDate}T12:00`));
+  const [picked, setSelectedYear] = useState<YearType | null>(null);
+  const selectedYear = picked ?? currentYear;
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [customPercentage, setCustomPercentage] = useState<string>('');
 

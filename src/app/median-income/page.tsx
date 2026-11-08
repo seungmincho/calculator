@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
 import I18nWrapper from '@/components/I18nWrapper'
 import MedianIncomeTable from '@/components/MedianIncomeTable'
+import { todayKST } from '@/utils/dday'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+
+// 정적 HTML 은 빌드 날짜(KST) 기준으로 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다 (hydration 불일치 방지)
+const buildDate = todayKST()
 
 export const metadata: Metadata = {
   title: '기준 중위소득 조회 - 가구별 기준 | 툴허브',
@@ -69,7 +73,7 @@ export default function MedianIncomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <I18nWrapper>
-        <MedianIncomeTable />
+        <MedianIncomeTable buildDate={buildDate} />
         <ToolFaq items={faq} />
         <div className="mt-8">
 

@@ -1,8 +1,12 @@
 import { Metadata } from 'next'
 import FreelancerTax from '@/components/FreelancerTax'
+import { todayKST } from '@/utils/dday'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+
+// 정적 HTML 은 빌드 날짜(KST) 기준으로 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다 (hydration 불일치 방지)
+const buildDate = todayKST()
 
 export const metadata: Metadata = {
   title: '프리랜서 세금 계산기 - 3.3% 원천징수, 종합소득세 환급액 계산 | 툴허브',
@@ -70,7 +74,7 @@ export default function FreelancerTaxPage() {
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
-              <FreelancerTax />
+              <FreelancerTax buildDate={buildDate} />
               <ToolFaq items={faqData.map((f) => ({ q: f.question, a: f.answer }))} />
               <div className="mt-8">
                 <RelatedTools />

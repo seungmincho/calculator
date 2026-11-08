@@ -8,6 +8,7 @@ import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, ty
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { usePopularTools } from '@/hooks/useToolAnalytics'
+import { useHydrated } from '@/hooks/useHydrated'
 import SearchDialog from './SearchDialog'
 import ToolAnalyticsDashboard from './ToolAnalyticsDashboard'
 import ToolIcon from './ToolIcon'
@@ -46,6 +47,8 @@ export default function HomePage() {
   const [puzzles, setPuzzles] = useState<Record<string, PuzzleStatus>>({})
   const [seasonPicks, setSeasonPicks] = useState<SeasonPick[]>([])
   const [deadlines, setDeadlines] = useState<Deadline[]>([])
+  // NEW 배지(addedDate 30일)는 오늘 날짜에 달려 있어 마운트 후에만 — 빌드일·방문일 사이에 30일이 끝난 도구가 있으면 hydration 불일치
+  const hydrated = useHydrated()
 
   useEffect(() => {
     // Keep the server HTML and first client render identical; storage is read after hydration.
@@ -187,7 +190,7 @@ export default function HomePage() {
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5 text-[15px] font-semibold text-fg">
             <span className="truncate">{t(item.labelKey)}</span>
-            {isNewTool(item) && <span className="shrink-0 text-[10px] font-bold text-primary">NEW</span>}
+            {hydrated && isNewTool(item) && <span className="shrink-0 text-[10px] font-bold text-primary">NEW</span>}
           </div>
           <div className="text-[13px] text-muted truncate">{t(item.descriptionKey)}</div>
         </div>

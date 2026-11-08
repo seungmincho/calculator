@@ -27,6 +27,7 @@ import RelatedTools from '@/components/RelatedTools'
 import GuideSection from '@/components/GuideSection'
 import { glassCard, glassInset } from '@/lib/glass'
 import { nextFiling } from '@/utils/freelancerTax'
+import { useHydrated } from '@/hooks/useHydrated'
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -104,17 +105,18 @@ const RELATED_TOOLS = [
   },
 ]
 
-export default function TaxSeason() {
+export default function TaxSeason({ buildDate }: { buildDate: string }) {
   const t = useTranslations('taxSeason')
 
   // 다음 신고 기한: 5월 31일, 토·일·공휴일이면 다음 영업일 (국세기본법 §5)
-  const now = new Date()
-  const filing = useMemo(() => nextFiling(new Date()), [])
+  // 정적 HTML·첫 렌더는 빌드 날짜 기준, 마운트 후 오늘 기준 (6월 1일 전후 hydration 불일치 방지)
+  const hydrated = useHydrated()
+  const filing = useMemo(() => nextFiling(hydrated ? new Date() : new Date(`${buildDate}T00:00`)), [hydrated, buildDate])
   const deadline = useMemo(() => { const d = new Date(filing.deadline); d.setHours(23, 59, 59); return d }, [filing])
   const year = filing.deadline.getFullYear()
   const countdown = useCountdown(deadline)
 
-  const isPast = deadline.getTime() <= now.getTime()
+  const isPast = hydrated && deadline.getTime() <= new Date().getTime()
 
   return (
     <div className="space-y-10">

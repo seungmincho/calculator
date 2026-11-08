@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from 'react'
 import { Copy, Check, Clock } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
+import { useHydrated } from '@/hooks/useHydrated'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -449,7 +450,9 @@ export default function CrontabGenerator() {
 
   const expression = useMemo(() => buildExpression(cronState), [cronState])
   const description = useMemo(() => describeCron(expression), [expression])
-  const nextTimes = useMemo(() => getNextExecutions(expression, 5), [expression])
+  // 다음 실행 시각은 지금 시각 기준 → 정적 HTML 에 넣으면 방문마다 hydration 불일치. 마운트 후에만 계산
+  const hydrated = useHydrated()
+  const nextTimes = useMemo(() => (hydrated ? getNextExecutions(expression, 5) : []), [hydrated, expression])
 
   const handleFieldChange = useCallback((key: CronField, state: FieldState) => {
     setCronState(prev => ({ ...prev, [key]: state }))
@@ -554,7 +557,7 @@ export default function CrontabGenerator() {
           <h2 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">
             다음 5회 실행 시간
           </h2>
-          {nextTimes.length > 0 ? (
+          {!hydrated ? null : nextTimes.length > 0 ? (
             <ol className="space-y-2">
               {nextTimes.map((d, i) => (
                 <li key={i} className="flex items-center gap-3">

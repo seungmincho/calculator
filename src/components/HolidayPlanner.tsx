@@ -7,6 +7,7 @@ import { CalendarPlus, Minus, Plus } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/holidayPlanner'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import { plan as makePlan, toIcs, MAX_LEAVE, type Break, type Day, type Mode } from '@/utils/holidayPlanner'
@@ -20,33 +21,33 @@ const parts = (s: string) => {
   return { y, m, d, w: new Date(Date.UTC(y, m - 1, d)).getUTCDay() }
 }
 
-export default function HolidayPlanner() {
+export default function HolidayPlanner({ buildDate }: { buildDate: string }) {
   const t = useTranslations('holidayPlanner')
   const sp = useSearchParams()
-  // ponytail: 기본 연도는 렌더 시점 날짜 기준. 빌드일과 방문일이 10월 1일·1월 1일을 사이에 두면 hydration 경고 1건(클라이언트 값으로 복구)
-  const now = new Date()
+  // 정적 HTML·첫 렌더는 빌드 날짜, 마운트 후 오늘 날짜 → 빌드일과 방문일이 10월 1일·1월 1일을 사이에 둬도 hydration 불일치 없음
+  const hydrated = useHydrated()
+  const now = hydrated ? new Date() : new Date(`${buildDate}T12:00`)
   const thisYear = now.getFullYear()
   const years = [thisYear, thisYear + 1]
+  const today = hydrated ? now.toLocaleDateString('sv-SE') : null // 정적 HTML은 지난 날짜 제외 없이
 
-  const [year, setYear] = useState(() => {
-    const y = Number(sp.get('y'))
-    return years.includes(y) ? y : now.getMonth() >= 9 ? thisYear + 1 : thisYear
-  })
+  const urlYear = Number(sp.get('y'))
+  const [picked, setYear] = useState<number | null>(null)
+  const year = picked ?? (years.includes(urlYear) ? urlYear : now.getMonth() >= 9 ? thisYear + 1 : thisYear)
   const [k, setK] = useState(() => {
     const n = Math.floor(Number(sp.get('k')))
     return n >= 1 && n <= MAX_LEAVE ? n : 5
   })
   const [mode, setMode] = useState<Mode>(() => (sp.get('m') === 'long' ? 'long' : 'total'))
   const [skipPast, setSkipPast] = useState(() => sp.get('p') !== '0')
-  const [today, setToday] = useState<string | null>(null) // 클라이언트에서만 (정적 HTML은 지난 날짜 제외 없이)
-  useEffect(() => setToday(new Date().toLocaleDateString('sv-SE')), [])
 
   useEffect(() => {
+    if (!hydrated) return // 빌드 날짜 기준 연도를 URL 에 박지 않게
     const q = new URLSearchParams({ y: String(year), k: String(k) })
     if (mode === 'long') q.set('m', 'long')
     if (!skipPast) q.set('p', '0')
     window.history.replaceState(null, '', `?${q}`)
-  }, [year, k, mode, skipPast])
+  }, [hydrated, year, k, mode, skipPast])
 
   const from = year === thisYear && skipPast && today ? today : ''
   const p = useMemo(() => makePlan(year, k, mode, from), [year, k, mode, from])

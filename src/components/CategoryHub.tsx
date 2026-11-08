@@ -5,10 +5,12 @@ import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import { menuConfig, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { glassCard } from '@/lib/glass'
+import { useHydrated } from '@/hooks/useHydrated'
 
 /** 카테고리 허브: 서브카테고리별 전체 도구 링크 그리드 (raw HTML에 모든 링크 노출 — 크롤 발견용) */
 export default function CategoryHub({ category }: { category: CategoryKey }) {
   const t = useTranslations()
+  const hydrated = useHydrated() // NEW 배지는 오늘 날짜 기준이라 마운트 후에만 (hydration 불일치 방지)
   const groups = new Map<string, MenuItem[]>()
   for (const item of menuConfig[category].items) {
     const key = item.subcategory ?? ''
@@ -36,7 +38,7 @@ export default function CategoryHub({ category }: { category: CategoryKey }) {
                   <span className="min-w-0">
                     <span className="flex items-center gap-2 font-medium text-fg">
                       {t(item.labelKey)}
-                      {isNewTool(item) && (
+                      {hydrated && isNewTool(item) && (
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">NEW</span>
                       )}
                     </span>

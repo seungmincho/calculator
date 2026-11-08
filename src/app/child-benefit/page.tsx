@@ -1,7 +1,11 @@
 import { Metadata } from 'next'
 import ChildBenefitCalculator from '@/components/ChildBenefitCalculator'
+import { todayKST } from '@/utils/dday'
 import I18nWrapper from '@/components/I18nWrapper'
 import ToolFaq from '@/components/ToolFaq'
+
+// 정적 HTML 은 빌드 날짜(KST) 기준으로 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다 (hydration 불일치 방지)
+const buildDate = todayKST()
 
 export const metadata: Metadata = {
   title: '부모급여·아동수당 계산기 - 자녀 수당 한번에 확인 | 툴허브',
@@ -95,7 +99,7 @@ export default function ChildBenefitPage() {
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
-              <ChildBenefitCalculator />
+              <ChildBenefitCalculator buildDate={buildDate} />
               <ToolFaq items={faq} />
             </I18nWrapper>
         </div>
