@@ -5,8 +5,29 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sat, 07 Nov 2026 08:24:16 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2026 02:54:03 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[연말정산 부양가족 공제 판정]]></title>
+    <link>https://toolhub.ai.kr/dependent-deduction/</link>
+    <guid>https://toolhub.ai.kr/dependent-deduction/</guid>
+    <description><![CDATA[가족별 나이·소득 요건 판정과 이유, 줄어드는 세금, 맞벌이 부부가 누구 앞으로 받아야 유리한지]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[기부금 세액공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/donation-tax-credit/</link>
+    <guid>https://toolhub.ai.kr/donation-tax-credit/</guid>
+    <description><![CDATA[정치자금·특례·일반·종교단체 기부금 한도와 공제율, 돌려받는 금액과 한도 초과분 이월]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[교육비 세액공제 계산기]]></title>
+    <link>https://toolhub.ai.kr/education-tax-credit/</link>
+    <guid>https://toolhub.ai.kr/education-tax-credit/</guid>
+    <description><![CDATA[가족별 교육비 한도(300만·900만)와 실제로 줄어드는 세금, 2026년부터 초등 1·2학년 예체능 학원비까지]]></description>
+    <pubDate>Sat, 07 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[기초연금 계산기]]></title>
     <link>https://toolhub.ai.kr/basic-pension/</link>

@@ -144,6 +144,9 @@ export const menuConfig: MenuConfig = {
       { href: '/jeongsi-2027', labelKey: 'footer.links.jeongsi2027', descriptionKey: 'toolsShowcase.tools.jeongsi2027.description', icon: '🎓', addedDate: '2026-11-07', subcategory: 'subcategory.others' },
       { href: '/energy-voucher', labelKey: 'footer.links.energyVoucher', descriptionKey: 'toolsShowcase.tools.energyVoucher.description', icon: '🔥', addedDate: '2026-11-07', subcategory: 'subcategory.livingCost' },
       { href: '/eitc', labelKey: 'footer.links.eitc', descriptionKey: 'toolsShowcase.tools.eitc.description', icon: '💵', addedDate: '2026-11-07', subcategory: 'subcategory.tax' },
+      { href: '/education-tax-credit', labelKey: 'footer.links.educationTaxCredit', descriptionKey: 'toolsShowcase.tools.educationTaxCredit.description', icon: '📚', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
+      { href: '/donation-tax-credit', labelKey: 'footer.links.donationTaxCredit', descriptionKey: 'toolsShowcase.tools.donationTaxCredit.description', icon: '🤝', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
+      { href: '/dependent-deduction', labelKey: 'footer.links.dependentDeduction', descriptionKey: 'toolsShowcase.tools.dependentDeduction.description', icon: '👨‍👩‍👧', addedDate: '2026-11-08', subcategory: 'subcategory.tax' },
     ],
   },
   tools: {

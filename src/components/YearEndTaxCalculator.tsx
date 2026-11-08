@@ -269,6 +269,7 @@ export default function YearEndTaxCalculator() {
                 </select>
               </label>
             </div>
+            {detail('/dependent-deduction/', t('yt.detail.dependent'), {})}
             <p className="text-xs text-muted">{t('yt.in.familyHint')}</p>
           </Section>
 
@@ -335,6 +336,7 @@ export default function YearEndTaxCalculator() {
             {money('eduSelf')}
             {money('eduSchool', t('yt.in.eduSchoolHint'))}
             {money('eduUniv', t('yt.in.eduUnivHint'))}
+            {detail('/education-tax-credit/', t('yt.detail.education'), { es: inp.eduSelf, esc: inp.eduSchool, eu: inp.eduUniv })}
             {detail('/medical-tax-credit/', t('yt.detail.medical'), { ms: inp.special, mg: inp.general, mp: inp.premature, mi: inp.infertility })}
           </Section>
 
@@ -349,6 +351,7 @@ export default function YearEndTaxCalculator() {
             {money('hometown', t('yt.in.hometownHint'))}
             {money('donation', t('yt.in.donationHint'))}
             {detail('/hometown-donation/', t('yt.detail.hometown'), { a: inp.hometown })}
+            {detail('/donation-tax-credit/', t('yt.detail.donation'), { dn: inp.donation })}
             {toggle('marriage', t('yt.in.marriage'), t('yt.in.marriageHint'))}
             {toggle('sme', t('yt.in.sme'), t('yt.in.smeHint'))}
             {optMoney('pension', t('yt.in.pension'), t('yt.in.autoHint'), auto.pension)}

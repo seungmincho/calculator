@@ -146,10 +146,28 @@ export function educationCredit(self: number, school: number, univ: number, kids
   return Math.floor((self + Math.min(school, 3_000_000 * k) + Math.min(univ, 9_000_000 * k)) * 0.15)
 }
 
-// ── 소득세법 §59의4④ 기부금 15% (1천만 초과분 30%), 일반기부금 한도 근로소득금액의 30% ──
-export function donationCredit(amount: number, earnedIncome: number) {
-  const a = Math.min(amount, Math.floor(earnedIncome * 0.3))
+// ── 소득세법 §59의4④ 기부금: 특례 + 일반(한도 안) 합계의 15%, 1천만 초과분 30% (2024 지급분만 3천만 초과 +10%p — §59의4⑧, 2026 없음).
+//    특례기부금(§34②1호)을 먼저 공제, 한도 = 소득금액 100% (§34②2호 기준소득금액 − 이월결손금).
+//    일반기부금 한도(§59의4④2호)의 '소득금액' = 종합소득금액 − 특례기부금: 종교단체 없으면 30%, 있으면 10% + min(20%, 종교단체 외).
+//    general = 종교단체 외 일반기부금(기존 donation). special·religious 생략 = 0 → 예전 결과 그대로 (2026-11-08 casenote 원문 확인) ──
+export function donationLimits(earnedIncome: number, special = 0, general = 0, religious = 0) {
+  const s = Math.min(special, Math.max(0, earnedIncome))
+  const base = Math.max(0, earnedIncome - s)
+  const cap = religious > 0 ? Math.floor(base * 0.1) + Math.min(Math.floor(base * 0.2), general) : Math.floor(base * 0.3)
+  return { special: s, base, cap, general: Math.min(general + religious, cap) }
+}
+export function donationCredit(amount: number, earnedIncome: number, special = 0, religious = 0) {
+  const l = donationLimits(earnedIncome, special, amount, religious)
+  const a = l.special + l.general
   return Math.floor(Math.min(a, 10_000_000) * 0.15 + Math.max(0, a - 10_000_000) * 0.3)
+}
+
+// ── 조특법 §76① 정치자금(정당·후원회·선관위): 10만까지 110분의 100, 10만 초과 금액의 15%(그 금액이 3천만 초과분 25%).
+//    특별세액공제가 아니다 — 표준세액공제(§59의4⑨1호: §59의4⑥·§52⑧·조특법 §95의2③ 신청 시만 배제)와 함께 받는다 ──
+export function politicalCredit(amount: number) {
+  const a = Math.max(0, amount)
+  const over = Math.max(0, a - 100_000)
+  return Math.floor(Math.min(a, 100_000) * 100 / 110 + Math.min(over, 30_000_000) * 0.15 + Math.max(0, over - 30_000_000) * 0.25)
 }
 
 // ── 조특법 §58① (2025.12.23 개정, 2026 기부분~) 고향사랑기부금 연 2,000만 한도: 10만 이하 100/110, 10만 초과~20만 40%,
@@ -204,7 +222,10 @@ export interface YetInput extends CardSpend, Medical {
   eduSelf: number
   eduSchool: number
   eduUniv: number
-  donation: number
+  donation: number          // 일반기부금(종교단체 외)
+  donationSpecial?: number  // 특례기부금 (생략 = 0, /donation-tax-credit)
+  donationReligious?: number // 일반기부금(종교단체)
+  political?: number        // 정치자금기부금 (조특법 §76)
   hometown: number
   rent: number
   marriage: boolean
@@ -241,8 +262,9 @@ export function calc(x: YetInput) {
     insurance: insuranceCredit(x.insurance),
     medical: medicalCredit(salary, x),
     education: educationCredit(x.eduSelf, x.eduSchool, x.eduUniv, x.children),
-    donation: donationCredit(x.donation, earnedIncome),
+    donation: donationCredit(x.donation, earnedIncome, x.donationSpecial, x.donationReligious),
     hometown: hometownCredit(x.hometown),
+    political: politicalCredit(x.political ?? 0),
     rent: rentCredit(salary, x.rent),
     marriage: x.marriage ? MARRIAGE_CREDIT : 0,
   }
@@ -256,7 +278,7 @@ export function calc(x: YetInput) {
     // 감면 시 근로소득세액공제 × (1 − 감면세액/산출세액) — 소득세법 §59①, 조특령 준용
     const ratio = computedTax ? reduction / computedTax : 0
     const earned = Math.floor(earnedIncomeCredit(computedTax, salary) * (1 - ratio))
-    const common = cr.child + cr.pension + cr.hometown + cr.marriage
+    const common = cr.child + cr.pension + cr.hometown + cr.political + cr.marriage
     const extra = special ? cr.insurance + cr.medical + cr.education + cr.donation + cr.rent : STANDARD_CREDIT
     const credits = { earned, common, extra, total: earned + common + extra }
     const determined = Math.max(0, computedTax - reduction - credits.total)

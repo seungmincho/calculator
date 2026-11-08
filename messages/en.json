@@ -2550,6 +2550,9 @@
     "calculators": "Calculators",
     "tools": "Tools",
     "links": {
+      "educationTaxCredit": "Education Tax Credit Calculator",
+      "donationTaxCredit": "Donation Tax Credit Calculator",
+      "dependentDeduction": "Dependent Deduction Checker",
       "everlandWaitTimes": "Everland visit planner",
       "hometownDonation": "Hometown Love Donation Calculator",
       "medicalTaxCredit": "Medical Expense Tax Credit",
@@ -7433,6 +7436,18 @@
     },
     "currentPage": "Current Page",
     "tools": {
+      "educationTaxCredit": {
+        "title": "Education Tax Credit Calculator",
+        "description": "Per-person education expense limits (₩3M / ₩9M) and the actual tax saved, including arts and sports academy fees for 1st–2nd graders from 2026"
+      },
+      "donationTaxCredit": {
+        "title": "Donation Tax Credit Calculator",
+        "description": "Limits and credit rates for political, special, general and religious donations, the refund you get and carry-forward of excess"
+      },
+      "dependentDeduction": {
+        "title": "Dependent Deduction Checker",
+        "description": "Check each family member's age and income tests with reasons, the tax saved, and which spouse should claim them"
+      },
       "everlandWaitTimes": {
         "title": "Everland wait times",
         "description": "Choose a visit day with weather and crowd estimates, then explore the ride map.",
@@ -32714,6 +32729,9 @@
   "yearEndTaxCalc": {
     "yt": {
       "detail": {
+        "dependent": "Check dependent eligibility (per person, couples)",
+        "education": "Education credit in detail (per-person limits, academies)",
+        "donation": "Donation credit in detail (religious, political, carry-forward)",
         "hometown": "Hometown donation in detail (real cost, gifts)",
         "pension": "Pension savings·IRP credit in detail",
         "medical": "Medical expense credit in detail (couples)",
@@ -58331,5 +58349,624 @@
         "asOf": "Checked 2026-11-07 against the Act and Decree in force from 2026-09-18. The EITC provisions are unchanged since the 2024-12-31 amendment, so 2025 and 2026 income follow the same rules. Confirm with the Hometax simulator or the NTS call center (126)."
       }
     }
+  },
+  "donationTaxCredit": {
+    "title": "Donation Tax Credit Calculator",
+    "subtitle": "Donations made in {year} (settled the following January) · applies the separate limits and rates for political, special, general and religious donations to show how much tax you actually save",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Gross pay (annual)",
+    "salaryHint": "Annual pay minus non-taxable allowances such as meal allowance. Donation limits are based on earned income, i.e. this amount minus the earned income deduction.",
+    "gifts": {
+      "title": "Annual donations by recipient",
+      "hint": "Amounts paid from January to December {year}. For regular giving, use the monthly amount × 12. Include donations made by your spouse, children and parents."
+    },
+    "kinds": {
+      "political": {
+        "label": "Political donations",
+        "hint": "Party dues, support associations of lawmakers and candidates, deposits with the election commission. Only donations in your own name count. Up to 100,000 KRW comes back almost in full.",
+        "short": "Political"
+      },
+      "special": {
+        "label": "Special donations",
+        "hint": "Central and local government, national defense funds, disaster relief, facility and scholarship funds for private schools and national university hospitals, the Community Chest of Korea, etc. Creditable up to your earned income.",
+        "short": "Special"
+      },
+      "general": {
+        "label": "General donations (non-religious)",
+        "hint": "Regular giving to social welfare foundations, public-interest corporations, civic groups, international relief charities, etc. Creditable up to 30% of earned income (after special donations).",
+        "short": "General"
+      },
+      "religious": {
+        "label": "General donations (religious)",
+        "hint": "Offerings to churches, cathedrals, temples and other religious bodies. Up to 10% of earned income (after special donations), and 30% together with non-religious donations.",
+        "short": "Religious"
+      }
+    },
+    "hometown": {
+      "text": "Hometown Love donations have different rates (in full up to 100,000 KRW, 40% up to 200,000 KRW), so they are calculated separately.",
+      "link": "Hometown donation calculator"
+    },
+    "result": {
+      "label": "Tax saved (incl. local income tax)"
+    },
+    "status": {
+      "none": "Enter your donations to see how much you get back.",
+      "noTax": "You owe no tax to begin with, so there is nothing to reduce. Uncredited special and general donations may be carried forward for 10 years.",
+      "standard": "The 130,000 KRW standard tax credit beats the donation credit ({donation} KRW), so special and general donations do not lower your tax. Political donations are credited on top of the standard credit.",
+      "partial": "You only owe {tax} KRW, so that is all that can be saved. Unused special and general donation credits may be carried forward for 10 years.",
+      "swap": "You get a {credit} KRW credit but lose the 130,000 KRW standard credit you had before, so your tax falls by {saving} KRW.",
+      "full": "The {credit} KRW credit plus 10% local income tax comes off your tax in full."
+    },
+    "bracket": {
+      "title": "Special + general credited amount (15% up to 10M KRW)",
+      "of": "{eligibleM}M / 10M KRW",
+      "over": "The {high} KRW above 10M KRW gets 30%.",
+      "under": "{left} KRW left until 10M KRW. Anything above that gets 30%."
+    },
+    "table": {
+      "caption": "Limits and creditable amounts by donation type",
+      "kind": "Type",
+      "amount": "Donated",
+      "limit": "Limit",
+      "eligible": "Creditable",
+      "excess": "Over limit",
+      "none": "None",
+      "excessNote": "The {excess} KRW over the limit is not credited this year. General donations over the limit can be carried forward for 10 years.",
+      "note": "Limits are based on earned income of {income} KRW. The general donation limit is filled by non-religious donations first (the total matches the statutory formula)."
+    },
+    "credits": {
+      "donation": "Special + general donation credit (15% / 30%)",
+      "political": "Political donation credit (100/110 up to 100,000 KRW)",
+      "total": "Total tax credit"
+    },
+    "share": {
+      "label": "Gross pay {salaryM}M KRW · donations {totalM}M KRW",
+      "headline": "{saving} KRW back in tax",
+      "headlineZero": "Tax saved: 0 KRW",
+      "sub": "Donation tax credit {credit} KRW",
+      "text": "With gross pay of {salaryM}M KRW and {totalM}M KRW in donations, the tax credit is {credit} KRW and tax falls by {saving} KRW."
+    },
+    "actions": {
+      "full": "Open in the year-end tax calculator",
+      "fullNote": "The year-end tax calculator has a single donation field for general (non-religious) donations, so only that amount is carried over. Check political, special and religious donations here."
+    },
+    "sim": {
+      "title": "Donate more before December 31",
+      "desc": "Donations are credited in the year you pay them. See how much more you get back by giving more to general (non-religious) charities this year.",
+      "extra": "Extra donation",
+      "more": "Donating another {extra} KRW cuts your tax by a further {more} KRW. Your real cost is {cost} KRW.",
+      "moreZero": "No tax is left to reduce, or the standard credit is better, so donating more would not lower this year's tax.",
+      "political": "Giving another {gap} KRW in political donations to reach {fullM}M KRW cuts your tax by {gain} KRW. Up to 100,000 KRW you get 100/110 back plus local income tax, almost the full amount.",
+      "politicalDone": "You have already used the 100,000 KRW political donation band. Anything above it is credited at 15% (25% on the part over 30M KRW)."
+    },
+    "guide": {
+      "title": "Limits and credit rates by donation type (donations made in 2026)",
+      "cols": {
+        "kind": "Type",
+        "examples": "Where the money went",
+        "limit": "Limit",
+        "rate": "Credit rate"
+      },
+      "rows": [
+        {
+          "kind": "Political",
+          "examples": "Party dues, support associations of lawmakers and candidates, election commission deposits (in your own name)",
+          "limit": "None",
+          "rate": "100/110 up to 100,000 KRW, 15% above (25% on the part over 30M KRW)"
+        },
+        {
+          "kind": "Special",
+          "examples": "Central and local government, national defense funds and troop comfort gifts, disaster relief, facility and scholarship funds for private schools and national university hospitals, the Community Chest of Korea",
+          "limit": "100% of earned income",
+          "rate": "15%, 30% on the part of special + general over 10M KRW"
+        },
+        {
+          "kind": "General (non-religious)",
+          "examples": "Social welfare foundations, public-interest corporations, civic groups, international relief charities, etc.",
+          "limit": "30% of (earned income − special donations)",
+          "rate": "15%, 30% on the part of special + general over 10M KRW"
+        },
+        {
+          "kind": "General (religious)",
+          "examples": "Churches, cathedrals, temples and other religious bodies",
+          "limit": "10% of (earned income − special donations) + the smaller of 20% and non-religious donations",
+          "rate": "15%, 30% on the part of special + general over 10M KRW"
+        },
+        {
+          "kind": "Hometown Love",
+          "examples": "A local government other than where you are registered",
+          "limit": "20M KRW a year",
+          "rate": "100/110 up to 100,000 KRW, 40% up to 200,000 KRW, 15% above — see the hometown donation calculator"
+        }
+      ]
+    },
+    "tips": {
+      "title": "Easy to miss",
+      "items": [
+        "Religious donations are often missing from the simplified year-end data. Get a donation receipt from your religious body in January and hand it to your employer.",
+        "Donations made by your spouse, children and parents count too. Age does not matter, only the income test (income of 1M KRW or less, or gross pay of 5M KRW or less with only earned income). Donations by a family member claimed as a dependant by someone else do not count.",
+        "Only political donations in your own name are credited. Political donations in a family member's name are excluded.",
+        "Special and general donations not credited because they exceeded the limit or your tax ran out can be carried forward for 10 years. Carried-forward amounts are credited before that year's donations.",
+        "The 40% rate (an extra 10 points on the part over 30M KRW) applied only to donations made in 2024. For donations made in 2026, the top rate is 30% on the part over 10M KRW.",
+        "The donation credit is a special tax credit, so it cannot be combined with the 130,000 KRW standard credit. Political and Hometown Love donations are credited on top of the standard credit."
+      ]
+    },
+    "next": {
+      "title": "Keep calculating",
+      "yearEnd": {
+        "title": "Year-end tax calculator",
+        "desc": "Add cards, pensions and medical costs for your total refund"
+      },
+      "hometown": {
+        "title": "Hometown donation calculator",
+        "desc": "Give 100,000 KRW for a tax credit plus 30% in gifts"
+      },
+      "medical": {
+        "title": "Medical expense tax credit",
+        "desc": "The 3% threshold, and which spouse should claim"
+      },
+      "pension": {
+        "title": "Pension savings and IRP credit",
+        "desc": "How much you get back by topping up before December 31"
+      }
+    },
+    "source": "Basis: Income Tax Act §59-4(4)(8)(9), §34, §61(2), Restriction of Special Taxation Act §76, Corporate Tax Act §24(2) · donations made in {year} (laws in force as of November 2026)"
+  },
+  "dependentDeduction": {
+    "title": "Dependent Deduction Checker",
+    "subtitle": "{year} tax year · Enter each family member's birth year and income to see whether you can claim them, why, and how much tax you save",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Your gross pay (excluding non-taxable allowances)",
+    "salaryHint": "Annual pay minus non-taxable allowances such as meal pay. Used only to calculate the tax saved.",
+    "me": {
+      "female": "I am a woman (women's additional deduction, 500,000 KRW)",
+      "single": "I have no spouse (single, divorced or widowed — single-parent deduction, 1,000,000 KRW)",
+      "hint": "The women's deduction requires comprehensive income of 30M KRW or less (gross pay about 41.47M KRW); without a spouse you must be a household head with dependents. If both apply, only the single-parent deduction of 1,000,000 KRW is given."
+    },
+    "family": {
+      "title": "Family",
+      "hint": "Judged as of December 31, {year}. The age test is met if it applies on any day of the year. Enter income for all of {year}.",
+      "empty": "Add a family member.",
+      "add": "Add family member"
+    },
+    "row": {
+      "name": "{rel} · born {born}",
+      "title": "Member {n}",
+      "remove": "Remove {name}",
+      "removeShort": "Remove",
+      "rel": "Relationship",
+      "born": "Birth year",
+      "disabled": "Has a disability (no age test, extra 2,000,000 KRW)",
+      "together": "Registered at the same address (temporary absence for school or illness counts)",
+      "claimer": "Currently claimed by",
+      "more": "Other income (daily wages, business, private pension, financial, other) · {n} entered",
+      "deduction": "Basic deduction 1,500,000 KRW{extra}",
+      "extra": " + additional {amount} KRW",
+      "contrib": "saves {amount} KRW in tax"
+    },
+    "rel": {
+      "spouse": "Spouse",
+      "parent": "Parent/grandparent",
+      "child": "Child (incl. adopted)",
+      "grandchild": "Grandchild",
+      "sibling": "Sibling",
+      "foster": "Foster child",
+      "recipient": "Basic livelihood recipient"
+    },
+    "relHint": {
+      "spouse": "No age test; only the income test applies.",
+      "parent": "Your spouse's parents and grandparents count too. They may live apart for housing reasons if you actually support them.",
+      "child": "May live apart. Must be 20 or younger unless disabled.",
+      "grandchild": "A lineal descendant, so the same age test as children (20 or younger).",
+      "sibling": "Your spouse's siblings count too. Must be registered at your address and share a household.",
+      "foster": "A child in family foster care. Check the decree for details such as the care period.",
+      "recipient": "A recipient under the National Basic Living Security Act who lives with you. No age test."
+    },
+    "who": {
+      "me": "Me",
+      "spouse": "Spouse"
+    },
+    "income": {
+      "wage": {
+        "label": "Employment income (gross pay)",
+        "short": "employment income",
+        "hint": "Salary or part-time pay, excluding non-taxable items. Up to 5,000,000 KRW is fine if this is the only income."
+      },
+      "daily": {
+        "label": "Daily wages",
+        "short": "daily wages",
+        "hint": "Daily wages are taxed separately, so they never count."
+      },
+      "business": {
+        "label": "Business income amount",
+        "short": "business income",
+        "hint": "Revenue minus necessary expenses (the income amount on the tax return)."
+      },
+      "publicPension": {
+        "label": "Public pension total (National, civil service, military, private school)",
+        "short": "public pension",
+        "hint": "Taxable pension (contributions from 2002 on, shown on the pension withholding receipt). With no other income, up to {limit} KRW a year is fine."
+      },
+      "privatePension": {
+        "label": "Private pension (pension savings / IRP payouts)",
+        "short": "private pension",
+        "hint": "Up to 15M KRW a year can be taxed separately, so we treat it as excluded."
+      },
+      "financial": {
+        "label": "Interest and dividends",
+        "short": "interest and dividends",
+        "hint": "20M KRW or less a year is taxed separately and excluded."
+      },
+      "other": {
+        "label": "Other income amount (e.g. lecture fees minus expenses)",
+        "short": "other income",
+        "hint": "3M KRW or less can be taxed separately, so we treat it as excluded."
+      },
+      "capitalGains": {
+        "label": "Capital gains amount (real estate, shares)",
+        "short": "capital gains",
+        "hint": "Gain minus the long-term holding deduction. Zero if exempt as a one-home household."
+      },
+      "retirement": {
+        "label": "Retirement income (severance received this year)",
+        "short": "retirement income",
+        "hint": "The full taxable severance counts, so above 1,000,000 KRW they cannot be claimed that year."
+      }
+    },
+    "fail": {
+      "age": {
+        "parent": "Must be born in {parent} or earlier (60 or older)",
+        "child": "Must be born in {young} or later (20 or younger)",
+        "grandchild": "Must be born in {young} or later (20 or younger)",
+        "foster": "Must be born in {young} or later (20 or younger)",
+        "sibling": "Must be born in {young} or later (20 or younger) or in {parent} or earlier (60 or older)"
+      },
+      "apart": "Siblings and recipients must be registered at your address and share a household",
+      "wage": "Even with employment income only, gross pay of {wage} KRW is over 5,000,000 KRW",
+      "income": "Income amount is over 1,000,000 KRW because of {sources} (total {total} KRW)"
+    },
+    "ok": "Meets both the age and income tests",
+    "note": {
+      "noAge": "No age test because of the disability",
+      "separated": "Excluded as separately taxed: {sources}",
+      "pensionLimit": "With public pension only, up to {limit} KRW passes",
+      "elderlyLost": "Being 70 or older, they would also have added the 1,000,000 KRW senior deduction"
+    },
+    "result": {
+      "label": "Tax saved thanks to your family (incl. local tax)",
+      "sub": "{n} of {total} eligible · basic {basic} KRW + additional {extra} KRW",
+      "dualNote": "Dual income: combined saving for both of you under the current split."
+    },
+    "chip": {
+      "ok": "Eligible",
+      "no": "Not eligible"
+    },
+    "self": {
+      "single": "Your single-parent deduction {amount} KRW (no spouse, with an eligible child)",
+      "woman": "Your women's deduction {amount} KRW"
+    },
+    "reform": "The government's August 2026 tax reform proposal would raise the income limit to 3M KRW and the employment-only gross pay limit to 7.5M KRW. It is still before the National Assembly with no confirmed start year, so it is not in the calculation. We will update it if passed.",
+    "share": {
+      "label": "Gross pay {salaryM}M KRW · {n} of {total} family members claimed",
+      "headline": "Tax down {saving} KRW",
+      "headlineZero": "Tax reduction: 0 KRW",
+      "sub": "Basic {basic} KRW + additional {extra} KRW",
+      "text": "With gross pay of {salaryM}M KRW, {n} of {total} family members qualify as dependents and tax falls by {saving} KRW."
+    },
+    "actions": {
+      "full": "Open in year-end tax calculator"
+    },
+    "couple": {
+      "title": "Dual income: who should claim",
+      "desc": "Each parent or child can be claimed by only one spouse. We try every split to find the one with the lowest combined tax.",
+      "spouseSalary": "Spouse's gross pay",
+      "spouseSalaryHint": "Once entered, you can pick who currently claims each family member.",
+      "empty": "Enter your spouse's gross pay to compare.",
+      "best": "A different split saves {gain} KRW more",
+      "same": "Your current split is already the best",
+      "moved": "move",
+      "current": "Current split",
+      "recommended": "Recommended split",
+      "note": "Tax saved, including local tax. An approximation from gross pay alone, assuming no other deductions. The women's and single-parent deductions do not depend on the split, so they are left out.",
+      "capped": "With many family members, only the first {n} are moved; the rest stay as they are now.",
+      "warning": "Two people must not claim the same family member. If siblings each claim the same parent, one claim is later cancelled and the underpaid tax plus a penalty is due. Agree on who claims before year-end settlement."
+    },
+    "rules": {
+      "ageTitle": "{year} age tests (birth year)",
+      "age": {
+        "spouse": "No age test",
+        "parent": "Born {parent} or earlier (60+)",
+        "child": "Born {young} or later (20 or younger)",
+        "grandchild": "Born {young} or later (20 or younger)",
+        "sibling": "Born {young} or later, or {parent} or earlier",
+        "foster": "Treated as born {young} or later (details in the decree)",
+        "recipient": "No age test"
+      },
+      "ageNote": "The age test is met if it applies on any day of the year (Income Tax Act Art. 53). No age test for people with disabilities; those born in {elderly} or earlier (70+) add a 1,000,000 KRW senior deduction.",
+      "incomeTitle": "Income test: annual income amount of 1,000,000 KRW or less",
+      "income": [
+        "Income amount is comprehensive income (employment, business, pension, interest, dividends, other) plus retirement and capital gains. Non-taxable and separately taxed income is excluded.",
+        "With employment income only, gross pay up to 5,000,000 KRW is fine. Combined with other income, the employment income amount (gross pay minus the employment income deduction) is added.",
+        "Public pensions count after the pension income deduction, so with no other income up to {limit} KRW a year passes.",
+        "Interest and dividends up to 20M KRW, daily wages, private pensions up to 15M KRW (separate taxation chosen) and other income up to 3M KRW (separate taxation chosen) are excluded.",
+        "A one-time severance payment or a real estate or share gain easily pushes income over 1,000,000 KRW. Only that year is affected; the next year is judged again."
+      ]
+    },
+    "compare": {
+      "title": "Not the same as health insurance dependents",
+      "desc": "The year-end dependent deduction follows the Income Tax Act (1,000,000 KRW income amount, age tests). Health insurance dependents follow the National Health Insurance Act (20M KRW income and property tests). Someone can be a health insurance dependent but not a tax dependent, and vice versa.",
+      "link": "Health insurance dependent checker",
+      "linkDesc": "Check the 20M KRW income and property tests"
+    },
+    "source": "Basis: Income Tax Act Arts. 50, 51, 53, 47-2, 14(3), 59-2 · {year} tax year (laws in force as of November 2026)"
+  },
+  "educationTaxCredit": {
+    "title": "Education Tax Credit Calculator",
+    "subtitle": "Korean year-end tax settlement, tax year {year} · 15% of each family member's education costs, up to a per-person limit, comes off your tax. From {year}, arts and sports classes for 1st and 2nd graders count too",
+    "won": " KRW",
+    "manUnit": "{m}M",
+    "salary": "Gross pay (excluding non-taxable allowances)",
+    "salaryHint": "Your salary minus non-taxable allowances such as meal allowance. This sets how much tax you owe.",
+    "family": {
+      "title": "Education costs paid this year (per person)",
+      "hint": "Enter what you paid from January 1 to December 31, {year}, separately for each person. Subtract scholarships and employer support."
+    },
+    "person": {
+      "legend": "Family member {n}: {kind}",
+      "kind": "{n}. Whose education costs?",
+      "remove": "Remove family member {n} ({kind})",
+      "removeShort": "Remove",
+      "add": "Add family member",
+      "addAria": "Add one family member whose education costs you paid",
+      "max": "You can add up to {n} family members."
+    },
+    "kinds": {
+      "self": {
+        "label": "Yourself",
+        "hint": "No limit · 15%"
+      },
+      "preschool": {
+        "label": "Preschool child",
+        "hint": "Up to 3M KRW per child a year · private academy and sports facility fees count"
+      },
+      "lower": {
+        "label": "Grade 1-2 (or under 9)",
+        "hint": "Elementary pupil in grade 2 or below, or under age 9 (born {birth} or later), on December 31, {year} · up to 3M KRW per child a year, arts and sports classes included"
+      },
+      "school": {
+        "label": "Elementary, middle or high school student",
+        "hint": "Up to 3M KRW per student a year · private academy fees do not count"
+      },
+      "univ": {
+        "label": "University student",
+        "hint": "Up to 9M KRW per student a year · graduate school counts only for yourself"
+      },
+      "disabled": {
+        "label": "Special education for a disabled person",
+        "hint": "No limit · rehabilitation education for a parent counts too"
+      }
+    },
+    "fields": {
+      "grad": {
+        "label": "University or graduate school tuition",
+        "hint": "Courses of one semester or more and part-time courses, minus scholarships and employer support"
+      },
+      "training": {
+        "label": "Vocational training fees",
+        "hint": "Minus any support from employment insurance and the like"
+      },
+      "loan": {
+        "label": "Student loan repayments",
+        "hint": "Tuition loan principal and interest repaid this year, excluding late fees and amounts forgiven or repaid with local government support"
+      },
+      "exam": {
+        "label": "CSAT fee and university application fees",
+        "hint": "College Scholastic Ability Test fee and university admission screening fees"
+      },
+      "care": {
+        "label": "Kindergarten or daycare costs",
+        "hint": "Tuition, childcare fees, meals and after-school programs (books included)"
+      },
+      "academy": {
+        "label": "Private academy and sports facility fees",
+        "hint": "Monthly courses held at least once a week. Example: 200,000 KRW a month × 12 = 2.4M KRW"
+      },
+      "school": {
+        "label": "School tuition, meals, textbooks, after-school classes",
+        "hint": "Books for after-school classes included"
+      },
+      "trip": {
+        "label": "Field trips",
+        "hint": "School trips and camps that are part of the curriculum, up to 300,000 KRW per student a year"
+      },
+      "arts": {
+        "label": "Arts academy and sports facility fees",
+        "hint": "Monthly courses held at least once a week at arts academies (piano, art) or sports facilities (taekwondo, swimming). Academic tutoring such as English or math does not count"
+      },
+      "uniform": {
+        "label": "School uniforms",
+        "hint": "Middle and high school only, up to 500,000 KRW per student a year"
+      },
+      "tuition": {
+        "label": "University tuition and entrance fees",
+        "hint": "Subtract scholarships and anything your child paid with a student loan"
+      },
+      "special": {
+        "label": "Rehabilitation education for a disabled person",
+        "hint": "Paid to social welfare facilities or developmental rehabilitation providers (under 18), minus government support"
+      }
+    },
+    "result": {
+      "label": "Tax saved (incl. local income tax)"
+    },
+    "status": {
+      "none": "Enter education costs to see the credit and how much tax it saves.",
+      "noTax": "The credit is {credit} KRW, but your tax due is already 0, so nothing comes back.",
+      "standard": "The standard tax credit of 130,000 KRW beats the {credit} KRW education credit, so the education credit does not reduce your tax.",
+      "partial": "The credit is {credit} KRW, but your tax due is smaller, so only {saving} KRW comes off. Unused credit is not carried forward.",
+      "full": "Your tax falls by the {credit} KRW credit plus 10% local income tax."
+    },
+    "people": {
+      "title": "Creditable education costs by person",
+      "name": "{n}. {kind}",
+      "of": "{eligibleM}M / {capM}M KRW",
+      "noCap": "{eligibleM}M KRW · no limit",
+      "over": "{over} KRW is over the limit and does not count.",
+      "room": "Use the remaining {room} KRW of the limit this year and your tax falls by another {more} KRW.",
+      "roomZero": "{room} KRW of the limit is left, but no tax remains to reduce, so paying more would not help.",
+      "full": "The limit is filled exactly."
+    },
+    "rows": {
+      "spent": "Education costs paid",
+      "eligible": "Creditable education costs",
+      "credit": "Education tax credit (15%)",
+      "saving": "Tax saved"
+    },
+    "note": "Calculated from your gross pay alone, assuming no other deductions. Card, insurance or child deductions lower your tax due and can change the result, so check with the year-end tax calculator.",
+    "share": {
+      "label": "Gross pay {salaryM}M KRW · education costs {spentM}M KRW",
+      "headline": "Tax down {saving} KRW",
+      "headlineZero": "Tax saved: 0 KRW",
+      "sub": "Education tax credit {credit} KRW",
+      "text": "With gross pay of {salaryM}M KRW and {spentM}M KRW in education costs, the education tax credit is {credit} KRW and tax falls by {saving} KRW."
+    },
+    "actions": {
+      "full": "Open in the year-end tax calculator"
+    },
+    "who": {
+      "title": "Whose education costs count",
+      "items": [
+        "Your own education costs have no limit: university and graduate school tuition, vocational training fees (minus support) and student loan repayments.",
+        "Costs you paid for your spouse, children, siblings, adopted or foster children count. From payments made on or after January 1, 2026 there is no age or income test, so a university student with a part-time job still counts (Income Tax Act Art. 59-4(3), amended December 23, 2025).",
+        "Education costs for parents or grandparents do not count, except rehabilitation education for a disabled person.",
+        "A dependant's graduate school costs and tuition your child paid with a student loan do not count. Your child claims the loan later, as their own education cost, when repaying it.",
+        "Leave out anything paid with tax-free money such as scholarships or employer tuition support.",
+        "For dual-income couples, a child's education costs go to the parent who claims that child's basic deduction."
+      ]
+    },
+    "list": {
+      "title": "What counts and what does not",
+      "yes": "Counts",
+      "no": "Excluded",
+      "cols": {
+        "item": "Item",
+        "ok": "Status",
+        "note": "Conditions and basis"
+      },
+      "rows": [
+        {
+          "item": "School, kindergarten and daycare tuition, entrance fees, meals, textbooks, after-school classes",
+          "ok": true,
+          "note": "Books for after-school classes included. 3M KRW per child for preschool to high school (Enforcement Decree Art. 118-6(1) 1-3, 5)"
+        },
+        {
+          "item": "Private academy and sports facility fees for preschool children",
+          "ok": true,
+          "note": "Monthly courses held at least weekly (Income Tax Act Art. 59-4(3)1(d), Decree Art. 118-6(7))"
+        },
+        {
+          "item": "Arts academy and sports facility fees for grade 1-2 (or under 9)",
+          "ok": true,
+          "note": "Payments from 2026. Monthly, at least weekly, combined with school costs up to 3M KRW (Art. 59-4(3)1(e), Decree Art. 118-6(8)-(10))"
+        },
+        {
+          "item": "Middle and high school uniforms",
+          "ok": true,
+          "note": "Up to 500,000 KRW per student a year (Decree Art. 118-6(1)4)"
+        },
+        {
+          "item": "Field trips (school trips, camps)",
+          "ok": true,
+          "note": "Part of the school curriculum, up to 300,000 KRW per student a year (Decree Art. 118-6(1)6)"
+        },
+        {
+          "item": "CSAT fee and university application fees",
+          "ok": true,
+          "note": "Decree Art. 118-6(1)7"
+        },
+        {
+          "item": "University tuition (children, spouse, etc.)",
+          "ok": true,
+          "note": "Up to 9M KRW per student a year (Art. 59-4(3)1 proviso)"
+        },
+        {
+          "item": "Your own graduate school, vocational training and student loan repayments",
+          "ok": true,
+          "note": "No limit (Art. 59-4(3)2)"
+        },
+        {
+          "item": "Rehabilitation education for a disabled person",
+          "ok": true,
+          "note": "No limit, parents included, minus government support (Art. 59-4(3)3, Decree Art. 118-6(14))"
+        },
+        {
+          "item": "Academic tutoring for school students (English, math, etc.)",
+          "ok": false,
+          "note": "Only preschool academies and grade 1-2 arts and sports classes count"
+        },
+        {
+          "item": "Arts classes for grade 3 and above",
+          "ok": false,
+          "note": "Excluded unless under 9 on December 31 (Art. 59-4(3)1(e))"
+        },
+        {
+          "item": "Elementary school uniforms",
+          "ok": false,
+          "note": "Uniforms count only for middle and high school (Decree Art. 118-6(1)4)"
+        },
+        {
+          "item": "A dependant's graduate school costs",
+          "ok": false,
+          "note": "Graduate school counts only for yourself (Art. 59-4(3)1 proviso)"
+        },
+        {
+          "item": "Tuition your child paid with a student loan",
+          "ok": false,
+          "note": "Your child claims it when repaying (Art. 59-4(3)1 proviso, 2(d))"
+        },
+        {
+          "item": "Parents' or grandparents' education costs",
+          "ok": false,
+          "note": "Except rehabilitation education for a disabled person (Art. 59-4(3)1, 3)"
+        },
+        {
+          "item": "Amounts paid with tax-free scholarships or employer tuition support",
+          "ok": false,
+          "note": "Art. 59-4(3) proviso, Decree Art. 118-6(2)"
+        }
+      ]
+    },
+    "missing": {
+      "title": "Costs missing from the simplified service and receipts",
+      "items": [
+        "Only kindergartens, schools, daycare centers, vocational training institutions and student loan agencies must submit data to the simplified service (Enforcement Decree Art. 216-3(1)4).",
+        "Private academies and sports facilities do not have to. For preschool and grade 1-2 classes, get an education fee payment certificate from the academy or gym and give it to your employer.",
+        "If uniform purchases are missing, get a receipt with the student's name from the uniform shop.",
+        "If field trip costs are missing, ask the school for a payment receipt.",
+        "Data for adult children or a spouse only appears after that person consents to sharing it on Hometax."
+      ]
+    },
+    "next": {
+      "title": "Related deductions",
+      "yearEnd": {
+        "title": "Year-end tax calculator",
+        "desc": "Carry your education costs over and estimate your full refund"
+      },
+      "dependent": {
+        "title": "Dependent Deduction Checker",
+        "desc": "Whoever claims the child's basic deduction also gets the education credit"
+      },
+      "card": {
+        "title": "Credit card deduction",
+        "desc": "Academy fees and uniforms paid by card also count as card spending (school fees do not)"
+      },
+      "medical": {
+        "title": "Medical expense tax credit",
+        "desc": "15% of family medical costs above 3% of gross pay"
+      }
+    },
+    "source": "Basis: Income Tax Act Art. 59-4(3) (amended Dec 23, 2025), Enforcement Decree Art. 118-6 (amended Feb 27, 2026) and Art. 216-3, Restriction of Special Taxation Act Enforcement Decree Art. 121-2(6) · tax year {year}"
   }
 }

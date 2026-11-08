@@ -134,6 +134,9 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [2027 정시 일정](https://toolhub.ai.kr/jeongsi-2027/): 수능 성적 발표부터 원서접수·가나다군·합격 발표·추가모집까지 D-day
 - [에너지바우처 대상·금액](https://toolhub.ai.kr/energy-voucher/): 수급 종류·세대원 특성·인원으로 대상 여부와 연간 지원금, 12월 31일 신청 마감
 - [근로장려금 계산기](https://toolhub.ai.kr/eitc/): 가구 유형·총소득·재산으로 근로장려금과 자녀장려금 예상액, 재산 감액까지
+- [교육비 세액공제 계산기](https://toolhub.ai.kr/education-tax-credit/): 가족별 교육비 한도(300만·900만)와 실제로 줄어드는 세금, 2026년부터 초등 1·2학년 예체능 학원비까지
+- [기부금 세액공제 계산기](https://toolhub.ai.kr/donation-tax-credit/): 정치자금·특례·일반·종교단체 기부금 한도와 공제율, 돌려받는 금액과 한도 초과분 이월
+- [연말정산 부양가족 공제 판정](https://toolhub.ai.kr/dependent-deduction/): 가족별 나이·소득 요건 판정과 이유, 줄어드는 세금, 맞벌이 부부가 누구 앞으로 받아야 유리한지
 
 ## 개발 도구
 
