@@ -3,15 +3,13 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import MobileResultLink from '@/components/MobileResultLink'
-import { useLanguage } from '@/contexts/LanguageContext'
-import { runningTranslations } from '@/lib/i18n/runningPace'
+import { useTranslations } from '@/lib/i18n/runningPace'
 import { calculateRunning, formatClock, formatDistance, parseClock, parseDistance, parsePace, type RunningMode } from '@/utils/runningPace'
 
 const DISTANCES = [5, 10, 21.0975, 42.195] as const
 
 export default function RunningPaceCalculator() {
-  const { language } = useLanguage()
-  const t = runningTranslations[language]('runningPace')
+  const t = useTranslations('runningPace')
   const [preset, setPreset] = useState<number | 'custom'>(10)
   const [customDistance, setCustomDistance] = useState('')
   const [mode, setMode] = useState<RunningMode>('time')

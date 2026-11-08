@@ -117,5 +117,19 @@ eq(run26({ wage: true, salary: 50_000_000, wageTax: 3_387_500 }).determined, 4_9
 // 자녀세액공제 금액(§59의2①)은 그대로 — 대상(2016년 이전 출생)만 다르고 입력이 센다
 eq(run26({ children: 3 }).cr.child, 950_000, '2026 자녀 3명 95만')
 
+// ── 10. 고배당기업 배당 분리과세 (조특법 §104의27, 2026 귀속만). 세율·원천징수는 dividend.ts ──
+const f50 = { biz: false, fin: true, finIncome: 50_000_000 }
+eq(run26(f50).fin, 50_000_000, '2026 금융 5천만 → 종합과세')
+// 고배당 3,500만 신청 → 나머지 1,500만 ≤ 2천만 → 종합과세 빠짐. 고배당 세액 280만 + 1,500만×20% = 580만, 지방 58만
+// 원천징수 490만·49만 기납부 → 추가납부 90만 + 9만 = 99만 (= dividend.ts highDividend(3,500만).extra)
+const h1 = run26({ ...f50, hdDividend: 35_000_000 })
+eq([h1.fin, h1.finSeparated, h1.hd.income, h1.hd.local, h1.prepaid.items.fin, h1.refund], [0, true, 5_800_000, 580_000, 4_900_000, -990_000], '고배당 신청 → 2천만 판정 바뀜')
+// 고배당 2,000만(≤2천만 = 14%, 원천징수로 끝) + 나머지 3,000만 종합과세: 비교과세 420만 − 8만 = 412만
+const h2 = run26({ ...f50, hdDividend: 20_000_000 })
+eq([h2.fin, h2.hd.total, h2.determined, h2.refund], [30_000_000, 3_080_000, 4_120_000, 88_000], '고배당 2천만 이하 + 나머지 종합과세')
+// 2025 귀속: 입력이 있어도 무시
+const h3 = run({ ...f50, hdDividend: 35_000_000 })
+eq([h3.hdAmt, h3.fin, h3.refund], [0, 50_000_000, 88_000], '2025 귀속은 고배당 분리과세 무시')
+
 if (fail) { console.log(`check-income-tax: ${fail} failed`); process.exit(1) }
 console.log('check-income-tax: all passed')

@@ -32494,6 +32494,8 @@
         "book": "Books"
       },
       "in": {
+        "hd": "Of which: high-dividend company dividends elected for separate taxation",
+        "hdHint": "Part of the total above. Excluded from the ₩20M threshold and from combined income, and taxed separately at 14% up to ₩20M, 20% up to ₩300M, 25% up to ₩5B and 30% above (plus 10% local income tax). The 14% withheld at payment counts as tax already paid.",
         "types": "Your income types (select all that apply)",
         "typesHint": "Pick every type you had. They are combined in the May filing.",
         "revenue": "Annual revenue (before 3.3% withholding)",
@@ -32566,6 +32568,7 @@
         "note": "Basic rates under Income Tax Act Art. 55 (from tax year 2023). Progressive: only the part above each threshold is taxed at the higher rate. With financial income combined, the bracket used in comparative taxation is shown."
       },
       "row": {
+        "hdTax": "High-dividend dividends ₩{amount}, separate tax (incl. local tax)",
         "title": "Calculation breakdown",
         "revenue": "Business revenue",
         "expense": "Expenses ({method})",
@@ -32611,7 +32614,7 @@
         "pay": "Amount to pay"
       },
       "note": {
-        "highDividend": "From 2026, dividends from qualifying high-dividend listed companies can be taxed separately at 14–30% instead of being combined (Restriction of Special Taxation Act Art. 104-27). This calculator treats all interest and dividends as ordinary financial income.",
+        "highDividend": "From 2026, dividends from qualifying high-dividend companies can, on election, be left out of the ₩20M threshold and combined income and taxed separately at 14–30% (Restriction of Special Taxation Act Art. 104-27; local tax under the Restriction of Special Local Taxation Act Art. 167-6). Enter the elected amount and it is included in the calculation. Up to ₩20M the rate equals the 14% withholding, so no extra tax is due.",
         "wageOnly": "With employment income only, year-end settlement completes your filing and no May return is needed. Missed deductions can still be claimed in May or via a correction claim.",
         "wageEstimated": "Year-end settlement tax was left blank, so an estimate is used. Enter the amount from your withholding receipt for accuracy.",
         "otherSeparated": "Separate taxation is cheaper, so other income is treated as settled by withholding (₩{tax} incl. local tax).",

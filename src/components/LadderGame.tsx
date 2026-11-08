@@ -47,8 +47,8 @@ const COLORS = [
 ]
 
 const glass = {
-  card: 'bg-surface border border-line rounded-2xl shadow-[0_20px_60px_rgba(79,70,229,0.10)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.28)]',
-  cardInset: 'shadow-[inset_1px_1px_8px_rgba(255,255,255,0.26),inset_-1px_-1px_8px_rgba(255,255,255,0.08)]',
+  card: 'bg-surface border border-line rounded-2xl',
+  cardInset: '',
   subCardStrong: 'bg-surface border border-line rounded-xl',
   pill: 'bg-surface border border-line',
 }
@@ -890,7 +890,7 @@ export default function LadderGame() {
                     key={id}
                     onClick={() => applyPreset(id)}
                     disabled={isPlaying}
-                    className="flex-shrink-0 px-3 py-1.5 bg-emerald-100/75 dark:bg-emerald-500/[0.10] text-sub border border-line rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/[0.14] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                    className="flex-shrink-0 px-3 py-1.5 bg-soft text-sub border border-line rounded-lg text-xs font-medium hover:bg-subtle transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                   >
                     {t(`presets.${id}`)}
                   </button>
@@ -912,7 +912,7 @@ export default function LadderGame() {
 
             {/* Position selection phase UI */}
             {isSelectionPhase && (
-              <div className="bg-emerald-100/55 dark:bg-emerald-500/[0.08] rounded-xl p-4 border border-line">
+              <div className="bg-subtle rounded-xl p-4 border border-line">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-semibold text-sub">
                     📍 {t('selection.title', { placed: colAssignments.filter(v => v !== null).length, total: participants.length })}
@@ -994,7 +994,7 @@ export default function LadderGame() {
                       value={p.animal}
                       onChange={e => updateParticipantAnimal(i, e.target.value)}
                       aria-label={t('a11y.participantAnimal', { n: i + 1 })}
-                      className="w-12 px-1 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-center flex-shrink-0"
+                      className="w-12 px-1 py-2 ui-field rounded-lg text-center flex-shrink-0"
                     >
                       {animalIcons.map(a => <option key={a} value={a}>{a}</option>)}
                     </select>
@@ -1003,7 +1003,7 @@ export default function LadderGame() {
                       value={p.name}
                       onChange={e => updateParticipant(i, e.target.value)}
                       aria-label={t('a11y.participantName', { n: i + 1 })}
-                      className="flex-1 min-w-0 px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                      className="flex-1 min-w-0 px-3 py-2 ui-field rounded-lg"
                       placeholder={t('settings.participantPlaceholder', { n: i + 1 })}
                     />
                     {participants.length > 2 && (
@@ -1032,7 +1032,7 @@ export default function LadderGame() {
                     value={o}
                     onChange={e => updateOutcome(i, e.target.value)}
                     aria-label={t('a11y.outcome', { n: i + 1 })}
-                    className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-3 py-2 ui-field rounded-lg"
                     placeholder={t('a11y.outcome', { n: i + 1 })}
                   />
                 ))}
@@ -1048,7 +1048,7 @@ export default function LadderGame() {
                 id="ladder-complexity"
                 value={ladderComplexity}
                 onChange={e => { const v = parseInt(e.target.value); setLadderComplexity(v); updateURL({ complexity: v.toString() }) }}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 ui-field rounded-lg"
               >
                 <option value={1}>{t('settings.complexities.simple')} (25%)</option>
                 <option value={2}>{t('settings.complexities.normal')} (40%)</option>
@@ -1066,7 +1066,7 @@ export default function LadderGame() {
                 id="ladder-speed"
                 value={animationSpeed}
                 onChange={e => { const v = parseInt(e.target.value); setAnimationSpeed(v); updateURL({ speed: v.toString() }) }}
-                className="w-full px-3 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 ui-field rounded-lg"
               >
                 <option value={3000}>{t('settings.speeds.slow')}</option>
                 <option value={1500}>{t('settings.speeds.normal')}</option>
@@ -1214,7 +1214,7 @@ export default function LadderGame() {
                           ${isAssigned
                             ? 'cursor-pointer hover:opacity-70'
                             : isSelectedSlot
-                              ? 'bg-emerald-100/70 dark:bg-emerald-500/[0.10] border-2 border-dashed border-emerald-400/80 dark:border-emerald-300/40 animate-pulse cursor-pointer'
+                              ? 'bg-primary-soft border-2 border-dashed border-primary animate-pulse cursor-pointer'
                               : 'bg-surface border-2 border-dashed border-line cursor-default'
                           }`}
                         style={isAssigned ? {
@@ -1461,7 +1461,7 @@ export default function LadderGame() {
               >
                 {outcomes.map((o, i) => (
                   <div key={i} className="flex-1 flex justify-center px-0.5">
-                    <span className="text-xs font-medium text-sub bg-emerald-100/70 dark:bg-emerald-500/[0.10] border border-line px-2 py-1 rounded-lg max-w-full truncate text-center">
+                    <span className="text-xs font-medium text-sub bg-soft border border-line px-2 py-1 rounded-lg max-w-full truncate text-center">
                       {isSelectionPhase || (blindMode && !revealedOutcomes.has(i)) ? '???' : o}
                     </span>
                   </div>
@@ -1488,7 +1488,7 @@ export default function LadderGame() {
 
           {/* Results card */}
           {showResults && Object.keys(results).length > 0 && (
-            <div className="bg-gradient-to-br from-amber-100/70 via-orange-50/65 to-rose-50/60 dark:from-amber-500/[0.10] dark:via-orange-500/[0.08] dark:to-rose-500/[0.06] rounded-2xl shadow-[0_24px_60px_rgba(251,146,60,0.18)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.28)] p-5 sm:p-8 border border-line">
+            <div className="bg-subtle rounded-2xl p-5 sm:p-8 border border-line">
               <h3 className="text-xl font-bold text-fg mb-5 flex items-center">
                 {t('result.title')}
               </h3>
@@ -1514,7 +1514,7 @@ export default function LadderGame() {
                       aria-atomic="true"
                       onKeyDown={shouldHide ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal() } } : undefined}
                       aria-label={shouldHide ? t('result.revealAria', { name }) : undefined}
-                      className={`flex items-center justify-between p-3 bg-surface rounded-xl border border-line shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition-all duration-500 ${
+                      className={`flex items-center justify-between p-3 bg-surface rounded-xl border border-line transition-all duration-500 ${
                         shouldHide ? 'cursor-pointer hover:shadow-md' : ''
                       }`}
                       style={{

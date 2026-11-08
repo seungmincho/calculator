@@ -29,13 +29,13 @@ const TYPE_NAME: Record<TypeKey, string> = { b: 'biz', w: 'wage', o: 'other', f:
 // 금액 입력 → URL 파라미터 (revenue·occ·method는 예전 링크와 호환)
 const MONEY = {
   revenue: 'revenue', prev: 'prev', major: 'major', book: 'book', salary: 'salary', wageTax: 'wtax',
-  otherDeduction: 'odd', otherCredit: 'ocr', otherPay: 'other', finIncome: 'fin', pension: 'np', yellow: 'yu',
+  otherDeduction: 'odd', otherCredit: 'ocr', otherPay: 'other', finIncome: 'fin', hdDividend: 'hd', pension: 'np', yellow: 'yu',
   pensionSavings: 'ps', irp: 'irp', midterm: 'mid',
 } as const
 type MoneyKey = keyof typeof MONEY
 const DEFAULT_MONEY: Record<MoneyKey, string> = {
   revenue: '30000000', prev: '25000000', major: '0', book: '0', salary: '40000000', wageTax: '',
-  otherDeduction: '0', otherCredit: '0', otherPay: '5000000', finIncome: '30000000', pension: '0', yellow: '0',
+  otherDeduction: '0', otherCredit: '0', otherPay: '5000000', finIncome: '30000000', hdDividend: '0', pension: '0', yellow: '0',
   pensionSavings: '0', irp: '0', midterm: '0',
 }
 const COUNTS = { persons: 'p', elderly: 'el', disabled: 'dis', children: 'c' } as const
@@ -130,7 +130,7 @@ export default function IncomeTaxCalculator() {
     wage: on('w'), salary: num(m.salary), wageTax: m.wageTax === '' ? null : num(m.wageTax),
     otherDeduction: num(m.otherDeduction), otherCredit: num(m.otherCredit),
     other: on('o'), otherPay: num(m.otherPay), otherExpenseRate: Math.min(100, parseFloat(oRate) || 0),
-    fin: on('f'), finIncome: num(m.finIncome),
+    fin: on('f'), finIncome: num(m.finIncome), hdDividend: num(m.hdDividend),
     ...counts, pension: num(m.pension), yellow: num(m.yellow), pensionSavings: num(m.pensionSavings), irp: num(m.irp),
     midterm: num(m.midterm), efiling,
   }
@@ -254,6 +254,9 @@ export default function IncomeTaxCalculator() {
               <section className="border-t border-line pt-5 space-y-4">
                 <h2 className="text-sm font-semibold text-fg">{t('it.type.fin')}</h2>
                 <Money label={t('it.in.fin')} value={m.finIncome} onChange={setMoney('finIncome')} hint={t('it.in.finHint')} unit={W} />
+                {RULES[year].highDividend && (
+                  <Money label={t('it.in.hd')} value={m.hdDividend} onChange={setMoney('hdDividend')} hint={t('it.in.hdHint')} unit={W} />
+                )}
               </section>
             )}
           </div>
@@ -378,6 +381,7 @@ export default function IncomeTaxCalculator() {
               {res.penalty > 0 && <Row label={t('it.row.penalty')} value={`+${won(res.penalty)}`} sub />}
               <Row label={t('it.row.determined')} value={won(res.determined)} />
               <Row label={t('it.row.localTax')} value={won(res.localTax)} />
+              {res.hdAmt > 0 && <Row label={t('it.row.hdTax', { amount: won(res.hdAmt) })} value={won(res.hd.total)} />}
               <Row label={t('it.row.totalTax')} value={won(res.totalTax)} strong />
               {res.prepaid.items.biz > 0 && <Row label={t('it.row.pBiz')} value={minus(res.prepaid.items.biz)} sub />}
               {res.prepaid.items.wage > 0 && <Row label={t('it.row.pWage')} value={minus(res.prepaid.items.wage)} sub />}
@@ -395,7 +399,7 @@ export default function IncomeTaxCalculator() {
                 </div>
               </div>
             </dl>
-            <Notes t={t} res={res} wageOnly={types.length === 1 && on('w')} highDividend={year === 2026 && on('f')} />
+            <Notes t={t} res={res} wageOnly={types.length === 1 && on('w')} highDividend={RULES[year].highDividend && on('f')} />
           </div>
 
           {/* 경비 방식 비교 */}

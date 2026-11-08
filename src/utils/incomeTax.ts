@@ -7,6 +7,7 @@ import {
   yellowUmbrellaLimit, childCredit, withholding33, SMALL_BIZ_LIMIT, type Industry, type Method,
 } from './freelancerTax.ts'
 import { earnedIncomeDeduction, earnedIncomeCredit } from './yearEndTax.ts'
+import { highDividend, atSource, finCheck } from './dividend.ts' // 고배당 분리과세 세율·근거 조문은 dividend.ts HD_TABLE
 
 export { BRACKETS, bracketIndex, eligibleMethod, type Method }
 
@@ -22,16 +23,16 @@ export const STD_CREDIT_OTHER = 70_000    // 표준세액공제: 근로소득 �
 //    자녀세액공제는 금액(§59의2①)이 같고 대상만 다르다 — 대상 자녀 수는 입력이 센다:
 //    2025 귀속 8세 이상, 2026 귀속 9세 이상이되 2017년생 제외 = 2016년 이전 출생 (부칙 2026.4.21 §2)
 //    경비율은 2026 귀속 고시(2027년 3월경) 전이라 두 해 모두 2025 귀속 고시(freelancerTax.ts INDUSTRIES).
-//    미반영: 2026년 이후 받는 고배당기업 배당 분리과세 선택(조특법 §104의27) — 화면 안내만 ──
+//    고배당기업 배당 분리과세(조특법 §104의27): 2026.1.1 이후 받는 배당부터 → 2026 귀속만 ──
 export type TaxYear = 2025 | 2026
 export const TAX_YEARS: TaxYear[] = [2026, 2025]
 export const DEFAULT_YEAR: TaxYear = 2026
 // 전자신고세액공제 (조특법 §104의8①, 시행령 §104의5②1호): 종합소득 확정신고 2만원 → 1만원 (2026.2.27 개정).
 // 부칙 §25 '시행 이후 전자신고하는 경우부터' → 2026년 5월에 신고한 2025 귀속분도 1만원.
 // 미반영: 근로소득만 있는 확정신고 예외자(§73)는 min(추가납부·환급 결정세액, 5천원)
-export const RULES: Record<TaxYear, { efiling: number }> = {
-  2025: { efiling: 10_000 },
-  2026: { efiling: 10_000 },
+export const RULES: Record<TaxYear, { efiling: number; highDividend: boolean }> = {
+  2025: { efiling: 10_000, highDividend: false },
+  2026: { efiling: 10_000, highDividend: true },
 }
 
 const floor10 = (x: number) => Math.floor(Math.max(0, x) / 10 + 1e-9) * 10
@@ -61,6 +62,7 @@ export interface Input {
   // 금융소득 (이자·배당)
   fin: boolean
   finIncome: number
+  hdDividend: number      // finIncome 중 분리과세 신청한 고배당기업 배당 (RULES.highDividend 연도만)
   // 공제
   persons: number         // 기본공제 인원 (본인 포함)
   elderly: number         // 70세 이상 (+100만, §51①1호)
@@ -80,7 +82,7 @@ export const DEFAULT_INPUT: Input = {
   method: 'simple', major: 0, bookExpense: 0, withheld33: true,
   wage: false, salary: 40_000_000, wageTax: null, otherDeduction: 0, otherCredit: 0,
   other: false, otherPay: 5_000_000, otherExpenseRate: 60,
-  fin: false, finIncome: 30_000_000,
+  fin: false, finIncome: 30_000_000, hdDividend: 0,
   persons: 1, elderly: 0, disabled: 0, children: 0, pension: 0, yellow: 0, pensionSavings: 0, irp: 0,
   midterm: 0, efiling: true,
 }
@@ -122,7 +124,12 @@ function core(i: Input, otherIncluded: boolean) {
   const otherIncome = otherPay - Math.floor(otherPay * Math.min(100, Math.max(0, i.otherExpenseRate)) / 100)
   const other = otherIncluded ? otherIncome : 0
   const finAmt = i.fin ? Math.max(0, i.finIncome) : 0
-  const fin = finAmt > FIN_THRESHOLD ? finAmt : 0 // 2천만 이하 = 14% 분리과세로 종결
+  // 고배당 분리과세 신청분은 2천만 기준 판단과 합산에서 빠지고 따로 과세 (조특법 §104의27, dividend.ts)
+  const hdAmt = RULES[i.year].highDividend ? Math.min(finAmt, Math.max(0, i.hdDividend)) : 0
+  const fin = finCheck(hdAmt, finAmt - hdAmt, true).over ? finAmt - hdAmt : 0 // 2천만 이하 = 14% 분리과세로 종결
+  const hdS = highDividend(hdAmt), hdW = atSource(hdAmt)
+  // 2천만 이하는 세율 14%라 지급 때 원천징수액 그대로 (dividend.ts highDividend)
+  const hd: { income: number; local: number; total: number } = hdS.separate ? hdS : hdW
   const total = biz.income + earned + other + fin
 
   // ── 소득공제 ──
@@ -158,10 +165,10 @@ function core(i: Input, otherIncluded: boolean) {
   const determined = Math.max(0, computed - credits) + penalty
   const localTax = Math.floor(determined * 0.1) // 지방소득세 = 소득세 결정세액의 10% (지방세법 §92)
   return {
-    biz, salary, earnedDeduction, earned, otherPay, otherIncome, other, finAmt, fin, total,
+    biz, salary, earnedDeduction, earned, otherPay, otherIncome, other, finAmt, fin, total, hdAmt, hd, hdWithheld: hdW,
     basic, pension, yellow, yellowLimit, otherDed, deduction, taxBase, computed, marginal,
     cr: { earned: earnedCr, child, pension: pensionCr, other: otherCr, standard, efiling },
-    credits, penalty, determined, localTax, totalTax: determined + localTax,
+    credits, penalty, determined, localTax, totalTax: determined + localTax + hd.total,
   }
 }
 
@@ -173,11 +180,11 @@ function prepaidOf(i: Input, c: ReturnType<typeof core>, wageTax: number) {
     biz: w33.incomeTax,
     wage: wageTax,
     other: otherIt,
-    fin: finIt,
+    fin: finIt + c.hdWithheld.income, // 고배당 분리과세분도 지급 때 14% 원천징수(§129) → 기납부
     midterm: Math.max(0, i.midterm),
   }
   const income = items.biz + items.wage + items.other + items.fin + items.midterm
-  const local = w33.localTax + Math.floor(wageTax * 0.1) + floor10(otherIt * 0.1) + floor10(finIt * 0.1) // 중간예납은 소득세만
+  const local = w33.localTax + Math.floor(wageTax * 0.1) + floor10(otherIt * 0.1) + floor10(finIt * 0.1) + c.hdWithheld.local // 중간예납은 소득세만
   return { items, income, local, total: income + local }
 }
 
@@ -200,16 +207,17 @@ export function calc(i: Input) {
   const pick = sep && sep.burden < inc.burden ? sep : inc
   const { c, p } = pick
 
-  const refundIncome = trunc10(p.income - c.determined)
-  const refundLocal = trunc10(p.local - c.localTax)
+  const refundIncome = trunc10(p.income - c.determined - c.hd.income)
+  const refundLocal = trunc10(p.local - c.localTax - c.hd.local)
+  const base = c.total + c.hdAmt
   return {
     ...c,
     otherIncome, otherSeparated: pick === sep, otherSepTax: pick.sepTax, otherMustInclude: mustInclude,
-    finSeparated: i.fin && c.finAmt > 0 && c.fin === 0,
+    finSeparated: i.fin && c.finAmt - c.hdAmt > 0 && c.fin === 0,
     wageTax, wageTaxEstimated,
     prepaid: p,
     refundIncome, refundLocal, refund: refundIncome + refundLocal, // + 환급 / − 추가납부
-    effRate: c.total > 0 ? (c.totalTax / c.total) * 100 : 0,       // 종합소득금액 대비 실효세율 (지방세 포함)
+    effRate: base > 0 ? (c.totalTax / base) * 100 : 0,             // 종합소득금액(+고배당 분리과세분) 대비 실효세율 (지방세 포함)
   }
 }
 export type Result = ReturnType<typeof calc>
