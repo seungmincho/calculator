@@ -1,3 +1,5 @@
+// Compile with esbuild, then run (src has .tsx, JSON imports and @/ aliases). From the repo root:
+//   node node_modules/esbuild/bin/esbuild scripts/check-theme-parks.ts --bundle --platform=node --external:react --external:react-dom --external:lucide-react --format=cjs --outfile=node_modules/.cache/checks/check-theme-parks.cjs && node node_modules/.cache/checks/check-theme-parks.cjs
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { DatabaseSync } from 'node:sqlite'

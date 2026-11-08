@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- 검사 스크립트: JSON-RPC 응답을 느슨하게 읽는다 */
 // Compile with esbuild, then run (netSalary imports without .ts extensions):
-//   node node_modules/esbuild/bin/esbuild scripts/check-mcp.ts --bundle --platform=node --format=cjs --outfile=<tmp>/check-mcp.cjs && node <tmp>/check-mcp.cjs
+//   node node_modules/esbuild/bin/esbuild scripts/check-mcp.ts --bundle --platform=node --format=cjs --outfile=node_modules/.cache/checks/check-mcp.cjs && node node_modules/.cache/checks/check-mcp.cjs
 import assert from 'node:assert/strict'
 import { handleMcp, TOOLS } from '../src/lib/mcpServer.ts'
 import { searchTools, TOOL_COUNT } from '../src/lib/toolSearch.ts'

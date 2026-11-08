@@ -6109,6 +6109,7 @@
     "completedBox": "completed a box! Extra turn!"
   },
   "lotto": {
+    "hotTop": "Top {n} Hot Numbers",
     "roundLabel": "Draw {round}",
     "latestUnavailable": "Couldn't load the latest draw",
     "frequency": {
@@ -32803,6 +32804,11 @@
             "title": "Arts & sports academies for grades 1–2",
             "desc": "Arts, music and sports academy fees for 1st and 2nd graders now qualify for the education credit (15%, up to 3M KRW per child).",
             "law": "Income Tax Act §59-4"
+          },
+          {
+            "title": "No income test for dependants' education costs",
+            "desc": "From education costs paid on or after 1 January 2026, a dependant's age and income no longer matter — tuition for a university student child earning over ₩1M from part-time work now counts (parents' and grandparents' education costs are still excluded).",
+            "law": "Income Tax Act Art. 59-4(3) (amended 2025.12.23)"
           },
           {
             "title": "Rent credit extended to spouses",

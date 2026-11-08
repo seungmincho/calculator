@@ -902,7 +902,7 @@ export default function LadderGame() {
             <button
               onClick={() => generateLadder()}
               disabled={isPlaying}
-              className="w-full bg-primary hover:bg-blue-700 text-white py-3 px-6 rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg shadow-green-200 dark:shadow-none"
+              className="w-full ui-btn py-3 px-6 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               <div className="flex items-center justify-center gap-2">
                 <RefreshCw className="w-5 h-5" />
@@ -918,10 +918,10 @@ export default function LadderGame() {
                     📍 {t('selection.title', { placed: colAssignments.filter(v => v !== null).length, total: participants.length })}
                   </h3>
                   <div className="flex gap-2">
-                    <button onClick={autoAssign} className="text-xs px-2 py-1 bg-soft text-sub rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800/40 transition-colors">
+                    <button onClick={autoAssign} className="text-xs px-2 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors">
                       🎲 {t('selection.random')}
                     </button>
-                    <button onClick={assignInOrder} className="text-xs px-2 py-1 bg-soft text-body rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <button onClick={assignInOrder} className="text-xs px-2 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors">
                       📋 {t('selection.inOrder')}
                     </button>
                   </div>
@@ -955,7 +955,7 @@ export default function LadderGame() {
                     )
                   })}
                   {colAssignments.every(v => v !== null) && (
-                    <div className="w-full text-center text-sm text-green-600 dark:text-green-400 font-medium mt-1">
+                    <div className="w-full text-center text-sm text-primary font-medium mt-1">
                       ✅ {t('selection.allPlaced')}
                     </div>
                   )}
@@ -978,7 +978,7 @@ export default function LadderGame() {
                 <button
                   onClick={addParticipant}
                   disabled={participants.length >= 8}
-                  className="px-3 py-1 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ui-btn-soft px-3 py-1 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {t('settings.addParticipant')}
                 </button>
@@ -1009,7 +1009,7 @@ export default function LadderGame() {
                     {participants.length > 2 && (
                       <button
                         onClick={() => removeParticipant(i)}
-                        className="flex-shrink-0 px-2 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                        className="flex-shrink-0 px-2 py-2 bg-soft text-body rounded-lg hover:bg-subtle hover:text-red-600 transition-colors text-sm"
                       >
                         {tCommon('delete')}
                       </button>
@@ -1086,7 +1086,7 @@ export default function LadderGame() {
                   disabled={isPlaying}
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     blindMode
-                      ? 'bg-amber-50 dark:bg-amber-900/30 border-amber-400 dark:border-amber-600 text-amber-700 dark:text-amber-300'
+                      ? 'bg-primary-soft border-primary text-primary'
                       : 'bg-subtle border-line text-muted'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
@@ -1099,7 +1099,7 @@ export default function LadderGame() {
                   disabled={isPlaying}
                   className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${
                     revealOneByOne
-                      ? 'bg-subtle border-purple-400 dark:border-purple-600 text-sub'
+                      ? 'bg-primary-soft border-primary text-primary'
                       : 'bg-subtle border-line text-muted'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
@@ -1115,7 +1115,7 @@ export default function LadderGame() {
                 <span className="text-sm font-bold text-sub">
                   {t('round.current', { round: currentRound })}
                 </span>
-                <span className="text-xs text-blue-500 dark:text-blue-400">
+                <span className="text-xs text-primary">
                   ({t('round.total', { count: rounds.length })})
                 </span>
               </div>
@@ -1130,7 +1130,7 @@ export default function LadderGame() {
               <h3 className="text-xl font-bold text-fg flex items-center">
                 {t('ladder.title')}
                 {currentRound > 1 && (
-                  <span className="ml-2 text-sm font-normal text-blue-500 dark:text-blue-400">
+                  <span className="ml-2 text-sm font-normal text-primary">
                     ({t('round.current', { round: currentRound })})
                   </span>
                 )}
@@ -1143,7 +1143,7 @@ export default function LadderGame() {
                     <button
                       onClick={() => playLadder()}
                       disabled={buttonsDisabled}
-                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
+                      className="flex-1 sm:flex-none ui-btn gap-1.5 py-2 px-4 text-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       {isPlaying ? (
                         <><RefreshCw className="w-4 h-4 animate-spin" /><span>{t('playing')}</span></>
@@ -1154,7 +1154,7 @@ export default function LadderGame() {
                     <button
                       onClick={showResultsOnly}
                       disabled={buttonsDisabled}
-                      className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
+                      className="flex-1 sm:flex-none ui-btn gap-1.5 py-2 px-4 text-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       <Zap className="w-4 h-4" /><span>{t('showResultsOnly')}</span>
                     </button>
@@ -1260,7 +1260,7 @@ export default function LadderGame() {
                         title={canClick ? t('play.playOne', { name: p.name }) : isCompleted ? t('play.done', { name: p.name }) : t('ladder.placeholder')}
                         className={`flex-1 flex flex-col items-center gap-0.5 py-1 px-1 rounded-lg text-xs font-medium transition-all ${
                           canClick
-                            ? 'hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-offset-1 dark:ring-offset-gray-800'
+                            ? 'hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-offset-1 ring-offset-surface'
                             : isCompleted
                               ? 'opacity-50 cursor-default'
                               : 'hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:cursor-not-allowed'
@@ -1285,7 +1285,7 @@ export default function LadderGame() {
             {/* SVG Ladder */}
             <div className={`relative ${glass.subCardStrong} overflow-x-auto`}>
               {!ladderReady ? (
-                <div className="flex flex-col items-center justify-center h-56 text-gray-400 dark:text-gray-600">
+                <div className="flex flex-col items-center justify-center h-56 text-faint">
                   <GitBranch className="w-10 h-10 mb-3 opacity-40" />
                   <p className="text-sm">{t('ladder.placeholder')}</p>
                 </div>
@@ -1531,7 +1531,7 @@ export default function LadderGame() {
                       <span className="text-lg text-gray-400">→</span>
                       {shouldHide ? (
                         <span
-                          className="font-bold px-3 py-1 rounded-lg text-white text-sm bg-slate-400/90 dark:bg-slate-500/90"
+                          className="font-bold px-3 py-1 rounded-lg text-sub text-sm bg-soft"
                           style={{
                             display: 'inline-block',
                             transition: 'transform 0.6s',
@@ -1563,21 +1563,21 @@ export default function LadderGame() {
                   <button
                     onClick={handleRematch}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-amber-100/70 dark:bg-amber-500/[0.10] hover:bg-amber-100 dark:hover:bg-amber-500/[0.14] px-3 py-2 rounded-xl text-amber-700 dark:text-amber-300 transition-colors text-sm font-medium border border-amber-200/70 dark:border-amber-300/15 disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-soft hover:bg-subtle px-3 py-2 rounded-xl text-body transition-colors text-sm font-medium disabled:opacity-50"
                   >
                     🔄 {t('result.rematch')}
                   </button>
                   <button
                     onClick={handleReshuffleLadder}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-teal-100/70 dark:bg-teal-500/[0.10] hover:bg-teal-100 dark:hover:bg-teal-500/[0.14] px-3 py-2 rounded-xl text-sub transition-colors text-sm font-medium border border-teal-200/70 dark:border-teal-300/15 disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-soft hover:bg-subtle px-3 py-2 rounded-xl text-body transition-colors text-sm font-medium disabled:opacity-50"
                   >
                     🔀 {t('result.reshuffle')}
                   </button>
                   <button
                     onClick={handleNextRound}
                     disabled={isPlaying}
-                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-blue-100/70 dark:bg-blue-500/[0.10] hover:bg-blue-100 dark:hover:bg-blue-500/[0.14] px-3 py-2 rounded-xl text-sub transition-colors text-sm font-medium border border-blue-200/70 dark:border-blue-300/15 disabled:opacity-50"
+                    className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-soft hover:bg-subtle px-3 py-2 rounded-xl text-body transition-colors text-sm font-medium disabled:opacity-50"
                   >
                     ➡️ {t('result.nextRound')}
                   </button>

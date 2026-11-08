@@ -1,3 +1,5 @@
+// Compile with esbuild, then run (src has .tsx, JSON imports and @/ aliases). From the repo root:
+//   node node_modules/esbuild/bin/esbuild scripts/check-everland-planner.ts --bundle --platform=node --external:react --external:react-dom --external:lucide-react --format=cjs --outfile=node_modules/.cache/checks/check-everland-planner.cjs && node node_modules/.cache/checks/check-everland-planner.cjs
 import assert from 'node:assert/strict'
 import { DatabaseSync } from 'node:sqlite'
 import { readFileSync } from 'node:fs'

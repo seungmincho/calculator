@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useTranslations } from '@/lib/i18n'
+import { useTranslations } from '@/lib/i18n/shared'
 
 /**
  * 모바일에서 결과 카드가 입력 카드 아래(첫 화면 밖)에 쌓이는 계산기용.

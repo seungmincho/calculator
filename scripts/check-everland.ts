@@ -1,4 +1,7 @@
 // Compile with esbuild (see docs/everland.md), then run. No network or production writes.
+// Not runnable with plain node (src imports JSON without `with { type: 'json' }`). From the repo root:
+//   node node_modules/esbuild/bin/esbuild scripts/check-everland.ts --bundle --platform=node --packages=external --format=cjs --outfile=node_modules/.cache/checks/check-everland.cjs && node node_modules/.cache/checks/check-everland.cjs
+//   (EVERLAND_BROWSER_TEST=1 adds the Chromium check; set CHROMIUM_PATH)
 import assert from 'node:assert/strict'
 import { DatabaseSync } from 'node:sqlite'
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- 검사 스크립트: API 응답 JSON을 느슨하게 읽는다 */
 // Compile with esbuild, then run (netSalary imports without .ts extensions):
-//   node node_modules/esbuild/bin/esbuild scripts/check-agent-api.ts --bundle --platform=node --format=cjs --outfile=<tmp>/check-agent-api.cjs && node <tmp>/check-agent-api.cjs
+//   node node_modules/esbuild/bin/esbuild scripts/check-agent-api.ts --bundle --platform=node --format=cjs --outfile=node_modules/.cache/checks/check-agent-api.cjs && node node_modules/.cache/checks/check-agent-api.cjs
 import assert from 'node:assert/strict'
 import { handleCalc } from '../src/lib/agentApi.ts'
 

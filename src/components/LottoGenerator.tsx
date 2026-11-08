@@ -1174,7 +1174,7 @@ export default function LottoGenerator() {
               <div className="bg-subtle rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-sub mb-2 flex items-center gap-1">
                   <TrendingUp className="w-4 h-4" />
-                  {t('hotNumbers')} TOP 6
+                  {t('hotTop', { n: 6 })}
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
                   {numberStats.slice(0, 6).map((stat) => (
