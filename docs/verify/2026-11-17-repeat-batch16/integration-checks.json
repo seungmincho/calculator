@@ -1,0 +1,87 @@
+{
+  "scope": "Batch16 school-grade inputs and CSAT score records",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T15:39:54.742Z",
+    "localStartedAt": "2026-11-17 00:39:54 KST",
+    "freeMemoryBeforeGiB": 5.67,
+    "browsersClosed": true,
+    "batch17ParentConnectedAfterCheckpoint": true
+  },
+  "browser": {
+    "total": 12,
+    "grade": 6,
+    "csat": 6,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "checkedAt": "2026-11-16T15:39:21.595Z",
+    "evidence": "browser/final-results.json"
+  },
+  "domain": {
+    "gradeGroups": 11,
+    "csatGroups": 35,
+    "existingGradeRank": "passed",
+    "existingCsatCalculation": "passed",
+    "csatContextGroups": 14
+  },
+  "independent": {
+    "gradePanelGroups": 9,
+    "gradeParentGroups": 4,
+    "csatDomainGroups": 6,
+    "csatSubjectCombinations": 593,
+    "csatPanelGroups": 9,
+    "csatParentGroups": 4,
+    "emptyUrlFollowupGroups": 2,
+    "totalGroups": 34,
+    "unresolvedFindings": 0
+  },
+  "resolvedProductFindings": [
+    "Explicit empty CSAT score query was normalized to zero on shared-URL revisit"
+  ],
+  "translations": {
+    "generatedFiles": 796,
+    "applyAddedImports": 0,
+    "ownImports": 516,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 89,
+    "staticKeyUsesChecked": 199,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "updatedDate": "2026-11-17",
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "0 errors/warnings",
+    "sharedScope": "0 errors/warnings",
+    "existingOutsideScope": [
+      "Notepad purity error 1",
+      "TimerStopwatch exhaustive-deps warning 1"
+    ]
+  },
+  "diffCheck": {
+    "exitCode": 0,
+    "scope": "Batch16 product, shared and handoff files"
+  },
+  "limitations": [
+    "Korean-only common i18n runtime",
+    "No atomic cross-tab write guarantee without Web Locks",
+    "Failed readback may occur after a successful write; no rollback guarantee",
+    "Some invalid numeric raw strings may display blank in native number inputs while state preserves the original",
+    "Raw-score comparison does not adjust exam difficulty or predict admissions"
+  ],
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "physical mobile testing"
+  ]
+}

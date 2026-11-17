@@ -1,0 +1,146 @@
+{
+  "status": "complete",
+  "lastCompletedCheckpoint": "CSV-performance + batch29 (prior batch27 preserved)",
+  "typecheck": {
+    "status": "passed",
+    "startedAt": "2026-11-16T20:26:25.100Z",
+    "startedAtKst": "2026-11-17 05:26:25",
+    "freeGiB": 4.65,
+    "totalGiB": 31.75,
+    "maxOldSpaceMiB": 2048,
+    "attempts": 1,
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "scope": "Shared CSV-performance and batch29 checkpoint; frozen unconnected batch28 and batch30 TS included",
+    "exitCode": 0,
+    "completionObservedAt": "2026-11-16T20:29:08.977Z"
+  },
+  "commonLint": {
+    "status": "passed",
+    "files": 4,
+    "errors": 0,
+    "warnings": 0
+  },
+  "discovery": {
+    "redirects": 472,
+    "rss": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45587
+  },
+  "accountSnapshot": {
+    "source": "root read-only account-wide snapshot",
+    "atKst": "2026-11-17 05:20",
+    "usedPercent": 37,
+    "remainingPercent": 63,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true
+  },
+  "scope": "CSV Worker and bounded preview performance follow-up",
+  "pairedReport": "../2026-11-17-repeat-batch29/report.md",
+  "preservesOriginalBatch26Evidence": true,
+  "author": {
+    "groups": 22,
+    "workerClientPreview": 9,
+    "parent": 13,
+    "scopedLint": "passed"
+  },
+  "translations": {
+    "status": "generated/static passed",
+    "patchLeavesPerLanguage": 16,
+    "staticUses": 95,
+    "errors": 0,
+    "generatedFiles": 1578
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 11,
+    "worker": 8,
+    "parent": 3,
+    "report": "performance/independent-review.md",
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-16T20:21:11.362Z",
+    "browserClosed": true,
+    "errors": 0,
+    "hydration": 0,
+    "unhandled": 0,
+    "rawTranslationKeys": 0,
+    "productFixes": 0,
+    "testConditionCorrection": "Next dev Blob/importScripts Worker bootstrap; one case retested",
+    "artifacts": "performance/browser",
+    "report": "performance/review-browser.md"
+  },
+  "finalCommonChecks": {
+    "status": "passed",
+    "messagesCheck": {
+      "files": 1578,
+      "status": "passed"
+    },
+    "namespaceApply": {
+      "imports": 0
+    },
+    "namespaceAudit": {
+      "ownImports": 534,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "codeDiffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current product/common paths; final report/handoff documentation check pending"
+  },
+  "performance": {
+    "measurementScope": "Single Windows Chrome development-server synthetic fixture; not average/mobile or deployed guarantee",
+    "sameInput10000x20": {
+      "previousMainHeartbeatGapMs": 1996,
+      "mainHeartbeatGapMs": 36.2,
+      "workerComputeMs": 210.8,
+      "roundTripMs": 240.4,
+      "callbackValidationPlusSettlementMs": 3.2,
+      "callbackToConfirmedFrameMs": 26.3,
+      "longTasks": 0,
+      "completeOutputBytes": 3480002
+    },
+    "wide1000x200": {
+      "mainHeartbeatGapMs": 42.8,
+      "workerComputeMs": 196.2,
+      "roundTripMs": 229.6,
+      "callbackMs": 1.8,
+      "completeOutputBytes": 3788002
+    },
+    "separateTable1000Cells": {
+      "elapsedMs": 221.7,
+      "maxGapMs": 132,
+      "longTaskMs": 115
+    },
+    "editingWithMemoizedTable": {
+      "elapsedMs": 123,
+      "maxGapMs": 25.2,
+      "tableMutations": 0
+    },
+    "remainingLimits": {
+      "largeInputNativePasteMaxGapMs": 412.8,
+      "largeSingleCellPreviewMaxGapMs": 294.9,
+      "fullManualRecoveryMaxGapMs": 480.4
+    },
+    "fullOutputPreserved": true
+  },
+  "documentationChecks": {
+    "files": 7,
+    "relativeLinksChecked": 167,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  },
+  "nextWork": {
+    "batch28": "parent integration started; not part of this completion",
+    "batch30": "clock/receipt boundary correction then parent integration",
+    "batch31": "unconnected preparation only",
+    "batch32": "unconnected preparation only",
+    "batch35": "separate public JS / isolated service worker validation; excluded from this checkpoint"
+  }
+}

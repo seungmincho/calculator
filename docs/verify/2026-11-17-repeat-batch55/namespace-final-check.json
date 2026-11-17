@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-17T01:02:25.581Z",
+  "apply": {
+    "exitCode": 0,
+    "chunk": "4dd065",
+    "summary": "--apply: 0 imports in 0 files"
+  },
+  "audit": {
+    "exitCode": 0,
+    "chunk": "444eb0",
+    "summary": "audit: 560 satisfied by own import, 6 via child component, 0 unresolved; 60 issues listed above"
+  }
+}

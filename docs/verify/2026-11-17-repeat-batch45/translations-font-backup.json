@@ -1,0 +1,44 @@
+{
+  "ko": { "fontPreview": { "pairing": { "backup": {
+    "title": "저장한 조합 옮기기", "description": "글꼴·크기·굵기 설정을 파일로 보관하고 다른 브라우저에서 가져오세요. 미리보기 원고와 글꼴 파일은 포함하지 않아요.",
+    "download": "조합 JSON 백업", "choose": "백업 파일 가져오기", "reading": "백업 파일을 확인하고 있어요.",
+    "preview": "{name} · 조합 {count}개", "slots": "선택 {selected}개 · 추가할 수 있는 조합 {available}개", "empty": "이 백업에는 저장된 조합이 없어요.",
+    "select": "{name} 가져오기", "name": "가져온 조합의 이름", "style": "{role} · {font} · {size}px · 요청 굵기 {requested} / 적용 굵기 {applied}",
+    "confirm": "선택한 {count}개 추가", "saving": "조합을 추가하고 있어요.", "saved": "조합 {count}개를 저장 목록에 추가했어요. 미리보기 원고와 현재 스타일은 그대로예요.",
+    "keepText": "기존 조합을 삭제하지 않아요. 현재 미리보기에 적용하려면 저장 목록에서 불러오기를 눌러 주세요.", "cancel": "가져오기 취소", "limit": "툴허브 조합 JSON 파일만 가져올 수 있어요. 파일은 최대 64KiB, 저장 목록은 최대 6개예요.",
+    "errors": {
+      "invalidData": "조합 파일의 형식이나 글꼴 설정이 올바르지 않아요. 원본 파일과 저장 목록은 바뀌지 않았어요.",
+      "unsupportedVersion": "이 버전의 백업은 아직 읽을 수 없어요. 최신 툴허브에서 다시 확인해 주세요.", "wrongApp": "툴허브 글꼴 조합 백업 파일을 선택해 주세요.",
+      "tooLarge": "파일은 최대 64KiB(65,536바이트)까지 가져올 수 있어요.", "unreadable": "파일을 읽지 못했어요. 파일을 다시 선택해 주세요.",
+      "unavailable": "저장소에 접근하지 못했어요. 브라우저 설정을 확인하고 저장 목록을 새로고침해 주세요.",
+      "conflict": "저장 목록이 바뀌었어요. 목록을 새로고침한 다음 파일을 다시 선택해 주세요.",
+      "quota": "저장 공간이 부족해 추가하지 못했어요. 기존 목록은 유지돼요.",
+      "unknownWrite": "저장 결과를 확인하지 못했어요. 중복 추가를 막기 위해 먼저 저장 목록을 새로고침해 주세요.",
+      "emptySelection": "가져올 조합을 하나 이상 선택해 주세요.", "invalidSelection": "가져올 항목을 확인하지 못했어요. 파일을 다시 선택해 주세요.",
+      "invalidName": "이름을 1~40자로 입력해 주세요. 줄바꿈과 제어 문자는 사용할 수 없어요.",
+      "duplicateName": "같은 이름의 조합이 있어요. 이름을 바꾸거나 선택을 해제해 주세요.", "limit": "저장 목록은 최대 6개예요. 가져올 항목을 줄이거나 기존 조합을 직접 삭제해 주세요.",
+      "cancelled": "가져오기를 취소했어요.", "downloadFailed": "백업 다운로드를 시작하지 못했어요. 다시 눌러 주세요."
+    }
+  } } } },
+  "en": { "fontPreview": { "pairing": { "backup": {
+    "title": "Move saved font pairs", "description": "Back up font, size and weight settings and import them in another browser. Preview text and font files are excluded.",
+    "download": "Back up pairs as JSON", "choose": "Import a backup file", "reading": "Checking the backup file…",
+    "preview": "{name} · Pairs: {count}", "slots": "Selected: {selected} · Available slots: {available}", "empty": "This backup has no saved pairs.",
+    "select": "Import {name}", "name": "Imported pair name", "style": "{role} · {font} · {size}px · Requested weight {requested} / applied {applied}",
+    "confirm": "Add selected pairs ({count})", "saving": "Adding pairs…", "saved": "Pairs added to your saved list: {count}. Your preview text and current styles are unchanged.",
+    "keepText": "Existing pairs are kept. To apply an imported pair to the preview, load it from your saved list.", "cancel": "Cancel import", "limit": "Accepts Toolhub font-pair JSON backups up to 64KiB. Your saved list can hold up to 6 pairs.",
+    "errors": {
+      "invalidData": "The backup format or font settings are invalid. The source file and saved list are unchanged.",
+      "unsupportedVersion": "This backup version is not supported yet. Try the latest version of Toolhub.", "wrongApp": "Choose a Toolhub font-pair backup file.",
+      "tooLarge": "Files must be no larger than 64KiB (65,536 bytes).", "unreadable": "Could not read the file. Select it again.",
+      "unavailable": "Could not access storage. Check browser settings and refresh the saved list.",
+      "conflict": "The saved list changed. Refresh the list, then select the file again.",
+      "quota": "There is not enough storage to add these pairs. Your existing list is kept.",
+      "unknownWrite": "Could not confirm the save. Refresh the saved list before trying again to avoid duplicates.",
+      "emptySelection": "Select at least one pair to import.", "invalidSelection": "Could not validate your selection. Select the file again.",
+      "invalidName": "Enter a name of 1–40 characters without line breaks or control characters.",
+      "duplicateName": "A pair already uses this name. Rename it or deselect it.", "limit": "Your saved list can hold up to 6 pairs. Select fewer pairs or manually delete an existing one.",
+      "cancelled": "Import cancelled.", "downloadFailed": "Could not start the backup download. Try again."
+    }
+  } } } }
+}

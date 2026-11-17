@@ -1,0 +1,38 @@
+{
+  "ko": {
+    "teamDivider": {
+      "rotation": {
+        "title": "다음 편성",
+        "description": "현재 팀을 직전 편성으로 삼아 함께 있던 두 사람의 조합이 덜 반복되도록 다시 나눠요. 고정한 사람의 팀은 유지해요.",
+        "action": "동료 겹침 줄여 다시 나누기",
+        "captainHint": "자동 편성을 쓰려면 무작위 또는 실력 균형 모드를 선택해 주세요.",
+        "rosterMismatch": "완료된 편성과 현재 명단·팀 수가 일치해야 합니다. 먼저 현재 설정으로 팀을 나눠 주세요.",
+        "repeatedPairs": "직전 동료 반복 {count}쌍",
+        "previousPairs": "직전 편성에서 같은 팀이었던 {count}쌍 중, 현재도 같은 팀인 조합을 셉니다.",
+        "skillBaseline": "실력 합계 편차 {count} 이하인 후보에서 골랐어요. 기준은 같은 설정으로 만든 기본 균형 편성이에요.",
+        "lockedLimit": "고정한 사람의 팀을 유지하느라 팀별 인원 차이를 1명 이내로 맞출 수 없었어요. 고정을 일부 해제하면 더 고르게 나눌 수 있어요.",
+        "editedHint": "카드를 옮긴 뒤의 실제 팀으로 반복 조합 수를 다시 계산했어요.",
+        "limitHint": "직전 편성만 기준으로 최대 {count}개 후보를 비교합니다. 반복 0쌍이나 최적의 조합을 보장하지 않아요.",
+        "sessionHint": "비교는 새로고침하면 사라지며, 공유 링크에는 현재 팀만 담겨요."
+      }
+    }
+  },
+  "en": {
+    "teamDivider": {
+      "rotation": {
+        "title": "Next team assignment",
+        "description": "Use the current teams as the previous round and try to repeat fewer teammate pairs. Locked members stay on their teams.",
+        "action": "Remix with fewer repeat teammates",
+        "captainHint": "Choose Random or Skill-balanced mode to create the next teams automatically.",
+        "rosterMismatch": "The completed teams must match the current roster and team count. Divide teams with the current settings first.",
+        "repeatedPairs": "Repeated teammate pairs: {count}",
+        "previousPairs": "Of the {count} teammate pairs in the previous assignment, we count those still on the same team now.",
+        "skillBaseline": "Chosen from candidates with a skill-total gap of {count} or less, using a standard balanced assignment with the same settings as the baseline.",
+        "lockedLimit": "Keeping locked members on their teams made a size gap of one or less impossible. Unlock some members for more even team sizes.",
+        "editedHint": "The repeated-pair count reflects the teams after your manual changes.",
+        "limitHint": "Compares up to {count} candidates against the previous assignment only. Zero repeats or an optimal arrangement are not guaranteed.",
+        "sessionHint": "This comparison clears on refresh. Shared links include only the current teams."
+      }
+    }
+  }
+}

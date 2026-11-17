@@ -1,0 +1,46 @@
+{
+  "ko": {
+    "teamDivider": {
+      "history": {
+        "redo": "다시 실행",
+        "redone": "편집을 다시 실행했습니다.",
+        "scopeHint": "팀 편성과 고정 상태를 되돌립니다. 현재 능력치와 다음 편성 방식은 그대로 유지됩니다.",
+        "hint": "최근 20번의 팀 편집을 되돌리거나 다시 실행할 수 있습니다. 명단·참석·팀 수를 바꾸면 이력이 초기화됩니다."
+      },
+      "resultActions": {
+        "download": "TXT 파일 받기",
+        "downloadFailed": "파일을 준비하지 못했습니다. 편성은 유지됩니다. 다시 시도해 주세요.",
+        "copyFailed": "복사하지 못했습니다. 아래 편성을 직접 선택하거나 다시 시도해 주세요.",
+        "copyLabel": "복사할 현재 팀 편성",
+        "select": "텍스트 선택",
+        "retry": "복사 다시 시도",
+        "copying": "복사 중",
+        "close": "닫기",
+        "selectionFailed": "자동 선택에 실패했습니다. 아래 내용을 직접 선택해 복사해 주세요.",
+        "hint": "TXT는 현재 편성을 UTF-8 텍스트로 받습니다. 결과를 이 기기의 기록에 추가하지 않습니다."
+      }
+    }
+  },
+  "en": {
+    "teamDivider": {
+      "history": {
+        "redo": "Redo",
+        "redone": "The edit was redone.",
+        "scopeHint": "History restores team assignments and locks. Current skill ratings and the next division mode stay unchanged.",
+        "hint": "Undo or redo the last 20 team edits. Changing the roster, attendance, or team count resets this history."
+      },
+      "resultActions": {
+        "download": "Download TXT",
+        "downloadFailed": "Could not prepare the file. Your teams are retained. Try again.",
+        "copyFailed": "Could not copy. Select the teams below manually, or try again.",
+        "copyLabel": "Current teams to copy",
+        "select": "Select text",
+        "retry": "Try copying again",
+        "copying": "Copying",
+        "close": "Close",
+        "selectionFailed": "Could not select automatically. Select and copy the content below manually.",
+        "hint": "Download the current teams as UTF-8 text. This does not add the result to device history."
+      }
+    }
+  }
+}

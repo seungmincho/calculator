@@ -1,0 +1,33 @@
+{
+  "source": "Actual QrBatchGenerator and utility/controller; actual qrcode/JSZip; controlled hook/print/DOM ports, not native browser.",
+  "results": [
+    {
+      "name": "full actual QR generation enables 2-cell print and honest opened notice",
+      "pass": true
+    },
+    {
+      "name": "partial generation is never printable and cancelled generation stays absent",
+      "pass": true
+    },
+    {
+      "name": "editing invalidates print before decode and same-source regeneration cannot revive it",
+      "pass": true
+    },
+    {
+      "name": "cancel keeps complete images for retry; decode error reports failure",
+      "pass": true
+    },
+    {
+      "name": "locale ABA invalidates pending work and old rendered action cannot start another print",
+      "pass": true
+    },
+    {
+      "name": "unmount and Strict effect replay dispose pending print without late dispatch",
+      "pass": true
+    },
+    {
+      "name": "ZIP retains actual PNGs and filenames and closes its previous print document",
+      "pass": true
+    }
+  ]
+}

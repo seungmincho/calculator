@@ -1,0 +1,55 @@
+{
+  "verifiedAt": "2026-11-16T14:02:10.901Z",
+  "scope": "Batch8 checkpoint; current disk also contains ongoing batch9/10 work, not their final verification",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T14:00:58.384Z",
+    "freeMemoryBeforeGiB": 5.7,
+    "browsersClosed": true
+  },
+  "browser": {
+    "total": 16,
+    "image": 5,
+    "dday": 5,
+    "pomodoro": 6,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0
+  },
+  "domain": {
+    "imageProfiles": 20,
+    "ddayCalendar": 63,
+    "pomodoroGoal": "passed",
+    "existingImageResize": "passed",
+    "existingDday": "passed"
+  },
+  "translations": {
+    "generatedFiles": 796,
+    "namespaceOwnImports": 505,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 109,
+    "staticKeyUsesChecked": 326,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "0 errors and warnings",
+    "sharedScope": "menuConfig and three pages, 0 errors and warnings"
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "external calendar import",
+    "physical mobile device testing"
+  ]
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "name": "initial-mobile-no-model-download",
+    "status": "PASS"
+  },
+  {
+    "name": "text-fallback-compare-save-reload-export",
+    "status": "PASS"
+  },
+  {
+    "name": "record-replay-blob-restoration",
+    "status": "PASS"
+  },
+  {
+    "name": "audio-validation-silence-and-take-limit",
+    "status": "PASS"
+  },
+  {
+    "name": "failed-save-preserves-answer",
+    "status": "PASS"
+  },
+  {
+    "name": "microphone-denied-text-remains-usable",
+    "status": "PASS"
+  },
+  {
+    "name": "summary-only-link-reproduces-numbers",
+    "status": "PASS"
+  },
+  {
+    "name": "cancel-model-load-preserves-answer",
+    "status": "PASS"
+  },
+  {
+    "name": "cancel-permission-stops-late-microphone",
+    "status": "PASS"
+  },
+  {
+    "name": "history-cap-updates-and-corrupt-record",
+    "status": "PASS"
+  },
+  {
+    "name": "copied-summary-never-contains-transcript",
+    "status": "PASS"
+  },
+  {
+    "name": "recording-stops-at-90-seconds",
+    "status": "FAIL",
+    "error": "locator.waitFor: Timeout 100000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '녹음 마치기', exact: true }) to be hidden\u001b[22m\n\u001b[2m    199 × locator resolved to visible <button class=\"ui-btn min-h-12 px-6 py-3 inline-flex items-center justify-center gap-2 disabled:opacity-40\">…</button>\u001b[22m\n"
+  }
+]

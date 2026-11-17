@@ -1,0 +1,46 @@
+{
+  "ko": {
+    "numberToKorean": {
+      "editing": {
+        "example": "예시 금액 123,456,789원의 변환 결과예요. 원하는 숫자로 바꿔 보세요.",
+        "blurHint": "입력하는 동안 원문을 유지하고, 숫자 입력을 마친 뒤 다른 곳을 누르면 쉼표로 정리해요. 한글 금액 원문은 그대로 둡니다.",
+        "composing": "문자 조합을 마치면 빠른 금액과 복사를 사용할 수 있어요.",
+        "clear": "입력 비우기",
+        "copying": "복사 중",
+        "linkLabel": "현재 변환 링크",
+        "batchLabel": "일괄 변환 표"
+      },
+      "copyRecovery": {
+        "failed": "{label} 복사를 완료하지 못했어요. 아래 전체 내용을 직접 선택하거나 다시 시도해 주세요.",
+        "field": "직접 복사할 {label}",
+        "hint": "전체 선택 후 기기의 복사 기능을 사용하세요. 내용을 선택하는 것만으로 클립보드에 복사되지는 않아요.",
+        "select": "전체 선택",
+        "retry": "현재 결과 다시 복사",
+        "close": "닫기",
+        "selectionFailed": "자동 선택을 완료하지 못했어요. 텍스트 영역에서 내용을 직접 선택해 주세요."
+      }
+    }
+  },
+  "en": {
+    "numberToKorean": {
+      "editing": {
+        "example": "This result uses the example amount 123,456,789 won. Replace it with your own number.",
+        "blurHint": "Your text is kept while you type. Numeric input gets grouping commas after you leave the field; Korean amount text is kept as entered.",
+        "composing": "Finish composing the text to use quick amounts and copy actions.",
+        "clear": "Clear input",
+        "copying": "Copying",
+        "linkLabel": "Current conversion link",
+        "batchLabel": "Batch conversion table"
+      },
+      "copyRecovery": {
+        "failed": "Could not finish copying {label}. Select the full text below or try again.",
+        "field": "{label} to copy manually",
+        "hint": "Select all, then use your device's copy command. Selecting text alone does not copy it to the clipboard.",
+        "select": "Select all",
+        "retry": "Copy current result again",
+        "close": "Close",
+        "selectionFailed": "The text could not be selected automatically. Select it directly in the text area."
+      }
+    }
+  }
+}

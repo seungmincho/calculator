@@ -1,0 +1,41 @@
+{
+  "RESULT": {
+    "OIL": [
+      {
+        "SIDOCD": "01",
+        "SIDONM": "서울",
+        "PRODCD": "B027",
+        "PRICE": 1899.67,
+        "DIFF": 0.1
+      },
+      {
+        "SIDOCD": "01",
+        "SIDONM": "서울",
+        "PRODCD": "B034",
+        "PRICE": 2428.28,
+        "DIFF": -0.8
+      },
+      {
+        "SIDOCD": "01",
+        "SIDONM": "서울",
+        "PRODCD": "C004",
+        "PRICE": 1705.84,
+        "DIFF": -1.17
+      },
+      {
+        "SIDOCD": "01",
+        "SIDONM": "서울",
+        "PRODCD": "D047",
+        "PRICE": 1882.09,
+        "DIFF": -0.01
+      },
+      {
+        "SIDOCD": "01",
+        "SIDONM": "서울",
+        "PRODCD": "K015",
+        "PRICE": 1238.14,
+        "DIFF": 0
+      }
+    ]
+  }
+}

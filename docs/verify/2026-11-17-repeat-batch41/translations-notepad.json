@@ -1,0 +1,94 @@
+{
+  "ko": {
+    "notepad": {
+      "persistence": {
+        "title": "메모 저장 상태",
+        "loading": "이 기기의 메모를 확인하고 있습니다.",
+        "idle": "메모를 수정하면 이 기기에 자동 저장합니다.",
+        "dirty": "아직 저장하지 않은 변경이 있습니다.",
+        "saving": "변경 내용을 저장하고 있습니다.",
+        "saved": "현재 변경 내용을 이 기기에 저장했습니다.",
+        "external": "다른 탭의 저장 내용이 바뀌었습니다.",
+        "memoryHint": "현재 화면의 메모는 유지됩니다. 중요한 내용은 백업으로 보관해 주세요.",
+        "backup": "현재 메모 백업",
+        "rawBackup": "기존 저장 원문 받기",
+        "retry": "저장 다시 시도",
+        "recheck": "저장본 다시 확인",
+        "comparison": "현재 {current}개 · 저장본 {external}개 · 같은 ID의 다른 내용 {conflicts}개",
+        "externalEmpty": "현재 저장본은 비어 있습니다. 함께 보관을 선택하면 화면의 메모를 다시 저장합니다.",
+        "showTitles": "저장본 제목 보기",
+        "keepBoth": "현재 메모와 함께 보관",
+        "keepBothHint": "화면의 메모를 유지하고 저장본을 추가합니다. 같은 ID의 내용이 다르면 별도 메모로 보관합니다.",
+        "settingsFailed": "보기 설정을 저장하지 못했습니다. 메모 내용의 저장 상태와는 별개입니다.",
+        "settingsRetry": "보기 설정 저장 재시도",
+        "errors": {
+          "unavailable": "브라우저 저장소를 사용할 수 없습니다. 현재 메모는 화면에 유지됩니다.",
+          "corrupt": "기존 저장 내용을 안전하게 읽을 수 없어 덮어쓰기를 멈췄습니다.",
+          "unsupported": "현재 앱에서 지원하지 않는 저장 형식입니다. 기존 원문을 유지합니다.",
+          "quota": "저장 공간이 부족해 변경 내용을 저장하지 못했습니다.",
+          "conflict": "다른 저장 내용이 확인되었습니다. 현재 메모를 유지한 채 저장본을 확인해 주세요.",
+          "unconfirmed": "저장 결과를 확인하지 못했습니다. 다시 확인하기 전에는 저장 완료로 표시하지 않습니다.",
+          "cancelled": "이전 저장 작업을 취소했습니다. 현재 메모는 유지됩니다."
+        }
+      },
+      "importRecovery": {
+        "reading": "파일을 읽고 있습니다. 메모를 편집하면 이 가져오기는 취소됩니다.",
+        "cancel": "가져오기 취소",
+        "cancelled": "가져오기를 취소하고 현재 메모를 유지했습니다.",
+        "result": "메모 {added}개 추가 · 충돌 사본 {conflicts}개 · 중복 {duplicates}개 제외 · 읽지 못한 파일 {failed}개",
+        "failureTitle": "읽지 못한 파일",
+        "unreadable": "파일을 읽지 못했습니다.",
+        "corrupt": "올바른 메모 배열 또는 백업 파일이 아닙니다.",
+        "unsupported": "지원하지 않는 백업 형식이나 버전입니다.",
+        "undoExpired": "이후 메모가 변경되어 이전 작업을 되돌릴 수 없습니다.",
+        "downloadFailed": "파일을 내려받지 못했습니다. 메모는 화면에 유지됩니다. 다시 시도해 주세요."
+      }
+    }
+  },
+  "en": {
+    "notepad": {
+      "persistence": {
+        "title": "Note storage status",
+        "loading": "Checking notes stored on this device.",
+        "idle": "Edits will be saved automatically on this device.",
+        "dirty": "There are changes that have not been saved.",
+        "saving": "Saving your changes.",
+        "saved": "The current changes have been saved on this device.",
+        "external": "The saved notes changed in another tab.",
+        "memoryHint": "Your notes remain on this screen. Download a backup of anything important.",
+        "backup": "Back up current notes",
+        "rawBackup": "Download original stored text",
+        "retry": "Retry saving",
+        "recheck": "Check saved notes again",
+        "comparison": "Current: {current} · Saved: {external} · Different notes with the same ID: {conflicts}",
+        "externalEmpty": "The saved list is empty. Keep both will save the notes currently on this screen again.",
+        "showTitles": "View saved note titles",
+        "keepBoth": "Keep current and saved notes",
+        "keepBothHint": "Keeps your current notes and adds saved notes. Different content with the same ID is kept as a separate note.",
+        "settingsFailed": "Display settings could not be saved. This is separate from the status of your note content.",
+        "settingsRetry": "Retry saving display settings",
+        "errors": {
+          "unavailable": "Browser storage is unavailable. Your current notes remain on screen.",
+          "corrupt": "The saved data could not be read safely, so it will not be overwritten.",
+          "unsupported": "This saved format is not supported by this version. The original data is preserved.",
+          "quota": "There is not enough storage space to save your changes.",
+          "conflict": "Different saved data was found. Review it while keeping your current notes.",
+          "unconfirmed": "The save result could not be verified. Check again before treating it as saved.",
+          "cancelled": "The previous save was cancelled. Your current notes are preserved."
+        }
+      },
+      "importRecovery": {
+        "reading": "Reading files. Editing a note will cancel this import.",
+        "cancel": "Cancel import",
+        "cancelled": "Import cancelled. Your current notes are preserved.",
+        "result": "Added {added} · Conflict copies {conflicts} · Duplicates skipped {duplicates} · Unreadable files {failed}",
+        "failureTitle": "Files that could not be read",
+        "unreadable": "The file could not be read.",
+        "corrupt": "This is not a valid note array or backup file.",
+        "unsupported": "This backup format or version is not supported.",
+        "undoExpired": "Notes changed after that action, so it can no longer be undone.",
+        "downloadFailed": "The file could not be downloaded. Your notes remain on screen. Please try again."
+      }
+    }
+  }
+}

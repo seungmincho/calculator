@@ -1,0 +1,82 @@
+{
+  "ko": {
+    "dutchPay": {
+      "storage": {
+        "saving": "기기에 저장 중…",
+        "saved": "기기에 저장했어요",
+        "deleted": "저장 기록을 삭제했어요",
+        "retry": "다시 저장",
+        "recheck": "저장 상태 다시 확인",
+        "load": "이 정산 불러오기",
+        "loadHint": "불러오면 현재 정산을 바꿉니다. 계좌 입력은 유지됩니다.",
+        "recheckHint": "저장된 상태만 다시 확인합니다. 현재 정산과 계좌 입력은 유지됩니다.",
+        "changed": "입력이 바뀌어 이전 불러오기를 취소했어요.",
+        "unavailable": "기기 저장소를 사용할 수 없어요. 현재 화면의 내용은 유지됩니다.",
+        "corrupt": "저장된 내용을 안전하게 읽을 수 없어요. 원본을 그대로 두고 이 항목의 저장을 멈췄어요.",
+        "tooLarge": "저장된 내용이 읽기 범위를 넘었어요. 원본과 현재 입력을 그대로 유지합니다.",
+        "unsupported": "지원하지 않는 저장 형식이에요. 원본을 변경하지 않았어요.",
+        "unsupportedState": "현재 정산을 손실 없이 저장할 수 없어요. 최대 30명·100개 항목과 입력 범위를 확인해 주세요. 현재 정산은 유지됩니다.",
+        "quota": "기기 저장 공간이 부족해 저장하지 못했어요. 현재 입력은 유지됩니다.",
+        "conflict": "다른 화면에서 저장 내용이 바뀌었어요. 저장 상태를 다시 확인해 주세요.",
+        "unconfirmed": "저장 여부를 확인하지 못했어요. 이미 저장됐을 수 있으니 저장 상태를 다시 확인해 주세요.",
+        "accountSaved": "이 기기에 저장돼요. 공유 링크에는 포함되지 않아요.",
+        "accountDirty": "현재 화면에서 사용할 수 있지만, 현재 계좌 입력은 아직 기기에 저장되지 않았어요.",
+        "accountFailed": "계좌 입력은 이 화면에 유지됩니다. 기기 저장을 다시 시도할 수 있어요.",
+        "loading": "저장된 정산 확인 중…"
+      },
+      "copyRecovery": {
+        "title": "복사할 내용",
+        "failed": "자동 복사를 완료하지 못했어요. 전체 내용을 선택해 직접 복사하거나 다시 시도해 주세요.",
+        "amountLabel": "송금 금액",
+        "noticeLabel": "정산 공지 전체",
+        "linkLabel": "보기 전용 링크 전체",
+        "hint": "내용은 그대로 표시됩니다. 복사나 저장은 실제 송금을 실행하지 않습니다.",
+        "select": "전체 선택",
+        "retry": "복사 다시 시도",
+        "copying": "복사 중…",
+        "close": "닫기",
+        "selectionFailed": "전체 선택을 완료하지 못했어요. 입력란에서 직접 선택해 복사해 주세요."
+      }
+    }
+  },
+  "en": {
+    "dutchPay": {
+      "storage": {
+        "saving": "Saving on this device…",
+        "saved": "Saved on this device",
+        "deleted": "Saved record deleted",
+        "retry": "Save again",
+        "recheck": "Check saved state again",
+        "load": "Load this settlement",
+        "loadHint": "Loading replaces the current settlement. Your account input stays unchanged.",
+        "recheckHint": "This checks the saved state only. Your current settlement and account input stay unchanged.",
+        "changed": "The previous load was cancelled because your input changed.",
+        "unavailable": "Device storage is unavailable. The current contents stay on screen.",
+        "corrupt": "The saved contents could not be read safely. The original is preserved and saving for this item is paused.",
+        "tooLarge": "The saved contents exceed the reading limit. The original and your current input are preserved.",
+        "unsupported": "This saved format is not supported. The original was not changed.",
+        "unsupportedState": "This settlement cannot be saved without losing data. Check the limits of 30 people, 100 items, and the input fields. Your current settlement is preserved.",
+        "quota": "There is not enough device storage to save. Your current input is preserved.",
+        "conflict": "The saved contents changed in another screen. Check the saved state again.",
+        "unconfirmed": "The save could not be confirmed. It may already be saved, so check the saved state again.",
+        "accountSaved": "Saved on this device. It is not included in the shared link.",
+        "accountDirty": "You can use this account input on the current screen, but it is not yet saved on this device.",
+        "accountFailed": "Your account input stays on this screen. You can retry saving it on this device.",
+        "loading": "Checking the saved settlement…"
+      },
+      "copyRecovery": {
+        "title": "Contents to copy",
+        "failed": "Automatic copying did not finish. Select the full contents to copy them manually, or try again.",
+        "amountLabel": "Transfer amount",
+        "noticeLabel": "Full settlement notice",
+        "linkLabel": "Full read-only link",
+        "hint": "The contents are shown unchanged. Copying or saving does not make an actual transfer.",
+        "select": "Select all",
+        "retry": "Try copying again",
+        "copying": "Copying…",
+        "close": "Close",
+        "selectionFailed": "The full contents could not be selected. Select and copy them directly in the field."
+      }
+    }
+  }
+}

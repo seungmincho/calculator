@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-11-16T15:50:51.707Z",
+  "patches": [
+    {
+      "name": "csat-goals",
+      "leafKeysPerLanguage": 63
+    },
+    {
+      "name": "lunar",
+      "leafKeysPerLanguage": 34
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "LunarConverter",
+      "staticKeysChecked": 72,
+      "dynamicPrefixesChecked": [
+        "mode",
+        "guide"
+      ]
+    },
+    {
+      "component": "LunarAnniversaryCalendar",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "calendarExport.errors"
+      ]
+    },
+    {
+      "component": "CsatGrade",
+      "staticKeysChecked": 76,
+      "dynamicPrefixesChecked": [
+        "u.cut",
+        "u.sel",
+        "guide"
+      ]
+    },
+    {
+      "component": "CsatGoalConditions",
+      "staticKeysChecked": 43,
+      "dynamicPrefixesChecked": [
+        "u.cut",
+        "goals.errors",
+        "goals.confirm",
+        "goals"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

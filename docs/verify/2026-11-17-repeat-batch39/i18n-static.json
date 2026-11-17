@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-11-16T22:53:21.129Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 6
+    },
+    {
+      "name": "regex",
+      "leafKeysPerLanguage": 59
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "RegexExtractor",
+      "staticKeysChecked": 103,
+      "dynamicPrefixesChecked": [
+        "execution.errors",
+        "guide.symbolDescs",
+        "guide.exampleDescs",
+        "patternBuilder.symbols",
+        "execution.url",
+        "presets.categories",
+        "presets.patterns",
+        "presets.descriptions"
+      ]
+    },
+    {
+      "component": "RegexResultPanel",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "execution.errors",
+        "execution.status",
+        "execution.transform",
+        "operation",
+        "execution.copy"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

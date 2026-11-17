@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-16T14:49:26.895Z",
+  "patches": [
+    {
+      "name": "gpa",
+      "leafKeysPerLanguage": 11
+    },
+    {
+      "name": "tts",
+      "leafKeysPerLanguage": 4
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "GpaConverter",
+      "staticKeysChecked": 54,
+      "dynamicPrefixesChecked": [
+        "scales"
+      ]
+    },
+    {
+      "component": "GpaCopyRecovery",
+      "staticKeysChecked": 2,
+      "dynamicPrefixesChecked": [
+        "copyRecovery"
+      ]
+    },
+    {
+      "component": "TextToSpeech",
+      "staticKeysChecked": 82,
+      "dynamicPrefixesChecked": [
+        "noKoreanVoice",
+        "speedPresets",
+        "guide"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

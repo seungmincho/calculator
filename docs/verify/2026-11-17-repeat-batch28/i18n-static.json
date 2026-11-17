@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-11-16T20:46:55.373Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 7
+    },
+    {
+      "name": "watermark",
+      "leafKeysPerLanguage": 86
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "ImageWatermark",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "ImageWatermarkWorkspace",
+      "staticKeysChecked": 75,
+      "dynamicPrefixesChecked": [
+        "batch.errors",
+        "batch.fonts",
+        "positions",
+        "batch.status",
+        "batch"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

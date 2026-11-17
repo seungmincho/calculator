@@ -1,0 +1,30 @@
+{
+  "kind": "controlled actual-hook callback order",
+  "nativeBrowser": false,
+  "realMicrophone": false,
+  "limitation": "Captured callback invocation proves missing ownership checks; it does not establish that browsers dispatch duplicate or stale native events in this order.",
+  "results": [
+    {
+      "scenario": "normal one-second synthetic completion",
+      "completed": 1,
+      "streamStops": 1
+    },
+    {
+      "scenario": "permission arrives after explicit cancellation",
+      "recorderCount": 0,
+      "streamStops": 1
+    },
+    {
+      "scenario": "invoke captured old error after a new recorder starts",
+      "newStreamStops": 1,
+      "newRecordingFlag": false,
+      "error": "recordingFailed"
+    },
+    {
+      "scenario": "invoke captured old stop a second time after a new recorder starts",
+      "newStreamStops": 1,
+      "newRecordingFlag": false,
+      "completed": 2
+    }
+  ]
+}

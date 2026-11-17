@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-11-16T23:54:13.659Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "running",
+      "leafKeysPerLanguage": 57
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "RunningPaceCalculator",
+      "staticKeysChecked": 80,
+      "dynamicPrefixesChecked": [
+        "comparison.query",
+        "distance",
+        "mode",
+        "comparison.copy"
+      ]
+    },
+    {
+      "component": "RunningPaceComparison",
+      "staticKeysChecked": 34,
+      "dynamicPrefixesChecked": [
+        "comparison.addErrors",
+        "unit",
+        "comparison.export"
+      ]
+    },
+    {
+      "component": "RunningPacePrint",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

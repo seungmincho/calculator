@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-17T01:15:57.458Z",
+  "freeGiB": 3.09,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "chromeClosed": true,
+  "allTypeScriptWritersFrozen": true,
+  "scope": [
+    52,
+    53,
+    54,
+    55
+  ],
+  "unconnectedPreparation": {
+    "56": "3 products+1test, author14/ind7/lint0, frozen",
+    "57": "2 complete-export helpers, parent unconnected, own tests/lint pending; queue independent initial6 only"
+  },
+  "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit"
+}

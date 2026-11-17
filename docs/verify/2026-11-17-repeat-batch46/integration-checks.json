@@ -1,0 +1,125 @@
+{
+  "scope": "TTS 원고·읽던 문장·설정 저장과 명시 열기",
+  "status": "complete",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 44,
+    "commonGuideLeaves": 4,
+    "patchLeavesPerLanguage": 48,
+    "staticUses": 102,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 559,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    },
+    "postNativeCopyRefinement": {
+      "authorKeys": 3,
+      "commonFaqValuesPerLanguage": 1,
+      "keyOrPlaceholderOrTsOrLimitChanges": 0,
+      "staticUses": 102,
+      "errors": 0,
+      "generatedCheck": 1578,
+      "nativeRerun": false
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/text-to-speech/page.tsx",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "canonicalFaq": true,
+    "scopedCommonLint": "4pages+menu union5 files passed",
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45900
+    }
+  },
+  "author": {
+    "status": "passed_frozen_at_checkpoint",
+    "groups": 23,
+    "groupBreakdown": "준비9+자식5+실제 부모9",
+    "scopedLintFiles": 9,
+    "errors": 0,
+    "warnings": 0,
+    "regression": "기존13 actual callback11 및 준비 TTS/recovery25/meeting11",
+    "report": "implementation.md",
+    "additionalAffectedChecks": "empty voices and restored guidance: author1+independent1, no double counting"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 16,
+    "preparation": 8,
+    "actualParent": 8,
+    "reports": [
+      "independent-review.md",
+      "independent-parent-review.md"
+    ],
+    "scopedLintExitCode": 0,
+    "resolvedP2": "empty voices[] no longer retains stale local voice; stopped/next/repeat waiting and reappearance message checked",
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-17T00:27:58.501Z",
+    "browserClosed": true,
+    "firstRunPassed": true,
+    "productFindings": 0,
+    "jsErrors": 0,
+    "hydration": 0,
+    "unhandled": 0,
+    "report": "review-browser.md",
+    "boundaries": "native DOM/Storage/WebLocks; controlled SpeechSynthesis/voice list; actual OS speech not tested"
+  },
+  "typecheck": {
+    "status": "passed",
+    "startedAt": "2026-11-17T00:43:59.864Z",
+    "recordedAt": "2026-11-17T00:44:55.753Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.36,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 2,
+    "outputChunk": "0f20ce",
+    "commandWallSeconds": 8.7373551,
+    "evidence": "../2026-11-17-repeat-batch51/typecheck-final-result.json",
+    "firstAttempt": "../2026-11-17-repeat-batch51/typecheck-attempt1.json",
+    "scope": "44/46/47/48/49/50/51 final parents plus unconnected52/53 preparation; all writers frozen and Chrome closed"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "sharedCheckpointScopes": [
+    44,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "preparedFutureScope": {
+    "52": "unconnected author12+independent8+lint0; TS frozen; parent/canonical not connected",
+    "53": "unconnected pure5+independent6+lint0; TS frozen; parent/canonical not connected"
+  },
+  "diffCheck": {
+    "status": "passed",
+    "trackedOnly": true,
+    "evidence": [
+      "../2026-11-17-repeat-batch51/source-diff-check.json",
+      "../2026-11-17-repeat-batch51/source-diff-followup.json",
+      "../2026-11-17-repeat-batch51/source-diff-type-fix.json"
+    ]
+  }
+}

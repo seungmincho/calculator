@@ -1,0 +1,30 @@
+[
+  {
+    "name": "voice-new-tab-preserves-audio-append-edit-save-export",
+    "pass": true
+  },
+  {
+    "name": "quota-failure-retains-selection-and-existing-draft",
+    "pass": true
+  },
+  {
+    "name": "newer-tab-draft-is-not-overwritten",
+    "pass": true
+  },
+  {
+    "name": "malformed-storage-and-expired-source-fail-closed",
+    "pass": true
+  },
+  {
+    "name": "duplicate-source-id-cannot-append-after-reload",
+    "pass": true
+  },
+  {
+    "name": "popup-blocked-retains-unsaved-voice-memo",
+    "pass": true
+  },
+  {
+    "name": "mobile-320-dark-import-and-action-editing",
+    "pass": true
+  }
+]

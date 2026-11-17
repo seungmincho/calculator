@@ -1,0 +1,46 @@
+{
+  "ko": {
+    "imageOcr": {
+      "output": {
+        "current": "현재 결과",
+        "all": "전체 결과",
+        "copying": "{label}를 복사하고 있어요.",
+        "copied": "복사했어요: {label}",
+        "failed": "{label} 자동 복사에 실패했어요. 전체 내용을 열어 직접 선택하거나 다시 시도해 주세요.",
+        "recoveryTitle": "{label} 직접 복사",
+        "showText": "전체 내용 보기",
+        "manualLabel": "복사할 전체 내용",
+        "select": "전체 선택",
+        "selectionFailed": "자동 선택을 못 했어요. 위 내용을 길게 누르거나 직접 선택해 복사해 주세요.",
+        "retry": "복사 다시 시도",
+        "close": "닫기",
+        "downloadFailed": "텍스트 파일 다운로드를 요청하지 못했어요. TXT 다운로드를 다시 눌러 주세요.",
+        "downloadStarted": "텍스트 파일 다운로드를 요청했어요.",
+        "available": "결과가 있는 이미지 {count}개의 내용을 현재 순서대로 모아요. 처리 중이거나 실패한 이미지의 이전 결과도 포함돼요.",
+        "empty": "복사할 내용이 비어 있어요."
+      }
+    }
+  },
+  "en": {
+    "imageOcr": {
+      "output": {
+        "current": "Current result",
+        "all": "All results",
+        "copying": "Copying: {label}",
+        "copied": "Copied: {label}",
+        "failed": "Automatic copying failed for {label}. Open the full text to select it manually, or try again.",
+        "recoveryTitle": "Copy manually: {label}",
+        "showText": "Show full text",
+        "manualLabel": "Full text to copy",
+        "select": "Select all",
+        "selectionFailed": "Automatic selection failed. Press and hold the text above, or select it manually to copy.",
+        "retry": "Try copying again",
+        "close": "Close",
+        "downloadFailed": "The text file download could not be requested. Select Download TXT to try again.",
+        "downloadStarted": "The text file download was requested.",
+        "available": "Combines text from {count} images with results, in their current order. Previous results are included for images being processed or whose latest attempt failed.",
+        "empty": "There is no text to copy."
+      }
+    }
+  }
+}

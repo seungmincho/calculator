@@ -1,0 +1,66 @@
+{
+  "ko": {
+    "speakingPractice": {
+      "records": {
+        "nameLabel": "연습 이름 · 선택",
+        "namePlaceholder": "예: 면접 자기소개 첫 연습",
+        "nameHint": "40자까지 입력할 수 있어요. 이름을 비워도 저장할 수 있어요.",
+        "exportName": "연습 이름: {name}",
+        "searchLabel": "저장 기록 검색",
+        "searchPlaceholder": "이름이나 전사문으로 찾기",
+        "filterLabel": "연습 종류",
+        "allModes": "전체 연습",
+        "refresh": "기록 목록 새로고침",
+        "refreshHint": "목록을 새로 읽어도 현재 연습은 유지돼요. 다른 탭의 최신 내용은 불러오기를 눌러 확인해 주세요.",
+        "refreshFailed": "기록 목록을 읽지 못했어요. 브라우저 저장 공간과 설정을 확인하고 새로고침해 주세요. 현재 연습은 유지돼요.",
+        "savedRefreshFailed": "저장은 완료했지만 목록을 다시 읽지 못했어요. 기록 목록을 새로고침해 주세요.",
+        "listUnavailable": "목록을 다시 읽으면 저장 기록을 확인할 수 있어요.",
+        "noMatches": "검색 조건에 맞는 기록이 없어요. 이름·전사문이나 연습 종류를 바꿔 보세요.",
+        "noReadable": "현재 표시할 수 있는 기록이 없어요. 저장된 원본은 그대로 유지했어요.",
+        "unreadable": "읽을 수 없는 기록 {count}개가 있어요. 원본을 변경하지 않았으며 저장 개수에 포함돼요.",
+        "unsupported": "아직 지원하지 않는 형식의 기록 {count}개가 있어요. 원본을 변경하지 않았으며 저장 개수에 포함돼요."
+      },
+      "errors": {
+        "storageConflict": "다른 탭에서 이 기록을 변경하거나 삭제했어요. 현재 연습은 유지했어요. 필요하면 파일로 보관한 뒤 목록을 새로고침하고 최신 기록을 불러와 주세요.",
+        "storageCorrupt": "저장된 기록을 읽을 수 없어 변경하지 않았어요. 현재 연습은 파일로 보관할 수 있어요.",
+        "storageUnsupported": "지원하지 않는 형식의 기록이라 변경하지 않았어요. 현재 연습은 파일로 보관할 수 있어요.",
+        "storageQuota": "기기 저장 공간이 부족해 기록을 변경하지 못했어요. 필요한 기록을 파일로 보관하고 저장 공간을 확보한 뒤 다시 시도해 주세요.",
+        "storageAborted": "기록 변경이 중단되어 완료하지 못했어요. 현재 연습은 유지했으니 다시 시도해 주세요.",
+        "storageDeleteFailed": "기록을 삭제하지 못했어요. 목록을 새로고침해 저장 상태를 확인하고 다시 시도해 주세요.",
+        "titleInvalid": "연습 이름은 제어문자 없이 40자 이내로 입력해 주세요."
+      }
+    }
+  },
+  "en": {
+    "speakingPractice": {
+      "records": {
+        "nameLabel": "Practice name · optional",
+        "namePlaceholder": "e.g. First interview introduction",
+        "nameHint": "Use up to 40 characters. You can also save without a name.",
+        "exportName": "Practice name: {name}",
+        "searchLabel": "Search saved practice",
+        "searchPlaceholder": "Find a name or transcript",
+        "filterLabel": "Practice type",
+        "allModes": "All practice",
+        "refresh": "Refresh saved practice",
+        "refreshHint": "Refreshing keeps your current practice. Use Open to view the latest version from another tab.",
+        "refreshFailed": "The saved list could not be read. Check browser storage and settings, then refresh. Your current practice is preserved.",
+        "savedRefreshFailed": "Your practice was saved, but the list could not be refreshed. Refresh the saved list to check it.",
+        "listUnavailable": "Refresh the list to view saved practice.",
+        "noMatches": "No records match. Try another name, transcript phrase, or practice type.",
+        "noReadable": "No records can currently be displayed. The stored originals have been preserved.",
+        "unreadable": "{count} records could not be read. The originals are unchanged and still count toward the storage limit.",
+        "unsupported": "{count} records use an unsupported format. The originals are unchanged and still count toward the storage limit."
+      },
+      "errors": {
+        "storageConflict": "Another tab changed or deleted this record. Your current practice is preserved. Export it if needed, refresh the list, and open the latest record.",
+        "storageCorrupt": "The stored record could not be read, so it was left unchanged. You can export your current practice.",
+        "storageUnsupported": "The record uses an unsupported format and was left unchanged. You can export your current practice.",
+        "storageQuota": "There is not enough device storage to change the record. Export important practice, free up space, and try again.",
+        "storageAborted": "The record change was interrupted and did not complete. Your current practice is preserved. Please try again.",
+        "storageDeleteFailed": "The record could not be deleted. Refresh the list to check its stored state, then try again.",
+        "titleInvalid": "Use up to 40 characters for the practice name, without control characters."
+      }
+    }
+  }
+}

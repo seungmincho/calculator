@@ -1,0 +1,128 @@
+{
+  "ko": {
+    "dutchPay": {
+      "description": "회식·여행비를 부담 비율과 항목별 참가자에 맞춰 나누고 공지를 만드세요. 정산 기록의 저장 상태를 확인하고 복사가 실패하면 전체 원문을 선택하거나 다시 시도할 수 있어요.",
+      "guide": {
+        "whatIs": {
+          "description": "한 명 또는 여러 명이 결제한 모임 비용을 나누는 도구입니다. 항목별 제외·부담 비율·원 단위 처리를 적용하고, 순잔액을 바탕으로 보낼 금액과 공지를 만듭니다. 저장 가능한 정산을 이 브라우저에 최근10개까지 남길 수 있으며 실제 송금은 실행하지 않습니다."
+        },
+        "howToUse": {
+          "items": [
+            "한 명이 전부 결제했는지 여러 명이 나눠 결제했는지 고르고 참가자·금액·항목별 대상을 입력하세요.",
+            "부담 비율과 원 단위 처리 방법을 정하고, 각자 부담액과 보낼 금액을 확인하세요.",
+            "금액·공지·정산 링크를 복사하세요. 실패하면 표시된 전체 원문을 선택하거나 재시도할 수 있어요.",
+            "기록 저장이 확인됐는지 안내를 확인하세요. 저장된 정산은 불러오기를 눌렀을 때 현재 폼을 바꿉니다.",
+            "선택 계좌는 입력 즉시 현재 공지에 반영돼요. 기기 저장 실패나 다른 탭 변경이 안내되면 현재 입력을 보존한 채 재조회·재시도를 하세요."
+          ]
+        },
+        "tips": {
+          "items": [
+            "정산 명단과 지출은 기존 공유 주소에 반영됩니다. 보기 전용은 편집 UI를 제한할 뿐 암호화나 접근 통제가 아니에요.",
+            "계좌는 정산 링크·저장한 정산·보기 전용 공지에 들어가지 않지만, 편집 화면의 공지 복사와 명시적 공유에는 포함될 수 있어요.",
+            "최근10개 기록을 저장할 수 있어요. 현재 링크 형식으로 빠짐없이 복원할 수 없는 입력은 폼을 유지하고 저장을 거부합니다.",
+            "저장 결과 확인 불가는 이미 쓰기가 이루어졌을 수도 있다는 뜻입니다. 성공으로 간주하지 않고 안내에 따라 재조회하세요.",
+            "여러 명 결제는 순잔액을 짝지어 송금 목록을 만듭니다. 모든 경우의 최소 송금 건수를 보장하지 않아요."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "일부 참가자를 한 항목에서만 제외할 수 있나요?",
+              "a": "해당 항목의 나눌 사람에서 이름을 눌러 제외하세요. 다른 항목의 참여 여부와 부담 비율은 그대로 유지됩니다."
+            },
+            {
+              "q": "원 단위를 맞춘 뒤 차액은 어떻게 처리하나요?",
+              "a": "한 명이 결제한 모드에서는 총무 외 참가자의 보낼 금액을 선택 단위로 처리하고 총무에게 차액을 배정해 전체 합계를 맞춥니다."
+            },
+            {
+              "q": "저장 실패나 손상된 기록이 있어도 정산할 수 있나요?",
+              "a": "현재 정산 계산과 복사는 계속 사용할 수 있습니다. 손상된 저장 원문은 자동으로 덮어쓰지 않고 해당 저장 기능에 상태를 표시합니다. 저장 버튼을 눌렀다는 이유만으로 성공을 표시하지 않습니다."
+            },
+            {
+              "q": "기록과 계좌는 공유 링크에 함께 들어가나요?",
+              "a": "정산 명단·지출은 링크에 포함됩니다. 계좌는 링크와 정산 기록에는 넣지 않지만 편집 화면에서 복사하거나 명시적으로 공유한 공지에는 포함될 수 있으므로 보내기 전에 확인하세요."
+            },
+            {
+              "q": "항목을 많이 추가한 정산도 저장할 수 있나요?",
+              "a": "폼의 항목 추가 한도와 저장 형식의 복원 범위는 다릅니다. 현재 형식은100항목까지 지원하며, 이를 넘거나 왕복 시 내용이 달라지는 정산은 현재 폼을 보존하고 저장을 거부합니다."
+            },
+            {
+              "q": "송금까지 자동으로 실행하나요?",
+              "a": "이 도구는 계산·공지·복사만 제공합니다. 표시된 금액을 확인한 뒤 사용 중인 은행이나 결제 앱에서 직접 송금하세요."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "dutchPay": {
+          "description": "항목별 정산·최근 기록 보존·공지와 금액 복사 복구"
+        }
+      }
+    }
+  },
+  "en": {
+    "dutchPay": {
+      "description": "Split meals and trips with weighted shares and item participants. Check whether settlements were saved, and select or retry the full text when copying fails.",
+      "guide": {
+        "whatIs": {
+          "description": "Split expenses paid by one or several people using item exclusions, weights and rounding. Net balances produce a transfer list and a notice. Keep up to 10 supported settlements in this browser; this tool does not send money."
+        },
+        "howToUse": {
+          "items": [
+            "Choose whether one or several people paid, then enter people, amounts and participants for each item.",
+            "Choose weights and rounding, then review each person's share and transfer amount.",
+            "Copy an amount, notice or settlement link. If copying fails, select the full text shown or retry.",
+            "Check that saving was confirmed. A saved settlement replaces the current form only when you load it.",
+            "An optional account updates the current notice immediately. If device saving fails or another tab changes it, recheck or retry while keeping your current input."
+          ]
+        },
+        "tips": {
+          "items": [
+            "Settlement names and expenses are reflected in the existing share URL. View-only mode limits the editing UI; it is not encryption or access control.",
+            "The account is excluded from settlement links, saved settlements and view-only notices. It may be included in notices copied or explicitly shared from the editor.",
+            "Keep up to 10 recent settlements. If the current link format cannot restore every value, the form is kept and saving is rejected.",
+            "An unconfirmed save may already have written data. Do not treat it as confirmed; recheck as instructed.",
+            "Multiple-payer settlement matches net balances. It does not guarantee the fewest possible transfers in every case."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Can I exclude someone from only one item?",
+              "a": "Tap their name under the participants for that item. Their participation and weight in other items remain unchanged."
+            },
+            {
+              "q": "Where does the rounding difference go?",
+              "a": "When one person paid, the amounts sent by everyone else are rounded to the chosen unit. The organizer receives the remaining difference so the full total matches."
+            },
+            {
+              "q": "Can I keep calculating if saving fails or a record is damaged?",
+              "a": "The current calculation and copying remain available. Damaged stored text is not overwritten automatically, and the affected storage feature shows its status. Clicking Save alone is not treated as success."
+            },
+            {
+              "q": "Do the account and records go into share links?",
+              "a": "The link includes settlement people and expenses. It excludes the account, as do saved settlements. Notices copied or explicitly shared from the editor may include the account, so review them before sending."
+            },
+            {
+              "q": "Can I save a settlement with many items?",
+              "a": "The form's item list and the storage format have different limits. The current format supports up to 100 items. More items or any values changed by a round trip are rejected for saving while the current form is kept."
+            },
+            {
+              "q": "Does this tool transfer money?",
+              "a": "It provides calculations, notices and copying only. Review the amounts, then send money yourself using your bank or payment app."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "dutchPay": {
+          "description": "Item-based splits, protected recent records and copy recovery"
+        }
+      }
+    }
+  }
+}

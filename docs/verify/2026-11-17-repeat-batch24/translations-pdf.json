@@ -1,0 +1,40 @@
+{
+  "ko": {
+    "pdfTools": {
+      "history": {
+        "title": "페이지 편집 이력",
+        "undo": "실행 취소",
+        "redo": "다시 실행",
+        "count": "실행 취소 {undo}단계 · 다시 실행 {redo}단계 · 최대 {max}단계",
+        "hint": "페이지 이동·회전·삭제·전체 원상복원을 되돌립니다. Ctrl/⌘+Z로 실행 취소, Ctrl/⌘+Shift+Z로 다시 실행할 수 있어요. 입력 칸의 편집은 해당 입력의 실행 취소를 사용합니다.",
+        "undone": "이전 페이지 편집으로 되돌렸습니다.",
+        "redone": "다음 페이지 편집을 다시 적용했습니다.",
+        "replaced": "새 PDF를 열고 편집 이력을 새로 시작했습니다.",
+        "replace": "다른 PDF 열기",
+        "replaceHint": "새 PDF를 읽는 데 성공하면 현재 문서를 교체합니다. 읽기 실패 시 현재 편집은 유지됩니다.",
+        "memoryOnly": "편집 이력은 이 페이지를 이용하는 동안만 유지됩니다. 원본 파일 바이트를 이력마다 복제하거나 저장하지 않습니다.",
+        "snapshot": "반출은 버튼을 누른 시점의 파일과 편집 순서를 사용합니다. 이후 편집이나 탭 이동 시 이전 작업의 결과 표시·자동 다운로드를 취소합니다.",
+        "invalidated": "입력이 바뀌어 이전 결과를 비웠습니다. 현재 편집본을 다시 반출해 주세요."
+      }
+    }
+  },
+  "en": {
+    "pdfTools": {
+      "history": {
+        "title": "Page edit history",
+        "undo": "Undo",
+        "redo": "Redo",
+        "count": "{undo} undo steps · {redo} redo steps · Up to {max} steps",
+        "hint": "Undo page moves, rotation, deletion and restoring the original layout. Use Ctrl/⌘+Z to undo and Ctrl/⌘+Shift+Z to redo. Editing inside an input keeps its native undo behavior.",
+        "undone": "Returned to the previous page edit.",
+        "redone": "Reapplied the next page edit.",
+        "replaced": "Opened the new PDF and started a new edit history.",
+        "replace": "Open another PDF",
+        "replaceHint": "The current document is replaced only after the new PDF loads successfully. A failed read keeps your current edits.",
+        "memoryOnly": "Edit history lasts only while you use this page. Original file bytes are not copied for each history step or saved.",
+        "snapshot": "Export uses the files and edit order captured when you press the button. Later edits or tab changes cancel the previous operation's result display and automatic download.",
+        "invalidated": "Inputs changed, so the previous result was cleared. Export the current edits again."
+      }
+    }
+  }
+}

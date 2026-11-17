@@ -1,0 +1,32 @@
+{
+  "ko": {
+    "toolsShowcase": {
+      "tools": {
+        "orderPicker": {
+          "description": "랜덤 순서 자동·한 명씩 공개, 전체 결과 복사·TXT 저장"
+        },
+        "roulette": {
+          "description": "항목 돌림판·현재 결과 복사와 실패 시 원문 선택"
+        },
+        "menuRoulette": {
+          "description": "메뉴 룰렛·복사 복구·최근 식사 제외·일주일 계획"
+        }
+      }
+    }
+  },
+  "en": {
+    "toolsShowcase": {
+      "tools": {
+        "orderPicker": {
+          "description": "Reveal a random order automatically or one at a time; copy or save the full result"
+        },
+        "roulette": {
+          "description": "Spin your choices and copy the current result with manual recovery"
+        },
+        "menuRoulette": {
+          "description": "Meal wheel, copy recovery, recent meal exclusions, and weekly planning"
+        }
+      }
+    }
+  }
+}

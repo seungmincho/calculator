@@ -1,0 +1,25 @@
+{
+  "mode": "legacy-defect-reproduction",
+  "parentSha256": "76c867ebbab1dc35edc958b476f82334496becb9d643f65dd058be6e843168c7",
+  "observations": [
+    {
+      "case": "revealAllThenOlderTick",
+      "before": 4,
+      "after": 2,
+      "canCopy": false,
+      "expectedFixed": {
+        "after": 4,
+        "canCopy": true
+      },
+      "shuffleCalls": 1
+    },
+    {
+      "case": "resetNewDrawThenOlderTickBeforeNewPrepare",
+      "after": 2,
+      "expectedFixed": {
+        "after": 0
+      },
+      "shuffleCalls": 2
+    }
+  ]
+}

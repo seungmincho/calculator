@@ -1,0 +1,84 @@
+{
+  "ko": {
+    "ddayCalculator": {
+      "calendarExport": {
+        "title": "캘린더 파일로 내보내기",
+        "description": "현재 D-day 또는 선택한 저장 일정을 .ics 파일로 내려받아 캘린더 앱에 가져오세요.",
+        "source": "내보낼 일정",
+        "current": "현재 D-day 1개",
+        "saved": "저장 일정 선택",
+        "noDate": "날짜를 입력해 주세요.",
+        "savedUnavailable": "저장 목록을 확인할 수 없습니다. 저장한 D-day 영역의 안내를 확인하고 목록을 다시 읽어 주세요. 현재 D-day는 따로 내보낼 수 있습니다.",
+        "emptySaved": "저장한 일정이 없습니다. 현재 D-day를 저장하면 여기에서 선택할 수 있습니다.",
+        "selectedCount": "{count}개 선택 · 한 파일에 최대 {max}개",
+        "clearSelection": "선택 해제",
+        "selectAll": "전체 선택",
+        "selectEvents": "캘린더로 내보낼 저장 일정 선택",
+        "download": "캘린더 파일(.ics) 다운로드",
+        "preparing": "파일 준비 중…",
+        "downloaded": "일정 {count}개가 담긴 파일의 다운로드를 시작했습니다. 캘린더 앱에서 파일을 가져와 확인해 주세요.",
+        "scope": "선택한 날짜의 하루짜리 종일 일정만 담습니다. 반복·알람은 추가하지 않으며 외부 캘린더 계정으로 자동 전송하지 않습니다.",
+        "importHint": "같은 저장 일정을 다시 내보내면 같은 식별자를 사용합니다. 다시 가져올 때 기존 일정을 갱신하거나 중복 추가하는 방식은 캘린더 앱마다 다르므로 가져오기 결과를 확인하세요.",
+        "reloadSaved": "저장 목록 다시 읽기",
+        "errors": {
+          "empty": "내보낼 저장 일정을 한 개 이상 선택하세요.",
+          "tooMany": "한 파일에는 최대 100개까지 담을 수 있습니다. 선택을 줄여 주세요. 일부만 잘라서 내보내지 않습니다.",
+          "invalidDate": "유효하지 않은 날짜가 있어 파일을 만들지 않았습니다. 0100년부터 9999년 사이의 실제 날짜인지 확인하세요.",
+          "endDate": "9999년 12월 31일은 다음 날 종료 날짜를 표현할 수 없어 내보낼 수 없습니다. 해당 일정을 제외하거나 날짜를 바꿔 주세요. 다른 선택 일정도 내보내지 않았습니다.",
+          "invalidTitle": "일정 제목이 비어 있거나 지원하지 않는 문자·길이를 포함합니다. 제목은 최대 2,000자이며 제어 문자나 깨진 문자는 사용할 수 없습니다. 일부만 바꿔서 내보내지 않았습니다.",
+          "invalidId": "일정 식별자가 올바르지 않아 파일을 만들지 않았습니다. 저장 목록을 다시 확인하세요.",
+          "duplicate": "같은 일정이 중복 선택되어 파일을 만들지 않았습니다. 선택을 해제한 뒤 다시 선택하세요.",
+          "selectionChanged": "선택한 일정이 저장 목록에서 바뀌거나 없어졌습니다. 선택을 해제하고 목록을 다시 확인하세요. 일부 일정만 내보내지 않았습니다.",
+          "timestamp": "파일 생성 시각을 확인할 수 없습니다. 기기의 날짜와 시간을 확인한 뒤 다시 시도하세요.",
+          "download": "캘린더 파일을 만들거나 내려받지 못했습니다. 현재 입력과 저장 일정은 유지됩니다. 브라우저의 다운로드 설정을 확인한 뒤 다시 시도하세요.",
+          "savedCorrupt": "저장 목록에 읽을 수 없는 항목이 있어 원본을 유지하고 저장 변경을 멈췄습니다. 현재 D-day 계산과 현재 일정 내보내기는 계속 사용할 수 있습니다.",
+          "savedUnsupported": "지원하지 않는 저장 형식입니다. 원본을 유지하고 저장 변경을 멈췄습니다. 현재 D-day는 따로 계산하고 내보낼 수 있습니다.",
+          "savedUnavailable": "브라우저 저장소를 사용할 수 없습니다. 저장 변경을 완료하지 못했습니다. 현재 입력은 유지됩니다.",
+          "savedQuota": "저장 공간이 부족해 변경 사항을 저장하지 못했습니다. 기존 목록과 현재 입력은 유지됩니다. 공간을 확보한 뒤 목록을 다시 읽어 주세요.",
+          "savedConflict": "다른 탭에서 저장 목록이 바뀌어 작업을 멈췄습니다. 현재 입력은 유지됩니다. 저장 목록을 다시 읽고 시도하세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "ddayCalculator": {
+      "calendarExport": {
+        "title": "Export a calendar file",
+        "description": "Download the current D-day or selected saved events as an .ics file, then import it into your calendar app.",
+        "source": "Events to export",
+        "current": "Current D-day only",
+        "saved": "Choose saved events",
+        "noDate": "Enter a date.",
+        "savedUnavailable": "The saved list cannot be verified. Check the notice under Saved D-days and reload the list. You can still export the current D-day separately.",
+        "emptySaved": "No saved events. Save the current D-day to make it available here.",
+        "selectedCount": "{count} selected · up to {max} per file",
+        "clearSelection": "Clear selection",
+        "selectAll": "Select all",
+        "selectEvents": "Choose saved events for calendar export",
+        "download": "Download calendar file (.ics)",
+        "preparing": "Preparing file…",
+        "downloaded": "Started downloading a file containing {count} events. Import it into your calendar app and check the result.",
+        "scope": "Includes one all-day event on each selected date. No recurrence or alarms are added, and nothing is sent automatically to a calendar account.",
+        "importHint": "Exporting the same saved event again uses the same identifier. Calendar apps may update an existing event or add a duplicate when reimporting, so check the import result.",
+        "reloadSaved": "Reload saved events",
+        "errors": {
+          "empty": "Select at least one saved event to export.",
+          "tooMany": "A file can contain up to 100 events. Reduce your selection. No partial file was created.",
+          "invalidDate": "An invalid date prevented export. Check that each date is a real date between years 0100 and 9999.",
+          "endDate": "December 31, 9999 cannot be exported because its next-day end date is outside the supported year range. Remove that event or change its date. No other selected events were exported.",
+          "invalidTitle": "An event title is empty or contains unsupported characters or length. Titles may contain up to 2,000 characters, without control or broken Unicode characters. No text was silently changed or removed.",
+          "invalidId": "An invalid event identifier prevented export. Check the saved list.",
+          "duplicate": "The same event was selected more than once. Clear the selection and select again.",
+          "selectionChanged": "A selected event changed or disappeared from the saved list. Clear the selection and check the list again. No partial file was created.",
+          "timestamp": "The file creation time could not be verified. Check your device’s date and time, then try again.",
+          "download": "The calendar file could not be created or downloaded. Current inputs and saved events are unchanged. Check your browser’s download settings and try again.",
+          "savedCorrupt": "The saved list contains unreadable entries. The original data is preserved and writes are paused. You can still calculate and export the current D-day.",
+          "savedUnsupported": "This saved format is unsupported. The original data is preserved and writes are paused. You can still calculate and export the current D-day.",
+          "savedUnavailable": "Browser storage is unavailable. The save operation did not complete. Your current inputs are unchanged.",
+          "savedQuota": "Storage is full, so changes could not be saved. The previous list and current inputs are unchanged. Free up space and reload the list.",
+          "savedConflict": "Another tab changed the saved list, so this action was stopped. Your current inputs are unchanged. Reload the list and try again."
+        }
+      }
+    }
+  }
+}

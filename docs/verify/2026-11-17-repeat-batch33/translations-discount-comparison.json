@@ -1,0 +1,160 @@
+{
+  "ko": {
+    "discountCalculator": {
+      "comparison": {
+        "title": "할인 후 실제 결제금액 비교",
+        "description": "같은 상품의 구매 조건을 최대 4개 비교하세요. 할인 후 개당 가격에 수량·주문 쿠폰·배송비를 적용합니다.",
+        "formula": "개당 가격 × 수량 → 상품 합계에서 주문 쿠폰 차감(최소 0원) → 배송비 추가",
+        "add": "빈 조건 추가",
+        "importBasic": "현재 기본 할인 결과로 추가",
+        "importMulti": "현재 중복 할인 결과로 추가",
+        "importHint": "가져오기는 클릭 당시 최종 개당 가격을 기존 화면과 같이 원 단위로 반올림합니다. 수량 1·쿠폰 0·배송비 0으로 추가하며 기존 계산을 바꿔도 자동으로 변하지 않습니다.",
+        "limit": "조건은 최대 4개입니다. 일부 조건을 삭제한 뒤 추가해 주세요.",
+        "invalidLink": "공유 링크의 비교 조건을 복원하지 못했습니다. 일부만 적용하지 않고 현재 조건을 유지합니다.",
+        "invalidStructure": "비교 조건의 개수나 식별값을 확인할 수 없습니다. 전체 결과 반출을 중지했습니다.",
+        "name": "조건 이름 (최대 40자)",
+        "defaultName": "조건 {index}",
+        "remove": "삭제",
+        "removeNamed": "{name} 조건 삭제",
+        "fields": {
+          "unitPrice": "할인 후 개당 상품 가격 (원)",
+          "quantity": "수량",
+          "coupon": "주문 금액 쿠폰 (원)",
+          "shipping": "배송비 (원)"
+        },
+        "results": {
+          "subtotal": "상품 합계",
+          "appliedCoupon": "실제 적용 쿠폰",
+          "excessCoupon": "상품 금액 초과 쿠폰",
+          "goodsTotal": "쿠폰 적용 후 상품 금액",
+          "total": "총 결제금액",
+          "unitAverage": "배송비 포함 개당 평균"
+        },
+        "errors": {
+          "missing": "값을 입력해 주세요. 빈칸은 0으로 계산하지 않습니다.",
+          "integer": "숫자만 사용한 원화 정수 또는 수량을 입력해 주세요.",
+          "range": "이 항목의 허용 범위를 확인해 주세요.",
+          "name": "이름은 줄바꿈을 공백으로 바꾼 뒤 40 Unicode 문자 이내로 입력해 주세요. 제어 문자는 사용할 수 없습니다."
+        },
+        "ranges": "개당 가격 0~10억 원 · 수량 1~999 · 쿠폰 0~1조 원 · 배송비 0~1천만 원. 쿠폰은 배송비에 적용하지 않습니다.",
+        "memory": "조건은 이번 방문의 메모리에만 유지하며 기기 기록에 저장하지 않습니다.",
+        "resultTitle": "구매 조건 비교 결과",
+        "validCount": "유효 조건 {valid} / 전체 {total}개",
+        "empty": "조건을 추가하면 결과가 표시됩니다.",
+        "incomplete": "입력이 끝나지 않았거나 잘못된 조건이 있습니다. 유효한 조건의 개별 계산은 보이지만 전체 최저 판정과 복사·파일·공유는 보류합니다.",
+        "singleCondition": "다른 조건을 추가해 비교하세요.",
+        "needsInput": "입력 필요",
+        "needsCorrection": "입력 수정 필요",
+        "lowestTotal": "총 결제 최저",
+        "lowestUnit": "개당 최저",
+        "tiedTotal": "총 결제 공동 최저",
+        "tiedUnit": "개당 공동 최저",
+        "averageHint": "개당 평균은 소수 둘째 자리까지 표시합니다. 최저와 동률은 반올림 전 값으로 비교하므로 표시 금액이 같아도 판정은 다를 수 있습니다.",
+        "assumption": "같은 상품·단위라는 입력을 전제로 합니다. 수량이 다르면 총액 최저와 개당 최저가 다를 수 있으며 카드 적립·조건부 무료배송·판매처 쿠폰 정책은 추정하지 않습니다.",
+        "copy": "전체 내역 복사",
+        "download": "전체 내역 TXT 저장",
+        "manualCopy": "복사하지 못한 전체 내역",
+        "selectText": "전체 텍스트 선택",
+        "actions": {
+          "copied": "전체 내역을 복사했습니다.",
+          "copyFailed": "자동 복사에 실패했습니다. 아래 전체 내역을 선택해 직접 복사하거나 다시 시도하세요.",
+          "downloaded": "TXT 다운로드를 요청했습니다.",
+          "downloadFailed": "TXT 다운로드를 시작하지 못했습니다. 입력과 결과는 유지됩니다."
+        },
+        "shareHint": "비교 링크에는 최대 4개의 숫자 조건만 담습니다. 직접 입력한 이름은 제외하고 받는 사람에게 조건 1~4로 표시합니다. 모든 조건이 유효할 때만 전체를 공유합니다.",
+        "shareImageHint": "공유 이미지는 4개 이내 조건의 총액·개당 평균 요약입니다. 전체 이름·입력·쿠폰 상세는 전체 내역 복사 또는 TXT에 포함됩니다.",
+        "exportTitle": "할인 후 실제 결제금액 비교 — 전체 내역",
+        "won": "원",
+        "shareLabel": "총 결제금액 · 개당 평균",
+        "shareHeadline": "구매 조건 {count}개 비교",
+        "shareSummary": "모든 금액은 입력한 조건으로 계산한 원화입니다.",
+        "basicManualCopy": "기본 계산 복사 내용",
+        "retryCopy": "복사 다시 시도",
+        "resetBasic": "기본 계산 초기화",
+        "basicLink": "기본 계산 링크 복사",
+        "basicLinkHint": "이 링크는 기본 계산 모드와 입력만 담습니다. 비교 조건은 아래 비교 결과에서 공유하세요. 중복 할인 단계는 링크에 포함되지 않습니다.",
+        "multiRateLabel": "{index}번째 중복 할인율",
+        "selectionFailed": "자동 선택을 완료하지 못했습니다. 위 내용을 직접 선택해 복사하세요."
+      }
+    }
+  },
+  "en": {
+    "discountCalculator": {
+      "comparison": {
+        "title": "Compare the total cost after discounts",
+        "description": "Compare up to 4 offers for the same item. Apply quantity, an order coupon and shipping to each discounted unit price.",
+        "formula": "Unit price × quantity → subtract the order coupon from the item subtotal (minimum 0 KRW) → add shipping",
+        "add": "Add an empty offer",
+        "importBasic": "Add current basic discount result",
+        "importMulti": "Add current stacked discount result",
+        "importHint": "Import the unit price at the time of the click, rounded to whole KRW as in the existing calculator. The new offer starts with quantity 1, coupon 0 and shipping 0. Later calculator edits do not change it.",
+        "limit": "You can compare up to 4 offers. Remove an offer before adding another.",
+        "invalidLink": "The comparison link could not be restored. No partial data was applied; the current offers remain.",
+        "invalidStructure": "The offer count or identifiers are invalid. Export of the full result has been stopped.",
+        "name": "Offer name (up to 40 characters)",
+        "defaultName": "Offer {index}",
+        "remove": "Remove",
+        "removeNamed": "Remove offer {name}",
+        "fields": {
+          "unitPrice": "Discounted unit price (KRW)",
+          "quantity": "Quantity",
+          "coupon": "Order coupon amount (KRW)",
+          "shipping": "Shipping (KRW)"
+        },
+        "results": {
+          "subtotal": "Item subtotal",
+          "appliedCoupon": "Coupon actually applied",
+          "excessCoupon": "Coupon above item subtotal",
+          "goodsTotal": "Items after coupon",
+          "total": "Total payment",
+          "unitAverage": "Average per unit, including shipping"
+        },
+        "errors": {
+          "missing": "Enter a value. A blank field is not calculated as zero.",
+          "integer": "Use digits only for whole KRW amounts or quantity.",
+          "range": "Check the allowed range for this field.",
+          "name": "Use up to 40 Unicode characters after line breaks become spaces. Control characters are not allowed."
+        },
+        "ranges": "Unit price 0–1 billion KRW · quantity 1–999 · coupon 0–1 trillion KRW · shipping 0–10 million KRW. Coupons do not reduce shipping.",
+        "memory": "Offers stay in memory for this visit and are not saved in device history.",
+        "resultTitle": "Offer comparison results",
+        "validCount": "{valid} valid / {total} total offers",
+        "empty": "Add an offer to see results.",
+        "incomplete": "Some offers are incomplete or invalid. Valid offers show their individual calculations, but lowest-price rankings, full copy, files and sharing are paused.",
+        "singleCondition": "Add another offer to compare.",
+        "needsInput": "Input needed",
+        "needsCorrection": "Correct the input",
+        "lowestTotal": "Lowest total payment",
+        "lowestUnit": "Lowest per unit",
+        "tiedTotal": "Joint lowest total",
+        "tiedUnit": "Joint lowest per unit",
+        "averageHint": "Per-unit averages display up to 2 decimal places. Lowest prices and ties use unrounded values, so identical displayed amounts may rank differently.",
+        "assumption": "This assumes the same item and unit. Different quantities can produce different total and per-unit winners. Card rewards, conditional free shipping and seller coupon rules are not inferred.",
+        "copy": "Copy full details",
+        "download": "Save full details as TXT",
+        "manualCopy": "Full details that could not be copied",
+        "selectText": "Select all text",
+        "actions": {
+          "copied": "Full details copied.",
+          "copyFailed": "Automatic copy failed. Select the full text below to copy manually, or try again.",
+          "downloaded": "TXT download requested.",
+          "downloadFailed": "The TXT download could not start. Your inputs and results remain."
+        },
+        "shareHint": "Comparison links contain only the numeric values of up to 4 offers. Custom names are excluded and recipients see Offer 1–4. The entire comparison can be shared only when every offer is valid.",
+        "shareImageHint": "The share image summarizes the total and per-unit average of up to 4 offers. Full names, inputs and coupon details are included in the full-text copy or TXT file.",
+        "exportTitle": "Total cost after discounts — full comparison",
+        "won": "KRW",
+        "shareLabel": "Total payment · average per unit",
+        "shareHeadline": "Compare {count} offers",
+        "shareSummary": "All amounts are in KRW, calculated from your inputs.",
+        "basicManualCopy": "Basic calculation copy text",
+        "retryCopy": "Retry copy",
+        "resetBasic": "Reset basic calculation",
+        "basicLink": "Copy basic calculation link",
+        "basicLinkHint": "This link includes the basic mode and inputs. Share comparison conditions from the comparison results below. Stacked discount steps are not included in links.",
+        "multiRateLabel": "Stacked discount rate {index}",
+        "selectionFailed": "Automatic selection was unavailable. Select the text above manually to copy it."
+      }
+    }
+  }
+}

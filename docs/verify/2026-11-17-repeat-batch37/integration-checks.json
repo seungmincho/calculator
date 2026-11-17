@@ -1,0 +1,208 @@
+{
+  "scope": "화면 비율 이미지 자르기 위치·반출 보호",
+  "status": "complete_local_verification",
+  "namespace": "aspectRatio",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 47,
+    "commonGuideLeaves": 9,
+    "patchLeavesPerLanguage": 56,
+    "staticUses": 86,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed1578",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 544,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 3,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45771
+    }
+  },
+  "author": {
+    "status": "passed/stable",
+    "groups": 25,
+    "preparedGroups": 16,
+    "actualParent": 9,
+    "existingCalculationRegression": "passed",
+    "existingCollageLayouts": 19,
+    "scopedLintFiles": 13,
+    "errors": 0,
+    "warnings": 0
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 16,
+    "pureAdapter": 7,
+    "actualParent": 6,
+    "remountAffected": 1,
+    "scopedLintFiles": 3,
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0,
+    "report": "independent-review.md",
+    "initialIndependentGroups": 14,
+    "rootCopyGuardGroups": 2,
+    "note": "Root actual cross-copy source was observed after author patch; no before-fix replay claim"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-16T22:19:27.528Z",
+    "browserClosed": true,
+    "report": "review-browser.md",
+    "initialPassed": 5,
+    "initialFailed": 3,
+    "affectedRetests": "mobile1 then inputlimits/clear-remount/cross-copy3; existing successful scenarios not repeated",
+    "productFindingsResolved": [
+      "React canvas host placeholder removeChild on clear/late decode/reselect",
+      "320px extreme ratio and recovery325px overflow"
+    ],
+    "additionalScope": "Own copy and ShareResult request ownership connected; both directions native stale fallback0",
+    "errors": {
+      "pageerror": 0,
+      "hydration": 0,
+      "unhandled": 0
+    },
+    "artifacts": {
+      "largePngBytes": 319513,
+      "largePngDimensions": [
+        4000,
+        4000
+      ],
+      "exifJpgBytes": 830
+    }
+  },
+  "typecheck": {
+    "preflightAt": "2026-11-16T23:08:20.003Z",
+    "freeMemoryGiB": 3.79,
+    "totalMemoryGiB": 31.75,
+    "heapMiB": 2048,
+    "chromeClosed": true,
+    "allTsWritersFrozen": true,
+    "scope": "37 final product changes,39/40 parents,unconnected41/42/43 preparation",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "status": "passed",
+    "sessionId": 26319,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "chunkId": "b2fa53",
+    "resultRecordedAt": "2026-11-16T23:10:06.257Z",
+    "order": "After final37/39/40 native contexts closed and all TS writers froze; before subsequent parent/preparation work",
+    "repeatRequired": false,
+    "priorSnapshotAttempts": [
+      {
+        "preflightAt": "2026-11-16T22:09:11.503Z",
+        "freeMemoryGiB": 4.29,
+        "sessionId": 61356,
+        "exitCode": 1,
+        "chunkId": "9ac60a",
+        "error": {
+          "file": "src/components/AspectRatio.tsx",
+          "line": 79,
+          "column": 109,
+          "code": "TS2345",
+          "detail": "string not assignable to SetStateAction<Zone>"
+        }
+      },
+      {
+        "preflightAt": "2026-11-16T22:13:07.701Z",
+        "freeMemoryGiB": 4.45,
+        "exitCode": 0,
+        "diagnostics": 0,
+        "elapsedSeconds": 9.0207204,
+        "chunkId": "147114"
+      }
+    ],
+    "priorTypeOnlyFix": "Explicit readAspectQuery return type preserves Zone union; URL/early-edit1 and file lint passed; runtime unchanged",
+    "priorSnapshotScope": "After36 native but before37 native; superseded for37 by final current check"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "commonCodeDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current36/37 product/code, canonical/generated/metadata/discovery and docs; followup type-only utility diff also passed"
+  },
+  "accountSnapshot": {
+    "atKst": "2026-11-17 07:44",
+    "usedPercent": 0,
+    "remainingPercent": 100,
+    "freeResetCoupons": 0,
+    "ordinaryUsageAllowed": true,
+    "source": "Root read-only account-wide snapshot after user manually used final coupon; agent reset operations0"
+  },
+  "resolvedFindings": [
+    {
+      "issue": "Disposed adapter encode could overlap a new adapter on SPA remount",
+      "before": "maximum active encode2 in independent port",
+      "fix": "module-level physicalWorkTail; owner-specific source/lifecycle retained",
+      "validation": "independent remount1 observed new read/decode0 before old finally and active encode1; author adapter8/late parent1/lint passed",
+      "limitation": "same JS module instance; no cross-tab/OS cancellation guarantee"
+    }
+  ],
+  "productScopeDiff": {
+    "status": "passed",
+    "exitCode": 0
+  },
+  "documentChecks": {
+    "status": "passed",
+    "markdownFiles": 10,
+    "relativeLinks": 204,
+    "missingLinks": 0,
+    "scope": "Current37/39/40 reports/plans and4handoffs",
+    "scopedDiffExitCode": 0,
+    "diffChunkId": "fe13bd"
+  },
+  "nativeFollowup": {
+    "status": "passed/stable",
+    "authorAffectedGroups": 2,
+    "scopedLint": "two product files and one script passed; no canonical change",
+    "rootIndependentGroups": 2,
+    "finalType": "passed after native fixes at08:08:20 KST"
+  },
+  "currentScopedDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "chunkId": "6dd7b2",
+    "scope": "Tracked37/39/40 product files, common metadata/canonical/generated/discovery and batch documents after37 native fixes/39 locale import fix",
+    "note": "Not a repository-wide clean-state claim; untracked new files are covered by author lint rather than git diff"
+  },
+  "completedAt": "2026-11-16T23:10:06.259Z",
+  "finalCommon": {
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "applyImports": 0,
+    "namespaceAudit": {
+      "own": 548,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    },
+    "scopedCommonLintFiles": 3,
+    "scopedCommonLintExitCode": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45839
+    }
+  }
+}

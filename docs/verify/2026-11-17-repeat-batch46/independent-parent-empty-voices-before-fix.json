@@ -1,0 +1,12 @@
+[
+  {
+    "mode": "stopped",
+    "disabled": false,
+    "addedUtterances": 1
+  },
+  {
+    "mode": "speaking",
+    "disabled": false,
+    "addedUtterances": 1
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "ko": {
+    "csatGrade": {
+      "directGrades": {
+        "jump": "등급으로 목표 비교",
+        "open": "등급 직접 입력으로 목표 비교",
+        "close": "직접 등급 입력 접기",
+        "basis": "사용자가 직접 입력한 등급 기준",
+        "description": "알고 있는 등급을 입력해 위에 저장한 같은 목표 조건을 비교하세요. 참고 원점수 컷으로 추정하지 않으며, 입력이 공식 성적임을 확인하는 기능은 아닙니다.",
+        "scope": "직접 입력은 이 페이지를 이용하는 동안만 유지됩니다. 기존 원점수 입력·12개 기록·공유 링크·공유 카드에 포함되지 않으며 표준점수·백분위·평균을 만들지 않습니다.",
+        "inquirySubject": "탐구 과목",
+        "chooseSubject": "과목 선택",
+        "gradeLabel": "{subject} 직접 등급",
+        "missing": "미입력",
+        "reset": "직접 등급 입력 초기화",
+        "rule": "국어·수학·영어·탐구 상위 한 과목을 각각 한 영역으로 세고, 등급 수치가 낮은 영역부터 더합니다. 대학별 필수 영역·탐구 평균·한국사 조건이나 합격 판단은 적용하지 않습니다.",
+        "loading": "저장된 목표 조건을 준비하는 중입니다. 직접 입력은 유지됩니다.",
+        "blocked": "최신 목표 목록을 확인할 수 없어 비교를 보류했습니다. 위의 ‘목표 목록 다시 읽기’를 사용하세요. 직접 입력은 유지됩니다.",
+        "noGoals": "비교할 저장 목표가 없습니다. 위에서 목표 조건을 저장하면 같은 목록에 바로 반영됩니다.",
+        "available": "현재 직접 입력한 유효 영역 {count}개 기준입니다. 입력을 추가하거나 고치면 결과가 달라질 수 있습니다.",
+        "inquiryConflict": "탐구의 같은 과목에 서로 다른 등급을 입력해 탐구 영역을 제외했습니다. 과목이나 등급을 수정하세요.",
+        "subjectRequired": "등급과 함께 탐구 과목을 선택해 주세요: {fields}. 과목이 확인되지 않은 입력은 제외합니다.",
+        "invalidGrades": "1~9 정수 등급을 확인해 주세요: {fields}. 잘못된 등급은 계산에서 제외합니다."
+      },
+      "rawSummary": {
+        "missing": "미입력",
+        "invalid": "입력 확인",
+        "needsInput": "입력 필요",
+        "checkInput": "입력 확인 필요",
+        "heroSub": "국수탐 평균 {noEng} · 현재 유효 입력 기준 3합 {s3}",
+        "shareText": "{year}학년도 참고 컷 기준 평균: {avg}, 현재 유효 입력 기준 3합 {s3} (상대평가 추정 포함). {currentYear}학년도 실제 성적·수능최저 판정이 아닙니다. 영어·한국사는 절대평가 기준입니다.",
+        "inquiryPair": "탐구 1: {a} · 탐구 2: {b}",
+        "averageRule": "전체 평균은 국어·수학·영어·탐구 두 칸, 영어 제외 평균은 국어·수학·탐구 두 칸이 모두 유효할 때 계산합니다. 한국사는 두 평균에서 제외하며 일부 과목만으로 평균을 만들지 않습니다.",
+        "inquiryConflict": "같은 탐구 과목에 서로 다른 점수를 입력해 평균 계산을 보류했습니다. 과목이나 점수를 수정하세요."
+      }
+    }
+  },
+  "en": {
+    "csatGrade": {
+      "directGrades": {
+        "jump": "Compare goals by grade",
+        "open": "Compare goals using entered grades",
+        "close": "Collapse direct grade inputs",
+        "basis": "Based on grades entered by you",
+        "description": "Enter grades you know to compare the same goals saved above. Reference raw-score cutoffs are not used to estimate these grades, and this feature does not verify them as official results.",
+        "scope": "Direct inputs last only while you use this page. They are excluded from existing raw-score inputs, the 12 saved records, shared links and share cards. No standard scores, percentiles or averages are generated.",
+        "inquirySubject": "Inquiry subject",
+        "chooseSubject": "Choose a subject",
+        "gradeLabel": "Entered {subject} grade",
+        "missing": "Not entered",
+        "reset": "Reset direct grade inputs",
+        "rule": "Korean, Math, English and the better inquiry subject each count as one area. Areas with lower grade numbers are added first. University-specific required areas, inquiry averages, Korean History requirements and admission decisions are not applied.",
+        "loading": "Preparing saved goal conditions. Your direct inputs are kept.",
+        "blocked": "Comparison is paused because the latest goals cannot be verified. Use ‘Reload goal list’ above. Your direct inputs are kept.",
+        "noGoals": "No saved goals to compare. Save a goal above and it will appear in this same list.",
+        "available": "Based on {count} valid areas you entered directly. Adding or correcting inputs may change the result.",
+        "inquiryConflict": "The same inquiry subject has different entered grades, so inquiry is excluded. Correct the subjects or grades.",
+        "subjectRequired": "Choose an inquiry subject for these grades: {fields}. Entries without a recognized subject are excluded.",
+        "invalidGrades": "Check integer grades from 1 to 9: {fields}. Invalid grades are excluded."
+      },
+      "rawSummary": {
+        "missing": "Not entered",
+        "invalid": "Check input",
+        "needsInput": "More input needed",
+        "checkInput": "Check inputs",
+        "heroSub": "Average excluding English: {noEng} · Best 3-area sum from valid inputs: {s3}",
+        "shareText": "Average using {year} reference cutoffs: {avg}; best 3-area sum from valid inputs: {s3} (including relative-grade estimates). This is not a {currentYear} official result or university minimum-grade decision. English and Korean History use absolute grading.",
+        "inquiryPair": "Inquiry 1: {a} · Inquiry 2: {b}",
+        "averageRule": "The full average requires valid Korean, Math, English and both inquiry entries. The average excluding English requires Korean, Math and both inquiry entries. Korean History is excluded from both; partial-subject averages are not calculated.",
+        "inquiryConflict": "The same inquiry subject has different scores, so averages are paused. Correct the subjects or scores."
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "ko": { "diffViewer": {
+    "merge": {
+      "title": "필요한 변경만 골라 병합", "jump": "변경을 골라 병합하기", "description": "각 구간에서 원본을 유지할지 수정본을 반영할지 고르세요. 처음에는 모두 원본 유지이며, 두 입력 문서는 바뀌지 않아요.",
+      "previous": "이전 비교의 두 입력을 기준으로 병합하고 있어요. 현재 입력을 반영하려면 다시 비교해 주세요.", "invalid": "병합 결과와 비교 문서가 일치하지 않아요. 다시 비교해 주세요.",
+      "selected": "변경 {total}곳 중 수정본 {selected}곳 반영", "allOriginal": "모두 원본 유지", "allModified": "모두 수정본 반영", "block": "변경 {number}",
+      "original": "원본 유지", "modified": "수정본 반영", "lines": "줄 수: {count}", "blankLine": "(빈 줄)", "noLines": "이쪽에는 해당 줄이 없어요.", "moreLines": "외 {count}줄", "ellipsis": "…",
+      "blockPages": "변경 구간 페이지", "resultPages": "병합 미리보기 페이지", "previousPage": "이전", "nextPage": "다음", "page": "{current} / {total}",
+      "noChanges": "다른 구간이 없어 원본 내용을 그대로 사용할 수 있어요.", "resultTitle": "병합 문서 미리보기", "resultSummary": "{lines}줄 · {bytes}바이트",
+      "empty": "병합 결과는 빈 문서예요. 복사하면 클립보드가 비워지고, TXT는 빈 파일로 내려받아요.",
+      "shortened": "긴 줄과 일부 내용은 미리보기에서 줄여 표시했어요. 복사와 TXT에는 전체 내용이 들어가요.", "previewHint": "한 페이지에 최대 200줄을 보여 줘요. 복사와 TXT에는 모든 페이지의 내용이 들어가요.",
+      "copy": "병합 문서 전체 복사", "copyEmpty": "빈 문서 복사", "download": "병합 TXT 다운로드", "lineEndings": "줄바꿈은 LF로 통일해요. 끝 줄바꿈과 빈 줄은 유지해요.",
+      "failed": "병합 결과를 만들지 못했어요. 마지막으로 확인한 결과를 유지해요. 다시 비교해 주세요."
+    },
+    "output": {
+      "comparison": "비교 표시 텍스트", "merged": "병합 문서", "copying": "복사 중…", "copied": "복사했어요: {label}", "downloadStarted": "{label} 다운로드를 시작했어요.", "downloadFailed": "{label} 다운로드를 시작하지 못했어요. 다시 눌러 주세요.",
+      "recoveryTitle": "{label} 복사 복구", "failed": "{label} 자동 복사에 실패했어요. 전체 내용을 열어 직접 선택하거나 다시 시도해 주세요.",
+      "showText": "전체 내용 열기", "manualLabel": "직접 복사할 전체 내용", "select": "전체 선택", "selectionFailed": "자동으로 선택하지 못했어요. 입력칸을 눌러 직접 선택해 주세요.", "retry": "복사 다시 시도", "close": "닫기", "empty": "복사할 내용은 빈 문서예요. TXT로 내려받을 수도 있어요."
+    }
+  } },
+  "en": { "diffViewer": {
+    "merge": {
+      "title": "Merge selected changes", "jump": "Choose changes to merge", "description": "Choose the original or modified text for each block. All blocks start with the original text. Your two input documents stay unchanged.",
+      "previous": "This merge uses the two documents from the previous comparison. Compare again to include your current edits.", "invalid": "The merge does not match the comparison. Compare the documents again.",
+      "selected": "Modified blocks selected: {selected} of {total}", "allOriginal": "Keep all original", "allModified": "Use all modified", "block": "Change {number}",
+      "original": "Keep original", "modified": "Use modified", "lines": "Lines: {count}", "blankLine": "(blank line)", "noLines": "No lines on this side.", "moreLines": "Additional lines: {count}", "ellipsis": "…",
+      "blockPages": "Change block pages", "resultPages": "Merged preview pages", "previousPage": "Previous", "nextPage": "Next", "page": "{current} / {total}",
+      "noChanges": "No changed blocks. You can use the original content as it is.", "resultTitle": "Merged document preview", "resultSummary": "Lines: {lines} · Bytes: {bytes}",
+      "empty": "The merged document is empty. Copying clears the clipboard; the TXT download will be an empty file.",
+      "shortened": "Long lines and some content are shortened in the preview. Copy and TXT include the complete document.", "previewHint": "Each page shows up to 200 lines. Copy and TXT include content from every page.",
+      "copy": "Copy full merged document", "copyEmpty": "Copy empty document", "download": "Download merged TXT", "lineEndings": "Line endings are normalized to LF. Trailing newlines and blank lines are kept.",
+      "failed": "Could not create the merge. Your last confirmed result is kept. Compare the documents again."
+    },
+    "output": {
+      "comparison": "comparison text", "merged": "merged document", "copying": "Copying…", "copied": "Copied {label}.", "downloadStarted": "Started downloading {label}.", "downloadFailed": "Could not start downloading {label}. Try again.",
+      "recoveryTitle": "Copy recovery for {label}", "failed": "Could not copy the {label} automatically. Open the full text to select it manually, or try again.",
+      "showText": "Open full text", "manualLabel": "Full text to copy manually", "select": "Select all", "selectionFailed": "Could not select the text automatically. Select it directly in the field.", "retry": "Try copying again", "close": "Close", "empty": "This is an empty document. You can also download it as a TXT file."
+    }
+  } }
+}

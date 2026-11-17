@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-17T01:45:23.961Z",
+  "freeGiB": 3.02,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "scopes": [
+    56,
+    57,
+    58
+  ],
+  "chromeClosed": true,
+  "allTsWritersFrozen": true,
+  "evidence": "56 team final freeze;57 taxi final freeze;58 root final freeze;common frozen;gpa/writing final independent JS only;verifier final23 and Chrome closed."
+}

@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-11-16T18:04:44.518Z",
+  "patches": [
+    {
+      "name": "password-actions",
+      "leafKeysPerLanguage": 14
+    },
+    {
+      "name": "pdf",
+      "leafKeysPerLanguage": 13
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "PdfTools",
+      "staticKeysChecked": 110,
+      "dynamicPrefixesChecked": [
+        "split.err",
+        "tabs"
+      ]
+    },
+    {
+      "component": "PdfHistoryControls",
+      "staticKeysChecked": 5,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "PasswordGenerator",
+      "staticKeysChecked": 72,
+      "dynamicPrefixesChecked": [
+        "strength",
+        "time",
+        "modes",
+        "check.type",
+        "check.pattern",
+        "check.suggest",
+        "errors",
+        "presets",
+        "settings.separators",
+        "guide"
+      ]
+    },
+    {
+      "component": "PasswordCopyRecovery",
+      "staticKeysChecked": 10,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

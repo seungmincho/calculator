@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-11-16T23:45:09.460Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 4
+    },
+    {
+      "name": "font-backup",
+      "leafKeysPerLanguage": 33
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "FontPairBackupPanel",
+      "staticKeysChecked": 19,
+      "dynamicPrefixesChecked": [
+        "pairing.backup.errors",
+        "pairing.roles"
+      ]
+    },
+    {
+      "component": "FontPairProfiles",
+      "staticKeysChecked": 19,
+      "dynamicPrefixesChecked": [
+        "pairing.roles",
+        "pairing.profiles.errors",
+        "pairing.profiles"
+      ]
+    },
+    {
+      "component": "FontPairPreview",
+      "staticKeysChecked": 21,
+      "dynamicPrefixesChecked": [
+        "pairing.roles",
+        "pairing.fontLabels",
+        "pairing.sizeLabels",
+        "pairing.weightLabels",
+        "pairing.textLabels",
+        "pairing.fontStatus",
+        "pairing.copyStatus"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

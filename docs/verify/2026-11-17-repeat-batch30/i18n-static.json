@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-16T20:44:26.371Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "pomodoro",
+      "leafKeysPerLanguage": 33
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "PomodoroTimer",
+      "staticKeysChecked": 83,
+      "dynamicPrefixesChecked": [
+        "reliability"
+      ]
+    },
+    {
+      "component": "PomodoroRecovery",
+      "staticKeysChecked": 9,
+      "dynamicPrefixesChecked": [
+        "reliability"
+      ]
+    },
+    {
+      "component": "PomodoroGoalPanel",
+      "staticKeysChecked": 16,
+      "dynamicPrefixesChecked": [
+        "goal.errors",
+        "goal.statsErrors",
+        "goal.notices"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

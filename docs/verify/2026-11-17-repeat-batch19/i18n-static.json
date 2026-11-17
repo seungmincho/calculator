@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-11-16T16:30:48.890Z",
+  "patches": [
+    {
+      "name": "diff",
+      "leafKeysPerLanguage": 57
+    },
+    {
+      "name": "markdown",
+      "leafKeysPerLanguage": 20
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "DiffViewer",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "TextDiffWorkspace",
+      "staticKeysChecked": 53,
+      "dynamicPrefixesChecked": [
+        "workspace.errors",
+        "results",
+        "workspace.filter",
+        "guide"
+      ]
+    },
+    {
+      "component": "MarkdownEditor",
+      "staticKeysChecked": 80,
+      "dynamicPrefixesChecked": [
+        "fileRead",
+        "guide"
+      ]
+    },
+    {
+      "component": "MarkdownCopyRecovery",
+      "staticKeysChecked": 8,
+      "dynamicPrefixesChecked": [
+        "copyRecovery.failed",
+        "copyRecovery.textTypes"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

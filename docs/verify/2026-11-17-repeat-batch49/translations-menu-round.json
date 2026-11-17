@@ -1,0 +1,36 @@
+{
+  "ko": {
+    "decisionTools": {
+      "menuRound": {
+        "title": "이번 추첨에서 제외한 메뉴",
+        "count": "돌릴 후보 {count}개 · 임시 제외 메뉴 {excluded}개",
+        "exclude": "이번에는 제외",
+        "hint": "먹은 기록을 남기지 않고 이번 추첨에서만 뺍니다. 같은 이름의 후보도 함께 제외됩니다.",
+        "minimum": "다시 돌릴 후보가 2개 이상 남아야 제외할 수 있습니다.",
+        "restore": "복구",
+        "restoreNamed": "{name} 복구",
+        "restoreAll": "모두 복구",
+        "excludedBadge": "이번 추첨에서 제외됨",
+        "resetHint": "후보나 식사 제외 대상이 바뀌면 임시 제외가 해제됩니다. 새로고침해도 해제됩니다.",
+        "linkHint": "후보 목록 링크와 주간 계획에는 이번 임시 제외가 적용되지 않습니다."
+      }
+    }
+  },
+  "en": {
+    "decisionTools": {
+      "menuRound": {
+        "title": "Menus skipped for this draw",
+        "count": "Available entries: {count} · Temporarily skipped menus: {excluded}",
+        "exclude": "Skip for this draw",
+        "hint": "Skip a menu without recording it as eaten. All entries with the same name are skipped together.",
+        "minimum": "At least 2 entries must remain available to spin again.",
+        "restore": "Restore",
+        "restoreNamed": "Restore {name}",
+        "restoreAll": "Restore all",
+        "excludedBadge": "Skipped for this draw",
+        "resetHint": "Temporary skips clear when candidates or meal exclusions change, and when you reload the page.",
+        "linkHint": "Candidate-list links and weekly plans do not include these temporary skips."
+      }
+    }
+  }
+}

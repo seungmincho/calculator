@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-11-17T01:51:25.545Z",
+  "preflightAt": "2026-11-17T01:51:00.242Z",
+  "heapMiB": 2048,
+  "freeGiB": 2.87,
+  "exitCode": 0,
+  "diagnostics": 0,
+  "execution": 2,
+  "firstExecutionPassed": true,
+  "outputChunk": "f3e9de",
+  "wallTimeSeconds": 9.3490971,
+  "scopes": [
+    56,
+    57,
+    58
+  ],
+  "state": "passed_final",
+  "reason": "58 duplicate notice JSX polish after first passed checkpoint; existing parent6/native1 repeated and lint0; product TS frozen and Chrome closed.",
+  "firstResult": "typecheck-first-result.json"
+}

@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-17T01:51:00.242Z",
+  "freeGiB": 2.87,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "scopes": [
+    56,
+    57,
+    58
+  ],
+  "chromeClosed": true,
+  "allTsWritersFrozen": true,
+  "reason": "After58 JSX duplicate error notice removal; first type already passed; existing parent6 repeated, native320KOEN1 impact repeated."
+}

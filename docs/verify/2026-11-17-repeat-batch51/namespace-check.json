@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-17T00:21:36.125Z",
+  "apply": {
+    "exitCode": 0,
+    "summary": [
+      "--apply: 0 imports in 0 files"
+    ]
+  },
+  "audit": {
+    "exitCode": 0,
+    "summary": [
+      "audit: 557 satisfied by own import, 6 via child component, 0 unresolved; 60 issues listed above"
+    ]
+  }
+}

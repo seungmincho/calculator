@@ -1,0 +1,78 @@
+{
+  "ko": {
+    "textConverter": {
+      "pipeline": {
+        "hint": "버튼으로 단계를 추가하고 위·아래로 순서를 바꾸면 결과가 바로 바뀝니다. 추가·이동·삭제·전체 초기화는 최대 30번 되돌리거나 다시 실행할 수 있습니다."
+      },
+      "guide": {
+        "howToUse": {
+          "items": [
+            "변환할 텍스트를 입력 칸에 붙여넣습니다. 여러 줄이면 줄마다 따로 변환됩니다.",
+            "'모든 케이스 한 번에'에서 필요한 형식 옆의 복사 버튼을 누릅니다.",
+            "단계를 추가한 뒤 위·아래로 순서를 바꾸거나 개별 삭제합니다. 단계 변경과 모두 지우기를 최대 30번 되돌리거나 다시 실행해도 원문과 작성 중인 입력은 유지됩니다.",
+            "결과 복사 버튼이나 Ctrl/⌘ + Enter로 결과를 복사합니다. 공유 링크에는 단순 변환과 목록 형식만 포함합니다. 원문·찾기/치환·접두/접미 문자열과 이력은 공유하지 않으며, 섞기 순서는 달라질 수 있습니다."
+          ]
+        }
+      },
+      "history": {
+        "undo": "단계 변경 되돌리기",
+        "redo": "다시 실행",
+        "scope": "추가·이동·삭제·전체 초기화를 최대 {max}번 되돌리거나 다시 실행합니다. 현재 변환 단계에만 적용하며 원문과 작성 중인 찾기·치환 입력은 바꾸지 않습니다. 이력은 이 페이지에 머무는 동안만 유지됩니다.",
+        "available": "되돌리기 {undo}번 · 다시 실행 {redo}번 가능",
+        "moveUp": "위로",
+        "moveDown": "아래로",
+        "remove": "삭제",
+        "stepLabel": "{position}번째 단계: {step}",
+        "moveUpAria": "{position}번째 단계 {step} 위로 이동",
+        "moveDownAria": "{position}번째 단계 {step} 아래로 이동",
+        "removeAria": "{position}번째 단계 {step} 삭제",
+        "moved": "{step} 단계를 {position}번째로 옮겼습니다.",
+        "removed": "{position}번째 단계 {step}을 삭제했습니다. 되돌릴 수 있습니다.",
+        "undone": "단계 변경을 되돌렸습니다. {remaining}번 더 되돌릴 수 있습니다.",
+        "redone": "단계 변경을 다시 실행했습니다. {remaining}번 더 다시 실행할 수 있습니다.",
+        "cleared": "{count}개 단계를 모두 지웠습니다. 원문은 그대로이며 되돌릴 수 있습니다.",
+        "stepFailed": "이 단계를 적용하지 못해 건너뛰었습니다.",
+        "keyboard": "단계 목록에 초점이 있을 때 Alt+↑/↓로 이동합니다. 이 영역에서는 Ctrl/⌘+Z로 되돌리기, Ctrl/⌘+Shift+Z 또는 Ctrl+Y로 다시 실행할 수 있습니다. 원문 입력창의 기본 되돌리기는 그대로입니다.",
+        "urlNotice": "공유 링크는 단순 변환과 목록 형식만 복원합니다. 원문·찾기/치환·접두/접미 문자열과 이력은 포함하지 않으며, 섞기 순서는 달라질 수 있습니다. 다른 공유 설정을 불러오면 이력은 새로 시작합니다."
+      }
+    }
+  },
+  "en": {
+    "textConverter": {
+      "pipeline": {
+        "hint": "Add steps and move them up or down to update the result instantly. Undo or redo up to 30 additions, moves, removals and resets."
+      },
+      "guide": {
+        "howToUse": {
+          "items": [
+            "Paste your text into the input. Multi-line input is converted line by line.",
+            "In 'Every case at once', press the copy button next to the format you need.",
+            "Add steps, move them up or down, or remove them individually. Undo or redo up to 30 step changes and resets while preserving your source text and unfinished fields.",
+            "Copy the result with the button or Ctrl/Cmd + Enter. Shared links include only simple operations and list formats. Source text, find/replace text, prefixes, suffixes and history are excluded, and shuffle order may differ."
+          ]
+        }
+      },
+      "history": {
+        "undo": "Undo step change",
+        "redo": "Redo",
+        "scope": "Undo or redo up to {max} additions, moves, removals and resets. This affects transformation steps only, preserving your source text and unfinished find/replace fields. History lasts only while you stay on this page.",
+        "available": "{undo} undo · {redo} redo available",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "remove": "Remove",
+        "stepLabel": "Step {position}: {step}",
+        "moveUpAria": "Move step {position}, {step}, up",
+        "moveDownAria": "Move step {position}, {step}, down",
+        "removeAria": "Remove step {position}, {step}",
+        "moved": "Moved {step} to position {position}.",
+        "removed": "Removed step {position}, {step}. You can undo this.",
+        "undone": "Undid the step change. {remaining} undo actions remain.",
+        "redone": "Redid the step change. {remaining} redo actions remain.",
+        "cleared": "Cleared all {count} steps. Your source text is unchanged and you can undo this.",
+        "stepFailed": "This step could not be applied and was skipped.",
+        "keyboard": "With focus in the step list, use Alt+Up/Down to move a step. In this section, Ctrl/Cmd+Z undoes, and Ctrl/Cmd+Shift+Z or Ctrl+Y redoes. Native undo in the source editor is unchanged.",
+        "urlNotice": "Shared links restore only simple operations and list formats. Source text, find/replace text, prefixes, suffixes and history are excluded, and shuffle order may differ. Loading another shared setup starts a new history."
+      }
+    }
+  }
+}

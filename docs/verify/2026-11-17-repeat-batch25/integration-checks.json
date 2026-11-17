@@ -1,0 +1,139 @@
+{
+  "scope": "Batch25 writing-version diff handoff and classic Minesweeper replay",
+  "status": "complete",
+  "translations": {
+    "patchLeavesPerLanguage": 40,
+    "staticUses": 176,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "finalMessagesCheckPending": false,
+    "finalNamespaceAuditPending": false,
+    "applyAddedImports": 0,
+    "ownImports": 531,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "messagesCheck": "1578 files verified"
+  },
+  "metadata": {
+    "routes": [
+      "/character-counter",
+      "/diff-viewer",
+      "/minesweeper"
+    ],
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "updatedDate": "2026-11-17",
+    "discoveryGenerated": true,
+    "redirectRules": 472,
+    "rssItems": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45460
+  },
+  "lint": {
+    "commonInitial": "6 existing JSX quote errors in Minesweeper page; other scoped files had no diagnostics",
+    "minesweeperEntitiesFixed": true,
+    "recheckSessionId": 65643,
+    "status": "passed",
+    "exitCode": 0,
+    "writingProductAndTests5Files": "0 errors/warnings; final storage-getter impact2 files also passed",
+    "minesweeperProductAndTests4Files": "0 errors/warnings; final fixture-only lint session2083 exit0 confirmed"
+  },
+  "authorTests": {
+    "writingPreparationDomain": 16,
+    "existingTts": 51,
+    "minesweeperPreparationDomain": 11,
+    "parentFinalPending": false,
+    "writingParentGroups": 10,
+    "writingTotalGroups": 26,
+    "existingDiffComponentGroups": 8,
+    "writingFinalReady": true,
+    "minesweeperParentClockGroups": 11,
+    "minesweeperTotalGroups": 22,
+    "existingMinesweeperRegression": "passed",
+    "minesweeperFinalReady": true
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "browserClosed": true,
+    "stablePreparedBatch26FilesIncluded": true,
+    "attempts": [
+      {
+        "preflightAt": "2026-11-16T19:16:16.681Z",
+        "freeGiB": 5.12,
+        "sessionId": 1204,
+        "exitCode": 1,
+        "error": "TS2345 TextDiffWorkspace.tsx:90 stale union mismatch"
+      },
+      {
+        "preflightAt": "2026-11-16T19:19:31.172Z",
+        "freeGiB": 5.28,
+        "exitCode": 0,
+        "wallTimeSeconds": 9.245
+      }
+    ],
+    "fix": "split alive and non-stale outcome checks; impact3 groups and file lint passed",
+    "additionalChromeAfterTypeFix": false
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "resumption": {
+    "reason": "user manually used one additional free reset coupon after quota exhaustion",
+    "accountUsedPercent": 0,
+    "accountRemainingPercent": 100,
+    "remainingCoupons": 1,
+    "accountWideSnapshot": true,
+    "agentResetExecuted": false,
+    "priorChecksPreserved": true
+  },
+  "preparedTypeScript": {
+    "jsonCsv": "domain12/3-files lint0; parent and 43-key fragment unconnected, TS editing paused; planned BOM/flatten follow-up deferred until next checkpoint",
+    "base64": "domain12/3-files lint0; parent unconnected and TS editing paused"
+  },
+  "browser": {
+    "passed": 12,
+    "failed": 0,
+    "writingCases": 6,
+    "minesweeperCases": 6,
+    "browsersClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "reportFinalizationPending": false,
+    "checkedAt": "2026-11-16T19:11:07.009Z",
+    "unhandledRejections": 0,
+    "report": "review-browser.md",
+    "firstRunAllPassed": true,
+    "actualTxtBytes": 111,
+    "publicScoreRequests": 0
+  },
+  "independent": {
+    "writingGroups": 7,
+    "minesweeperGroups": 6,
+    "totalGroups": 13,
+    "lint": "0 errors/warnings",
+    "unresolvedFindings": 0
+  },
+  "completedAt": "2026-11-16T19:20:51.555Z",
+  "diffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "batch25 product, common metadata/messages/generated assets and handoffs"
+  },
+  "handoffLinks": {
+    "checkedFiles": 5,
+    "missing": 0
+  },
+  "accountAtCheckpoint": {
+    "usedPercent": 9,
+    "remainingPercent": 91,
+    "remainingCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "accountWideSnapshot": true,
+    "source": "root read-only check after batch25 checkpoint"
+  }
+}

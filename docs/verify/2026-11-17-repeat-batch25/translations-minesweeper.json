@@ -1,0 +1,26 @@
+{
+  "ko": { "minesweeper": { "replay": {
+    "start": "같은 판 연습",
+    "active": "같은 판 연습 중",
+    "result": "같은 판 연습 결과",
+    "hint": "원래 지뢰 배치와 처음 연 칸을 그대로 사용해요. 개인 최고 기록·업적·리더보드에는 반영하지 않아요.",
+    "clockHint": "첫 칸은 미리 열었어요. 다음에 칸을 열거나 깃발을 바꾸는 유효한 조작부터 시간을 재요.",
+    "automaticWin": "처음 칸을 펼치는 것만으로 모든 안전 칸을 열었어요. 연습 완료이며 시간과 클릭 수는 0이에요.",
+    "newRandom": "새 판으로 돌아가기",
+    "again": "같은 판 다시 연습",
+    "failed": "이 판의 연습 정보를 확인하지 못했어요. 현재 판은 그대로 두었어요.",
+    "noRecord": "이번 연습 결과는 기록에 저장하지 않아요."
+  } } },
+  "en": { "minesweeper": { "replay": {
+    "start": "Practice this board",
+    "active": "Practicing the same board",
+    "result": "Same-board practice result",
+    "hint": "Practice with the original mine layout and first opened cell. This does not count toward personal bests, achievements, or the leaderboard.",
+    "clockHint": "The first cell is already open. Timing starts with your next action that opens a cell or changes a flag.",
+    "automaticWin": "Opening the first cell revealed every safe cell. Practice is complete with zero time and clicks.",
+    "newRandom": "Return to a new board",
+    "again": "Practice this board again",
+    "failed": "This board's practice data could not be verified. Your current board is unchanged.",
+    "noRecord": "This practice result is not saved to your records."
+  } } }
+}

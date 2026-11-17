@@ -1,0 +1,102 @@
+{
+  "scope": "Batch24 PDF edit history and single password regeneration",
+  "status": "complete",
+  "translations": {
+    "patchLeavesPerLanguage": 27,
+    "staticUses": 197,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "applyAddedImports": 0,
+    "ownImports": 531,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "finalMessagesCheckPending": false,
+    "messagesCheck": "1578 files verified"
+  },
+  "metadata": {
+    "routes": [
+      "/pdf-tools",
+      "/password-generator"
+    ],
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "updatedDate": "2026-11-17",
+    "discoveryGenerated": true,
+    "redirectRules": 472,
+    "rssItems": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45383
+  },
+  "authorTests": {
+    "pdfPreparationDomain": 10,
+    "passwordPreparationDomain": 10,
+    "passwordChild": 2,
+    "existingPasswordRegression": "passed",
+    "parentFinalPending": false,
+    "passwordParent": 6,
+    "passwordTotal": 18,
+    "passwordFinalReady": true,
+    "pdfParent": 6,
+    "pdfTotal": 16,
+    "existingPdfRegression": "passed",
+    "pdfFinalReady": true
+  },
+  "lint": {
+    "commonPagesAndMenu": "0 errors/warnings",
+    "passwordProductAndTests6Files": "0 errors/warnings",
+    "pdfProductAndTests6Files": "0 errors/warnings",
+    "pdfComponentFixture": "0 errors/warnings",
+    "pdfProductAndTests7Files": "0 errors/warnings"
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "preflightAt": "2026-11-16T18:06:39.601Z",
+    "freeGiB": 5.33,
+    "browserClosed": true,
+    "stablePreparedBatch25FilesIncluded": true,
+    "sessionId": 32755,
+    "exitCode": 0,
+    "attempts": 1
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "preparedTypeScript": {
+    "writingDiff": "domain16/existingTts51/lint0; parent unconnected and TS editing paused",
+    "minesweeperReplay": "domain11/lint0; parent unconnected and TS editing paused per root"
+  },
+  "independent": {
+    "pdfGroups": 9,
+    "passwordGroups": 6,
+    "totalGroups": 15,
+    "unresolvedFindings": 0,
+    "lint": "0 errors/warnings"
+  },
+  "browser": {
+    "passed": 11,
+    "failed": 0,
+    "pdfCases": 6,
+    "passwordCases": 5,
+    "checkedAt": "2026-11-16T18:06:26.053Z",
+    "browsersClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "reportFinalizationPending": false,
+    "report": "review-browser.md"
+  },
+  "diffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "batch24 product/utils/tests, originals/generated metadata/discovery and batch24/handoff documents"
+  },
+  "completedAt": "2026-11-16T18:10:46.762Z",
+  "localDocumentLinks": {
+    "files": 5,
+    "missing": []
+  }
+}

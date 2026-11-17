@@ -1,0 +1,128 @@
+{
+  "ko": {
+    "qrGenerator": {
+      "description": "URL·텍스트·Wi-Fi·연락처 QR을 브라우저에서 만들고 PNG·SVG로 저장하세요. 서로 다른 내용 최대 30개는 PNG ZIP 또는 A4 한 장에 6개씩 묶어 인쇄할 수 있습니다.",
+      "guide": {
+        "whatIs": {
+          "description": "가입 없이 브라우저에서 바로 만드는 무료 QR 코드 생성기입니다. URL·텍스트·Wi-Fi·연락처(vCard)·문자·이메일·전화·위치 8가지 유형을 지원하고, 색상·오류 정정 레벨·여백·가운데 로고를 바꿔 PNG(최대 2048px)·SVG로 저장하거나 A4 한 장에 여러 개를 인쇄할 수 있습니다. 내용이 QR 이미지 안에 직접 들어가는 정적 QR이라 만료나 스캔 횟수 제한이 없습니다. 일괄 생성은 서로 다른 내용 최대 30개를 PNG ZIP으로 저장하거나 A4 최대 5장에 한 번씩 인쇄합니다."
+        },
+        "howToUse": {
+          "items": [
+            "위쪽 탭에서 유형을 고릅니다 (탭에 포커스를 두고 좌우 화살표 키로도 이동).",
+            "내용을 입력하면 미리보기가 바로 바뀝니다. 아래에 QR 버전·칸 수·데이터 크기가 표시됩니다.",
+            "디자인에서 점·배경 색, 오류 정정 레벨, 여백을 조정하고 필요하면 가운데 로고를 넣습니다.",
+            "휴대폰 기본 카메라로 미리보기를 찍어 제대로 열리는지 확인합니다.",
+            "PNG(크기 선택)나 SVG로 저장하거나 이미지를 복사하고, 매장 테이블용이면 A4 인쇄로 여러 장 출력합니다.",
+            "서로 다른 QR은 일괄 생성에서 최대 30줄을 입력한 뒤 생성하세요. QR 묶음 인쇄는 A4 세로 한 장에 6개씩 배치하며 이름·번호만 글자로 표시합니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "만든 QR 코드에 유효기간이 있나요?",
+              "a": "없습니다. 이 도구가 만드는 정적 QR은 내용이 이미지 안에 들어 있어 만료·스캔 횟수 제한이 없습니다. URL을 담았다면 그 웹 주소가 살아 있는 한 계속 작동합니다."
+            },
+            {
+              "q": "입력한 Wi-Fi 비밀번호나 연락처가 서버에 저장되나요?",
+              "a": "아니요. QR은 브라우저에서 만들어지고 입력 내용은 전송되지 않습니다. 공유 링크에도 URL·텍스트 유형만 담기고 Wi-Fi 비밀번호·연락처는 들어가지 않습니다. 다만 QR을 찍는 누구나 비밀번호를 볼 수 있으니 손님용 네트워크를 권장합니다."
+            },
+            {
+              "q": "로고를 넣어도 인식되나요?",
+              "a": "오류 정정 덕분에 가운데 일부를 가려도 읽힙니다. 로고는 QR 폭의 30% 이하로, 오류 정정은 H로 두는 것을 권장하며 저장 전 꼭 스캔해 보세요. 모서리 세 개의 큰 사각형은 가리면 안 됩니다."
+            },
+            {
+              "q": "인쇄하려면 어떤 크기·형식이 좋나요?",
+              "a": "디자인 툴·인쇄소에는 확대해도 깨지지 않는 SVG, 문서·현수막에는 PNG 2048px을 권장합니다. 인쇄 크기는 한 변 2cm 이상을 권장하며, 촘촘한 QR일수록 더 크게 뽑으세요."
+            },
+            {
+              "q": "아이폰에서도 Wi-Fi QR로 바로 연결되나요?",
+              "a": "최신 아이폰·안드로이드 기본 카메라는 Wi-Fi QR을 인식해 연결 알림을 띄웁니다. 기종에 따라 다를 수 있으니 붙이기 전에 직접 찍어 확인해 보세요."
+            },
+            {
+              "q": "QR 코드를 상업적으로 써도 되나요?",
+              "a": "네. QR 코드는 덴소웨이브의 등록상표이지만 특허권을 행사하지 않아 누구나 자유롭게 만들고 쓸 수 있습니다. 이 도구로 만든 이미지에는 워터마크가 없습니다."
+            },
+            {
+              "q": "서로 다른 QR을 한 번씩 묶어 인쇄할 수 있나요?",
+              "a": "일괄 생성에서 최대 30개의 QR을 만든 뒤 QR 묶음 인쇄를 누르세요. A4 세로 한 장에 2열 3행으로 6개씩, 최대 5장에 각 QR을 한 번씩 배치합니다. 기존 단일 QR의 반복 인쇄와는 별도입니다. 이름은 앞 48글자까지만 표시하며 QR 내용 자체는 바꾸지 않습니다."
+            },
+            {
+              "q": "인쇄 준비를 취소하면 결과도 없어지나요?",
+              "a": "인쇄 준비 취소는 완료된 QR 결과를 유지하므로 다시 시도할 수 있습니다. 입력이나 다른 반출 동작이 바뀌면 이전 인쇄 요청을 막습니다. 인쇄 창을 열었다는 안내는 종이 출력 완료를 뜻하지 않으며, 용지와 배율을 확인하고 실제 출력물을 스캔해 주세요."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "qr": {
+          "description": "맞춤 QR·서로 다른 QR 30개 ZIP과 A4 묶음 인쇄"
+        }
+      }
+    }
+  },
+  "en": {
+    "qrGenerator": {
+      "description": "Create URL, text, Wi-Fi, and contact QR codes in your browser and save PNG or SVG. Generate up to 30 different codes for a PNG ZIP or a batch print layout with 6 codes per A4 page.",
+      "guide": {
+        "whatIs": {
+          "description": "A free QR code generator that runs in your browser with no sign-up. It supports 8 types — URL, text, Wi-Fi, contact (vCard), SMS, email, phone, and location — with custom colors, error correction, margin, and a center logo. Save as PNG (up to 2048px) or SVG, or print many on one A4 sheet. These are static QR codes: the content lives in the image, so they never expire and have no scan limits. Batch generation supports up to 30 different codes, saved as a PNG ZIP or printed once each on up to 5 A4 pages."
+        },
+        "howToUse": {
+          "items": [
+            "Pick a type from the tabs (with a tab focused, use the left/right arrow keys).",
+            "Type your content and the preview updates instantly, with QR version, module count, and data size below it.",
+            "Under Design, adjust dot and background colors, error correction, and margin, and add a center logo if needed.",
+            "Scan the preview with your phone's camera to confirm it opens correctly.",
+            "Save as PNG (choose a size) or SVG, copy the image, or print several on A4 for tables.",
+            "For different QR codes, enter up to 30 lines in batch generation. Print QR batch places 6 codes on each portrait A4 page and prints only names and row numbers as text."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Do these QR codes expire?",
+              "a": "No. Static QR codes store the content in the image itself, so there is no expiry and no scan limit. A URL code keeps working as long as the web address does."
+            },
+            {
+              "q": "Is my Wi-Fi password or contact info stored on a server?",
+              "a": "No. QR codes are generated in your browser and nothing is sent. The share link only includes URL and text types — never Wi-Fi passwords or contacts. Anyone who scans a Wi-Fi QR can see the password, so a guest network is recommended."
+            },
+            {
+              "q": "Will a QR code with a logo still scan?",
+              "a": "Error correction lets it read even with the center covered. Keep the logo under 30% of the QR width, use level H, and test-scan before saving. Never cover the three large corner squares."
+            },
+            {
+              "q": "What size and format should I use for print?",
+              "a": "Use SVG for design tools and print shops since it scales without blur, and 2048px PNG for documents and banners. At least 2 cm per side is recommended; print denser codes larger."
+            },
+            {
+              "q": "Does a Wi-Fi QR connect on iPhone?",
+              "a": "Recent iPhone and Android camera apps recognize Wi-Fi QR codes and offer to join. Behavior can vary by device, so scan it yourself before posting."
+            },
+            {
+              "q": "Can I use QR codes commercially?",
+              "a": "Yes. QR Code is a registered trademark of DENSO WAVE, which does not exercise its patent rights, so anyone can create and use them freely. Images made here have no watermark."
+            },
+            {
+              "q": "Can I print different QR codes once each?",
+              "a": "Generate up to 30 codes in the batch tool, then select Print QR batch. It places each code once in 2 columns and 3 rows per portrait A4 page, up to 5 pages. This is separate from repeating a single QR code. Names show their first 48 characters; the encoded contents remain unchanged."
+            },
+            {
+              "q": "Does canceling print preparation clear generated codes?",
+              "a": "Canceling print preparation keeps completed codes for another attempt. Input changes or another output action invalidate an older print request. Opening the print dialog does not confirm physical printing; check paper and scale, then scan the printed codes."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "qr": {
+          "description": "Custom QR codes, a ZIP of up to 30 different codes, and A4 batch printing"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "voice-save-restore-search-export-delete",
+    "pass": true
+  },
+  {
+    "name": "voice-real-record-pause-resume-duration",
+    "pass": true
+  },
+  {
+    "name": "voice-transcribe-cancel-and-limits-mocked-asr",
+    "pass": true
+  },
+  {
+    "name": "voice-storage-failure-keeps-recording",
+    "pass": true
+  }
+]

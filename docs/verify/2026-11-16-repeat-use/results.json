@@ -1,0 +1,42 @@
+[
+  {
+    "name": "voice-save-restore-search-export-delete",
+    "pass": true
+  },
+  {
+    "name": "voice-real-record-pause-resume-duration",
+    "pass": true
+  },
+  {
+    "name": "voice-transcribe-cancel-and-limits-mocked-asr",
+    "pass": true
+  },
+  {
+    "name": "voice-storage-failure-keeps-recording",
+    "pass": true
+  },
+  {
+    "name": "tts-selected-range-repeat-and-text-reset",
+    "pass": true
+  },
+  {
+    "name": "tts-gap-pause-resume-stop-no-stale-audio",
+    "pass": true
+  },
+  {
+    "name": "roster-balanced-save-reload-update-delete",
+    "pass": true
+  },
+  {
+    "name": "roster-storage-failure-preserves-data",
+    "pass": true
+  },
+  {
+    "name": "mobile-320-ko",
+    "pass": true
+  },
+  {
+    "name": "mobile-320-en",
+    "pass": true
+  }
+]

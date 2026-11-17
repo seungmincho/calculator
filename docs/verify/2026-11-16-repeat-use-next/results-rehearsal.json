@@ -1,0 +1,10 @@
+[
+  {
+    "name": "rehearsal-timing-pause-save-compare-reload",
+    "pass": true
+  },
+  {
+    "name": "rehearsal-quota-keeps-measurement",
+    "pass": true
+  }
+]

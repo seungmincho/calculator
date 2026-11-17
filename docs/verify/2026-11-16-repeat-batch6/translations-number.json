@@ -1,0 +1,98 @@
+{
+  "ko": {
+    "numberToKorean": {
+      "copyFailed": "복사하지 못했어요. 브라우저의 클립보드 권한을 확인하거나 결과를 직접 선택해 복사해 주세요.",
+      "batch": {
+        "title": "여러 금액 한 번에 변환",
+        "description": "한 줄에 금액 하나를 입력하거나, 스프레드시트의 항목명·금액 두 열을 복사해 붙여 넣으세요. 두 열은 탭으로 구분하며 금액의 쉼표는 그대로 사용할 수 있어요.",
+        "options": "위 설정을 함께 적용합니다. 접두어: {prefix} · 단위 띄어쓰기: {spacing}",
+        "spacingOn": "사용",
+        "spacingOff": "사용 안 함",
+        "inputLabel": "금액 목록",
+        "placeholder": "용역비\t1,234,500\n보증금\t100,000,000\n0\n-12.5",
+        "limits": "빈 줄 포함 최대 {lines}줄, 전체 {characters}자, 한 줄 {lineCharacters}자까지 입력할 수 있어요.",
+        "privacy": "이 목록은 현재 화면에서만 처리합니다. 서버·공유 URL·브라우저 저장소에 저장하지 않으며 새로고침하면 사라집니다.",
+        "summary": "전체 {total}줄 · 변환 {valid}줄 · 오류 {invalid}줄 · 빈 줄 {skipped}줄 건너뜀",
+        "formalHint": "계약서식 불가 {count}줄: 0·음수·소수는 한글 읽기만 제공해요.",
+        "blankHint": "빈 줄은 결과에서 제외하되 원래 줄 번호를 유지합니다. 한도 초과 시 일부만 변환하지 않고 입력을 고칠 때까지 출력을 멈춥니다.",
+        "copyTable": "전체 표 복사 (TSV)",
+        "copying": "표 복사 중…",
+        "downloadCsv": "CSV 다운로드",
+        "copied": "오류 행을 포함한 전체 표를 복사했어요.",
+        "copyFailed": "표를 복사하지 못했어요. 클립보드 권한을 확인하거나 CSV 다운로드를 이용해 주세요.",
+        "downloadFailed": "파일을 준비하지 못했어요. 다시 시도하거나 전체 표 복사를 이용해 주세요.",
+        "exportHint": "복사·다운로드에는 오류 행까지 원래 순서대로 포함됩니다. 오류 행의 변환 칸은 비워 두고 상태에 이유를 표시해요.",
+        "spreadsheetHint": "원문·항목·정규 숫자 셀은 작은따옴표(')를 앞에 붙여 텍스트로 보호합니다. CSV를 가져올 때도 해당 열을 ‘텍스트’로 지정하세요. 숫자로 자동 변환하면 15자리를 넘는 금액이 바뀔 수 있으며, 프로그램에 따라 보호용 작은따옴표가 보일 수 있어요.",
+        "results": "일괄 변환 결과",
+        "noValue": "—",
+        "valid": "변환 완료",
+        "formalUnavailable": "계약서식 불가 · 0·음수·소수는 읽기만 제공",
+        "columns": {
+          "line": "원본 줄",
+          "label": "항목",
+          "source": "원문",
+          "number": "정규 숫자",
+          "reading": "한글 읽기",
+          "formal": "계약서식",
+          "status": "상태"
+        },
+        "errors": {
+          "tooManyCharacters": "전체 입력은 30,000자까지 가능해요. 원문을 자동으로 자르지 않았습니다. 입력을 줄이면 다시 변환합니다.",
+          "tooManyLines": "빈 줄을 포함해 100줄까지 가능해요. 원문을 자동으로 자르지 않았습니다. 줄 수를 줄이면 다시 변환합니다.",
+          "lineTooLong": "한 줄은 300자까지 입력할 수 있어요.",
+          "tooManyColumns": "탭으로 나눈 열이 3개 이상이에요. 항목명과 금액 두 열만 넣어 주세요.",
+          "emptyAmount": "금액 칸이 비어 있어요.",
+          "invalidAmount": "금액을 해석할 수 없어요. 숫자 표기와 정수부 20자리 한도를 확인해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "numberToKorean": {
+      "copyFailed": "Could not copy. Check your browser's clipboard permission or select and copy the result manually.",
+      "batch": {
+        "title": "Convert multiple amounts",
+        "description": "Enter one amount per line, or paste two spreadsheet columns: an item name and an amount. Use a tab between columns. Commas within amounts are preserved.",
+        "options": "Uses the settings above. Prefix: {prefix} · Unit spacing: {spacing}",
+        "spacingOn": "On",
+        "spacingOff": "Off",
+        "inputLabel": "Amount list",
+        "placeholder": "Service fee\t1,234,500\nDeposit\t100,000,000\n0\n-12.5",
+        "limits": "Up to {lines} lines including blank lines, {characters} characters in total, and {lineCharacters} characters per line.",
+        "privacy": "This list is processed only on this screen. It is not saved to a server, shared URL, or browser storage. Refreshing clears the list.",
+        "summary": "{total} lines · {valid} converted · {invalid} errors · {skipped} blank lines skipped",
+        "formalHint": "{count} rows cannot use contract format: zero, negative, and fractional values only receive a Korean reading.",
+        "blankHint": "Blank lines are omitted from results while original line numbers are retained. Exceeding an overall limit stops output until you edit the input; it never produces a partial conversion.",
+        "copyTable": "Copy entire table (TSV)",
+        "copying": "Copying table…",
+        "downloadCsv": "Download CSV",
+        "copied": "Copied the entire table, including error rows.",
+        "copyFailed": "Could not copy the table. Check clipboard permission or download the CSV instead.",
+        "downloadFailed": "Could not prepare the file. Try again or copy the entire table.",
+        "exportHint": "Copied and downloaded tables include error rows in their original order. Converted fields remain empty for those rows, with the reason in the status column.",
+        "spreadsheetHint": "Item, source, and normalized number cells start with an apostrophe (') to protect them as text. Set those columns to Text when importing CSV too. Automatic numeric conversion may change amounts longer than 15 digits; some programs may display the protective apostrophe.",
+        "results": "Batch conversion results",
+        "noValue": "—",
+        "valid": "Converted",
+        "formalUnavailable": "No contract format · reading only for zero, negative, or fractional values",
+        "columns": {
+          "line": "Source line",
+          "label": "Item",
+          "source": "Original text",
+          "number": "Normalized number",
+          "reading": "Korean reading",
+          "formal": "Contract format",
+          "status": "Status"
+        },
+        "errors": {
+          "tooManyCharacters": "The total input limit is 30,000 characters. Your text has not been truncated. Shorten the input to resume conversion.",
+          "tooManyLines": "The limit is 100 lines including blanks. Your text has not been truncated. Remove some lines to resume conversion.",
+          "lineTooLong": "Each line may contain up to 300 characters.",
+          "tooManyColumns": "This line has three or more tab-separated columns. Provide only an item name and an amount.",
+          "emptyAmount": "The amount cell is empty.",
+          "invalidAmount": "Could not read the amount. Check the number format and the 20-digit limit for its integer part."
+        }
+      }
+    }
+  }
+}

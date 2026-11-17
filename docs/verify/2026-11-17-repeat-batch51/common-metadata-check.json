@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-11-17T00:24:19.496Z",
+  "pages": [
+    {
+      "batch": 46,
+      "slug": "text-to-speech",
+      "sharedDescriptionUses": 4,
+      "sharedTitleUses": 3,
+      "updatedDate": "2026-11-17",
+      "footerAndShowcase": true,
+      "faqCanonical": true
+    },
+    {
+      "batch": 47,
+      "slug": "diff-viewer",
+      "sharedDescriptionUses": 4,
+      "sharedTitleUses": 3,
+      "updatedDate": "2026-11-17",
+      "footerAndShowcase": true,
+      "faqCanonical": true
+    },
+    {
+      "batch": 50,
+      "slug": "speaking-practice",
+      "sharedDescriptionUses": 4,
+      "sharedTitleUses": 3,
+      "updatedDate": "2026-11-17",
+      "footerAndShowcase": true,
+      "faqCanonical": true
+    },
+    {
+      "batch": 51,
+      "slug": "dday-calculator",
+      "sharedDescriptionUses": 4,
+      "sharedTitleUses": 3,
+      "updatedDate": "2026-11-17",
+      "footerAndShowcase": true,
+      "faqCanonical": true
+    }
+  ]
+}

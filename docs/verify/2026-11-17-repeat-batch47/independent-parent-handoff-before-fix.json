@@ -1,0 +1,37 @@
+[
+  {
+    "action": "choose",
+    "retained": false,
+    "rawPreserved": false,
+    "resultPreserved": false,
+    "workers": 0
+  },
+  {
+    "action": "merged-copy",
+    "retained": false,
+    "rawPreserved": false,
+    "resultPreserved": false,
+    "workers": 0
+  },
+  {
+    "action": "merged-download",
+    "retained": false,
+    "rawPreserved": false,
+    "resultPreserved": false,
+    "workers": 0
+  },
+  {
+    "action": "comparison-copy",
+    "retained": false,
+    "rawPreserved": false,
+    "resultPreserved": false,
+    "workers": 0
+  },
+  {
+    "action": "comparison-download",
+    "retained": false,
+    "rawPreserved": false,
+    "resultPreserved": false,
+    "workers": 0
+  }
+]

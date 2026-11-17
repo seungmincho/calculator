@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-11-16T21:36:45.129Z",
+  "state": "prepared-awaiting-author-final-ready",
+  "plannedFlows": 7,
+  "listCheck": "pass",
+  "oraclePreparation": "independent quoted CSV/TSV reader",
+  "oraclePreparationCheck": "pass",
+  "scopedRunnerLint": "exit0",
+  "browserStarted": false,
+  "productCasesReady": false,
+  "productPassCount": null
+}

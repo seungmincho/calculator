@@ -1,0 +1,67 @@
+{
+  "verifiedAt": "2026-11-16T14:37:12.268Z",
+  "scope": "Batch12 final checkpoint, all batch8-12 product work stable",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T14:34:28.169Z",
+    "freeMemoryBeforeGiB": 5.54,
+    "browsersClosed": true
+  },
+  "browser": {
+    "total": 11,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "evidence": "browser/final-results.json"
+  },
+  "domain": {
+    "attendance": "passed",
+    "mealPlan": 19,
+    "voiceExport": 29,
+    "existingMeetingHandoff": 11
+  },
+  "independent": {
+    "attendanceGroups": 9,
+    "menuVoiceGroups": 12,
+    "monthEndWeeks": 2411,
+    "selectionPermutations": 24
+  },
+  "translations": {
+    "generatedFiles": 796,
+    "applyAddedImports": 0,
+    "ownImports": 512,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 73,
+    "staticKeyUsesChecked": 252,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "passed, 0 errors/warnings",
+    "sharedScope": "passed, 0 errors/warnings",
+    "jsonPathAfterTypeFix": "passed, 0 errors/warnings",
+    "existingOutsideThisBatch": [
+      "Notepad purity error 1 (HEAD/current identical)",
+      "TimerStopwatch exhaustive-deps warning 1"
+    ]
+  },
+  "diffCheck": {
+    "exitCode": 0
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "physical mobile device testing",
+    "real user microphone or ASR model quality testing"
+  ]
+}

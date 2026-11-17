@@ -1,0 +1,64 @@
+{
+  "ko": {
+    "imageCompressor": {
+      "queue": {
+        "title": "압축 작업",
+        "pause": "일시정지",
+        "resume": "계속 처리",
+        "retryFailed": "실패 항목만 다시 시도 ({n})",
+        "idle": "현재 처리를 마쳤어요",
+        "running": "한 장씩 압축하고 있어요",
+        "pausing": "진행 중인 처리가 끝나면 멈춰요",
+        "paused": "일시정지했어요",
+        "counts": "완료 {done} · 실패 {failed} · 대기·처리 중 {waiting}",
+        "pausedHint": "사진을 추가하거나 설정을 바꿔도 정지를 유지해요. 계속 처리를 누르면 현재 설정으로 이어서 처리해요.",
+        "cancelHint": "일시정지는 다음 처리 단계부터 적용돼요. 이미 시작한 브라우저 처리는 끝날 때까지 기다릴 수 있어요.",
+        "zipHint": "ZIP에는 버튼을 누른 순간 현재 설정으로 완료된 사진을 담아요. 이후 사진이나 설정을 바꿔도 이 ZIP의 내용은 유지돼요. 만드는 중 다시 요청하면 새 요청만 다운로드해요.",
+        "zipWorking": "선택한 시점의 결과로 ZIP을 만들고 있어요.",
+        "zipFailed": "ZIP을 만들거나 다운로드를 요청하지 못했어요. 완료된 사진을 확인하고 다시 눌러 주세요.",
+        "restartZip": "현재 완료 결과로 ZIP 다시 만들기"
+      },
+      "guide": {
+        "howToUse": {
+          "items": [
+            "1. 사진을 끌어다 놓거나, 눌러서 선택하거나, Ctrl+V로 붙여넣으세요 (여러 장 가능).",
+            "2. 용도별 빠른 설정을 고르거나, '화질로 조절' / '목표 용량 맞추기' 중 하나를 선택하세요.",
+            "3. 출력 형식과 최대 크기를 바꾸면 새 설정으로 처리해요. 일시정지 중에는 계속 처리를 눌러야 시작하며 실패 항목만 따로 재시도할 수 있어요.",
+            "4. 전후 비교로 화질을 확인하고 한 장씩 또는 ZIP으로 저장하세요. ZIP은 클릭 당시 현재 설정으로 완료된 사진을 담아요."
+          ]
+        }
+      }
+    }
+  },
+  "en": {
+    "imageCompressor": {
+      "queue": {
+        "title": "Compression tasks",
+        "pause": "Pause",
+        "resume": "Continue processing",
+        "retryFailed": "Retry failed items only ({n})",
+        "idle": "Current processing has finished",
+        "running": "Compressing one image at a time",
+        "pausing": "Waiting for the current operation to stop",
+        "paused": "Paused",
+        "counts": "Done {done} · Failed {failed} · Waiting or processing {waiting}",
+        "pausedHint": "Adding images or changing settings keeps the queue paused. Choose Continue processing to use the current settings.",
+        "cancelHint": "Pausing takes effect between processing stages. A browser operation that has already started may need to finish first.",
+        "zipHint": "The ZIP contains images completed with the current settings when you click. Later image or setting changes do not alter that ZIP. If you request another while it is being created, only the latest request downloads.",
+        "zipWorking": "Creating a ZIP from the results captured when you clicked.",
+        "zipFailed": "The ZIP could not be created or its download could not be requested. Check the completed images and try again.",
+        "restartZip": "Create a new ZIP from current results"
+      },
+      "guide": {
+        "howToUse": {
+          "items": [
+            "1. Drop images, click to select, or paste with Ctrl+V. You can add multiple images.",
+            "2. Choose a preset or select quality adjustment or target file size.",
+            "3. Changing the format or maximum size uses the new settings. A paused queue waits for Continue processing, and failed items can be retried separately.",
+            "4. Compare before and after, then download individual images or a ZIP. The ZIP contains images completed with the current settings when you clicked."
+          ]
+        }
+      }
+    }
+  }
+}

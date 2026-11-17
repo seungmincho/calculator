@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-11-17T00:21:14.493Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 4
+    },
+    {
+      "name": "dday",
+      "leafKeysPerLanguage": 12
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "DdayCalculator",
+      "staticKeysChecked": 88,
+      "dynamicPrefixesChecked": [
+        "holidays",
+        "anniv.types",
+        "modes",
+        "presets",
+        "calendarExport.errors",
+        "add.units"
+      ]
+    },
+    {
+      "component": "DdayCalendarExport",
+      "staticKeysChecked": 20,
+      "dynamicPrefixesChecked": [
+        "calendarExport",
+        "calendarExport.errors"
+      ]
+    },
+    {
+      "component": "DdayCopyRecovery",
+      "staticKeysChecked": 7,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

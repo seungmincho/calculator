@@ -1,0 +1,159 @@
+{
+  "scope": "저장한 글꼴 조합 JSON 백업·선택 추가",
+  "status": "complete_local_verification",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 33,
+    "commonGuideLeaves": 4,
+    "patchLeavesPerLanguage": 37,
+    "staticUses": 59,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 551,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 5,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45894
+    },
+    "lintFollowup": "Wordle static SEO example apostrophes removed; affected page lint passed; no runtime change"
+  },
+  "author": {
+    "status": "passed_frozen",
+    "groups": 22,
+    "core": 9,
+    "child": 7,
+    "actualParent": 6,
+    "scopedLintFiles": 6,
+    "finalParentImpactLintFiles": 2,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "report": "implementation.md"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 14,
+    "core": 8,
+    "actualParent": 6,
+    "reports": [
+      "independent-core-review.md",
+      "independent-parent-review.md"
+    ],
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 7,
+    "failed": 0,
+    "checkedAt": "2026-11-16T23:41:34.382Z",
+    "browserClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "productChanges": 0,
+    "report": "review-browser.md",
+    "jsonBytes": 433,
+    "actualFonts": {
+      "families": [
+        "Noto Serif KR700",
+        "Nanum Gothic400"
+      ],
+      "loadedFacesEach": 1,
+      "requests200": 8
+    },
+    "fixtureCorrections": "URL pair=1 auto-open timing and FontFace async completion; affected2 and finalfont1 only"
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "attempt": 1,
+    "preflightAt": "2026-11-16T23:43:20.541Z",
+    "freeGiB": 3.84,
+    "totalGiB": 31.75,
+    "heapMiB": 2048,
+    "sessionId": 89128,
+    "resultChunk": "d7af11",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "scope": [
+      "41Notepad",
+      "42KoreanWordle",
+      "43UnitBatch",
+      "45FontPairBackup",
+      "44unconnectedRunningPrepAfterCopyFix",
+      "49unconnectedMenuPurePrep"
+    ],
+    "browserClosedBeforeStart": true,
+    "allTSWritersFrozen": true,
+    "preflightReport": "typecheck-final-preflight.json",
+    "resultReport": "typecheck-final-result.json",
+    "laterProductChangesNotCovered": true
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "diff": {
+    "status": "passed",
+    "exitCode": 0,
+    "chunk": "e7f1a1",
+    "scope": "current four product sources and tests plus owned canonical/generated/page/menu/discovery",
+    "note": "git diff --check covers tracked changes; not a clean-worktree or untracked-file assertion"
+  },
+  "commonFinal": {
+    "translatedPatchLeavesPerLanguage": 177,
+    "staticUses": 312,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "ownNamespaceRegistrations": 551,
+    "childRegistrations": 6,
+    "unresolvedRegistrations": 0,
+    "existingDynamicNotices": 60
+  },
+  "accountSnapshot": {
+    "source": "root read-only report",
+    "at": "2026-11-17T08:39:00+09:00",
+    "usedPercent": 30,
+    "remainingPercent": 70,
+    "freeCoupons": 0,
+    "ordinaryUsageAllowed": true,
+    "scope": "whole account, not task-only usage",
+    "agentAccountMutations": 0
+  },
+  "finalEnglishCopyRefinement": {
+    "status": "passed_static_and_generated",
+    "values": 4,
+    "locale": "en",
+    "keysChanged": false,
+    "placeholdersChanged": false,
+    "productTSChanged": false,
+    "afterTypecheckAndNative": true,
+    "nativeRerun": false,
+    "report": "final-english-copy-refinement.json"
+  },
+  "documentation": {
+    "status": "passed",
+    "files": 16,
+    "localLinks": 217,
+    "missingLinks": 0
+  }
+}

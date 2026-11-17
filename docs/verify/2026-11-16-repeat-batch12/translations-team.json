@@ -1,0 +1,30 @@
+{
+  "ko": {
+    "teamDivider": {
+      "attendance": {
+        "title": "오늘 참석자",
+        "summary": "전체 {total}명 중 {attending}명 참석",
+        "hint": "체크를 끄면 이번 편성에서만 빠집니다. 명단 저장·갱신·백업에는 전체 이름과 능력치가 남아요.",
+        "all": "전원 참석",
+        "none": "참석 선택 해제",
+        "attending": "{name} 오늘 참석",
+        "resetHint": "참석 여부를 바꾸면 현재 팀·고정·되돌리기 기록이 초기화됩니다. 참석 선택은 이 화면에서만 유지돼요.",
+        "notEnough": "참석자 {count}명으로는 {teams}팀을 만들 수 없어요. 참석자를 늘리거나 팀 수를 줄여 주세요."
+      }
+    }
+  },
+  "en": {
+    "teamDivider": {
+      "attendance": {
+        "title": "Today's attendees",
+        "summary": "{attending} attending out of {total} members",
+        "hint": "Unchecking excludes a person from this assignment only. Saved, updated, and backed-up rosters keep every member and skill rating.",
+        "all": "Mark everyone attending",
+        "none": "Clear attendance",
+        "attending": "{name} attending today",
+        "resetHint": "Changing attendance clears the current teams, locks, and undo history. Attendance is kept only on this screen.",
+        "notEnough": "{count} attendees cannot form {teams} teams. Add attendees or reduce the team count."
+      }
+    }
+  }
+}

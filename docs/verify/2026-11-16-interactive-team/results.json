@@ -1,0 +1,14 @@
+[
+  {
+    "name": "deal-move-swap-undo-lock-share",
+    "pass": true
+  },
+  {
+    "name": "desktop-drag-drop",
+    "pass": true
+  },
+  {
+    "name": "mobile-tap-captain-and-reduced-motion",
+    "pass": true
+  }
+]

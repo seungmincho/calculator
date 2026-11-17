@@ -1,0 +1,156 @@
+{
+  "ko": {
+    "regexExtractor": {
+      "execution": {
+        "status": {
+          "idle": "패턴을 입력하면 처리합니다.",
+          "waiting": "입력 변경을 기다리는 중입니다.",
+          "running": "정규식을 처리하고 있습니다.",
+          "canceled": "처리를 중지했습니다. 다시 실행하려면 재시도를 누르세요.",
+          "previous": "이전 입력으로 만든 결과입니다. 현재 입력의 결과가 아닙니다.",
+          "complete": "처리했습니다.",
+          "empty": "처리 결과가 빈 문자열입니다."
+        },
+        "actions": {
+          "cancel": "처리 중지",
+          "retry": "현재 입력으로 재시도",
+          "copy": "전체 결과 복사",
+          "copyLink": "현재 입력 링크 복사",
+          "download": "전체 결과 TXT",
+          "select": "전체 선택",
+          "retryCopy": "복사 재시도",
+          "openManual": "전체 선택용 원문 열기"
+        },
+        "errors": {
+          "invalidInput": "처리할 입력 형식을 확인해 주세요.",
+          "inputTooLarge": "입력은 최대 1,000,000자까지 처리할 수 있습니다.",
+          "patternTooLarge": "정규식 패턴은 최대 10,000자까지 사용할 수 있습니다.",
+          "replacementTooLarge": "치환 문자열은 최대 100,000자까지 사용할 수 있습니다.",
+          "emptyPattern": "정규식 패턴을 입력해 주세요.",
+          "invalidRegex": "정규식이나 플래그가 올바르지 않거나 이 브라우저에서 지원되지 않습니다.",
+          "outputTooLarge": "전체 결과가 4,000,000자를 넘습니다. 패턴이나 입력 범위를 줄여 주세요. 일부 결과는 내보내지 않았습니다.",
+          "tooManyMatches": "탐색 중 일치가 100,000개를 넘었습니다. 패턴이나 입력 범위를 줄여 주세요.",
+          "unsupported": "이 브라우저에서는 별도 작업 처리를 사용할 수 없습니다.",
+          "workerFailed": "작업을 시작하거나 완료하지 못했습니다. 입력을 유지했으니 다시 시도해 주세요.",
+          "invalidResponse": "작업 결과를 확인하지 못했습니다. 다시 시도해 주세요.",
+          "timeout": "처리가 오래 걸려 중지했습니다(기준 5초). 패턴이나 입력 범위를 줄인 뒤 다시 시도하세요.",
+          "fileTooLarge": "텍스트 파일은 최대 4MiB까지 읽을 수 있습니다.",
+          "fileFailed": "파일을 읽지 못했습니다. 현재 입력은 유지했습니다.",
+          "saveFailed": "이력을 저장하지 못했습니다. 입력과 결과를 유지했으니 다시 시도하거나 TXT로 저장하세요."
+        },
+        "limits": "입력 1,000,000자 · 패턴 10,000자 · 치환 100,000자 · 결과 4,000,000자 · 탐색 일치 100,000개 · 파일 4MiB. 문자 길이는 UTF-16 기준이며 일부 이모지는 2자로 계산합니다.",
+        "preview": "화면에는 전체 {total}자 중 앞 {shown}자를 표시합니다. 전체 복사와 TXT는 성공한 결과 전체를 사용합니다.",
+        "detailPreview": "일치 상세는 미리보기입니다. 첫 5개, 전체 20,000자, 항목당 2,000자, 캡처 20개까지만 표시하며 전체 결과와 총 일치 수는 별도로 유지합니다.",
+        "detailTruncated": "이 상세 내용은 일부만 표시했습니다.",
+        "groupCount": "전체 캡처 {count}개",
+        "copy": {
+          "copied": "복사했습니다.",
+          "failed": "복사하지 못했습니다. 아래 원문을 직접 선택해 복사하거나 다시 시도하세요.",
+          "manual": "복사할 전체 내용",
+          "selectionFailed": "자동 선택을 완료하지 못했습니다. 원문을 직접 선택해 복사하세요.",
+          "downloaded": "TXT 다운로드를 시작했습니다.",
+          "downloadFailed": "TXT 다운로드를 시작하지 못했습니다. 결과는 유지했습니다."
+        },
+        "url": {
+          "tooLong": "현재 입력 링크가 16,384자를 넘어 링크 공유를 중지했습니다. 주소에서 이전 정규식 입력을 제거했습니다. 결과 전체는 TXT로 저장할 수 있습니다.",
+          "invalidInput": "현재 입력을 링크로 만들 수 없어 주소에서 이전 정규식 입력을 제거했습니다.",
+          "invalidEncoding": "현재 문자열을 링크에 정확히 담을 수 없어 링크 공유를 중지했습니다. 원문은 유지했습니다.",
+          "malformedEncoding": "링크의 일부 인코딩을 복원하지 못해 해당 문자열을 그대로 유지했습니다.",
+          "invalidOperation": "링크의 작업 종류를 확인하지 못해 기본 작업을 표시합니다.",
+          "invalidTransform": "링크의 스마트 변환을 확인하지 못해 일반 정규식 작업을 표시합니다.",
+          "duplicateParameter": "링크에 같은 항목이 여러 번 있어 첫 값을 읽었습니다.",
+          "notice": "공유 링크에는 패턴·입력·치환 내용이 포함됩니다. 공유 전에 내용을 확인하세요.",
+          "writeFailed": "주소를 갱신하지 못해 링크 공유를 중지했습니다. 주소가 이전 입력일 수 있으니 공유하지 말고, 현재 입력을 유지한 채 다시 편집하거나 TXT를 사용하세요."
+        },
+        "transform": {
+          "dedupe": "중복 행 제거 결과",
+          "uppercaseMatch": "일치한 문자를 대문자로 변환",
+          "none": "일반 정규식 처리"
+        },
+        "inputLines": "처리한 입력 행",
+        "historyMatches": "일치 {count}개",
+        "reading": "텍스트 파일을 읽고 있습니다.",
+        "saved": "이력을 저장했습니다.",
+        "activeFlags": "현재 플래그: {flags}",
+        "noFlags": "없음"
+      }
+    }
+  },
+  "en": {
+    "regexExtractor": {
+      "execution": {
+        "status": {
+          "idle": "Enter a pattern to process text.",
+          "waiting": "Waiting for input changes.",
+          "running": "Processing the regular expression.",
+          "canceled": "Processing stopped. Select retry to run it again.",
+          "previous": "This result belongs to earlier input, not the current input.",
+          "complete": "Processing complete.",
+          "empty": "Processing completed with an empty string."
+        },
+        "actions": {
+          "cancel": "Stop processing",
+          "retry": "Retry current input",
+          "copy": "Copy complete result",
+          "copyLink": "Copy current input link",
+          "download": "Download complete TXT",
+          "select": "Select all",
+          "retryCopy": "Retry copy",
+          "openManual": "Open complete text for selection"
+        },
+        "errors": {
+          "invalidInput": "Check the input format.",
+          "inputTooLarge": "Input is limited to 1,000,000 characters.",
+          "patternTooLarge": "Patterns are limited to 10,000 characters.",
+          "replacementTooLarge": "Replacement text is limited to 100,000 characters.",
+          "emptyPattern": "Enter a regular expression pattern.",
+          "invalidRegex": "The pattern or flags are invalid or unsupported by this browser.",
+          "outputTooLarge": "The complete result exceeds 4,000,000 characters. Narrow the pattern or input. No partial result was exported.",
+          "tooManyMatches": "The scan exceeded 100,000 matches. Narrow the pattern or input.",
+          "unsupported": "This browser cannot run a separate processing worker.",
+          "workerFailed": "The task could not start or finish. Your input was kept; try again.",
+          "invalidResponse": "The task result could not be verified. Try again.",
+          "timeout": "Processing took too long and was stopped (5-second target). Narrow the pattern or input, then retry.",
+          "fileTooLarge": "Text files are limited to 4MiB.",
+          "fileFailed": "The file could not be read. Current input was kept.",
+          "saveFailed": "History could not be saved. Input and results were kept; retry or download TXT."
+        },
+        "limits": "Input 1,000,000 characters · pattern 10,000 · replacement 100,000 · output 4,000,000 · scan matches 100,000 · file 4MiB. Lengths use UTF-16 units; some emoji count as 2.",
+        "preview": "Showing the first {shown} of {total} characters. Complete copy and TXT use the entire successful result.",
+        "detailPreview": "Match details are previews: first 5 matches, 20,000 characters overall, 2,000 per field and 20 captures. Complete output and total match count remain separate.",
+        "detailTruncated": "Only part of this detail is shown.",
+        "groupCount": "{count} captures in total",
+        "copy": {
+          "copied": "Copied.",
+          "failed": "Copy failed. Select the complete text below manually or retry.",
+          "manual": "Complete text to copy",
+          "selectionFailed": "Automatic selection was unavailable. Select the text manually to copy it.",
+          "downloaded": "TXT download started.",
+          "downloadFailed": "TXT download could not start. The result was kept."
+        },
+        "url": {
+          "tooLong": "The current input link exceeds 16,384 characters, so link sharing is disabled. Earlier regex input was removed from the address. Download the complete result as TXT.",
+          "invalidInput": "This input cannot be linked. Earlier regex input was removed from the address.",
+          "invalidEncoding": "This text cannot be represented exactly in a link, so link sharing is disabled. Your original text was kept.",
+          "malformedEncoding": "Some link encoding could not be decoded. Those strings were kept unchanged.",
+          "invalidOperation": "The link operation was not recognized. The default operation is shown.",
+          "invalidTransform": "The link transformation was not recognized. A regular expression operation is shown.",
+          "duplicateParameter": "The link contains repeated parameters; the first value was read.",
+          "notice": "Shared links contain the pattern, input and replacement text. Review the contents before sharing.",
+          "writeFailed": "The address could not be updated, so link sharing is disabled. It may still contain earlier input. Keep your current input and edit again, or use TXT."
+        },
+        "transform": {
+          "dedupe": "Duplicate-line removal result",
+          "uppercaseMatch": "Uppercase matched characters",
+          "none": "Regular expression operation"
+        },
+        "inputLines": "Processed input lines",
+        "historyMatches": "{count} matches",
+        "reading": "Reading the text file.",
+        "saved": "History saved.",
+        "activeFlags": "Current flags: {flags}",
+        "noFlags": "none"
+      }
+    }
+  }
+}

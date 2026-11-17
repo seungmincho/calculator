@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-16",
+  "patches": [
+    {
+      "name": "image",
+      "leafKeysPerLanguage": 50
+    },
+    {
+      "name": "dday",
+      "leafKeysPerLanguage": 33
+    },
+    {
+      "name": "pomodoro",
+      "leafKeysPerLanguage": 26
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "ImageResizer",
+      "staticKeysChecked": 91,
+      "dynamicPrefixesChecked": [
+        "preset",
+        "mode",
+        "fit",
+        "fitHint",
+        "formatHint",
+        "guide"
+      ]
+    },
+    {
+      "component": "ImageResizeProfiles",
+      "staticKeysChecked": 38,
+      "dynamicPrefixesChecked": [
+        "fit",
+        "profiles.formats",
+        "profiles.errors",
+        "profiles"
+      ]
+    },
+    {
+      "component": "DdayCalculator",
+      "staticKeysChecked": 86,
+      "dynamicPrefixesChecked": [
+        "holidays",
+        "anniv.types",
+        "modes",
+        "presets",
+        "calendarExport.errors",
+        "add.units"
+      ]
+    },
+    {
+      "component": "DdayCalendarExport",
+      "staticKeysChecked": 16,
+      "dynamicPrefixesChecked": [
+        "calendarExport",
+        "calendarExport.errors"
+      ]
+    },
+    {
+      "component": "PomodoroTimer",
+      "staticKeysChecked": 79,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "PomodoroGoalPanel",
+      "staticKeysChecked": 16,
+      "dynamicPrefixesChecked": [
+        "goal.errors",
+        "goal.statsErrors",
+        "goal.notices"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; not English runtime UI verification."
+}

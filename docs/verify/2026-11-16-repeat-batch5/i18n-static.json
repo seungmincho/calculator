@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-16",
+  "patches": [
+    {
+      "name": "taxi",
+      "leafKeysPerLanguage": 41
+    },
+    {
+      "name": "gpa",
+      "leafKeysPerLanguage": 54
+    },
+    {
+      "name": "writing",
+      "leafKeysPerLanguage": 45
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TaxiFare",
+      "staticKeysChecked": 106,
+      "dynamicPrefixesChecked": [
+        "regions",
+        "types",
+        "regionGroups",
+        "traffic",
+        "typesShort"
+      ]
+    },
+    {
+      "component": "TaxiSavedTrips",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "regions",
+        "typesShort",
+        "traffic",
+        "savedTrips.errors",
+        "savedTrips"
+      ]
+    },
+    {
+      "component": "GpaCalculator",
+      "staticKeysChecked": 81,
+      "dynamicPrefixesChecked": [
+        "autosave.errors"
+      ]
+    },
+    {
+      "component": "GpaScenarioPanel",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "scenarios.errors",
+        "scenarios",
+        "scenarios.confirm"
+      ]
+    },
+    {
+      "component": "CharacterCounter",
+      "staticKeysChecked": 59,
+      "dynamicPrefixesChecked": [
+        "target.unit",
+        "save",
+        "target.basis",
+        "target.presetNames"
+      ]
+    },
+    {
+      "component": "WritingVersionsPanel",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "target.basis",
+        "target.unit",
+        "versions.errors",
+        "versions.notices"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; not English runtime UI verification."
+}

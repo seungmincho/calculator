@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-17T01:47:42.873Z",
+  "preflightAt": "2026-11-17T01:45:23.961Z",
+  "heapMiB": 2048,
+  "freeGiB": 3.02,
+  "sessionId": 86108,
+  "outputChunk": "7541e1",
+  "exitCode": 0,
+  "diagnostics": 0,
+  "attempt": 1,
+  "scopes": [
+    56,
+    57,
+    58
+  ],
+  "state": "passed_before_optional58_display_polish",
+  "note": "First whole type passed after final23 browser flows and TS freeze. Any later58 JSX display change requires its own impact evidence and a refreshed type checkpoint; no exact elapsed duration claimed."
+}

@@ -1,0 +1,25 @@
+{
+  "mode": "fixed-expectations",
+  "parentSha256": "613c660ad4641fb66448e2bb6d630aac682a277e9948e969a77efe2f433b0d56",
+  "observations": [
+    {
+      "case": "revealAllThenOlderTick",
+      "before": 4,
+      "after": 4,
+      "canCopy": true,
+      "expectedFixed": {
+        "after": 4,
+        "canCopy": true
+      },
+      "shuffleCalls": 1
+    },
+    {
+      "case": "resetNewDrawThenOlderTickBeforeNewPrepare",
+      "after": 0,
+      "expectedFixed": {
+        "after": 0
+      },
+      "shuffleCalls": 2
+    }
+  ]
+}

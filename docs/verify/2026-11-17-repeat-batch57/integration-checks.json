@@ -1,0 +1,82 @@
+{
+  "scope": "OCR 원고·작업 보호",
+  "status": "passed_final",
+  "author": {
+    "status": "passed_frozen",
+    "groups": 14,
+    "scopedLint": "exit0/errors0/warnings0"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 19,
+    "prepared": 12,
+    "parent": 7,
+    "reports": [
+      "independent-preparation-review.md",
+      "independent-parent-review.md"
+    ]
+  },
+  "translations": {
+    "status": "passed",
+    "patchLeavesPerLanguage": 33,
+    "staticUses": 84,
+    "generatedFiles": 1578,
+    "errors": 0,
+    "messagesCheck": "passed"
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/image-ocr/page.tsx",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "canonicalFaq": true
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-17T01:41:43.780Z",
+    "browserClosed": true,
+    "report": "review-browser.md",
+    "runtimeErrors": 0
+  },
+  "typecheck": {
+    "recordedAt": "2026-11-17T01:47:42.873Z",
+    "preflightAt": "2026-11-17T01:45:23.961Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.02,
+    "sessionId": 86108,
+    "outputChunk": "7541e1",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 1,
+    "scopes": [
+      56,
+      57,
+      58
+    ],
+    "state": "passed_before_optional58_display_polish",
+    "note": "First whole type passed after final23 browser flows and TS freeze. Any later58 JSX display change requires its own impact evidence and a refreshed type checkpoint; no exact elapsed duration claimed.",
+    "evidence": "../2026-11-17-repeat-batch58/typecheck-first-result.json"
+  },
+  "finalTypecheck": {
+    "recordedAt": "2026-11-17T01:51:25.545Z",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "evidence": "../2026-11-17-repeat-batch58/typecheck-final-result.json"
+  },
+  "finalRecheck": {
+    "checkedAt": "2026-11-17 15:28 KST",
+    "by": "Claude Code",
+    "sourceChangedAfterFinalTypecheck": false,
+    "typecheck": "exit0/diagnostics0/33s/heap3GB",
+    "messagesCheck": 1578,
+    "namespaceAuditUnresolved": 0,
+    "scopedLint": "12 files, errors0, warnings1 (Blob preview img)",
+    "note": "독립 부모 검사 7그룹 재실행 PASS. 작성자 부모 검사(`check-ocr-parent.mjs`)는 58 연결 뒤의 최종 ImageOcr에서 harness host가 `@/lib/i18n/translationResource`를 해석하지 못해 실행되지 않는다. 57 host가 갱신되지 않은 것이며 고치지 않았다(최종 부모는 독립 7그룹과 58 host 6그룹이 본다). dev 서버 실제 페이지에서 통제 Worker가 아닌 실제 Tesseract kor+eng로 합성 이미지를 인식해 \"ToolHub OCR 2026 / 안녕하세요 테스트\"(평균 신뢰도 94%)를 얻었고 원고 수정이 유지됐다. 앞선 native 검증이 다루지 않은 실제 모델 경로 1건이며 인식 정확도 일반을 보증하지 않는다."
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false
+}

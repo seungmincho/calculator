@@ -1,0 +1,310 @@
+{
+  "results": [
+    {
+      "task": "asr",
+      "text": "몸놈트어 기운은 자녀들이 사랑을 제대로 못 받고 그러면 매우 심각한 결과가 초래해 된다는 결론을 내렸습니다.",
+      "error": [
+        ""
+      ]
+    },
+    {
+      "task": "feedback",
+      "mode": "intro",
+      "quality": "standard",
+      "elapsedSeconds": 10,
+      "feedback": "선택한 생성형 코칭 결과잘 전달한 점“저는 웹 개발자입니다.”이 구절에서는 직업을 명확히 전달합니다.다음에 보완할 점“최근 유류비 계산기의 입력 과정을 단순하게 바꾸었습니다.”이 구절에서는 개선된 방식을 설명하지 못합니다.다듬은 답변저는 웹 개발자입니다. 최근 유류비 계산기의 입력 과정을 단순화하여 사용자 불편을 해결했습니다. 앞으로도 사용하기 쉬운 도구를 개발하고 싶습니다.다듬은 답변 복사다시 말할 때 한 가지한 문장에 한 가지 사실만 담아 다시 말해 보세요.AI는 전사문의 구성과 표현을 제안해요. 발음·억양 점수는 제공하지 않으며, 다듬은 문장의 사실관계는 직접 확인해 주세요.Qwen3-1.7B-q4f16_1-MLC",
+      "error": [
+        ""
+      ],
+      "raw": [
+        {
+          "kind": "return",
+          "uuid": "9a7b6ecf-f38a-4bf3-8029-2ff1465bc29e",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "dab46071-1477-4eab-bffe-d49e4802b6cc",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "9fcc4c56-f23a-40ea-907e-5700a27ff4fa",
+          "content": {
+            "id": "516eed80-37bc-4a94-b777-bad1ee4f09de",
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "message": {
+                  "content": "<think>\n\n</think>\n\n{\n  \"strengthQuote\": \"저는 웹 개발자입니다.\",\n  \"strength\": \"이 구절에서는 직업을 명확히 전달합니다.\",\n  \"improveQuote\": \"최근 유류비 계산기의 입력 과정을 단순하게 바꾸었습니다.\",\n  \"improve\": \"이 구절에서는 개선된 방식을 설명하지 못합니다.\",\n  \"rewrite\": \"저는 웹 개발자입니다. 최근 유류비 계산기의 입력 과정을 단순화하여 사용자 불편을 해결했습니다. 앞으로도 사용하기 쉬운 도구를 개발하고 싶습니다.\",\n  \"next\": \"한 문장에 한 가지 사실만 담아 다시 말해 보세요.\"\n}",
+                  "role": "assistant"
+                }
+              }
+            ],
+            "model": "Qwen3-1.7B-q4f16_1-MLC",
+            "object": "chat.completion",
+            "created": 1794823239,
+            "usage": {
+              "completion_tokens": 175,
+              "prompt_tokens": 466,
+              "total_tokens": 641,
+              "extra": {
+                "e2e_latency_s": 5.61,
+                "prefill_tokens_per_s": 370.16442926353335,
+                "decode_tokens_per_s": 40.354376362550475,
+                "time_to_first_token_s": 1.2589000000003725,
+                "time_per_output_token_s": 0.024780459770108516,
+                "grammar_init_s": 0.5795,
+                "grammar_per_token_s": 0.00014057142853736887
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "task": "feedback",
+      "mode": "report",
+      "quality": "standard",
+      "elapsedSeconds": 9,
+      "feedback": "선택한 생성형 코칭 결과잘 전달한 점“이번 주에 유류비 계산기 개편을 마쳤습니다.”완료된 일에 대한 명확한 정보를 제공합니다.다음에 보완할 점“정산 기능과 차량 저장 기능을 추가했습니다.”추가 내용에 대한 구체적인 설명이 필요합니다.다듬은 답변이번 주에 유류비 계산기 개편을 마쳤으며, 정산 기능과 차량 저장 기능을 추가했고, 모바일 화면 테스트는 완료되었고, 현재 배포 전 상태이며, 내일 최종 확인 후 배포할 예정입니다.다듬은 답변 복사다시 말할 때 한 가지한 문장에 한 가지 사실만 담아 다시 말해 보세요.AI는 전사문의 구성과 표현을 제안해요. 발음·억양 점수는 제공하지 않으며, 다듬은 문장의 사실관계는 직접 확인해 주세요.Qwen3-1.7B-q4f16_1-MLC",
+      "error": [
+        ""
+      ],
+      "raw": [
+        {
+          "kind": "return",
+          "uuid": "9a7b6ecf-f38a-4bf3-8029-2ff1465bc29e",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "dab46071-1477-4eab-bffe-d49e4802b6cc",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "9fcc4c56-f23a-40ea-907e-5700a27ff4fa",
+          "content": {
+            "id": "516eed80-37bc-4a94-b777-bad1ee4f09de",
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "message": {
+                  "content": "<think>\n\n</think>\n\n{\n  \"strengthQuote\": \"저는 웹 개발자입니다.\",\n  \"strength\": \"이 구절에서는 직업을 명확히 전달합니다.\",\n  \"improveQuote\": \"최근 유류비 계산기의 입력 과정을 단순하게 바꾸었습니다.\",\n  \"improve\": \"이 구절에서는 개선된 방식을 설명하지 못합니다.\",\n  \"rewrite\": \"저는 웹 개발자입니다. 최근 유류비 계산기의 입력 과정을 단순화하여 사용자 불편을 해결했습니다. 앞으로도 사용하기 쉬운 도구를 개발하고 싶습니다.\",\n  \"next\": \"한 문장에 한 가지 사실만 담아 다시 말해 보세요.\"\n}",
+                  "role": "assistant"
+                }
+              }
+            ],
+            "model": "Qwen3-1.7B-q4f16_1-MLC",
+            "object": "chat.completion",
+            "created": 1794823239,
+            "usage": {
+              "completion_tokens": 175,
+              "prompt_tokens": 466,
+              "total_tokens": 641,
+              "extra": {
+                "e2e_latency_s": 5.61,
+                "prefill_tokens_per_s": 370.16442926353335,
+                "decode_tokens_per_s": 40.354376362550475,
+                "time_to_first_token_s": 1.2589000000003725,
+                "time_per_output_token_s": 0.024780459770108516,
+                "grammar_init_s": 0.5795,
+                "grammar_per_token_s": 0.00014057142853736887
+              }
+            }
+          }
+        },
+        {
+          "kind": "return",
+          "uuid": "469ef7fa-5600-44fa-89b6-e9bfe42eaf6f",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "73026d2c-ecab-4fe5-a9a1-22de781866da",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "6071caf2-cb15-4844-b4a2-bcb81e278670",
+          "content": {
+            "id": "8726f27b-f3fc-4320-8df6-4ac30133b2e6",
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "message": {
+                  "content": "<think>\n\n</think>\n\n{\n  \"strengthQuote\": \"이번 주에 유류비 계산기 개편을 마쳤습니다.\",\n  \"strength\": \"완료된 일에 대한 명확한 정보를 제공합니다.\",\n  \"improveQuote\": \"정산 기능과 차량 저장 기능을 추가했습니다.\",\n  \"improve\": \"추가 내용에 대한 구체적인 설명이 필요합니다.\",\n  \"rewrite\": \"이번 주에 유류비 계산기 개편을 마쳤으며, 정산 기능과 차량 저장 기능을 추가했고, 모바일 화면 테스트는 완료되었고, 현재 배포 전 상태이며, 내일 최종 확인 후 배포할 예정입니다.\",\n  \"next\": \"한 문장에 한 가지 사실만 담아 다시 말해 보세요.\"\n}",
+                  "role": "assistant"
+                }
+              }
+            ],
+            "model": "Qwen3-1.7B-q4f16_1-MLC",
+            "object": "chat.completion",
+            "created": 1794823249,
+            "usage": {
+              "completion_tokens": 191,
+              "prompt_tokens": 471,
+              "total_tokens": 662,
+              "extra": {
+                "e2e_latency_s": 5.823,
+                "prefill_tokens_per_s": 351.3614323013801,
+                "decode_tokens_per_s": 42.78315694649011,
+                "time_to_first_token_s": 1.3405,
+                "time_per_output_token_s": 0.02337368421060473,
+                "grammar_init_s": 0.5879000000003726,
+                "grammar_per_token_s": 0.0001371727748066968
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2070759131396958",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.83.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.90.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.91.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.89.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.87.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.85.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.84.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.88.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.86.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.82.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.76.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.81.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.79.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.80.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.72.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "http://static.axept.io/sdk.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://static.axept.io/sdk.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.78.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "blob:http://127.0.0.1:3039/829c696e-54a9-43c3-b76e-0f5aeb851fa0",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/ort-wasm-simd-threaded.jsep.mjs",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/ort-wasm-simd-threaded.jsep.wasm",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://client.axept.io/projectconfigurations/brands/6852548e237197d2502e4208.json?r=0",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://static.axept.io/datacenter-ranges.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.74.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "blob:http://127.0.0.1:3039/2e10a06e-da2d-4a85-9a14-6b61a5bb09f4",
+      "body": null
+    }
+  ],
+  "errors": [
+    "Failed to load resource: net::ERR_FAILED"
+  ]
+}

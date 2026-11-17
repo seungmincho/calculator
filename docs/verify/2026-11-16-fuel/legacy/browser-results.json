@@ -1,0 +1,26 @@
+[
+  {
+    "name": "fuel-exact-date",
+    "status": "PASS"
+  },
+  {
+    "name": "fuel-earlier-date",
+    "status": "PASS"
+  },
+  {
+    "name": "fuel-empty",
+    "status": "PASS"
+  },
+  {
+    "name": "fuel-error",
+    "status": "PASS"
+  },
+  {
+    "name": "fuel-manual-and-realtime",
+    "status": "PASS"
+  },
+  {
+    "name": "fuel-mobile-dark",
+    "status": "PASS"
+  }
+]

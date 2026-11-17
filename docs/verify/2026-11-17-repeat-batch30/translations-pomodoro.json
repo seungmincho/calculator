@@ -1,0 +1,80 @@
+{
+  "ko": {
+    "pomodoroTimer": {
+      "reliability": {
+        "restoredExpired": "이전에 실행한 단계가 이미 끝났어요. 자리를 비운 동안의 시간은 완료 횟수나 할 일에 더하지 않았어요.",
+        "advanceExpired": "다음 단계 시작",
+        "advanceHint": "집중 단계였다면 짧은 휴식으로 넘어갑니다. 이전 단계의 완료 기록은 추가하지 않아요.",
+        "clockChanged": "시간 기준이 바뀌어 타이머를 일시정지했어요. 남은 시간을 확인한 뒤 다시 시작해 주세요.",
+        "clockGapExpired": "시간 기준이 달라져 이 단계의 완료를 확인할 수 없어요. 완료 기록을 추가하지 않고 다음 단계로 넘어갈 수 있어요.",
+        "conflict": "다른 탭에서 타이머 저장본이 바뀌어 일시정지했어요. 이 단계의 완료 기록은 추가하지 않았어요.",
+        "unconfirmed": "타이머 저장 결과를 확인할 수 없어 일시정지했어요. 저장본을 다시 읽어 실제 상태를 확인해 주세요.",
+        "counterLimit": "누적 횟수가 처리할 수 있는 범위를 넘어 타이머를 정지했어요. 전체 초기화 후 다시 시작해 주세요.",
+        "settling": "완료 상태를 확인하고 있어요",
+        "timeHint": "일시정지 시간을 제외하고 남은 시간을 계산합니다. 탭이나 기기가 쉬는 동안 알림이 늦어질 수 있어요.",
+        "storageTitle": "이 브라우저의 저장 상태",
+        "settingsLabel": "타이머 설정",
+        "tasksLabel": "할 일 목록",
+        "timerLabel": "진행 중인 타이머",
+        "corrupt": "{item} 저장본의 형식을 확인할 수 없어요. 원본을 유지하며 이 항목의 자동 저장을 멈췄어요.",
+        "unsupported": "{item} 저장본은 지원하지 않는 버전이에요. 원본을 유지하며 자동 저장을 멈췄어요.",
+        "oversized": "{item} 저장본이 읽기 한도를 넘었어요. 원본을 유지하며 자동 저장을 멈췄어요.",
+        "unavailable": "{item} 저장소에 접근할 수 없어요. 현재 화면의 변경은 다시 방문하면 남지 않을 수 있어요.",
+        "quota": "저장 공간이 부족해 {item} 변경을 저장하지 못했어요. 입력은 현재 화면에 남아 있어요.",
+        "saveConflict": "{item} 저장본이 다른 곳에서 바뀌었어요. 현재 입력을 유지하며 자동 저장을 멈췄어요.",
+        "saveUnconfirmed": "{item} 저장 결과를 확인할 수 없어요. 이미 저장됐을 수 있으니 다시 읽어 확인해 주세요.",
+        "invalid": "{item}의 현재 값을 저장할 수 없어요. 입력을 확인해 주세요.",
+        "reload": "저장본 다시 읽기",
+        "reloadConfirm": "저장본을 다시 읽으면 현재 화면의 {item}을 바꿉니다. 계속할까요?",
+        "discard": "이 저장본 지우기",
+        "discardConfirm": "이 브라우저의 {item} 저장본을 지울까요? 다른 항목의 저장본은 유지됩니다.",
+        "discarded": "저장본을 지웠어요. 현재 화면의 입력은 유지돼요.",
+        "reloaded": "저장본을 다시 읽었어요.",
+        "cancelPending": "저장 대기 취소",
+        "pending": "저장 상태를 확인하고 있어요",
+        "canceled": "저장 대기를 취소했어요. 현재 입력은 유지돼요.",
+        "confirm": "계속",
+        "cancel": "취소"
+      }
+    }
+  },
+  "en": {
+    "pomodoroTimer": {
+      "reliability": {
+        "restoredExpired": "The previously running phase has expired. Time away was not added to completed sessions or tasks.",
+        "advanceExpired": "Start the next phase",
+        "advanceHint": "An expired work phase moves to a short break. No completion record is added for the previous phase.",
+        "clockChanged": "The time reference changed, so the timer was paused. Check the remaining time before starting again.",
+        "clockGapExpired": "The time references differ, so this phase's completion cannot be confirmed. You can move to the next phase without adding a completion record.",
+        "conflict": "Another tab changed the saved timer, so this timer was paused. No completion record was added for this phase.",
+        "unconfirmed": "The timer's saved state could not be confirmed, so it was paused. Reload the saved state to check it.",
+        "counterLimit": "The accumulated count exceeded the supported range, so the timer stopped. Reset the session before starting again.",
+        "settling": "Checking the completed phase",
+        "timeHint": "Remaining time excludes pauses. Alerts may be delayed while the tab or device is suspended.",
+        "storageTitle": "Storage in this browser",
+        "settingsLabel": "Timer settings",
+        "tasksLabel": "Task list",
+        "timerLabel": "Current timer",
+        "corrupt": "The saved {item} has an unreadable format. The original is preserved and automatic saving for this item is paused.",
+        "unsupported": "The saved {item} uses an unsupported version. The original is preserved and automatic saving is paused.",
+        "oversized": "The saved {item} exceeds the reading limit. The original is preserved and automatic saving is paused.",
+        "unavailable": "Storage for {item} is unavailable. Changes on this screen may not remain when you return.",
+        "quota": "There is not enough storage to save {item}. Your input remains on this screen.",
+        "saveConflict": "The saved {item} changed elsewhere. Your current input is preserved and automatic saving is paused.",
+        "saveUnconfirmed": "The save result for {item} could not be confirmed. It may already be saved; reload it to check.",
+        "invalid": "The current {item} cannot be saved. Check your input.",
+        "reload": "Reload saved state",
+        "reloadConfirm": "Reloading will replace {item} on this screen with the saved state. Continue?",
+        "discard": "Delete this saved state",
+        "discardConfirm": "Delete the saved {item} from this browser? Other saved items will be kept.",
+        "discarded": "The saved state was deleted. Your current input is unchanged.",
+        "reloaded": "The saved state was reloaded.",
+        "cancelPending": "Cancel pending save",
+        "pending": "Checking the saved state",
+        "canceled": "The pending save was canceled. Your current input is unchanged.",
+        "confirm": "Continue",
+        "cancel": "Cancel"
+      }
+    }
+  }
+}

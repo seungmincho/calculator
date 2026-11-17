@@ -1,0 +1,90 @@
+{
+  "ko": {
+    "fontPreview": {
+      "pairing": {
+        "title": "제목·본문 글꼴 조합",
+        "open": "제목·본문 글꼴 조합 열기",
+        "close": "제목·본문 글꼴 조합 접기",
+        "entryHint": "제목과 본문에 서로 다른 글꼴을 적용한 문서 미리보기를 열 수 있어요.",
+        "description": "제목과 본문에 다른 글꼴을 적용해 읽는 느낌을 비교하고, 마음에 드는 조합의 CSS를 가져가세요.",
+        "sampleTitle": "좋은 문장은 읽기 좋은 글꼴에서",
+        "sampleBody": "한 문서 안에서도 제목과 본문은 서로 다른 역할을 합니다. 제목은 이야기를 시작하고, 본문은 그 이야기를 차분하게 이어 갑니다.\n\n글꼴의 인상과 글자 크기, 굵기를 바꿔 보세요. 익숙한 문장으로 비교하면 나에게 필요한 조합을 더 쉽게 찾을 수 있습니다.",
+        "roles": { "title": "제목 설정", "body": "본문 설정" },
+        "fontLabels": { "title": "제목 글꼴", "body": "본문 글꼴" },
+        "sizeLabels": { "title": "제목 크기: {size}px", "body": "본문 크기: {size}px" },
+        "weightLabels": { "title": "제목 굵기", "body": "본문 굵기" },
+        "textLabels": { "title": "제목 예시 문구", "body": "본문 예시 문구" },
+        "applied": "적용: {font} · 굵기 {weight}",
+        "adjusted": "이 글꼴은 굵기 {requested}을 지원하지 않아 가장 가까운 {applied}을 적용했어요.",
+        "textLimit": "{count}/{max}자",
+        "preview": "문서 미리보기",
+        "emptyTitle": "제목 예시 문구를 입력해 주세요",
+        "emptyBody": "본문 예시 문구를 입력해 주세요.",
+        "fontStatus": {
+          "loading": "선택한 글꼴을 불러오고 있어요.",
+          "failed": "일부 글꼴을 불러오지 못해 기본 글꼴로 보일 수 있어요. 연결을 확인하거나 글꼴을 다시 선택해 주세요.",
+          "unverified": "이 브라우저에서는 실제 글꼴 다운로드 결과를 확인할 수 없어요. 기본 글꼴로 보일 수 있으니 다른 브라우저에서도 확인해 주세요.",
+          "timeout": "글꼴을 불러오는 데 오래 걸려 로딩 확인을 멈췄어요. 기본 글꼴로 보일 수 있어요. 연결을 확인한 뒤 글꼴을 다시 선택해 주세요."
+        },
+        "remoteFonts": "목록의 웹 글꼴을 외부 서비스에서 불러와요. Google Fonts에는 미리보기에 쓰인 글자를 포함한 요청을 보내요. 내 폰트 파일은 아래 기존 영역에서 따로 확인할 수 있어요.",
+        "swap": "제목·본문 글꼴 바꾸기",
+        "swapHint": "서로 바꾸기는 글꼴과 굵기만 바꾸며, 각 문구와 글자 크기는 유지해요.",
+        "copyCss": "조합 CSS 복사",
+        "showCss": "조합 CSS 보기",
+        "hideCss": "조합 CSS 접기",
+        "share": "조합 링크 복사",
+        "shareHint": "링크 복사를 눌렀을 때만 조합과 예시 문구를 링크에 담아요. 공유할 내용인지 확인해 주세요. 링크는 최대 {max}자이며, 내 폰트 파일은 포함하지 않아요.",
+        "copyStatus": {
+          "css": "선택한 글꼴과 실제 적용 굵기를 포함한 CSS를 복사했어요. font-pair-title과 font-pair-body 클래스를 적용해 주세요.",
+          "link": "조합 링크를 복사했어요. 링크를 열면 같은 글꼴·크기·굵기·문구를 확인할 수 있어요.",
+          "failed": "복사하지 못했어요. 브라우저의 클립보드 권한을 확인한 뒤 다시 시도해 주세요.",
+          "length": "공유 링크가 너무 길어요. 예시 문구를 줄인 뒤 다시 복사해 주세요. 현재 입력은 그대로 유지했어요."
+        }
+      }
+    }
+  },
+  "en": {
+    "fontPreview": {
+      "pairing": {
+        "title": "Heading and body font pairing",
+        "open": "Open heading and body font pairing",
+        "close": "Close heading and body font pairing",
+        "entryHint": "Open a document preview with separate fonts for the heading and body.",
+        "description": "Try different fonts for a heading and body text, compare how they read together, and copy the CSS for your preferred pairing.",
+        "sampleTitle": "Good writing deserves readable type",
+        "sampleBody": "A heading and body text play different roles in a document. The heading opens the story, while the body carries it forward at a comfortable pace.\n\nTry changing the typeface, size, and weight. Comparing familiar sentences makes it easier to find the combination that suits your work.",
+        "roles": { "title": "Heading settings", "body": "Body settings" },
+        "fontLabels": { "title": "Heading font", "body": "Body font" },
+        "sizeLabels": { "title": "Heading size: {size}px", "body": "Body size: {size}px" },
+        "weightLabels": { "title": "Heading weight", "body": "Body weight" },
+        "textLabels": { "title": "Heading sample text", "body": "Body sample text" },
+        "applied": "Applied: {font} · weight {weight}",
+        "adjusted": "This font does not support weight {requested}. The nearest supported weight, {applied}, is applied.",
+        "textLimit": "{count}/{max} characters",
+        "preview": "Document preview",
+        "emptyTitle": "Enter a sample heading",
+        "emptyBody": "Enter sample body text.",
+        "fontStatus": {
+          "loading": "Loading the selected fonts…",
+          "failed": "Some fonts could not load, so a fallback font may appear. Check your connection or select the font again.",
+          "unverified": "This browser cannot verify the actual font downloads. A fallback font may appear. Check the preview in another browser.",
+          "timeout": "Font loading took too long, so verification stopped. A fallback font may appear. Check your connection and select the font again."
+        },
+        "remoteFonts": "Catalog web fonts load from external services. Requests to Google Fonts include the characters used in the preview. You can still preview your own font file in the separate section below.",
+        "swap": "Swap heading and body fonts",
+        "swapHint": "Swapping exchanges fonts and weights while keeping each role's text and size.",
+        "copyCss": "Copy pairing CSS",
+        "showCss": "Show pairing CSS",
+        "hideCss": "Hide pairing CSS",
+        "share": "Copy pairing link",
+        "shareHint": "The pairing and sample text enter a link only when you press Copy pairing link. Check that the text is suitable for sharing. Links can contain up to {max} characters. Your local font files are never included.",
+        "copyStatus": {
+          "css": "Copied CSS with the selected fonts and applied weights. Use the font-pair-title and font-pair-body classes.",
+          "link": "Pairing link copied. Opening it restores the same fonts, sizes, weights, and text.",
+          "failed": "Could not copy. Check your browser's clipboard permissions and try again.",
+          "length": "The sharing link is too long. Shorten the sample text and try copying again. Your current input is unchanged."
+        }
+      }
+    }
+  }
+}

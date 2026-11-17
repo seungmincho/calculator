@@ -1,0 +1,143 @@
+{
+  "scope": "더치페이 정산 기록·계좌 보존·복사 복구",
+  "status": "complete_local_verification",
+  "namespace": "dutchPay",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 32,
+    "commonGuideLeaves": 6,
+    "patchLeavesPerLanguage": 38,
+    "staticUses": 130,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed1578",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 544,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 3,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45771
+    }
+  },
+  "author": {
+    "status": "passed/stable",
+    "groups": 30,
+    "storage": 13,
+    "copy": 4,
+    "child": 2,
+    "actualParent": 11,
+    "existingCalculationRegression": "passed",
+    "scopeLint": {
+      "files": 8,
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0,
+      "initial": "Test JS unused declaration1 removed; affected file rechecked only"
+    }
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 11,
+    "purePorts": 5,
+    "actualParent": 6,
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0,
+    "report": "independent-review.md"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-16T22:02:32.041Z",
+    "browserClosed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "report": "review-browser.md",
+    "results": "browser/final-results.json",
+    "fixtureCorrections": "Initial3 failures: about:blank observer, early copied/focus assertion, nonexistent SPA link; affected3 rerun only; product unchanged"
+  },
+  "typecheck": {
+    "status": "passed_after_batch37_return_type_annotation",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "heapMiB": 2048,
+    "preflightAt": "2026-11-16T22:09:11.503Z",
+    "freeMemoryGiB": 4.29,
+    "totalMemoryGiB": 31.75,
+    "sessionId": 61356,
+    "allTsWritersFrozen": true,
+    "chromeClosed": true,
+    "order": "After36 native; before37 native. This is the frozen07:13 snapshot, not later39/40/41/42 changes.",
+    "attempts": [
+      {
+        "preflightAt": "2026-11-16T22:09:11.503Z",
+        "freeMemoryGiB": 4.29,
+        "sessionId": 61356,
+        "exitCode": 1,
+        "chunkId": "9ac60a",
+        "error": {
+          "file": "src/components/AspectRatio.tsx",
+          "line": 79,
+          "column": 109,
+          "code": "TS2345",
+          "detail": "string not assignable to SetStateAction<Zone>"
+        }
+      },
+      {
+        "preflightAt": "2026-11-16T22:13:07.701Z",
+        "freeMemoryGiB": 4.45,
+        "exitCode": 0,
+        "diagnostics": 0,
+        "elapsedSeconds": 9.0207204,
+        "chunkId": "147114"
+      }
+    ],
+    "exitCode": 0,
+    "diagnostics": 0,
+    "fix": "Explicit readAspectQuery return type preserves Zone union; URL/early-edit1 and file lint passed; runtime unchanged",
+    "reuseFor37": "Only if37 product TS remains unchanged through its later browser validation"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "commonCodeDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current36/37 product/code, canonical/generated/metadata/discovery and docs; followup type-only utility diff also passed"
+  },
+  "accountSnapshot": {
+    "atKst": "2026-11-17 07:13",
+    "usedPercent": 95,
+    "remainingPercent": 5,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "source": "root account-wide read-only snapshot; not task-only usage"
+  },
+  "productScopeDiff": {
+    "status": "passed",
+    "exitCode": 0
+  },
+  "completedAt": "2026-11-16T22:15:38.963Z",
+  "documentChecks": {
+    "status": "passed_at36_close",
+    "markdownFiles": 8,
+    "relativeLinks": 186,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-11-17T01:39:02.445Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 1
+    },
+    {
+      "name": "ocr-output",
+      "leafKeysPerLanguage": 16
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "ImageOcr",
+      "staticKeysChecked": 84,
+      "dynamicPrefixesChecked": [
+        "prep",
+        "cleanup",
+        "jobs.confirmation",
+        "output",
+        "guide"
+      ]
+    },
+    {
+      "component": "OcrCopyRecovery",
+      "staticKeysChecked": 9,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

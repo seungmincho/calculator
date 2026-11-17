@@ -1,0 +1,108 @@
+{
+  "scope": "이미지 변환 작업 제어·마지막 성공 보존",
+  "status": "passed_final",
+  "translations": {
+    "status": "passed",
+    "patchLeavesPerLanguage": 47,
+    "authorLeaves": 28,
+    "commonLeaves": 19,
+    "staticUses": 66,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 561,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/image-converter/page.tsx",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "canonicalFaq": true,
+    "scopedCommonLint": "page+menu, 2 files exit0/warnings0",
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45961
+    }
+  },
+  "author": {
+    "status": "passed_frozen",
+    "groups": 23,
+    "prepared": 14,
+    "parent": 9,
+    "scopedLintFiles": 7,
+    "errors": 0,
+    "warnings": 1,
+    "warning": "native Blob preview img"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 14,
+    "prepared": 7,
+    "parent": 7,
+    "reports": [
+      "independent-preparation-review.md",
+      "independent-parent-review.md"
+    ]
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-17T01:40:02.312Z",
+    "browserClosed": true,
+    "report": "review-browser.md",
+    "runtimeErrors": 0,
+    "firstAttemptProductFailure": {
+      "cause": "Common page imported missing FaqJsonLd module",
+      "fix": "Existing ToolFaq named export",
+      "evidence": "browser/initial-page-import-failure.json"
+    }
+  },
+  "typecheck": {
+    "recordedAt": "2026-11-17T01:47:42.873Z",
+    "preflightAt": "2026-11-17T01:45:23.961Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.02,
+    "sessionId": 86108,
+    "outputChunk": "7541e1",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 1,
+    "scopes": [
+      56,
+      57,
+      58
+    ],
+    "state": "passed_before_optional58_display_polish",
+    "note": "First whole type passed after final23 browser flows and TS freeze. Any later58 JSX display change requires its own impact evidence and a refreshed type checkpoint; no exact elapsed duration claimed.",
+    "evidence": "../2026-11-17-repeat-batch58/typecheck-first-result.json"
+  },
+  "finalTypecheck": {
+    "recordedAt": "2026-11-17T01:51:25.545Z",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "evidence": "../2026-11-17-repeat-batch58/typecheck-final-result.json"
+  },
+  "finalRecheck": {
+    "checkedAt": "2026-11-17 15:28 KST",
+    "by": "Claude Code",
+    "sourceChangedAfterFinalTypecheck": false,
+    "typecheck": "exit0/diagnostics0/33s/heap3GB",
+    "messagesCheck": 1578,
+    "namespaceAuditUnresolved": 0,
+    "scopedLint": "12 files, errors0, warnings1 (Blob preview img)",
+    "note": "작성자 부모 검사 9그룹 재실행 PASS. dev 서버 실제 페이지에서 합성 PNG 3장의 JPG 변환, PNG 전환 중 이전 JPG 성공 결과 유지, `?f=png` 반영, 현재 설정 완료 3, 375px 가로 overflow0·44px 미만 버튼 0을 확인했다."
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false
+}

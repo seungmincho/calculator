@@ -1,0 +1,86 @@
+{
+  "verifiedAt": "2026-11-16T14:51:13.490Z",
+  "scope": "Batch13 GPA copy recovery and TTS failed-sentence retry",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T14:49:00.635Z",
+    "freeMemoryBeforeGiB": 4.29,
+    "browsersClosed": true
+  },
+  "browser": {
+    "total": 11,
+    "gpa": 4,
+    "tts": 7,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "evidence": "browser/final-results.json"
+  },
+  "domain": {
+    "gpaCopy": 18,
+    "ttsRecovery": 25,
+    "ttsComponentGroups": 11,
+    "existingTts": "passed",
+    "existingTextHandoff": 51
+  },
+  "independent": {
+    "gpaComponentGroups": 8,
+    "ttsComponentGroups": 10,
+    "findings": [
+      {
+        "severity": "P2",
+        "issue": "Older result-copy rejection could fallback-write over a newer link copy",
+        "status": "fixed and independently reproduced in component harness and Chrome"
+      }
+    ]
+  },
+  "translations": {
+    "generatedFiles": 796,
+    "applyAddedImports": 0,
+    "ownImports": 513,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 15,
+    "staticKeyUsesChecked": 138,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "0 errors/warnings",
+    "sharedScope": "0 errors/warnings",
+    "existingOutsideScope": [
+      "Notepad purity error 1",
+      "TimerStopwatch exhaustive-deps warning 1"
+    ]
+  },
+  "diffCheck": {
+    "exitCode": 0
+  },
+  "accountSnapshot": {
+    "reportedBy": "root",
+    "recordedAt": "2026-11-16T14:51:13.490Z",
+    "accountWideUsagePercent": 94,
+    "accountWideRemainingPercent": 6,
+    "unusedResetCoupons": 3,
+    "resetUsed": false,
+    "note": "End-of-batch read-only snapshot; not task-specific usage and not an exact API query timestamp"
+  },
+  "limitations": [
+    "Already submitted OS clipboard writes cannot be canceled by this guard",
+    "Web Speech callbacks controlled in browser; real OS audio quality and physical mobile devices not tested",
+    "Existing Korean-only common i18n registry"
+  ],
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ]
+}

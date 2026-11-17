@@ -1,0 +1,123 @@
+{
+  "scope": "할인 후 구매 조건4개 비교",
+  "namespace": "discountCalculator",
+  "status": "complete_local_verification",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 65,
+    "commonGuideLeaves": 7,
+    "patchLeavesPerLanguage": 72,
+    "staticUses": 117,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed1578 after final33 selectionFailed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 543,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 3,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45715
+    }
+  },
+  "author": {
+    "status": "passed/stable",
+    "groups": 33,
+    "preparedDomain": 10,
+    "preparedActions": 3,
+    "preparedChild": 7,
+    "actualParent": 9,
+    "actualShareResultCrossGuard": 4,
+    "finalScopedLintFiles": 4,
+    "errors": 0,
+    "warnings": 0
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 9,
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0,
+    "report": "discount-independent-review.md"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 6,
+    "failed": 0,
+    "checkedAt": "2026-11-16T21:44:02.555Z",
+    "browserClosed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "results": "browser/final-results.json",
+    "report": "review-browser.md",
+    "scopedRunnerLintExitCode": 0,
+    "fixtureCorrections": "Initial native6 passed; independent feedback token fix followed by affected copy1 native recheck"
+  },
+  "typecheck": {
+    "status": "passed_first_attempt",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "heapMiB": 2048,
+    "preflightAt": "2026-11-16T21:44:29.427Z",
+    "freeMemoryGiB": 4.29,
+    "totalMemoryGiB": 31.75,
+    "sessionId": 11961,
+    "allTsWritersFrozen": true,
+    "chromeClosed": true,
+    "scope": "Shared33/34 checkpoint including stable unconnected36/37 preparation; later feature completion excluded",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "resultChunkId": "835c00",
+    "attempts": 1
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "commonCodeDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current33/34 products/checks, canonical/generated, metadata/discovery, batch documents and final handoffs"
+  },
+  "resolvedFindings": [
+    {
+      "issue": "Whole-summary copy rejected after a newer ShareResult link copy could run legacy fallback",
+      "before": "actual integrated child+ShareResult fixture legacy fallback1 instead of0",
+      "fix": "Cross-invalidate summary/ShareResult/basic calculation exports; add selection failure feedback",
+      "validation": "actual ShareResult4 and native cross-guard passed"
+    },
+    {
+      "issue": "Basic/comparison copy feedback revived after input or locale A-B-A",
+      "fix": "Store request token in feedback and require current(token) when displaying",
+      "validation": "author additional2/related4, independent4 affected, native copy1 passed"
+    }
+  ],
+  "accountSnapshot": {
+    "atKst": "2026-11-17 06:44",
+    "usedPercent": 81,
+    "remainingPercent": 19,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "source": "root read-only account-wide snapshot; not task-only usage"
+  },
+  "completedAt": "2026-11-16T21:48:11.557Z",
+  "documentChecks": {
+    "status": "passed",
+    "markdownFiles": 8,
+    "relativeLinks": 185,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  }
+}

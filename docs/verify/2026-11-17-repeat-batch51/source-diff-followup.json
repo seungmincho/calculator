@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-17T00:39:38.863Z",
+  "exitCode": 0,
+  "pathspecs": [
+    "src/components/TextDiffWorkspace.tsx",
+    "src/components/LineMergePanel.tsx",
+    "messages/ko.json",
+    "messages/en.json",
+    "messages/generated",
+    "src/lib/i18n/ns",
+    "public/i18n"
+  ],
+  "stdout": "",
+  "reason": "47 anchor2 files and subsequent47/46 copy changes after prior54-path check; tracked diff only"
+}

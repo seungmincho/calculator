@@ -1,0 +1,13 @@
+{
+  "kind": "synthetic proposed wrapper size; not product backup implementation",
+  "profiles": 6,
+  "nameCodeUnits": 40,
+  "idCharacters": 80,
+  "longestCurrentFontId": "black-and-white-picture",
+  "storageCodeUnits": 2912,
+  "storageUtf8Bytes": 2912,
+  "proposedPrettyBackupUtf8Bytes": 3913,
+  "proposedReadLimit": 65536,
+  "exactProfileRoundTrip": true,
+  "realUserStorageReads": 0
+}

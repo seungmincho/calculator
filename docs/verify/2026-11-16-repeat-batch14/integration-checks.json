@@ -1,0 +1,101 @@
+{
+  "verifiedAt": "2026-11-16T15:11:40.381Z",
+  "scope": "Batch14 font pair style profiles; records previously completed checks without re-running",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T15:06:55.959Z",
+    "localStartedAt": "2026-11-17 00:06:55 KST",
+    "freeMemoryBeforeGiB": 4.52,
+    "browsersClosed": true
+  },
+  "browser": {
+    "total": 8,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "evidence": "browser/final-results.json",
+    "realFontFamilies": [
+      "Noto Serif KR",
+      "Nanum Gothic"
+    ]
+  },
+  "domain": {
+    "fontPairProfilesGroups": 16,
+    "existingFontPairing": "passed",
+    "existingFontPreviewCatalogFonts": 38
+  },
+  "independent": {
+    "domainGroups": 10,
+    "catalogWeightCombinations": 342,
+    "profileComponentGroups": 8,
+    "parentIntegrationGroups": 5,
+    "totalGroups": 23,
+    "unresolvedFindings": 0
+  },
+  "translations": {
+    "generatedFiles": 796,
+    "applyAddedImports": 0,
+    "ownImports": 514,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 33,
+    "staticKeyUsesChecked": 95,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "updatedDate": "2026-11-17",
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "0 errors/warnings",
+    "sharedScope": "0 errors/warnings",
+    "existingOutsideScope": [
+      "Notepad purity error 1",
+      "TimerStopwatch exhaustive-deps warning 1"
+    ]
+  },
+  "diffCheck": {
+    "exitCode": 0,
+    "note": "Final document diff checked after evidence file was written"
+  },
+  "accountSnapshots": [
+    {
+      "phase": "before user reset",
+      "reportedBy": "root",
+      "accountWideUsagePercent": 99,
+      "accountWideRemainingPercent": 1,
+      "unusedResetCoupons": 3,
+      "agentResetConfirmed": false
+    },
+    {
+      "phase": "after user manually used one coupon",
+      "reportedBy": "root",
+      "accountWideUsagePercent": 0,
+      "accountWideRemainingPercent": 100,
+      "unusedResetCoupons": 2,
+      "normalUsageAllowed": true,
+      "userResetConfirmed": true,
+      "agentResetPerformed": false
+    }
+  ],
+  "limitations": [
+    "Korean-only common i18n runtime",
+    "No atomic multi-tab guarantee without Web Locks",
+    "Readback failure may occur after the write; no rollback/no-write guarantee",
+    "Already submitted OS clipboard writes cannot be canceled",
+    "Real font network test limited to two families"
+  ],
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "physical mobile testing",
+    "local font file verification"
+  ]
+}

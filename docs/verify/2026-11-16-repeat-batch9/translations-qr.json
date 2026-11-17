@@ -1,0 +1,92 @@
+{
+  "ko": {
+    "qrGenerator": {
+      "batch": {
+        "title": "서로 다른 QR 한 번에 만들기",
+        "description": "여러 내용을 한 줄씩 넣고 각각의 QR을 확인한 뒤 PNG 파일을 ZIP으로 내려받으세요.",
+        "fixedSettings": "일괄 QR은 검정·흰색, 여백 4칸, 오류 복원 M, 512px PNG로 만들어요. 위 단일 QR의 색·로고 설정은 적용하지 않아요.",
+        "inputLabel": "일괄 QR 내용",
+        "placeholder": "https://toolhub.ai.kr\n안내문\t입구 오른쪽에서 접수해 주세요\n상품 A\tPRODUCT-A-001",
+        "syntax": "한 줄에 내용 하나, 또는 이름과 내용을 탭으로 구분해 입력해 주세요. 첫 탭만 이름 구분자로 쓰며 이후 공백·탭과 URL 형식은 원문 그대로 넣어요. 마지막 줄바꿈 1개는 무시하고, 그 외 빈 줄은 오류로 표시해요.",
+        "limits": "최대 {rows}행 · 내용당 UTF-8 {bytes}바이트 · 전체 입력 {chars}자까지. 오류가 있는 행을 모두 고쳐야 생성할 수 있어요.",
+        "privacy": "입력은 이 화면의 메모리에서만 처리하며 서버·주소창·자동 저장에 넣지 않아요.",
+        "generate": "일괄 QR 생성",
+        "download": "PNG ZIP 다운로드",
+        "cancel": "일괄 작업 취소",
+        "generating": "QR 생성 중 {count}/{total}",
+        "zipping": "ZIP 만드는 중 {count}%",
+        "summary": "총 {count}행 · 오류 {errors}행",
+        "mapping": "파일명 앞 번호는 입력한 줄 번호예요. 이름이 같아도 각 행을 다른 파일로 저장해요.",
+        "rowTitle": "{line}행 · {label}",
+        "unnamed": "이름 없음",
+        "emptyPayload": "내용 없음",
+        "byteCount": "UTF-8 {count}바이트",
+        "previewAlt": "입력 {line}행의 QR 코드",
+        "failedLine": "{line}행의 이미지 생성에 실패했어요. 이 작업의 일부 결과는 다운로드하지 않아요. 입력을 확인한 뒤 다시 생성해 주세요.",
+        "errors": {
+          "emptyInput": "QR에 넣을 내용을 입력해 주세요.",
+          "totalLimit": "전체 입력은 30,000자까지예요. 입력을 나누어 다시 시도해 주세요. 입력한 내용은 자르지 않고 그대로 남겨 두었어요.",
+          "rowLimit": "입력한 {count}행은 한도를 넘었어요. 빈 줄을 포함해 30행 이하로 나누어 주세요. 일부 행만 골라 생성하지 않아요."
+        },
+        "rowErrors": {
+          "empty": "빈 내용은 QR로 만들 수 없어요. 이 행을 채우거나 삭제해 주세요.",
+          "bytes": "이 행의 내용이 UTF-8 1,000바이트를 넘었어요. 내용을 줄여 주세요.",
+          "unicode": "이 행에 정상적으로 인코딩할 수 없는 문자가 있어요. 해당 내용을 다시 입력해 주세요."
+        },
+        "notices": {
+          "ready": "{count}개의 QR을 모두 만들었어요. 미리보기를 확인한 뒤 ZIP으로 내려받으세요.",
+          "edited": "입력이 바뀌어 이전 결과를 지웠어요. 현재 내용으로 다시 생성해 주세요.",
+          "cancelled": "일괄 작업을 취소했어요. 입력은 그대로 남아 있어요.",
+          "downloaded": "PNG ZIP 다운로드를 시작했어요.",
+          "zipFailed": "ZIP 파일을 만들거나 다운로드하지 못했어요. 미리보기와 입력은 그대로 유지했으니 다시 시도해 주세요.",
+          "renderFailed": "QR 생성을 완료하지 못했어요. 입력을 확인하고 다시 시도해 주세요. 완료하지 않은 결과는 다운로드하지 않아요."
+        }
+      }
+    }
+  },
+  "en": {
+    "qrGenerator": {
+      "batch": {
+        "title": "Create different QR codes in a batch",
+        "description": "Enter one payload per line, preview each QR code, and download the PNG files in a ZIP archive.",
+        "fixedSettings": "Batch codes use black and white, a four-module margin, error correction M, and 512px PNG output. The single-code colors and logo above do not apply.",
+        "inputLabel": "Batch QR contents",
+        "placeholder": "https://toolhub.ai.kr\nDirections\tPlease check in to the right of the entrance\nProduct A\tPRODUCT-A-001",
+        "syntax": "Enter one payload per line, or a name followed by a tab and the payload. Only the first tab separates the name; subsequent whitespace, tabs, and URL formats are encoded unchanged. One final newline is ignored; other empty rows are errors.",
+        "limits": "Up to {rows} rows · {bytes} UTF-8 bytes per payload · {chars} characters in total. Fix every invalid row before generating.",
+        "privacy": "Input is processed only in this page's memory. It is not sent to a server, put in the address bar, or saved automatically.",
+        "generate": "Generate batch QR codes",
+        "download": "Download PNG ZIP",
+        "cancel": "Cancel batch task",
+        "generating": "Generating QR codes {count}/{total}",
+        "zipping": "Creating ZIP {count}%",
+        "summary": "{count} rows · {errors} invalid rows",
+        "mapping": "The number at the start of each filename matches its input line. Rows with the same name still receive separate files.",
+        "rowTitle": "Line {line} · {label}",
+        "unnamed": "Unnamed",
+        "emptyPayload": "No payload",
+        "byteCount": "{count} UTF-8 bytes",
+        "previewAlt": "QR code for input line {line}",
+        "failedLine": "Could not generate the image for line {line}. Partial results from this task are not downloadable. Check the input and generate again.",
+        "errors": {
+          "emptyInput": "Enter the content to encode.",
+          "totalLimit": "Total input is limited to 30,000 characters. Split the input and try again. Your input has been preserved without truncation.",
+          "rowLimit": "The input contains {count} rows, exceeding the limit. Split it into batches of at most 30 rows, including empty rows. Rows are never silently skipped."
+        },
+        "rowErrors": {
+          "empty": "An empty payload cannot be encoded. Fill in or remove this row.",
+          "bytes": "This row exceeds 1,000 UTF-8 bytes. Shorten its content.",
+          "unicode": "This row contains a character that cannot be encoded correctly. Enter the affected content again."
+        },
+        "notices": {
+          "ready": "All {count} QR codes are ready. Check the previews, then download the ZIP.",
+          "edited": "Input changed, so the previous results were cleared. Generate again with the current contents.",
+          "cancelled": "Batch task cancelled. Your input is unchanged.",
+          "downloaded": "Started downloading the PNG ZIP.",
+          "zipFailed": "Could not create or download the ZIP. Your previews and input are preserved. Please try again.",
+          "renderFailed": "QR generation could not finish. Check the input and try again. Incomplete results are not downloadable."
+        }
+      }
+    }
+  }
+}

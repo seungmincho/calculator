@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-11-17T01:41:01.770Z",
+  "trackedOnly": true,
+  "paths": [
+    "messages/ko.json",
+    "messages/en.json",
+    "messages/generated",
+    "public/i18n",
+    "src/lib/i18n/ns",
+    "src/config/menuConfig.ts",
+    "src/app/image-converter/page.tsx",
+    "src/app/image-ocr/page.tsx",
+    "public/_redirects",
+    "public/rss.xml",
+    "public/llms.txt",
+    "src/components/ImageConverter.tsx",
+    "src/components/ImageOcr.tsx",
+    "src/components/OcrCopyRecovery.tsx",
+    "src/utils/imageConversionQueue.ts",
+    "src/utils/imageConversionImports.ts",
+    "src/utils/imageConversionActions.ts",
+    "src/utils/ocrQueue.ts",
+    "src/lib/ocr/workerSession.ts",
+    "src/utils/ocrDownload.ts"
+  ],
+  "exitCode": 0,
+  "stdout": "",
+  "stderrWarningCount": 460,
+  "note": "Selected tracked paths only. Untracked files are covered separately by scoped lint/static/type checks. CRLF normalization warnings are not whitespace errors."
+}

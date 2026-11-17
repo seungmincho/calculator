@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-11-17T01:34:21.669Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 19
+    },
+    {
+      "name": "image-conversion-queue",
+      "leafKeysPerLanguage": 28
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "ImageConverter",
+      "staticKeysChecked": 66,
+      "dynamicPrefixesChecked": [
+        "queue",
+        "formatHint",
+        "error",
+        "compare.headers"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

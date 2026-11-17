@@ -1,0 +1,29 @@
+{
+  "syntheticOnly": true,
+  "realStorageReads": 0,
+  "proposedProfiles": 8,
+  "textCodeUnitsEach": 30000,
+  "proposedRawUtf8Bytes": 1445817,
+  "proposedBudgetBytes": 2097152,
+  "currentChunkBoundaryObservation": {
+    "inputCodeUnits": 341,
+    "chunks": [
+      {
+        "start": 0,
+        "end": 140
+      },
+      {
+        "start": 140,
+        "end": 280
+      },
+      {
+        "start": 280,
+        "end": 341
+      }
+    ],
+    "splitSurrogateBoundaries": [
+      140
+    ]
+  },
+  "limitation": "Proposed record schema measurement, not implemented storage. Boundary observation is original product code; no fix applied."
+}

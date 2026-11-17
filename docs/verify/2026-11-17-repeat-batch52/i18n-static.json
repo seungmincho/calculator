@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-17T00:53:39.865Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "percent",
+      "leafKeysPerLanguage": 32
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "PercentCalculator",
+      "staticKeysChecked": 50,
+      "dynamicPrefixesChecked": [
+        "errors"
+      ]
+    },
+    {
+      "component": "PercentComparisonPanel",
+      "staticKeysChecked": 16,
+      "dynamicPrefixesChecked": [
+        "comparison"
+      ]
+    },
+    {
+      "component": "PercentCopyRecovery",
+      "staticKeysChecked": 7,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

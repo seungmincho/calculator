@@ -1,0 +1,21 @@
+{
+  "source": "Actual unconnected child with controlled React/focus/selection ports; no browser or parent-integration claim.",
+  "results": [
+    {
+      "name": "full Unicode text is rendered only after explicit expansion, without truncation",
+      "pass": true
+    },
+    {
+      "name": "selection failure is reported and a successful selection clears it",
+      "pass": true
+    },
+    {
+      "name": "focus reentry and old rendered handlers cannot act on a replaced failure",
+      "pass": true
+    },
+    {
+      "name": "empty result has an honest notice and disables selection",
+      "pass": true
+    }
+  ]
+}

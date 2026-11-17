@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-17T00:23:18.799Z",
+  "key": "decisionTools.menuRound.count",
+  "value": "Available entries: {count} · Temporarily skipped menus: {excluded}",
+  "keysChanged": 0,
+  "placeholdersChanged": 0,
+  "productTsChanges": 0,
+  "staticCheck": {
+    "uses": 79,
+    "errors": 0
+  },
+  "generatedCheck": 1578,
+  "nativeAfterChange": false,
+  "native7Preserved": true
+}

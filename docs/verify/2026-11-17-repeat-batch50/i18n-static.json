@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-11-17T00:19:02.054Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 4
+    },
+    {
+      "name": "speaking-preparation",
+      "leafKeysPerLanguage": 8
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "SpeakingPractice",
+      "staticKeysChecked": 195,
+      "dynamicPrefixesChecked": [
+        "basic.duration",
+        "basic.cues",
+        "basic.next",
+        "modes",
+        "stages",
+        "errors"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

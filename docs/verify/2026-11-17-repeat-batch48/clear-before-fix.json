@@ -1,0 +1,21 @@
+{
+  "kind": "actual existing CharacterCounter confirmation and deferred lock handlers; controlled browser ports, not native",
+  "boundary": "confirm clear all, type new text while the clear lock is pending, release old clear",
+  "before": {
+    "displayed": "확인 뒤에 입력한 새 원고",
+    "raw": "{\"active\":0,\"tabs\":[{\"title\":\"질문 1\",\"text\":\"기존 원고 1\",\"target\":500,\"basis\":\"chars\"},{\"title\":\"질문 2\",\"text\":\"기존 원고 2\",\"target\":500,\"basis\":\"chars\"},{\"title\":\"질문 3\",\"text\":\"기존 원고 3\",\"target\":500,\"basis\":\"chars\"},{\"title\":\"질문 4\",\"text\":\"기존 원고 4\",\"target\":500,\"basis\":\"chars\"},{\"title\":\"질문 5\",\"text\":\"기존 원고 5\",\"target\":500,\"basis\":\"chars\"}]}",
+    "pendingLocks": 2
+  },
+  "after": {
+    "displayed": "",
+    "raw": null,
+    "pendingLocks": 1,
+    "writes": [
+      [
+        "remove",
+        "characterCounter.v2"
+      ]
+    ]
+  },
+  "observedIssue": "confirmed old operation clears newer visible manuscript before any subsequent autosave lock is released"
+}

@@ -1,0 +1,300 @@
+{
+  "results": [
+    {
+      "task": "asr",
+      "text": "몸놈트어 기운은 자녀들이 사랑을 제대로 못 받고 그러면 매우 심각한 결과가 초래해 된다는 결론을 내렸습니다.",
+      "error": [
+        ""
+      ]
+    },
+    {
+      "task": "feedback",
+      "mode": "intro",
+      "quality": "standard",
+      "elapsedSeconds": 11,
+      "feedback": "잘 전달한 점“저는 웹 개발자입니다.”첫 문장에서 직업을 밝히고, 강점을 전달하는 데 있어 '사용자의 불편을 찾아 개선하는 것이 제 강점'이라는 표현이 자연스럽고 명확해요.다음에 보완할 점“사용자의 불편을 찾아 개선하는 것이 제 강점입니다.”강점의 근거를 더 구체적으로 전달하면 좋습니다. 예: '사용자들의 불편을 해결하는 데 기반한 개발자'라고 말하는 것이 좋습니다.'다듬은 답변저는 사용자 중심으로 개발하는 웹 개발자입니다. 유류비 계산기의 입력 과정을 단순화하고, 사용자 친화적인 도구를 만들고 싶습니다.다듬은 답변 복사다시 말할 때 한 가지역할과 강점을 첫 두 문장으로 말해 보세요.AI는 전사문의 구성과 표현을 제안해요. 발음·억양 점수는 제공하지 않으며, 다듬은 문장의 사실관계는 직접 확인해 주세요.Qwen3-1.7B-q4f16_1-MLC다시 녹음",
+      "error": [
+        ""
+      ],
+      "raw": [
+        {
+          "kind": "return",
+          "uuid": "47b980ac-5054-4f96-88b2-2dab5e5fe06e",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "86d1a02b-48df-4120-aabc-8ca15671bccd",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "479f6d51-6b76-4c42-a3b5-ab18309b4b8d",
+          "content": {
+            "id": "91928392-56b6-4fb6-81b5-461627a0e76c",
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "message": {
+                  "content": "<think>\n\n</think>\n\n{\"strengthQuote\":\"저는 웹 개발자입니다.\",\"strength\":\"첫 문장에서 직업을 밝히고, 강점을 전달하는 데 있어 '사용자의 불편을 찾아 개선하는 것이 제 강점'이라는 표현이 자연스럽고 명확해요.\",\"improveQuote\":\"사용자의 불편을 찾아 개선하는 것이 제 강점입니다.\",\"improve\":\"강점의 근거를 더 구체적으로 전달하면 좋습니다. 예: '사용자들의 불편을 해결하는 데 기반한 개발자'라고 말하는 것이 좋습니다.'\",\"rewrite\":\"저는 사용자 중심으로 개발하는 웹 개발자입니다. 유류비 계산기의 입력 과정을 단순화하고, 사용자 친화적인 도구를 만들고 싶습니다.\",\"next\":\"역할과 강점을 첫 두 문장으로 말해 보세요.\"}",
+                  "role": "assistant"
+                }
+              }
+            ],
+            "model": "Qwen3-1.7B-q4f16_1-MLC",
+            "object": "chat.completion",
+            "created": 1794818671,
+            "usage": {
+              "completion_tokens": 203,
+              "prompt_tokens": 605,
+              "total_tokens": 808,
+              "extra": {
+                "e2e_latency_s": 6.851,
+                "prefill_tokens_per_s": 391.00368383664255,
+                "decode_tokens_per_s": 38.4498248820293,
+                "time_to_first_token_s": 1.5472999999988823,
+                "time_per_output_token_s": 0.026007920792049707,
+                "grammar_init_s": 0.451,
+                "grammar_per_token_s": 0.00014975369453723805
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "task": "feedback",
+      "mode": "report",
+      "quality": "standard",
+      "elapsedSeconds": 6,
+      "feedback": "잘 전달한 점“모바일 화면 테스트도 완료했습니다.”테스트 완료 여부를 알 수 있어 현재 진행 상태가 명확해요.다음에 보완할 점“현재 배포 전이며 내일 최종 확인 후 배포할 예정입니다.”배포 일정을 명확히 하기 위해 완료된 일과 남은 일의 분리가 필요해요.다듬은 답변모바일 화면 테스트를 완료했습니다. 유류비 계산기 개편과 정산 기능, 차량 저장 기능 추가는 완료되었고, 내일 최종 확인 후 배포할 예정입니다.다듬은 답변 복사다시 말할 때 한 가지완료한 일과 남은 일을 나누어 말해 보세요.AI는 전사문의 구성과 표현을 제안해요. 발음·억양 점수는 제공하지 않으며, 다듬은 문장의 사실관계는 직접 확인해 주세요.Qwen3-1.7B-q4f16_1-MLC다시 녹음",
+      "error": [
+        ""
+      ],
+      "raw": [
+        {
+          "kind": "return",
+          "uuid": "47b980ac-5054-4f96-88b2-2dab5e5fe06e",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "86d1a02b-48df-4120-aabc-8ca15671bccd",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "479f6d51-6b76-4c42-a3b5-ab18309b4b8d",
+          "content": {
+            "id": "91928392-56b6-4fb6-81b5-461627a0e76c",
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "message": {
+                  "content": "<think>\n\n</think>\n\n{\"strengthQuote\":\"저는 웹 개발자입니다.\",\"strength\":\"첫 문장에서 직업을 밝히고, 강점을 전달하는 데 있어 '사용자의 불편을 찾아 개선하는 것이 제 강점'이라는 표현이 자연스럽고 명확해요.\",\"improveQuote\":\"사용자의 불편을 찾아 개선하는 것이 제 강점입니다.\",\"improve\":\"강점의 근거를 더 구체적으로 전달하면 좋습니다. 예: '사용자들의 불편을 해결하는 데 기반한 개발자'라고 말하는 것이 좋습니다.'\",\"rewrite\":\"저는 사용자 중심으로 개발하는 웹 개발자입니다. 유류비 계산기의 입력 과정을 단순화하고, 사용자 친화적인 도구를 만들고 싶습니다.\",\"next\":\"역할과 강점을 첫 두 문장으로 말해 보세요.\"}",
+                  "role": "assistant"
+                }
+              }
+            ],
+            "model": "Qwen3-1.7B-q4f16_1-MLC",
+            "object": "chat.completion",
+            "created": 1794818671,
+            "usage": {
+              "completion_tokens": 203,
+              "prompt_tokens": 605,
+              "total_tokens": 808,
+              "extra": {
+                "e2e_latency_s": 6.851,
+                "prefill_tokens_per_s": 391.00368383664255,
+                "decode_tokens_per_s": 38.4498248820293,
+                "time_to_first_token_s": 1.5472999999988823,
+                "time_per_output_token_s": 0.026007920792049707,
+                "grammar_init_s": 0.451,
+                "grammar_per_token_s": 0.00014975369453723805
+              }
+            }
+          }
+        },
+        {
+          "kind": "return",
+          "uuid": "f05ae368-3695-4f2d-996f-7fe048a19436",
+          "content": null
+        },
+        {
+          "kind": "return",
+          "uuid": "8758f9e6-65a4-400d-9706-6c42ee1ef91b",
+          "content": {
+            "id": "df873ef8-690a-4497-b227-148f00d6e26e",
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "message": {
+                  "content": "<think>\n\n</think>\n\n{\"strengthQuote\":\"모바일 화면 테스트도 완료했습니다.\",\"strength\":\"테스트 완료 여부를 알 수 있어 현재 진행 상태가 명확해요.\",\"improveQuote\":\"현재 배포 전이며 내일 최종 확인 후 배포할 예정입니다.\",\"improve\":\"배포 일정을 명확히 하기 위해 완료된 일과 남은 일의 분리가 필요해요.\",\"rewrite\":\"모바일 화면 테스트를 완료했습니다. 유류비 계산기 개편과 정산 기능, 차량 저장 기능 추가는 완료되었고, 내일 최종 확인 후 배포할 예정입니다.\",\"next\":\"완료한 일과 남은 일을 나누어 말해 보세요.\"}",
+                  "role": "assistant"
+                }
+              }
+            ],
+            "model": "Qwen3-1.7B-q4f16_1-MLC",
+            "object": "chat.completion",
+            "created": 1794818678,
+            "usage": {
+              "completion_tokens": 172,
+              "prompt_tokens": 583,
+              "total_tokens": 755,
+              "extra": {
+                "e2e_latency_s": 5.568,
+                "prefill_tokens_per_s": 493.1066565166477,
+                "decode_tokens_per_s": 39.28325292916577,
+                "time_to_first_token_s": 1.182300000000745,
+                "time_per_output_token_s": 0.025456140350779147,
+                "grammar_init_s": 0.18620000000111758,
+                "grammar_per_token_s": 0.00014069767438178502
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2070759131396958",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.83.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.90.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.91.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.89.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.87.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.85.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.84.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.88.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.82.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.86.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.76.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.81.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.79.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.80.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.72.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "http://static.axept.io/sdk.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://static.axept.io/sdk.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "blob:http://127.0.0.1:3039/ae15d1bc-fe40-4db3-b992-77aaf590a5e6",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/web/variable/woff2-dynamic-subset/PretendardVariable.subset.78.woff2",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/ort-wasm-simd-threaded.jsep.mjs",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/ort-wasm-simd-threaded.jsep.wasm",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://client.axept.io/projectconfigurations/brands/6852548e237197d2502e4208.json?r=0",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "https://static.axept.io/datacenter-ranges.js",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "url": "blob:http://127.0.0.1:3039/9c3d264c-f0ee-4c99-aeee-7cc407272244",
+      "body": null
+    }
+  ],
+  "errors": [
+    "Failed to load resource: net::ERR_FAILED"
+  ]
+}

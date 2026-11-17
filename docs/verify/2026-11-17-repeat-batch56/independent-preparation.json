@@ -1,0 +1,33 @@
+{
+  "source": "Independent direct execution of actual helpers with controlled async process/header/ZIP ports. Not browser pixels/codec execution.",
+  "results": [
+    {
+      "name": "clear then same-ID add retains one live process and releases the discarded old output",
+      "pass": true
+    },
+    {
+      "name": "settings ABA and stale debounce cannot accept an old result or start concurrent work",
+      "pass": true
+    },
+    {
+      "name": "pause preserves completed output, failed new format and selective retry stay paused",
+      "pass": true
+    },
+    {
+      "name": "processing notification reentry may pause before process starts without stranding row",
+      "pass": true
+    },
+    {
+      "name": "concurrent header reads survive each other; clear prevents old publication and preserves new reading count",
+      "pass": true
+    },
+    {
+      "name": "ZIP snapshot owns current format bytes and cancellation blocks late downloads",
+      "pass": true
+    },
+    {
+      "name": "settings URL preserves outside state data and drops only irrelevant owned settings",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "ko": {
+    "tetris": {
+      "description": "SRS 회전·7-bag·홀드·고스트가 있는 솔로 블록 퍼즐입니다. 게임 배경의 단축키와 버튼 초점을 구분하고 화면 패드는 키보드·터치로 조작할 수 있습니다.",
+      "guide": {
+        "whatIs": {
+          "description": "떨어지는 블록을 이동·회전해 가로줄을 완성하는 퍼즐입니다. 솔로 모드는 홀드·넥스트5개·고스트·레벨과 기존 점수 규칙을 제공합니다. 키보드와 화면 버튼을 사용하며, 버튼이나 입력칸에 초점이 있을 때 게임 단축키가 해당 조작을 가로채지 않도록 구분합니다."
+        },
+        "keyboard": {
+          "items": [
+            "게임 배경에서 ←·→: 좌우 이동, 누르고 있으면 연속 이동",
+            "게임 배경에서 ↑ 또는 X: 시계방향 회전, Z 또는 Ctrl: 반시계방향 회전",
+            "게임 배경에서 ↓: 소프트 드롭, Space: 하드 드롭",
+            "게임 배경에서 C 또는 Shift: 홀드",
+            "게임 배경에서 P 또는 Esc: 일시정지/재개. 시작 전·게임 종료 뒤 Enter: 게임 시작",
+            "화면 패드 버튼에 초점을 둔 뒤 Space 또는 Enter를 누르면 그 버튼의 동작을 한 번 수행합니다.",
+            "입력칸·링크·다른 버튼의 키보드 조작과 IME 조합은 게임 단축키로 가로채지 않습니다."
+          ]
+        },
+        "touch": {
+          "items": [
+            "보드를 탭하면 시계방향으로 회전합니다.",
+            "보드에서 좌우로 드래그하면 칸 단위로 이동합니다.",
+            "아래로 천천히 드래그하면 소프트 드롭, 빠르게 튕기면 하드 드롭입니다.",
+            "위로 튕기면 홀드합니다.",
+            "화면의 좌우 이동·내리기 버튼을 누르고 있으면 연속 이동합니다.",
+            "일시정지·새 게임·페이지 이탈 때 누르고 있던 조작을 정리하며 재개 후에는 새 입력을 사용합니다."
+          ]
+        },
+        "howToUse": {
+          "items": [
+            "시작 버튼으로 솔로 게임을 시작하세요.",
+            "게임 배경에서 단축키를 쓰거나 Tab으로 화면 패드 버튼에 초점을 옮겨 Space/Enter로 조작하세요.",
+            "터치 화면에서는 패드 버튼과 보드 제스처를 사용하세요. 고스트를 보고 블록이 놓일 위치를 확인할 수 있습니다.",
+            "잠시 쉬려면 일시정지하세요. 재개 후에는 이동 키나 버튼을 새로 눌러 조작합니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "버튼 위에서 Space를 누르면 하드 드롭되나요?",
+              "a": "화면 패드 버튼에 초점이 있으면 그 버튼의 동작을 한 번 실행합니다. 다른 버튼이나 링크·입력칸의 기본 조작도 게임 단축키가 가로채지 않습니다."
+            },
+            {
+              "q": "키보드와 터치를 함께 사용할 수 있나요?",
+              "a": "사용할 수 있습니다. 같은 방향을 누르는 입력을 각각 추적하며 하나를 놓아도 아직 누른 다른 입력을 유지합니다. 반대 방향을 함께 누르면 마지막으로 누른 방향을 우선합니다."
+            },
+            {
+              "q": "홀드는 어떻게 사용하나요?",
+              "a": "게임 배경에서 C 또는 Shift를 누르거나 홀드 조작을 사용하세요. 현재 블록을 보관하고 다음 블록으로 바꾸며 한 블록당 한 번만 교환할 수 있습니다."
+            },
+            {
+              "q": "일시정지 후 이전 터치가 남아 있나요?",
+              "a": "일시정지·새 게임·탭 숨김·창 초점 이탈 때 누른 입력과 제스처를 정리합니다. 재개 후 이전 포인터를 놓는 이벤트가 새 게임 조작으로 적용되지 않게 합니다."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "tetris": {
+          "description": "클래식 블록 퍼즐, 솔로 키보드·터치 패드 조작"
+        }
+      }
+    }
+  },
+  "en": {
+    "tetris": {
+      "description": "A solo block puzzle with SRS rotation, 7-bag, hold and ghost pieces. Game-background shortcuts respect focused controls, and the on-screen pad works with keyboard and touch.",
+      "guide": {
+        "whatIs": {
+          "description": "Move and rotate falling pieces to complete horizontal lines. Solo mode keeps hold, a five-piece preview, a ghost, levels and existing scoring. Keyboard shortcuts are separated from focused buttons, links and text fields."
+        },
+        "keyboard": {
+          "items": [
+            "On the game background, Left/Right moves; hold to repeat.",
+            "On the game background, Up or X rotates clockwise; Z or Ctrl rotates counterclockwise.",
+            "On the game background, Down soft drops and Space hard drops.",
+            "On the game background, C or Shift holds.",
+            "On the game background, P or Escape pauses/resumes. Enter starts a game from the idle or game-over screen.",
+            "Focus an on-screen pad button and press Space or Enter to perform its labeled action once.",
+            "Game shortcuts do not intercept text fields, links, other buttons or IME composition."
+          ]
+        },
+        "touch": {
+          "items": [
+            "Tap the board to rotate clockwise.",
+            "Drag left or right across the board to move by cells.",
+            "Drag down slowly to soft drop, or flick down to hard drop.",
+            "Flick up to hold.",
+            "Hold the on-screen left, right or down button to repeat movement.",
+            "Pause, a new game or leaving the page clears held controls. Use a fresh input after resuming."
+          ]
+        },
+        "howToUse": {
+          "items": [
+            "Start solo play with the Start button.",
+            "Use shortcuts on the game background, or Tab to a pad button and activate it with Space or Enter.",
+            "On touch screens, use pad buttons and board gestures. The ghost shows where the piece will land.",
+            "Pause when needed. After resuming, press movement keys or buttons again."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Does Space hard drop when a button is focused?",
+              "a": "A focused pad button performs its own labeled action once. Game shortcuts also leave the normal behavior of other buttons, links and text fields intact."
+            },
+            {
+              "q": "Can I mix keyboard and touch controls?",
+              "a": "Yes. Inputs holding the same direction are tracked separately, so releasing one keeps another held input active. If opposite directions are held, the most recently pressed direction takes priority."
+            },
+            {
+              "q": "How does hold work?",
+              "a": "Press C or Shift on the game background, or use the hold control. Store the current piece and switch to the next one. Swapping is allowed once per piece."
+            },
+            {
+              "q": "Can an old touch carry over after pausing?",
+              "a": "Pause, a new game, a hidden tab or loss of window focus clears held inputs and gestures. Releasing an old pointer after resuming does not apply an action to the new game."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "tetris": {
+          "description": "Classic block puzzle with solo keyboard and touch-pad controls"
+        }
+      }
+    }
+  }
+}

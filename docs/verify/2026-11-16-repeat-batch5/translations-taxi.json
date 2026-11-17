@@ -1,0 +1,100 @@
+{
+  "ko": {
+    "taxiFare": {
+      "savedTrips": {
+        "title": "자주 가는 이동",
+        "count": "({count}/{max})",
+        "description": "자주 쓰는 이동 조건을 이름과 함께 저장하세요. 불러오기를 누르면 현재 계산 기준으로 요금을 다시 계산합니다.",
+        "current": "저장할 현재 조건",
+        "summary": "{region} · {type} · {distance}km · {time}분({mode}) · {hour}시 · {traffic} · {area} · {people}명",
+        "inside": "시내",
+        "outside": "시외",
+        "autoTime": "시간 자동",
+        "manualTime": "시간 직접 입력",
+        "name": "이동 이름",
+        "namePlaceholder": "예: 회사에서 집",
+        "nameHint": "최대 {max}자, 같은 이름은 사용할 수 없어요.",
+        "save": "현재 조건 저장",
+        "saving": "저장 중…",
+        "saved": "이동 조건을 저장했어요.",
+        "renamed": "이름을 변경했어요.",
+        "deleted": "저장한 이동을 삭제했어요.",
+        "loaded": "이동 조건을 불러와 요금을 다시 계산했어요.",
+        "refreshed": "저장 목록을 다시 읽었어요. 입력 조건은 그대로예요.",
+        "loading": "저장한 이동을 읽는 중…",
+        "empty": "아직 저장한 이동이 없어요.",
+        "list": "저장한 이동 목록",
+        "load": "불러오기",
+        "rename": "이름 변경",
+        "newName": "새 이동 이름",
+        "renameSave": "이름 저장",
+        "delete": "삭제",
+        "deletePrompt": "‘{name}’ 이동을 저장 목록에서 삭제할까요?",
+        "deleteConfirm": "삭제 확인",
+        "cancel": "취소",
+        "refresh": "목록 다시 읽기",
+        "localOnly": "이 브라우저에만 저장됩니다. 브라우저 데이터를 지우면 사라지며 다른 기기와 동기화되지 않아요. 저장한 이름과 목록은 공유 링크에 포함되지 않습니다.",
+        "errors": {
+          "invalidData": "저장 목록을 읽을 수 없어 변경을 멈췄어요. 기존 데이터는 그대로 보관됩니다.",
+          "unsupportedVersion": "다른 버전의 저장 목록이라 변경할 수 없어요. 기존 데이터는 그대로 보관됩니다.",
+          "unavailable": "브라우저 저장소를 사용할 수 없어 작업을 완료하지 못했어요. 저장소 설정이나 여유 공간을 확인한 뒤 목록을 다시 읽어 주세요.",
+          "conflict": "다른 탭에서 저장 목록이 바뀌었어요. 목록 다시 읽기를 누른 뒤 다시 시도해 주세요.",
+          "invalidConditions": "거리 0~1,000km, 시간 0~10,000분 범위의 올바른 이동 조건을 입력해 주세요.",
+          "invalidName": "이름을 공백만으로 입력할 수 없어요. 줄바꿈 없이 1~40자로 입력해 주세요.",
+          "duplicateName": "같은 이름의 이동이 있어요. 다른 이름으로 저장해 주세요.",
+          "limit": "이동은 최대 10개까지 저장할 수 있어요. 필요 없는 이동을 삭제한 뒤 저장해 주세요.",
+          "missingTrip": "이 이동이 저장 목록에 없어요. 목록을 다시 읽어 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "taxiFare": {
+      "savedTrips": {
+        "title": "Frequent trips",
+        "count": "({count}/{max})",
+        "description": "Save frequently used trip settings with a name. Load a trip to recalculate its fare using the current calculation rules.",
+        "current": "Current settings to save",
+        "summary": "{region} · {type} · {distance} km · {time} min ({mode}) · {hour}:00 · {traffic} · {area} · {people} passenger(s)",
+        "inside": "Within city",
+        "outside": "Outside city",
+        "autoTime": "Automatic time",
+        "manualTime": "Manual time",
+        "name": "Trip name",
+        "namePlaceholder": "e.g. Office to home",
+        "nameHint": "Up to {max} characters. Each trip needs a different name.",
+        "save": "Save current settings",
+        "saving": "Saving…",
+        "saved": "Trip settings saved.",
+        "renamed": "Trip renamed.",
+        "deleted": "Saved trip deleted.",
+        "loaded": "Trip settings loaded and fare recalculated.",
+        "refreshed": "Saved trips refreshed. Calculator settings are unchanged.",
+        "loading": "Reading saved trips…",
+        "empty": "No saved trips yet.",
+        "list": "Saved trips",
+        "load": "Load",
+        "rename": "Rename",
+        "newName": "New trip name",
+        "renameSave": "Save name",
+        "delete": "Delete",
+        "deletePrompt": "Delete ‘{name}’ from your saved trips?",
+        "deleteConfirm": "Confirm delete",
+        "cancel": "Cancel",
+        "refresh": "Refresh saved trips",
+        "localOnly": "Saved only in this browser. Clearing browser data removes your trips. They do not sync across devices. Trip names and your saved list are not included in shared links.",
+        "errors": {
+          "invalidData": "The saved list could not be read, so changes are blocked. Existing data has been preserved.",
+          "unsupportedVersion": "This list uses a different version and cannot be changed here. Existing data has been preserved.",
+          "unavailable": "Browser storage is unavailable, so the action could not be completed. Check your storage settings or free space, then refresh saved trips.",
+          "conflict": "Another tab changed the saved list. Refresh saved trips before trying again.",
+          "invalidConditions": "Enter valid trip settings: a distance from 0 to 1,000 km and a time from 0 to 10,000 minutes.",
+          "invalidName": "Enter a name of 1–40 characters without line breaks. A name cannot contain only spaces.",
+          "duplicateName": "A trip with this name already exists. Use a different name.",
+          "limit": "You can save up to 10 trips. Delete an unused trip before saving another.",
+          "missingTrip": "This trip is no longer in the saved list. Refresh saved trips."
+        }
+      }
+    }
+  }
+}

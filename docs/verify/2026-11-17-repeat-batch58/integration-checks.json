@@ -1,0 +1,77 @@
+{
+  "scope": "OCR 복사·TXT 실패 복구",
+  "status": "passed_final",
+  "author": {
+    "status": "passed_frozen",
+    "groups": 13,
+    "scopedLint": "exit0/errors0/warnings0"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 13,
+    "note": "준비6+실제 부모7=13 PASS"
+  },
+  "translations": {
+    "status": "passed",
+    "patchLeavesPerLanguage": 17,
+    "staticUses": 93,
+    "generatedFiles": 1578,
+    "errors": 0,
+    "messagesCheck": "passed"
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/image-ocr/page.tsx",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "canonicalFaq": true
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 7,
+    "failed": 0,
+    "checkedAt": "2026-11-17T01:45:03.712Z",
+    "browserClosed": true,
+    "report": "review-browser.md",
+    "runtimeErrors": 0
+  },
+  "typecheck": {
+    "recordedAt": "2026-11-17T01:47:42.873Z",
+    "preflightAt": "2026-11-17T01:45:23.961Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.02,
+    "sessionId": 86108,
+    "outputChunk": "7541e1",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 1,
+    "scopes": [
+      56,
+      57,
+      58
+    ],
+    "state": "passed_before_optional58_display_polish",
+    "note": "First whole type passed after final23 browser flows and TS freeze. Any later58 JSX display change requires its own impact evidence and a refreshed type checkpoint; no exact elapsed duration claimed.",
+    "evidence": "../2026-11-17-repeat-batch58/typecheck-first-result.json"
+  },
+  "finalTypecheck": {
+    "recordedAt": "2026-11-17T01:51:25.545Z",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "evidence": "typecheck-final-result.json"
+  },
+  "finalRecheck": {
+    "checkedAt": "2026-11-17 15:28 KST",
+    "by": "Claude Code",
+    "sourceChangedAfterFinalTypecheck": false,
+    "typecheck": "exit0/diagnostics0/33s/heap3GB",
+    "messagesCheck": 1578,
+    "namespaceAuditUnresolved": 0,
+    "scopedLint": "12 files, errors0, warnings1 (Blob preview img)",
+    "note": "부모 검사 6/6 재실행 PASS. dev 서버 실제 페이지에서 수정한 원고의 현재 결과 복사 성공 표시를 확인하고, Clipboard·execCommand를 막은 뒤 375px에서 실패 안내 정확 1개·복구 버튼 44px·원고 유지·가로 overflow0을 확인했다."
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false
+}

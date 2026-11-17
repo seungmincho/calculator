@@ -1,0 +1,90 @@
+{
+  "ko": {
+    "characterCounter": {
+      "backup": {
+        "title": "수정본 백업·가져오기",
+        "description": "저장한 수정본을 JSON 파일로 보관하거나, 백업 파일에서 고른 수정본만 목록에 추가하세요. 현재 작성 중인 문항과 되돌리기 상태는 바꾸지 않아요.",
+        "privacy": "백업에는 저장한 원고 본문이 들어 있어요. 안전한 곳에 보관해 주세요. 파일은 기기에서만 검사하며 최대 2MB까지 받을 수 있어요.",
+        "export": "수정본 백업 파일 저장",
+        "choose": "수정본 백업 파일 선택",
+        "cancel": "가져오기 취소",
+        "reading": "백업 파일을 검사하고 있어요. 아직 저장 목록에는 추가하지 않았어요.",
+        "file": "선택한 파일: {name}",
+        "exportedAt": "백업 시각: {date}",
+        "counts": "현재 {current}개 + 선택 {selected}개 → 추가 후 {after}/{max}개",
+        "conflictHint": "신규 수정본만 기본 선택해요. 같은 ID의 다른 내용은 직접 선택하면 기존 수정본을 유지한 채 별도 수정본으로 추가해요. 추가 후 적용은 위의 ‘현재 문항에 복원’을 따로 눌러 주세요.",
+        "empty": "이 백업 파일에는 저장된 수정본이 없어요.",
+        "summary": "문항 제목: {title} · {count}자 · 출처 문항 {tab} · {basis} · 목표 {target}",
+        "viewText": "가져올 본문 확인",
+        "add": "선택한 수정본 추가",
+        "status": {
+          "new": "신규 · 선택하면 목록에 추가해요.",
+          "duplicate": "동일 내용 · 기존 목록이나 이 파일에 같은 내용이 있어 추가하지 않아요.",
+          "conflict": "ID 충돌 · 기본 미선택이며, 선택하면 별도 수정본으로 복사해요. 기존 내용은 교체하지 않아요."
+        },
+        "notices": {
+          "exported": "수정본 백업 파일 다운로드를 시작했어요.",
+          "imported": "수정본 {count}개를 목록에 추가했어요. 작성 중인 문항과 되돌리기는 그대로예요.",
+          "cancelled": "가져오기를 취소했어요. 저장 목록과 작성 중인 원고는 그대로예요."
+        },
+        "errors": {
+          "size": "백업 파일은 최대 2MB까지 받을 수 있어요. 이 파일은 가져오지 않았으며 원고를 자르지 않았어요.",
+          "format": "이 파일은 글자수 세기의 수정본 백업 형식이 아니에요. 이 도구에서 저장한 백업 파일을 선택해 주세요.",
+          "version": "지원하지 않는 백업 버전이에요. 기존 저장 목록은 그대로 보존했어요.",
+          "corrupt": "수정본 내용을 확인할 수 없어요. 항목 형식·중복 ID·본문 크기·날짜 형식을 확인해 주세요. 파일과 기존 저장 목록을 바꾸지 않았어요.",
+          "emptySelection": "추가할 수정본을 하나 이상 선택해 주세요. 같은 내용의 수정본은 다시 추가하지 않아요.",
+          "full": "추가 후 수정본이 최대 20개를 넘어요. 선택 수를 줄이거나 기존 목록을 정리한 뒤 파일을 다시 선택해 주세요.",
+          "totalLimit": "추가 후 원고의 합계가 300,000자를 넘어요. 선택 수를 줄여 주세요. 일부 항목만 임의로 추가하지 않아요.",
+          "id": "충돌 수정본의 새 식별자를 만들지 못했어요. 기존 목록은 그대로예요. 다시 시도해 주세요.",
+          "unavailable": "파일을 읽거나 저장하지 못했어요. 브라우저 저장 공간과 파일 접근을 확인한 뒤 다시 시도해 주세요. 저장 실패 시 선택한 항목과 현재 원고는 유지돼요.",
+          "conflict": "저장 목록이 미리보기 이후 변경됐어요. 덮어쓰지 않았으니 목록을 새로고침하고 파일을 다시 선택해 주세요.",
+          "stale": "문항이나 저장 목록이 바뀌어 이전 가져오기 미리보기를 취소했어요. 파일을 다시 선택해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "characterCounter": {
+      "backup": {
+        "title": "Back up and import versions",
+        "description": "Keep saved versions in a JSON file, or add selected versions from a backup to your list. Your current prompts and Undo state stay unchanged.",
+        "privacy": "The backup contains your saved manuscript text. Keep it somewhere safe. Files are checked only on your device, with a 2 MB limit.",
+        "export": "Save writing versions backup",
+        "choose": "Choose writing versions backup",
+        "cancel": "Cancel import",
+        "reading": "Checking the backup file. Nothing has been added to your saved list yet.",
+        "file": "Selected file: {name}",
+        "exportedAt": "Exported: {date}",
+        "counts": "Current {current} + selected {selected} → {after}/{max} after adding",
+        "conflictHint": "Only new versions are selected by default. Selecting different content with the same ID creates a separate version and keeps the original. To apply an added version, use Restore to current prompt above.",
+        "empty": "This backup contains no saved versions.",
+        "summary": "Prompt title: {title} · {count} characters · Source prompt {tab} · {basis} · Target {target}",
+        "viewText": "Inspect imported text",
+        "add": "Add selected versions",
+        "status": {
+          "new": "New · Select to add it to your saved list.",
+          "duplicate": "Identical content · Already present in the saved list or this file, so it will not be added again.",
+          "conflict": "ID conflict · Not selected by default. Selecting creates a separate copy and keeps the existing version."
+        },
+        "notices": {
+          "exported": "Started downloading the writing versions backup.",
+          "imported": "Added {count} versions to your list. Your current prompts and Undo state are unchanged.",
+          "cancelled": "Import cancelled. Your saved list and current manuscript are unchanged."
+        },
+        "errors": {
+          "size": "Backup files can be up to 2 MB. The file was not imported or truncated.",
+          "format": "This is not a Character Counter writing versions backup. Choose a backup saved by this tool.",
+          "version": "This backup version is not supported. Your existing saved list was preserved.",
+          "corrupt": "Could not validate the versions. Check item formats, duplicate IDs, text limits, and timestamps. The file and existing saved list are unchanged.",
+          "emptySelection": "Select at least one version to add. Identical versions are not added again.",
+          "full": "Adding these versions would exceed the limit of 20. Select fewer items, or adjust the existing list and choose the file again.",
+          "totalLimit": "The combined manuscripts would exceed 300,000 characters. Select fewer items. Items are never partially added without your choice.",
+          "id": "Could not create a new identifier for a conflicting version. The existing list is unchanged. Please try again.",
+          "unavailable": "Could not read the file or save versions. Check browser storage space and file access, then try again. Failed saves preserve your selected items and current manuscript.",
+          "conflict": "The saved list changed after the preview. Nothing was overwritten. Refresh the list and select the file again.",
+          "stale": "The current prompt or saved list changed, so the previous import preview was cancelled. Select the file again."
+        }
+      }
+    }
+  }
+}

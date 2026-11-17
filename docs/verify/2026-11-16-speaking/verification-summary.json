@@ -1,0 +1,70 @@
+{
+  "unitChecks": {
+    "passed": 12,
+    "total": 12
+  },
+  "browserChecks": [
+    {
+      "name": "initial-mobile-no-model-download",
+      "status": "PASS"
+    },
+    {
+      "name": "text-fallback-compare-save-reload-export",
+      "status": "PASS"
+    },
+    {
+      "name": "record-replay-blob-restoration",
+      "status": "PASS",
+      "recheckArtifact": "browser-record-replay.json"
+    },
+    {
+      "name": "audio-validation-silence-and-take-limit",
+      "status": "PASS"
+    },
+    {
+      "name": "failed-save-preserves-answer",
+      "status": "PASS"
+    },
+    {
+      "name": "microphone-denied-text-remains-usable",
+      "status": "PASS"
+    },
+    {
+      "name": "summary-only-link-reproduces-numbers",
+      "status": "PASS"
+    },
+    {
+      "name": "cancel-model-load-preserves-answer",
+      "status": "PASS"
+    },
+    {
+      "name": "cancel-permission-stops-late-microphone",
+      "status": "PASS"
+    },
+    {
+      "name": "history-cap-updates-and-corrupt-record",
+      "status": "PASS"
+    },
+    {
+      "name": "copied-summary-never-contains-transcript",
+      "status": "PASS"
+    },
+    {
+      "name": "recording-stops-at-90-seconds",
+      "status": "PASS",
+      "recheckArtifact": "browser-recording-stops.json"
+    }
+  ],
+  "actualModelTests": {
+    "file": "real-standard.json",
+    "asr": true,
+    "intro": true,
+    "report": true,
+    "feedbackPersistence": true,
+    "editedTranscriptInvalidatesFeedback": true
+  },
+  "typecheck": "PASS",
+  "targetedLint": "PASS",
+  "translationAuditUnresolved": 0,
+  "buildRun": false
+}

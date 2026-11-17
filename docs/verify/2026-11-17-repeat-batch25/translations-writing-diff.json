@@ -1,0 +1,90 @@
+{
+  "ko": {
+    "characterCounter": {
+      "versions": {
+        "diff": {
+          "button": "줄 단위로 비교",
+          "hint": "선택한 저장본과 현재 탭의 글을 클릭 시점 그대로 새 텍스트 비교 탭에 보냅니다. 원래 글과 저장 목록은 유지됩니다. 각 원문은 최대 50,000자이며, 전달은 10분 뒤 만료됩니다.",
+          "sent": "두 원문을 새 탭에 전달했습니다. 새 탭에서 내용을 확인한 뒤 비교를 눌러 주세요.",
+          "popupBlocked": "새 탭을 열지 못했습니다. 이 사이트의 팝업을 허용한 뒤 다시 눌러 주세요.",
+          "handoffFailed": "새 탭에 원문을 전달하지 못했습니다. 브라우저의 저장소 제한을 확인한 뒤 다시 시도해 주세요. 원래 글과 저장 목록은 그대로입니다.",
+          "textTooLong": "원문 하나당 최대 50,000자까지 전달할 수 있습니다. 글을 자동으로 자르거나 일부만 보내지 않았습니다.",
+          "conflict": "저장 목록이나 선택한 저장본이 바뀌었습니다. 목록을 다시 읽고 비교할 저장본을 선택해 주세요. 현재 글은 유지됩니다.",
+          "corrupt": "저장 목록을 확인할 수 없어 전달하지 않았습니다. 원래 데이터와 현재 글을 유지합니다.",
+          "unavailable": "저장 목록을 읽지 못했습니다. 브라우저의 저장소 설정을 확인한 뒤 다시 시도해 주세요.",
+          "manual": "전달이 어려우면 위의 저장본과 현재 글을 각각 선택해 복사한 뒤 텍스트 비교 도구에 붙여 넣을 수 있습니다.",
+          "manualLink": "텍스트 비교 도구 열기",
+          "privacy": "본문과 제목은 URL에 넣지 않습니다. 주소를 복사해도 두 원문을 공유하는 링크가 되지는 않습니다."
+        }
+      }
+    },
+    "diffViewer": {
+      "handoff": {
+        "title": "글자수 세기에서 받은 원문",
+        "loaded": "클릭 당시의 저장본과 현재 글을 받았습니다. 두 입력을 확인한 뒤 비교를 누르세요. 원래 탭에서 이후에 편집한 내용은 여기에 자동 반영되지 않습니다.",
+        "saved": "저장본: {name}",
+        "current": "현재 글: {tab}번 탭",
+        "documentTitle": "제목: {title}",
+        "edited": "전달받은 뒤 입력을 수정하거나 순서를 바꿨습니다. 다음 비교는 지금 두 입력을 기준으로 실행합니다.",
+        "cleanupFailed": "두 원문은 받았지만 전달용 임시 데이터의 삭제를 확인하지 못했거나 다른 값으로 바뀌었습니다. 지금 입력은 유지합니다.",
+        "privacy": "본문은 이 주소에 포함되지 않습니다. 정상적으로 소비된 전달은 새로고침으로 다시 적용되지 않으며, 주소를 복사해도 두 원문을 공유하는 링크가 되지는 않습니다.",
+        "errors": {
+          "missing": "전달된 원문이 없거나 이미 사용되었습니다. 기존처럼 직접 입력하거나 원래 글자수 세기 탭에서 다시 보내 주세요.",
+          "invalid": "전달 형식을 확인할 수 없어 입력을 바꾸지 않았습니다. 원래 글자수 세기 탭에서 다시 보내 주세요.",
+          "unsupported": "지원하지 않는 전달 형식입니다. 입력과 전달 데이터는 유지됩니다. 원래 글자수 세기 탭에서 다시 보내 주세요.",
+          "expired": "전달 후 10분이 지나 적용하지 않았습니다. 원래 글자수 세기 탭에서 다시 보내 주세요.",
+          "future": "전달 시각을 확인할 수 없어 적용하지 않았습니다. 기기의 날짜와 시간을 확인한 뒤 다시 보내 주세요.",
+          "textTooLong": "전달 원문이 문서당 50,000자 한도를 넘어 입력을 바꾸지 않았습니다. 직접 입력한 글에는 기존 비교 한도가 적용됩니다.",
+          "unavailable": "전달용 저장소를 읽지 못해 입력을 바꾸지 않았습니다. 직접 입력하거나 브라우저 설정을 확인한 뒤 다시 보내 주세요.",
+          "changed": "확인하는 동안 전달 데이터가 바뀌어 입력을 바꾸지 않았습니다. 새 데이터를 삭제하지 않았습니다.",
+          "edited": "이미 입력을 편집하거나 비교를 시작해 전달된 원문을 적용하지 않았습니다. 지금 입력은 유지됩니다.",
+          "applyFailed": "전달된 원문을 적용하지 못했습니다. 전달 데이터를 지우지 않았습니다. 원래 탭에서 다시 보내거나 직접 입력해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "characterCounter": {
+      "versions": {
+        "diff": {
+          "button": "Compare lines",
+          "hint": "Send the selected saved version and current tab's text to a new text comparison tab as they are at this click. Your original draft and saved list stay unchanged. Each document can contain up to 50,000 characters; the transfer expires after 10 minutes.",
+          "sent": "Both documents were sent to a new tab. Review them there, then select Compare.",
+          "popupBlocked": "The new tab could not open. Allow popups for this site, then try again.",
+          "handoffFailed": "The documents could not be sent to the new tab. Check your browser's storage restrictions and try again. Your original draft and saved list are unchanged.",
+          "textTooLong": "Each document can contain up to 50,000 characters. No text was truncated or sent partially.",
+          "conflict": "The saved list or selected version changed. Reload the list and select a version again. Your current draft is unchanged.",
+          "corrupt": "The saved list could not be validated, so nothing was sent. Your stored data and current draft are preserved.",
+          "unavailable": "The saved list could not be read. Check your browser's storage settings and try again.",
+          "manual": "If the transfer fails, select and copy the saved and current text above separately, then paste them into the text comparison tool.",
+          "manualLink": "Open text comparison",
+          "privacy": "Text and titles are not included in the URL. Copying the address does not create a link that shares both documents."
+        }
+      }
+    },
+    "diffViewer": {
+      "handoff": {
+        "title": "Documents from Character Counter",
+        "loaded": "The saved and current text were received as they were when you clicked. Review both inputs, then select Compare. Later edits in the original tab are not applied here automatically.",
+        "saved": "Saved version: {name}",
+        "current": "Current text: tab {tab}",
+        "documentTitle": "Title: {title}",
+        "edited": "You edited or swapped the received inputs. The next comparison will use the two inputs shown now.",
+        "cleanupFailed": "Both documents were received, but removal of the temporary transfer data could not be confirmed, or the data changed. Your current inputs are preserved.",
+        "privacy": "The text is not included in this address. A successfully consumed transfer is not applied again after refresh. Copying the address does not create a link that shares both documents.",
+        "errors": {
+          "missing": "No transferred documents were found, or they were already used. Enter text as usual or send them again from the original Character Counter tab.",
+          "invalid": "The transfer format could not be validated, so your inputs were not changed. Send the documents again from the original Character Counter tab.",
+          "unsupported": "This transfer format is not supported. Your inputs and transfer data are preserved. Send the documents again from the original Character Counter tab.",
+          "expired": "The transfer is more than 10 minutes old and was not applied. Send the documents again from the original Character Counter tab.",
+          "future": "The transfer time could not be validated, so nothing was applied. Check your device's date and time, then send again.",
+          "textTooLong": "A transferred document exceeds 50,000 characters, so your inputs were not changed. Text entered directly is subject to the existing comparison limits.",
+          "unavailable": "Transfer storage could not be read, so your inputs were not changed. Enter text directly, or check your browser settings and send again.",
+          "changed": "The transfer data changed while it was being checked, so your inputs were not changed. The newer data was not deleted.",
+          "edited": "You already edited an input or started a comparison, so the transferred documents were not applied. Your current inputs are preserved.",
+          "applyFailed": "The transferred documents could not be applied. The transfer data was not deleted. Send again from the original tab or enter text directly."
+        }
+      }
+    }
+  }
+}

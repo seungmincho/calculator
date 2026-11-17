@@ -1,0 +1,38 @@
+{
+  "ko": {
+    "percentCalculator": {
+      "errors": { "overflow": "계산 결과가 표현 가능한 숫자 범위를 넘었어요. 입력값을 조정해 주세요." },
+      "comparison": {
+        "title": "결과 모아 비교", "add": "비교에 담기", "jump": "담은 결과 보기", "count": "{count} / 6개",
+        "memoryOnly": "최대 6개를 이 페이지에서만 보관해요. 새로고침하거나 페이지를 떠나면 사라집니다.",
+        "differentBases": "담을 당시 입력과 표시 설정을 유지합니다. 종류나 기준이 다른 계산의 우열·차이는 자동 계산하지 않아요.",
+        "empty": "각 계산 카드에서 ‘비교에 담기’를 눌러 결과를 모아 보세요.",
+        "added": "현재 계산을 비교 목록에 담았어요.", "duplicate": "같은 입력과 표시 설정의 결과가 이미 있어요.", "limit": "최대 6개까지 담을 수 있어요. 기존 항목을 제거한 뒤 추가해 주세요.",
+        "remove": "제거", "removeNamed": "{number}번 {name} 제거", "clear": "비교 목록 비우기",
+        "result": "결과", "formula": "계산식", "on": "켜짐", "off": "꺼짐",
+        "copyAll": "전체 비교 복사", "copying": "복사 중…", "copied": "전체 비교 내용을 복사했어요.",
+        "copyFailed": "복사하지 못했어요. 아래 전체 내용을 직접 선택하거나 다시 시도해 주세요.",
+        "download": "전체 비교 TXT", "downloaded": "전체 비교 파일 다운로드를 요청했어요.", "downloadFailed": "다운로드를 시작하지 못했어요. 다시 시도해 주세요.",
+        "recovery": { "title": "복사 복구", "description": "실패한 복사 대상의 전체 내용입니다. 직접 선택해 복사할 수 있어요.", "text": "직접 복사할 전체 내용", "select": "전체 선택", "retry": "복사 다시 시도", "close": "닫기", "selectionFailed": "자동 선택하지 못했어요. 위 필드에서 직접 전체 선택해 주세요." }
+      }
+    }
+  },
+  "en": {
+    "percentCalculator": {
+      "errors": { "overflow": "The result exceeds the supported numeric range. Adjust the inputs." },
+      "comparison": {
+        "title": "Compare collected results", "add": "Add to comparison", "jump": "View collected results", "count": "{count} / 6 results",
+        "memoryOnly": "Keep up to 6 results on this page only. Refreshing or leaving the page clears them.",
+        "differentBases": "Each result keeps its original inputs and display settings. Calculations with different kinds or bases are not ranked or subtracted automatically.",
+        "empty": "Choose ‘Add to comparison’ on a calculation card to collect its result.",
+        "added": "Added this calculation to the comparison.", "duplicate": "A result with these inputs and display settings is already included.", "limit": "You can keep up to 6 results. Remove an item before adding another.",
+        "remove": "Remove", "removeNamed": "Remove result {number}: {name}", "clear": "Clear comparison",
+        "result": "Result", "formula": "Formula", "on": "On", "off": "Off",
+        "copyAll": "Copy all results", "copying": "Copying…", "copied": "Copied the full comparison.",
+        "copyFailed": "Copy failed. Select the full text below or try again.",
+        "download": "Download all as TXT", "downloaded": "Requested the full comparison download.", "downloadFailed": "Could not start the download. Please try again.",
+        "recovery": { "title": "Copy recovery", "description": "This is the complete text of the failed copy request. You can select and copy it manually.", "text": "Full text for manual copy", "select": "Select all", "retry": "Retry copy", "close": "Close", "selectionFailed": "Automatic selection failed. Select all text in the field manually." }
+      }
+    }
+  }
+}

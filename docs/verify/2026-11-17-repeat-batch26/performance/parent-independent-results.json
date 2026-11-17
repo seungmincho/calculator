@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-11-16T20:15:28.589Z",
+  "passed": 3,
+  "browserExecuted": false,
+  "hostSetupReused": "author controlled React/DOM setup only; independent event sequences and string oracles",
+  "results": [
+    {
+      "name": "native file-picker cancel during conversion settles busy state and captured late result cannot replace next confirmation",
+      "status": "pass",
+      "oldWorkerTerminated": true,
+      "newExactCsvPreserved": true
+    },
+    {
+      "name": "cross-action copy rejection cannot resurrect manual recovery after transferred decode and a new confirmation",
+      "status": "pass",
+      "actualTransferDetached": true,
+      "staleFallbackCalls": 0,
+      "staleDecodeApplied": false
+    },
+    {
+      "name": "surrogate-adjusted 50001-unit page keeps exact full export while dirty edits retain memoized read-only snapshot",
+      "status": "pass",
+      "longestUtf16Page": 50001,
+      "allPageBytesExact": true,
+      "dirtySnapshotNodeRetained": true
+    }
+  ]
+}

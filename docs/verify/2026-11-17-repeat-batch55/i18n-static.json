@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-11-17T00:53:39.903Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "qr-batch-print",
+      "leafKeysPerLanguage": 10
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "QrBatchGenerator",
+      "staticKeysChecked": 29,
+      "dynamicPrefixesChecked": [
+        "batch.notices",
+        "batch.errors",
+        "batch.rowErrors"
+      ]
+    },
+    {
+      "component": "QrGenerator",
+      "staticKeysChecked": 107,
+      "dynamicPrefixesChecked": [
+        "types",
+        "alt",
+        "result.density",
+        "result",
+        "style.errorLevels"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

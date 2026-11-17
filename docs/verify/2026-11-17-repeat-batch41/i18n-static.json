@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-11-16T23:23:56.450Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 7
+    },
+    {
+      "name": "notepad",
+      "leafKeysPerLanguage": 36
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "Notepad",
+      "staticKeysChecked": 75,
+      "dynamicPrefixesChecked": [
+        "reading",
+        "guide"
+      ]
+    },
+    {
+      "component": "NotepadRecovery",
+      "staticKeysChecked": 15,
+      "dynamicPrefixesChecked": [
+        "persistence.errors",
+        "persistence"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

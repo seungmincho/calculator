@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-11-16T17:49:25.515Z",
+  "patches": [
+    {
+      "name": "screen-recorder",
+      "leafKeysPerLanguage": 45
+    },
+    {
+      "name": "typing-custom",
+      "leafKeysPerLanguage": 45
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TypingTest",
+      "staticKeysChecked": 62,
+      "dynamicPrefixesChecked": [
+        "language",
+        "mode",
+        "guide"
+      ]
+    },
+    {
+      "component": "CustomTypingWorkspace",
+      "staticKeysChecked": 36,
+      "dynamicPrefixesChecked": [
+        "custom"
+      ]
+    },
+    {
+      "component": "TypingSummaryCopy",
+      "staticKeysChecked": 9,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "ScreenRecorder",
+      "staticKeysChecked": 20,
+      "dynamicPrefixesChecked": [
+        "guide"
+      ]
+    },
+    {
+      "component": "ScreenRecordingSessionPanel",
+      "staticKeysChecked": 22,
+      "dynamicPrefixesChecked": [
+        "retry.phases",
+        "retry.errors"
+      ]
+    },
+    {
+      "component": "ScreenRecordingLastResult",
+      "staticKeysChecked": 20,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

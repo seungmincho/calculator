@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-16",
+  "scope": "Existing tools, repeat-use batches 5-7",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "freeMemoryBeforeGiB": 5.92,
+    "browsersClosed": true
+  },
+  "browser": {
+    "batch5": 19,
+    "batch6": 11,
+    "batch7": 4,
+    "total": 34,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0
+  },
+  "translations": {
+    "generatedFiles": 796,
+    "namespaceOwnImports": 499,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 229,
+    "staticKeyUsesChecked": 572,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "Passed by implementation owners",
+    "sharedMenuMetadataScope": "Passed, 7 files, 0 errors and warnings"
+  },
+  "gitDiffCheckExitCode": 0,
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "physical mobile device testing"
+  ]
+}

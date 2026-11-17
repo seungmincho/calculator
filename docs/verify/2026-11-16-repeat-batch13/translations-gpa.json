@@ -1,0 +1,44 @@
+{
+  "ko": {
+    "gpaConverterCalc": {
+      "copyRecovery": {
+        "copying": "복사 중…",
+        "manualHint": "선택 버튼을 누른 뒤 기기의 복사 메뉴 또는 Ctrl+C·⌘C를 사용하세요. 필드의 글자를 길게 눌러 직접 선택할 수도 있어요.",
+        "selectionFailed": "자동 선택을 하지 못했어요. 위 필드의 글자를 직접 선택해 복사해 주세요.",
+        "result": {
+          "failed": "결과를 복사하지 못했어요. 아래 텍스트를 직접 복사하거나 다시 시도해 주세요.",
+          "field": "직접 복사할 결과 텍스트",
+          "select": "결과 텍스트 선택",
+          "retry": "결과 복사 다시 시도"
+        },
+        "link": {
+          "failed": "공유 링크를 복사하지 못했어요. 아래 링크를 직접 복사하거나 다시 시도해 주세요.",
+          "field": "직접 복사할 공유 링크",
+          "select": "공유 링크 선택",
+          "retry": "공유 링크 복사 다시 시도"
+        }
+      }
+    }
+  },
+  "en": {
+    "gpaConverterCalc": {
+      "copyRecovery": {
+        "copying": "Copying…",
+        "manualHint": "Select the text, then use your device's Copy menu or Ctrl+C / ⌘C. You can also press and hold inside the field to select it manually.",
+        "selectionFailed": "Automatic selection failed. Select the text in the field manually to copy it.",
+        "result": {
+          "failed": "The result could not be copied. Copy the text below manually or try again.",
+          "field": "Result text for manual copying",
+          "select": "Select result text",
+          "retry": "Retry result copy"
+        },
+        "link": {
+          "failed": "The share link could not be copied. Copy the link below manually or try again.",
+          "field": "Share link for manual copying",
+          "select": "Select share link",
+          "retry": "Retry share link copy"
+        }
+      }
+    }
+  }
+}

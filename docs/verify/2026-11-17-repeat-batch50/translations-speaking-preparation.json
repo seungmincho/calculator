@@ -1,0 +1,30 @@
+{
+  "ko": {
+    "speakingPractice": {
+      "preparation": {
+        "label": "녹음 준비",
+        "immediate": "바로 시작",
+        "three": "3초 준비",
+        "five": "5초 준비",
+        "hint": "마이크를 허용한 뒤 준비해요. 준비 시간은 녹음에 포함되지 않으며, 준비 중 화면을 벗어나면 취소돼요.",
+        "preparing": "녹음 준비 중",
+        "remaining": "{seconds}초 후 녹음을 시작해요",
+        "finishing": "녹음 마무리 중"
+      }
+    }
+  },
+  "en": {
+    "speakingPractice": {
+      "preparation": {
+        "label": "Recording preparation",
+        "immediate": "Start now",
+        "three": "3 seconds",
+        "five": "5 seconds",
+        "hint": "Preparation starts after microphone permission. It is not recorded. Leaving this screen during preparation cancels it.",
+        "preparing": "Preparing to record",
+        "remaining": "Recording countdown: {seconds}s",
+        "finishing": "Finishing recording"
+      }
+    }
+  }
+}

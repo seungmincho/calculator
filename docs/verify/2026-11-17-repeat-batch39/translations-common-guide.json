@@ -1,0 +1,116 @@
+{
+  "ko": {
+    "regexExtractor": {
+      "description": "정규식 추출·행 필터·치환을 별도 작업으로 실행하고 오래 걸리면 취소하세요. 성공한 전체 결과를 복사·TXT로 반출하며 미리보기와 이전 결과의 상태를 구분합니다.",
+      "guide": {
+        "operations": {
+          "2": "추출: 전역은 전체 일치 목록, 비전역은 첫 전체 일치와 캡처를 출력"
+        },
+        "whatIs": {
+          "description": "입력한 텍스트에서 패턴을 추출하거나 일치한 행을 골라내고 문자열을 치환하는 도구입니다. 정규식 실행은 Worker에서 처리하고 취소·오류·한도 상태를 표시합니다. 일부 결과를 완성본으로 취급하지 않으며 이전 성공 결과를 남길 때 현재 입력과 구분합니다."
+        },
+        "howToUse": {
+          "items": [
+            "작업 모드·패턴·플래그를 고르고 텍스트를 입력하거나 프리셋을 사용하세요. 입력 변경 뒤 약300ms 대기 후 자동 실행합니다.",
+            "실행이 오래 걸리면 취소하세요. 취소한 같은 입력은 바로 자동 재실행하지 않으며 명시 재시도나 새 입력으로 실행할 수 있습니다.",
+            "추출·행 필터·치환 결과의 성공 상태와 전체 길이를 확인하세요. 미리보기는 최대50,000 UTF-16단위이고 전체 복사/TXT는 성공한 전체 문자열을 사용합니다.",
+            "파일은4MiB 이하, 해독한 입력은1,000,000 UTF-16단위 이하입니다. 패턴10,000·치환100,000·출력4,000,000단위·탐색 일치100,000개 한도를 넘으면 안내합니다.",
+            "입력·패턴은 기존 URL에 반영될 수 있습니다. 공유 주소 길이 한도를 넘으면 일부를 잘라 공유하지 않으며 전체 결과는 TXT로 반출할 수 있습니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "취소와5초 제한은 어떻게 동작하나요?",
+              "a": "실행 중 Worker를 종료해 취소합니다.5초를 중단 기준으로 사용하지만 브라우저의 비활성 탭 타이머 지연 때문에 모든 환경의 엄격한 벽시계 상한을 보장하지 않습니다. 탭이 숨겨지거나 페이지를 떠나면 현재 작업을 취소하며 돌아왔다는 이유만으로 자동 재개하지 않습니다."
+            },
+            {
+              "q": "빈 문자열을 찾는 패턴도 사용할 수 있나요?",
+              "a": "빈 일치 뒤 다음 위치로 진행하고 마지막 위치는 한 번 처리해 종료합니다. Unicode 모드에서는 서로게이트 쌍을 나누지 않도록 코드포인트 단위로 진행합니다."
+            },
+            {
+              "q": "캡처가 있는 추출 결과는 어떻게 나오나요?",
+              "a": "g 플래그를 쓰면 전체 일치 목록을 출력합니다. 비전역 추출은 첫 전체 일치와 캡처 그룹을 함께 출력하는 기존 JavaScript match 의미를 유지합니다."
+            },
+            {
+              "q": "치환에서 캡처와 달러 기호를 사용할 수 있나요?",
+              "a": "캡처 참조·전체 일치·명명된 캡처·달러 및 앞뒤 문맥의 JavaScript 치환 의미를 유지합니다. 결과 한도를 넘으면 일부를 성공 결과로 표시하지 않습니다."
+            },
+            {
+              "q": "화면 미리보기만 파일에 저장되나요?",
+              "a": "아니요. 성공한 전체 결과와 미리보기 길이를 구분하며 복사/TXT에는 전체 결과를 사용합니다. 현재 입력이 실패하거나 취소된 상태에서 이전 성공 결과를 사용할 때는 그 상태를 표시합니다."
+            },
+            {
+              "q": "Worker를 사용할 수 없으면 어떻게 되나요?",
+              "a": "생성 실패나 실행 오류를 안내하고 재시도를 제공합니다. 오래 걸리는 정규식을 메인 화면에서 다시 동기 실행하지 않습니다."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "regex": {
+          "description": "정규식 추출·치환, 작업 취소와 전체 결과 복사·TXT"
+        }
+      }
+    }
+  },
+  "en": {
+    "regexExtractor": {
+      "description": "Extract, filter lines or replace text in a separate task that can be canceled. Copy or export the full successful result, with previews and previous-result states clearly distinguished.",
+      "guide": {
+        "operations": {
+          "2": "Extract: global matches, or the first full match and captures without g"
+        },
+        "whatIs": {
+          "description": "Extract patterns, filter matching lines or replace text. Regular expressions run in a Worker with cancellation, errors and limits. Partial results are not presented as complete, and a retained successful result is distinguished from the current input."
+        },
+        "howToUse": {
+          "items": [
+            "Choose an operation, pattern and flags, then enter text or select a preset. Changes run automatically after an approximately 300ms delay.",
+            "Cancel a slow task. The same canceled input is not immediately rerun; retry explicitly or edit the input.",
+            "Check the result status and full length. Preview shows at most 50,000 UTF-16 units; full copy and TXT export use the complete successful string.",
+            "Files are limited to 4 MiB and decoded input to 1,000,000 UTF-16 units. Limits also apply to patterns at 10,000, replacements at 100,000, output at 4,000,000 units, and scanned matches at 100,000.",
+            "Input and patterns may be reflected in the existing URL. Overlong links are not silently truncated. Use TXT to export the full result."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "How do cancellation and the five-second limit work?",
+              "a": "Cancellation terminates the active Worker. Five seconds is a stopping threshold, not a strict wall-clock guarantee in all environments because background timers may be delayed. Hiding or leaving the page cancels the task, and returning does not automatically resume it."
+            },
+            {
+              "q": "Can a pattern match an empty string?",
+              "a": "After an empty match, processing advances to the next position and handles the final position once. Unicode mode advances by code point without splitting surrogate pairs."
+            },
+            {
+              "q": "How are capture groups included in extraction?",
+              "a": "With g, output contains the full-match list. Without g, extraction preserves the existing JavaScript match meaning: the first full match followed by its capture groups."
+            },
+            {
+              "q": "Can replacements use captures and dollar signs?",
+              "a": "JavaScript replacement semantics for captures, full matches, named captures, dollar signs and surrounding context are preserved. If output exceeds the limit, partial content is not marked as successful."
+            },
+            {
+              "q": "Is only the visible preview exported?",
+              "a": "No. The full successful result is distinct from its preview, and full copy or TXT uses the complete string. A previous successful result is labeled when the current input fails or is canceled."
+            },
+            {
+              "q": "What if a Worker cannot start?",
+              "a": "An error and retry option are shown. Slow regular expressions are not rerun synchronously on the main screen."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "regex": {
+          "description": "Regex extraction and replacement with cancellation and full TXT export"
+        }
+      }
+    }
+  }
+}

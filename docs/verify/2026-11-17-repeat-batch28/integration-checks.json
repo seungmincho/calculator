@@ -1,0 +1,135 @@
+{
+  "scope": "여러 사진 워터마크",
+  "status": "complete_local_verification",
+  "namespace": "imageWatermark",
+  "preparation": {
+    "groups": 24,
+    "status": "passed; historical preparation subset of final author count"
+  },
+  "metadata": {
+    "status": "passed",
+    "updatedDate": "2026-11-17",
+    "sharedDescriptions": true,
+    "scopedLint": {
+      "files": 3,
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45632
+    }
+  },
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 86,
+    "commonGuideLeaves": 7,
+    "patchLeavesPerLanguage": 93,
+    "staticUses": 75,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 538,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-16T20:56:05.128Z",
+    "chromeClosed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "rawTranslationKeys": 0,
+    "firstRunAllPassed": true,
+    "report": "review-browser.md",
+    "results": "browser/final-results.json",
+    "productFixesDuringBrowser": 0
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 14,
+    "pureAdapter": 8,
+    "actualParent": 6,
+    "scopedLint": "passed",
+    "report": "watermark-independent-review.md",
+    "unresolvedFindings": 0
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "heapMiB": 2048,
+    "startedAt": "2026-11-16T20:58:33.001Z",
+    "resultCollectedAtKst": "2026-11-17 06:01",
+    "sessionId": 24287,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempts": 1,
+    "freeMemoryGiB": 4.5,
+    "totalMemoryGiB": 31.75,
+    "chromeClosed": true,
+    "allTsWritersFrozen": true,
+    "scope": "Shared batch28/batch30 execution; includes frozen batch31 connected edit unit and batch32 unconnected prepared files, without certifying those later features",
+    "sharedWith": "../2026-11-17-repeat-batch30/integration-checks.json"
+  },
+  "priorCompletedCheckpoints": [
+    "CSV performance follow-up",
+    "batch29",
+    "batch35 JS-only"
+  ],
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "accountSnapshot": {
+    "atKst": "2026-11-17 05:59",
+    "usedPercent": 58,
+    "remainingPercent": 42,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "source": "root account-wide read-only memo; not task-only usage or reset execution"
+  },
+  "author": {
+    "status": "passed/stable",
+    "groups": 33,
+    "preparedDomainQueueAdapter": 25,
+    "workspace": 7,
+    "wrapperConnection": 1,
+    "scopedLint": "Preparation8 files and changed5 files passed; overlapping files not double-counted",
+    "errors": 0,
+    "warnings": 0
+  },
+  "resolvedFindings": [
+    {
+      "issue": "Paused retry-failed restarted normal pending rows",
+      "fix": "Replace run membership with failed IDs and invalidate old generation",
+      "validation": "Author queue10, independent affected case, and native browser pause/retry flow passed"
+    }
+  ],
+  "codeDiffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current product and common source files; final document check recorded separately"
+  },
+  "followingParents": {
+    "batch31": "Complete edit unit included in typecheck; author functional/lint and browser validation pending at checkpoint; canonical unmerged",
+    "batch32": "Parent atomic patch stopped before write; prepared files only included; canonical unmerged"
+  },
+  "updatedAt": "2026-11-16T21:04:14.356Z",
+  "documentChecks": {
+    "status": "passed",
+    "relativeMarkdownFiles": 6,
+    "relativeLinks": 171,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-11-16T21:59:23.925Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 6
+    },
+    {
+      "name": "dutch-pay",
+      "leafKeysPerLanguage": 32
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "DutchPay",
+      "staticKeysChecked": 122,
+      "dynamicPrefixesChecked": [
+        "dir",
+        "storage",
+        "mode",
+        "modeHint"
+      ]
+    },
+    {
+      "component": "DutchPayCopyRecovery",
+      "staticKeysChecked": 8,
+      "dynamicPrefixesChecked": [
+        "copyRecovery"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

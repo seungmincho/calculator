@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-11-16T18:13:22.352Z",
+  "patches": [
+    {
+      "name": "minesweeper",
+      "leafKeysPerLanguage": 10
+    },
+    {
+      "name": "writing-diff",
+      "leafKeysPerLanguage": 30
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "WritingVersionsPanel",
+      "staticKeysChecked": 35,
+      "dynamicPrefixesChecked": [
+        "target.basis",
+        "target.unit",
+        "versions.errors",
+        "versions.notices",
+        "versions.diff"
+      ]
+    },
+    {
+      "component": "TextDiffWorkspace",
+      "staticKeysChecked": 62,
+      "dynamicPrefixesChecked": [
+        "handoff.errors",
+        "workspace.errors",
+        "results",
+        "workspace.filter",
+        "guide"
+      ]
+    },
+    {
+      "component": "DiffViewer",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "Minesweeper",
+      "staticKeysChecked": 79,
+      "dynamicPrefixesChecked": [
+        "guide"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

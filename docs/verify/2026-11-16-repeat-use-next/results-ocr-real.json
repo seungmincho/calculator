@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ocr-real-recognition-to-tts",
+    "pass": true
+  },
+  {
+    "name": "ocr-real-recognition-to-tts-selection",
+    "pass": true
+  }
+]

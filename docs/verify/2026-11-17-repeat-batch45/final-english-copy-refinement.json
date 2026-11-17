@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-11-16T23:45:08.457Z",
+  "changes": [
+    {
+      "lang": "en",
+      "key": "fontPreview.pairing.backup.preview",
+      "before": "{name} · {count} pairs",
+      "after": "{name} · Pairs: {count}"
+    },
+    {
+      "lang": "en",
+      "key": "fontPreview.pairing.backup.slots",
+      "before": "{selected} selected · {available} slots available",
+      "after": "Selected: {selected} · Available slots: {available}"
+    },
+    {
+      "lang": "en",
+      "key": "fontPreview.pairing.backup.confirm",
+      "before": "Add {count} selected pairs",
+      "after": "Add selected pairs ({count})"
+    },
+    {
+      "lang": "en",
+      "key": "fontPreview.pairing.backup.saved",
+      "before": "Added {count} pairs to your saved list. Your preview text and current styles are unchanged.",
+      "after": "Pairs added to your saved list: {count}. Your preview text and current styles are unchanged."
+    }
+  ],
+  "keysChanged": false,
+  "placeholdersChanged": false,
+  "productTSChanged": false,
+  "nativeRerun": false
+}

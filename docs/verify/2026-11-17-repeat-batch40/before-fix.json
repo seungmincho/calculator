@@ -1,0 +1,38 @@
+{
+  "reproductionOnly": true,
+  "sourceSha256": "66a2fc45fba9972b5d32bcc433fe760eb9ef215fcc92d7ad3e91dec11b92c5aa",
+  "groups": 5,
+  "probes": [
+    {
+      "name": "Space on focused button intercepted as hard drop",
+      "calls": [
+        "preventDefault",
+        "press:hard"
+      ]
+    },
+    {
+      "name": "Enter on focused link restarts finished game",
+      "calls": [
+        "preventDefault",
+        "start"
+      ]
+    },
+    {
+      "name": "existing textarea exclusion works",
+      "calls": []
+    },
+    {
+      "name": "pad has no native keyboard activation handler",
+      "missing": [
+        "onClick",
+        "onKeyDown"
+      ]
+    },
+    {
+      "name": "unrelated pointer releases and acts on first gesture",
+      "calls": [
+        "rotate"
+      ]
+    }
+  ]
+}

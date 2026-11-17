@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-16T09:33:35.607Z",
+  "results": [
+    {
+      "name": "national",
+      "url": "https://toolhub.ai.kr/api/fuel-prices",
+      "status": "PASS",
+      "basis": "20261116",
+      "cacheControl": "public, max-age=7200"
+    },
+    {
+      "name": "seoul",
+      "url": "https://toolhub.ai.kr/api/fuel-prices?sido=01",
+      "status": "PASS",
+      "basis": null,
+      "cacheControl": "public, max-age=7200"
+    },
+    {
+      "name": "historical",
+      "url": "https://toolhub.ai.kr/api/fuel-prices?date=2026-11-15&sido=01",
+      "status": "PASS",
+      "basis": "2026-11-15",
+      "cacheControl": "public, max-age=86400"
+    }
+  ]
+}

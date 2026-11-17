@@ -1,0 +1,36 @@
+{
+  "ko": {
+    "shareResult": {
+      "copyFailed": "링크를 자동으로 복사하지 못했어요.",
+      "busySave": "이미지 만드는 중",
+      "busyShare": "공유 준비 중",
+      "busyCopy": "복사 중",
+      "saveFailed": "이미지를 만들거나 저장을 시작하지 못했어요. 다시 시도해 주세요.",
+      "downloadStarted": "이미지 다운로드를 시작했어요.",
+      "manualTitle": "링크를 직접 복사해 주세요",
+      "manualLabel": "공유할 링크",
+      "manualHint": "아래 링크를 선택해서 복사하거나, 다시 복사를 시도할 수 있어요.",
+      "selectAll": "링크 전체 선택",
+      "retryCopy": "다시 복사",
+      "closeRecovery": "닫기",
+      "selectionFailed": "자동 선택을 하지 못했어요. 링크를 길게 누르거나 직접 선택해 주세요."
+    }
+  },
+  "en": {
+    "shareResult": {
+      "copyFailed": "Could not copy the link automatically.",
+      "busySave": "Creating image",
+      "busyShare": "Preparing share",
+      "busyCopy": "Copying",
+      "saveFailed": "Could not create the image or start the download. Please try again.",
+      "downloadStarted": "Image download started.",
+      "manualTitle": "Copy the link manually",
+      "manualLabel": "Link to share",
+      "manualHint": "Select and copy the link below, or try copying again.",
+      "selectAll": "Select entire link",
+      "retryCopy": "Retry copy",
+      "closeRecovery": "Close",
+      "selectionFailed": "Could not select the link automatically. Long-press or select it manually."
+    }
+  }
+}

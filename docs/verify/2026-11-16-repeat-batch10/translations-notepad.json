@@ -1,0 +1,50 @@
+{
+  "ko": {
+    "notepad": {
+      "reading": {
+        "title": "메모 읽어주기",
+        "all": "메모 전체 읽어주기",
+        "selection": "선택 영역 읽어주기",
+        "hint": "최대 {max}자를 새 탭에 전달합니다. 본문은 URL에 넣지 않으며 전달은 10분 뒤 만료됩니다. 기기 음성만 사용하도록 열리고, 재생은 직접 시작합니다.",
+        "selected": "{count}자 선택됨",
+        "sent": "{count}자를 새 읽어주기 탭에 전달했습니다. 원본 메모는 그대로 유지됩니다.",
+        "selectionChanged": "메모나 선택 영역이 바뀌었습니다. 읽을 부분을 다시 선택해 주세요.",
+        "popupBlocked": "새 탭을 열지 못했습니다. 이 사이트의 팝업을 허용한 뒤 다시 눌러 주세요.",
+        "textTooLong": "한 번에 최대 30,000자까지 전달할 수 있습니다. 읽을 부분을 나누어 선택해 주세요.",
+        "emptyText": "읽을 내용이 없습니다. 메모를 작성하거나 글자가 있는 부분을 선택해 주세요.",
+        "handoffFailed": "새 탭에 내용을 전달하지 못했습니다. 브라우저의 저장소 제한을 확인한 뒤 다시 시도해 주세요. 원본 메모는 유지됩니다."
+      }
+    },
+    "textToSpeech": {
+      "handoff": {
+        "notepadLoaded": "메모장에서 전달한 내용을 불러왔습니다. 기기 음성만 사용하도록 설정했으며, 재생 버튼을 누르면 읽기 시작합니다.",
+        "notepadExpired": "메모장에서 전달한 내용이 없거나 만료·손상되었습니다. 메모장으로 돌아가 다시 전달해 주세요.",
+        "cleanupFailed": "전달용 임시 데이터를 지우지 못했거나 다른 값으로 바뀌었습니다. 새로고침하면 이전 내용이 다시 표시될 수 있습니다."
+      }
+    }
+  },
+  "en": {
+    "notepad": {
+      "reading": {
+        "title": "Read this note aloud",
+        "all": "Read the whole note",
+        "selection": "Read selected text",
+        "hint": "Send up to {max} characters to a new tab. The text stays out of the URL and the transfer expires after 10 minutes. Only device voices are enabled initially; playback starts when you press Play.",
+        "selected": "{count} characters selected",
+        "sent": "Sent {count} characters to a new read-aloud tab. Your original note is unchanged.",
+        "selectionChanged": "The note or selection has changed. Select the text again.",
+        "popupBlocked": "Could not open a new tab. Allow pop-ups for this site, then try again.",
+        "textTooLong": "You can send up to 30,000 characters at a time. Select a shorter section.",
+        "emptyText": "There is no text to read. Write a note or select a section with text.",
+        "handoffFailed": "Could not transfer the text to the new tab. Check your browser's storage restrictions and try again. Your original note is unchanged."
+      }
+    },
+    "textToSpeech": {
+      "handoff": {
+        "notepadLoaded": "Loaded text from Notepad. Only device voices are enabled. Press Play to start reading.",
+        "notepadExpired": "The Notepad transfer is missing, expired, or invalid. Return to Notepad and send it again.",
+        "cleanupFailed": "The temporary transfer could not be removed or was replaced by another value. Reloading may show an earlier transfer again."
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-11-17T00:56:58.011Z",
+  "patches": [
+    {
+      "name": "color-converter",
+      "leafKeysPerLanguage": 36
+    },
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 8
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "ColorConverter",
+      "staticKeysChecked": 44,
+      "dynamicPrefixesChecked": [
+        "query",
+        "formats",
+        "channels",
+        "guide.formats"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

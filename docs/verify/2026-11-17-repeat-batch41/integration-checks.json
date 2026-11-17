@@ -1,0 +1,138 @@
+{
+  "scope": "메모장 외부 변경·파일 가져오기 원고 보호",
+  "status": "complete_local_verification",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 36,
+    "commonGuideLeaves": 7,
+    "patchLeavesPerLanguage": 43,
+    "staticUses": 90,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 551,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 5,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45894
+    },
+    "lintFollowup": "Wordle static SEO example apostrophes removed; affected page lint passed; no runtime change"
+  },
+  "author": {
+    "status": "passed_frozen",
+    "groups": 36,
+    "prepared": 26,
+    "actualParent": 10,
+    "scopedLintFiles": 8,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "report": "implementation.md"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 22,
+    "prepared": 13,
+    "actualParent": 9,
+    "reports": [
+      "independent-preparation-review.md",
+      "independent-parent-review.md"
+    ],
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-16T23:33:40.538Z",
+    "browserClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "productChanges": 0,
+    "report": "review-browser.md",
+    "actual": "two tabs/Storage/Web Locks/File.text/keyboard/TXT JSON downloads/new TTS tab",
+    "fixtureCorrections": "React selection uses native keyboard; wait for TTS hydration; collect popup promise with click"
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "attempt": 1,
+    "preflightAt": "2026-11-16T23:43:20.541Z",
+    "freeGiB": 3.84,
+    "totalGiB": 31.75,
+    "heapMiB": 2048,
+    "sessionId": 89128,
+    "resultChunk": "d7af11",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "scope": [
+      "41Notepad",
+      "42KoreanWordle",
+      "43UnitBatch",
+      "45FontPairBackup",
+      "44unconnectedRunningPrepAfterCopyFix",
+      "49unconnectedMenuPurePrep"
+    ],
+    "browserClosedBeforeStart": true,
+    "allTSWritersFrozen": true,
+    "preflightReport": "../2026-11-17-repeat-batch45/typecheck-final-preflight.json",
+    "resultReport": "../2026-11-17-repeat-batch45/typecheck-final-result.json",
+    "laterProductChangesNotCovered": true
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "diff": {
+    "status": "passed",
+    "exitCode": 0,
+    "chunk": "e7f1a1",
+    "scope": "current four product sources and tests plus owned canonical/generated/page/menu/discovery",
+    "note": "git diff --check covers tracked changes; not a clean-worktree or untracked-file assertion"
+  },
+  "commonFinal": {
+    "translatedPatchLeavesPerLanguage": 177,
+    "staticUses": 312,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "ownNamespaceRegistrations": 551,
+    "childRegistrations": 6,
+    "unresolvedRegistrations": 0,
+    "existingDynamicNotices": 60
+  },
+  "accountSnapshot": {
+    "source": "root read-only report",
+    "at": "2026-11-17T08:39:00+09:00",
+    "usedPercent": 30,
+    "remainingPercent": 70,
+    "freeCoupons": 0,
+    "ordinaryUsageAllowed": true,
+    "scope": "whole account, not task-only usage",
+    "agentAccountMutations": 0
+  },
+  "documentation": {
+    "status": "passed",
+    "files": 16,
+    "localLinks": 217,
+    "missingLinks": 0
+  }
+}

@@ -1,0 +1,97 @@
+
+=== issues ===
+src/components/Breadcrumb.tsx
+   L25 root t(found.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L29 root t(found.subcategory) key namespace not static [@/lib/i18n/navigation]
+   L32 root t(category.titleKey) key namespace not static [@/lib/i18n/navigation]
+src/components/CategoryHub.tsx
+   L27 root t(sub) key namespace not static [registry]
+   L40 root t(item.labelKey) key namespace not static [registry]
+   L45 root t(item.descriptionKey) key namespace not static [registry]
+src/components/CertifiedLetter.tsx
+   L336 object property ns: 'certifiedLetter'
+src/components/DecisionToolsBar.tsx
+   L32 root t(key) key namespace not static [@/lib/i18n/navigation]
+src/components/document/DocumentGenerator.tsx
+   L65 dynamic namespace useTranslations(ns) [registry]
+src/components/EmploymentContract.tsx
+   L649 object property ns: 'employmentContract'
+src/components/Footer.tsx
+   L48 root t(category.titleKey) key namespace not static [@/lib/i18n/shared]
+   L58 root t(item.labelKey) key namespace not static [@/lib/i18n/shared]
+src/components/GuideSection.tsx
+   L13 dynamic namespace useTranslations(namespace) [registry]
+src/components/Header.tsx
+   L55 root t(menuConfig[key].titleKey) key namespace not static [@/lib/i18n/navigation]
+   L58 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L63 root translator t passed around: [t]
+src/components/HomePage.tsx
+   L97 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L97 root t(item.descriptionKey) key namespace not static [@/lib/i18n/navigation]
+   L100 root translator t passed around: [activeCategory, searchQuery, t]
+   L151 root t(seasonPicks.length ? 'homePage.season.label' : 'homePage.deadline.label') key namespace not static [@/lib/i18n/navigation]
+   L196 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L199 root t(item.descriptionKey) key namespace not static [@/lib/i18n/navigation]
+   L242 root t(tool.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L269 root t(tool.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L270 root t(tool.descriptionKey) key namespace not static [@/lib/i18n/navigation]
+   L290 root t(favoritedItems.length > 0 ? 'favorites.title' : 'homePage.recentlyViewed.title') key namespace not static [@/lib/i18n/navigation]
+   L311 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L348 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L353 root t(item.descriptionKey) key namespace not static [@/lib/i18n/navigation]
+   L384 root t(menuConfig[key].titleKey) key namespace not static [@/lib/i18n/navigation]
+   L398 root t(menuConfig[catKey].titleKey) key namespace not static [@/lib/i18n/navigation]
+   L435 root t(menuConfig[catKey].titleKey) key namespace not static [@/lib/i18n/navigation]
+   L439 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+src/components/InquiryForm.tsx
+   L85 root translator tGlobal passed around: findToolByPath(fromPath, tGlobal)
+   L86 root translator tGlobal passed around: [fromPath, tGlobal]
+src/components/IouGenerator.tsx
+   L382 object property ns: 'iouGenerator'
+src/components/LeaseContract.tsx
+   L588 object property ns: 'leaseContract'
+src/components/MobileBottomNav.tsx
+   L36 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L42 root translator t passed around: [t]
+   L237 root t(labelKey) key namespace not static [@/lib/i18n/navigation]
+   L256 root t(labelKey) key namespace not static [@/lib/i18n/navigation]
+src/components/PaySlip.tsx
+   L462 object property ns: 'paySlip'
+src/components/PowerOfAttorney.tsx
+   L314 object property ns: 'powerOfAttorney'
+src/components/ReceiptGenerator.tsx
+   L318 object property ns: 'receiptGenerator'
+src/components/RelatedTools.tsx
+   L62 root t(item.labelKey) key namespace not static [@/lib/i18n/shared]
+   L65 root t(item.descriptionKey) key namespace not static [@/lib/i18n/shared]
+src/components/ResignationLetter.tsx
+   L201 object property ns: 'resignationLetter'
+src/components/SearchDialog.tsx
+   L53 root t(item.labelKey) key namespace not static [@/lib/i18n/navigation]
+   L54 root t(item.descriptionKey) key namespace not static [@/lib/i18n/navigation]
+   L62 root translator t passed around: [t]
+src/components/ToolAnalyticsDashboard.tsx
+   L226 root t(menuConfig[key].titleKey) key namespace not static [@/lib/i18n/shared]
+   L272 root t(tool.labelKey) key namespace not static [@/lib/i18n/shared]
+   L273 root t(menuConfig[tool.categoryKey].titleKey) key namespace not static [@/lib/i18n/shared]
+src/components/ToolShareButton.tsx
+   L23 root t(found.labelKey) key namespace not static [@/lib/i18n/shared]
+   L24 root t(found.descriptionKey) key namespace not static [@/lib/i18n/shared]
+src/components/ToolsShowcase.tsx
+   L69 root t(item.labelKey) key namespace not static [@/lib/i18n/shared]
+   L73 root t(item.descriptionKey) key namespace not static [@/lib/i18n/shared]
+   L161 root t(categoryTitleKeys[categoryKey]) key namespace not static [@/lib/i18n/shared]
+   L171 root t(subcatKey) key namespace not static [@/lib/i18n/shared]
+src/components/YearEndChecklist.tsx
+   L148 root tr(LABEL[i.href]) key namespace not static [registry]
+
+=== namespaces not in ko.json ===
+
+VIA CHILD: src/app/coding-patterns/page.tsx 'codingPatterns' <- src/components/CodingPatterns.tsx (rendered earlier in tree? check order)
+VIA CHILD: src/app/cs-hub/page.tsx 'csHub' <- src/components/CsHub.tsx (rendered earlier in tree? check order)
+VIA CHILD: src/app/cs-interview/page.tsx 'csInterview' <- src/components/CsInterview.tsx (rendered earlier in tree? check order)
+VIA CHILD: src/app/dev-cheatsheet/page.tsx 'devCheatsheet' <- src/components/DevCheatsheet.tsx (rendered earlier in tree? check order)
+VIA CHILD: src/app/dev-roadmap/page.tsx 'devRoadmap' <- src/components/DevRoadmap.tsx (rendered earlier in tree? check order)
+VIA CHILD: src/app/system-design/page.tsx 'systemDesign' <- src/components/SystemDesign.tsx (rendered earlier in tree? check order)
+
+audit: 492 satisfied by own import, 6 via child component, 0 unresolved; 60 issues listed above

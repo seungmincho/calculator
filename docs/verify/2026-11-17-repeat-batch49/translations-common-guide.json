@@ -1,0 +1,106 @@
+{
+  "ko": {
+    "decisionTools": {
+      "menu": {
+        "subtitle": "점심·저녁 후보를 돌려 고르세요. 뽑힌 메뉴를 이번에만 제외하고 원래 후보 그대로 복구할 수 있어요.",
+        "faq": [
+          {
+            "q": "메뉴 추천 룰렛은 무료인가요?",
+            "a": "네, 완전 무료입니다. 회원가입이나 앱 설치 없이 브라우저에서 바로 사용할 수 있어요. PC, 스마트폰, 태블릿 모두 지원합니다."
+          },
+          {
+            "q": "룰렛에 메뉴를 몇 개까지 추가할 수 있나요?",
+            "a": "2개부터 최대 12개까지 올릴 수 있습니다. 메뉴 이름(20자 이내)을 입력하고 추가 버튼을 누르면 되며, 원하지 않는 항목은 언제든 삭제할 수 있어요."
+          },
+          {
+            "q": "어떤 메뉴 프리셋이 있나요?",
+            "a": "처음에는 저녁메뉴 프리셋(삼겹살·치킨·피자·파스타·초밥·국밥·찜닭·부대찌개·마라탕·쌀국수·족발·보쌈)이 채워져 있습니다. 점심메뉴 프리셋에는 김치찌개·제육볶음·돈까스·비빔밥·냉면·라멘·짜장면·짬뽕·우동·덮밥·샐러드·김밥이 들어 있고, 한식·중식·일식·양식·분식·야식배달·카페·벌칙 프리셋도 있어요."
+          },
+          {
+            "q": "룰렛 결과를 친구에게 공유할 수 있나요?",
+            "a": "네! 현재 입력한 메뉴 목록이 URL에 자동으로 담기므로, 주소창의 링크를 복사해서 카카오톡이나 메신저로 공유하면 같은 룰렛을 친구도 돌릴 수 있어요. 결과가 나오면 \"이미지\"로 결과 카드를 저장하거나 \"복사\"로 메뉴 이름을 복사할 수도 있습니다."
+          },
+          {
+            "q": "오늘 뭐 먹지? 메뉴 추천과는 무엇이 다른가요?",
+            "a": "메뉴 룰렛은 내가 정한 후보 중에서 하나를 뽑는 도구이고, 오늘 뭐 먹지? 메뉴 추천은 300가지가 넘는 메뉴 중에서 상황·카테고리에 맞춰 골라 주는 도구입니다. 후보가 떠오르지 않을 때는 메뉴 추천을 먼저 써 보세요."
+          },
+          {
+            "q": "오늘 점심 메뉴 정할 때 말고 다른 용도로도 쓸 수 있나요?",
+            "a": "물론입니다. 저녁 메뉴 결정, 디저트 선택, 카페 메뉴 고르기, 모임 장소 결정, 벌칙 정하기 등 다양한 상황에서 활용할 수 있어요."
+          },
+          {
+            "q": "이번에만 빼고 싶은 메뉴는 어떻게 하나요?",
+            "a": "결과에서 이번에는 제외를 누르면 같은 이름의 모든 후보를 이번 추첨에서만 뺍니다. 원본 목록의 줄과 순서는 그대로이며 복구하면 돌아옵니다. 다시 돌릴 후보가 2개 이상 남아야 제외할 수 있습니다."
+          },
+          {
+            "q": "임시 제외가 식사 기록이나 주간 계획에 반영되나요?",
+            "a": "아니요. 먹었다는 기록을 남기지 않고 주간 계획 후보도 바꾸지 않습니다. 식사 기록에 따른 기존 제외는 별개라 임시 복구만으로 되살릴 수 없습니다."
+          },
+          {
+            "q": "이번 제외를 저장하거나 링크로 보낼 수 있나요?",
+            "a": "이번 제외는 페이지 메모리에만 유지됩니다. 원본 후보나 실제 식사 제외 대상이 바뀌거나 새로고침하면 해제됩니다. 링크는 원래 후보 목록만 공유하며 복구 뒤 자동으로 다시 돌리지 않습니다."
+          }
+        ]
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "menuRoulette": {
+          "description": "메뉴 룰렛·이번 회차 제외와 복구·식사 기록·주간 계획"
+        }
+      }
+    }
+  },
+  "en": {
+    "decisionTools": {
+      "menu": {
+        "subtitle": "Spin your lunch or dinner choices. Temporarily exclude a picked menu for this round and restore the original choices.",
+        "faq": [
+          {
+            "q": "Is menu roulette free?",
+            "a": "Yes. Use it in a browser without an account or app installation."
+          },
+          {
+            "q": "How many menu entries can I add?",
+            "a": "Use 2 to 12 entries. Newly typed names can contain up to 20 characters. Edit the original list before spinning; temporary skips are a separate action."
+          },
+          {
+            "q": "Which presets are available?",
+            "a": "Start with dinner or choose lunch, Korean, Chinese, Japanese, Western, street food, late-night delivery, cafe or penalty presets. You can edit the original candidates."
+          },
+          {
+            "q": "Can I share the roulette with a friend?",
+            "a": "The URL contains the original candidate list. It does not include the picked result or temporary skips. Copy the result text or save its image separately."
+          },
+          {
+            "q": "How is this different from the other menu picker?",
+            "a": "Menu roulette draws from the candidates you enter. The separate menu picker suggests choices by category and situation."
+          },
+          {
+            "q": "Can I use it for more than lunch?",
+            "a": "You can use your own candidate list for dinner, desserts, cafes or another choice."
+          },
+          {
+            "q": "How can I skip a menu only for this draw?",
+            "a": "Choose Skip for this draw on the result to skip every entry with the same name. Original rows and their order stay intact and return when restored. At least 2 entries must remain available."
+          },
+          {
+            "q": "Do temporary skips change meal history or the weekly plan?",
+            "a": "No. Skipping does not mark a menu as eaten or change weekly-plan candidates. Existing meal-history exclusions remain separate; restoring a temporary skip does not override them."
+          },
+          {
+            "q": "Can I save temporary skips or send them in a link?",
+            "a": "They stay only in page memory and clear when the original candidates or effective meal exclusions change, or when you reload. Links share only the original list. Restoring does not automatically spin again."
+          }
+        ]
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "menuRoulette": {
+          "description": "Menu roulette, temporary exclusions and restore, meal history and weekly plans"
+        }
+      }
+    }
+  }
+}

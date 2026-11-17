@@ -1,0 +1,110 @@
+{
+  "ko": {
+    "jsonFormatter": {
+      "selection": {
+        "title": "선택한 노드",
+        "hint": "선택한 값과 경로를 확인하세요. 복사는 미리보기 구간이 아닌 전체 내용을 사용합니다.",
+        "pointer": "JSON Pointer",
+        "rootPointer": "루트의 JSON Pointer는 빈 문자열입니다. 빈 이름의 키를 가리키는 /와 다릅니다.",
+        "path": "JSONPath (jsonpath-plus)",
+        "value": "선택 값 JSON",
+        "checking": "이 경로가 선택한 노드를 정확히 가리키는지 확인 중입니다.",
+        "copying": "복사 중…",
+        "copied": "복사했어요",
+        "copy": {
+          "value": "선택 값 전체 JSON 복사",
+          "pointer": "JSON Pointer 복사",
+          "path": "JSONPath 복사"
+        },
+        "pathStatus": {
+          "unsupported": "이 키 조합은 현재 JSONPath 엔진에서 정확히 표현할 수 없어요. JSON Pointer나 값 JSON을 사용하세요.",
+          "unavailable": "JSONPath 지원 여부를 확인하지 못했어요. 노드를 다시 선택하거나 JSON Pointer를 사용하세요."
+        },
+        "valueStatus": {
+          "nonFinite": "선택한 값에 NaN 또는 Infinity가 있어 JSON으로 그대로 복사할 수 없어요. null로 바꾸지 않았으며 경로 복사는 계속 사용할 수 있어요.",
+          "notJsonValue": "선택한 값에 JSON으로 표현할 수 없는 값이 있어요. 경로 복사를 사용하세요.",
+          "serializationFailed": "이 선택 값을 JSON으로 만들지 못했어요. 다른 노드를 선택하거나 경로 복사를 사용하세요."
+        },
+        "previewRange": "전체 {total} UTF-16 단위 중 {start}–{end} · {page}/{pages} 구간. 복사는 전체 값입니다.",
+        "first": "처음 구간",
+        "previous": "이전 구간",
+        "next": "다음 구간",
+        "last": "끝 구간",
+        "rootLabel": "루트 (전체 값)",
+        "emptyKey": "빈 이름의 키",
+        "selectNode": "{name} 값과 경로 선택",
+        "expandNode": "{name} 펼치기",
+        "collapseNode": "{name} 접기",
+        "recovery": {
+          "failed": "복사하지 못했어요. 아래 전체 내용을 직접 선택하거나 다시 시도하세요.",
+          "field": {
+            "output": "전체 출력 — 수동 복사",
+            "value": "선택 값 전체 JSON — 수동 복사",
+            "pointer": "JSON Pointer — 수동 복사",
+            "path": "JSONPath — 수동 복사"
+          },
+          "hint": "이 필드는 전체 내용입니다. 큰 내용은 표시·선택에 시간이 걸릴 수 있어요. 선택 후 기기의 복사 기능을 사용하세요.",
+          "select": "전체 내용 선택",
+          "retry": "복사 다시 시도",
+          "close": "닫기",
+          "selectionFailed": "자동으로 선택하지 못했어요. 필드를 눌러 직접 선택해 주세요."
+        },
+        "clearSearch": "트리 검색 지우기"
+      }
+    }
+  },
+  "en": {
+    "jsonFormatter": {
+      "selection": {
+        "title": "Selected node",
+        "hint": "Inspect the selected value and path. Copy uses the complete content, not just the preview segment.",
+        "pointer": "JSON Pointer",
+        "rootPointer": "The root JSON Pointer is an empty string. It differs from /, which points to an empty object key.",
+        "path": "JSONPath (jsonpath-plus)",
+        "value": "Selected value as JSON",
+        "checking": "Checking that this path identifies the selected node exactly.",
+        "copying": "Copying…",
+        "copied": "Copied",
+        "copy": {
+          "value": "Copy full selected JSON",
+          "pointer": "Copy JSON Pointer",
+          "path": "Copy JSONPath"
+        },
+        "pathStatus": {
+          "unsupported": "This key combination cannot be represented exactly by the current JSONPath engine. Use JSON Pointer or the JSON value.",
+          "unavailable": "JSONPath support could not be checked. Select the node again or use JSON Pointer."
+        },
+        "valueStatus": {
+          "nonFinite": "The selection contains NaN or Infinity, which JSON cannot preserve. Nothing was changed to null. Path copying remains available.",
+          "notJsonValue": "The selection contains a value that JSON cannot represent. Use path copying instead.",
+          "serializationFailed": "The selection could not be serialized as JSON. Select another node or use path copying."
+        },
+        "previewRange": "UTF-16 units {start}–{end} of {total} · segment {page}/{pages}. Copy includes the full value.",
+        "first": "First segment",
+        "previous": "Previous segment",
+        "next": "Next segment",
+        "last": "Last segment",
+        "rootLabel": "Root (entire value)",
+        "emptyKey": "Empty object key",
+        "selectNode": "Select value and path for {name}",
+        "expandNode": "Expand {name}",
+        "collapseNode": "Collapse {name}",
+        "recovery": {
+          "failed": "Copy failed. Select the full content below manually or retry.",
+          "field": {
+            "output": "Full output — manual copy",
+            "value": "Full selected JSON — manual copy",
+            "pointer": "JSON Pointer — manual copy",
+            "path": "JSONPath — manual copy"
+          },
+          "hint": "This field contains the full content. Large content may take time to display and select. After selecting, use your device’s copy command.",
+          "select": "Select full content",
+          "retry": "Retry copy",
+          "close": "Close",
+          "selectionFailed": "Automatic selection failed. Select the text directly in the field."
+        },
+        "clearSearch": "Clear tree search"
+      }
+    }
+  }
+}

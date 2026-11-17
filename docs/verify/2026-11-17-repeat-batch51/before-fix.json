@@ -1,0 +1,61 @@
+{
+  "kind": "actual original parent/ICS with controlled I/O; real Web Crypto and Blob; not native browser",
+  "sourceSha256": {
+    "src/components/DdayCalculator.tsx": "ed93a76eb535d52d8824daf8482efd6d7b1bf7ad29b265e5f5458888691f6949",
+    "src/components/DdayCalendarExport.tsx": "5a36ea4e5e711e999af604582f431f6942e87d32a7251a6dba3b3f4ac859ea42"
+  },
+  "normal": 2,
+  "reproducedProblems": 4,
+  "cases": [
+    {
+      "boundary": "normal matching native Clipboard completion",
+      "normal": true,
+      "copiedFeedback": true,
+      "legacyCalls": 0
+    },
+    {
+      "boundary": "native rejection and execCommand false",
+      "problem": true,
+      "copiedFeedback": true,
+      "legacyReturned": false,
+      "outcome": "success label despite both copy methods failing"
+    },
+    {
+      "boundary": "copy A pending then title/date B then old rejection",
+      "problem": true,
+      "oldFallbackCalls": 1,
+      "copiedFeedbackOnB": true,
+      "inputPreserved": true
+    },
+    {
+      "boundary": "normal current ICS real SHA/Blob",
+      "normal": true,
+      "problem": false,
+      "downloads": 1,
+      "filename": "dday-2028-02-29.ics",
+      "originalSnapshotPreserved": true,
+      "revoked": 1,
+      "outcome": "matching requested file"
+    },
+    {
+      "boundary": "ICS real SHA pending then edit",
+      "normal": false,
+      "problem": true,
+      "downloads": 1,
+      "filename": "dday-2028-02-29.ics",
+      "originalSnapshotPreserved": true,
+      "revoked": 1,
+      "outcome": "old clicked file is still submitted after current context changes"
+    },
+    {
+      "boundary": "ICS real SHA pending then unmount",
+      "normal": false,
+      "problem": true,
+      "downloads": 1,
+      "filename": "dday-2028-02-29.ics",
+      "originalSnapshotPreserved": true,
+      "revoked": 1,
+      "outcome": "old clicked file is still submitted after current context changes"
+    }
+  ]
+}

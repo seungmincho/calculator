@@ -1,0 +1,58 @@
+{
+  "verifiedAt": "2026-11-16T14:24:33.193Z",
+  "scope": "Batch9 final checkpoint with batch9/10; later batch11/12 edits require their own final checkpoint",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T14:22:17.041Z",
+    "freeMemoryBeforeGiB": 5.33,
+    "browsersClosed": true,
+    "initialAttempt": {
+      "memoryMeasuredAt": "2026-11-16T14:20:22.161Z",
+      "freeMemoryBeforeGiB": 5.36,
+      "exitCode": 1,
+      "errors": [
+        "JsonFormatter unknown JSONPath argument",
+        "JsonPathPresets false type-predicate narrowing to never"
+      ],
+      "resolution": "Product owner corrected JSON root validation and range-check return type; final tsc passed"
+    }
+  },
+  "browser": {
+    "total": 13,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "evidence": "browser/final-results.json"
+  },
+  "translations": {
+    "generatedFiles": 796,
+    "ownImports": 512,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 132,
+    "staticKeyUsesChecked": 315,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "products": "0 errors; existing TimerStopwatch exhaustive-deps warning 1",
+    "shared": "0 errors and warnings"
+  },
+  "diffCheck": {
+    "exitCode": 0
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "physical mobile device testing"
+  ]
+}

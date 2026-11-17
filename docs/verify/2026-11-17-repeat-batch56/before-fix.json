@@ -1,0 +1,67 @@
+{
+  "actualParent": true,
+  "controlledIO": true,
+  "nativeBrowser": false,
+  "realImageDecode": false,
+  "sourceSha256": "321ba3f96943414e349e0127024806e2d55b48b7a5ee193eab16185cdad23a8b",
+  "sourceFile": "src/components/ImageConverter.tsx",
+  "findings": [
+    {
+      "scenario": "normal sequential conversion and unique ZIP entries",
+      "normal": true,
+      "conversions": 2,
+      "maxActive": 1,
+      "zipNames": [
+        "a.jpg",
+        "a (2).jpg"
+      ]
+    },
+    {
+      "scenario": "pending header read adds files after explicit reset",
+      "defect": true,
+      "resetEmpty": true,
+      "lateItemAdded": true,
+      "newConversionStarted": true
+    },
+    {
+      "scenario": "failed new setting removes and revokes previous successful output",
+      "defect": true,
+      "previousSuccessfulOutputRetained": false,
+      "previousUrlRevoked": true
+    },
+    {
+      "scenario": "during250ms displayed PNG setting still offers completed JPG output",
+      "defect": true,
+      "displayedFormat": "png",
+      "downloadFormat": "jpeg",
+      "allDownloadEnabled": true,
+      "conversionsBeforeDebounce": 1
+    },
+    {
+      "scenario": "ZIP already started still downloads after reset settings and unmount",
+      "observed": true,
+      "cases": [
+        {
+          "transition": "reset",
+          "downloadsAfterTransition": 1
+        },
+        {
+          "transition": "settings",
+          "downloadsAfterTransition": 1
+        },
+        {
+          "transition": "unmount",
+          "downloadsAfterTransition": 1
+        }
+      ],
+      "policyNote": "unmount is a lifecycle defect; reset/settings cancellation policy must be explicit in the new contract"
+    },
+    {
+      "scenario": "debounced URL writer discards foreign duplicate query hash and history state",
+      "defect": true,
+      "foreignValuesKept": 0,
+      "hashKept": false,
+      "historyStatePassed": null
+    }
+  ]
+}

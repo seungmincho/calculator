@@ -1,0 +1,222 @@
+{
+  "ko": {
+    "kanbanBoard": {
+      "close": "닫기",
+      "assignee": "담당자",
+      "assigneePlaceholder": "담당자 이름 (선택)",
+      "assignedTo": "담당자: {name}",
+      "scheduledDate": "마감일: {date}",
+      "overdueDate": "기한 지남: {date}",
+      "fromMeeting": "회의록 사본: {title}",
+      "meetingCopy": "‘{title}’에서 가져온 업무 사본입니다. 여기서 바꾼 내용은 원본 회의록에 반영되지 않습니다.",
+      "deleteNamedCard": "카드 삭제: {title}",
+      "dragNamedCard": "카드 끌어 이동: {title}",
+      "moveColumn": "열 이동",
+      "moveNamedCard": "열 이동: {title}",
+      "columnName": "열 이름",
+      "rename": "이름",
+      "renameNamedColumn": "열 이름 변경: {title}",
+      "deleteNamedColumn": "열 삭제: {title}",
+      "searchPlaceholder": "제목·설명·담당자 검색",
+      "loadingBoard": "저장된 보드를 불러오고 있습니다.",
+      "emptyBoard": "아직 열이 없습니다. 열을 추가하거나 회의록 업무를 가져와 시작하세요.",
+      "noMatchingCards": "검색 조건에 맞는 카드가 없습니다.",
+      "confirmImportReplace": "JSON 파일의 보드로 현재 보드를 교체할까요? 현재 보드를 보관하려면 먼저 내보내기 해주세요.",
+      "jsonImported": "JSON 보드를 가져와 저장했습니다.",
+      "importTooLarge": "파일이 너무 큽니다. 30MB 이하의 보드 JSON 파일을 선택해 주세요. 기존 보드는 변경하지 않았습니다.",
+      "meetingImported": "회의 업무 {added}개를 저장했습니다. 이미 있는 업무 {skipped}개는 건너뛰었습니다.",
+      "meetingTargetError": "새 열 이름 또는 상태별 목적 열을 확인해 주세요. 새 열 이름은 120자까지 입력할 수 있습니다.",
+      "meetingPayloadError": "전달된 회의 업무를 확인할 수 없습니다. 회의록에서 항목을 확인한 뒤 다시 보내 주세요.",
+      "handoffCleanupFailed": "보드 작업은 완료됐지만 임시 전달 데이터를 지우지 못했습니다. 이 탭을 닫으면 임시 데이터가 정리됩니다.",
+      "storage": {
+        "invalidBoard": "저장된 보드가 손상되었거나 지원하지 않는 버전입니다. 원본을 덮어쓰지 않았습니다. 원본 파일을 백업한 뒤 저장 데이터를 복구하고 다시 불러와 주세요.",
+        "conflict": "다른 탭에서 보드가 바뀌었습니다. 변경 내용을 덮어쓰지 않았습니다. 최신 보드를 불러온 뒤 다시 시도해 주세요. 전달받은 회의 업무는 이 화면에 유지됩니다.",
+        "unavailable": "브라우저 저장소에 접근할 수 없습니다. 저장소 사용을 허용한 뒤 다시 불러와 주세요. 보드는 변경하지 않았습니다.",
+        "saveFailed": "보드를 저장하지 못했습니다. 화면의 보드는 변경하지 않았습니다. 저장 공간과 브라우저 설정을 확인한 뒤 다시 시도해 주세요.",
+        "reload": "저장된 보드 다시 불러오기",
+        "backup": "저장 원본 파일 백업"
+      },
+      "colors": {
+        "blue": "파랑",
+        "green": "초록",
+        "red": "빨강",
+        "yellow": "노랑",
+        "purple": "보라",
+        "pink": "분홍",
+        "orange": "주황",
+        "gray": "회색"
+      },
+      "sample": {
+        "columns": { "todo": "할 일", "inProgress": "진행 중", "review": "검토", "done": "완료" },
+        "tasks": {
+          "requirements": { "title": "요구사항 분석", "description": "고객 요구사항을 검토하고 핵심 기능 목록을 작성합니다." },
+          "design": { "title": "UI 디자인 초안", "description": "와이어프레임과 주요 화면 목업을 작성합니다." },
+          "schema": { "title": "데이터베이스 스키마 설계", "description": "테이블과 데이터 간 관계를 정의합니다." },
+          "login": { "title": "로그인 기능 구현", "description": "인증과 소셜 로그인을 연결합니다." },
+          "api": { "title": "API 명세서 작성", "description": "요청과 응답 형식을 문서화합니다." },
+          "homepage": { "title": "메인 페이지 검토", "description": "모바일 화면과 다크 모드 동작을 검토합니다." },
+          "setup": { "title": "프로젝트 환경 설정", "description": "개발 환경과 코드 검사 도구를 설정했습니다." },
+          "kickoff": { "title": "팀 킥오프 미팅", "description": "역할, 작업 일정, 소통 채널을 정했습니다." }
+        }
+      },
+      "guide": {
+        "howTo": {
+          "items": [
+            "컬럼 추가로 새 작업 단계를 만들고 각 열에서 카드를 추가하세요.",
+            "카드 편집에서 제목, 상세 내용, 담당자, 마감일을 바꿀 수 있습니다.",
+            "카드의 열 이동 선택 상자 또는 드래그로 작업 단계를 바꾸세요.",
+            "회의록의 실행 항목을 선택해 보내면 상태별 새 열 또는 직접 고른 기존 열에 추가할 수 있습니다.",
+            "제목·설명·담당자 검색과 우선순위 필터로 필요한 카드를 찾으세요."
+          ]
+        },
+        "tips": {
+          "items": [
+            "JSON 내보내기로 보드를 백업하거나 다른 기기로 옮길 수 있습니다.",
+            "마감일이 지난 카드는 ‘기한 지남’ 표시로 확인할 수 있습니다.",
+            "색상 이름 레이블로 업무 유형을 구분할 수 있습니다.",
+            "회의록에서 가져온 업무는 사본이며 칸반 수정은 원본 회의록에 반영되지 않습니다.",
+            "같은 회의 업무를 다시 가져오면 기존 카드의 수정 내용을 유지하고 중복을 건너뜁니다.",
+            "보드는 이 기기의 브라우저에 저장됩니다. 저장 오류나 다른 탭 충돌이 있으면 안내를 확인하세요."
+          ]
+        },
+        "dragDrop": {
+          "desc": "컴퓨터에서는 카드를 드래그해 다른 열이나 같은 열의 원하는 위치로 옮길 수 있습니다. 모바일에서는 카드의 열 이동 선택 상자를 사용하거나 끌기 손잡이를 길게 눌러 이동하세요. 편집 버튼은 항상 표시됩니다."
+        }
+      }
+    },
+    "kanbanMeetingImportPanel": {
+      "title": "회의록 업무 가져오기",
+      "invalidHandoff": "전달된 업무가 없거나, 10분이 지났거나, 데이터 형식이 올바르지 않습니다. 기존 보드는 변경하지 않았습니다. 회의록 탭에서 다시 보내 주세요.",
+      "close": "가져오기 닫기",
+      "summary": "전달 {total}개 · 추가 예정 {added}개 · 중복 {skipped}개",
+      "copyNotice": "회의 업무의 사본을 이 보드에 추가합니다. 기존 카드와 열을 유지하며 원본 회의록에는 변경 내용이 자동 반영되지 않습니다.",
+      "priorityNotice": "담당자·기한·상태를 가져옵니다. 회의록에는 우선순위가 없으므로 새 카드의 우선순위는 ‘보통’으로 시작합니다.",
+      "duplicateNotice": "같은 회의의 같은 업무가 이미 있으면 건너뜁니다. 기존 카드에서 편집한 내용은 유지됩니다. 직접 삭제한 카드는 다시 가져올 수 있습니다.",
+      "preview": "전달받은 업무 {count}개 확인",
+      "unassigned": "담당자 없음",
+      "noDueDate": "기한 없음",
+      "itemDetails": "담당자: {assignee} · 기한: {dueDate} · 상태: {status}",
+      "destination": "업무를 넣을 위치",
+      "newColumns": "회의 전용 열 추가",
+      "existingColumns": "기존 열에 배치",
+      "newColumnsHint": "새로 추가할 업무가 있는 상태에만 회의 전용 열을 덧붙입니다. 열 이름은 수정할 수 있습니다.",
+      "existingColumnsHint": "각 상태의 목적 열을 직접 골라 주세요. 열 이름으로 상태를 자동 추정하지 않습니다.",
+      "allDuplicates": "모든 업무가 이미 보드에 있습니다. 기존 카드를 그대로 유지하고 빈 열도 추가하지 않습니다.",
+      "columnTitle": "{status} 새 열 이름",
+      "columnTarget": "{status} 목적 열",
+      "selectColumn": "목적 열 선택",
+      "importButton": "업무 {count}개 가져오기",
+      "status": { "pending": "대기", "in-progress": "진행 중", "done": "완료" }
+    }
+  },
+  "en": {
+    "kanbanBoard": {
+      "close": "Close",
+      "assignee": "Assignee",
+      "assigneePlaceholder": "Assignee name (optional)",
+      "assignedTo": "Assignee: {name}",
+      "scheduledDate": "Due: {date}",
+      "overdueDate": "Overdue: {date}",
+      "fromMeeting": "Meeting copy: {title}",
+      "meetingCopy": "This is a copy of an action from ‘{title}’. Changes here do not update the original meeting minutes.",
+      "deleteNamedCard": "Delete card: {title}",
+      "dragNamedCard": "Drag card: {title}",
+      "moveColumn": "Move to column",
+      "moveNamedCard": "Move to column: {title}",
+      "columnName": "Column name",
+      "rename": "Name",
+      "renameNamedColumn": "Rename column: {title}",
+      "deleteNamedColumn": "Delete column: {title}",
+      "searchPlaceholder": "Search titles, descriptions, and assignees",
+      "loadingBoard": "Loading your saved board.",
+      "emptyBoard": "There are no columns yet. Add a column or import actions from meeting minutes to begin.",
+      "noMatchingCards": "No cards match your filters.",
+      "confirmImportReplace": "Replace the current board with this JSON file? Export the current board first if you want to keep a backup.",
+      "jsonImported": "The JSON board was imported and saved.",
+      "importTooLarge": "This file is too large. Choose a board JSON file no larger than 30 MB. The current board has not changed.",
+      "meetingImported": "Saved {added} meeting actions. Skipped {skipped} actions already on the board.",
+      "meetingTargetError": "Check the new column names or destination columns. New column names can contain up to 120 characters.",
+      "meetingPayloadError": "The transferred meeting actions are invalid. Check the items in the meeting minutes and send them again.",
+      "handoffCleanupFailed": "The board operation finished, but temporary transfer data could not be removed. Close this tab to clear it.",
+      "storage": {
+        "invalidBoard": "The saved board is damaged or uses an unsupported version. It has not been overwritten. Download the original file, restore your saved data, and reload the board.",
+        "conflict": "Another tab changed the board. Its changes have not been overwritten. Load the latest board and try again. Your transferred meeting actions remain on this screen.",
+        "unavailable": "Browser storage is unavailable. Allow storage access and reload the saved board. The board has not been changed.",
+        "saveFailed": "The board could not be saved. The board on screen has not been changed. Check storage space and browser settings, then try again.",
+        "reload": "Reload saved board",
+        "backup": "Back up original saved file"
+      },
+      "colors": {
+        "blue": "Blue",
+        "green": "Green",
+        "red": "Red",
+        "yellow": "Yellow",
+        "purple": "Purple",
+        "pink": "Pink",
+        "orange": "Orange",
+        "gray": "Gray"
+      },
+      "sample": {
+        "columns": { "todo": "To do", "inProgress": "In progress", "review": "Review", "done": "Done" },
+        "tasks": {
+          "requirements": { "title": "Analyze requirements", "description": "Review customer requirements and list the core features." },
+          "design": { "title": "Draft the UI design", "description": "Create wireframes and mockups for the main screens." },
+          "schema": { "title": "Design the database schema", "description": "Define tables and relationships between data." },
+          "login": { "title": "Implement sign-in", "description": "Connect authentication and social sign-in." },
+          "api": { "title": "Write the API specification", "description": "Document request and response formats." },
+          "homepage": { "title": "Review the homepage", "description": "Review mobile layouts and dark mode behavior." },
+          "setup": { "title": "Set up the project", "description": "Configured the development environment and code checks." },
+          "kickoff": { "title": "Team kickoff meeting", "description": "Agreed on roles, the schedule, and communication channels." }
+        }
+      },
+      "guide": {
+        "howTo": {
+          "items": [
+            "Add columns for your work stages, then add cards to each column.",
+            "Edit a card to change its title, details, assignee, or due date.",
+            "Change work stages with each card's column selector or by dragging it.",
+            "Select and send meeting actions to add them to new status columns or existing columns you choose.",
+            "Find cards by title, description, or assignee and filter by priority."
+          ]
+        },
+        "tips": {
+          "items": [
+            "Export JSON to back up your board or move it to another device.",
+            "An Overdue label identifies cards whose due dates have passed.",
+            "Use color name labels to group types of work.",
+            "Imported meeting actions are copies. Editing the board does not update the original minutes.",
+            "Sending the same action again preserves edits to its existing card and skips the duplicate.",
+            "Your board is saved in this browser on this device. Check any storage or other-tab conflict notices."
+          ]
+        },
+        "dragDrop": {
+          "desc": "On a computer, drag cards between columns or reorder them in a column. On mobile, use the column selector or hold the drag handle to move a card. The edit button is always visible."
+        }
+      }
+    },
+    "kanbanMeetingImportPanel": {
+      "title": "Import meeting actions",
+      "invalidHandoff": "There is no transfer, it is more than 10 minutes old, or the data format is invalid. The existing board has not changed. Send the actions again from the meeting minutes tab.",
+      "close": "Close import",
+      "summary": "Received {total} · To add {added} · Duplicates {skipped}",
+      "copyNotice": "Add copies of meeting actions to this board. Existing cards and columns are preserved. Changes are not automatically synced to the original meeting minutes.",
+      "priorityNotice": "Assignees, due dates, and statuses are preserved. Meeting actions have no priority, so new cards start at Medium.",
+      "duplicateNotice": "An action from the same meeting is skipped if it is already on the board. Existing card edits are preserved. Deleted cards can be imported again.",
+      "preview": "Review {count} transferred actions",
+      "unassigned": "Unassigned",
+      "noDueDate": "No due date",
+      "itemDetails": "Assignee: {assignee} · Due: {dueDate} · Status: {status}",
+      "destination": "Where to place the actions",
+      "newColumns": "Add meeting columns",
+      "existingColumns": "Use existing columns",
+      "newColumnsHint": "Append a meeting column only for statuses with new actions. You can edit each column name.",
+      "existingColumnsHint": "Choose the destination for each status. Column meanings are not inferred from their names.",
+      "allDuplicates": "All actions are already on the board. Existing cards are preserved and no empty columns are added.",
+      "columnTitle": "New {status} column name",
+      "columnTarget": "{status} destination column",
+      "selectColumn": "Choose a destination",
+      "importButton": "Import {count} actions",
+      "status": { "pending": "Pending", "in-progress": "In progress", "done": "Done" }
+    }
+  }
+}

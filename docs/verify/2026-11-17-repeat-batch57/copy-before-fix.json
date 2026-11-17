@@ -1,0 +1,21 @@
+{
+  "actualParent": true,
+  "controlledClipboard": true,
+  "candidate": 58,
+  "modelDownload": false,
+  "sourceSha256": "f5bbcd6a74d8d225a31b950c7fdb5daada39f76c59b7aebf00e412e0328a3b54",
+  "observations": [
+    {
+      "mode": "apiRejected",
+      "claimsCopied": true,
+      "legacyCalls": 0,
+      "explicitRecoveryField": false
+    },
+    {
+      "mode": "missingApiLegacyFalse",
+      "claimsCopied": true,
+      "legacyCalls": 1,
+      "explicitRecoveryField": false
+    }
+  ]
+}

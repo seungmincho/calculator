@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-17T00:51:02.965Z",
+  "files": 18,
+  "linksChecked": 270,
+  "missing": [],
+  "historyCounts": [
+    {
+      "file": "docs/handoff/CONTINUOUS-IMPROVEMENT-PLAN.md",
+      "count": 1
+    },
+    {
+      "file": "docs/handoff/2026-11-16-repeat-use-features.md",
+      "count": 1
+    }
+  ],
+  "trackedDocumentDiff": {
+    "exitCode": 0,
+    "outputChunk": "45c380",
+    "note": "tracked owned documents only; CRLF normalization notice, no whitespace errors"
+  }
+}

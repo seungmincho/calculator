@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-11-16T17:40:55.927Z",
+  "patches": [
+    {
+      "name": "csat-direct",
+      "leafKeysPerLanguage": 28
+    },
+    {
+      "name": "image-queue",
+      "leafKeysPerLanguage": 16
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "CsatGrade",
+      "staticKeysChecked": 85,
+      "dynamicPrefixesChecked": [
+        "u.cut",
+        "u.sel",
+        "guide"
+      ]
+    },
+    {
+      "component": "CsatGoalConditions",
+      "staticKeysChecked": 43,
+      "dynamicPrefixesChecked": [
+        "u.cut",
+        "goals.errors",
+        "goals.confirm",
+        "goals"
+      ]
+    },
+    {
+      "component": "CsatDirectGradePanel",
+      "staticKeysChecked": 36,
+      "dynamicPrefixesChecked": [
+        "u.cut"
+      ]
+    },
+    {
+      "component": "ImageCompressor",
+      "staticKeysChecked": 76,
+      "dynamicPrefixesChecked": [
+        "preset",
+        "formatHint",
+        "queue",
+        "guide"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

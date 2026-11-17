@@ -1,0 +1,86 @@
+{
+  "checkedAt": "2026-11-16T06:17:37.486Z",
+  "scope": "Fuel calculator redesign verification",
+  "liveApi": [
+    {
+      "name": "national",
+      "url": "https://toolhub.ai.kr/api/fuel-prices",
+      "status": "PASS",
+      "basis": "20261116",
+      "cacheControl": "public, max-age=7200"
+    },
+    {
+      "name": "seoul",
+      "url": "https://toolhub.ai.kr/api/fuel-prices?sido=01",
+      "status": "PASS",
+      "basis": null,
+      "cacheControl": "public, max-age=7200"
+    },
+    {
+      "name": "historical",
+      "url": "https://toolhub.ai.kr/api/fuel-prices?date=2026-11-15&sido=01",
+      "status": "PASS",
+      "basis": "2026-11-15",
+      "cacheControl": "public, max-age=86400"
+    }
+  ],
+  "browser": [
+    {
+      "name": "split-save-csv-share",
+      "status": "PASS"
+    },
+    {
+      "name": "historical-prices-and-fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "mobile-320",
+      "status": "PASS"
+    },
+    {
+      "name": "mobile-390",
+      "status": "PASS"
+    },
+    {
+      "name": "live-response-rendering",
+      "status": "PASS"
+    },
+    {
+      "name": "fuel-exact-date",
+      "status": "PASS"
+    },
+    {
+      "name": "fuel-earlier-date",
+      "status": "PASS"
+    },
+    {
+      "name": "fuel-empty",
+      "status": "PASS"
+    },
+    {
+      "name": "fuel-error",
+      "status": "PASS"
+    },
+    {
+      "name": "fuel-manual-and-realtime",
+      "status": "PASS"
+    },
+    {
+      "name": "fuel-mobile-dark",
+      "status": "PASS"
+    }
+  ],
+  "download": {
+    "path": "fuel-driving-log.csv",
+    "checked": [
+      "UTF-8 BOM",
+      "11 columns",
+      "quoted Korean memo",
+      "saved price and efficiency",
+      "fuel and full-trip totals",
+      "per-person remainder"
+    ]
+  },
+  "buildRun": false,
+  "deployed": false
+}

@@ -1,0 +1,110 @@
+{
+  "scope": "숫자 한글 변환 입력·단일/일괄 복사 복구",
+  "namespace": "numberToKorean",
+  "status": "complete_local_verification",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 14,
+    "commonGuideLeaves": 8,
+    "patchLeavesPerLanguage": 22,
+    "staticUses": 86,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed1578 after final33 selectionFailed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 543,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 3,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45715
+    }
+  },
+  "author": {
+    "status": "passed/stable",
+    "groups": 40,
+    "preparedGroups": 32,
+    "actualParent": 8,
+    "legacyCalculation": "passed",
+    "existingBatchChecks": 18,
+    "scopedLintFiles": 9,
+    "errors": 0,
+    "warnings": 0,
+    "previousTypeFix": "Prepared TS2774 typeof check passed in prior checkpoint; current parent behavior independently verified now"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 8,
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0,
+    "report": "independent-review.md"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 7,
+    "failed": 0,
+    "checkedAt": "2026-11-16T21:39:36.108Z",
+    "browserClosed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "results": "browser/final-results.json",
+    "report": "review-browser.md",
+    "scopedRunnerLintExitCode": 0,
+    "fixtureCorrections": "Initial mobile region selector included recovery section; corrected selector and repeated only mobile1"
+  },
+  "typecheck": {
+    "status": "passed_first_attempt",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "heapMiB": 2048,
+    "preflightAt": "2026-11-16T21:44:29.427Z",
+    "freeMemoryGiB": 4.29,
+    "totalMemoryGiB": 31.75,
+    "sessionId": 11961,
+    "allTsWritersFrozen": true,
+    "chromeClosed": true,
+    "scope": "Shared33/34 checkpoint including stable unconnected36/37 preparation; later feature completion excluded",
+    "exitCode": 0,
+    "diagnostics": 0,
+    "resultChunkId": "835c00",
+    "attempts": 1
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "commonCodeDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current33/34 products/checks, canonical/generated, metadata/discovery, batch documents and final handoffs"
+  },
+  "accountSnapshot": {
+    "atKst": "2026-11-17 06:44",
+    "usedPercent": 81,
+    "remainingPercent": 19,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "source": "root read-only account-wide snapshot; not task-only usage"
+  },
+  "completedAt": "2026-11-16T21:48:11.559Z",
+  "documentChecks": {
+    "status": "passed",
+    "markdownFiles": 8,
+    "relativeLinks": 185,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  }
+}

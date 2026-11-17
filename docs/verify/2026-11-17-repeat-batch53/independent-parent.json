@@ -1,0 +1,37 @@
+{
+  "source": "Independent assertions against actual ColorConverter + ShareResult. Author hook/DOM/clipboard fixture reused; no native-browser claim.",
+  "results": [
+    {
+      "name": "original shorthand and invalid draft failures retain all five exact representations",
+      "pass": true
+    },
+    {
+      "name": "alpha, CSS, Unicode and long drafts never truncate into valid RGB or rewrite URL",
+      "pass": true
+    },
+    {
+      "name": "failed native and legacy copy is honest; manual focus reentry cannot restore stale output",
+      "pass": true
+    },
+    {
+      "name": "input and locale ABA prevent stale fallback and copied status",
+      "pass": true
+    },
+    {
+      "name": "share image and direct copy invalidate each other without late downloads",
+      "pass": true
+    },
+    {
+      "name": "initial URL canonicalizes only owned color and preserves unrelated duplicate query/hash/state",
+      "pass": true
+    },
+    {
+      "name": "early edit beats hydration; duplicate color URL does not silently choose a value",
+      "pass": true
+    },
+    {
+      "name": "random includes both endpoints and unmount blocks pending completion",
+      "pass": true
+    }
+  ]
+}

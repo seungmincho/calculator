@@ -1,0 +1,144 @@
+{
+  "scope": "테트리스 솔로 키보드·포인터 소유권과 복귀 보호",
+  "status": "complete_local_verification",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 2,
+    "commonGuideLeaves": 7,
+    "patchLeavesPerLanguage": 9,
+    "staticUses": 63,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 546,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    },
+    "finalNamespaceAudit": {
+      "own": 548,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 3,
+    "scopedLintExitCode": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45839
+    }
+  },
+  "author": {
+    "status": "passed/stable",
+    "groups": 34,
+    "preparedGroups": 23,
+    "actualParent": 11,
+    "scopedLintFiles": 7,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 8,
+    "report": "independent-review.md",
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "checkedAt": "2026-11-16T22:55:55.545Z",
+    "passed": 8,
+    "failed": 0,
+    "browserClosed": true,
+    "report": "browser/final-results.json",
+    "productChanges": 0,
+    "reviewDocument": "review-browser.md",
+    "errors": {
+      "pageerror": 0,
+      "hydration": 0,
+      "unhandled": 0,
+      "rawKeys": 0
+    },
+    "publicLeaderboardRequests": 0,
+    "limits": [
+      "AudioContext silent port; no real speaker or physical mobile assurance",
+      "RAF/finish/popup/zero-width controlled; real keyboard/CDP touch/Canvas/React",
+      "Enter guide precision after native validated with canonical/static/generation only"
+    ]
+  },
+  "typecheck": {
+    "preflightAt": "2026-11-16T23:08:20.003Z",
+    "freeMemoryGiB": 3.79,
+    "totalMemoryGiB": 31.75,
+    "heapMiB": 2048,
+    "chromeClosed": true,
+    "allTsWritersFrozen": true,
+    "scope": "37 final product changes,39/40 parents,unconnected41/42/43 preparation",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "status": "passed",
+    "sessionId": 26319,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "chunkId": "b2fa53",
+    "resultRecordedAt": "2026-11-16T23:10:06.257Z",
+    "order": "After final37/39/40 native contexts closed and all TS writers froze; before subsequent parent/preparation work",
+    "repeatRequired": false
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "editorialFollowup": {
+    "status": "passed",
+    "change": "KO/EN guide Enter starts only from idle/over",
+    "productTsChanges": 0,
+    "validation": "canonical patch equality/static9leaf63uses and generated1578 check",
+    "browserRepeat": false
+  },
+  "currentScopedDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "chunkId": "6dd7b2",
+    "scope": "Tracked37/39/40 product files, common metadata/canonical/generated/discovery and batch documents after37 native fixes/39 locale import fix",
+    "note": "Not a repository-wide clean-state claim; untracked new files are covered by author lint rather than git diff"
+  },
+  "completedAt": "2026-11-16T23:10:06.260Z",
+  "finalCommon": {
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "applyImports": 0,
+    "namespaceAudit": {
+      "own": 548,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    },
+    "scopedCommonLintFiles": 3,
+    "scopedCommonLintExitCode": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45839
+    }
+  },
+  "documentChecks": {
+    "status": "passed",
+    "markdownFiles": 10,
+    "relativeLinks": 204,
+    "missingLinks": 0,
+    "scope": "Current37/39/40 reports/plans and4handoffs",
+    "scopedDiffExitCode": 0,
+    "diffChunkId": "fe13bd"
+  }
+}

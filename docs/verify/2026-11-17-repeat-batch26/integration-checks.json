@@ -1,0 +1,141 @@
+{
+  "scope": "Batch26 JSON/CSV fidelity and Base64URL text/file conversion",
+  "status": "complete",
+  "translations": {
+    "patchLeavesPerLanguage": 147,
+    "csvLeaves": 98,
+    "base64Leaves": 49,
+    "staticUses": 144,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed; 1578 files verified after final CSV accessibility labels",
+    "applyAddedImports": 0,
+    "ownImports": 532,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "transientMismatch": "sourceBytes added by author during first check; merged and full static patch check passed",
+    "latestPolicy": "decode files validated by actual UTF-8/size/Base64 content, not extension; hint and guide updated"
+  },
+  "metadata": {
+    "routes": [
+      "/json-csv-converter",
+      "/base64-converter"
+    ],
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "updatedDate": "2026-11-17",
+    "redirectRules": 472,
+    "rssItems": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45517
+  },
+  "lint": {
+    "commonFiles": 3,
+    "status": "passed",
+    "exitCode": 0,
+    "base64ProductAndTests": {
+      "files": 6,
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 1,
+      "warning": "native Blob preview img no-img-element warning; pre-change baseline not separately collected; no suppression added"
+    },
+    "jsonCsvProductAndTests": {
+      "files": 6,
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "authorTests": {
+    "jsonCsvDomainGroups": 13,
+    "jsonCsvParentGroups": 8,
+    "jsonCsvFinalReady": true,
+    "jsonCsvFinalLintPending": false,
+    "base64CodecActionGroups": 13,
+    "base64ParentRecoveryGroups": 8,
+    "base64FinalReady": true,
+    "jsonCsvAccessibilityImpactGroups": 1
+  },
+  "independent": {
+    "status": "passed",
+    "jsonCsvGroups": 8,
+    "base64Groups": 8,
+    "totalGroups": 16,
+    "lint": {
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 14,
+    "failed": 0,
+    "base64Cases": 7,
+    "jsonCsvCases": 7,
+    "browsersClosed": true,
+    "finalReportPending": false,
+    "checkedAt": "2026-11-16T19:41:56.267Z",
+    "report": "review-browser.md",
+    "firstRunAllPassed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "mobileScreenshotsReviewed": 4,
+    "performance": {
+      "scope": "dev Chrome single-run conversion plus render, not pure parser or mobile device",
+      "csv10000x20": {
+        "inputBytes": 700069,
+        "outputBytes": 3480002,
+        "elapsedMs": 2199,
+        "maxTimerGapMs": 1996,
+        "nextEditMs": 133
+      },
+      "csv1000x200": {
+        "outputBytes": 3788002,
+        "elapsedMs": 932,
+        "maxTimerGapMs": 713
+      },
+      "limitation": "~2s UI main-thread delay; no no-freeze/Worker performance claim",
+      "followUp": "csv-performance-plan.md; isolated preparation now, parent connection after batch27 checkpoint"
+    }
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "preflight": {
+      "at": "2026-11-16T19:42:31.133Z",
+      "freeGiB": 5.12,
+      "totalGiB": 31.75
+    },
+    "browserClosed": true,
+    "productAndPreparedTsStable": true,
+    "exitCode": 0,
+    "sessionId": 88053,
+    "attempts": 1,
+    "completedAt": "2026-11-16T19:43:52.210Z"
+  },
+  "diffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "batch26 products, messages/generated assets, two pages/menu/discovery and handoffs"
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "lastCompletedCheckpoint": 26,
+  "preparedTypeScript": {
+    "worldClock": "27A unconnected meeting10 + calendar/actions8, existing regression +5filelint0; editing paused",
+    "whiteNoise": "27B unconnected pure/storage11 +session/native adapter10,7filelint0, TS frozen; root review found gain-before-resume-verification boundary pending minimal fix after26 checkpoint, before27 parent connection"
+  },
+  "completedAt": "2026-11-16T19:46:38.086Z",
+  "handoffLinks": {
+    "checkedFiles": 5,
+    "missing": 0
+  }
+}

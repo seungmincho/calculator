@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-11-16T14:34:59.191Z",
+  "patches": [
+    {
+      "name": "menu",
+      "leafKeysPerLanguage": 43
+    },
+    {
+      "name": "team",
+      "leafKeysPerLanguage": 8
+    },
+    {
+      "name": "voice",
+      "leafKeysPerLanguage": 22
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TeamDivider",
+      "staticKeysChecked": 91,
+      "dynamicPrefixesChecked": [
+        "backup.errors",
+        "presets",
+        "mode"
+      ]
+    },
+    {
+      "component": "DecisionTools",
+      "staticKeysChecked": 53,
+      "dynamicPrefixesChecked": [
+        "tabs",
+        "presets"
+      ]
+    },
+    {
+      "component": "MealPlanPanel",
+      "staticKeysChecked": 27,
+      "dynamicPrefixesChecked": [
+        "mealPlan.errors"
+      ]
+    },
+    {
+      "component": "VoiceMemo",
+      "staticKeysChecked": 67,
+      "dynamicPrefixesChecked": [
+        "enhance",
+        "enhance.stages"
+      ]
+    },
+    {
+      "component": "VoiceMemoTranscriptExport",
+      "staticKeysChecked": 14,
+      "dynamicPrefixesChecked": [
+        "transcriptExport.errors"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

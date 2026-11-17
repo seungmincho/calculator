@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-11-17T01:04:16.712Z",
+  "scopes": [
+    52,
+    53,
+    54,
+    55
+  ],
+  "commonLeavesPerLanguage": 130,
+  "staticUses": 381,
+  "errors": 0,
+  "generatedFiles": 1578,
+  "applyImports": 0,
+  "audit": {
+    "own": 560,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60
+  },
+  "scopedLint": {
+    "uniqueFiles": 5,
+    "files": [
+      "src/app/percent-calculator/page.tsx",
+      "src/app/qr-generator/page.tsx",
+      "src/app/color-converter/page.tsx",
+      "src/config/menuConfig.ts",
+      "src/app/typing-test/page.tsx"
+    ],
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "discovery": {
+    "redirects": 472,
+    "rss": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45921
+  },
+  "typecheck": {
+    "status": "passed",
+    "evidence": "typecheck-final-result.json"
+  },
+  "browser": {
+    "status": "passed",
+    "total": 30,
+    "scopes": {
+      "52": 8,
+      "53": 8,
+      "54": 7,
+      "55": 7
+    }
+  },
+  "note": "No build/deploy/commit/push; 54 parent joined this checkpoint, 56 is unconnected preparation.",
+  "status": "complete"
+}

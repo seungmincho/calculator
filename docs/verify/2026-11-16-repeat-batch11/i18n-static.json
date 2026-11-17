@@ -1,0 +1,76 @@
+{
+  "checkedAt": "2026-11-16T14:34:58.809Z",
+  "patches": [
+    {
+      "name": "gpa",
+      "leafKeysPerLanguage": 29
+    },
+    {
+      "name": "team",
+      "leafKeysPerLanguage": 31
+    },
+    {
+      "name": "writing",
+      "leafKeysPerLanguage": 32
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TeamDivider",
+      "staticKeysChecked": 91,
+      "dynamicPrefixesChecked": [
+        "backup.errors",
+        "presets",
+        "mode"
+      ]
+    },
+    {
+      "component": "TeamRosterBackup",
+      "staticKeysChecked": 18,
+      "dynamicPrefixesChecked": [
+        "mode",
+        "backup.status",
+        "backup.errors"
+      ]
+    },
+    {
+      "component": "GpaScenarioPanel",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "scenarios.errors",
+        "scenarios",
+        "scenarios.confirm"
+      ]
+    },
+    {
+      "component": "GpaScenarioBackup",
+      "staticKeysChecked": 17,
+      "dynamicPrefixesChecked": [
+        "scenarioBackup.status",
+        "scenarioBackup.errors"
+      ]
+    },
+    {
+      "component": "WritingVersionsPanel",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "target.basis",
+        "target.unit",
+        "versions.errors",
+        "versions.notices"
+      ]
+    },
+    {
+      "component": "WritingVersionsBackup",
+      "staticKeysChecked": 18,
+      "dynamicPrefixesChecked": [
+        "backup.errors",
+        "backup.notices",
+        "backup.status",
+        "target.basis"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

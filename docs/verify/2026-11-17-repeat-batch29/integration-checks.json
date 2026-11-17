@@ -1,0 +1,128 @@
+{
+  "status": "complete",
+  "lastCompletedCheckpoint": "CSV-performance + batch29 (prior batch27 preserved)",
+  "typecheck": {
+    "status": "passed",
+    "startedAt": "2026-11-16T20:26:25.100Z",
+    "startedAtKst": "2026-11-17 05:26:25",
+    "freeGiB": 4.65,
+    "totalGiB": 31.75,
+    "maxOldSpaceMiB": 2048,
+    "attempts": 1,
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "scope": "Shared CSV-performance and batch29 checkpoint; frozen unconnected batch28 and batch30 TS included",
+    "exitCode": 0,
+    "completionObservedAt": "2026-11-16T20:29:08.979Z"
+  },
+  "commonLint": {
+    "status": "passed",
+    "files": 4,
+    "errors": 0,
+    "warnings": 0
+  },
+  "discovery": {
+    "redirects": 472,
+    "rss": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45587
+  },
+  "accountSnapshot": {
+    "source": "root read-only account-wide snapshot",
+    "atKst": "2026-11-17 05:20",
+    "usedPercent": 37,
+    "remainingPercent": 63,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true
+  },
+  "scope": "TeamDivider 20-transition undo/redo and result copy/TXT",
+  "pairedReport": "../2026-11-17-repeat-batch26/report-performance.md",
+  "author": {
+    "status": "passed/stable",
+    "groups": 23,
+    "pureHistoryActions": 12,
+    "recoveryChild": 2,
+    "parentBoard": 9,
+    "existingRegressionScripts": 6,
+    "scopedLintFiles": 9,
+    "errors": 0,
+    "warnings": 0
+  },
+  "translations": {
+    "status": "passed",
+    "patchLeavesPerLanguage": 14,
+    "staticUses": 116,
+    "errors": 0,
+    "generatedFiles": 1578
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 14,
+    "pureRoot": 6,
+    "actualParentTaxi": 8,
+    "scopedLint": "passed",
+    "reports": [
+      "team-history-independent-review.md",
+      "team-parent-independent-review.md"
+    ],
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 7,
+    "failed": 0,
+    "firstRunAllPassed": true,
+    "checkedAt": "2026-11-16T20:26:03.173Z",
+    "browserClosed": true,
+    "errors": 0,
+    "hydration": 0,
+    "productFixesDuringBrowser": 0,
+    "artifacts": "browser",
+    "report": "review-browser.md",
+    "unhandled": 0,
+    "rawTranslationKeys": 0,
+    "nativeTxtBytes": 159
+  },
+  "finalCommonChecks": {
+    "status": "passed",
+    "messagesCheck": {
+      "files": 1578,
+      "status": "passed"
+    },
+    "namespaceApply": {
+      "imports": 0
+    },
+    "namespaceAudit": {
+      "ownImports": 534,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "resolvedFindings": [
+    {
+      "source": "root source review then author actual effect replay",
+      "issue": "StrictMode cleanup incremented epochRef without state boardEpoch, blocking first division",
+      "before": "0 participants rather than 6",
+      "fix": "Remove cleanup epoch increment; retain mounted/reveal/copy/url cleanup",
+      "validation": "Author parent9 and independent parent8 including effect replay/stale unmount PASS; actual Next development StrictMode browser7/7 PASS"
+    }
+  ],
+  "codeDiffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current product/common paths; final report/handoff documentation check pending"
+  },
+  "documentationChecks": {
+    "files": 7,
+    "relativeLinksChecked": 167,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  },
+  "nextWork": {
+    "batch28": "parent integration started; not part of this completion",
+    "batch30": "clock/receipt boundary correction then parent integration",
+    "batch31": "unconnected preparation only",
+    "batch32": "unconnected preparation only",
+    "batch35": "separate public JS / isolated service worker validation; excluded from this checkpoint"
+  }
+}

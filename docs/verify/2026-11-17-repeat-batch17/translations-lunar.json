@@ -1,0 +1,86 @@
+{
+  "ko": {
+    "lunarConverter": {
+      "calendarExport": {
+        "title": "음력 기념일 캘린더",
+        "description": "기념일 이름을 쓰고 내보낼 음력 연도를 선택하세요. 아래 양력 날짜마다 하루짜리 일정을 만듭니다.",
+        "eventTitle": "캘린더에 표시할 기념일 이름",
+        "titleHint": "{count}/{max}자",
+        "selectAll": "가능한 연도 모두 선택",
+        "clearSelection": "선택 모두 해제",
+        "selectYears": "내보낼 음력 연도와 양력 날짜",
+        "selectYear": "음력 {year}년, {date} 선택",
+        "lunarYear": "음력 {year}년",
+        "unavailable": "변환 지원 범위 밖",
+        "noAvailable": "현재 조건으로 내보낼 수 있는 날짜가 없습니다.",
+        "past": "이미 지난 날짜 · 그대로 내보내기",
+        "selectedCount": "선택한 날짜 {count}개",
+        "rule": "이 도구는 해당 윤달이 없는 해에는 같은 평달로, 30일이 없는 달에는 29일로 계산합니다. 각 연도의 대체 여부를 일정 설명에도 포함합니다.",
+        "range": "양력 변환 범위: {from}~{to}. 범위를 벗어나는 연도는 선택할 수 없습니다.",
+        "descriptionLunar": "기념일 기준: 음력 {leap}{month}월 {day}일 · 계산 연도: 음력 {year}년",
+        "descriptionSolar": "계산한 양력 날짜: {date}",
+        "noAdjustment": "이 해에는 윤달·날짜 대체가 없습니다.",
+        "preparing": "캘린더 파일 준비 중…",
+        "download": "선택한 날짜 ICS 내려받기",
+        "downloaded": "일정 {count}개의 파일 다운로드를 요청했어요. 브라우저의 다운로드 목록을 확인해 주세요.",
+        "scope": "선택한 연도마다 계산한 날짜를 각각 내보냅니다. 양력 날짜로 매년 반복하는 일정은 만들지 않으며, 지난 날짜를 미래로 옮기지 않습니다.",
+        "importHint": "내려받은 .ics 파일을 원하는 캘린더에서 가져오세요. 반복해서 가져올 때의 중복 처리 방식은 캘린더 앱에 따라 다릅니다.",
+        "privacy": "기념일 이름과 연도 선택은 자동 저장하거나 공유 URL에 넣지 않으며 서버로 보내지 않습니다.",
+        "errors": {
+          "invalidLunar": "음력 월·일과 윤달 여부를 다시 확인해 주세요.",
+          "empty": "내보낼 연도를 하나 이상 선택해 주세요.",
+          "tooMany": "한 번에 최대 11개 연도를 선택할 수 있어요.",
+          "invalidYears": "선택한 연도가 변환 지원 범위를 벗어났어요. 연도를 다시 선택해 주세요.",
+          "duplicate": "같은 연도가 중복 선택되었어요. 연도를 다시 선택해 주세요.",
+          "outOfRange": "선택한 날짜 중 변환 범위 밖인 날짜가 있어 파일을 만들지 않았어요. 날짜를 다시 확인해 주세요.",
+          "invalidTitle": "기념일 이름을 1~100자로 입력해 주세요. 지원하지 않는 문자는 사용할 수 없어요.",
+          "invalidDescription": "일정 설명을 만들지 못했어요. 날짜를 다시 선택한 뒤 시도해 주세요.",
+          "timestamp": "현재 시각을 확인할 수 없어요. 기기의 날짜와 시간을 확인해 주세요.",
+          "download": "파일 다운로드를 요청하지 못했어요. 다시 시도해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "lunarConverter": {
+      "calendarExport": {
+        "title": "Lunar anniversary calendar",
+        "description": "Enter an event name and select lunar years. Each Gregorian date below becomes a separate all-day event.",
+        "eventTitle": "Anniversary name for the calendar",
+        "titleHint": "{count}/{max} characters",
+        "selectAll": "Select all available years",
+        "clearSelection": "Clear selection",
+        "selectYears": "Lunar years and Gregorian dates to export",
+        "selectYear": "Select lunar year {year}, {date}",
+        "lunarYear": "Lunar year {year}",
+        "unavailable": "Outside the conversion range",
+        "noAvailable": "No dates can be exported for the current settings.",
+        "past": "Past date · exported unchanged",
+        "selectedCount": "{count} dates selected",
+        "rule": "When that leap month is absent, this tool uses the regular month. When day 30 is absent, it uses day 29. Each event description includes any adjustment for that year.",
+        "range": "Gregorian conversion range: {from}–{to}. Years outside this range cannot be selected.",
+        "descriptionLunar": "Anniversary rule: lunar {leap}month {month}, day {day}; lunar year calculated: {year}.",
+        "descriptionSolar": "Calculated Gregorian date: {date}",
+        "noAdjustment": "No leap-month or day adjustment is needed for this year.",
+        "preparing": "Preparing calendar file…",
+        "download": "Download selected dates as ICS",
+        "downloaded": "Requested a file download with {count} events. Check your browser's downloads.",
+        "scope": "Each selected year exports its calculated date separately. Events do not repeat annually on a fixed Gregorian date, and past dates are not moved to the future.",
+        "importHint": "Import the downloaded .ics file into your preferred calendar. Duplicate handling on repeated imports depends on the calendar app.",
+        "privacy": "The event name and year selection are not saved automatically, added to the share URL, or sent to a server.",
+        "errors": {
+          "invalidLunar": "Check the lunar month, day, and leap-month setting.",
+          "empty": "Select at least one year to export.",
+          "tooMany": "You can select up to 11 years at once.",
+          "invalidYears": "A selected year is outside the conversion range. Select the years again.",
+          "duplicate": "The same year was selected more than once. Select the years again.",
+          "outOfRange": "A selected date is outside the conversion range, so no file was created. Check the dates again.",
+          "invalidTitle": "Enter an event name of 1–100 characters without unsupported characters.",
+          "invalidDescription": "The event description could not be created. Select the dates again and retry.",
+          "timestamp": "The current time could not be read. Check your device's date and time.",
+          "download": "The file download could not be requested. Please try again."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "waitUnhandled": [
+    "late-started-rejection"
+  ],
+  "arrayBufferCalls": 1,
+  "fileUnhandled": [
+    "late-file-rejection"
+  ]
+}

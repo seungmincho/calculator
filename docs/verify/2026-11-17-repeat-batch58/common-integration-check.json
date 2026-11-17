@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-11-17T01:39:30.727Z",
+  "pages": [
+    "src/app/image-converter/page.tsx",
+    "src/app/image-ocr/page.tsx"
+  ],
+  "descriptionUsesEach": 4,
+  "titleUsesEach": 3,
+  "canonicalFaq": true,
+  "actualNamedFaqExport": true,
+  "scopedCommonLint": {
+    "uniqueFiles": 3,
+    "errors": 0,
+    "warnings": 0
+  },
+  "generatedFiles": 1578,
+  "messagesCheck": "passed",
+  "translations": {
+    "56": {
+      "leaves": 47,
+      "staticUses": 66
+    },
+    "57": {
+      "leaves": 33,
+      "staticUses": 84
+    },
+    "58": {
+      "leaves": 17,
+      "staticUses": 93
+    }
+  },
+  "uniqueStaticUses": 159,
+  "note": "ImageOcr 84 uses appear in both57 and58 scope reports; aggregate unique count is66+84+9, not243.",
+  "discovery": {
+    "redirects": 472,
+    "rss": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45982
+  },
+  "namespaceAudit": {
+    "own": 561,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "exitCode": 0
+  },
+  "namespaceApply": {
+    "imports": 0,
+    "files": 0,
+    "exitCode": 0
+  },
+  "patchLeavesPerLanguage": 97,
+  "firstNativeIntegrationFailure": {
+    "scope": 56,
+    "status": "fixed",
+    "cause": "Missing standalone FaqJsonLd import in common page",
+    "fix": "Existing ToolFaq named export",
+    "scopeLint": "page exit0/warnings0",
+    "nativeEvidence": "../2026-11-17-repeat-batch56/browser/initial-page-import-failure.json"
+  }
+}

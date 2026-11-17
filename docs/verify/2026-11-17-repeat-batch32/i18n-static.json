@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-11-16T21:10:33.468Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 9
+    },
+    {
+      "name": "json-tree",
+      "leafKeysPerLanguage": 38
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "JsonFormatter",
+      "staticKeysChecked": 118,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "JsonTreeSelectionPanel",
+      "staticKeysChecked": 14,
+      "dynamicPrefixesChecked": [
+        "selection.copy",
+        "selection.pathStatus",
+        "selection.valueStatus"
+      ]
+    },
+    {
+      "component": "JsonTreeCopyRecovery",
+      "staticKeysChecked": 8,
+      "dynamicPrefixesChecked": [
+        "selection.recovery.field"
+      ]
+    },
+    {
+      "component": "JsonPathPresets",
+      "staticKeysChecked": 20,
+      "dynamicPrefixesChecked": [
+        "presets.errors"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

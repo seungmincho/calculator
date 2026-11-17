@@ -1,0 +1,6 @@
+{
+  "source": "actual copyRunningText native fallback with focus-triggered ownership invalidation; controlled DOM",
+  "outcome": "stale",
+  "legacyCommandsAfterInvalidation": 1,
+  "oldFocusRestores": 1
+}

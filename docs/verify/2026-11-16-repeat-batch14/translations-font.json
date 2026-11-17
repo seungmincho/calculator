@@ -1,0 +1,88 @@
+{
+  "ko": {
+    "fontPreview": {
+      "pairing": {
+        "profiles": {
+          "title": "저장한 스타일 조합",
+          "count": "{count}/{max}개",
+          "description": "제목·본문의 글꼴, 크기, 요청한 굵기만 저장합니다. 불러와도 현재 문구는 유지돼요. 지원하지 않는 굵기는 기존 미리보기처럼 가까운 굵기로 표시됩니다.",
+          "name": "스타일 조합 이름",
+          "nameHint": "최대 {max}자. 같은 이름은 중복 저장할 수 없어요.",
+          "save": "현재 스타일 저장",
+          "saving": "저장 중…",
+          "saved": "스타일 조합을 저장했어요.",
+          "deleted": "스타일 조합을 삭제했어요. 현재 미리보기는 유지됩니다.",
+          "loaded": "스타일을 불러왔어요. 제목·본문 문구는 그대로 유지했어요.",
+          "refreshed": "저장 목록을 다시 읽었어요. 현재 미리보기는 바뀌지 않았어요.",
+          "loading": "공유 설정과 저장 목록을 확인하고 있어요.",
+          "empty": "저장한 스타일 조합이 없어요.",
+          "list": "저장한 글꼴 스타일 조합 목록",
+          "styleSummary": "{role}: {font} · {size}px · 요청 굵기 {weight}",
+          "load": "스타일 불러오기",
+          "delete": "스타일 삭제",
+          "deletePrompt": "‘{name}’ 스타일 조합을 삭제할까요? 현재 미리보기는 유지됩니다.",
+          "deleteConfirm": "삭제 확인",
+          "cancel": "취소",
+          "refresh": "목록 다시 읽기",
+          "localOnly": "이 브라우저에만 저장되며 원고와 폰트 파일은 저장하지 않습니다. 저장본은 직접 불러올 때만 적용되고, 방문한 공유 링크의 설정이 먼저 표시돼요.",
+          "errors": {
+            "invalidData": "저장된 스타일 목록을 읽을 수 없어요. 기존 데이터는 변경하지 않았습니다. 목록 다시 읽기로 확인해 주세요.",
+            "unsupportedVersion": "더 새로운 버전의 저장 목록입니다. 기존 데이터는 변경하지 않았어요.",
+            "unavailable": "브라우저 저장소를 사용할 수 없어요. 저장 권한을 확인한 뒤 목록을 다시 읽어 주세요.",
+            "quota": "브라우저 저장 공간이 부족해 저장하지 못했어요. 기존 목록은 유지됩니다.",
+            "conflict": "목록이 바뀌어 저장 결과를 확인할 수 없어요. 목록을 다시 읽은 뒤 시도해 주세요.",
+            "invalidStyles": "글꼴이나 크기·굵기 설정이 유효하지 않아요. 현재 설정을 확인해 주세요.",
+            "invalidName": "이름은 공백만으로 만들 수 없으며, 제어 문자 없이 40자 이내로 입력해 주세요.",
+            "duplicateName": "같은 이름의 스타일 조합이 있어요. 다른 이름을 입력해 주세요.",
+            "limit": "스타일 조합은 최대 6개까지 저장할 수 있어요. 필요 없는 조합을 삭제한 뒤 저장해 주세요.",
+            "missingProfile": "선택한 스타일을 찾을 수 없어요. 목록을 다시 읽어 주세요.",
+            "invalidAction": "저장 요청을 처리할 수 없어요. 목록을 다시 읽은 뒤 시도해 주세요."
+          }
+        }
+      }
+    }
+  },
+  "en": {
+    "fontPreview": {
+      "pairing": {
+        "profiles": {
+          "title": "Saved style pairs",
+          "count": "{count}/{max}",
+          "description": "Save only the title and body fonts, sizes, and requested weights. Loading keeps your current text. Unsupported weights use the nearest available weight, as in the existing preview.",
+          "name": "Style pair name",
+          "nameHint": "Up to {max} characters. Each saved pair needs a unique name.",
+          "save": "Save current styles",
+          "saving": "Saving…",
+          "saved": "Style pair saved.",
+          "deleted": "Style pair deleted. The current preview is unchanged.",
+          "loaded": "Styles loaded. Your title and body text were kept.",
+          "refreshed": "Saved list refreshed. The current preview is unchanged.",
+          "loading": "Checking shared settings and saved styles…",
+          "empty": "No saved style pairs yet.",
+          "list": "Saved font style pairs",
+          "styleSummary": "{role}: {font} · {size}px · requested weight {weight}",
+          "load": "Load styles",
+          "delete": "Delete styles",
+          "deletePrompt": "Delete the style pair “{name}”? The current preview will stay unchanged.",
+          "deleteConfirm": "Confirm deletion",
+          "cancel": "Cancel",
+          "refresh": "Reload saved list",
+          "localOnly": "Saved only in this browser, without manuscript text or font files. A saved pair is applied only when you load it. Shared-link settings are shown first on a new visit.",
+          "errors": {
+            "invalidData": "The saved style list could not be read. Existing data was not changed. Reload the saved list to check again.",
+            "unsupportedVersion": "This list uses a newer storage version. Existing data was not changed.",
+            "unavailable": "Browser storage is unavailable. Check storage permissions and reload the saved list.",
+            "quota": "Browser storage is full. The style pair was not saved and the existing list was kept.",
+            "conflict": "The list changed, so the save result could not be confirmed. Reload the saved list before trying again.",
+            "invalidStyles": "A font, size, or weight is invalid. Check the current settings.",
+            "invalidName": "Enter a nonblank name of up to 40 characters without control characters.",
+            "duplicateName": "A style pair with this name already exists. Choose another name.",
+            "limit": "You can save up to 6 style pairs. Delete an unused pair before saving another.",
+            "missingProfile": "The selected style pair could not be found. Reload the saved list.",
+            "invalidAction": "The save request could not be processed. Reload the saved list and try again."
+          }
+        }
+      }
+    }
+  }
+}

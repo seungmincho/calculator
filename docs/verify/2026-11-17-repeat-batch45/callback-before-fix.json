@@ -1,0 +1,30 @@
+{
+  "result": {
+    "ok": false,
+    "error": "unavailable"
+  },
+  "storageWrites": 1,
+  "storedProfiles": [
+    {
+      "id": "new-id",
+      "name": "incoming",
+      "styles": {
+        "title": {
+          "fontId": "noto-sans-kr",
+          "size": 31,
+          "weight": 800
+        },
+        "body": {
+          "fontId": "nanum-myeongjo",
+          "size": 17,
+          "weight": 500
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "confirmed": true
+    }
+  ]
+}

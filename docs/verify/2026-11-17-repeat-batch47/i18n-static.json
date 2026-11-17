@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-11-17T00:38:58.749Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "line-merge",
+      "leafKeysPerLanguage": 47
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "DiffViewer",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "TextDiffWorkspace",
+      "staticKeysChecked": 64,
+      "dynamicPrefixesChecked": [
+        "handoff.errors",
+        "workspace.errors",
+        "results",
+        "workspace.filter",
+        "guide"
+      ]
+    },
+    {
+      "component": "LineMergePanel",
+      "staticKeysChecked": 34,
+      "dynamicPrefixesChecked": [
+        "merge"
+      ]
+    },
+    {
+      "component": "DiffCopyRecovery",
+      "staticKeysChecked": 10,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

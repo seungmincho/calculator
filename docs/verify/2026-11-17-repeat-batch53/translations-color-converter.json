@@ -1,0 +1,92 @@
+{
+  "ko": {
+    "colorConverter": {
+      "input": {
+        "label": "HEX 색상 코드",
+        "hint": "3자리 또는 6자리 HEX를 입력하세요. #은 생략할 수 있어요. 투명도나 CSS 색상 표현식은 지원하지 않아요.",
+        "invalid": "0–9, A–F로 이루어진 3자리 또는 6자리 HEX를 입력해 주세요.",
+        "lastValid": "입력이 아직 유효하지 않아 마지막 유효 색 {hex}의 미리보기와 변환값을 유지하고 있어요.",
+        "restore": "마지막 색으로 되돌리기",
+        "picker": "색상 선택기",
+        "sliderHint": "슬라이더로 색을 선택하면 HEX 입력도 선택한 색으로 바뀌어요."
+      },
+      "channels": {
+        "red": "빨강 (R)",
+        "green": "초록 (G)",
+        "blue": "파랑 (B)",
+        "hue": "색조 (H)",
+        "saturation": "채도 (S)",
+        "lightness": "명도 (L)"
+      },
+      "formats": { "hex": "HEX", "rgb": "RGB", "hsl": "HSL", "hsv": "HSV / HSB", "cmyk": "CMYK" },
+      "presets": { "label": "기본 색상", "choose": "{hex} 색상 선택" },
+      "copy": {
+        "action": "복사",
+        "format": "{format} 값 복사",
+        "copying": "복사 중",
+        "copied": "복사됨",
+        "failed": "자동 복사가 되지 않았어요. 아래 값을 선택해 복사하거나 다시 시도해 주세요.",
+        "recoveryTitle": "색상 값 직접 복사",
+        "field": "복사할 전체 값",
+        "select": "전체 선택",
+        "retry": "다시 복사",
+        "close": "닫기",
+        "selectionFailed": "자동 선택하지 못했어요. 아래 값을 직접 선택해 주세요."
+      },
+      "query": {
+        "invalid": "링크의 색상을 읽지 못했어요. 표시된 색을 확인하거나 새 색을 입력해 주세요.",
+        "writeFailed": "주소를 갱신하지 못했어요. 복사와 공유는 표시된 색을 사용해요."
+      },
+      "share": {
+        "label": "색상 변환값",
+        "notice": "표시된 유효 색 {hex}을 공유해요. 입력 중인 원문은 링크에 포함하지 않아요.",
+        "cmykNote": "CMYK는 계산상의 참고값이며 실제 인쇄 색상을 보장하지 않아요."
+      }
+    }
+  },
+  "en": {
+    "colorConverter": {
+      "input": {
+        "label": "HEX color code",
+        "hint": "Enter a 3- or 6-digit HEX code. The # is optional. Transparency and CSS color expressions are not supported.",
+        "invalid": "Enter 3 or 6 hexadecimal digits using 0–9 and A–F.",
+        "lastValid": "The input is not valid yet. The preview and conversions still show the last valid color, {hex}.",
+        "restore": "Restore last color",
+        "picker": "Color picker",
+        "sliderHint": "Choosing a color with a slider also replaces the HEX input with that color."
+      },
+      "channels": {
+        "red": "Red (R)",
+        "green": "Green (G)",
+        "blue": "Blue (B)",
+        "hue": "Hue (H)",
+        "saturation": "Saturation (S)",
+        "lightness": "Lightness (L)"
+      },
+      "formats": { "hex": "HEX", "rgb": "RGB", "hsl": "HSL", "hsv": "HSV / HSB", "cmyk": "CMYK" },
+      "presets": { "label": "Preset colors", "choose": "Choose color {hex}" },
+      "copy": {
+        "action": "Copy",
+        "format": "Copy {format} value",
+        "copying": "Copying",
+        "copied": "Copied",
+        "failed": "Automatic copying failed. Select the value below to copy it, or try again.",
+        "recoveryTitle": "Copy color value manually",
+        "field": "Complete value to copy",
+        "select": "Select all",
+        "retry": "Copy again",
+        "close": "Close",
+        "selectionFailed": "Automatic selection failed. Select the value below manually."
+      },
+      "query": {
+        "invalid": "The color in this link could not be read. Check the displayed color or enter a new one.",
+        "writeFailed": "The address could not be updated. Copying and sharing use the displayed color."
+      },
+      "share": {
+        "label": "Color conversions",
+        "notice": "Sharing uses the displayed valid color, {hex}. Your input draft is not included in the link.",
+        "cmykNote": "CMYK values are calculated references and do not guarantee printed colors."
+      }
+    }
+  }
+}

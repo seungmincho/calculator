@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-17T01:13:50.699Z",
+  "exitCode": 1,
+  "chunk": "f80e1c",
+  "pathspecs": [
+    "src/components/PercentCalculator.tsx",
+    "src/components/PercentComparisonPanel.tsx",
+    "src/components/PercentCopyRecovery.tsx",
+    "src/utils/percentComparison.ts",
+    "src/utils/percentComparisonActions.ts",
+    "src/components/ColorConverter.tsx",
+    "src/utils/colorConversion.ts",
+    "src/components/TypingTest.tsx",
+    "src/components/CustomTypingWorkspace.tsx",
+    "src/components/TypingMistakePractice.tsx",
+    "src/utils/typingReview.ts",
+    "src/components/QrBatchGenerator.tsx",
+    "src/utils/qrBatchPrint.ts",
+    "src/utils/qrBatchPrintJob.ts",
+    "src/app/percent-calculator/page.tsx",
+    "src/app/color-converter/page.tsx",
+    "src/app/typing-test/page.tsx",
+    "src/app/qr-generator/page.tsx",
+    "src/config/menuConfig.ts",
+    "messages/ko.json",
+    "messages/en.json",
+    "messages/generated",
+    "src/lib/i18n/ns",
+    "public/i18n",
+    "public/rss.xml",
+    "public/_redirects",
+    "public/llms.txt"
+  ],
+  "trackedOnly": true,
+  "note": "Checks tracked differences for selected final product/common paths; untracked contents and repository cleanliness are not claimed. Line-ending warnings are separate from whitespace errors.",
+  "diagnostics": [
+    "src/components/ColorConverter.tsx:164: new blank line at EOF."
+  ],
+  "status": "failed_formatting_only"
+}

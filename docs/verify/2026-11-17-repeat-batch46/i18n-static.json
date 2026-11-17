@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-11-17T00:33:10.932Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 4
+    },
+    {
+      "name": "tts",
+      "leafKeysPerLanguage": 44
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TextToSpeech",
+      "staticKeysChecked": 83,
+      "dynamicPrefixesChecked": [
+        "readingList",
+        "noKoreanVoice",
+        "speedPresets",
+        "guide"
+      ]
+    },
+    {
+      "component": "TtsReadingList",
+      "staticKeysChecked": 19,
+      "dynamicPrefixesChecked": [
+        "readingList.errors",
+        "readingList"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

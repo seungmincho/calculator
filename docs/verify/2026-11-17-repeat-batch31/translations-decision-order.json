@@ -1,0 +1,58 @@
+{
+  "ko": {
+    "decisionTools": {
+      "order": {
+        "revealMode": "공개 방식",
+        "autoReveal": "자동 공개",
+        "manualReveal": "한 명씩 공개",
+        "nextPerson": "다음 한 명 공개",
+        "manualReady": "순서가 정해졌어요. 원하는 때 다음 한 명을 공개하세요.",
+        "fixedOrderHint": "공개 방식을 바꿔도 이미 정해진 순서는 유지돼요.",
+        "inputLocked": "공개 중에는 명단을 바꿀 수 없어요. 초기화하면 다시 편집할 수 있어요.",
+        "revealProgress": "{total}명 중 {count}명 공개",
+        "revealComplete": "{total}명의 순서를 모두 공개했어요.",
+        "exportHint": "모두 공개한 뒤 전체 순서를 복사하거나 TXT로 저장할 수 있어요.",
+        "downloadText": "TXT 저장",
+        "downloadFailed": "파일을 저장하지 못했어요. 순서는 그대로 있으니 다시 시도해 주세요.",
+        "resultLink": "정해진 순서 보기"
+      },
+      "resultActions": {
+        "copyFailed": "복사하지 못했어요. 아래 결과를 직접 선택하거나 다시 시도해 주세요.",
+        "copyLabel": "복사할 결과",
+        "select": "전체 선택",
+        "retry": "복사 재시도",
+        "copying": "복사 중…",
+        "close": "닫기",
+        "selectionFailed": "자동으로 선택하지 못했어요. 결과를 길게 누르거나 직접 선택해 주세요."
+      }
+    }
+  },
+  "en": {
+    "decisionTools": {
+      "order": {
+        "revealMode": "Reveal mode",
+        "autoReveal": "Reveal automatically",
+        "manualReveal": "Reveal one at a time",
+        "nextPerson": "Reveal next person",
+        "manualReady": "The order is set. Reveal the next person when you are ready.",
+        "fixedOrderHint": "Changing the reveal mode keeps the order already drawn.",
+        "inputLocked": "The participant list is locked during the reveal. Reset to edit it again.",
+        "revealProgress": "{count} of {total} people revealed",
+        "revealComplete": "All {total} people have been revealed.",
+        "exportHint": "Reveal everyone to copy the full order or save it as TXT.",
+        "downloadText": "Save TXT",
+        "downloadFailed": "The file could not be saved. Your order is unchanged. Please try again.",
+        "resultLink": "View the drawn order"
+      },
+      "resultActions": {
+        "copyFailed": "Copy failed. Select the result below or try again.",
+        "copyLabel": "Result to copy",
+        "select": "Select all",
+        "retry": "Retry copy",
+        "copying": "Copying…",
+        "close": "Close",
+        "selectionFailed": "Automatic selection failed. Press and hold or select the result manually."
+      }
+    }
+  }
+}

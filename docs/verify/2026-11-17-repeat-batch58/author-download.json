@@ -1,0 +1,17 @@
+{
+  "source": "Actual unconnected utility with controlled browser DOM/URL and real Blob UTF8 bytes, not a native disk save.",
+  "results": [
+    {
+      "name": "exact UTF8 bytes, filename and delayed owned URL cleanup",
+      "pass": true
+    },
+    {
+      "name": "empty/stale requests and invalidation before click cannot dispatch",
+      "pass": true
+    },
+    {
+      "name": "DOM/URL/click failures are honest and release any acquired URL",
+      "pass": true
+    }
+  ]
+}

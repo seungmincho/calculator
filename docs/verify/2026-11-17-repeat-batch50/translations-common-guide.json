@@ -1,0 +1,90 @@
+{
+  "ko": {
+    "speakingPractice": {
+      "description": "바로 또는 3초·5초 준비 후 녹음하고, 기본 점검과 재녹음 비교로 연습하세요.",
+      "guideSteps": [
+        "질문을 고르고 바로 시작 또는 3초·5초 준비를 선택하세요. 마이크 권한을 허용한 뒤 준비가 끝나야 녹음합니다. 녹음·다시 듣기에는 모델 다운로드가 필요 없어요.",
+        "음성을 글로 변환할 때만 Whisper tiny를 받아요. 이름·숫자·누락된 내용을 확인하고 고치세요.",
+        "자동으로 표시되는 기본 점검에서 시간·추임새 후보·반복 표현·구성 단서를 살펴보세요.",
+        "다시 녹음해 첫 연습과 비교하고 이 기기에 저장하세요. 문장 다듬기가 필요할 때만 생성형 코칭을 선택하세요."
+      ],
+      "faq": [
+        {
+          "q": "처음부터 1.1GB를 받아야 하나요?",
+          "a": "아니요. 녹음·직접 입력·기본 점검·비교·저장은 생성형 모델 없이 됩니다. 음성 인식은 약 41MB의 Whisper tiny 모델과 추가 실행 파일을 사용합니다. 약 1.1GB의 생성형 코칭은 용량 안내를 확인하고 선택한 뒤 실행할 때만 다운로드합니다."
+        },
+        {
+          "q": "휴대폰에서도 쓸 수 있나요?",
+          "a": "기본 점검은 WebGPU 없이 작동합니다. 음성 인식은 브라우저 안에서 처리하며 기기에 따라 시간이 걸릴 수 있습니다. 처리를 취소해도 녹음과 원문은 유지됩니다. 생성형 코칭은 WebGPU와 충분한 메모리를 지원하는 기기에서만 선택할 수 있습니다."
+        },
+        {
+          "q": "기본 점검은 무엇을 확인하나요?",
+          "a": "녹음 시간, 전사문의 어절 수와 속도, 추임새 후보, 같은 어절이 3번 이상 나온 경우와 모드별 구성 단서를 확인합니다. 단어와 표현 규칙에 따른 참고 자료로, 내용을 이해한 평가나 발음·억양 점수가 아닙니다. 음성 인식에서 빠진 추임새는 셀 수 없습니다."
+        },
+        {
+          "q": "녹음이 외부로 전송되나요?",
+          "a": "음성 인식과 선택형 생성 코칭은 모두 브라우저에서 실행합니다. 모델 파일을 내려받지만 녹음과 원문을 AI 서버로 업로드하지 않습니다. 기록도 이 브라우저에만 저장합니다."
+        },
+        {
+          "q": "다운로드한 코칭 모델을 지울 수 있나요?",
+          "a": "생성형 코칭 설정에서 다운로드한 코칭 모델 삭제를 누르면 이 사이트가 저장한 코칭 모델 캐시를 지웁니다. 연습 기록과 음성 인식 모델은 유지합니다. 다시 코칭을 실행하면 모델을 다시 받을 수 있습니다."
+        },
+        {
+          "q": "녹음 전에 준비 시간을 둘 수 있나요?",
+          "a": "바로 시작 또는 3초·5초 준비를 고를 수 있습니다. 준비 시간은 마이크 권한을 허용한 뒤 시작하며 녹음 길이와 90초 상한에 포함하지 않습니다. 준비 중 취소하거나 화면을 떠나면 자동 녹음하지 않고 새로 시작해야 합니다."
+        }
+      ]
+    },
+    "toolsShowcase": {
+      "tools": {
+        "speakingPractice": {
+          "description": "0·3·5초 녹음 준비, 자기소개·업무 보고 비교와 기록 검색"
+        }
+      }
+    }
+  },
+  "en": {
+    "speakingPractice": {
+      "description": "Record immediately or after a 3- or 5-second countdown, then practise with basic checks and take comparisons.",
+      "guideSteps": [
+        "Choose a question and immediate start or a 3- or 5-second countdown. Recording starts after permission and preparation. Recording and playback require no model download.",
+        "Whisper tiny downloads only when you transcribe audio. Correct names, numbers and missing words.",
+        "Review automatic basic checks for duration, possible fillers, repeated words and structure cues.",
+        "Record again, compare with your first take, and save on this device. Choose generative coaching only when you want a rewritten answer."
+      ],
+      "faq": [
+        {
+          "q": "Do I have to download 1.1GB to start?",
+          "a": "No. Recording, typing, basic checks, comparison and saving work without a generative model. Transcription uses about 41MB of Whisper tiny weights plus runtime files. The roughly 1.1GB coaching download starts only after you opt in and run it."
+        },
+        {
+          "q": "Can I use this on a phone?",
+          "a": "Basic checks work without WebGPU. On-device transcription may take time on some phones. Cancelling processing preserves your recording and text. Generative coaching requires WebGPU and sufficient memory."
+        },
+        {
+          "q": "What do basic checks measure?",
+          "a": "Recording duration, whitespace-separated word count and pace, possible filler words, words repeated at least three times, and mode-specific structure cues. These are text rules, not semantic assessment or pronunciation scores. Fillers omitted by transcription cannot be counted."
+        },
+        {
+          "q": "Are recordings sent to a server?",
+          "a": "Speech recognition and optional coaching run in your browser. Model files are downloaded, but audio and transcripts are not uploaded to an AI server. Saved records remain in this browser."
+        },
+        {
+          "q": "Can I remove the coaching download?",
+          "a": "Use Remove downloaded coaching model in coaching settings. It clears this site’s coaching model cache while preserving practice records and the speech model. Running coaching again may download it again."
+        },
+        {
+          "q": "Can I have a countdown before recording?",
+          "a": "Choose immediate start or a 3- or 5-second preparation period. It begins after microphone permission is granted and does not count toward the recording duration or 90-second limit. Cancelling or leaving during preparation does not start recording automatically; start again explicitly."
+        }
+      ]
+    },
+    "toolsShowcase": {
+      "tools": {
+        "speakingPractice": {
+          "description": "Immediate or 3/5-second recording preparation, take comparison and saved-record search"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-11-16T21:39:54.758Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 7
+    },
+    {
+      "name": "discount-comparison",
+      "leafKeysPerLanguage": 65
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "DiscountCalculator",
+      "staticKeysChecked": 54,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "DiscountComparison",
+      "staticKeysChecked": 63,
+      "dynamicPrefixesChecked": [
+        "comparison.fields",
+        "comparison.errors",
+        "comparison.actions"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

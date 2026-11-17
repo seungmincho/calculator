@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-16T23:43:20.541Z",
+  "freeGiB": 3.84,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "browserClosed": true,
+  "allTSWritersFrozen": true,
+  "scope": [
+    "41Notepad",
+    "42KoreanWordle",
+    "43UnitBatch",
+    "45FontPairBackup",
+    "44unconnectedRunningPrepAfterCopyFix",
+    "49unconnectedMenuPurePrep"
+  ],
+  "notes": "44copy helper impact independent1+author2/lint2 passed and refrozen;49pure8/lint0 frozen. No current browser changes."
+}

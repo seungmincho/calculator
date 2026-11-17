@@ -1,0 +1,82 @@
+{
+  "scope": "Batch15 CSAT reference basis and official candidate guidance; final local checkpoint",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T15:26:58.690Z",
+    "localStartedAt": "2026-11-17 00:26:58 KST",
+    "freeMemoryBeforeGiB": 5.42,
+    "browsersClosed": true,
+    "batch16ParentConnectedAfterCheckpoint": true
+  },
+  "browser": {
+    "total": 8,
+    "grade": 3,
+    "dday": 5,
+    "allPassed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "checkedAt": "2026-11-16T15:26:00.465Z",
+    "evidence": "browser/final-results.json"
+  },
+  "domain": {
+    "gradeGroups": 13,
+    "ddayGroups": 8,
+    "existingGrade": "passed",
+    "existingDday": "passed",
+    "unchangedCutsSha256": "137d11fd379ac5627f9a789f2b088ecdeab84145593ce5de224bbfafeff5bcd5"
+  },
+  "independent": {
+    "initialGroups": 20,
+    "hydrationFollowupGroups": 3,
+    "totalGroups": 23,
+    "unresolvedFindings": 0
+  },
+  "resolvedProductFindings": [
+    "Nondefault CSAT share URL initial hydration mismatch",
+    "320px D-day countdown two-digit line wrapping"
+  ],
+  "translations": {
+    "generatedFiles": 796,
+    "applyAddedImports": 0,
+    "ownImports": 515,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "patchLeafKeysPerLanguage": 104,
+    "staticKeyUsesChecked": 77,
+    "englishRuntimeVerified": false
+  },
+  "discovery": {
+    "updatedDate": "2026-11-17",
+    "rssItems": 382,
+    "redirectRules": 472,
+    "llmsTools": 315
+  },
+  "lint": {
+    "productScopes": "0 errors/warnings",
+    "sharedScope": "0 errors/warnings",
+    "existingOutsideScope": [
+      "Notepad purity error 1",
+      "TimerStopwatch exhaustive-deps warning 1"
+    ]
+  },
+  "diffCheck": {
+    "exitCode": 0,
+    "scope": "Batch15 product, shared and handoff files"
+  },
+  "limitations": [
+    "Prior-year 24 reference cutoff tables not fully reverified against original publications",
+    "Korean-only common i18n runtime",
+    "OS share invoked with a mock; physical printing and external calendar import not verified",
+    "No physical mobile or static export verification"
+  ],
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push",
+    "search index verification"
+  ]
+}

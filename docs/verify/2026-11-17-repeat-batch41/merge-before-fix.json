@@ -1,0 +1,22 @@
+{
+  "expectedNotes": 3,
+  "actualNotes": 2,
+  "added": 1,
+  "duplicates": 1,
+  "notes": [
+    {
+      "id": "original",
+      "title": "same title",
+      "content": "current draft",
+      "createdAt": 1,
+      "updatedAt": 2
+    },
+    {
+      "id": "reserved-id",
+      "title": "same title",
+      "content": "incoming draft",
+      "createdAt": 1,
+      "updatedAt": 2
+    }
+  ]
+}

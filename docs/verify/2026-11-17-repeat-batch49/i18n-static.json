@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-11-17T00:19:01.687Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 3
+    },
+    {
+      "name": "menu-round",
+      "leafKeysPerLanguage": 11
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "DecisionTools",
+      "staticKeysChecked": 71,
+      "dynamicPrefixesChecked": [
+        "tabs",
+        "presets"
+      ]
+    },
+    {
+      "component": "MenuRoundExclusions",
+      "staticKeysChecked": 8,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

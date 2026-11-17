@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "milliseconds": 3710,
+  "text": "몸놈트어 기운은 자녀들이 사랑을 제대로 못 받고 그러면 매우 심각한 결과가 초래해 된다는 결론을 내렸습니다.",
+  "modelRequests": [
+    "http://127.0.0.1:3039/_next/static/chunks/node_modules_%40huggingface_transformers_dist_transformers_web_9ef01f32.js",
+    "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/ort-wasm-simd-threaded.jsep.mjs",
+    "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/ort-wasm-simd-threaded.jsep.wasm"
+  ],
+  "noCoachingDownload": true,
+  "noExternalRequestBody": true
+}

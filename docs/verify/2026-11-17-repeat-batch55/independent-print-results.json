@@ -1,0 +1,37 @@
+{
+  "boundary": "Actual pure/default iframe adapter with controlled DOM; actual parent with native qrcode/JSZip and controlled print ports; no Chrome or physical printer",
+  "results": [
+    {
+      "name": "independent 1..30 page oracle, exact order and HTML payload exclusion, escaping and 48-codepoint label boundary",
+      "pass": true
+    },
+    {
+      "name": "source-result metadata mismatch or non-PNG URL refuses every print snapshot",
+      "pass": true
+    },
+    {
+      "name": "actual default iframe adapter waits for all reverse-order decoders and cleans only its own frame/listener after print",
+      "pass": true
+    },
+    {
+      "name": "actual iframe failures in document/image/print never open a partial document and release frames",
+      "pass": true
+    },
+    {
+      "name": "actual iframe timeout/cancel/owner loss/old afterprint never interfere with a newer document",
+      "pass": true
+    },
+    {
+      "name": "actual parent print-cancel retains complete QR bytes and ZIP names/content; retry prints unchanged order",
+      "pass": true
+    },
+    {
+      "name": "actual parent old print/edit/localeABA/unmount callbacks cannot print or replace the current result",
+      "pass": true
+    },
+    {
+      "name": "actual parent generation remains all-or-nothing and stale generation cannot expose printable partial QR",
+      "pass": true
+    }
+  ]
+}

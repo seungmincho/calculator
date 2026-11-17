@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-11-17T01:43:42.426Z",
+  "apply": {
+    "imports": 0,
+    "files": 0,
+    "exitCode": 0
+  },
+  "audit": {
+    "own": 561,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "exitCode": 0
+  },
+  "note": "Observed after56 generation with final OCR recovery component present;57/58 subsequent canonical generation changes data only, not component namespace imports."
+}

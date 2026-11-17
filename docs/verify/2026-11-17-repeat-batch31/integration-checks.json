@@ -1,0 +1,136 @@
+{
+  "scope": "순서 공개 제어·결정 도구 복사 복구",
+  "status": "complete_local_verification",
+  "namespace": "decisionTools",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 20,
+    "commonGuideLeaves": 3,
+    "patchLeavesPerLanguage": 23,
+    "staticUses": 75,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed1578 after final38 copyFailed wording correction",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 540,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "routes": [
+      "/order-picker/",
+      "/roulette/",
+      "/menu-roulette/"
+    ],
+    "updatedDate": "2026-11-17",
+    "scopedLintFiles": 5,
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45644
+    }
+  },
+  "author": {
+    "status": "passed/stable",
+    "preparedPure": 10,
+    "preparedChild": 2,
+    "actualParent": 8,
+    "baselineAffected": 2,
+    "groups": 22,
+    "existingMealPlanChecks": 19,
+    "scopedLintFiles": 9,
+    "errors": 0,
+    "warnings": 0
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 8,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "unresolvedFindings": 0,
+    "report": "independent-review.md"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 6,
+    "failed": 0,
+    "checkedAt": "2026-11-16T21:16:27.707Z",
+    "browserClosed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "results": "browser/final-results.json",
+    "report": "review-browser.md",
+    "scopedRunnerLintExitCode": 0,
+    "productTsFixesDuringBrowser": 0,
+    "fixtureCorrections": "Initial4 flows: hidden wrapper expectation, Windows Clipboard CRLF, duplicate save-button selection; affected flows rerun only"
+  },
+  "typecheck": {
+    "status": "passed_after_prepared_batch34_fix",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "heapMiB": 2048,
+    "totalMemoryGiB": 31.75,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempts": [
+      {
+        "preflightAt": "2026-11-16T21:21:58.327Z",
+        "freeMemoryGiB": 4.39,
+        "sessionId": 87442,
+        "exitCode": 1,
+        "error": {
+          "file": "src/utils/numberToKoreanActions.ts",
+          "line": 39,
+          "column": 53,
+          "code": "TS2774",
+          "scope": "unconnected batch34 prepared utility"
+        }
+      },
+      {
+        "preflightAt": "2026-11-16T21:24:34.513Z",
+        "freeMemoryGiB": 4.36,
+        "exitCode": 0,
+        "diagnostics": 0,
+        "elapsedSeconds": 7.8093365,
+        "chunkId": "aad590"
+      }
+    ],
+    "fix": "One line explicitly checks typeof native clipboard.writeText === function; copy14 + global API success/absence + scoped lint passed; current products unchanged",
+    "allTsWritersFrozen": true,
+    "chromeClosed": true,
+    "scope": "Shared31/32/38 checkpoint including stable unconnected33/34 prepared files; later feature completion excluded"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "accountSnapshot": {
+    "atKst": "2026-11-17 06:14",
+    "usedPercent": 65,
+    "remainingPercent": 35,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "source": "root account-wide read-only memo; not task-only usage"
+  },
+  "commonCodeDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current31/32/38 products, canonical/generated, metadata/discovery and batch documents"
+  },
+  "documentChecks": {
+    "status": "passed",
+    "markdownFiles": 7,
+    "relativeLinks": 183,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  },
+  "completedAt": "2026-11-16T21:28:42.886Z"
+}

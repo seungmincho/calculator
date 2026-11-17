@@ -1,0 +1,16 @@
+{
+  "source": "supabase",
+  "requested_date": "2026-11-15",
+  "sido": "01",
+  "data": [
+    {
+      "trade_date": "2026-11-15",
+      "sido_cd": "01",
+      "sido_nm": "서울",
+      "gasoline": 1899.57,
+      "premium_gasoline": 2429.08,
+      "diesel": 1882.1,
+      "lpg": 1238.14
+    }
+  ]
+}

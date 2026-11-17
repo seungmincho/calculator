@@ -1,0 +1,18 @@
+{
+  "ko": {
+    "tetris": {
+      "input": {
+        "padHint": "버튼에 초점을 둔 뒤 Space 또는 Enter를 누르면 한 번 조작해요. 이동 버튼을 손가락이나 마우스로 누르고 있으면 계속 이동해요.",
+        "focusHint": "입력칸·버튼·링크를 사용하는 동안에는 전역 게임 단축키가 실행되지 않아요. 일시정지하거나 새 게임을 시작하면 누르고 있던 조작이 해제돼요."
+      }
+    }
+  },
+  "en": {
+    "tetris": {
+      "input": {
+        "padHint": "Focus a button and press Space or Enter for one action. Hold a movement button with a finger or mouse to keep moving.",
+        "focusHint": "Global game shortcuts stay inactive while you use inputs, buttons, or links. Pausing or starting a new game releases all held controls."
+      }
+    }
+  }
+}

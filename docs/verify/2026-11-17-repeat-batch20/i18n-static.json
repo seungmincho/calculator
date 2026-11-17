@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-11-16T16:52:21.396Z",
+  "patches": [
+    {
+      "name": "lunar",
+      "leafKeysPerLanguage": 53
+    },
+    {
+      "name": "speaking-records",
+      "leafKeysPerLanguage": 24
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "LunarConverter",
+      "staticKeysChecked": 73,
+      "dynamicPrefixesChecked": [
+        "mode",
+        "guide"
+      ]
+    },
+    {
+      "component": "LunarSavedAnniversaries",
+      "staticKeysChecked": 29,
+      "dynamicPrefixesChecked": [
+        "savedAnniversaries.errors",
+        "savedAnniversaries"
+      ]
+    },
+    {
+      "component": "LunarCopyRecovery",
+      "staticKeysChecked": 6,
+      "dynamicPrefixesChecked": [
+        "copyRecovery"
+      ]
+    },
+    {
+      "component": "LunarAnniversaryCalendar",
+      "staticKeysChecked": 30,
+      "dynamicPrefixesChecked": [
+        "calendarExport.errors"
+      ]
+    },
+    {
+      "component": "SpeakingPractice",
+      "staticKeysChecked": 187,
+      "dynamicPrefixesChecked": [
+        "basic.duration",
+        "basic.cues",
+        "basic.next",
+        "modes",
+        "stages",
+        "errors"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

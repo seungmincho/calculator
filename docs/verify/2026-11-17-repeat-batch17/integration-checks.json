@@ -1,0 +1,23 @@
+{
+  "scope": "Batch17 simple CSAT goals and lunar anniversary ICS",
+  "typecheck": {
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T15:54:00.448Z",
+    "localStartedAt": "2026-11-17 00:54:00 KST",
+    "freeMemoryBeforeGiB": 5.5,
+    "browsersClosed": true,
+    "nextBatchRuntimeUnconnected": true
+  },
+  "browser": { "total": 11, "csatGoals": 6, "lunarCalendar": 5, "allPassed": true, "javascriptErrors": 0, "hydrationErrors": 0, "checkedAt": "2026-11-16T15:51:57.176Z", "evidence": "browser/final-results.json" },
+  "domain": { "csatGoalsGroups": 24, "allowlistTargetedFollowupGroups": 1, "lunarCalendarGroups": 15, "existingLunar": "passed", "existingCsatCalculation": "passed", "csatContextGroups": 14 },
+  "independent": { "lunarGroups": 11, "csatGoalGroups": 15, "gradeCombinations": 6561, "areasPerCombination": [2, 3, 4], "totalGroups": 26, "unresolvedFindings": 0 },
+  "resolvedProductFindings": ["320px lunar date selector clipped the year; responsive date rows corrected"],
+  "translations": { "generatedFiles": 796, "applyAddedImports": 0, "ownImports": 518, "viaChild": 6, "unresolved": 0, "existingDynamicNotices": 60, "patchLeafKeysPerLanguage": 97, "staticKeyUsesChecked": 221, "englishRuntimeVerified": false },
+  "discovery": { "updatedDate": "2026-11-17", "rssItems": 382, "redirectRules": 472, "llmsTools": 315 },
+  "lint": { "newProductScopes": "0 errors/warnings", "sharedScope": "0 errors/warnings", "existingBaseline": ["LunarConverter set-state-in-effect errors 4, unchanged before/after parent hookup", "Notepad purity error 1", "TimerStopwatch exhaustive-deps warning 1"] },
+  "diffCheck": { "exitCode": 0, "scope": "Batch17 product, shared and handoff files" },
+  "limitations": ["Korean-only common i18n runtime at this checkpoint", "Simple grade-sum goals are not university-specific admissions decisions", "ICS dates reuse existing lunar rules; not a new certification of all conversion data", "External calendar import and duplicate handling not verified", "No atomic cross-tab guarantee without Web Locks; failed readback may follow a successful write"],
+  "notRun": ["production build", "deployment", "commit", "push", "physical mobile testing"]
+}

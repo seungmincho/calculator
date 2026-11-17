@@ -1,0 +1,56 @@
+{
+  "ko": {
+    "pomodoroTimer": {
+      "description": "집중과 휴식 시간을 정하고 일시정지·재개하세요. 오늘 목표·할 일·최근 7일 기록과 재방문 안내를 함께 확인합니다.",
+      "guideHowItems": [
+        "할 일을 고르고 집중·휴식 시간과 오늘 목표를 정합니다.",
+        "시작 후 필요하면 일시정지하고 명시적으로 재개합니다.",
+        "현재 단계 완료 후 휴식이나 다음 집중을 시작합니다. 자동 시작은 설정에서 선택합니다.",
+        "재방문 시 남은 시간이나 만료 안내를 확인합니다. 부재 시간은 자동 기록하지 않습니다.",
+        "완료한 집중 횟수와 최근 7일 기록을 확인하고 CSV로 내려받습니다."
+      ],
+      "guideTipsTitle": "타이머 활용 팁",
+      "guideTipsItems": [
+        "이 도구의 알림은 브라우저와 운영체제의 백그라운드 실행 제한을 받습니다.",
+        "시간 기준이 크게 달라졌다는 안내가 나오면 남은 시간과 단계를 확인한 뒤 재개하세요.",
+        "손상되거나 접근할 수 없는 설정·할 일·타이머 저장본은 원문을 보호하면서 현재 화면에서 사용할 수 있습니다.",
+        "다른 탭이 타이머 저장본을 바꾸면 멈춥니다. 안내를 확인하고 명시적으로 다시 읽으세요.",
+        "건너뛰기나 부재 중 만료된 저장 상태를 완료한 집중 기록으로 자동 추가하지 않습니다."
+      ]
+    },
+    "toolsShowcase": {
+      "tools": {
+        "pomodoroTimer": {
+          "description": "집중·휴식 타이머, 복귀·저장 안내와 오늘 목표·7일 CSV"
+        }
+      }
+    }
+  },
+  "en": {
+    "pomodoroTimer": {
+      "description": "Set focus and break times, pause and resume. Check your daily goal, tasks, seven-day records and return guidance together.",
+      "guideHowItems": [
+        "Choose a task, focus and break durations, and a daily goal.",
+        "Start, pause when needed, and explicitly resume.",
+        "After the current phase ends, start a break or the next focus phase. Auto-start is optional in settings.",
+        "On return, check remaining time or the expired-session notice. Away time is not automatically recorded.",
+        "Review completed focus sessions and download the last seven days as CSV."
+      ],
+      "guideTipsTitle": "Timer tips",
+      "guideTipsItems": [
+        "Alerts depend on browser and operating-system background execution limits.",
+        "If time sources have changed substantially, check the remaining time and phase before resuming.",
+        "Corrupt or inaccessible settings, task and timer data are preserved while you use the current screen.",
+        "The timer stops if another tab changes its saved state. Review the notice and explicitly reload it.",
+        "Skipping or returning to an already-expired saved phase does not automatically add a completed focus session."
+      ]
+    },
+    "toolsShowcase": {
+      "tools": {
+        "pomodoroTimer": {
+          "description": "Focus and break timer with return/storage guidance, daily goals and seven-day CSV"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "scope": "Batch23 custom typing and preserved last screen-recording result",
+  "status": "complete",
+  "translations": {
+    "patchLeavesPerLanguage": 90,
+    "staticUses": 169,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "applyAddedImports": 0,
+    "ownImports": 531,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "finalMessagesCheckPending": false,
+    "messagesCheck": "1578 files verified"
+  },
+  "metadata": {
+    "routes": [
+      "/typing-test",
+      "/screen-recorder"
+    ],
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "updatedDate": "2026-11-17",
+    "discoveryGenerated": true,
+    "redirectRules": 472,
+    "rssItems": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45320
+  },
+  "authorTests": {
+    "typingDomain": 9,
+    "typingChild": 8,
+    "typingFocusImpact": 1,
+    "typingParent": 6,
+    "typingTotal": 24,
+    "existingTyping": "passed",
+    "recordingPreparedStateOwnership": 10,
+    "recordingParentPending": false,
+    "recordingSession": 10,
+    "recordingAdapterParent": 6,
+    "recordingTotal": 26
+  },
+  "lint": {
+    "commonPagesAndMenu": "0 errors/warnings",
+    "typing8Files": "0 errors/warnings",
+    "recordingProductAndExistingTests9Files": "0 errors/warnings",
+    "recordingIntegrationFixture": "0 errors/warnings per final author implementation record"
+  },
+  "typecheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "attempts": 1,
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "preflightAt": "2026-11-16T17:54:23.083Z",
+    "freeGiB": 5.54,
+    "browserClosed": true,
+    "stablePreparedBatch24FilesIncluded": true,
+    "sessionId": 19657
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "independent": {
+    "typingGroups": 8,
+    "recordingGroups": 8,
+    "totalGroups": 16,
+    "lint": "0 errors/warnings",
+    "unresolvedFindings": 0
+  },
+  "preparedTypeScript": {
+    "pdf": "domain10/lint0; parent unconnected, author confirmed editing paused",
+    "password": "domain10/actualChildKOEN2/existing regression/lint0; parent unconnected and editing paused"
+  },
+  "browser": {
+    "passed": 11,
+    "failed": 0,
+    "typingCases": 5,
+    "recordingCases": 6,
+    "checkedAt": "2026-11-16T17:51:29.051Z",
+    "browsersClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "report": "review-browser.md",
+    "nativeVideoBytes": 38759,
+    "nativeVideoDimensions": [
+      320,
+      180
+    ],
+    "personalScreenOrMicRequests": 0,
+    "osCaptureDialogRequests": 0
+  },
+  "completedAt": "2026-11-16T17:56:34.646Z",
+  "diffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "batch23 product/utils/tests, common originals/generated metadata/discovery and batch23/handoff documents"
+  },
+  "localDocumentLinks": {
+    "files": 5,
+    "missing": []
+  }
+}

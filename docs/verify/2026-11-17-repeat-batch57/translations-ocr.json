@@ -1,0 +1,48 @@
+{
+  "ko": {
+    "imageOcr": {
+      "jobs": {
+        "title": "인식 대기열", "pause": "현재 파일 뒤 일시정지", "pausing": "현재 파일을 마친 뒤 일시정지해요.", "paused": "인식 대기열이 일시정지됐어요.", "resume": "계속 인식", "retryFailed": "실패한 파일만 재시도", "failedCount": "실패한 파일 {count}개", "waitingCount": "대기 중 {count}개",
+        "pauseHint": "진행 중인 파일은 끝까지 처리하고 다음 파일부터 기다립니다. 일시정지 중 추가한 파일도 계속을 눌러야 시작해요.",
+        "retryPaused": "실패한 파일을 대기열에 넣었어요. 계속을 누르면 다른 대기 파일과 함께 순서대로 인식합니다.",
+        "previousResult": "이전 성공 결과를 표시하고 있어요. 편집·복사·TXT·읽기 전달도 이 원고를 사용합니다.",
+        "settingsChanged": "이 결과는 이전 언어·보정·회전 설정으로 인식했어요. 현재 설정을 적용하려면 다시 인식을 눌러 주세요.",
+        "editedRetained": "새 인식을 완료했어요. 사용자가 편집한 원고는 그대로 유지했어요.",
+        "emptyResult": "새 인식을 완료했지만 텍스트를 찾지 못했어요.",
+        "emptyEditedRetained": "새 인식에서 텍스트를 찾지 못했어요. 편집한 원고는 그대로 유지했어요.",
+        "resourceWaiting": "이전 인식 작업을 정리하는 중이에요. 준비가 끝나면 대기 중인 파일을 시작합니다.",
+        "workerUnavailable": "인식 작업을 준비하지 못했어요. 이전 원고를 유지했어요. 실패한 파일을 다시 시도해 주세요.",
+        "confirmation": {
+          "title": "편집한 원고 확인", "rerun": "편집한 {count}개 원고를 새 인식 결과로 바꿀까요? 인식에 실패하면 이전 원고를 유지합니다.",
+          "cleanup": "편집한 {count}개 원고를 원래 인식 결과로 다시 정리할까요? 편집 내용은 초기화됩니다.",
+          "reset": "이미지와 원고를 모두 비울까요? 편집한 {count}개 원고도 삭제됩니다.",
+          "newEditHint": "인식 중 새로 편집한 내용은 덮어쓰지 않습니다.", "confirmRerun": "새 결과로 바꾸기", "confirmCleanup": "편집 초기화 후 정리", "confirmReset": "모두 비우기", "cancel": "취소",
+          "changed": "확인 중 원고나 목록이 바뀌었어요. 현재 내용을 확인하고 작업을 다시 선택해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "imageOcr": {
+      "jobs": {
+        "title": "Recognition queue", "pause": "Pause after this file", "pausing": "The queue will pause after the current file finishes.", "paused": "The recognition queue is paused.", "resume": "Continue recognition", "retryFailed": "Retry failed files only", "failedCount": "{count} failed files", "waitingCount": "{count} files waiting",
+        "pauseHint": "The current file finishes before the queue pauses. Files added while paused also wait until you choose Continue.",
+        "retryPaused": "Failed files were added to the queue. Continue processes them in order with the other waiting files.",
+        "previousResult": "Showing the previous successful result. Editing, copy, TXT and read-aloud transfer use this manuscript.",
+        "settingsChanged": "This result used earlier language, preparation or rotation settings. Choose Recognize again to apply the current settings.",
+        "editedRetained": "Recognition finished. Your edited manuscript has been kept.",
+        "emptyResult": "Recognition finished, but no text was found.",
+        "emptyEditedRetained": "No text was found in the new recognition. Your edited manuscript has been kept.",
+        "resourceWaiting": "Finishing cleanup of an earlier recognition job. Waiting files will start when it is ready.",
+        "workerUnavailable": "Could not prepare recognition. The previous manuscript has been kept. Try the failed files again.",
+        "confirmation": {
+          "title": "Review edited manuscripts", "rerun": "Replace {count} edited manuscripts with new recognition results? Previous manuscripts are kept if recognition fails.",
+          "cleanup": "Clean up {count} edited manuscripts from the original recognition results? Your edits will be reset.",
+          "reset": "Clear all images and manuscripts? This also removes {count} edited manuscripts.",
+          "newEditHint": "New edits made while recognition is running will not be overwritten.", "confirmRerun": "Replace with new results", "confirmCleanup": "Reset edits and clean up", "confirmReset": "Clear everything", "cancel": "Cancel",
+          "changed": "The manuscript or list changed while awaiting confirmation. Review the current content and choose the action again."
+        }
+      }
+    }
+  }
+}

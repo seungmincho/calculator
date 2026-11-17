@@ -1,0 +1,42 @@
+{
+  "ko": {
+    "qrGenerator": {
+      "batch": {
+        "print": {
+          "button": "QR 묶음 인쇄",
+          "documentTitle": "QR 묶음",
+          "row": "{line}번",
+          "page": "{page} / {total}",
+          "summary": "QR {count}개 · A4 {pages}장 · 한 장에 6개",
+          "hint": "각 QR을 한 번씩 인쇄해요. 이름과 번호만 표시하며, QR 내용은 글자로 넣지 않아요. 인쇄 배율 100%를 권장하며, 출력 후 스캔해서 확인해 주세요.",
+          "shortened": "긴 이름 {count}개는 앞 48글자까지만 표시해요. QR 내용은 그대로 유지돼요.",
+          "preparing": "인쇄할 QR 이미지를 준비하고 있어요."
+        },
+        "notices": {
+          "printOpened": "인쇄 창을 열었어요. 용지와 배율을 확인해 주세요.",
+          "printFailed": "인쇄할 이미지를 준비하지 못했어요. QR 묶음 인쇄를 다시 눌러 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "qrGenerator": {
+      "batch": {
+        "print": {
+          "button": "Print QR batch",
+          "documentTitle": "QR batch",
+          "row": "No. {line}",
+          "page": "{page} / {total}",
+          "summary": "QR codes: {count} · A4 pages: {pages} · 6 per page",
+          "hint": "Each QR code appears once, with its name and number. QR contents are not printed as text. Use 100% scale and scan the printed codes to check them.",
+          "shortened": "Long names: {count}. Only their first 48 characters are shown. QR contents stay unchanged.",
+          "preparing": "Preparing QR images for printing."
+        },
+        "notices": {
+          "printOpened": "The print dialog opened. Check the paper size and scale.",
+          "printFailed": "The images could not be prepared for printing. Select Print QR batch to try again."
+        }
+      }
+    }
+  }
+}

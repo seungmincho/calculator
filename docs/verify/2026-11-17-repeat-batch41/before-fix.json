@@ -1,0 +1,20 @@
+{
+  "reproductionOnly": true,
+  "sourceSha256": "50ccf88ad5e0cf1db76a1b4455d5810fd63219bd3287632c0e53fe9f5bf5d5bd",
+  "groups": 3,
+  "probes": [
+    {
+      "name": "storage event replaces unsaved local note",
+      "content": "other tab text"
+    },
+    {
+      "name": "external key deletion clears current unsaved notes",
+      "count": 0
+    },
+    {
+      "name": "late import restores captured notes over a newer edit",
+      "content": "unsaved local text",
+      "count": 2
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "rehearsal-timing-pause-save-compare-reload",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "rehearsal-quota-keeps-measurement",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "ocr-transfer-no-url-no-autoplay-local-voice",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "ocr-transfer-online-only-blocked-until-choice",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "ocr-real-recognition-to-tts",
+    "pass": true,
+    "source": "results-ocr-real.json"
+  },
+  {
+    "name": "ocr-real-recognition-to-tts-selection",
+    "pass": true,
+    "source": "results-ocr-real.json"
+  },
+  {
+    "name": "meals-save-week-exclusion-reload-date-rollover",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "meals-filtered-spin-save-and-empty-recovery",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "meals-storage-failure-preserves-input",
+    "pass": true,
+    "source": "results.json"
+  },
+  {
+    "name": "mobile-320-remaining-tools",
+    "pass": true,
+    "source": "results-mobile.json"
+  }
+]

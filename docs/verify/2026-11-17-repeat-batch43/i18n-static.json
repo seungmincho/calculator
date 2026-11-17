@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-16T23:17:49.704Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "unit-batch",
+      "leafKeysPerLanguage": 51
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "UnitConverter",
+      "staticKeysChecked": 29,
+      "dynamicPrefixesChecked": [
+        "u",
+        "categories",
+        "formula",
+        "notes"
+      ]
+    },
+    {
+      "component": "UnitBatchConverter",
+      "staticKeysChecked": 38,
+      "dynamicPrefixesChecked": [
+        "batch.errors",
+        "batch.columns"
+      ]
+    },
+    {
+      "component": "UnitCopyRecovery",
+      "staticKeysChecked": 8,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

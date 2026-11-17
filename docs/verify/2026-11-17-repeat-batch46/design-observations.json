@@ -1,0 +1,135 @@
+{
+  "productSourceSha256": "f718e245f51a2e110b103197b8a1aac59dc2df97a35c175efce6a066d323b9e0",
+  "productWrites": 0,
+  "browserStorageReads": 0,
+  "publicRpcCalls": 0,
+  "currentSurrogateSplit": [
+    {
+      "start": 0,
+      "end": 140,
+      "isolatedHighAtEnd": true
+    },
+    {
+      "start": 140,
+      "end": 280,
+      "isolatedHighAtEnd": false
+    },
+    {
+      "start": 280,
+      "end": 341,
+      "isolatedHighAtEnd": false
+    }
+  ],
+  "safeObservations": [
+    {
+      "max": "1",
+      "segments": [
+        {
+          "text": "A",
+          "start": 0,
+          "end": 1
+        },
+        {
+          "text": "\ud83d",
+          "start": 1,
+          "end": 2
+        },
+        {
+          "text": "\ude00",
+          "start": 2,
+          "end": 3
+        },
+        {
+          "text": "B",
+          "start": 3,
+          "end": 4
+        },
+        {
+          "text": "C",
+          "start": 4,
+          "end": 5
+        },
+        {
+          "text": "D",
+          "start": 5,
+          "end": 6
+        }
+      ],
+      "integerOffsets": true
+    },
+    {
+      "max": "1.5",
+      "segments": [
+        {
+          "text": "A",
+          "start": 0,
+          "end": 1.5
+        },
+        {
+          "text": "😀",
+          "start": 1.5,
+          "end": 3
+        },
+        {
+          "text": "B",
+          "start": 3,
+          "end": 4.5
+        },
+        {
+          "text": "CD",
+          "start": 4.5,
+          "end": 6
+        }
+      ],
+      "integerOffsets": false
+    },
+    {
+      "max": "NaN",
+      "segments": [
+        {
+          "text": "A😀BCD",
+          "start": 0,
+          "end": 6
+        }
+      ],
+      "integerOffsets": true
+    },
+    {
+      "max": "Infinity",
+      "segments": [
+        {
+          "text": "A😀BCD",
+          "start": 0,
+          "end": 6
+        }
+      ],
+      "integerOffsets": true
+    }
+  ],
+  "notExecuted": [
+    {
+      "max": 0,
+      "reason": "Source inference: start never advances on ABCD."
+    },
+    {
+      "max": -1,
+      "reason": "Source inference: start decreases on ABCD."
+    }
+  ],
+  "proposedSchema": {
+    "limits": {
+      "records": 8,
+      "text": 30000,
+      "name": 40,
+      "voiceName": 512,
+      "segmentText": 140,
+      "asciiId": 80,
+      "asciiRevision": 80,
+      "rawBytes": 2097152
+    },
+    "actualSyntheticBytes": 1471151,
+    "conservativeSerializerBound": 1478975,
+    "exactRoundTrip": true,
+    "implementationExists": false
+  }
+}

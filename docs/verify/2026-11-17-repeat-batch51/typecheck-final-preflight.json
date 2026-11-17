@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-17T00:43:59.864Z",
+  "freeGiB": 3.36,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "chromeClosed": true,
+  "allTsWritersFrozen": true,
+  "scopes": [
+    44,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "unconnectedPreparation": [
+    52,
+    53
+  ],
+  "attempt": 2,
+  "reason": "TS2367 pageHidden getter preserves current runtime state; affected hook1+parent1 and lint passed",
+  "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit"
+}

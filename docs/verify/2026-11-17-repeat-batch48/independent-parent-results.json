@@ -1,0 +1,46 @@
+{
+  "productSha256": "d7664cd6bed246575fd7c22b9c5ddc08e080504e1624dd6266ee7280bebd34d8",
+  "baselineHashes": {
+    "before-fix.json": "95f48bc8e69821ecad49a202e21eba8c6967d6d7b5c5bff050a35c89cf5d3511",
+    "clear-before-fix.json": "c68ec37a9c2ed7353d63b45c53a7e7b931c7aee541db7c6e2d129d572191f744",
+    "check-character-baseline.mjs": "10f76cbee65a7a6c8092d1bb5c3283d25f09eefb8ae48bab3fc14474b87578d7",
+    "check-character-clear-baseline.mjs": "c943944f1bc110854e29e9c1fcb16548e0ce9cb5c62118f510ff70ef77a908fe"
+  },
+  "groups": 8,
+  "results": [
+    {
+      "name": "initial20 field coordinates, untouched tabs and explicit default tab use independent merge oracle",
+      "pass": true
+    },
+    {
+      "name": "full manual copy recovery and actual child retry keep exact whitespace/emoji text",
+      "pass": true
+    },
+    {
+      "name": "native late rejection cannot fall back after tab/input/locale ABA or newer copy kind",
+      "pass": true
+    },
+    {
+      "name": "undo restores all fields and token cannot resurrect after same-tab ABA; other-tab edits are isolated",
+      "pass": true
+    },
+    {
+      "name": "clear pending plus old/new autosaves: six release permutations preserve latest input and version bytes",
+      "pass": true
+    },
+    {
+      "name": "real versions child uses latest parent tab for Diff full text, raw preservation and explicit restore undo",
+      "pass": true
+    },
+    {
+      "name": "blocked/corrupt/readback states preserve current text and do not announce false autosave",
+      "pass": true
+    },
+    {
+      "name": "Strict replay and true unmount cancel old clipboard/lock completions without losing live draft",
+      "pass": true
+    }
+  ],
+  "publicRpcCalls": 0,
+  "nativeBrowser": false
+}

@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-11-17T01:04:16.710Z",
+  "rows": [
+    {
+      "batch": 52,
+      "page": "percent-calculator",
+      "descriptionUses": 4,
+      "titleUses": 3,
+      "canonicalFaq": true
+    },
+    {
+      "batch": 53,
+      "page": "color-converter",
+      "descriptionUses": 4,
+      "titleUses": 3,
+      "canonicalFaq": true
+    },
+    {
+      "batch": 54,
+      "page": "typing-test",
+      "descriptionUses": 4,
+      "titleUses": 3,
+      "canonicalFaq": true
+    },
+    {
+      "batch": 55,
+      "page": "qr-generator",
+      "descriptionUses": 4,
+      "titleUses": 3,
+      "canonicalFaq": true
+    }
+  ],
+  "errors": 0
+}

@@ -1,0 +1,252 @@
+{
+  "ko": {
+    "csatDday": {
+      "essentials": {
+        "title": "시험 전 먼저 확인",
+        "arrival": "{time}까지 지정 시험실 입실",
+        "required": "수험표와 인정 신분증을 챙기세요. 1교시를 선택하지 않아도 같은 시각까지 입실해야 합니다. 모바일 신분증은 사용할 수 없어요.",
+        "navigation": "수능 준비 바로가기",
+        "checklist": "준비물 확인",
+        "schedule": "시간표 보기",
+        "practice": "과목별 연습",
+        "checked": "공식 안내 확인: {date} ·",
+        "source": "교육부 수험생 유의사항"
+      },
+      "schedule": {
+        "desc": "일반 수험생의 한국시간(KST) 시간표입니다. 시험 당일에는 현재 교시가 표시돼요.",
+        "generalNote": "시험편의제공 대상자의 시간표는 별도 안내를 확인하세요. 이 화면은 시험장 방송·감독관 안내를 대신하지 않습니다.",
+        "practiceStart": "전체 시간표 연습 시작",
+        "practiceOn": "전체 시간표 연습 중: 누른 시각을 1교시 시작으로 놓고 표의 시각을 옮깁니다. 실제 시험 방송이나 듣기평가는 제공하지 않아요.",
+        "inqNote": "2027학년도 공식 안내와 대조한 일반 수험생 시간표예요. 4교시 입실은 14:40까지 마치세요.",
+        "inq": {
+          "inq1": "탐구 첫 번째 시간 (2과목 선택자)",
+          "collect": "응시한 과목 문제지 회수",
+          "inq2": "탐구 두 번째 시간 (1·2과목 선택자)"
+        },
+        "inqRules": [
+          "한국사는 모든 수험생이 응시해야 합니다. 미응시하면 수능 성적이 무효 처리되고 성적통지표가 제공되지 않습니다.",
+          "탐구는 신청한 선택과목 순서대로, 해당 시간의 문제지 한 부만 책상 위에 놓고 응시하세요.",
+          "두 번째 탐구 시간에 이미 끝난 첫 번째 과목의 답안을 작성하거나 수정하면 부정행위입니다."
+        ],
+        "inqSingle": "탐구 1과목 선택자는 첫 번째 시간에 대기하고 16:07~16:37에 응시합니다. 대기 중 시험 준비는 금지되며 감독관 안내를 따르세요."
+      },
+      "practice": {
+        "title": "과목별 시간 맞춰 연습",
+        "description": "선택한 과목의 시험 시간을 타이머에 채웁니다. 이동 후 시작 버튼을 직접 눌러야 하며 자동으로 실행되지 않아요.",
+        "open": "{subject} {minutes}분 타이머 열기",
+        "subjects": { "kor": "국어", "math": "수학", "eng": "영어", "hist": "한국사", "inq1": "탐구 한 과목", "lang2": "제2외국어/한문" },
+        "limit": "일반 수험생 기준의 사전 연습용입니다. 영어 70분에는 듣기평가가 포함되지만 이 타이머는 듣기 음원·방송·시험장 감독을 제공하지 않습니다. 실제 시험에 기기를 사용하지 마세요."
+      },
+      "checklist": {
+        "verifyNote": "2027학년도 공식 안내 대조 · {date} 확인. 세부 인정 범위와 특수 물품은 공식 유의사항·감독관 안내를 확인하세요.",
+        "items": {
+          "idCard": "사진이 있는 인정 신분증 (모바일 신분증 불가)",
+          "signPen": "검은색 컴퓨터용 사인펜 (개인 지참 가능)",
+          "correctionTape": "흰색 수정테이프 (개인 지참 가능)",
+          "water": "음용수 (전자식 화면 없는 용기)",
+          "mask": "여분 마스크 (감독관 사전 확인)",
+          "tissue": "휴지·필요한 약 (특수 물품 사전 확인)"
+        },
+        "provided": "검은색 컴퓨터용 사인펜과 샤프를 지급합니다. 흰색 수정테이프는 시험 중 감독관에게 요청할 수 있어요.",
+        "penNote": "개인 사인펜과 흰색 수정테이프는 지참할 수 있지만 개인 샤프는 시험 중 휴대할 수 없습니다. 답안지와 필적확인문구는 검은색 컴퓨터용 사인펜으로 작성하세요.",
+        "banned": [
+          "휴대전화·스마트워치·스마트안경·태블릿·블루투스 이어폰 등 통신·결제 기능 물품",
+          "전자사전·전자식 화면이 있는 시계나 텀블러 등 LCD·LED 표시 물품",
+          "전자담배·보조배터리 등 충전식 전자기기와 그 밖의 모든 전자기기"
+        ],
+        "bannedNote": "불가피하게 가져왔다면 1교시 시작 전 수거 시간에 감독관에게 제출하세요. 전원이 꺼져 있어도 미제출 소지는 부정행위입니다.",
+        "tips": [
+          "수험표를 분실했다면 응시원서와 같은 사진 1장과 신분증을 준비해 당일 08:00까지 시험장 관리본부에 재발급을 요청하세요.",
+          "점심 식사와 음용수는 제공되지 않습니다. 시험장 위치와 이동 시간도 미리 확인하세요.",
+          "개인 샤프·볼펜·연습장 등은 시험 중 휴대할 수 없습니다. 의료기기·귀마개·방석 등 특수 물품은 사전 확인 절차를 따르세요."
+        ]
+      },
+      "sheet": {
+        "desc": "사전 연습이나 시험 후 답 기록에 사용하세요. 입력한 답과 선택 과목은 이 브라우저에 저장되며, 인쇄하면 기록표만 출력됩니다.",
+        "warn": "교육부는 수험표 뒷면 가채점표를 매 교시 종료령 전에 작성하도록 안내합니다. 종료령 뒤 문답지 회수 전 작성은 부정행위입니다. 이 사이트 인쇄물은 사전 연습·시험 후 기록용이며, 시험장에서는 공식 유의사항과 감독관 안내를 따르세요.",
+        "countNote": "문항 수는 2027학년도 시행기본계획과 대조했어요. * 표시는 단답형이에요.",
+        "printScope": "사전 연습·시험 후 기록용입니다. 이 인쇄물의 시험 중 사용을 허용하는 자료가 아닙니다."
+      },
+      "timeline": {
+        "items": {
+          "susiExtra": "수시 미등록 충원 합격 통보",
+          "jeongsiExtra": "정시 미등록 충원 합격 통보"
+        },
+        "note": "2027학년도 대입전형 시행계획 기준입니다. 정시 접수는 1/4~1/7 중 대학별 3일 이상으로 실제 기간이 다릅니다. 수시 충원 통보는 12/29 18시까지, 등록은 12/30 22시까지이며, 정시 충원 통보는 2/17 18시까지, 등록은 2/18 22시까지입니다. 지원 대학의 최신 모집요강을 우선 확인하세요."
+      },
+      "guide": {
+        "whatIs": {
+          "desc": "2027학년도 수능은 2026년 11월 19일(목), 성적 통지일은 12월 11일(금)입니다. 이 도구는 준비물·일반 수험생 시간표·사전 시간 연습과 시험 후 답 기록을 돕습니다. 시험장에서는 공식 안내와 감독관 지시가 우선입니다."
+        },
+        "dayBefore": {
+          "items": [
+            "11월 18일 예비소집의 장소·시각은 안내받은 내용을 확인하세요. 수험표의 선택과목과 시험장 위치, 이동 시간을 점검하세요.",
+            "수험표와 인정 신분증을 미리 준비하세요. 모바일 신분증은 사용할 수 없습니다.",
+            "시계에 통신·결제·전자식 화면 기능이 없는지 확인하세요.",
+            "도시락과 음용수를 준비하고 평소 생활 리듬을 유지하세요."
+          ]
+        },
+        "examDay": {
+          "items": [
+            "08:10까지 지정 시험실에 입실하세요. 국어 미선택자도 같은 시각까지 입실해야 합니다.",
+            "전자기기를 가져왔다면 1교시 시작 전 감독관에게 제출하세요.",
+            "4교시 한국사에 반드시 응시하고 탐구 선택과목 순서를 지키세요.",
+            "종료령이 울리면 필기를 멈추고 문답지 회수 및 퇴실 안내를 따르세요."
+          ]
+        },
+        "tips": {
+          "items": [
+            "과목별 타이머로 필요한 시간만 채워 사전 연습하세요. 실제 듣기평가나 방송을 대신하지 않습니다.",
+            "전체 시간표 연습은 누른 순간을 국어 시작으로 잡아 화면 시각을 옮기는 기능입니다.",
+            "준비물 체크리스트는 이 브라우저에 저장되니 전날 다시 확인하세요.",
+            "시험 후에는 기록한 답을 옮기고 예상 등급을 참고하되, 추정 결과를 공식 성적으로 해석하지 마세요."
+          ]
+        },
+        "faq": {
+          "items": [
+            { "q": "2027학년도 수능은 언제인가요?", "a": "2026년 11월 19일(목)입니다. 모든 수험생은 08:10까지 지정 시험실에 입실해야 하며, 성적 통지는 12월 11일(금)입니다." },
+            { "q": "필기구를 가져가도 되나요?", "a": "검은색 컴퓨터용 사인펜과 흰색 수정테이프, 흑색 연필·지우개·0.5mm 흑색 샤프심은 지참할 수 있습니다. 개인 샤프는 시험 중 휴대할 수 없습니다. 시험실에서 사인펜·샤프를 지급하고 수정테이프는 요청할 수 있습니다." },
+            { "q": "휴대전화를 가져갔다면 어떻게 하나요?", "a": "1교시 시작 전 수거 시간에 감독관에게 제출하세요. 전원을 끈 상태라도 제출하지 않고 소지하면 부정행위입니다." },
+            { "q": "수험표를 잃어버렸어요.", "a": "응시원서와 같은 사진 1장과 신분증을 준비해 당일 08:00까지 시험장 관리본부에 재발급을 요청하세요. 준비가 어렵다면 관리본부에 바로 문의하세요." },
+            { "q": "이 가채점표를 시험장에서 써도 되나요?", "a": "이 사이트 인쇄물은 사전 연습·시험 후 기록용입니다. 공식 수험표 뒷면 가채점표와 다릅니다. 종료령 뒤 문답지 회수 전 작성은 부정행위이며, 시험 중·쉬는 시간의 사용은 공식 유의사항과 감독관 안내를 따르세요." }
+          ]
+        },
+        "sources": {
+          "items": [
+            { "label": "교육부 2027 수능 수험생 유의사항 안내 (2026-11-09)", "url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107599&lev=0" },
+            { "label": "교육부 안내 본문 — 대한민국 정책브리핑", "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975290" },
+            { "label": "평가원 2027 수험생 유의사항 PDF — 부산교육청 게시", "url": "https://www.pen.go.kr/upload/main/na/bbs_2282/ntt_1181914/doc_6de1v1ef2%3D4bvb9%3D48v41%3Da8vfd%3Dc1b4ve097v656c_v1252.pdf" },
+            { "label": "교육부·평가원 2027 수능 시행세부계획 공고", "url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=106592&lev=0" },
+            { "label": "대교협 2027학년도 대학입학전형 시행계획", "url": "https://www.kcue.or.kr/_upload/news/2025/04/30/application_25d9ccd90388d6ba316a2c7d398ff944.pdf" }
+          ],
+          "note": "확인일: {date}. 시험일·시간·문항수는 2027학년도 시행계획, 준비물·4교시·가채점 안내는 해당 연도 공식 유의사항과 대조했습니다. 개별 응시 조건과 대학별 일정은 최신 공식 안내를 다시 확인하세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "csatDday": {
+      "essentials": {
+        "title": "Check before exam day",
+        "arrival": "Be in your assigned room by {time}",
+        "required": "Bring your admission ticket and accepted photo ID. The same arrival deadline applies if you are not taking period 1. Mobile IDs are not accepted.",
+        "navigation": "CSAT preparation shortcuts",
+        "checklist": "Check supplies",
+        "schedule": "View timetable",
+        "practice": "Practice by subject",
+        "checked": "Official guidance checked: {date} ·",
+        "source": "Ministry candidate guidance"
+      },
+      "schedule": {
+        "desc": "Standard-candidate timetable in Korea Standard Time (KST). The current period is highlighted on exam day.",
+        "generalNote": "Candidates receiving exam accommodations must check their separate timetable. This screen does not replace exam announcements or proctor instructions.",
+        "practiceStart": "Practice the full timetable",
+        "practiceOn": "Full timetable practice: the time you clicked becomes the start of Korean and all displayed times shift. No exam broadcasts or listening audio are provided.",
+        "inqNote": "Checked against 2027 official guidance for standard candidates. Return to your room by 14:40 for period 4.",
+        "inq": {
+          "inq1": "First inquiry slot (two-subject candidates)",
+          "collect": "Collection of the completed question paper",
+          "inq2": "Second inquiry slot (one- or two-subject candidates)"
+        },
+        "inqRules": [
+          "Korean History is compulsory. Missing it invalidates the CSAT result and no score report is issued.",
+          "Take inquiry subjects in your registered order, with only the current subject's question paper on your desk.",
+          "Writing or changing answers for the completed first subject during the second inquiry slot is misconduct."
+        ],
+        "inqSingle": "One-subject candidates wait during the first slot and take their subject from 16:07 to 16:37. Studying during the waiting period is prohibited; follow proctor instructions."
+      },
+      "practice": {
+        "title": "Practice with a subject timer",
+        "description": "Open the timer with the subject's duration filled in. You must press Start yourself; it does not start automatically.",
+        "open": "Open {subject} timer — {minutes} min",
+        "subjects": { "kor": "Korean", "math": "Math", "eng": "English", "hist": "Korean History", "inq1": "one inquiry subject", "lang2": "second language/Classical Chinese" },
+        "limit": "For advance practice using standard-candidate durations. English's 70 minutes includes listening, but this timer supplies no listening audio, exam broadcasts, or supervision. Do not use a device during the actual exam."
+      },
+      "checklist": {
+        "verifyNote": "Checked against 2027 official guidance on {date}. Check the official notice and proctor instructions for accepted IDs and special items.",
+        "items": {
+          "idCard": "Accepted photo ID (mobile IDs not accepted)",
+          "signPen": "Black computer marking pen (personal supply allowed)",
+          "correctionTape": "White correction tape (personal supply allowed)",
+          "water": "Drinking water (container without an electronic display)",
+          "mask": "Spare mask (proctor inspection required)",
+          "tissue": "Tissues and needed medicine (special items require approval)"
+        },
+        "provided": "A black computer marking pen and mechanical pencil are supplied. Ask a proctor for white correction tape when needed.",
+        "penNote": "Personal black marking pens and white correction tape are allowed; personal mechanical pencils cannot be carried during the test. Use the black marking pen for answers and the handwriting verification phrase.",
+        "banned": [
+          "Communication/payment devices, including phones, smartwatches, smart glasses, tablets, and Bluetooth earphones",
+          "Items with LCD/LED displays, including electronic dictionaries, digital watches, and electronic-display tumblers",
+          "Rechargeable devices such as e-cigarettes and power banks, and all other electronic devices"
+        ],
+        "bannedNote": "If you brought one, hand it to a proctor during collection before period 1. Keeping an unsubmitted device is misconduct even when it is powered off.",
+        "tips": [
+          "For a lost ticket, bring a photo matching your application and your ID to exam headquarters by 08:00 for reissue.",
+          "Lunch and drinking water are not supplied. Check your test location and travel time in advance.",
+          "Personal mechanical pencils, ballpoint pens, and notebooks cannot be carried during the test. Follow prior approval procedures for medical devices, earplugs, cushions, or other special items."
+        ]
+      },
+      "sheet": {
+        "desc": "Use this for advance practice or recording answers after the exam. Answers and subject choices are saved in this browser; printing outputs only the record sheet.",
+        "warn": "The Ministry says to complete the answer memo on the back of the official ticket before each ending signal. Writing after the signal and before papers are collected is misconduct. This site's printout is for advance practice or post-exam records; follow official guidance and proctor instructions at the exam.",
+        "countNote": "Question counts were checked against the 2027 implementation plan. * marks short-answer questions.",
+        "printScope": "For advance practice or post-exam records. This printout does not authorize its use during the exam."
+      },
+      "timeline": {
+        "items": {
+          "susiExtra": "Early admission additional offers",
+          "jeongsiExtra": "Regular admission additional offers"
+        },
+        "note": "Based on the 2027 admissions plan. Regular applications run for at least three university-selected days within Jan 4–7. Early additional offers end Dec 29 at 18:00, registration Dec 30 at 22:00; regular additional offers end Feb 17 at 18:00, registration Feb 18 at 22:00. Check each university's latest prospectus."
+      },
+      "guide": {
+        "whatIs": {
+          "desc": "The 2027 CSAT takes place on November 19, 2026, with scores reported on December 11. This tool helps with supplies, the standard timetable, advance timing practice, and post-exam answer records. Official guidance and proctor instructions take priority at the test center."
+        },
+        "dayBefore": {
+          "items": [
+            "Check the announced location and time for the November 18 preliminary gathering. Verify your registered subjects, test location, and travel time.",
+            "Prepare your ticket and accepted photo ID. Mobile IDs are not accepted.",
+            "Check that your watch has no communication, payment, or electronic-display functions.",
+            "Pack lunch and drinking water, and maintain your usual routine."
+          ]
+        },
+        "examDay": {
+          "items": [
+            "Be in your assigned room by 08:10, including if you are not taking Korean.",
+            "If you brought electronics, submit them to a proctor before period 1.",
+            "Take compulsory Korean History and follow your registered inquiry subject order.",
+            "Stop writing at the ending signal and follow instructions for collecting papers and leaving."
+          ]
+        },
+        "tips": {
+          "items": [
+            "Open a subject timer for advance practice. It does not replace listening audio or exam announcements.",
+            "Full timetable practice shifts the displayed times so the moment you start becomes the Korean start time.",
+            "The supplies checklist is saved in this browser; revisit it the night before.",
+            "After the exam, enter your recorded answers and treat estimated grades as estimates, not official scores."
+          ]
+        },
+        "faq": {
+          "items": [
+            { "q": "When is the 2027 CSAT?", "a": "November 19, 2026. Every candidate must be in their assigned room by 08:10. Scores are reported on December 11." },
+            { "q": "May I bring writing supplies?", "a": "Black computer marking pens, white correction tape, black pencils, erasers, and 0.5 mm black pencil leads are allowed. Personal mechanical pencils cannot be carried during the test. Marking pens and mechanical pencils are supplied; correction tape can be requested." },
+            { "q": "What if I brought my phone?", "a": "Submit it to a proctor during collection before period 1. Keeping it without submission is misconduct even when switched off." },
+            { "q": "I lost my admission ticket.", "a": "Bring a photo matching your application and your ID to exam headquarters by 08:00 for reissue. Contact headquarters promptly if you cannot prepare them." },
+            { "q": "May I use this answer sheet at the test center?", "a": "This printout is for advance practice or post-exam records, and is separate from the official ticket's answer memo. Writing after the ending signal before paper collection is misconduct. Follow the official notice and proctor instructions for use during the test or breaks." }
+          ]
+        },
+        "sources": {
+          "items": [
+            { "label": "Ministry's 2027 CSAT candidate guidance (Nov 9, 2026)", "url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107599&lev=0" },
+            { "label": "Ministry guidance text — Korea Policy Briefing", "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975290" },
+            { "label": "KICE 2027 candidate notice PDF — Busan education office", "url": "https://www.pen.go.kr/upload/main/na/bbs_2282/ntt_1181914/doc_6de1v1ef2%3D4bvb9%3D48v41%3Da8vfd%3Dc1b4ve097v656c_v1252.pdf" },
+            { "label": "Ministry/KICE 2027 detailed implementation plan", "url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=106592&lev=0" },
+            { "label": "KCUE 2027 university admissions implementation plan", "url": "https://www.kcue.or.kr/_upload/news/2025/04/30/application_25d9ccd90388d6ba316a2c7d398ff944.pdf" }
+          ],
+          "note": "Checked on {date}. Dates, durations, and question counts were compared with the 2027 implementation plan; supplies, period 4, and answer-memo guidance with that year's official notice. Recheck official instructions for your circumstances and each university's schedule."
+        }
+      }
+    }
+  }
+}

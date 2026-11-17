@@ -1,0 +1,84 @@
+{
+  "ko": {
+    "koreanWordle": {
+      "description": "매일 한국 시간 자정의 2글자 단어를 6번 안에 맞혀 보세요. 최근 일일 기록30개를 확인하고, 끝낸 도전의 정답 없는 격자를 복사할 수 있습니다.",
+      "guide": {
+        "whatIs": {
+          "description": "자모 힌트로 오늘의 2글자 단어를 맞히는 게임입니다. 기존 일일·연습·하드·색약 모드와 통계를 유지하며, 통계에서 최근 일일 기록30개를 읽고 완료한 기록의 격자를 공유할 수 있습니다. 과거 기록을 열어도 현재 퍼즐이 과거 날짜로 바뀌지 않습니다."
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "하루에 한 번만 플레이할 수 있나요?",
+              "a": "오늘의 일일 도전은 한국 시간 자정에 바뀝니다. 더 풀고 싶다면 기존 연습 모드에서 2·3글자 단어를 플레이할 수 있습니다."
+            },
+            {
+              "q": "최근30개만 저장하나요?",
+              "a": "30개는 화면에 보여 주는 최근 일일 기록 수입니다. 이 표시 한도에 맞춰 오래된 기록을 잘라 저장하지 않습니다. 정상적으로 읽은 전체 기록으로 누적 통계를 계산하며, 보호 한도나 형식 검사에 걸린 저장본은 원문을 유지하고 부분 통계를 정상 결과처럼 표시하지 않습니다."
+            },
+            {
+              "q": "과거 기록을 열면 그날 퍼즐을 다시 풀 수 있나요?",
+              "a": "기록은 읽기 전용입니다. 날짜·성공 여부·시도 수를 살펴보고 끝낸 기록의 격자를 펼칠 수 있으며 현재 퍼즐의 날짜는 바꾸지 않습니다."
+            },
+            {
+              "q": "공유한 격자에 정답이 포함되나요?",
+              "a": "완료된 일일 기록은 날짜·도전 번호·횟수와 색상 격자로 공유하며 실제 정답이나 추측 단어를 넣지 않습니다."
+            },
+            {
+              "q": "저장이나 복사가 실패하면 어떻게 하나요?",
+              "a": "저장 여부를 안내하고 지금 푼 내용은 화면에 유지합니다. 손상된 저장본을 자동 정리해 덮지 않습니다. 복사 실패 시 전체 격자 선택·재시도를 사용하고 저장된 것으로 확인되지 않은 상태를 구분하세요."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "koreanWordle": {
+          "description": "오늘의 한글 단어, 최근 일일 기록30개와 정답 없는 결과 격자"
+        }
+      }
+    }
+  },
+  "en": {
+    "koreanWordle": {
+      "description": "Guess the daily two-syllable word in six tries, changing at midnight in Korea. View the latest 30 daily records and copy spoiler-free grids from completed challenges.",
+      "guide": {
+        "whatIs": {
+          "description": "Use jamo hints to guess the daily two-syllable word. Existing daily, practice, hard and color-accessible modes and statistics are preserved. View the latest 30 daily records and share completed grids without switching the current puzzle to an earlier date."
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Can I only play once a day?",
+              "a": "The daily challenge changes at midnight in Korea. Use the existing practice mode for additional two- or three-syllable games."
+            },
+            {
+              "q": "Are only 30 records stored?",
+              "a": "Thirty is the display limit for recent daily records, not a truncation rule for stored history. Cumulative statistics use all records successfully validated. Data exceeding protective limits or failing validation is preserved without presenting partial statistics as a normal result."
+            },
+            {
+              "q": "Can I replay a past puzzle by opening its record?",
+              "a": "Records are read-only. View the date, outcome and attempt count, and expand completed grids without changing the current puzzle's date."
+            },
+            {
+              "q": "Does a shared grid reveal the answer?",
+              "a": "A completed daily record shares its date, challenge number, attempt count and colored grid, without the actual answer or guessed words."
+            },
+            {
+              "q": "What if saving or copying fails?",
+              "a": "Storage status is reported and current play remains on screen. Damaged records are not silently cleaned and overwritten. On copy failure, use full-grid selection and retry, and distinguish confirmed storage from an unconfirmed save."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "koreanWordle": {
+          "description": "Daily Korean word puzzle with 30 recent daily records and spoiler-free grids"
+        }
+      }
+    }
+  }
+}

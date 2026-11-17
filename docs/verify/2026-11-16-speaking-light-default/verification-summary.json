@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-16",
+  "browser": [
+    {
+      "name": "initial-mobile-no-model-download",
+      "status": "PASS"
+    },
+    {
+      "name": "automatic-basic-checks-no-gpu-no-download",
+      "status": "PASS"
+    },
+    {
+      "name": "remove-coaching-cache-preserves-records",
+      "status": "PASS"
+    },
+    {
+      "name": "text-fallback-compare-save-reload-export",
+      "status": "PASS"
+    },
+    {
+      "name": "record-replay-blob-restoration",
+      "status": "PASS"
+    },
+    {
+      "name": "audio-validation-silence-and-take-limit",
+      "status": "PASS"
+    },
+    {
+      "name": "failed-save-preserves-answer",
+      "status": "PASS"
+    },
+    {
+      "name": "microphone-denied-text-remains-usable",
+      "status": "PASS"
+    },
+    {
+      "name": "summary-only-link-reproduces-numbers",
+      "status": "PASS"
+    },
+    {
+      "name": "cancel-model-load-preserves-answer",
+      "status": "PASS"
+    },
+    {
+      "name": "cancel-permission-stops-late-microphone",
+      "status": "PASS"
+    },
+    {
+      "name": "history-cap-updates-and-corrupt-record",
+      "status": "PASS"
+    },
+    {
+      "name": "copied-summary-never-contains-transcript",
+      "status": "PASS"
+    },
+    {
+      "name": "recording-stops-at-90-seconds",
+      "status": "PASS"
+    }
+  ],
+  "pureChecks": 18,
+  "realInference": [
+    {
+      "task": "asr",
+      "hasOutput": true,
+      "errors": []
+    },
+    {
+      "task": "feedback",
+      "mode": "intro",
+      "elapsedSeconds": 10,
+      "hasOutput": true,
+      "errors": []
+    },
+    {
+      "task": "feedback",
+      "mode": "report",
+      "elapsedSeconds": 9,
+      "hasOutput": true,
+      "errors": []
+    }
+  ],
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "translationAudit": "0 unresolved",
+  "mobileViewports": [
+    320,
+    375
+  ],
+  "realMobileDeviceTested": false,
+  "buildRun": false,
+  "recordButtonVisibleOnFirstScreen": {
+    "widths": [
+      320,
+      375
+    ],
+    "height": 812,
+    "bottomNavigationMargin": 80
+  }
+}

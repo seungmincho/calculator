@@ -1,0 +1,96 @@
+{
+  "ko": {
+    "jsonFormatter": {
+      "description": "JSON을 검증·정렬·압축하고 트리에서 선택한 전체 값과 정확한 경로를 확인하세요. JSONPath 검색식 저장과 복사 실패 원문 선택·재시도를 지원합니다.",
+      "guide": {
+        "subtitle": "JSON 검증·포맷·트리 선택과 전체 값 복사, JSONPath 검색식 저장",
+        "features": {
+          "treeViewDesc": "객체 키와 배열 인덱스를 구분해 노드를 선택하고 전체 값 JSON·JSON Pointer·확인된 JSONPath를 복사합니다. 짧게 보이는 트리 값과 실제 복사 원문은 구분합니다.",
+          "performance": "보기 방식",
+          "performanceDesc": "포맷·압축·트리·통계로 같은 JSON을 확인합니다. 큰 문서나 깊은 트리는 처리와 화면 표시 시간이 늘어날 수 있습니다."
+        },
+        "tips": {
+          "tip2": "트리에서 노드를 선택한 뒤 전체 값이나 경로를 명시적으로 복사하세요. 지원하지 못하는 JSONPath는 안내하며 JSON Pointer와 값을 사용할 수 있습니다."
+        },
+        "howToUse": {
+          "items": [
+            "1. 에디터에 JSON 데이터를 붙여넣거나 파일을 불러옵니다.",
+            "2. 포맷·압축·트리·통계 중 원하는 보기를 선택합니다.",
+            "3. 트리의 노드를 선택하고 전체 값 JSON·JSON Pointer·확인된 JSONPath 중 필요한 항목을 복사합니다.",
+            "4. JSONPath 검색식으로 값을 찾고 자주 쓰는 식만 이름으로 저장할 수 있습니다. 복사가 실패하면 원문 선택과 재시도를 사용합니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "트리에 짧게 보이는 문자열도 전체 복사되나요?",
+              "a": "JSON으로 표현할 수 있는 선택값은 전체 JSON으로 복사합니다. 약 50,000 UTF-16 단위씩 나눈 미리보기와 실제 복사 원문은 구분합니다. NaN·Infinity를 포함한 선택은 null로 바꾸지 않고 값 복사 불가를 안내하며 경로를 사용할 수 있습니다."
+            },
+            {
+              "q": "특수한 객체 키의 경로는 어떻게 처리하나요?",
+              "a": "객체 키와 배열 인덱스를 구분하고 JSON Pointer는 슬래시와 틸드를 이스케이프합니다. JSONPath는 현재 엔진에서 같은 값을 선택하는지 확인하며 지원되지 않는 키는 안내합니다."
+            },
+            {
+              "q": "JSON 원문과 선택값도 저장되나요?",
+              "a": "검색식 저장에는 이름과 식만 들어갑니다. 이번 선택값·경로 기능은 새 장기 저장이나 전송을 추가하지 않으며 복사는 사용자가 명시한 원문을 클립보드에 전달합니다."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "json": {
+          "description": "JSON 검증·정렬·트리 선택값과 정확한 경로 복사·검색식 저장"
+        }
+      }
+    }
+  },
+  "en": {
+    "jsonFormatter": {
+      "description": "Validate, format, and minify JSON, then inspect complete selected values and precise paths in the tree. Save JSONPath queries and recover failed copies with manual selection and retry.",
+      "guide": {
+        "subtitle": "JSON validation, formatting, tree selection, full-value copying, and saved JSONPath queries",
+        "features": {
+          "treeViewDesc": "Select nodes using distinct object keys and array indexes, then copy the complete JSON value, JSON Pointer, or verified JSONPath. Truncated tree labels do not truncate copied data.",
+          "performance": "View modes",
+          "performanceDesc": "Inspect the same JSON as formatted text, compact text, a tree, or statistics. Large documents and deep trees can take longer to process and render."
+        },
+        "tips": {
+          "tip2": "Select a tree node, then explicitly copy its full value or path. Unsupported JSONPath keys show a notice; use JSON Pointer or the value instead."
+        },
+        "howToUse": {
+          "items": [
+            "1. Paste JSON into the editor or load a file.",
+            "2. Choose format, minify, tree, or statistics.",
+            "3. Select a tree node and copy its complete JSON value, JSON Pointer, or verified JSONPath.",
+            "4. Find values with a JSONPath expression and save frequently used queries by name. Use manual selection and retry if copying fails."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Does copying include strings truncated in the tree?",
+              "a": "JSON-representable selections copy as complete JSON. The preview is divided into roughly 50,000 UTF-16-unit segments without shortening copied data. Selections containing NaN or Infinity show that value copying is unavailable instead of replacing them with null; paths remain available."
+            },
+            {
+              "q": "How are paths for special object keys handled?",
+              "a": "Object keys and array indexes remain distinct, and JSON Pointer escapes slashes and tildes. JSONPath is checked against the current engine for the same value, with a notice for unsupported keys."
+            },
+            {
+              "q": "Are JSON documents and selected values saved?",
+              "a": "Saved queries contain only a name and expression. This selection and path feature adds no persistent storage or transmission; an explicit copy sends the requested text to the clipboard."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "json": {
+          "description": "Validate and format JSON, copy selected values and precise paths, and save queries"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "scope": "문서 비교 변경 구간 선택 병합·전체 복사/TXT",
+  "status": "complete",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 47,
+    "commonGuideLeaves": 5,
+    "patchLeavesPerLanguage": 52,
+    "staticUses": 108,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 559,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    },
+    "postNativeCopyRefinement": {
+      "keys": [
+        "diffViewer.output.copied",
+        "diffViewer.output.failed"
+      ],
+      "language": "ko",
+      "keyOrPlaceholderOrProductTsChanges": 0,
+      "staticUses": 107,
+      "errors": 0,
+      "generatedFiles": 1578,
+      "nativeRerun": false
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/diff-viewer/page.tsx",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "canonicalFaq": true,
+    "scopedCommonLint": "4pages+menu union5 files passed",
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45900
+    }
+  },
+  "author": {
+    "status": "passed_frozen_at_checkpoint",
+    "groups": 28,
+    "groupBreakdown": "순수9+출력5+자식6+실제 부모/client8",
+    "scopedLintFiles": 11,
+    "errors": 0,
+    "warnings": 0,
+    "regression": "기존 client/Worker/clipboard13",
+    "report": "implementation.md"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 17,
+    "coreOutput": 9,
+    "actualParent": 8,
+    "errors": 0,
+    "warnings": 0,
+    "report": "independent-parent-review.md",
+    "resolvedP2": "pending writing handoff cancelled by merge selection and both outputs;5 routes plus getter boundary"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 9,
+    "failed": 0,
+    "checkedAt": "2026-11-17T00:39:55.749Z",
+    "browserClosed": true,
+    "jsErrors": 0,
+    "hydration": 0,
+    "unhandled": 0,
+    "report": "review-browser.md",
+    "artifacts": {
+      "emptyTxtBytes": 0,
+      "largestMergedTxtBytes": 2097152
+    },
+    "performance": {
+      "pasteMs": 366,
+      "workerToReactMs": 247,
+      "selectionToRenderMs": 124,
+      "manualFullRecoveryMs": 959,
+      "maxHeartbeatGapMs": 476,
+      "note": "Observed Playwright/layout wall time; not pure Worker CPU or general-device responsiveness guarantee"
+    },
+    "productChangesDuringNative": 0,
+    "fixtureCorrections": "2 flows omitted explicit full-text-open step; affected2 rerun only",
+    "baseFlows": 8,
+    "anchorImpactFlows": 1
+  },
+  "typecheck": {
+    "status": "passed",
+    "startedAt": "2026-11-17T00:43:59.864Z",
+    "recordedAt": "2026-11-17T00:44:55.753Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.36,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 2,
+    "outputChunk": "0f20ce",
+    "commandWallSeconds": 8.7373551,
+    "evidence": "../2026-11-17-repeat-batch51/typecheck-final-result.json",
+    "firstAttempt": "../2026-11-17-repeat-batch51/typecheck-attempt1.json",
+    "scope": "44/46/47/48/49/50/51 final parents plus unconnected52/53 preparation; all writers frozen and Chrome closed"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "sharedCheckpointScopes": [
+    44,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "preparedFutureScope": {
+    "52": "unconnected author12+independent8+lint0; TS frozen; parent/canonical not connected",
+    "53": "unconnected pure5+independent6+lint0; TS frozen; parent/canonical not connected"
+  },
+  "diffCheck": {
+    "status": "passed",
+    "trackedOnly": true,
+    "evidence": [
+      "../2026-11-17-repeat-batch51/source-diff-check.json",
+      "../2026-11-17-repeat-batch51/source-diff-followup.json",
+      "../2026-11-17-repeat-batch51/source-diff-type-fix.json"
+    ]
+  }
+}

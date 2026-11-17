@@ -1,0 +1,78 @@
+{
+  "ko": {
+    "pomodoroTimer": {
+      "goal": {
+        "title": "오늘 집중 목표",
+        "progress": "{count} / {goal}회 완료",
+        "remaining": "목표까지 집중 {count}회 남았어요.",
+        "reached": "오늘 목표를 달성했어요.",
+        "label": "하루 목표 횟수",
+        "save": "목표 저장",
+        "reload": "목표 다시 불러오기",
+        "export": "최근 7일 CSV",
+        "scope": "목표는 1~20회로 이 브라우저에 저장해요. 끝까지 마친 집중만 세며, 진행 중·휴식·건너뛰기는 포함하지 않아요. 목표를 바꿔도 타이머는 계속됩니다.",
+        "exportNote": "기기의 현지 날짜 기준으로 오늘을 포함한 최근 7일을 내보내요. 같은 날짜의 기록은 합산하며, 할 일 내용은 파일에 넣지 않아요.",
+        "csvDate": "날짜",
+        "csvCount": "완료 집중 횟수",
+        "csvMinutes": "완료 집중 시간(분)",
+        "retryStats": "집중 기록 저장 다시 시도",
+        "otherSaveFailed": "타이머·설정·할 일 중 일부를 브라우저에 저장하지 못했어요. 현재 화면은 유지되지만 새로고침하면 최근 변경이 사라질 수 있어요. 브라우저 저장 공간과 설정을 확인해 주세요.",
+        "errors": {
+          "invalid": "하루 목표를 1~20 사이의 정수로 입력해 주세요.",
+          "corrupt": "저장된 목표를 읽을 수 없어 임시 기본값 4회를 표시해요. 기존 저장 내용은 덮어쓰지 않았어요. 저장 내용을 확인한 뒤 다시 불러와 주세요.",
+          "unavailable": "목표를 읽거나 저장하지 못했어요. 입력한 목표는 그대로 남아 있어요. 브라우저 저장 공간과 설정을 확인한 뒤 다시 시도해 주세요.",
+          "conflict": "다른 창에서 목표가 변경됐어요. 입력한 목표는 그대로예요. 목표를 다시 불러온 뒤 저장해 주세요."
+        },
+        "statsErrors": {
+          "corrupt": "저장된 집중 기록의 날짜나 횟수를 확인할 수 없어 기존 데이터를 보존하고 기록 저장을 멈췄어요. 잘못된 날짜·미래 날짜·음수 기록은 사용할 수 없어요. 오늘 새로 완료한 집중은 현재 화면에만 표시돼요.",
+          "unavailable": "저장된 집중 기록에 접근할 수 없어요. 현재 화면의 새 기록은 브라우저에 저장되지 않으니 새로고침에 주의해 주세요.",
+          "failed": "집중 기록 저장에 실패했어요. 현재 화면의 기록은 유지되며 CSV로 내려받을 수 있어요. 저장 공간을 확인한 뒤 다시 시도해 주세요.",
+          "conflict": "다른 창에서 집중 기록이 변경되어 덮어쓰기를 멈췄어요. 현재 화면의 기록을 CSV로 보관한 뒤 새로고침해 주세요. CSV에는 이 화면에 보이는 기록만 포함돼요."
+        },
+        "notices": {
+          "saved": "하루 목표를 저장했어요. 타이머는 그대로 유지됩니다.",
+          "downloaded": "최근 7일 집중 기록의 CSV 다운로드를 시작했어요.",
+          "downloadFailed": "CSV 파일을 만들지 못했어요. 현재 기록은 그대로 유지했어요. 다시 시도해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "pomodoroTimer": {
+      "goal": {
+        "title": "Today's focus goal",
+        "progress": "{count} / {goal} sessions completed",
+        "remaining": "{count} more focus sessions to reach your goal.",
+        "reached": "You reached today's goal.",
+        "label": "Daily session goal",
+        "save": "Save goal",
+        "reload": "Reload saved goal",
+        "export": "Last 7 days CSV",
+        "scope": "Save a goal of 1–20 sessions in this browser. Only finished focus sessions count; running sessions, breaks, and skips do not. Changing the goal keeps the timer running.",
+        "exportNote": "Exports the last seven days including today, using this device's local calendar dates. Records for the same date are added together. Task text is not included.",
+        "csvDate": "Date",
+        "csvCount": "Completed focus sessions",
+        "csvMinutes": "Completed focus minutes",
+        "retryStats": "Retry saving focus records",
+        "otherSaveFailed": "Some timer, setting, or task changes could not be saved in this browser. They remain on screen, but refreshing may lose recent changes. Check browser storage space and settings.",
+        "errors": {
+          "invalid": "Enter a whole-number daily goal between 1 and 20.",
+          "corrupt": "The saved goal could not be read, so a temporary default of four is shown. Existing data was not overwritten. Check the saved data and reload it.",
+          "unavailable": "The goal could not be read or saved. Your entered goal is preserved. Check browser storage space and settings, then try again.",
+          "conflict": "Another window changed the goal. Your entered goal is preserved. Reload the saved goal before saving again."
+        },
+        "statsErrors": {
+          "corrupt": "Saved focus records contain unreadable dates or counts, so existing data was preserved and saving paused. Invalid or future dates and negative values are not accepted. Newly completed sessions appear only on this screen.",
+          "unavailable": "Saved focus records are unavailable. New records on this screen are not saved in the browser, so take care before refreshing.",
+          "failed": "Focus records could not be saved. They remain on screen and can be downloaded as CSV. Check storage space and try again.",
+          "conflict": "Another window changed the focus records, so overwriting was stopped. Download this screen's records as CSV before refreshing. The CSV contains only records shown here."
+        },
+        "notices": {
+          "saved": "Daily goal saved. The timer is unchanged.",
+          "downloaded": "Started downloading the last seven days of focus records as CSV.",
+          "downloadFailed": "Could not create the CSV file. Your current records are unchanged. Please try again."
+        }
+      }
+    }
+  }
+}

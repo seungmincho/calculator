@@ -1,0 +1,134 @@
+{
+  "scope": "Batch21 text pipeline history and sequential QR image reading",
+  "status": "complete",
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0,
+    "heapLimitMiB": 2048,
+    "memoryMeasuredAt": "2026-11-16T17:19:58.652Z",
+    "localStartedAt": "2026-11-17 02:19:58 KST",
+    "freeMemoryBeforeGiB": 5.98,
+    "browsersClosed": true,
+    "typescriptWritersPaused": true,
+    "batch22PreparedFilesIncluded": true
+  },
+  "translations": {
+    "patchLeavesPerLanguage": 75,
+    "staticUses": 132,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "applyAddedImports": 0,
+    "ownImports": 525,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "latestUrlNoticeMerged": true
+  },
+  "metadata": {
+    "routes": [
+      "/text-converter",
+      "/qr-scanner"
+    ],
+    "updatedDate": "2026-11-17",
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "discoveryGenerated": true,
+    "qrFinalProductLimitsMustBeReconciled": false
+  },
+  "authorTests": {
+    "textHistoryDomainGroups": 14,
+    "textControlsGroups": 8,
+    "textParentUrlGroups": 7,
+    "textExistingRegression": "passed",
+    "qrDomainAndActualNodeWorkerGroups": 7,
+    "qrActualBatchControlledIoGroups": 6,
+    "qrActualPortsGroups": 5
+  },
+  "lint": {
+    "commonPagesAndMenu": "0 errors/warnings",
+    "textProduct6Files": "0 errors/warnings",
+    "qrProductAndTests13Files": "0 errors/warnings"
+  },
+  "diffCheck": {
+    "sharedScopeExitCode": 0,
+    "finalProductScopeExitCode": 0
+  },
+  "preparedTypeScript": {
+    "imageCompressionQueueAndNamesAndZip": "stable; domain13/scopedlint0, parent unconnected",
+    "csatDirectGrades": "stable; domain11/child3/scopedlint0, parent unconnected"
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "qrLimits": {
+    "files": 10,
+    "fileMiB": 8,
+    "totalMiB": 40,
+    "originalPixels": 16777216,
+    "processingLongEdge": 2048,
+    "fileTimeoutSeconds": 20,
+    "nativeTimeoutSeconds": 3,
+    "workerTimeoutSeconds": 10,
+    "formats": [
+      "PNG",
+      "JPEG",
+      "WebP",
+      "GIF"
+    ],
+    "resultsPerFile": "first decoded QR only",
+    "animationFrames": "one frame, not all frames"
+  },
+  "dependencies": {
+    "declaredJsqr": "1.4.0",
+    "lockJsqr": "1.4.0",
+    "packageManager": "npm",
+    "license": "Apache-2.0",
+    "lockEntriesChanged": [
+      "",
+      "node_modules/jsqr"
+    ],
+    "isolatedWorkerMinifiedBytes": 131756,
+    "isolatedWorkerGzipBytes": 47807,
+    "productionBundleNotMeasured": true
+  },
+  "browser": {
+    "total": 13,
+    "text": 6,
+    "qr": 7,
+    "allPassed": true,
+    "pageErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "checkedAt": "2026-11-16T17:17:20.578Z",
+    "evidence": "browser/final-results.json"
+  },
+  "independent": {
+    "textHistoryGroups": 6,
+    "qrCancellationBoundaries": 4,
+    "qrCopyGroups": 3,
+    "unresolvedFindings": 0
+  },
+  "textHistoryUrlFollowup": {
+    "sameQueryHashPreservesHistory": true,
+    "differentQueryResetsBaseline": true,
+    "independentInitialRunAfterFix": true,
+    "browserImpactPending": false,
+    "browserImpactPassed": true
+  },
+  "findingsResolved": [
+    "Same-query hash navigation reset private/history state",
+    "Pre-aborted async reads failed to consume late rejection",
+    "Parent and batch copying required a shared generation"
+  ],
+  "limitations": [
+    "One decoded result per image; multiple-QR success not guaranteed",
+    "Native BarcodeDetector was controlled; fallback pixels and Worker were real",
+    "Camera used synthetic MediaStream, not hardware",
+    "Injected timeout/cancellation separated from actual Worker/resource cleanup",
+    "No physical phone or production static export"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "synthetic": true,
+  "date": "2026-11-17",
+  "proposedRawBytes": 8388608,
+  "proposedDays": 80000,
+  "rows": [
+    {
+      "days": 1,
+      "utf16": 64,
+      "utf8Bytes": 88,
+      "jsonParseMs": 0.01,
+      "statsMs": 0.19,
+      "played": 1
+    },
+    {
+      "days": 321,
+      "utf16": 20116,
+      "utf8Bytes": 27820,
+      "jsonParseMs": 0.09,
+      "statsMs": 0.23,
+      "played": 321
+    },
+    {
+      "days": 10000,
+      "utf16": 648140,
+      "utf8Bytes": 888140,
+      "jsonParseMs": 4.22,
+      "statsMs": 7.34,
+      "played": 10000
+    },
+    {
+      "days": 80000,
+      "utf16": 5267819,
+      "utf8Bytes": 7187819,
+      "jsonParseMs": 41.83,
+      "statsMs": 80.71,
+      "played": 80000
+    },
+    {
+      "days": 80000,
+      "representation": "same valid records with escaped Hangul",
+      "utf8Bytes": 10067819
+    },
+    {
+      "days": 80001,
+      "utf16": 5267885,
+      "utf8Bytes": 7187909,
+      "jsonParseMs": 37.64,
+      "statsMs": 76.62,
+      "played": 80001
+    }
+  ],
+  "note": "Protection budgets, not legacy maxima. Valid alternate whitespace/escapes can exceed 8MiB; exceeding data must be preserved without partial statistics or writes. Node timing is not browser performance."
+}

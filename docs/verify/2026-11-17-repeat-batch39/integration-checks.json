@@ -1,0 +1,176 @@
+{
+  "scope": "정규식 Worker 취소·시간 제한과 성공 결과 반출",
+  "status": "complete_local_verification",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 59,
+    "commonGuideLeaves": 6,
+    "patchLeavesPerLanguage": 65,
+    "staticUses": 133,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 548,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "prepared_and_linted",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "scopedLintFiles": 3,
+    "scopedLintExitCode": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45839
+    }
+  },
+  "author": {
+    "status": "passed_refrozen",
+    "groups": 37,
+    "preparedGroups": 23,
+    "literalWhitespace": 1,
+    "actualParent": 13,
+    "scopedLintFiles": 8,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "nativeFollowup": {
+      "fix": "useOptionalLanguage from LanguageContext with KO fallback replaces unexported useLocale",
+      "affectedGroups": 1,
+      "scopedLintFiles": 2,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 13,
+    "rootCore": 4,
+    "parent": 9,
+    "reports": [
+      "independent-core-preparation.md",
+      "independent-parent-review.md"
+    ],
+    "scopedLintExitCode": 0,
+    "unresolvedFindings": 0,
+    "resolvedFindings": [
+      "early input overwritten by initial URL restore",
+      "literal whitespace pattern trimmed to idle",
+      "pending FileReader continued after cancel"
+    ],
+    "additionalReview": "stale debounce guard added before independent replay; not counted as before-fix reproduced finding"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "workerFlowsStarted": true,
+    "finding": {
+      "file": "src/components/RegexExtractor.tsx",
+      "line": 5,
+      "error": "useLocale import not exported from @/lib/i18n",
+      "observed": "HTTP500 and compile overlay in actual dev route",
+      "classification": "product integration defect; control harness module mock did not catch",
+      "fix": "valid LanguageContext export; locale/copy ABA1 and2file lint passed",
+      "nativeResolution": "fixed; fresh context final8/8 passed"
+    },
+    "owner": "gpa_scenarios",
+    "retest": "fresh native context after minimal fix and author lint/freeze",
+    "progress": {
+      "initialAfterImportFixPassed": 5,
+      "initialAfterImportFixFailed": 3,
+      "finalPassed": 8,
+      "note": "CRLF/OS Clipboard/URL warning/button name fixture corrections; product import failure recorded separately"
+    },
+    "failed": 0,
+    "checkedAt": "2026-11-16T23:07:42.424Z",
+    "browserClosed": true,
+    "errors": {
+      "pageerror": 0,
+      "hydration": 0,
+      "unhandled": 0
+    },
+    "report": "review-browser.md",
+    "normalModuleWorkers": {
+      "created": 7,
+      "terminated": 7
+    },
+    "backtrackingTerminationSeparate": 5,
+    "performance": {
+      "backtrackingObservedMs": 300,
+      "mainHeartbeats": 19,
+      "backtrackingMaxGapMs": 16.8,
+      "foregroundTimeoutObservedMs": 5449,
+      "largeInputUtf16": 63000,
+      "fullTxtBytes": 105000,
+      "pasteWorkerPreviewElapsedMs": 1330,
+      "pasteWorkerPreviewMainMaxGapMs": 930.6,
+      "limitation": "Includes native paste and DOM rendering; not Worker-only timing or zero-lag claim"
+    },
+    "reviewDocument": "final"
+  },
+  "typecheck": {
+    "preflightAt": "2026-11-16T23:08:20.003Z",
+    "freeMemoryGiB": 3.79,
+    "totalMemoryGiB": 31.75,
+    "heapMiB": 2048,
+    "chromeClosed": true,
+    "allTsWritersFrozen": true,
+    "scope": "37 final product changes,39/40 parents,unconnected41/42/43 preparation",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "status": "passed",
+    "sessionId": 26319,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "chunkId": "b2fa53",
+    "resultRecordedAt": "2026-11-16T23:10:06.257Z",
+    "order": "After final37/39/40 native contexts closed and all TS writers froze; before subsequent parent/preparation work",
+    "repeatRequired": false
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "currentScopedDiff": {
+    "status": "passed",
+    "exitCode": 0,
+    "chunkId": "6dd7b2",
+    "scope": "Tracked37/39/40 product files, common metadata/canonical/generated/discovery and batch documents after37 native fixes/39 locale import fix",
+    "note": "Not a repository-wide clean-state claim; untracked new files are covered by author lint rather than git diff"
+  },
+  "completedAt": "2026-11-16T23:10:06.259Z",
+  "finalCommon": {
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "applyImports": 0,
+    "namespaceAudit": {
+      "own": 548,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    },
+    "scopedCommonLintFiles": 3,
+    "scopedCommonLintExitCode": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45839
+    }
+  },
+  "documentChecks": {
+    "status": "passed",
+    "markdownFiles": 10,
+    "relativeLinks": 204,
+    "missingLinks": 0,
+    "scope": "Current37/39/40 reports/plans and4handoffs",
+    "scopedDiffExitCode": 0,
+    "diffChunkId": "fe13bd"
+  }
+}

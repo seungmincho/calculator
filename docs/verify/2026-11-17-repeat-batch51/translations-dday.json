@@ -1,0 +1,14 @@
+{
+  "ko": { "ddayCalculator": { "exportActions": {
+    "recoveryTitle": "일정 결과 직접 복사", "failed": "자동 복사하지 못했어요. 전체 문구를 선택해 직접 복사하거나 다시 시도하세요.",
+    "field": "복사할 일정 결과와 링크", "select": "전체 선택", "retry": "다시 복사", "close": "닫기", "selectionFailed": "자동 선택하지 못했어요. 문구를 직접 선택해 주세요.", "copying": "복사 중…",
+    "cancel": "파일 준비 취소", "cancelled": "파일 준비를 취소했어요. 선택한 일정은 그대로 남아 있어요.",
+    "scopeHint": "준비 중 날짜·제목을 바꾸거나 다른 반출을 시작하면 이전 파일 준비를 취소해요. 필요한 일정으로 다시 눌러 주세요."
+  }, "calendarExport": { "downloaded": "일정 {count}개의 캘린더 파일 다운로드를 요청했어요." } } },
+  "en": { "ddayCalculator": { "exportActions": {
+    "recoveryTitle": "Copy the event result manually", "failed": "Automatic copying failed. Select the full text to copy it manually, or try again.",
+    "field": "Event result and link to copy", "select": "Select all", "retry": "Try copying again", "close": "Close", "selectionFailed": "Automatic selection failed. Select the text manually.", "copying": "Copying…",
+    "cancel": "Cancel file preparation", "cancelled": "File preparation was cancelled. Your selected events are kept.",
+    "scopeHint": "Changing the date or title, or starting another export, cancels the earlier file preparation. Click again for the events you need."
+  }, "calendarExport": { "downloaded": "Calendar download requested · Events: {count}" } } }
+}

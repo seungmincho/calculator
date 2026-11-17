@@ -1,0 +1,96 @@
+{
+  "ko": {
+    "imageOcr": {
+      "description": "사진 속 글자를 순서대로 인식하고 편집하세요. 현재 파일 뒤 일시정지·실패만 재시도하며 이전 성공 원고와 인식 중 새 편집을 보존합니다. 현재·전체 결과 복사, TXT와 읽어주기 전달을 지원합니다.",
+      "guide": {
+        "features": {
+          "items": [
+            "한국어·영어·일본어·중국어 간체/번체를 선택해 이미지 텍스트 인식",
+            "회전·흑백 보정과 낮은 신뢰도 단어 표시, 한글 띄어쓰기·줄바꿈 정리",
+            "여러 이미지 순차 처리·현재 파일 완료 뒤 일시정지·실패만 재시도",
+            "다시 인식이 실패해도 이전 성공 원고 유지, 인식 중 새 편집 보존",
+            "편집 원고를 바꾸는 다시 인식·정리·초기화 전 확인",
+            "현재·전체 결과 복사와 실패 시 수동 선택, TXT 다운로드·읽어주기 전달",
+            "인식은 브라우저에서 처리하며 엔진·언어 데이터는 필요할 때 내려받음"
+          ]
+        },
+        "tips": {
+          "items": [
+            "원본 이미지와 인식 결과를 대조해 오인식한 글자를 직접 고치세요.",
+            "언어·보정·회전 설정을 바꾸면 기존 결과에는 이전 설정 안내가 표시됩니다. 새 설정을 적용하려면 다시 인식을 선택하세요.",
+            "다시 인식하는 중에 고친 원고는 새 결과로 덮어쓰지 않습니다. 이전 성공 결과도 계속 확인하고 사용할 수 있습니다.",
+            "정리 옵션을 바꾸면 편집 원고 대신 원래 인식 결과를 다시 정리할 수 있으니 확인 내용을 읽어 주세요.",
+            "처음 실행하거나 저장된 언어 데이터를 사용할 수 없을 때는 준비 시간이 걸릴 수 있습니다. 다운로드와 인식 속도는 환경에 따라 다릅니다."
+          ]
+        },
+        "whatIs": {
+          "description": "이미지에 포함된 글자를 브라우저에서 인식해 편집 가능한 원고로 만드는 도구입니다. 한국어·영어·일본어·중국어 간체/번체를 선택하고 여러 이미지를 한 장씩 처리합니다. 진행 중인 파일 완료 뒤 일시정지·계속·실패만 재시도할 수 있으며, 새 인식 실패나 지연이 이전 성공 원고와 그사이의 새 편집을 지우지 않도록 보호합니다. 이미지는 인식 서버로 업로드하지 않으며 엔진·언어 데이터 다운로드는 필요합니다."
+        },
+        "howToUse": {
+          "items": [
+            "이미지를 선택하거나 끌어 놓거나 Ctrl+V로 붙여넣습니다. 선택된 언어로 순서대로 인식을 시작합니다.",
+            "현재 파일 뒤 일시정지로 다음 파일을 보류하고 계속 인식으로 재개합니다. 실패한 파일만 재시도할 수 있으며 정지 중이면 계속을 누른 뒤 진행합니다.",
+            "언어·보정·회전 설정을 바꾼 뒤 다시 인식을 선택합니다. 편집한 원고를 바꾸거나 모두 비우는 작업은 확인 후 실행합니다.",
+            "낮은 신뢰도 표시와 원본을 대조하며 결과를 수정합니다. 인식 중 새로 편집한 내용은 새 결과로 덮어쓰지 않습니다.",
+            "현재 또는 전체 결과를 복사하거나 TXT로 받습니다. 자동 복사가 실패하면 전체 내용 보기에서 직접 선택하거나 다시 시도합니다.",
+            "전체 반출은 결과가 있는 이미지의 원고를 현재 목록 순서대로 모읍니다. 처리 중이거나 실패한 항목의 이전 성공 원고도 포함하며, 선택한 원고는 읽어주기로 전달할 수 있습니다."
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "imageOcr": {
+          "description": "이미지 순차 인식·편집 원고 보존·실패 재시도·복사 복구와 TXT"
+        }
+      }
+    }
+  },
+  "en": {
+    "imageOcr": {
+      "description": "Recognize and edit image text in order. Pause after the current file, retry failures, and keep previous successful manuscripts and new edits made during recognition. Copy current or all results, download TXT, or send text to read aloud.",
+      "guide": {
+        "features": {
+          "items": [
+            "Recognize Korean, English, Japanese, and Simplified or Traditional Chinese",
+            "Rotation and image preparation, low-confidence word markers, and Korean spacing or line cleanup",
+            "Sequential image processing, pause after the current file, and retry failed files",
+            "Keep previous successful text after a failed rerun and preserve new edits made during recognition",
+            "Confirmation before replacing edited manuscripts through rerun, cleanup, or reset",
+            "Copy current or all results with manual recovery, download TXT, or transfer to read aloud",
+            "Recognition runs in the browser; engine and language data download when needed"
+          ]
+        },
+        "tips": {
+          "items": [
+            "Compare recognized text with the source image and correct mistakes.",
+            "After changing language, preparation, or rotation, existing results show an earlier-settings notice. Choose Recognize again to apply new settings.",
+            "Edits made while recognition is running are not overwritten by the new result. Previous successful text remains available.",
+            "Cleanup can rebuild text from the original recognition result instead of your edits. Read the confirmation before continuing.",
+            "Preparation may take time on the first run or when stored language data is unavailable. Download and recognition speed depend on your environment."
+          ]
+        },
+        "whatIs": {
+          "description": "This tool recognizes image text in your browser and turns it into an editable manuscript. Choose Korean, English, Japanese, or Simplified/Traditional Chinese and process images one at a time. Pause after the current file, continue, or retry failures. A failed or delayed rerun preserves previous successful text and new edits made in the meantime. Images are not uploaded to a recognition server; engine and language data downloads are needed."
+        },
+        "howToUse": {
+          "items": [
+            "Select, drop, or paste images with Ctrl+V. Recognition starts in order with the selected languages.",
+            "Pause after this file holds subsequent files. Continue recognition resumes them. Retry failed files only keeps a paused queue paused until you continue.",
+            "Change language, preparation, or rotation, then choose Recognize again. Actions that replace edited manuscripts or clear all content require confirmation.",
+            "Compare low-confidence markers with the image and edit the result. New edits made during recognition are not overwritten.",
+            "Copy the current or all results, or download TXT. If automatic copying fails, open the full text to select it manually or retry.",
+            "Combined output uses manuscripts with results in the current list order, including previous successes for processing or failed items. A selected manuscript can also be transferred to read aloud."
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "imageOcr": {
+          "description": "Sequential OCR, protected edits, retry, copy recovery, and TXT"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "actualParent": true,
+  "controlledWorkerAndCanvas": true,
+  "modelDownload": false,
+  "privateImages": false,
+  "nativeBrowser": false,
+  "tesseractVersion": "6.0.1",
+  "sourceSha256": {
+    "src/components/ImageOcr.tsx": "f5bbcd6a74d8d225a31b950c7fdb5daada39f76c59b7aebf00e412e0328a3b54",
+    "src/utils/ocr.ts": "976bd495c2085577db98d1df980e1431b22d3217c15725087b58fa29d02f385e",
+    "src/utils/textHandoff.ts": "c39d533f00645cce16194f12c2b5fb7915ae2bdaa90ac3f192ac76f61d4692f0",
+    "node_modules/tesseract.js/package.json": "b5c3e647996bca7619fa248ed36b85492ef8b6e9342dd46c824f811173e92b85",
+    "node_modules/tesseract.js/docs/api.md": "f80c9ef846140d795942ba173a9478d563ae597ad2d3697fcf1437a8ab0ed55e",
+    "node_modules/tesseract.js/src/index.d.ts": "6bd6a86c2233e2ece7b22c2b7908bd53da81376d9aae630f706f8305489e8c66",
+    "node_modules/tesseract.js/src/createWorker.js": "730c82036c801416256cdbf4bf36df934b0f25f2dcb3913454bccd9e2cfdb857"
+  },
+  "observations": [
+    {
+      "scenario": "normal sequential two-file queue, v6 blocks, cleanup, edit, full copy/TXT and OCR handoff",
+      "workers": 1,
+      "recognize": 2,
+      "text": "내가 편집한 원고",
+      "fullOutput": "내가 편집한 원고\n\nSecond result",
+      "handoffText": "내가 편집한 원고"
+    },
+    {
+      "scenario": "explicit rerun replaces edited manuscript without confirmation and hides it while pending",
+      "editedBefore": "Hand edited manuscript",
+      "textareaDuringRerun": false,
+      "after": "Replacement OCR"
+    },
+    {
+      "scenario": "unmount during createWorker still acquires and recognizes on the late worker",
+      "terminateAfterLateCreate": 0,
+      "recognizeAfterUnmount": 1
+    },
+    {
+      "scenario": "reset removes images but does not invalidate an in-flight worker creation/recognize",
+      "oldRecognizeAfterReset": 1,
+      "oldTextReappeared": false,
+      "workerRetainedUntilUnmount": true
+    },
+    {
+      "scenario": "cleanup option clears the edited manuscript by existing explicit behavior",
+      "before": "Preserve my editing",
+      "after": "Original raw",
+      "policyDecisionRequired": true
+    }
+  ]
+}

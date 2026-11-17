@@ -1,0 +1,29 @@
+{
+  "actualParent": true,
+  "controlledIO": true,
+  "nativeBrowser": false,
+  "sourceSha256": "21db601c8682076c5b37713548cfdf7d3d7e9aeac17f68e7e181a9cfa6a7ffbe",
+  "results": [
+    {
+      "scenario": "valid six-digit default",
+      "sliders": 6,
+      "copied": "#3B82F6"
+    },
+    {
+      "scenario": "valid CSS shorthand has no conversion results or sliders",
+      "draft": "#abc",
+      "sliders": 0,
+      "pickerReceivesRawShorthand": true
+    },
+    {
+      "scenario": "incomplete draft removes last valid results and feeds raw invalid picker value",
+      "draft": "#ab",
+      "sliders": 0
+    },
+    {
+      "scenario": "native rejection and false legacy copy still show copied icon",
+      "legacyFalse": 1,
+      "copiedIcons": 1
+    }
+  ]
+}

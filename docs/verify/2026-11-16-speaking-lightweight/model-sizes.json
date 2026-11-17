@@ -1,0 +1,80 @@
+[
+  {
+    "model": "LiquidAI/LFM2.5-230M-ONNX",
+    "files": [
+      {
+        "path": "onnx/model_q4.onnx",
+        "bytes": 154010
+      },
+      {
+        "path": "onnx/model_q4.onnx_data",
+        "bytes": 211111936
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 4733389
+      }
+    ],
+    "totalBytes": 215999335
+  },
+  {
+    "model": "LiquidAI/LFM2.5-230M-GGUF",
+    "files": [
+      {
+        "path": "LFM2.5-230M-Q4_K_M.gguf",
+        "bytes": 153406304
+      }
+    ],
+    "totalBytes": 153406304
+  },
+  {
+    "model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+    "files": [
+      {
+        "path": "onnx/model_q4f16.onnx",
+        "bytes": 117691126
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 2104556
+      }
+    ],
+    "totalBytes": 119795682
+  },
+  {
+    "model": "onnx-community/gemma-3-270m-it-ONNX",
+    "files": [
+      {
+        "path": "onnx/model_q4f16.onnx",
+        "bytes": 330717
+      },
+      {
+        "path": "onnx/model_q4f16.onnx_data",
+        "bytes": 272626176
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 20323013
+      }
+    ],
+    "totalBytes": 293279906
+  },
+  {
+    "model": "onnx-community/whisper-tiny",
+    "files": [
+      {
+        "path": "onnx/encoder_model_quantized.onnx",
+        "bytes": 10124990
+      },
+      {
+        "path": "onnx/decoder_model_merged_quantized.onnx",
+        "bytes": 30719241
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 2480466
+      }
+    ],
+    "totalBytes": 43324697
+  }
+]

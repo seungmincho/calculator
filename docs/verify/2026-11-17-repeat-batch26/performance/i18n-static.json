@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-11-16T20:11:30.251Z",
+  "patches": [
+    {
+      "name": "json-csv-performance",
+      "leafKeysPerLanguage": 16
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "JsonCsvConverter",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "JsonCsvWorkspace",
+      "staticKeysChecked": 95,
+      "dynamicPrefixesChecked": [
+        "fidelity.errors",
+        "fidelity.workerErrors",
+        "fidelity",
+        "tabs",
+        "presets",
+        "fidelity.delimiters"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

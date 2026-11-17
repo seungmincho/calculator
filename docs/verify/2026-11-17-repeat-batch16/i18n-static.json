@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-11-16T15:34:15.240Z",
+  "patches": [
+    {
+      "name": "csat-records",
+      "leafKeysPerLanguage": 56
+    },
+    {
+      "name": "grade-records",
+      "leafKeysPerLanguage": 33
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "GradeCalculator",
+      "staticKeysChecked": 60,
+      "dynamicPrefixesChecked": [
+        "guide"
+      ]
+    },
+    {
+      "component": "GradeSavedRecords",
+      "staticKeysChecked": 26,
+      "dynamicPrefixesChecked": [
+        "records.errors"
+      ]
+    },
+    {
+      "component": "CsatGrade",
+      "staticKeysChecked": 77,
+      "dynamicPrefixesChecked": [
+        "u.cut",
+        "u.sel",
+        "guide"
+      ]
+    },
+    {
+      "component": "CsatScoreRecords",
+      "staticKeysChecked": 36,
+      "dynamicPrefixesChecked": [
+        "records.errors",
+        "records",
+        "u.cut",
+        "records.reasons",
+        "records.confirm"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

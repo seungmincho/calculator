@@ -1,0 +1,120 @@
+{
+  "ko": {
+    "base64Converter": {
+      "flow": {
+        "sample": "안녕하세요, ToolHub!",
+        "mode": "변환 방향",
+        "result": "변환 결과",
+        "swap": "결과를 반대 방향 입력으로",
+        "reading": "파일을 읽고 있습니다.",
+        "copying": "복사 중",
+        "convertFailed": "변환하지 못했습니다. 입력과 형식을 확인한 뒤 다시 시도해 주세요.",
+        "downloadFailed": "파일을 준비하지 못했습니다. 결과는 유지됩니다. 다시 시도해 주세요.",
+        "format": "Base64 형식",
+        "standard": "표준 Base64",
+        "url": "Base64URL",
+        "padding": "URL용 결과에 = 패딩 포함",
+        "paddingHint": "표준 결과는 패딩을 포함하며, URL용 결과는 기본적으로 생략합니다.",
+        "decodeRules": "두 형식 모두 올바르게 생략된 끝 패딩과 ASCII 공백·탭·줄바꿈·폼 피드를 허용합니다. 다른 문자나 잘못된 패딩은 변환하지 않습니다.",
+        "dataUrlRule": "data URL의 내용은 형식 선택과 관계없이 표준 Base64로 읽고 만듭니다.",
+        "fileSource": "파일 바이트 사용 중",
+        "fileSelected": "{name} · {bytes}바이트",
+        "fileSourceHint": "다시 변환해도 같은 파일의 원본 바이트를 사용합니다.",
+        "useText": "텍스트 입력으로 바꾸기",
+        "decodeFileHint": ".txt·.base64·.b64 등 Base64 내용을 담은 파일을 UTF-8 텍스트로 읽습니다. 파일명보다 실제 내용을 검사합니다.",
+        "raw": "Base64 내용만",
+        "dataUrl": "data URL 전체",
+        "bytes": "결과 크기: {bytes}바이트",
+        "sourceBytes": "인코딩한 원본: {bytes}바이트",
+        "utf8": "UTF-8 텍스트",
+        "binary": "유효한 UTF-8 텍스트가 아닙니다. 원본 바이트를 파일로 내려받을 수 있습니다.",
+        "download": "결과 파일 받기",
+        "previewFailed": "이미지 형식·헤더를 확인할 수 없거나 16,777,216픽셀을 넘으면 미리보기하지 않습니다. 결과 바이트는 파일로 받을 수 있습니다.",
+        "previewAlt": "변환 결과 이미지",
+        "changed": "입력 또는 옵션이 바뀌었습니다. 다시 변환해 주세요.",
+        "limits": "텍스트의 UTF-8 크기·파일 바이트·디코딩 결과는 최대 4MiB, Base64 문자열은 최대 6MiB입니다.",
+        "empty": "내용을 입력하거나 파일을 선택해 주세요. 텍스트의 공백도 그대로 변환됩니다.",
+        "privacy": "내용과 파일은 이 화면에서만 처리하며 URL이나 기기 기록에 저장하지 않습니다. Base64는 암호화가 아닙니다."
+      },
+      "codecErrors": {
+        "byteLimit": "바이트 크기가 4MiB를 넘습니다. 원문을 줄이거나 더 작은 파일을 선택해 주세요.",
+        "textLimit": "Base64 문자열 또는 해당 텍스트 파일이 6MiB를 넘습니다.",
+        "invalidUnicode": "텍스트에 완성되지 않은 유니코드 문자가 있습니다. 해당 문자를 확인해 주세요.",
+        "alphabet": "선택한 Base64 형식에 없는 문자가 있습니다. 형식과 입력을 확인해 주세요.",
+        "padding": "끝 패딩이나 길이가 올바르지 않습니다. 패딩은 올바른 위치에 포함하거나 완전히 생략해 주세요.",
+        "canonicalBits": "마지막 문자의 남는 비트가 올바르지 않습니다. 원래 Base64 내용을 확인해 주세요.",
+        "dataUrl": "지원하는 data URL 형식이 아닙니다. MIME과 ;base64, 구분자를 확인해 주세요.",
+        "fileType": "디코딩할 내용은 .txt 또는 .base64 파일로 선택해 주세요.",
+        "fileRead": "파일을 읽지 못했습니다. 이전 입력은 유지됩니다. 다시 선택해 주세요.",
+        "fileUtf8": "Base64 텍스트 파일이 유효한 UTF-8이 아닙니다. 파일 인코딩을 확인해 주세요."
+      },
+      "copyRecovery": {
+        "failed": "복사하지 못했습니다. 아래 내용을 직접 선택하거나 다시 시도해 주세요.",
+        "label": "복사할 현재 결과",
+        "select": "텍스트 선택",
+        "retry": "복사 다시 시도",
+        "close": "닫기",
+        "selectionFailed": "자동 선택에 실패했습니다. 내용을 직접 선택해 복사해 주세요."
+      }
+    }
+  },
+  "en": {
+    "base64Converter": {
+      "flow": {
+        "sample": "Hello, ToolHub!",
+        "mode": "Conversion direction",
+        "result": "Conversion result",
+        "swap": "Use result as the opposite input",
+        "reading": "Reading the file.",
+        "copying": "Copying",
+        "convertFailed": "Could not convert. Check the input and format, then try again.",
+        "downloadFailed": "Could not prepare the file. Your result is retained. Try again.",
+        "format": "Base64 format",
+        "standard": "Standard Base64",
+        "url": "Base64URL",
+        "padding": "Include = padding in URL output",
+        "paddingHint": "Standard output includes padding. URL output omits it by default.",
+        "decodeRules": "Both formats accept correctly omitted end padding and ASCII spaces, tabs, line breaks, and form feeds. Other characters and malformed padding are rejected.",
+        "dataUrlRule": "Data URLs always use standard Base64, regardless of the selected raw format.",
+        "fileSource": "Using file bytes",
+        "fileSelected": "{name} · {bytes} bytes",
+        "fileSourceHint": "Converting again uses the same original file bytes.",
+        "useText": "Switch to text input",
+        "decodeFileHint": "Upload UTF-8 text containing Base64, such as a .txt, .base64, or .b64 file. Its content is checked regardless of the filename.",
+        "raw": "Base64 content only",
+        "dataUrl": "Full data URL",
+        "bytes": "Result size: {bytes} bytes",
+        "sourceBytes": "Original data encoded: {bytes} bytes",
+        "utf8": "UTF-8 text",
+        "binary": "These bytes are not valid UTF-8 text. You can download the original bytes as a file.",
+        "download": "Download result file",
+        "previewFailed": "Images with unreadable headers or more than 16,777,216 pixels cannot be previewed. You can still download the result bytes.",
+        "previewAlt": "Converted image preview",
+        "changed": "The input or options changed. Convert again to update the result.",
+        "limits": "UTF-8 text, file bytes, and decoded results are limited to 4MiB. Base64 strings are limited to 6MiB.",
+        "empty": "Enter content or choose a file. Whitespace in text is preserved.",
+        "privacy": "Content and files are processed in this page and are not stored in the URL or device history. Base64 is not encryption."
+      },
+      "codecErrors": {
+        "byteLimit": "The byte size exceeds 4MiB. Shorten the input or choose a smaller file.",
+        "textLimit": "The Base64 string or its text file exceeds 6MiB.",
+        "invalidUnicode": "The text contains an incomplete Unicode character. Check the affected character.",
+        "alphabet": "The input contains characters outside the selected Base64 alphabet. Check the format and input.",
+        "padding": "The end padding or length is invalid. Use correctly placed padding or omit it entirely.",
+        "canonicalBits": "The unused bits in the final character are invalid. Check the original Base64 content.",
+        "dataUrl": "This data URL format is unsupported. Check its MIME type and ;base64, separator.",
+        "fileType": "Choose a .txt or .base64 file containing the content to decode.",
+        "fileRead": "Could not read the file. Your previous input is retained. Choose the file again.",
+        "fileUtf8": "The Base64 text file is not valid UTF-8. Check its encoding."
+      },
+      "copyRecovery": {
+        "failed": "Could not copy. Select the content below manually, or try again.",
+        "label": "Current result to copy",
+        "select": "Select text",
+        "retry": "Try copying again",
+        "close": "Close",
+        "selectionFailed": "Could not select automatically. Select and copy the content manually."
+      }
+    }
+  }
+}

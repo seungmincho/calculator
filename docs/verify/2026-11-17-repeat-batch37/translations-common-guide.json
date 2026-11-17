@@ -1,0 +1,162 @@
+{
+  "ko": {
+    "aspectRatio": {
+      "description": "가로·세로 비율과 해상도를 계산하고, 사진을9위치나 슬라이더로 잘라 맞추세요. 여백 채우기와 실제 출력 크기를 비교하고 복사·저장 실패 상태를 확인할 수 있어요.",
+      "preview": {
+        "zoneNote": {
+          "shorts": "현재 도구의 참고 오버레이이며 플랫폼의 최신 공식 수치가 아닙니다. 파일에는 그리지 않아요. 표시상 안전 영역 약 {safeW}×{safeH}px",
+          "reels": "현재 도구의 위14%·아래35%·좌우6% 참고 오버레이입니다. 최신 공식 규격을 보장하지 않으며 파일에는 그리지 않아요. 표시상 안전 영역 약 {safeW}×{safeH}px"
+        }
+      },
+      "guide": {
+        "whatIs": {
+          "description": "가로·세로 픽셀에서 종횡비를 구하고 비율을 유지한 치수를 계산하는 도구입니다. 사진 자르기의 위치와 중앙 여백 채우기를 미리 보고 같은 영역을 파일로 저장할 수 있습니다. 치수 계산과 실제 이미지 반출 한도는 구분합니다."
+        },
+        "common": {
+          "items": [
+            "16:9 예시:1920×1080,3840×2160",
+            "9:16 세로 예시:1080×1920",
+            "4:5 세로 예시:1080×1350",
+            "1:1 정사각형 예시:1080×1080",
+            "링크 이미지 예시:1200×630, 정확한 비율은40:21",
+            "울트라와이드 예시:2560×1080은64:27,3440×1440은43:18",
+            "4:3·3:2 등 필요한 비율을 직접 선택하세요. 플랫폼 프리셋은 참고값이며 게시 위치의 현재 조건은 별도로 확인하세요."
+          ]
+        },
+        "howToUse": {
+          "items": [
+            "가로·세로를 입력하거나 비율·해상도 예시를 선택하세요. 비율 고정 중에는 한 변 변경에 맞춰 다른 변을 계산합니다.",
+            "PNG·JPEG·WebP·GIF 이미지를 선택하세요. 파일8MiB 이하와 원본16,000,000픽셀 이하를 지원하며 애니메이션은 정지 프레임으로 처리합니다.",
+            "잘라내기에서9위치 또는 두 축 슬라이더를 사용하세요. 잘리는 여유가 없는 축은 조절할 수 없고 여백 채우기는 중앙 정렬입니다.",
+            "저장 버튼 근처의 실제 출력 치수와 축소 안내를 확인하세요. 긴 변8192 및 전체16,000,000픽셀 한도를 함께 적용합니다.",
+            "치수·비율·CSS를 복사하거나 현재 숫자 설정 링크를 공유하세요. 복사가 실패하면 전체 원문 선택과 재시도를 사용할 수 있습니다."
+          ]
+        },
+        "tips": {
+          "items": [
+            "같은 사진의 목표 비율을 바꾸면 선택 위치는 유지됩니다. 새 사진을 정상적으로 불러오면 중앙50/50으로 시작합니다.",
+            "새 파일 읽기가 실패하면 마지막 정상 이미지를 유지합니다. 오래된 읽기나 내보내기 결과가 현재 사진을 되살리지 않도록 처리합니다.",
+            "참고 안전 영역은 화면에만 표시하며 저장 이미지에 그리지 않습니다. 게시 플랫폼의 실제 UI와 같다고 보장하지 않습니다.",
+            "PNG 원본은PNG, 나머지 지원 이미지는JPEG로 저장합니다. PNG가 아닌 이미지의 투명 영역은JPEG로 보존되지 않습니다.",
+            "CSS aspect-ratio:16 / 9;로 웹 요소의 비율을 지정할 수 있습니다. 사진이나 파일명은 공유 링크에 넣지 않습니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "1920×1080은 왜16:9인가요?",
+              "a": "가로와 세로를 최대공약수120으로 나누면16:9입니다. 정확히 같은 비율이 아닌 크기는 가까운 비율로 구분해 표시합니다."
+            },
+            {
+              "q": "잘리는 위치를 직접 바꿀 수 있나요?",
+              "a": "잘라내기 모드에서9위치 버튼이나 가로·세로 슬라이더를 사용하세요. 원본에 잘리는 여유가 있는 축만 움직이며 미리보기와 파일은 같은 원본 영역을 사용합니다."
+            },
+            {
+              "q": "계산한 크기와 저장한 크기가 다른 이유는 무엇인가요?",
+              "a": "파일 반출에는 긴 변8192와16,000,000픽셀 한도를 함께 적용합니다. 실제 출력 크기와 축소 안내를 확인하세요. 너무 가늘어 한 변이0이 되는 출력은 억지로 늘리지 않고 거부합니다."
+            },
+            {
+              "q": "지원 파일과 용량은 어떻게 되나요?",
+              "a": "PNG·JPEG·WebP·GIF, 파일8MiB 이하·원본16,000,000픽셀 이하입니다. 실제 파일 내용과 해독 결과를 검사하며 SVG·HEIC는 지원하지 않습니다. 애니메이션은 정지 프레임만 사용합니다."
+            },
+            {
+              "q": "공유 링크에 사진이나 자르기 위치가 들어가나요?",
+              "a": "현재 공유는 가로·세로·비율 잠금·참고 안전 영역 설정을 담습니다. 사진·파일명·자르기 위치는 링크에 포함하지 않습니다."
+            },
+            {
+              "q": "안전 영역이 공식 최신 규격인가요?",
+              "a": "현재 도구의 참고 오버레이입니다. 최신 플랫폼 UI를 보장하지 않고 파일에도 그리지 않으므로 실제 게시 환경에서 별도로 확인하세요."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "aspectRatio": {
+          "description": "비율·해상도 계산, 사진 자르기 위치 조절과 안전한 반출"
+        }
+      }
+    }
+  },
+  "en": {
+    "aspectRatio": {
+      "description": "Calculate aspect ratios and resolutions, then position a crop with nine presets or sliders. Compare centered padding, review actual output size, and recover from copy or export failures.",
+      "preview": {
+        "zoneNote": {
+          "shorts": "A reference overlay in this tool, not current official platform dimensions. It is not drawn into the file. Shown safe area about {safeW}×{safeH}px",
+          "reels": "This tool uses a reference overlay of 14% at the top,35% at the bottom and 6% on each side. Current official dimensions are not guaranteed, and it is not drawn into the file. Shown safe area about {safeW}×{safeH}px"
+        }
+      },
+      "guide": {
+        "whatIs": {
+          "description": "Calculate a width-to-height ratio and dimensions that preserve it. Preview an adjustable photo crop or centered padding, then export the same region. Calculation dimensions and actual image export limits are separate."
+        },
+        "common": {
+          "items": [
+            "16:9 examples: 1920×1080,3840×2160",
+            "9:16 portrait example: 1080×1920",
+            "4:5 portrait example: 1080×1350",
+            "1:1 square example: 1080×1080",
+            "Link image example: 1200×630, with an exact ratio of 40:21",
+            "Ultrawide examples: 2560×1080 is 64:27,3440×1440 is 43:18",
+            "Choose other ratios such as 4:3 or 3:2. Platform presets are reference values; check the current requirements of the destination separately."
+          ]
+        },
+        "howToUse": {
+          "items": [
+            "Enter width and height or select a ratio or resolution example. With ratio lock enabled, changing one side recalculates the other.",
+            "Choose a PNG, JPEG, WebP or GIF of up to 8 MiB and 16,000,000 source pixels. Animations are processed as a still frame.",
+            "Use nine position buttons or two sliders in Crop mode. An axis without excess image area cannot move; padding remains centered.",
+            "Check the actual output dimensions and reduction notice near Save. Both the 8192-pixel long-side limit and 16,000,000-pixel total limit apply.",
+            "Copy dimensions, a ratio or CSS, or share the numeric setup. If copying fails, select the full text or retry."
+          ]
+        },
+        "tips": {
+          "items": [
+            "Changing the target ratio of the same photo keeps its position. A successfully loaded replacement starts centered at 50/50.",
+            "If reading a replacement fails, the last valid image stays available. Older read or export results cannot restore an outdated photo.",
+            "The reference safe area is shown only on screen, never in the saved image. It is not a guarantee of the destination platform's actual UI.",
+            "PNG sources export as PNG; other supported images export as JPEG. Transparency from non-PNG sources is not preserved by JPEG.",
+            "CSS aspect-ratio:16 / 9; sets the proportions of a web element. Image content and filenames are excluded from share links."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Why is 1920×1080 a 16:9 ratio?",
+              "a": "Dividing both dimensions by their greatest common divisor,120, gives 16:9. Dimensions that are only close to that ratio are labeled separately."
+            },
+            {
+              "q": "Can I choose which part is cropped?",
+              "a": "Use the nine position buttons or horizontal and vertical sliders in Crop mode. Only axes with excess source area can move. Preview and export use the same source region."
+            },
+            {
+              "q": "Why can exported dimensions differ from the calculation?",
+              "a": "Export applies both an 8192-pixel long-side limit and a 16,000,000-pixel total limit. Review the actual dimensions and reduction notice. Extremely thin outputs that would round a side to 0 are rejected instead of stretched."
+            },
+            {
+              "q": "Which files and limits are supported?",
+              "a": "PNG, JPEG, WebP and GIF up to 8 MiB and 16,000,000 source pixels. Actual file content and decoded dimensions are checked. SVG and HEIC are unsupported, and animations use a still frame only."
+            },
+            {
+              "q": "Does a share link include the photo or crop position?",
+              "a": "Current links contain width, height, ratio lock and the reference safe-area setting. Photos, filenames and crop position are excluded."
+            },
+            {
+              "q": "Is the safe area the latest official specification?",
+              "a": "It is a reference overlay in this tool. It does not guarantee the latest platform UI and is not drawn into the file; check the real publishing environment separately."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "aspectRatio": {
+          "description": "Ratios and resolutions with crop positioning and guarded image export"
+        }
+      }
+    }
+  }
+}

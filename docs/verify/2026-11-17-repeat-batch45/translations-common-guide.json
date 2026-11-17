@@ -1,0 +1,134 @@
+{
+  "ko": {
+    "fontPreview": {
+      "description": "한글 폰트 38종을 비교하고 제목·본문 스타일 조합을 저장하세요. 조합 JSON 백업과 선택 가져오기는 원고와 현재 스타일을 유지합니다.",
+      "guide": {
+        "usage": {
+          "items": [
+            "쓸 문구를 입력하거나 예시 문구(가나다·인사말·숫자·영문 혼합·긴 문단)를 고르세요.",
+            "크기·굵기·행간·자간과 미리보기 배경(밝게/어둡게)을 조절하세요. 해당 굵기가 없는 폰트는 가장 가까운 굵기로 보여 주고 카드에 표시합니다.",
+            "분류(고딕·명조·손글씨·디스플레이·코딩)나 검색으로 좁히고, 별표로 즐겨찾기해 두세요(이 브라우저에 저장).",
+            "핀 버튼으로 최대 4개를 고정하면 위쪽에서 나란히 비교할 수 있습니다.",
+            "마음에 드는 폰트의 'CSS 복사'로 <link>·@import·font-family 코드를 복사하고, '공식 페이지'에서 다운로드하세요.",
+            "'공유 링크 복사'로 문구·크기·고정한 폰트가 그대로 담긴 링크를 팀원에게 보낼 수 있습니다.",
+            "갖고 있는 폰트 파일(ttf/otf/woff/woff2)을 끌어놓으면 같은 설정으로 미리볼 수 있습니다. 파일은 업로드되지 않습니다.",
+            "제목·본문 조합에 이름을 붙여 저장하고 JSON으로 백업하세요. 가져올 항목과 이름을 확인해 저장 목록에 추가한 뒤, 미리보기에 적용할 조합을 명시적으로 불러오세요."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "여기서 고른 폰트를 내 웹사이트에 바로 적용할 수 있나요?",
+              "a": "네. 카드의 'CSS 복사'를 누르면 <link> 태그, @import 구문, font-family 선언이 함께 복사됩니다. <link>를 HTML <head>에 넣거나 @import를 CSS 맨 위에 넣고, font-family를 지정하면 됩니다."
+            },
+            {
+              "q": "상업적으로 써도 되나요?",
+              "a": "목록의 폰트는 모두 SIL OFL 1.1이라 광고·인쇄물·웹·영상 등 상업적 용도에 무료입니다. 폰트 파일만 따로 파는 것과 수정본을 원래 이름으로 배포하는 것은 금지됩니다. 사용 전 각 카드의 공식 페이지에서 최신 조건을 확인하세요."
+            },
+            {
+              "q": "폰트 파일은 어디서 다운로드하나요?",
+              "a": "각 카드의 '공식 페이지' 버튼을 누르면 Google Fonts 소개 페이지나 제작사 저장소(Pretendard, D2Coding)로 이동해 파일을 받을 수 있습니다."
+            },
+            {
+              "q": "굵기를 900으로 했는데 얇게 보여요.",
+              "a": "그 폰트에 900 굵기가 없으면 가장 가까운 굵기로 보여 줍니다. 카드 아래 '굵기' 항목에서 실제로 있는 굵기와 적용된 굵기를 확인하세요."
+            },
+            {
+              "q": "내 폰트 파일을 올리면 서버에 저장되나요?",
+              "a": "아니요. 브라우저의 FontFace API로 이 기기 안에서만 읽어 보여 주며, 파일은 어디에도 전송되지 않습니다. 페이지를 닫으면 사라집니다."
+            },
+            {
+              "q": "저장한 글꼴 조합을 다른 브라우저로 옮길 수 있나요?",
+              "a": "저장 목록에서 조합 JSON 백업을 내려받고 다른 브라우저에서 가져오세요. 파일을 확인한 뒤 항목을 선택하고 이름을 수정해 추가합니다. 기존 조합을 자동 삭제하지 않으며 목록은 최대 6개입니다."
+            },
+            {
+              "q": "조합 백업에 원고나 글꼴 파일도 포함되나요?",
+              "a": "아니요. 조합 이름과 제목·본문의 글꼴 ID, 크기, 요청 굵기 설정만 포함합니다. 미리보기 원고, 업로드한 글꼴 파일, 임의 CSS 주소는 넣지 않습니다. 일반 공유 링크의 문구 포함 여부와는 별개입니다."
+            },
+            {
+              "q": "가져오면 현재 미리보기가 바뀌나요?",
+              "a": "가져오기는 저장 목록에만 추가합니다. 현재 원고와 스타일은 유지하며, 적용하려면 추가한 조합의 불러오기를 누르세요. 불러온 뒤에도 현재 원고는 유지됩니다."
+            },
+            {
+              "q": "어떤 조합 백업을 가져올 수 있나요?",
+              "a": "현재 지원하는 툴허브 글꼴 조합 JSON 파일이며 UTF-8 기준 최대 64KiB(65,536바이트)입니다. 알 수 없는 글꼴·미래 버전·잘못된 설정은 자동 치환하지 않습니다. 이름 충돌이나 6개 상한은 선택과 이름을 조정해 해결하세요. 저장 결과를 확인하지 못하면 재시도 전에 목록을 새로고침하세요."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "fontPreview": {
+          "description": "한글 폰트 비교·스타일 조합 저장·JSON 백업과 선택 가져오기"
+        }
+      }
+    }
+  },
+  "en": {
+    "fontPreview": {
+      "description": "Compare 38 Korean fonts and save heading/body style pairs. Back up pairs as JSON and import selected pairs while keeping your text and current styles.",
+      "guide": {
+        "usage": {
+          "items": [
+            "Type your copy or pick a sample (Ga-na-da, greeting, numbers & Latin, paragraph).",
+            "Adjust size, weight, line height, letter spacing and the preview background. Fonts without the chosen weight use the closest one, noted on the card.",
+            "Narrow down by category (gothic, myeongjo, handwriting, display, coding) or search, and star favorites (saved in this browser).",
+            "Pin up to 4 fonts to compare them side by side at the top.",
+            "Use 'Copy CSS' for the <link>, @import and font-family code, and 'Official page' to download.",
+            "'Copy share link' keeps your text, size and pinned fonts in the URL.",
+            "Drop your own font file (ttf/otf/woff/woff2) to preview it with the same settings. The file is never uploaded.",
+            "Name and save heading/body pairs, then back them up as JSON. Review selected pairs and names before adding them to the list, and load a pair explicitly to apply it to the preview."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Can I use the font on my website right away?",
+              "a": "Yes. 'Copy CSS' copies a <link> tag, an @import rule and the font-family declaration. Put the <link> in your HTML <head> or the @import at the top of your CSS, then set font-family."
+            },
+            {
+              "q": "Can I use these fonts commercially?",
+              "a": "All fonts in the list are SIL OFL 1.1, free for commercial use in ads, print, web and video. Selling the font files by themselves and distributing modified versions under the original name are not allowed. Check the latest terms on each card's official page."
+            },
+            {
+              "q": "Where do I download the font files?",
+              "a": "Each card's 'Official page' button opens the Google Fonts specimen page or the vendor repository (Pretendard, D2Coding)."
+            },
+            {
+              "q": "I chose weight 900 but the text looks thin.",
+              "a": "If the font has no 900 weight, the closest available weight is used. The 'Weights' line on the card shows available and applied weights."
+            },
+            {
+              "q": "Is my own font file uploaded to a server?",
+              "a": "No. It is read locally with the browser FontFace API and never sent anywhere. It is gone when you close the page."
+            },
+            {
+              "q": "Can I move saved font pairs to another browser?",
+              "a": "Download a font-pair JSON backup and import it in the other browser. Review the file, select pairs and edit their names before adding them. Existing pairs are kept and the list holds up to 6 pairs."
+            },
+            {
+              "q": "Does the backup include my text or font files?",
+              "a": "No. It contains pair names and heading/body font IDs, sizes and requested weights. Preview text, uploaded font files and arbitrary CSS URLs are excluded. This is separate from text included in an ordinary share link."
+            },
+            {
+              "q": "Will importing change my current preview?",
+              "a": "Importing only adds to the saved list. Your current text and styles stay unchanged. Load an imported pair explicitly to apply its styles; loading also keeps your current text."
+            },
+            {
+              "q": "Which backups can I import?",
+              "a": "Use a supported Toolhub font-pair JSON backup up to 64KiB (65,536 UTF-8 bytes). Unknown fonts, future versions and invalid settings are not silently replaced. Resolve name conflicts and the 6-pair limit by editing names or selections. If a write cannot be confirmed, refresh the saved list before retrying."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "fontPreview": {
+          "description": "Compare fonts, save style pairs, back up JSON and import selected pairs"
+        }
+      }
+    }
+  }
+}

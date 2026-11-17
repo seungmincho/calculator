@@ -1,0 +1,22 @@
+{
+  "reproductionOnly": true,
+  "sourceSha256": "f0d72facb2378c8e242e8bb1a0bfe8bdf7dc3706406aa441a0cf6c31b96c9f55",
+  "groups": 3,
+  "probes": [
+    {
+      "name": "capitalize smart mode leaves matched letters unchanged",
+      "replacement": "$1",
+      "output": "hello world"
+    },
+    {
+      "name": "multi-character delimiter treats each character as forbidden content",
+      "pattern": "::([^##]*)##",
+      "matches": 0
+    },
+    {
+      "name": "already scheduled regex callback overwrites deduplication",
+      "immediate": "A1\nB2",
+      "afterOldCallback": "1\n1\n2"
+    }
+  ]
+}

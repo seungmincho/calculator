@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-17T01:21:20.263Z",
+  "files": 12,
+  "linksChecked": 254,
+  "missing": [],
+  "historyEntryCounts": [
+    {
+      "file": "docs/handoff/CONTINUOUS-IMPROVEMENT-PLAN.md",
+      "count": 1
+    },
+    {
+      "file": "docs/handoff/2026-11-16-repeat-use-features.md",
+      "count": 1
+    }
+  ],
+  "trackedDocumentDiff": {
+    "exitCode": 0,
+    "stdout": "",
+    "note": "tracked owned document paths only; untracked/clean tree not claimed"
+  }
+}

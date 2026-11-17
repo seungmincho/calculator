@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-11-17T00:40:26.702Z",
+  "freeGiB": 3.24,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "chromeClosed": true,
+  "allTsWritersFrozen": true,
+  "scopes": [
+    44,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "unconnectedPreparation": [
+    52,
+    53
+  ],
+  "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+  "completedAt": "2026-11-17T00:42:31.228Z",
+  "status": "failed",
+  "sessionId": 62674,
+  "exitCode": 1,
+  "outputChunk": "1d4d12",
+  "diagnostics": [
+    {
+      "file": "src/hooks/useSpeakingRecorder.ts",
+      "line": 131,
+      "column": 30,
+      "code": "TS2367",
+      "message": "This comparison appears to be unintentional because the types visible and hidden have no overlap."
+    }
+  ],
+  "owner": "/root/team_rotation",
+  "next": "Minimal type-preserving fix, relevant visibility/preparation impact and lint, refreeze, rerun whole type only"
+}

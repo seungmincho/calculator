@@ -1,0 +1,35 @@
+{
+  "sizes": {
+    "ko": {
+      "shortCount": 40,
+      "shortMaxCodePoints": 29,
+      "longMaxCodePoints": 148,
+      "timeCodePoints": 1945
+    },
+    "en": {
+      "shortCount": 16,
+      "shortMaxCodePoints": 56,
+      "longMaxCodePoints": 226,
+      "timeCodePoints": 1373
+    }
+  },
+  "correctedPositionRemainsInAttempt": [
+    "0"
+  ],
+  "currentResultFields": [
+    "lang",
+    "ms",
+    "keys",
+    "speed",
+    "accuracy",
+    "errors",
+    "missed"
+  ],
+  "missedIsAggregateNotPosition": [
+    [
+      "a",
+      2
+    ]
+  ],
+  "scope": "Existing pure functions only; no product changes, browser or new feature implemented."
+}

@@ -1,0 +1,89 @@
+{
+  "scope": "퍼센트 계산 결과6개 메모리 비교",
+  "status": "complete",
+  "translations": {
+    "status": "passed",
+    "patchLeavesPerLanguage": 37,
+    "staticUses": 73,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 560,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/percent-calculator/page.tsx",
+    "updatedDate": "2026-11-17",
+    "sharedDescription": true,
+    "canonicalFaq": true,
+    "scopedCommonLint": "2pages+menu 3 files exit0/warnings0",
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45921
+    }
+  },
+  "author": {
+    "status": "passed_frozen_at_checkpoint",
+    "groups": 20,
+    "report": "implementation.md"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 15,
+    "report": "independent-parent-review.md",
+    "errors": 0,
+    "warnings": 0,
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-17T00:59:18.337Z",
+    "browserClosed": true,
+    "report": "review-browser.md",
+    "runtimeErrors": 0,
+    "runtimeProductChangesAfterNative": 0
+  },
+  "typecheck": {
+    "status": "passed",
+    "preflightAt": "2026-11-17T01:15:57.458Z",
+    "recordedAt": "2026-11-17T01:19:19.928Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.09,
+    "sessionId": 68215,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 1,
+    "outputChunk": "24ecd5",
+    "evidence": "../2026-11-17-repeat-batch55/typecheck-final-result.json"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "diffCheck": {
+    "status": "passed",
+    "trackedOnly": true,
+    "evidence": "../2026-11-17-repeat-batch55/source-diff-check.json",
+    "formattingFailure": "../2026-11-17-repeat-batch55/source-diff-attempt1.json"
+  },
+  "sharedCheckpointScopes": [
+    52,
+    53,
+    54,
+    55
+  ],
+  "preparedFutureScope": {
+    "56": "3 products+1test, author14/ind7/lint0, frozen",
+    "57": "2 complete-export helpers, parent unconnected, own tests/lint pending; queue independent initial6 only"
+  }
+}

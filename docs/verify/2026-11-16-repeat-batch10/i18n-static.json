@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-11-16T14:10:48.846Z",
+  "patches": [
+    {
+      "name": "jsonpath",
+      "leafKeysPerLanguage": 33
+    },
+    {
+      "name": "notepad",
+      "leafKeysPerLanguage": 14
+    },
+    {
+      "name": "url",
+      "leafKeysPerLanguage": 38
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "Notepad",
+      "staticKeysChecked": 75,
+      "dynamicPrefixesChecked": [
+        "reading",
+        "guide"
+      ]
+    },
+    {
+      "component": "TextToSpeech",
+      "staticKeysChecked": 77,
+      "dynamicPrefixesChecked": [
+        "noKoreanVoice",
+        "speedPresets",
+        "guide"
+      ]
+    },
+    {
+      "component": "JsonFormatter",
+      "staticKeysChecked": 107,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "JsonPathPresets",
+      "staticKeysChecked": 20,
+      "dynamicPrefixesChecked": [
+        "presets.errors"
+      ]
+    },
+    {
+      "component": "UrlEncoder",
+      "staticKeysChecked": 36,
+      "dynamicPrefixesChecked": []
+    },
+    {
+      "component": "UrlBatchConverter",
+      "staticKeysChecked": 29,
+      "dynamicPrefixesChecked": [
+        "batch.errors",
+        "batch.modes",
+        "batch"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

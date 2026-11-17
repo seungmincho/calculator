@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-16",
+  "patches": [
+    {
+      "name": "number",
+      "leafKeysPerLanguage": 38
+    },
+    {
+      "name": "font",
+      "leafKeysPerLanguage": 39
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "NumberToKorean",
+      "staticKeysChecked": 33,
+      "dynamicPrefixesChecked": [
+        "guide"
+      ]
+    },
+    {
+      "component": "NumberToKoreanBatch",
+      "staticKeysChecked": 35,
+      "dynamicPrefixesChecked": [
+        "batch.errors",
+        "batch"
+      ]
+    },
+    {
+      "component": "FontPreview",
+      "staticKeysChecked": 55,
+      "dynamicPrefixesChecked": [
+        "cat",
+        "presets",
+        "guide"
+      ]
+    },
+    {
+      "component": "FontPairPreview",
+      "staticKeysChecked": 21,
+      "dynamicPrefixesChecked": [
+        "pairing.roles",
+        "pairing.fontLabels",
+        "pairing.sizeLabels",
+        "pairing.weightLabels",
+        "pairing.textLabels",
+        "pairing.fontStatus",
+        "pairing.copyStatus"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; not English runtime UI verification."
+}

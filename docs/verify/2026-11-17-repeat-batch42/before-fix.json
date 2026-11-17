@@ -1,0 +1,29 @@
+{
+  "reproductionOnly": true,
+  "sourceSha256": "d3e5cad7660553b803b6e2885d86e51a3555c676e3f0e808ffe610080f40c3e2",
+  "groups": 5,
+  "probes": [
+    {
+      "name": "normal empty legacy record is supported",
+      "pass": true
+    },
+    {
+      "name": "valid JSON null bypasses fallback and crashes statistics",
+      "error": "TypeError"
+    },
+    {
+      "name": "wrong guesses shape reaches statistics unchecked",
+      "error": "TypeError"
+    },
+    {
+      "name": "native rejection and legacy false still show copied",
+      "copied": true
+    },
+    {
+      "name": "old daily reveal opens result overlays after a new practice was created",
+      "practiceLength": 3,
+      "nameModal": true,
+      "statistics": true
+    }
+  ]
+}

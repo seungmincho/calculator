@@ -1,0 +1,59 @@
+[
+  {
+    "name": "initial-mobile-no-model-download",
+    "status": "PASS"
+  },
+  {
+    "name": "automatic-basic-checks-no-gpu-no-download",
+    "status": "PASS"
+  },
+  {
+    "name": "remove-coaching-cache-preserves-records",
+    "status": "FAIL",
+    "error": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('코칭 모델 캐시를 지웠어요. 연습 기록은 그대로예요.', { exact: true }) to be visible\u001b[22m\n"
+  },
+  {
+    "name": "text-fallback-compare-save-reload-export",
+    "status": "PASS"
+  },
+  {
+    "name": "record-replay-blob-restoration",
+    "status": "PASS"
+  },
+  {
+    "name": "audio-validation-silence-and-take-limit",
+    "status": "PASS"
+  },
+  {
+    "name": "failed-save-preserves-answer",
+    "status": "PASS"
+  },
+  {
+    "name": "microphone-denied-text-remains-usable",
+    "status": "PASS"
+  },
+  {
+    "name": "summary-only-link-reproduces-numbers",
+    "status": "PASS"
+  },
+  {
+    "name": "cancel-model-load-preserves-answer",
+    "status": "PASS"
+  },
+  {
+    "name": "cancel-permission-stops-late-microphone",
+    "status": "PASS"
+  },
+  {
+    "name": "history-cap-updates-and-corrupt-record",
+    "status": "PASS"
+  },
+  {
+    "name": "copied-summary-never-contains-transcript",
+    "status": "PASS"
+  },
+  {
+    "name": "recording-stops-at-90-seconds",
+    "status": "PASS"
+  }
+]

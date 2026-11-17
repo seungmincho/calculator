@@ -1,0 +1,14 @@
+{
+  "ko": { "characterCounter": {
+    "save": { "saving": "변경한 원고를 저장하고 있어요." },
+    "copyRecovery": { "title": "문항 {tab} 원문 복사", "failed": "자동 복사하지 못했어요. 아래 전체 원문을 선택해 직접 복사하거나 다시 시도하세요.", "field": "복사할 전체 원문", "select": "전체 선택", "retry": "다시 복사", "close": "닫기", "selectionFailed": "자동 선택하지 못했어요. 원문을 직접 선택해 주세요.", "copying": "복사 중…" },
+    "editing": { "clearCancelled": "원고가 바뀌어 이전 전체 초기화를 취소했어요. 새 입력은 그대로 남아 있어요.", "spellerOpened": "외부 맞춤법 사이트 열기를 요청했어요. 복사 결과를 확인한 뒤 사이트에 직접 붙여넣으세요.", "spellerFailed": "외부 사이트를 열지 못했어요. 다시 눌러 주세요." },
+    "tools": { "spellHint": "새 탭의 외부 사이트에서 직접 붙여넣어 검사해요. 이 도구는 원문을 사이트 주소나 서버로 자동 전송하지 않아요. 복사에 실패하면 원문 선택·재시도를 이용하세요." }
+  } },
+  "en": { "characterCounter": {
+    "save": { "saving": "Saving your updated draft…" },
+    "copyRecovery": { "title": "Copy question {tab}", "failed": "Automatic copying failed. Select the full original text below to copy it manually, or try again.", "field": "Full original text to copy", "select": "Select all", "retry": "Try copying again", "close": "Close", "selectionFailed": "Automatic selection failed. Select the text manually.", "copying": "Copying…" },
+    "editing": { "clearCancelled": "The draft changed, so the earlier clear-all request was cancelled. Your new input is kept.", "spellerOpened": "Requested the external spelling site. Check the copy result, then paste the text on that site yourself.", "spellerFailed": "The external site could not be opened. Try again." },
+    "tools": { "spellHint": "Paste the text yourself on the external site in a new tab. This tool does not automatically send your text in the site address or to a server. If copying fails, use manual selection or retry." }
+  } }
+}

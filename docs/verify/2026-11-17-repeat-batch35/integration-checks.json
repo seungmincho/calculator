@@ -1,0 +1,56 @@
+{
+  "scope": "Service Worker owned cache cleanup, valid offline response and native navigation Request preservation",
+  "status": "complete",
+  "authorVmGroups": 10,
+  "rootIndependentGroups": 3,
+  "initialVmLimitation": "Initial9 and root2 used cors request port; native navigate RequestInit constructor failure was found in actual Chrome",
+  "resolvedAdditionalFinding": "Reuse unchanged original Request; explicit same-origin init with original request properties and signal for normalized navigation",
+  "browser": {
+    "status": "passed",
+    "passed": 5,
+    "failed": 0,
+    "checkedAt": "2026-11-16T20:36:55.873Z",
+    "actualSwSha256": "be973e825edc063b5b0db23d2da6cee3e72da2954a1f1deea8b513011223ac51",
+    "browserClosed": true,
+    "serverClosed": true,
+    "existing3039Accessed": false,
+    "isolatedContext": true,
+    "personalOrProductionCachesAccessed": false,
+    "initialPassingActivationRetained": true,
+    "affectedRetests": 4,
+    "pageErrors": 0,
+    "workerErrors": 0,
+    "generatedOfflineHtmlBytes": 2777,
+    "generatedOfflineStatus": 200,
+    "unhandledRejections": 0,
+    "testCorrections": [
+      "Use existing /tips/ dynamic route",
+      "Check document and offline lookup targets separately from favicon"
+    ]
+  },
+  "lint": {
+    "exitCode": 0,
+    "errors": 0,
+    "unchangedPushCatchWarning": 1
+  },
+  "scopedDiff": {
+    "exitCode": 0
+  },
+  "cacheVersion": "v4.35.16",
+  "typecheck": {
+    "status": "not repeated",
+    "reason": "JS-only scope, separate from earlier passed CSV+29 TS checkpoint and ongoing batch28/30 TS"
+  },
+  "build": false,
+  "deploy": false,
+  "devRestart": false,
+  "commit": false,
+  "push": false,
+  "sourceMatchesActualBrowserSha256": true,
+  "documentationChecks": {
+    "files": 4,
+    "relativeLinks": 135,
+    "missing": 0,
+    "diffExitCode": 0
+  }
+}

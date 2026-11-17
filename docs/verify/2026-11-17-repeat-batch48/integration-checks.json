@@ -1,0 +1,119 @@
+{
+  "scope": "글자수 세기 초기복원·복사·undo·늦은 초기화 원고 보호",
+  "status": "complete",
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 13,
+    "commonGuideLeaves": 5,
+    "patchLeavesPerLanguage": 18,
+    "staticUses": 68,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 559,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "metadata": {
+    "status": "passed",
+    "page": "src/app/character-counter/page.tsx",
+    "updatedDate": "2026-11-17",
+    "updatedDateNote": "already17 retained",
+    "sharedDescription": true,
+    "canonicalFaq": true,
+    "scopedLintFiles": 2,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0,
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45900
+    }
+  },
+  "author": {
+    "status": "passed_frozen_at_checkpoint",
+    "groups": 18,
+    "pure": 9,
+    "actualParentRecovery": 9,
+    "scopedLintFiles": 6,
+    "errors": 0,
+    "warnings": 0,
+    "report": "implementation.md"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 8,
+    "actualParent": 8,
+    "report": "independent-parent-review.md",
+    "unresolvedFindings": 0,
+    "productChanges": 0,
+    "scopedLintExitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-17T00:10:31.935Z",
+    "browserClosed": true,
+    "jsErrors": 0,
+    "hydration": 0,
+    "unhandled": 0,
+    "report": "review-browser.md",
+    "results": "browser/final-results.json",
+    "productFindings": 0,
+    "fixtureNote": "Windows native Clipboard CRLF differs from submitted LF; exact writeText preserved, normalized OS read checked, copy1 impact rerun",
+    "artifacts": {
+      "versionJsonBytes": 305,
+      "diffTxtBytes": 70
+    }
+  },
+  "typecheck": {
+    "status": "passed",
+    "startedAt": "2026-11-17T00:43:59.864Z",
+    "recordedAt": "2026-11-17T00:44:55.753Z",
+    "heapMiB": 2048,
+    "freeGiB": 3.36,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempt": 2,
+    "outputChunk": "0f20ce",
+    "commandWallSeconds": 8.7373551,
+    "evidence": "../2026-11-17-repeat-batch51/typecheck-final-result.json",
+    "firstAttempt": "../2026-11-17-repeat-batch51/typecheck-attempt1.json",
+    "scope": "44/46/47/48/49/50/51 final parents plus unconnected52/53 preparation; all writers frozen and Chrome closed"
+  },
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "preparedFutureScope": {
+    "52": "unconnected author12+independent8+lint0; TS frozen; parent/canonical not connected",
+    "53": "unconnected pure5+independent6+lint0; TS frozen; parent/canonical not connected"
+  },
+  "sharedCheckpointScopes": [
+    44,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "diffCheck": {
+    "status": "passed",
+    "trackedOnly": true,
+    "evidence": [
+      "../2026-11-17-repeat-batch51/source-diff-check.json",
+      "../2026-11-17-repeat-batch51/source-diff-followup.json",
+      "../2026-11-17-repeat-batch51/source-diff-type-fix.json"
+    ]
+  }
+}

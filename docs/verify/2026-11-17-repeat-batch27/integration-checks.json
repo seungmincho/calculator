@@ -1,0 +1,166 @@
+{
+  "scope": "Batch27 exact WorldClock meeting instant/ICS and WhiteNoise deadline/settings",
+  "status": "complete",
+  "lastCompletedCheckpoint": 27,
+  "metadata": {
+    "routes": [
+      "/world-clock",
+      "/white-noise"
+    ],
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "updatedDate": "2026-11-17",
+    "status": "prepared and scoped lint passed",
+    "redirectRules": 472,
+    "rssItems": 382,
+    "llmsTools": 315,
+    "llmsBytes": 45579
+  },
+  "translations": {
+    "status": "passed",
+    "worldClockLeaves": 53,
+    "whiteNoiseLeaves": 78,
+    "patchLeavesPerLanguage": 131,
+    "staticUses": 134,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "applyAddedImports": 0,
+    "ownImports": 534,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60
+  },
+  "authorTests": {
+    "worldClockPreparationGroups": 18,
+    "worldClockParentGroups": 8,
+    "worldClockTotalGroups": 26,
+    "worldClockExistingRegression": "passed",
+    "worldClockLint": "0 errors/warnings",
+    "worldClockFinalReady": true,
+    "whiteNoiseDomainStorageGroups": 11,
+    "whiteNoiseSessionAdapterGroups": 12,
+    "whiteNoiseParentGroups": 8,
+    "whiteNoiseTotalGroups": 31,
+    "whiteNoiseResumeMuteImpactIncluded": 2,
+    "whiteNoiseLint": "10 files (9 product/TS tests +1 actual-parent mjs): exit0/errors0/warnings0; final session33742 result collected without repeat",
+    "whiteNoiseFinalReady": true
+  },
+  "independent": {
+    "status": "passed",
+    "worldClockGroups": 9,
+    "whiteNoiseGroups": 6,
+    "totalGroups": 15,
+    "lint": "exit0/errors0/warnings0",
+    "unresolvedFindings": 0
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 14,
+    "failed": 0,
+    "worldClockCases": 7,
+    "whiteNoiseCases": 7,
+    "chromeClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "initialTestConditionFailures": 3,
+    "productFixesRequested": 0,
+    "finalReportPending": false,
+    "checkedAt": "2026-11-16T20:00:51.041Z",
+    "unhandledRejections": 0,
+    "report": "review-browser.md",
+    "mobileScreenshotsReviewed": 4,
+    "actualIcsBytes": 516,
+    "nativeAudioPhysicalOutput": "muted sink gain0 and Chrome --mute-audio",
+    "nativeOfflineWaveformChecked": true
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "preflight": {
+      "at": "2026-11-16T20:01:18.315Z",
+      "freeGiB": 4.35,
+      "totalGiB": 31.75
+    },
+    "browserClosed": true,
+    "productAndPreparedTsStable": true,
+    "exitCode": 0,
+    "failureScope": "unconnected CSV performance preparation, not batch27 parents",
+    "attempts": [
+      {
+        "preflight": {
+          "at": "2026-11-16T20:01:18.315Z",
+          "freeGiB": 4.35,
+          "totalGiB": 31.75
+        },
+        "exitCode": 1,
+        "sessionId": 12047
+      },
+      {
+        "preflight": {
+          "at": "2026-11-16T20:03:53.916Z",
+          "freeGiB": 4.61,
+          "totalGiB": 31.75
+        },
+        "exitCode": 0,
+        "wallTimeSeconds": 8.8087222
+      }
+    ],
+    "retryPreflight": {
+      "at": "2026-11-16T20:03:53.916Z",
+      "freeGiB": 4.61,
+      "totalGiB": 31.75
+    },
+    "fix": "JsonCsvWorkerPort transfer ArrayBuffer[] required; every existing caller already supplied array; no runtime/cast changes",
+    "fixValidation": "worker9 groups including transfer detach passed, changed client lint exit0",
+    "additionalChromeAfterTypeFix": false,
+    "completedAt": "2026-11-16T20:04:33.599Z",
+    "initialError": "TS2322 src/lib/jsonCsv/client.ts:43 native Worker postMessage overload incompatible with optional ArrayBuffer[] custom port"
+  },
+  "diffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "batch27 products/common/generated/discovery/handoffs plus prepared CSV port declaration fix"
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "lint": {
+    "commonFiles": 3,
+    "status": "passed",
+    "exitCode": 0
+  },
+  "preparedTypeScript": {
+    "csvPerformance": {
+      "files": 5,
+      "groups": 9,
+      "lint": "0 errors/warnings",
+      "parentConnected": false,
+      "editingPaused": true
+    },
+    "teamHistory": {
+      "productFiles": 3,
+      "testFiles": 2,
+      "domainGroups": 12,
+      "childGroups": 2,
+      "lint": "0 errors/warnings",
+      "parentConnected": false,
+      "editingPaused": true
+    }
+  },
+  "completedAt": "2026-11-16T20:06:59.578Z",
+  "handoffLinks": {
+    "checkedFiles": 5,
+    "missing": 0
+  },
+  "accountAtCheckpoint": {
+    "usedPercent": 29,
+    "remainingPercent": 71,
+    "remainingCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "accountWideSnapshot": true,
+    "source": "root read-only check at05:04KST"
+  }
+}

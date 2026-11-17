@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-11-16T21:40:28.739Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 8
+    },
+    {
+      "name": "number",
+      "leafKeysPerLanguage": 14
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "NumberToKorean",
+      "staticKeysChecked": 41,
+      "dynamicPrefixesChecked": [
+        "guide"
+      ]
+    },
+    {
+      "component": "NumberToKoreanBatch",
+      "staticKeysChecked": 38,
+      "dynamicPrefixesChecked": [
+        "batch.errors",
+        "batch"
+      ]
+    },
+    {
+      "component": "NumberToKoreanCopyRecovery",
+      "staticKeysChecked": 7,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

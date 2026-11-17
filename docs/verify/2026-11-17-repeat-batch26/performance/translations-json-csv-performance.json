@@ -1,0 +1,50 @@
+{
+  "ko": {
+    "jsonCsvConverter": {
+      "fidelity": {
+        "cancel": "작업 취소",
+        "canceled": "작업을 취소했습니다. 현재 원문과 이전 결과는 유지됩니다.",
+        "workerTime": "Worker 처리 시간",
+        "previewRange": "텍스트 범위 {start}–{end} / {total} (UTF-16)",
+        "previewHint": "긴 결과는 약 50,000단위씩 나누어 표시합니다. 이모지와 줄바꿈 경계는 유지하며, 전체 복사·다운로드에는 모든 구간이 포함됩니다.",
+        "previewLabel": "확정 결과 텍스트 미리보기",
+        "textPages": "텍스트 미리보기 페이지",
+        "copyAll": "전체 결과 복사",
+        "downloadAll": "전체 결과 다운로드",
+        "manualHint": "이 칸에는 전체 결과가 있습니다. 큰 결과는 표시와 전체 선택에 시간이 걸릴 수 있습니다.",
+        "workerErrors": {
+          "unsupported": "이 환경에서는 Worker를 사용할 수 없습니다. 원문을 유지했으니 Worker를 지원하는 브라우저에서 다시 시도해 주세요.",
+          "workerFailed": "변환 작업을 실행하지 못했습니다. 원문은 유지됩니다. 변환을 다시 시도하거나 파일을 다시 선택해 주세요.",
+          "invalidResponse": "작업 결과를 확인하지 못했습니다. 원문을 유지했으니 다시 시도해 주세요.",
+          "timeout": "작업 대기 시간이 길어 중단했습니다. 원문을 유지했으니 다시 시도해 주세요.",
+          "canceled": "작업을 취소했습니다."
+        },
+        "notMeasured": "예제 · 측정 전"
+      }
+    }
+  },
+  "en": {
+    "jsonCsvConverter": {
+      "fidelity": {
+        "cancel": "Cancel task",
+        "canceled": "Task canceled. Your input and previous result are preserved.",
+        "workerTime": "Worker processing time",
+        "previewRange": "Text range {start}–{end} of {total} (UTF-16)",
+        "previewHint": "Long results are displayed in sections of about 50,000 units, preserving emoji and line-ending boundaries. Copy all and download include every section.",
+        "previewLabel": "Confirmed result text preview",
+        "textPages": "Text preview pages",
+        "copyAll": "Copy entire result",
+        "downloadAll": "Download entire result",
+        "manualHint": "This field contains the entire result. Large results may take time to display and select.",
+        "workerErrors": {
+          "unsupported": "Workers are unavailable in this environment. Your input is preserved; retry in a browser that supports Workers.",
+          "workerFailed": "The task could not run. Your input is preserved. Retry conversion or select the file again.",
+          "invalidResponse": "The task result could not be verified. Your input is preserved; try again.",
+          "timeout": "The task timed out and was stopped. Your input is preserved; try again.",
+          "canceled": "Task canceled."
+        },
+        "notMeasured": "Example · not measured"
+      }
+    }
+  }
+}

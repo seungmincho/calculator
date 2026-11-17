@@ -1,0 +1,21 @@
+{
+  "sourceSha256": "60bc1c339e11c5713cf7dda480d9bb85324b720cac880a8b15f1ccb4f0ae0ad7",
+  "observations": [
+    {
+      "order": "own-link",
+      "fallback": [],
+      "copies": [
+        "1920×1080",
+        "https://toolhub.ai.kr/aspect-ratio/"
+      ]
+    },
+    {
+      "order": "link-own",
+      "fallback": [],
+      "copies": [
+        "https://toolhub.ai.kr/aspect-ratio/",
+        "1920×1080"
+      ]
+    }
+  ]
+}

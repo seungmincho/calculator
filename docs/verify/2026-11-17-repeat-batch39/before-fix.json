@@ -1,0 +1,52 @@
+{
+  "reproductionOnly": true,
+  "sourceSha256": "f0d72facb2378c8e242e8bb1a0bfe8bdf7dc3706406aa441a0cf6c31b96c9f55",
+  "timeoutMs": 100,
+  "groups": 9,
+  "result": [
+    {
+      "name": "ordinary global extract",
+      "timeout": false,
+      "output": "12\n34",
+      "count": 2
+    },
+    {
+      "name": "non-global extract keeps capture output",
+      "timeout": false,
+      "output": "ab\na\nb",
+      "count": 1
+    },
+    {
+      "name": "grep returns matching lines",
+      "timeout": false,
+      "output": "A12\nB34",
+      "count": 2
+    },
+    {
+      "name": "replace retains JS replacement tokens",
+      "timeout": false,
+      "output": "[a]b[a]c",
+      "count": 2
+    },
+    {
+      "name": "global start anchor never advances",
+      "timeout": true
+    },
+    {
+      "name": "global optional match never advances",
+      "timeout": true
+    },
+    {
+      "name": "replace global end anchor never advances",
+      "timeout": true
+    },
+    {
+      "name": "Unicode lookahead never advances",
+      "timeout": true
+    },
+    {
+      "name": "backtracking blocks current synchronous callback",
+      "timeout": true
+    }
+  ]
+}

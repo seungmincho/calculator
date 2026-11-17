@@ -1,0 +1,102 @@
+{
+  "ko": {
+    "percentCalculator": {
+      "subtitle": "비율·증감률·할인을 바로 계산하고, 결과 최대 6개를 담아 당시 입력과 수식을 함께 비교하세요.",
+      "guide": {
+        "whatIs": {
+          "description": "A의 B%, 비율, 증감률(인상률), 할인가, 할인 전 정가 역산, 연속 할인, 퍼센트포인트, 부가세 역산까지 자주 묻는 퍼센트 질문 8가지를 한 화면에서 동시에 계산하는 도구입니다. 모드를 바꿀 필요 없이 숫자만 바꾸면 모든 카드가 바로 갱신되고, 결과마다 수식과 복사 버튼이 붙어 있습니다. 유효한 결과는 최대 6개까지 페이지 메모리에 담고 전체 내용을 복사하거나 TXT로 내려받을 수 있습니다."
+        },
+        "howToUse": {
+          "items": [
+            "1. 맨 위 입력창에 '5만원의 15%', '3만→4만', '12만 30% 할인'처럼 한 줄로 적으면 해당 카드가 자동으로 채워지고 답이 바로 표시됩니다.",
+            "2. 또는 원하는 카드의 입력칸에 직접 숫자를 넣으세요. 5만, 1억 2천만 같은 한글 단위도 됩니다.",
+            "3. 소수점 자릿수(0~4)와 만·억 단위 표시를 고를 수 있고, '수식 보기'로 계산 과정을 확인합니다.",
+            "4. 복사 버튼은 콤마 없는 숫자를 복사하고, 주소창 링크를 공유하면 같은 입력값이 그대로 열립니다.",
+            "5. 각 카드의 비교에 담기를 눌러 최대 6개 결과를 모으세요. 입력을 바꿔도 담은 결과는 그대로이며, 전체 비교 복사나 TXT로 보관할 수 있습니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "20% 할인 후 10% 할인은 30% 할인인가요?",
+              "a": "아닙니다. 20% 할인 후 10% 추가 할인은 0.8 × 0.9 = 0.72, 즉 28% 할인입니다. 연속 퍼센트 할인은 단순 합산이 아닙니다."
+            },
+            {
+              "q": "퍼센트 포인트(% p)와 퍼센트(%) 차이는?",
+              "a": "3%에서 5%로 상승하면 '2%p 상승'이지만 '약 67% 상승'이기도 합니다. %p는 절대 차이, %는 상대 변화율입니다."
+            },
+            {
+              "q": "소수점 처리는 어떻게 되나요?",
+              "a": "계산 결과는 소수점 둘째 자리까지 표시됩니다. 더 정밀한 결과가 필요하면 소수점 자릿수 설정을 변경할 수 있습니다."
+            },
+            {
+              "q": "담은 결과는 새로고침하거나 공유해도 남나요?",
+              "a": "아니요. 비교 목록은 이 페이지 메모리에 최대 6개만 보관하며 새로고침하거나 떠나면 사라집니다. 링크는 기존 계산 입력만 재현하고 비교 목록은 담지 않습니다. 내용을 남기려면 전체 비교 복사나 TXT 다운로드를 사용하세요."
+            },
+            {
+              "q": "다른 종류의 결과를 담으면 차이도 계산하나요?",
+              "a": "담을 당시 입력, 표시 설정, 단위와 계산식을 그대로 보관합니다. 비율과 금액 등 종류나 기준이 다른 결과의 차이나 순위는 자동 계산하지 않습니다. 비교 목록 비우기와 계산 입력 초기화는 별도 동작입니다."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "percentCalculator": {
+          "description": "비율·증감률·할인 계산과 결과 6개 비교·전체 TXT"
+        }
+      }
+    }
+  },
+  "en": {
+    "percentCalculator": {
+      "subtitle": "Calculate ratios, changes, and discounts, then collect up to 6 results with their original inputs and formulas.",
+      "guide": {
+        "whatIs": {
+          "description": "It answers the eight most common percent questions at once: B% of A, ratio, percent change, sale price, original price from a sale price, stacked discounts, percentage points, and VAT-inclusive to net. No mode switching: change a number and every card updates, each with its formula and a copy button. Collect up to 6 valid results in page memory and copy or download the complete comparison as TXT."
+        },
+        "howToUse": {
+          "items": [
+            "1. Type a question in the top box, like '15% of 50000', '30000->40000' or '120000 30% off'. The matching card fills in and the answer appears right away.",
+            "2. Or type numbers directly into any card. Korean units like 5만 work too.",
+            "3. Choose decimal places (0-4) and Korean unit display, and toggle 'Show formula' to see the math.",
+            "4. Copy gives a plain number without commas, and the page URL reproduces your inputs when shared.",
+            "5. Use Add to comparison on a card to collect up to 6 results. Editing inputs keeps collected results unchanged; copy or download the full comparison to retain it."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "Is a 20% discount followed by a 10% discount the same as 30% off?",
+              "a": "No. 20% off then 10% off equals 0.8 × 0.9 = 0.72, which is a 28% discount. Sequential percentage discounts do not simply add up."
+            },
+            {
+              "q": "What is the difference between percentage points (%p) and percent (%)?",
+              "a": "Going from 3% to 5% is a '2 percentage point increase' but also roughly a '67% increase.' %p expresses the absolute difference; % expresses the relative change."
+            },
+            {
+              "q": "How are decimal places handled?",
+              "a": "Results are displayed to two decimal places by default. You can change the decimal precision setting if you need more precise results."
+            },
+            {
+              "q": "Are collected results saved or included in a shared link?",
+              "a": "No. Up to 6 results stay in page memory and disappear when you refresh or leave. The link reproduces the calculator inputs, not the comparison list. Use Copy all results or Download all as TXT to keep the contents."
+            },
+            {
+              "q": "Does the comparison calculate differences between different result types?",
+              "a": "Each entry preserves its original inputs, display settings, unit, and formula. Results with different kinds or bases, such as rates and amounts, are not automatically ranked or subtracted. Clearing the comparison and resetting calculator inputs are separate actions."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "percentCalculator": {
+          "description": "Percent, change, and discount calculations with up to 6 collected results and full TXT export"
+        }
+      }
+    }
+  }
+}

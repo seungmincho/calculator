@@ -1,0 +1,31 @@
+{
+  "actualParent": true,
+  "controlledIO": true,
+  "nativeBrowser": false,
+  "sourceSha256": "ffd60974e14b5de3e58e53a406bbf42f86bfa81c6b4393b9d887ab07040ecf49",
+  "results": [
+    {
+      "scenario": "default percent-of copy",
+      "result": 7500
+    },
+    {
+      "scenario": "shared inputs preserve own values but lose foreign query, hash and history state",
+      "a": "120",
+      "b": "25",
+      "url": "https://toolhub.ai.kr/percent-calculator/?a=120&b=25",
+      "state": null
+    },
+    {
+      "scenario": "old card copy rejection after input edit",
+      "oldFallback": "7500",
+      "currentCardShowsOldFailure": true
+    },
+    {
+      "scenario": "finite inputs overflow multiplication and are copied as zero",
+      "a": "1e308",
+      "b": "1e308",
+      "copied": "0",
+      "visibleStart": "A의 B%는?   5 % 10 % 15 % 20 % 30 % 50 % 결과 0    100,000,000,000,000,000,000,000,0"
+    }
+  ]
+}

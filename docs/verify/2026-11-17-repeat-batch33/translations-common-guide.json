@@ -1,0 +1,116 @@
+{
+  "ko": {
+    "discountCalculator": {
+      "description": "할인율·할인 금액·원가를 계산하고, 할인 후 가격에 수량·금액 쿠폰·배송비를 더한 구매 조건을 비교하세요.",
+      "guide": {
+        "basic": {
+          "items": [
+            "세 계산 모드와 최대 3단계 중복 할인으로 현재 할인가를 계산하세요.",
+            "현재 할인 결과를 원 단위로 반올림해 비교 조건에 추가하거나 할인 후 개당 가격을 직접 입력하세요.",
+            "최대 4개 조건의 상품 가격×수량에서 금액 쿠폰을 차감한 뒤 배송비를 더해 비교합니다.",
+            "총액과 배송비 포함 개당 평균을 함께 확인하세요. 수량이 다른 조건은 두 기준의 최저가가 다를 수 있습니다."
+          ]
+        },
+        "tips": {
+          "items": [
+            "금액 쿠폰은 상품 합계까지만 적용하며 배송비에서 차감하지 않습니다.",
+            "빈칸·소수·음수·범위 밖 입력은 0으로 바꾸지 않고 오류로 표시합니다.",
+            "비교 링크에는 숫자 조건만 포함하며 직접 입력한 이름은 넣지 않습니다. 이름은 복사·TXT 결과에 포함될 수 있습니다.",
+            "카드 혜택·적립·무료배송 조건은 자동 추정하지 않으므로 실제 적용할 금액을 입력하세요."
+          ]
+        },
+        "whatIs": {
+          "description": "할인율·할인가·원가와 연속 할인 결과를 계산하고 같은 상품의 구매 조건을 나란히 비교하는 도구입니다. 입력한 할인 후 가격·수량·금액 쿠폰·배송비로 총액과 개당 평균을 계산합니다."
+        },
+        "howToUse": {
+          "items": [
+            "1. 기존 계산 모드에서 할인가를 계산하거나 비교 카드에 할인 후 개당 가격을 입력합니다.",
+            "2. 각 조건의 수량·주문 금액 쿠폰·배송비를 입력합니다.",
+            "3. 총 결제금액과 개당 평균을 비교합니다. 같은 값은 공동 최저로 표시합니다.",
+            "4. 현재 유효한 요약을 복사·TXT로 저장하거나 숫자 조건만 링크로 공유합니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "금액 쿠폰이 상품 합계보다 크면 어떻게 되나요?",
+              "a": "상품 합계만큼만 적용해 상품 금액은 최소 0원입니다. 초과 쿠폰 금액은 구분하고 배송비는 그대로 더합니다."
+            },
+            {
+              "q": "수량이 다르면 무엇을 비교해야 하나요?",
+              "a": "총 결제금액과 배송비를 포함한 개당 평균을 함께 보여 줍니다. 같은 상품·단위라는 전제로 계산하며 필요한 수량이나 판매처를 대신 추천하지 않습니다."
+            },
+            {
+              "q": "조건 이름과 기록이 자동 저장되나요?",
+              "a": "조건은 현재 방문의 메모리에 두며 새 장기 저장은 하지 않습니다. 명시 공유 링크에는 최대 4개의 숫자 조건만 들어가고 직접 입력한 이름은 제외합니다."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "discountCalculator": {
+          "description": "할인율·중복 할인과 수량·쿠폰·배송비 포함 4조건 비교"
+        }
+      }
+    }
+  },
+  "en": {
+    "discountCalculator": {
+      "description": "Calculate discounts and original prices, then compare offers using discounted unit prices, quantities, amount coupons, and shipping.",
+      "guide": {
+        "basic": {
+          "items": [
+            "Use the three calculation modes and up to three sequential discounts to find the current discounted price.",
+            "Add the current result rounded to whole won, or enter a discounted unit price directly.",
+            "Compare up to four offers: price × quantity, minus an amount coupon, then plus shipping.",
+            "View both the total and average per item including shipping. Different quantities may have different lowest offers under these two measures."
+          ]
+        },
+        "tips": {
+          "items": [
+            "Amount coupons apply only up to the merchandise subtotal and do not reduce shipping.",
+            "Blank, fractional, negative, or out-of-range inputs remain errors rather than silently becoming zero.",
+            "Comparison links contain numeric conditions only, excluding custom names. Names may appear in copied or TXT summaries.",
+            "Card benefits, rewards, and free-shipping rules are not inferred; enter the amounts that actually apply."
+          ]
+        },
+        "whatIs": {
+          "description": "Calculate discounts, discounted and original prices, and sequential discounts, then compare offers for the same item. Enter a discounted unit price, quantity, amount coupon, and shipping to calculate totals and per-item averages."
+        },
+        "howToUse": {
+          "items": [
+            "1. Calculate a discounted price using the existing modes or enter it directly in a comparison card.",
+            "2. Enter each offer's quantity, order amount coupon, and shipping.",
+            "3. Compare total payment and average per item. Equal values share the lowest marker.",
+            "4. Copy or save the current valid summary as TXT, or explicitly share numeric conditions in a link."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "What if the amount coupon exceeds the merchandise subtotal?",
+              "a": "Only the subtotal is applied, leaving merchandise at a minimum of zero. The excess coupon amount is shown separately, and shipping is added unchanged."
+            },
+            {
+              "q": "How do I compare different quantities?",
+              "a": "Both total payment and the average per item including shipping are shown. Calculations assume the same item and unit; the tool does not choose a quantity or seller for you."
+            },
+            {
+              "q": "Are custom names or comparison records saved automatically?",
+              "a": "Offers remain in memory for the current visit, with no new persistent storage. An explicit link includes up to four numeric offers and excludes custom names."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "discountCalculator": {
+          "description": "Discounts and four-offer comparisons including quantity, coupons, and shipping"
+        }
+      }
+    }
+  }
+}

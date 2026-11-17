@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-11-16T19:54:38.393Z",
+  "patches": [
+    {
+      "name": "white-noise",
+      "leafKeysPerLanguage": 78
+    },
+    {
+      "name": "world-clock-meeting",
+      "leafKeysPerLanguage": 53
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "WorldClock",
+      "staticKeysChecked": 90,
+      "dynamicPrefixesChecked": [
+        "markets"
+      ]
+    },
+    {
+      "component": "WhiteNoise",
+      "staticKeysChecked": 17,
+      "dynamicPrefixesChecked": [
+        "playback",
+        "playback.errors",
+        "types",
+        "typeDesc",
+        "guide"
+      ]
+    },
+    {
+      "component": "WhiteNoiseProfiles",
+      "staticKeysChecked": 27,
+      "dynamicPrefixesChecked": [
+        "types",
+        "profiles.errors",
+        "profiles"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

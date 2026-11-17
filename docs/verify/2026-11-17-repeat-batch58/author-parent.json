@@ -1,0 +1,29 @@
+{
+  "source": "Actual ImageOcr/queue/session/output helpers; synthetic Worker/Canvas/Clipboard/DOM ports. Recovery child tested separately; no model/native claim.",
+  "results": [
+    {
+      "name": "current/all copy use exact displayed edited text and failed fallback remains honest",
+      "pass": true
+    },
+    {
+      "name": "pending current/all copies share one owner and stale rejection never performs fallback",
+      "pass": true
+    },
+    {
+      "name": "edited text and locale ABA invalidate pending copy and old manual callbacks",
+      "pass": true
+    },
+    {
+      "name": "TXT contains current whole UTF8 text and suppresses an older pending copy",
+      "pass": true
+    },
+    {
+      "name": "handoff and unmount invalidate pending output",
+      "pass": true
+    },
+    {
+      "name": "empty edited result is not reported as copied and closing recovery preserves original text",
+      "pass": true
+    }
+  ]
+}

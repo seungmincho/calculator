@@ -1,0 +1,26 @@
+{
+  "kind": "actual original CharacterCounter handlers with controlled browser ports; not native browser",
+  "cases": [
+    {
+      "boundary": "normal native clipboard resolution",
+      "outcome": "success feedback after matching copy"
+    },
+    {
+      "boundary": "native reject + legacy false",
+      "outcome": "incorrect copied feedback although both attempts fail",
+      "legacyReturned": false
+    },
+    {
+      "boundary": "copy A, switch writing tab B, reject old clipboard",
+      "outcome": "old A legacy copy runs and copied feedback appears on B"
+    },
+    {
+      "boundary": "edit enabled textarea before initial storage microtask",
+      "outcome": "saved draft overwrites early input"
+    },
+    {
+      "boundary": "transform, type new content, undo old transform",
+      "outcome": "new user content is overwritten by unrelated old undo"
+    }
+  ]
+}

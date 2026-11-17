@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-11-17T01:10:00.245Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 5
+    },
+    {
+      "name": "typing-review",
+      "leafKeysPerLanguage": 29
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TypingTest",
+      "staticKeysChecked": 63,
+      "dynamicPrefixesChecked": [
+        "language",
+        "mode",
+        "guide"
+      ]
+    },
+    {
+      "component": "CustomTypingWorkspace",
+      "staticKeysChecked": 37,
+      "dynamicPrefixesChecked": [
+        "custom"
+      ]
+    },
+    {
+      "component": "TypingMistakePractice",
+      "staticKeysChecked": 28,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

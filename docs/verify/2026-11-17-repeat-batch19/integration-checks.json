@@ -1,0 +1,113 @@
+{
+  "scope": "Batch19 Diff comparison and Markdown copy/file-read recovery",
+  "status": "complete",
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "prerequisites": [
+      "Chrome closed",
+      "batch20 and batch21 prepared TypeScript stable"
+    ],
+    "preparedFilesStable": {
+      "lunarSavedAnniversaries": true,
+      "speakingRecordsAndStorage": true,
+      "textPipelineHistory": true
+    },
+    "initialAttempt": {
+      "exitCode": 1,
+      "memoryMeasuredAt": "2026-11-16T16:39:51.358Z",
+      "localStartedAt": "2026-11-17 01:39:51 KST",
+      "freeMemoryBeforeGiB": 6.4,
+      "error": "MarkdownEditor.tsx:356 TS2322 input onCancel is not present in InputHTMLAttributes"
+    },
+    "finalAttempt": {
+      "exitCode": 0,
+      "memoryMeasuredAt": "2026-11-16T16:44:40.754Z",
+      "localStartedAt": "2026-11-17 01:44:40 KST",
+      "freeMemoryBeforeGiB": 6.47,
+      "heapLimitMiB": 2048,
+      "browsersClosed": true,
+      "typescriptWritersPaused": true
+    },
+    "fix": {
+      "change": "Replace unsupported JSX input onCancel with native cancel listener and cleanup",
+      "authorDomEventGroups": 3,
+      "independentExistingCancelGroupRechecked": 1,
+      "extraBrowserNotRun": true
+    }
+  },
+  "translations": {
+    "patchLeavesPerLanguage": 77,
+    "staticUses": 141,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "applyAddedImports": 0,
+    "ownImports": 519,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60
+  },
+  "metadata": {
+    "routes": [
+      "/diff-viewer",
+      "/markdown-editor"
+    ],
+    "updatedDate": "2026-11-17",
+    "sharedDescriptionsAcrossMetadataOgTwitterJsonLd": true,
+    "discoveryGenerated": true
+  },
+  "lint": {
+    "commonPagesAndMenu": "0 errors/warnings",
+    "diffProductScope": "0 errors/warnings",
+    "markdownProduct4Files": "0 errors/warnings",
+    "markdownPreviousBaselineErrorResolved": true
+  },
+  "authorTests": {
+    "lineDiffGroups": 8,
+    "diffClientWorkerCopyGroups": 13,
+    "diffUiGroups": 8,
+    "markdownActionsGroups": 17,
+    "markdownLocaleRegressionGroups": 11
+  },
+  "diffCheck": {
+    "sharedScopeExitCode": 0,
+    "finalProductScopeExitCode": 0
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "independent": {
+    "totalGroups": 25,
+    "diffGroups": 12,
+    "markdownGroups": 13,
+    "unresolvedFindings": 0,
+    "resolvedFindings": [
+      "Previous result copy completion shown after a new comparison completed"
+    ],
+    "separateNodeWorkerGroups": 3,
+    "shortSequenceOraclePairs": 14400
+  },
+  "browser": {
+    "total": 14,
+    "diff": 7,
+    "markdown": 7,
+    "allPassed": true,
+    "pageErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "checkedAt": "2026-11-16T16:39:39.180Z",
+    "browsersClosed": true,
+    "evidence": "browser/final-results.json",
+    "initialFillFailureSeparatedFromNativePaste": true
+  },
+  "limitations": [
+    "Controlled Clipboard/Worker/FileReader failure injection distinguished from native execution",
+    "Already-submitted OS Clipboard writes cannot be cancelled",
+    "Actual phone and other-app paste not verified",
+    "No production static export",
+    "Large-input Playwright fill failure occurred before Worker creation; native paste passed"
+  ]
+}

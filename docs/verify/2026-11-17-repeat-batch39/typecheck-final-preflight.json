@@ -1,0 +1,10 @@
+{
+  "preflightAt": "2026-11-16T23:08:20.003Z",
+  "freeMemoryGiB": 3.79,
+  "totalMemoryGiB": 31.75,
+  "heapMiB": 2048,
+  "chromeClosed": true,
+  "allTsWritersFrozen": true,
+  "scope": "37 final product changes,39/40 parents,unconnected41/42/43 preparation",
+  "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit"
+}

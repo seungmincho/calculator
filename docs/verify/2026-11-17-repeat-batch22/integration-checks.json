@@ -1,0 +1,107 @@
+{
+  "scope": "Batch22 entered-grade goal comparison and image-compression queue controls",
+  "status": "complete",
+  "typecheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "attempts": 1,
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "preflightAt": "2026-11-16T17:39:23.737Z",
+    "freeGiB": 5.59,
+    "browserClosed": true,
+    "stablePreparedBatch23FilesIncluded": true,
+    "sessionId": 20799
+  },
+  "translations": {
+    "patchLeavesPerLanguage": 44,
+    "staticUses": 240,
+    "staticErrors": 0,
+    "generatedFiles": 1578,
+    "additionalExistingImageHintsRewordedPerLanguage": 3,
+    "applyAddedImports": 0,
+    "ownImports": 527,
+    "viaChild": 6,
+    "unresolved": 0,
+    "existingDynamicNotices": 60,
+    "finalMessagesCheckPending": false,
+    "messagesCheck": "1578 files verified"
+  },
+  "metadata": {
+    "routes": [
+      "/csat-grade",
+      "/image-compressor"
+    ],
+    "descriptionsSharedAcrossMetadataOgTwitterJsonLd": true,
+    "updatedDate": "2026-11-17",
+    "discoveryRegenerationPending": false,
+    "discoveryGenerated": true
+  },
+  "authorTests": {
+    "preparedDirectGradesDomainGroups": 11,
+    "preparedDirectGradeChildGroups": 3,
+    "preparedImageQueueGroups": 13,
+    "parentFinalPending": false,
+    "directRawSummaryGroups": 5,
+    "existingGoalsGroups": 24,
+    "existingGradeRegression": "passed",
+    "directParentFinalReady": true,
+    "imageAbortSharedZipGroups": 7,
+    "imageParentControlledGroups": 4,
+    "existingImageRegressions": [
+      "compress",
+      "resize",
+      "convert",
+      "pdf-tools"
+    ],
+    "imageNormalFallbackImpactGroups": 1
+  },
+  "lint": {
+    "commonPagesAndMenu": "0 errors/warnings",
+    "directGrade8FilesAndAnchorImpact2Files": "0 errors/warnings",
+    "imageProductAndTests7FilesAndParentFixture": "0 errors/warnings",
+    "imageFallbackImpact2Files": "0 errors/warnings"
+  },
+  "notRun": [
+    "production build",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "preparedTypeScript": {
+    "customTyping": "pure9/actualChild8/existingTyping/scopedlint0; parent unconnected during checkpoint",
+    "screenRecorder": "stable and editing paused per author; parent unconnected during checkpoint"
+  },
+  "independent": {
+    "directGradeGroups": 6,
+    "imagePassedGroups": 10,
+    "totalGroups": 16,
+    "imagePending": false
+  },
+  "browser": {
+    "passed": 14,
+    "failed": 0,
+    "initialPassed": 13,
+    "addedImpact": 1,
+    "directGradeCases": 6,
+    "imageCases": 8,
+    "checkedAt": "2026-11-16T17:38:13.455Z",
+    "browsersClosed": true,
+    "jsErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "report": "review-browser.md"
+  },
+  "findings": {
+    "imageAbortedNativeFailureStartsHtmlFallback": "resolved: optional AbortSignal propagated into decode/encode; independent impact2 and browser impact1 passed"
+  },
+  "completedAt": "2026-11-16T17:42:26.772Z",
+  "diffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "batch22 product/utils/tests, common originals/generated metadata/discovery and batch22/handoff documents"
+  },
+  "localDocumentLinks": {
+    "files": 5,
+    "missing": []
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-11-16T15:27:42.405Z",
+  "patches": [
+    {
+      "name": "dday",
+      "leafKeysPerLanguage": 55
+    },
+    {
+      "name": "grade",
+      "leafKeysPerLanguage": 49
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "CsatGrade",
+      "staticKeysChecked": 77,
+      "dynamicPrefixesChecked": [
+        "u.cut",
+        "u.sel",
+        "guide"
+      ]
+    },
+    {
+      "component": "CsatDday",
+      "staticKeysChecked": 0,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

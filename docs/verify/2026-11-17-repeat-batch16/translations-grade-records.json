@@ -1,0 +1,84 @@
+{
+  "ko": {
+    "gradeCalc": {
+      "records": {
+        "title": "저장한 성적 입력",
+        "description": "시험이나 학기 이름을 붙여 입력을 보관하고 필요할 때 불러오세요. 목록을 고르는 것만으로 현재 입력이 바뀌지 않습니다.",
+        "storageHint": "이 브라우저에 최대 8개를 저장합니다. 기록 이름은 40자까지이며 빈 행과 편집 중인 값도 그대로 보관합니다. 요약에는 계산 가능한 과목과 단위만 포함됩니다.",
+        "name": "성적 기록 이름",
+        "save": "현재 성적 입력 저장",
+        "inputLimit": "저장할 입력은 과목 1~30개, 과목명 80자, 숫자 입력란의 원문 32자 이내여야 합니다. 제어문자는 사용할 수 없습니다. 현재 입력은 그대로 유지됩니다.",
+        "count": "저장 기록 {count}/8개",
+        "savedList": "저장 성적 기록 선택",
+        "choose": "기록 선택",
+        "option": "{name} · {system}등급제 · 유효 {count}과목/{units}단위",
+        "details": "{year}년 입학 · {system}등급제 · 전체 {count}과목",
+        "savedAt": "저장 시각: {date}",
+        "load": "선택 성적 기록 불러오기",
+        "delete": "선택 성적 기록 삭제",
+        "loadConfirm": "‘{name}’ 기록으로 현재 입학년도, 등급제와 모든 과목 입력을 바꿀까요? 저장하지 않은 현재 입력은 사라집니다.",
+        "deleteConfirm": "‘{name}’ 기록을 저장 목록에서 삭제할까요? 현재 입력과 결과는 유지됩니다.",
+        "confirmLoad": "현재 입력을 이 기록으로 바꾸기",
+        "confirmDelete": "성적 기록 삭제 확인",
+        "cancel": "취소",
+        "refresh": "성적 기록 목록 다시 읽기",
+        "saved": "현재 성적 입력을 저장했습니다.",
+        "loaded": "‘{name}’ 기록을 현재 입력에 불러왔습니다.",
+        "deleted": "저장 성적 기록을 삭제했습니다. 현재 입력은 유지됩니다.",
+        "errors": {
+          "corrupt": "저장 기록을 읽을 수 없어 원본을 덮어쓰지 않았습니다. 현재 계산은 계속 사용할 수 있습니다.",
+          "unsupported": "지원하지 않는 버전의 기록이라 원본을 덮어쓰지 않았습니다. 현재 계산은 계속 사용할 수 있습니다.",
+          "unavailable": "브라우저 저장소에 접근하지 못해 작업을 완료하지 못했습니다. 설정을 확인한 뒤 목록을 다시 읽어 주세요.",
+          "quota": "저장 공간이 부족해 작업을 완료하지 못했습니다. 현재 입력은 유지됩니다. 공간을 확보한 뒤 목록을 다시 읽어 주세요.",
+          "conflict": "다른 탭에서 기록이 바뀌어 작업을 멈췄습니다. 현재 입력은 유지됩니다. 목록을 다시 읽고 기록을 선택해 주세요.",
+          "unconfirmed": "쓰기 후 저장 내용을 확인하지 못했습니다. 이미 반영되었을 수 있으니 목록을 다시 읽어 확인해 주세요. 현재 입력은 유지됩니다.",
+          "changed": "불러오기를 기다리는 동안 현재 입력이 바뀌어 교체를 취소했습니다. 새 입력은 유지됩니다. 필요하면 기록을 다시 불러와 주세요.",
+          "invalid": "저장할 입력 형식이나 길이를 확인해 주세요. 현재 입력은 그대로 유지됩니다.",
+          "limit": "기록은 최대 8개까지 저장할 수 있습니다. 필요 없는 기록을 삭제한 뒤 저장해 주세요.",
+          "name": "기록 이름은 공백만으로 구성할 수 없으며 1~40자로 입력해 주세요. 제어문자는 사용할 수 없습니다."
+        }
+      }
+    }
+  },
+  "en": {
+    "gradeCalc": {
+      "records": {
+        "title": "Saved grade inputs",
+        "description": "Save inputs under an exam or semester name and load them when needed. Selecting a record does not change the current form.",
+        "storageHint": "Save up to 8 records in this browser. Names can have up to 40 characters. Blank rows and unfinished values are preserved; summaries only include calculable subjects and credits.",
+        "name": "Grade record name",
+        "save": "Save current grade inputs",
+        "inputLimit": "Saved inputs need 1–30 subjects, subject names up to 80 characters, and numeric input text up to 32 characters. Control characters are not allowed. Your current form is preserved.",
+        "count": "Saved records: {count}/8",
+        "savedList": "Saved grade record",
+        "choose": "Choose a record",
+        "option": "{name} · {system}-grade scale · {count} valid subjects/{units} credits",
+        "details": "Entry year {year} · {system}-grade scale · {count} total subjects",
+        "savedAt": "Saved: {date}",
+        "load": "Load selected grade record",
+        "delete": "Delete selected grade record",
+        "loadConfirm": "Replace the current entry year, grade scale, and all subject inputs with “{name}”? Unsaved current inputs will be lost.",
+        "deleteConfirm": "Delete “{name}” from saved records? Current inputs and results will remain.",
+        "confirmLoad": "Replace current inputs with this record",
+        "confirmDelete": "Confirm grade record deletion",
+        "cancel": "Cancel",
+        "refresh": "Reload grade records",
+        "saved": "Current grade inputs saved.",
+        "loaded": "Loaded “{name}” into the current form.",
+        "deleted": "Saved grade record deleted. Current inputs are unchanged.",
+        "errors": {
+          "corrupt": "Saved records could not be read, so the original data was not overwritten. You can still use the calculator.",
+          "unsupported": "This record version is unsupported, so the original data was not overwritten. You can still use the calculator.",
+          "unavailable": "Browser storage could not be accessed, so the action did not finish. Check your settings and reload the list.",
+          "quota": "There is not enough storage space to finish the action. Your current form is preserved. Free some space and reload the list.",
+          "conflict": "Records changed in another tab, so the action stopped. Your current form is preserved. Reload the list and select a record again.",
+          "unconfirmed": "The stored data could not be confirmed after writing. The change may already be saved; reload the list to check. Your current form is preserved.",
+          "changed": "Current inputs changed while loading was waiting, so replacement was canceled. Your new inputs are preserved. Load the record again if needed.",
+          "invalid": "Check the format and length of the inputs to save. Your current form is preserved.",
+          "limit": "You can save up to 8 records. Delete an unneeded record before saving another.",
+          "name": "Enter a non-blank record name of 1–40 characters. Control characters are not allowed."
+        }
+      }
+    }
+  }
+}

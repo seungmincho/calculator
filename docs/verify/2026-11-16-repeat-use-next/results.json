@@ -1,0 +1,43 @@
+[
+  {
+    "name": "rehearsal-timing-pause-save-compare-reload",
+    "pass": true
+  },
+  {
+    "name": "rehearsal-quota-keeps-measurement",
+    "pass": true
+  },
+  {
+    "name": "ocr-transfer-no-url-no-autoplay-local-voice",
+    "pass": true
+  },
+  {
+    "name": "ocr-transfer-online-only-blocked-until-choice",
+    "pass": true
+  },
+  {
+    "name": "ocr-real-recognition-to-tts",
+    "pass": true
+  },
+  {
+    "name": "ocr-real-recognition-to-tts-selection",
+    "pass": false,
+    "error": "locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '선택한 글 읽어주기', exact: true }).last()\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" class=\"ui-btn-soft min-h-11 px-3 py-2 text-sm disabled:opacity-40\">선택한 글 읽어주기</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    28 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+  },
+  {
+    "name": "meals-save-week-exclusion-reload-date-rollover",
+    "pass": true
+  },
+  {
+    "name": "meals-filtered-spin-save-and-empty-recovery",
+    "pass": true
+  },
+  {
+    "name": "meals-storage-failure-preserves-input",
+    "pass": true
+  },
+  {
+    "name": "mobile-320-remaining-tools",
+    "pass": true
+  }
+]

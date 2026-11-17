@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-11-16T14:11:17.898Z",
+  "patches": [
+    {
+      "name": "qr",
+      "leafKeysPerLanguage": 33
+    },
+    {
+      "name": "timer",
+      "leafKeysPerLanguage": 55
+    },
+    {
+      "name": "units",
+      "leafKeysPerLanguage": 44
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TimerStopwatch",
+      "staticKeysChecked": 88,
+      "dynamicPrefixesChecked": [
+        "modes",
+        "countdown",
+        "shortcuts"
+      ]
+    },
+    {
+      "component": "TimerRoutine",
+      "staticKeysChecked": 44,
+      "dynamicPrefixesChecked": [
+        "routine.status",
+        "routine.errors"
+      ]
+    },
+    {
+      "component": "UnitConverter",
+      "staticKeysChecked": 26,
+      "dynamicPrefixesChecked": [
+        "u",
+        "categories",
+        "formula",
+        "notes"
+      ]
+    },
+    {
+      "component": "UnitFavorites",
+      "staticKeysChecked": 29,
+      "dynamicPrefixesChecked": [
+        "categories",
+        "u",
+        "favorites.errors",
+        "favorites"
+      ]
+    },
+    {
+      "component": "QrGenerator",
+      "staticKeysChecked": 107,
+      "dynamicPrefixesChecked": [
+        "types",
+        "alt",
+        "result.density",
+        "result",
+        "style.errorLevels"
+      ]
+    },
+    {
+      "component": "QrBatchGenerator",
+      "staticKeysChecked": 21,
+      "dynamicPrefixesChecked": [
+        "batch.notices",
+        "batch.errors",
+        "batch.rowErrors"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

@@ -1,0 +1,13 @@
+{
+  "whileOldPending": {
+    "reads": 1,
+    "decoded": 1,
+    "currentFinished": true,
+    "maximum": 2,
+    "active": 1
+  },
+  "maximum": 2,
+  "oldCanvasReleased": true,
+  "oldSourceClosed": 1,
+  "newSourceClosed": 1
+}

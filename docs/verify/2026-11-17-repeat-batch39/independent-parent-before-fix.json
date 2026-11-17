@@ -1,0 +1,10 @@
+{
+  "scope": "Actual RegexExtractor + useRegexWorkspace + client with controlled Worker/FileReader ports; no Chrome",
+  "sourceState": "Parent implementation before author fixes requested by independent review; no original baseline file was changed",
+  "probes": [
+    { "case": "Enabled input change before initial 0ms URL restore", "entered": "typed-before-restore", "disabled": false, "actualAfterRestore": "url-old", "expected": "typed-before-restore" },
+    { "case": "Literal single-space extract pattern", "input": "a b", "pattern": " ", "actualStatus": "idle", "actualWorkerCount": 0, "expectedOutput": " " },
+    { "case": "Main cancel while file read is pending, followed by late onload", "actualReaderAborted": false, "actualStatus": "running", "actualWorkerCount": 1, "actualInput": "file late", "expected": "Reader aborted; original input and canceled state retained; no Worker restart" }
+  ],
+  "additionalStaticObservation": "Old debounce callback lacked request/revision ownership. Author added guards before independent execution of that pre-fix boundary; this is not counted as an independently reproduced pre-fix failure."
+}

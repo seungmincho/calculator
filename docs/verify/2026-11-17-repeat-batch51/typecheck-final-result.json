@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-11-17T00:43:59.864Z",
+  "freeGiB": 3.36,
+  "totalGiB": 31.75,
+  "heapMiB": 2048,
+  "chromeClosed": true,
+  "allTsWritersFrozen": true,
+  "scopes": [
+    44,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "unconnectedPreparation": [
+    52,
+    53
+  ],
+  "attempt": 2,
+  "reason": "TS2367 pageHidden getter preserves current runtime state; affected hook1+parent1 and lint passed",
+  "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+  "recordedAt": "2026-11-17T00:44:55.753Z",
+  "status": "passed",
+  "exitCode": 0,
+  "diagnostics": [],
+  "outputChunk": "0f20ce",
+  "sessionId": null,
+  "commandWallSeconds": 8.7373551,
+  "attempts": [
+    {
+      "attempt": 1,
+      "sessionId": 62674,
+      "exitCode": 1,
+      "evidence": "typecheck-attempt1.json",
+      "diagnostic": "useSpeakingRecorder.ts:131 TS2367"
+    },
+    {
+      "attempt": 2,
+      "exitCode": 0,
+      "outputChunk": "0f20ce"
+    }
+  ],
+  "impactValidation": {
+    "hookHiddenGroups": 1,
+    "parentCancelHiddenGroups": 1,
+    "hookLintExitCode": 0,
+    "nativeRerun": false,
+    "reason": "Property-narrowing workaround uses dynamic pageHidden getter; same runtime state read"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "scope": "Batch18 existing English translation paths, fallback and explicit retry",
+  "typecheck": { "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit", "exitCode": 0, "heapLimitMiB": 2048, "memoryMeasuredAt": "2026-11-16T16:21:42.542Z", "localStartedAt": "2026-11-17 01:21:42 KST", "freeMemoryBeforeGiB": 5.31, "browsersClosed": true, "batch19ParentsNotConnectedAtCheckpoint": true },
+  "browser": { "total": 12, "allPassed": true, "pageErrors": 0, "hydrationErrors": 0, "unhandledRejections": 0, "checkedAt": "2026-11-16T16:21:15.443Z", "evidence": "browser/final-results.json", "koreanModeEnglishBodyRequests": 0, "loaderStubRequestsExcludedFromBodyCount": true, "realChunkAndJsonRetryVerified": true },
+  "independent": { "initialGroups": 19, "fallbackGroups": 10, "totalGroups": 29, "registryKoreanParityPaths": 79217, "pureLegacyParityCases": 28287, "staticGraphs": 6, "literalEnglishNamespaceImports": 390, "unresolvedFindings": 0 },
+  "generation": { "fixtureGroups": 6, "generatedFiles": 1578, "englishNamespaceFiles": 390, "publicHashJsonFiles": 391, "manifestScopes": 8, "sourceReconstruction": "passed", "driftMissingStaleAndHashReplacement": "passed", "checkIsReadOnly": true, "staleCleanupRestrictedToWorkspace": true },
+  "localeEffects": { "authorGroups": 11, "independentReactGroups": 2, "independentGroupsAlreadyIncludedInTotal29": true, "fixed": ["Markdown saved manuscript reclassified by translated example", "Othello repeated processing of the same received message object"] },
+  "resolvedIntegrationFindings": ["Failed resource retried when a new English consumer mounted", "InstallPrompt common.close resolved below pwa namespace", "Bundler failed import cache prevented explicit retry", "320px retry panel extended outside viewport"],
+  "translations": { "patchLeavesPerLanguage": 4, "staticUses": 17, "staticErrors": 0, "applyAddedImports": 0, "ownImports": 519, "viaChild": 6, "unresolved": 0, "existingDynamicNotices": 60, "representativeEnglishRuntimeVerified": true },
+  "lint": { "runtime16Files": "0 errors/warnings", "generatorAndFixture": "0 errors/warnings", "existingBaseline": ["MarkdownEditor error 1", "Othello warnings 8", "LunarConverter errors 4", "Notepad error 1", "TimerStopwatch warning 1"] },
+  "diffCheck": { "exitCode": 0, "scope": "Batch18 runtime, generator, generated assets, locale callsite fixes, tests and handoffs" },
+  "limitations": ["Representative existing translation paths verified, not every tool", "Korean server metadata/JSON-LD and hardcoded text remain outside scope", "InstallPrompt was not mounted in the existing layout; no real popup visibility claim", "No physical mobile or WebRTC network verification", "Expected blocked/injected network logs are separate from app page errors"],
+  "notRun": ["production build", "deployment", "commit", "push", "English search indexing verification"]
+}

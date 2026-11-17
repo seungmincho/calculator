@@ -1,0 +1,104 @@
+{
+  "ko": {
+    "typingTest": {
+      "description": "한글 타수·영문 WPM과 정확도를 확인하고, 완료 후 틀린 단어·공백 주변을 따로 골라 다시 연습하세요.",
+      "guide": {
+        "whatIs": {
+          "description": "기본 네 가지 모드와 내 글로 한글·영문 타자 연습을 하는 도구입니다. 완료 결과 아래에서 확정된 오류가 있던 구간을 골라 다시 연습할 수 있습니다. 복습은 원래 지문·결과·기존 기록을 유지하고 짧은 구간의 정확도와 오류 위치 수를 별도로 표시합니다."
+        },
+        "howTo": {
+          "items": [
+            "오늘의 문장·짧은 글·긴 글·시간제 또는 내 글 연습을 고르세요. 내 글은 미리보기 확인 후 이 글로 시작을 눌러 적용해요.",
+            "적용된 연습의 타자 입력칸에 첫 글자를 치면 측정이 시작돼요. 원고 작성칸 편집만으로 측정하지 않아요.",
+            "맞은 글자는 진하게, 틀린 글자는 빨간 밑줄, 조합 중인 글자는 파란 밑줄로 표시해요.",
+            "글을 끝까지 치거나 기본 시간제의 시간이 끝나면 결과를 확인해요. 내 글 결과는 기존 기록과 일일 통계에 합산하지 않아요.",
+            "기본 연습은 이미지·링크로 공유할 수 있어요. 내 글은 지문을 포함하지 않는 결과 요약만 복사하며, 같은 지문 공유 링크를 만들지 않아요.",
+            "완료 결과의 틀린 구간 다시 연습에서 후보를 고르고 이 구간 연습을 누르세요. 같은 구간을 다시 하거나 닫아도 원래 결과와 내 글 초안은 유지됩니다."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "한국어 타자 속도의 평균은 어느 정도인가요?",
+              "a": "일반 성인의 평균은 분당 200~300타 수준입니다. 300~400타 이상이면 빠른 편이고, 600타 이상은 이 도구의 '달인' 등급에 해당합니다. 공식 기준이 있는 것은 아니니 참고용으로 보세요."
+            },
+            {
+              "q": "WPM(Words Per Minute)과 타수(분당 타자)는 어떻게 다른가요?",
+              "a": "WPM은 영문 기준으로 분당 입력한 단어(5글자 기준) 수를 나타냅니다. 한국어는 자모 단위 타수로 측정하는 것이 일반적입니다. 영어 60WPM은 대략 한국어 300타 수준과 비슷한 체감 속도입니다."
+            },
+            {
+              "q": "결과가 저장되나요?",
+              "a": "기본 연습의 최근 측정 결과는 브라우저 로컬스토리지에 저장됩니다. 내 글의 원고와 결과는 기존 기록·일일 통계에 합산하거나 URL에 넣지 않으며 이번 방문의 메모리에만 유지됩니다. 필요한 내 글 결과 요약은 직접 복사하세요. 틀린 구간 복습도 원고·결과를 새로 저장하거나 기존 기록에 합산하지 않습니다."
+            },
+            {
+              "q": "틀린 구간은 어떻게 고르나요?",
+              "a": "완료한 연습에서 확정된 입력의 오류 위치를 기준으로 공백 사이 구간을 표시합니다. 공백을 틀리면 양옆 구간을 함께 포함하고, 나중에 고친 오류도 남습니다. 시간제에서 아직 입력하지 않은 뒷부분은 포함하지 않습니다. 문법 분석이나 오타 원인 판정은 아닙니다."
+            },
+            {
+              "q": "짧은 구간 복습도 최고 기록에 들어가나요?",
+              "a": "아니요. 선택한 구간의 완료·정확도·오류 위치 수만 확인하며 기존 최고 기록·일일 통계·원래 결과를 바꾸지 않습니다. 원문 공백과 문장부호를 유지하고 최대 1,000자 구간을 연습합니다. 다음 구간은 직접 선택하며 URL이나 저장 기록에 복습 지문을 넣지 않습니다."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "typingTest": {
+          "description": "한글·영문·내 글 타자 연습과 완료 후 틀린 구간 복습"
+        }
+      }
+    }
+  },
+  "en": {
+    "typingTest": {
+      "description": "Check Korean keystrokes, English WPM, and accuracy, then choose completed-practice sections around mistakes for separate review.",
+      "guide": {
+        "whatIs": {
+          "description": "Practice Korean or English with four standard modes or your own text. After completion, choose sections containing committed mistakes for separate review. Review preserves the original passage, result, and records and shows section accuracy and error-position count separately."
+        },
+        "howTo": {
+          "items": [
+            "Choose Daily, Short, Long, Timed or Custom text. For custom text, review the preview and apply it with Start with this text.",
+            "Measurement starts when you type the first character in the practice field. Editing the draft field does not start it.",
+            "Correct characters turn dark, errors have a red underline, and a composing syllable has a blue underline.",
+            "See results when you finish the text or a standard timed session ends. Custom-text results do not enter standard records or daily statistics.",
+            "Standard practice supports image and link sharing. Custom text only copies a result summary without the passage and does not create a same-passage share link.",
+            "In Practice missed sections below the completed result, select a candidate and choose Practice this section. Retrying or closing the section keeps the original result and custom-text draft."
+          ]
+        },
+        "faq": {
+          "items": [
+            {
+              "q": "What is the average Korean typing speed for an adult?",
+              "a": "The average adult types around 200–300 keystrokes per minute (타수). 300–400+ keystrokes/min is considered fast, and 600+ matches this tool's top 'Legend' grade. There is no official standard, so treat these as rough guides."
+            },
+            {
+              "q": "What is the difference between WPM and keystrokes per minute?",
+              "a": "WPM (Words Per Minute) is an English-centric metric counting words (standardized to 5 characters). Korean typing is traditionally measured in keystrokes per minute. Roughly, 60 WPM in English feels similar in effort to about 300 keystrokes/min in Korean."
+            },
+            {
+              "q": "Are my results saved?",
+              "a": "Recent standard-practice results are saved in browser local storage. Custom passages and results stay in memory for this visit, are excluded from standard records and daily statistics, and are not added to the URL. Copy a custom-result summary if needed. Review practice also does not save passages or results or add them to standard records."
+            },
+            {
+              "q": "How are review sections selected?",
+              "a": "After practice ends, committed-input error positions identify sections separated by whitespace. A whitespace error includes both neighboring sections, and corrected mistakes remain eligible. Untyped text after a timed session is excluded. This is not grammar analysis or a diagnosis of the mistake."
+            },
+            {
+              "q": "Does review practice count toward my best score?",
+              "a": "No. It shows completion, accuracy, and error-position count for the selected section without changing the original result, best records, or daily statistics. Original whitespace and punctuation remain, with sections up to 1,000 characters. Choose each next section yourself; review text is not added to URLs or stored records."
+            }
+          ]
+        }
+      }
+    },
+    "toolsShowcase": {
+      "tools": {
+        "typingTest": {
+          "description": "Korean, English, and custom-text typing with separate review of missed sections"
+        }
+      }
+    }
+  }
+}

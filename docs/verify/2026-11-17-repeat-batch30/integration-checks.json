@@ -1,0 +1,128 @@
+{
+  "scope": "포모도로 남은 시간·복귀·저장 보호",
+  "status": "complete_local_verification",
+  "namespace": "pomodoroTimer",
+  "preparation": {
+    "groups": 33,
+    "status": "passed; historical preparation subset of final author count"
+  },
+  "metadata": {
+    "status": "passed",
+    "updatedDate": "2026-11-17",
+    "sharedDescriptions": true,
+    "scopedLint": {
+      "files": 3,
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "discovery": {
+      "redirects": 472,
+      "rss": 382,
+      "llmsTools": 315,
+      "llmsBytes": 45632
+    }
+  },
+  "translations": {
+    "status": "passed",
+    "authorPatchLeaves": 33,
+    "commonGuideLeaves": 5,
+    "patchLeavesPerLanguage": 38,
+    "staticUses": 108,
+    "errors": 0,
+    "generatedFiles": 1578,
+    "messagesCheck": "passed",
+    "namespaceApplyImports": 0,
+    "namespaceAudit": {
+      "own": 538,
+      "viaChild": 6,
+      "unresolved": 0,
+      "existingDynamicNotices": 60
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "checkedAt": "2026-11-16T20:55:19.028Z",
+    "chromeClosed": true,
+    "javascriptErrors": 0,
+    "hydrationErrors": 0,
+    "unhandledRejections": 0,
+    "rawTranslationKeys": 0,
+    "firstRunAllPassed": false,
+    "report": "review-browser.md",
+    "results": "browser/final-results.json",
+    "productFixesDuringBrowser": 0,
+    "testCorrections": "Initial route typo; then virtual wall rollback and quoted CSV expectations corrected, affected two cases rerun only"
+  },
+  "independent": {
+    "status": "passed",
+    "groups": 13,
+    "core": 8,
+    "actualParent": 5,
+    "scopedLint": "passed"
+  },
+  "typecheck": {
+    "status": "passed",
+    "command": "node --max-old-space-size=2048 node_modules/typescript/bin/tsc --noEmit",
+    "heapMiB": 2048,
+    "startedAt": "2026-11-16T20:58:33.001Z",
+    "resultCollectedAtKst": "2026-11-17 06:01",
+    "sessionId": 24287,
+    "exitCode": 0,
+    "diagnostics": 0,
+    "attempts": 1,
+    "freeMemoryGiB": 4.5,
+    "totalMemoryGiB": 31.75,
+    "chromeClosed": true,
+    "allTsWritersFrozen": true,
+    "scope": "Shared batch28/batch30 execution; includes frozen batch31 connected edit unit and batch32 unconnected prepared files, without certifying those later features",
+    "sharedWith": "../2026-11-17-repeat-batch28/integration-checks.json"
+  },
+  "priorCompletedCheckpoints": [
+    "CSV performance follow-up",
+    "batch29",
+    "batch35 JS-only"
+  ],
+  "build": false,
+  "deploy": false,
+  "commit": false,
+  "push": false,
+  "author": {
+    "status": "passed/stable",
+    "groups": 48,
+    "core": 20,
+    "storage": 13,
+    "coordinator": 8,
+    "actualParentRecovery": 7,
+    "scopedLintFiles": 10,
+    "errors": 0,
+    "warnings": 0
+  },
+  "accountSnapshot": {
+    "atKst": "2026-11-17 05:59",
+    "usedPercent": 58,
+    "remainingPercent": 42,
+    "freeResetCoupons": 1,
+    "ordinaryUsageAllowed": true,
+    "source": "root account-wide read-only memo; not task-only usage or reset execution"
+  },
+  "codeDiffCheck": {
+    "status": "passed",
+    "exitCode": 0,
+    "scope": "Current product and common source files; final document check recorded separately"
+  },
+  "followingParents": {
+    "batch31": "Complete edit unit included in typecheck; author functional/lint and browser validation pending at checkpoint; canonical unmerged",
+    "batch32": "Parent atomic patch stopped before write; prepared files only included; canonical unmerged"
+  },
+  "updatedAt": "2026-11-16T21:04:14.358Z",
+  "documentChecks": {
+    "status": "passed",
+    "relativeMarkdownFiles": 6,
+    "relativeLinks": 171,
+    "missingLinks": 0,
+    "scopedDiffExitCode": 0
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "ko": {
+    "csatGrade": {
+      "description": "2026학년도 참고 컷으로 국어·수학·탐구 등급을 추정하고, 영어·한국사는 절대평가 기준으로 계산합니다.",
+      "disclaimer": "국어·수학·탐구의 수록표는 2026학년도 참고 자료입니다. 2027학년도 실제 등급·표준점수·백분위는 평가원 성적통지표로 확인하세요. 원점수 추정 컷은 공식 등급 구분 표준점수와 다릅니다.",
+      "context": {
+        "title": "시험 학년도와 계산 기준을 구분하세요",
+        "relative": "국어·수학·탐구: {year}학년도(2025년 시행) 참고 원점수 추정 컷을 사용합니다. {currentYear}학년도 컷은 이 계산기에 반영되어 있지 않습니다.",
+        "absolute": "영어·한국사: {year}학년도 절대평가 원점수 기준을 적용합니다. 영어 90점 이상, 한국사 40점 이상이 1등급입니다.",
+        "schedule": "{year}학년도 시험: 2026년 11월 19일 · 성적 통지: 2026년 12월 11일 (한국 시간)",
+        "referenceLabel": "{year} 기준 참고 등급 평균 · 추정 포함",
+        "shareScope": "{year} 실제 성적 아님 · 영어·한국사 절대평가",
+        "absoluteShort": "절대평가",
+        "estimatedShort": "참고 추정",
+        "shareInquiry": "{grades} · 참고 추정",
+        "relativeRow": "{year}학년도 컷 기준 참고 등급",
+        "toNextReference": "참고 표의 {g}등급 컷까지 +{n}점",
+        "interpolation": "표준점수·백분위는 {year}학년도 참고 표의 점과 점 사이를 단순 보간한 값입니다. 국어·수학의 공통·선택과목 점수 조정이나 올해 응시자 분포를 계산하지 않으므로 공식 성적 환산에 사용할 수 없습니다.",
+        "minimumLimit": "{year}학년도 참고 추정 등급이 포함된 등급 합입니다. 영역 지정·탐구 평균/반올림·한국사 조건 등 대학별 요건은 반영하지 않으며, 실제 수능최저 충족이나 합격을 판정하지 않습니다.",
+        "relativeCaption": "{year}학년도 참고 표 · 원점수 컷은 추정",
+        "absoluteCaption": "{year}학년도 영어·한국사 절대평가 기준",
+        "absoluteCut": "원점수 기준",
+        "estimatedCut": "원점수 추정 컷",
+        "sourcesTitle": "올해 시험·채점 제도 공식 안내",
+        "sourcesNote": "2026-11-17 확인. 아래 자료는 2027학년도 일정과 채점 제도에 관한 공식 안내이며, 이 계산기의 2026학년도 원점수 추정 표를 보증하는 자료가 아닙니다.",
+        "planSource": "교육부 · 2027학년도 수능 시행기본계획",
+        "scheduleSource": "교육부 · 2027학년도 시험·성적 통지 일정",
+        "scoringSource": "평가원 · 2027학년도 Q&A 자료집 (교육청 게시 PDF, 28~30쪽)"
+      },
+      "u": {
+        "heroLabel": "국·수·영·탐 평균 (탐구 2과목 평균을 1영역으로)",
+        "heroSub": "참고 계산: 국수탐 평균 {noEng}등급 · 상위 3개 영역 합 {s3}",
+        "shareRow": "{g}등급 · {basis} ({s}점)",
+        "shareText": "{year}학년도 참고 컷 기준 평균 {avg}등급, 3합 {s3} (상대평가 추정 포함). {currentYear}학년도 실제 성적·수능최저 판정이 아닙니다. 영어·한국사는 절대평가 기준입니다.",
+        "inputNote": "국어·수학·탐구는 {year}학년도 선택과목·탐구 과목별 참고 추정 컷입니다. 점수를 바꾸면 이 기준으로 다시 계산됩니다.",
+        "absNote": "절대평가 원점수 기준 · 표준점수·백분위 미산출",
+        "topRange": "등급별 명목 누적 비율 {from}~{to}%",
+        "estStdPct": "참고 보간: 표준점수 약 {std} · 백분위 약 {pct}",
+        "geoNote": "기하 선택과목의 전년도 참고 추정 컷",
+        "minTitle": "수능최저 등급 합 참고 계산",
+        "minNote": "국어·수학·영어·탐구(두 과목 중 좋은 1과목)를 각각 한 영역으로 보고, 등급이 좋은 영역부터 더합니다. 위 등급 평균과 탐구 반영 방식이 다릅니다.",
+        "minOk": "참고 계산상 입력 기준 이내",
+        "minShort": "참고 등급 합이 입력 기준보다 {n} 높음",
+        "minMine": "참고 {n}합 {sum} / 입력 기준 {target} 이내",
+        "histNote": "한국사 {g}등급은 위 합계에서 제외됩니다. 한국사 요건은 지원 대학 모집요강에서 별도로 확인하세요.",
+        "tableAbs": "영어와 한국사는 상대평가 추정 컷이 아니라 정해진 원점수 구간으로 등급을 나눕니다.",
+        "tableRel": "계산기에 수록된 {year}학년도 참고 원점수 추정 컷입니다. 같은 총점이라도 공통·선택과목 점수 구성과 해당 시험의 성적 분포에 따라 실제 등급이 달라질 수 있습니다.",
+        "dataSource": "자료 범위: {year}학년도 참고 표. 원점수 추정 컷, 참고용 등급 구분 표준점수와 누적 비율을 함께 보여줍니다. 올해 공식 성적 환산표가 아닙니다.",
+        "stdAtCut": "참고 등급 구분 표준점수",
+        "cumTop": "명목 누적 비율"
+      },
+      "guide": {
+        "whatIs": {
+          "description": "원점수로 참고 등급과 등급 합을 계산하는 도구입니다. 2027학년도 시험 일정과 별개로, 국어·수학·탐구는 2026학년도 참고 원점수 추정 컷을 사용합니다. 영어·한국사는 2027학년도 절대평가 기준으로 계산합니다. 올해 상대평가 성적 예측이나 대학별 수능최저 판정을 대신하지 않습니다."
+        },
+        "grading": {
+          "items": [
+            "국어·수학·탐구는 표준점수에 따른 상대평가입니다. 등급별 명목 누적 비율은 4·11·23·40·60·77·89·96·100%이며, 동점자 때문에 실제 비율과 차이가 날 수 있습니다.",
+            "국어·수학은 공통과목 성적을 활용해 선택과목 점수를 조정한 뒤 표준점수를 산출합니다. 원점수 총점만으로 공식 표준점수·등급을 확정할 수 없습니다.",
+            "영어는 100점 만점의 절대평가입니다. 90점 이상 1등급, 80점 이상 2등급처럼 10점씩 내려가며, 20점 미만은 9등급입니다. 표준점수·백분위는 제공하지 않습니다.",
+            "한국사는 50점 만점의 절대평가입니다. 40점 이상 1등급, 35점 이상 2등급처럼 5점씩 내려가며, 5점 미만은 9등급입니다. 한국사 미응시자에게는 수능 성적통지표가 제공되지 않습니다.",
+            "2027학년도 사회·과학탐구는 17개 과목 중 최대 2과목을 선택합니다. 이 계산기는 선택한 각 과목의 전년도 참고 표를 사용하며, 사탐·과탐 전체 평균 컷을 사용하는 방식이 아닙니다."
+          ]
+        },
+        "howToUse": {
+          "items": [
+            "1. 국어·수학 선택과목과 실제 응시하는 탐구 과목을 고릅니다.",
+            "2. 원점수를 입력하고 각 결과의 참고 추정·절대평가 표시를 확인합니다.",
+            "3. 등급 평균은 국어·수학·영어와 탐구 2과목 평균을 합쳐 4로 나눈 값입니다. 한국사는 제외합니다.",
+            "4. 등급 합 참고 계산은 탐구 상위 1과목을 사용합니다. 입력 기준과 비교한 뒤 지원 대학의 영역 지정·탐구·한국사 요건을 별도로 확인합니다.",
+            "5. 결과 이미지와 공유 문구에도 기준 학년도·추정 여부가 표시됩니다. 공유 링크는 입력한 과목·점수·등급 합 기준을 복원합니다."
+          ]
+        },
+        "tips": {
+          "items": [
+            "2026학년도 수능은 2025년에 시행된 시험입니다. 2027학년도 시험은 2026년 11월 19일이며, 이 계산기의 상대평가 참고 자료와 학년도가 다릅니다.",
+            "상대평가의 원점수 추정 컷과 공식 등급 구분 표준점수를 구분하세요. 영어·한국사는 원점수에 따른 절대평가 등급만 성적통지표에 표시됩니다.",
+            "표준점수·백분위 추정은 전년도 참고점 사이의 단순 보간입니다. 실제 백분위는 응시자 성적 분포로 산출되므로 화면의 추정치를 공식 환산값으로 사용하지 마세요.",
+            "수능최저의 필수 영역, 탐구 상위 1과목 또는 2과목 평균, 반올림 규칙, 한국사 조건은 대학·모집단위마다 다릅니다.",
+            "정시 반영 지표와 탐구 변환표준점수도 대학별로 다릅니다. 최종 성적은 평가원 성적통지표, 지원 요건은 해당 대학 모집요강을 확인하세요."
+          ]
+        },
+        "faq": {
+          "items": [
+            { "q": "이 결과가 2027학년도 수능 예상 등급인가요?", "a": "국어·수학·탐구 결과는 2026학년도 참고 컷을 적용한 계산입니다. 2027학년도 컷은 반영되어 있지 않아 올해 실제 등급으로 해석할 수 없습니다. 영어·한국사는 2027학년도 절대평가 원점수 기준을 적용합니다." },
+            { "q": "2027학년도 시험과 성적 통지는 언제인가요?", "a": "시험일은 2026년 11월 19일(목), 성적 통지일은 2026년 12월 11일(금)입니다. 아래 교육부 공식 일정에서 확인할 수 있습니다." },
+            { "q": "원점수가 같아도 표준점수·등급이 다를 수 있나요?", "a": "네. 국어·수학은 공통·선택과목 점수 조정을 거치고, 상대평가 성적은 해당 시험 응시자 분포에 따라 달라집니다. 이 도구의 총점별 단순 보간은 공식 산출 과정을 재현하지 않습니다." },
+            { "q": "등급 합이 기준 이내이면 수능최저를 충족한 건가요?", "a": "이 화면은 국어·수학·영어·탐구 상위 1과목 중 좋은 영역부터 더하는 참고 계산입니다. 상대평가 추정 등급이 포함되며, 대학별 필수 영역·탐구 평균/반올림·한국사 조건은 반영하지 않습니다. 실제 충족 여부는 공식 성적과 모집요강으로 확인해야 합니다." },
+            { "q": "탐구를 등급 평균과 등급 합에 어떻게 반영하나요?", "a": "등급 평균에서는 탐구 2과목의 평균을 한 영역으로 사용합니다. 수능최저 등급 합 참고 계산에서는 두 탐구 중 더 좋은 1과목을 한 영역으로 사용합니다. 두 계산 모두 한국사는 제외하며, 대학별 산식과 같다고 가정하지 않습니다." },
+            { "q": "참고 컷과 점수가 같으면 어느 등급인가요?", "a": "이 계산기에서는 표에 적힌 원점수 이상이면 해당 등급으로 계산합니다. 다만 상대평가 참고 컷은 원점수 추정치라 올해 실제 등급의 경계를 보장하지 않습니다. 영어·한국사는 공식 절대평가 구간을 적용합니다." }
+          ]
+        }
+      }
+    }
+  },
+  "en": {
+    "csatGrade": {
+      "description": "Estimate Korean, Math and Inquiry grades using 2026 academic-year reference cutoffs; calculate English and Korean History using absolute grading rules.",
+      "disclaimer": "The Korean, Math and Inquiry tables are 2026 academic-year reference data. Use the official KICE score report for actual 2027 grades, standard scores and percentiles. Estimated raw-score cutoffs are distinct from official standard-score grade boundaries.",
+      "context": {
+        "title": "Separate the exam year from the reference data",
+        "relative": "Korean, Math and Inquiry use estimated raw-score cutoffs for academic year {year} (exam held in 2025). This calculator does not include {currentYear} academic-year cutoffs.",
+        "absolute": "English and Korean History use {year} academic-year absolute grading rules. Grade 1 starts at 90 points for English and 40 for Korean History.",
+        "schedule": "{year} academic-year exam: Nov 19, 2026 · Score reports: Dec 11, 2026 (Korea time)",
+        "referenceLabel": "{year} reference average · includes estimates",
+        "shareScope": "Not actual {year} results · English/History: absolute",
+        "absoluteShort": "Absolute",
+        "estimatedShort": "Estimate",
+        "shareInquiry": "{grades} · estimate",
+        "relativeRow": "Reference grade using {year} cutoffs",
+        "toNextReference": "+{n} points to grade {g} in the reference table",
+        "interpolation": "Standard scores and percentiles are simple interpolations between points in the {year} reference tables. They do not model Korean/Math common-section and elective adjustments or this year's score distribution, and cannot convert raw scores into official results.",
+        "minimumLimit": "This sum includes grade estimates based on {year} reference data. It does not apply university-specific required areas, Inquiry averaging/rounding or Korean History conditions, and does not determine admission or actual minimum-requirement eligibility.",
+        "relativeCaption": "{year} academic-year reference table · estimated raw cutoffs",
+        "absoluteCaption": "{year} academic-year English/History absolute grading rules",
+        "absoluteCut": "Raw-score boundary",
+        "estimatedCut": "Estimated raw cutoff",
+        "sourcesTitle": "Official exam and scoring guidance",
+        "sourcesNote": "Checked Nov 17, 2026. These sources explain the 2027 schedule and scoring system; they do not certify this calculator's 2026 estimated raw-score tables.",
+        "planSource": "Ministry of Education · 2027 CSAT implementation plan",
+        "scheduleSource": "Ministry of Education · 2027 exam and score-report dates",
+        "scoringSource": "KICE · 2027 Q&A (PDF hosted by education office, pp. 28–30)"
+      },
+      "u": {
+        "heroLabel": "Korean/Math/English/Inquiry average (two Inquiry grades averaged)",
+        "heroSub": "Reference: excl. English {noEng} · best 3 areas sum {s3}",
+        "shareRow": "Grade {g} · {basis} ({s} pts)",
+        "shareText": "Average grade {avg}, best-3 sum {s3}, using {year} academic-year reference cutoffs (includes relative-grade estimates). Not actual {currentYear} results or an admissions-requirement decision. English and Korean History use absolute grading.",
+        "inputNote": "Korean, Math and Inquiry use {year} academic-year reference estimates for each elective and subject. Editing scores recalculates using this basis.",
+        "absNote": "Absolute raw-score rules · no standard score or percentile",
+        "topRange": "Nominal cumulative grade band {from}–{to}%",
+        "estStdPct": "Reference interpolation: standard score ~{std} · percentile ~{pct}",
+        "geoNote": "Previous academic-year reference estimates for Geometry",
+        "minTitle": "Reference grade sum for minimum requirements",
+        "minNote": "Adds the best areas among Korean, Math, English and Inquiry (the better one of two subjects). This uses Inquiry differently from the average above.",
+        "minOk": "Within the entered limit in this reference calculation",
+        "minShort": "Reference grade sum exceeds the entered limit by {n}",
+        "minMine": "Reference best-{n} sum {sum} / entered limit {target}",
+        "histNote": "Korean History grade {g} is excluded from this sum. Check the university's separate Korean History condition.",
+        "tableAbs": "English and Korean History grades follow defined raw-score bands, not relative-grade estimates.",
+        "tableRel": "These are the calculator's {year} academic-year estimated raw-score reference cutoffs. Actual grades may differ for the same total score because of common/elective score composition and the exam's score distribution.",
+        "dataSource": "Scope: {year} academic-year reference data, showing estimated raw cutoffs, reference standard-score boundaries and nominal cumulative bands. This is not an official conversion table for this year's results.",
+        "stdAtCut": "Reference standard-score boundary",
+        "cumTop": "Nominal cumulative band"
+      },
+      "guide": {
+        "whatIs": {
+          "description": "This tool calculates reference grades and grade sums from raw scores. It displays the 2027 academic-year schedule but uses 2026 reference raw-score estimates for Korean, Math and Inquiry. English and Korean History use 2027 absolute grading rules. It does not predict this year's relative grades or decide university-specific minimum requirements."
+        },
+        "grading": {
+          "items": [
+            "Korean, Math and Inquiry use relative grading based on standard scores. Nominal cumulative bands are 4, 11, 23, 40, 60, 77, 89, 96 and 100%; ties can make actual proportions differ.",
+            "Korean and Math standard scores involve adjusting elective scores using the common section. A total raw score alone cannot determine an official standard score or grade.",
+            "English is graded absolutely out of 100. Grade 1 starts at 90, Grade 2 at 80, and boundaries decrease by 10 points; below 20 is Grade 9. No standard score or percentile is reported.",
+            "Korean History is graded absolutely out of 50. Grade 1 starts at 40, Grade 2 at 35, and boundaries decrease by 5 points; below 5 is Grade 9. Students who do not take Korean History receive no CSAT score report.",
+            "For the 2027 exam, up to two of 17 Social Studies/Science subjects may be selected. This calculator uses a previous-year reference table for each chosen subject, not one overall Social Studies/Science average."
+          ]
+        },
+        "howToUse": {
+          "items": [
+            "1. Select your Korean/Math electives and the specific Inquiry subjects you take.",
+            "2. Enter raw scores and check the estimate or absolute-grading label on each result.",
+            "3. The average adds Korean, Math, English and the mean of both Inquiry grades, then divides by four. Korean History is excluded.",
+            "4. The reference grade sum uses the better Inquiry subject. Compare with your entered limit, then separately check required areas, Inquiry rules and Korean History conditions in the university's admission guide.",
+            "5. Shared images and text include the reference year and estimate labels. Links restore selected subjects, scores and the grade-sum settings."
+          ]
+        },
+        "tips": {
+          "items": [
+            "The 2026 academic-year CSAT was held in 2025. The 2027 academic-year exam is on November 19, 2026, and is distinct from this calculator's relative-grading reference data.",
+            "Distinguish estimated raw cutoffs from official standard-score grade boundaries. English and Korean History score reports show only absolute grades based on raw scores.",
+            "Standard-score and percentile estimates are simple interpolations between previous-year reference points. Actual percentiles depend on the score distribution; do not treat these estimates as official conversions.",
+            "Required areas, best-one versus average-of-two Inquiry rules, rounding and Korean History conditions vary by university and program.",
+            "Admissions score measures and converted Inquiry scores also vary by university. Use the official KICE score report and the relevant university's admission guide for final decisions."
+          ]
+        },
+        "faq": {
+          "items": [
+            { "q": "Are these predicted grades for the 2027 academic-year CSAT?", "a": "Korean, Math and Inquiry results apply 2026 reference cutoffs. The calculator does not include 2027 cutoffs, so they cannot be read as this year's actual grades. English and Korean History use 2027 absolute raw-score rules." },
+            { "q": "When are the 2027 exam and score reports?", "a": "The exam is on Thursday, November 19, 2026, and score reports are issued on Friday, December 11, 2026. See the official Ministry of Education schedule linked below." },
+            { "q": "Can equal raw scores yield different standard scores or grades?", "a": "Yes. Korean and Math involve common-section/elective adjustments, while relative grades depend on that exam's score distribution. This tool's simple interpolation by total score does not reproduce official scoring." },
+            { "q": "Does a sum within the entered limit mean I meet the minimum requirement?", "a": "This reference calculation adds the best areas among Korean, Math, English and your better Inquiry subject. It includes relative-grade estimates and omits university-specific required areas, Inquiry averaging/rounding and Korean History rules. Check actual eligibility against your official results and the admission guide." },
+            { "q": "How does Inquiry count in the average and grade sum?", "a": "The average treats the mean of both Inquiry grades as one area. The reference minimum-requirement sum treats the better Inquiry grade as one area. Both exclude Korean History and may differ from a university's formula." },
+            { "q": "What happens exactly at a reference cutoff?", "a": "This calculator assigns the listed grade at or above the table's raw-score boundary. Relative-grade boundaries are reference estimates and do not guarantee this year's actual boundary. English and Korean History follow the official absolute-grading bands." }
+          ]
+        }
+      }
+    }
+  }
+}

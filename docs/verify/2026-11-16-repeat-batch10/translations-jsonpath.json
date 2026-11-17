@@ -1,0 +1,84 @@
+{
+  "ko": {
+    "jsonFormatter": {
+      "presets": {
+        "panelLabel": "JSONPath",
+        "openPanel": "JSONPath 검색 열기",
+        "queryLabel": "JSONPath 검색식",
+        "running": "검색 중…",
+        "rootUnsupported": "현재 검색 엔진이 이 JSON 루트에서 해당 검색식을 처리하지 못했습니다. 루트 전체는 $로 조회하거나 객체·배열 JSON으로 검색해 주세요.",
+        "title": "자주 쓰는 검색식",
+        "description": "현재 검색식을 이름으로 최대 12개 저장하세요. 불러온 뒤 검색 실행 버튼을 직접 눌러 결과를 확인합니다.",
+        "storageHint": "이 브라우저에 이름과 검색식만 저장합니다. JSON 원문과 검색 결과는 저장하지 않아요. 검색식은 1,000자, 이름은 40자까지입니다.",
+        "name": "검색식 이름",
+        "save": "현재 검색식 저장",
+        "expressionLimit": "저장할 검색식은 공백을 제외한 내용이 있고 전체 1,000자 이내여야 합니다.",
+        "savedList": "저장 검색식 선택",
+        "choose": "검색식 선택",
+        "load": "선택 검색식 불러오기",
+        "renameLabel": "변경할 이름",
+        "rename": "이름 변경",
+        "delete": "선택 검색식 삭제",
+        "deleteConfirm": "‘{name}’ 검색식을 저장 목록에서 삭제할까요? 현재 입력과 결과는 유지됩니다.",
+        "confirmDelete": "검색식 삭제 확인",
+        "cancel": "취소",
+        "refresh": "저장 목록 다시 읽기",
+        "saved": "검색식을 저장했습니다.",
+        "loaded": "‘{name}’ 검색식을 채웠습니다. JSON 원문은 그대로이며 검색 실행을 눌러야 결과가 나옵니다.",
+        "renamed": "저장 검색식의 이름을 변경했습니다.",
+        "deleted": "저장 검색식을 삭제했습니다.",
+        "errors": {
+          "corrupt": "저장 검색식을 읽을 수 없어 원본을 유지했습니다. 검색 기능은 계속 사용할 수 있어요.",
+          "unsupported": "지원하지 않는 저장 형식이라 원본을 유지했습니다. 검색 기능은 계속 사용할 수 있어요.",
+          "unavailable": "브라우저 저장소를 사용할 수 없어 작업을 완료하지 못했습니다. 저장소 설정을 확인해 주세요.",
+          "quota": "저장 공간이 부족해 변경을 저장하지 못했습니다. 기존 검색식은 유지됩니다.",
+          "conflict": "다른 탭에서 저장 목록이 바뀌어 작업을 멈췄습니다. 현재 검색식은 유지했으니 목록을 다시 읽고 선택해 주세요.",
+          "invalid": "이름은 1~40자, 검색식은 공백이 아닌 내용이 있는 1,000자 이내로 입력하세요.",
+          "limit": "검색식은 최대 12개 저장할 수 있습니다. 필요 없는 저장 검색식을 삭제해 주세요.",
+          "duplicate": "같은 이름의 검색식이 있습니다. 다른 이름을 입력해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "jsonFormatter": {
+      "presets": {
+        "panelLabel": "JSONPath",
+        "openPanel": "Open JSONPath search",
+        "queryLabel": "JSONPath expression",
+        "running": "Searching…",
+        "rootUnsupported": "The current query engine could not evaluate this expression on this JSON root. Use $ for the entire root, or query an object or array.",
+        "title": "Saved expressions",
+        "description": "Save up to 12 named expressions. Loading fills the expression; press Run to see its results.",
+        "storageHint": "Only names and expressions are saved in this browser. JSON input and query results are not stored. Expressions can have up to 1,000 characters and names up to 40.",
+        "name": "Expression name",
+        "save": "Save current expression",
+        "expressionLimit": "A saved expression must contain non-whitespace text and be no more than 1,000 characters in total.",
+        "savedList": "Saved expression",
+        "choose": "Choose an expression",
+        "load": "Load selected expression",
+        "renameLabel": "New name",
+        "rename": "Rename",
+        "delete": "Delete selected expression",
+        "deleteConfirm": "Delete “{name}” from your saved expressions? Current inputs and results will remain.",
+        "confirmDelete": "Confirm expression deletion",
+        "cancel": "Cancel",
+        "refresh": "Reload saved list",
+        "saved": "Expression saved.",
+        "loaded": "Filled in “{name}”. Your JSON input is unchanged; press Run to obtain results.",
+        "renamed": "Saved expression renamed.",
+        "deleted": "Saved expression deleted.",
+        "errors": {
+          "corrupt": "Saved expressions could not be read, so the original data was preserved. You can still run queries.",
+          "unsupported": "This saved format is unsupported, so the original data was preserved. You can still run queries.",
+          "unavailable": "Browser storage is unavailable, so the action could not finish. Check your storage settings.",
+          "quota": "There is not enough space to save the change. Existing expressions are preserved.",
+          "conflict": "Another tab changed the saved list, so the action stopped. Your current expression is intact; reload the list and select again.",
+          "invalid": "Enter a name of 1–40 characters and an expression with non-whitespace text, up to 1,000 characters.",
+          "limit": "You can save up to 12 expressions. Delete an unneeded saved expression first.",
+          "duplicate": "An expression with this name already exists. Enter a different name."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-11-16T17:13:12.769Z",
+  "patches": [
+    {
+      "name": "qr",
+      "leafKeysPerLanguage": 54
+    },
+    {
+      "name": "text-history",
+      "leafKeysPerLanguage": 21
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "TextConverter",
+      "staticKeysChecked": 42,
+      "dynamicPrefixesChecked": [
+        "cases",
+        "ops",
+        "groups",
+        "list",
+        "errors",
+        "related"
+      ]
+    },
+    {
+      "component": "TextPipelineHistoryControls",
+      "staticKeysChecked": 24,
+      "dynamicPrefixesChecked": [
+        "list",
+        "cases",
+        "ops",
+        "errors"
+      ]
+    },
+    {
+      "component": "QrScanner",
+      "staticKeysChecked": 40,
+      "dynamicPrefixesChecked": [
+        "batch.historyErrors"
+      ]
+    },
+    {
+      "component": "QrBatchScanner",
+      "staticKeysChecked": 21,
+      "dynamicPrefixesChecked": [
+        "batch.notices",
+        "batch.status",
+        "batch.errors"
+      ]
+    },
+    {
+      "component": "QrCopyRecovery",
+      "staticKeysChecked": 5,
+      "dynamicPrefixesChecked": []
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

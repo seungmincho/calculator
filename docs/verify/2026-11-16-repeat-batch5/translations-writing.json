@@ -1,0 +1,116 @@
+{
+  "ko": {
+    "characterCounter": {
+      "save": {
+        "loading": "저장된 원고를 확인하고 있어요.",
+        "failed": "자동 저장에 실패했어요. 현재 원고는 화면에 남아 있으니 복사해 두거나 다시 저장해 주세요.",
+        "corrupt": "저장된 원고를 읽을 수 없어 자동 저장을 멈췄어요. 기존 저장 내용은 그대로 보존했어요. 초기화하려면 ‘모든 문항 지우기’를 사용해 주세요.",
+        "unavailable": "브라우저 저장소에 접근할 수 없어요. 새로고침 전에 현재 원고를 복사해 주세요.",
+        "conflict": "다른 창에서 원고가 변경되어 자동 저장을 멈췄어요. 현재 원고를 복사한 뒤 새로고침해 주세요.",
+        "retry": "자동 저장 다시 시도"
+      },
+      "versions": {
+        "title": "원고 수정본",
+        "description": "고치기 전 원고를 이름 붙여 저장하고, 현재 원고와 비교하거나 원하는 문항에 복원하세요.",
+        "privacy": "수정본은 이 브라우저에만 저장되며 서버로 보내지 않아요. 브라우저 데이터를 지우면 사라져요. 중요한 원고는 따로 복사해 두세요.",
+        "name": "수정본 이름",
+        "namePlaceholder": "예: 지원동기 1차 수정",
+        "save": "현재 원고 저장",
+        "limits": "전체 문항에서 {count}/{max}개 저장 · 이름 40자 · 원고당 50,000자 · 전체 원고 300,000자까지",
+        "empty": "아직 저장한 수정본이 없어요. 원고를 작성하고 이름을 붙여 저장해 보세요.",
+        "list": "모든 문항의 수정본",
+        "refresh": "수정본 목록 새로고침",
+        "origin": "문항 {tab}에서 저장 · {title}",
+        "untitled": "제목 없음",
+        "compare": "현재 원고와 비교",
+        "comparisonBasis": "두 원고 모두 현재 기준인 ‘{basis}’으로 비교해요.",
+        "difference": "현재 원고 − 저장한 원고: {count}{unit}",
+        "savedText": "저장한 원고",
+        "currentText": "현재 원고 · 문항 {tab}",
+        "settings": "제목: {title} · 기준: {basis} · 목표: {target}{unit}",
+        "count": "{count}{unit}",
+        "noText": "입력한 원고가 없어요.",
+        "restore": "현재 문항에 복원",
+        "delete": "수정본 삭제",
+        "confirmation": "수정본 작업 확인",
+        "confirmRestore": "‘{name}’을 현재 문항 {tab}에 복원할까요? 본문·문항 제목·글자 기준·목표를 바꿔요. 정리 도구의 ‘되돌리기’로 복원 전 상태를 되찾을 수 있어요.",
+        "confirmDelete": "‘{name}’ 수정본을 삭제할까요? 현재 원고는 그대로 유지돼요. 삭제한 수정본은 되돌릴 수 없어요.",
+        "confirmRestoreButton": "확인하고 복원",
+        "confirmDeleteButton": "확인하고 삭제",
+        "cancel": "취소",
+        "notices": {
+          "saved": "수정본을 저장했어요.",
+          "deleted": "수정본을 삭제했어요.",
+          "restored": "현재 문항에 복원했어요. 정리 도구의 ‘되돌리기’로 복원 전 원고와 설정을 되찾을 수 있어요."
+        },
+        "errors": {
+          "corrupt": "저장된 수정본을 읽을 수 없어요. 기존 저장 내용은 덮어쓰지 않았어요. 브라우저 저장 내용을 확인한 뒤 목록을 새로고침해 주세요.",
+          "unavailable": "수정본을 읽거나 저장하지 못했어요. 브라우저 저장 공간과 설정을 확인해 주세요. 입력한 이름과 현재 원고는 그대로 남아 있어요.",
+          "conflict": "다른 창에서 수정본이 변경됐어요. 현재 원고와 입력한 이름은 그대로예요. 목록을 새로고침한 뒤 다시 시도해 주세요.",
+          "full": "수정본은 전체 문항에서 최대 20개까지 저장할 수 있어요. 필요 없는 수정본을 삭제한 뒤 다시 저장해 주세요.",
+          "empty": "빈 원고는 수정본으로 저장할 수 없어요.",
+          "title": "수정본 이름을 1~40자로 입력해 주세요.",
+          "textLimit": "원고 하나는 50,000자까지 저장할 수 있어요. 현재 입력은 그대로 보존했어요.",
+          "totalLimit": "저장한 원고의 합계는 300,000자까지예요. 필요 없는 수정본을 삭제한 뒤 다시 저장해 주세요."
+        }
+      }
+    }
+  },
+  "en": {
+    "characterCounter": {
+      "save": {
+        "loading": "Checking saved drafts…",
+        "failed": "Auto-save failed. Your current draft is still on screen. Copy it somewhere safe or try saving again.",
+        "corrupt": "The saved draft could not be read, so auto-save is paused. Existing data was preserved. Use ‘Clear all prompts’ to reset it.",
+        "unavailable": "Browser storage is unavailable. Copy your current draft before refreshing.",
+        "conflict": "Another window changed the draft, so auto-save is paused. Copy your current draft before refreshing.",
+        "retry": "Retry auto-save"
+      },
+      "versions": {
+        "title": "Writing versions",
+        "description": "Save a named version before editing, compare it with your current draft, or restore it to any prompt.",
+        "privacy": "Versions stay in this browser and are not sent to a server. Clearing browser data deletes them. Keep a separate copy of important drafts.",
+        "name": "Version name",
+        "namePlaceholder": "e.g. Personal statement, first revision",
+        "save": "Save current draft",
+        "limits": "{count}/{max} versions across all prompts · names up to 40 characters · 50,000 characters per draft · 300,000 total",
+        "empty": "No saved versions yet. Write a draft and give it a name to save a version.",
+        "list": "Versions from all prompts",
+        "refresh": "Refresh version list",
+        "origin": "Saved from prompt {tab} · {title}",
+        "untitled": "Untitled",
+        "compare": "Compare with current draft",
+        "comparisonBasis": "Both drafts use the current counting method: {basis}.",
+        "difference": "Current draft − saved draft: {count}{unit}",
+        "savedText": "Saved draft",
+        "currentText": "Current draft · prompt {tab}",
+        "settings": "Title: {title} · Method: {basis} · Target: {target}{unit}",
+        "count": "{count}{unit}",
+        "noText": "No draft entered.",
+        "restore": "Restore to current prompt",
+        "delete": "Delete version",
+        "confirmation": "Confirm version action",
+        "confirmRestore": "Restore ‘{name}’ to current prompt {tab}? This replaces the text, prompt title, counting method, and target. Use Undo in the cleanup tools to recover the previous draft and settings.",
+        "confirmDelete": "Delete version ‘{name}’? Your current draft stays unchanged. The deleted version cannot be recovered.",
+        "confirmRestoreButton": "Confirm restore",
+        "confirmDeleteButton": "Confirm delete",
+        "cancel": "Cancel",
+        "notices": {
+          "saved": "Version saved.",
+          "deleted": "Version deleted.",
+          "restored": "Restored to the current prompt. Use Undo in the cleanup tools to recover your previous draft and settings."
+        },
+        "errors": {
+          "corrupt": "Saved versions could not be read. Existing data was not overwritten. Check browser storage, then refresh the version list.",
+          "unavailable": "Could not read or save versions. Check browser storage space and settings. Your entered name and current draft are preserved.",
+          "conflict": "Another window changed the versions. Your current draft and entered name are preserved. Refresh the list and try again.",
+          "full": "You can save up to 20 versions across all prompts. Delete an unneeded version before saving another.",
+          "empty": "An empty draft cannot be saved as a version.",
+          "title": "Enter a version name between 1 and 40 characters.",
+          "textLimit": "Each draft can contain up to 50,000 characters. Your current input has been preserved.",
+          "totalLimit": "Saved drafts can contain up to 300,000 characters in total. Delete an unneeded version and try again."
+        }
+      }
+    }
+  }
+}

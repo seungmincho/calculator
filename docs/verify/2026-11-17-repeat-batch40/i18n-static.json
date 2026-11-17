@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-16T22:57:06.088Z",
+  "patches": [
+    {
+      "name": "common-guide",
+      "leafKeysPerLanguage": 7
+    },
+    {
+      "name": "tetris",
+      "leafKeysPerLanguage": 2
+    }
+  ],
+  "componentChecks": [
+    {
+      "component": "Tetris",
+      "staticKeysChecked": 63,
+      "dynamicPrefixesChecked": [
+        "action",
+        "settings",
+        "guide"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "Static ko/en key, interpolation and merged-value validation; dynamic keys are checked only by prefix. Not English runtime UI verification."
+}

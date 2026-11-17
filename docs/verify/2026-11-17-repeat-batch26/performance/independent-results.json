@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-11-16T20:10:59.499Z",
+  "passed": 8,
+  "browserExecuted": false,
+  "results": [
+    {
+      "name": "real Worker independent quoted records and headerless object oracle",
+      "status": "pass",
+      "elapsedMs": 157.47520000000003,
+      "independentCases": 8,
+      "expectedObjectsBuiltWithoutProductParser": true
+    },
+    {
+      "name": "real Worker JSON union serialization uses independent exact byte oracle",
+      "status": "pass",
+      "elapsedMs": 78.15480000000002,
+      "byteOracles": 4
+    },
+    {
+      "name": "actual 200000-cell output equals preserved browser artifact and every preview page rejoins it",
+      "status": "pass",
+      "elapsedMs": 191.1254,
+      "actualWorkerThread": true,
+      "wholeBytes": 3480002,
+      "previewPages": 70,
+      "computeMsNodeOnly": 150.96679999999998
+    },
+    {
+      "name": "pre-transfer bound preserves rejected buffer and exact-bound decode transfers once",
+      "status": "pass",
+      "elapsedMs": 58.988399999999956,
+      "oversizedCreatedWorkers": 0,
+      "rejectedBytesRetained": true,
+      "exactTwoMiBTransferredAndDecoded": true,
+      "surrogateUtf8Rejected": true
+    },
+    {
+      "name": "mixed conversion/decode ownership timeline ignores captured callbacks after replacement and termination",
+      "status": "pass",
+      "elapsedMs": 1.1890000000000782,
+      "independentTimelineTransitions": 24,
+      "eachWorkerTerminatedOnce": true,
+      "lateMessageErrorMessageerrorIgnored": true,
+      "throwingTerminateStillSettled": true
+    },
+    {
+      "name": "response trust boundaries reject malformed shape but preserve valid domain positions",
+      "status": "pass",
+      "elapsedMs": 0.4673000000000229,
+      "malformedReplies": 8,
+      "unrelatedIdIgnored": true,
+      "structuredErrorPositionPreserved": true
+    },
+    {
+      "name": "preview exhaustive boundary placements preserve CRLF and astral pairs without touching source",
+      "status": "pass",
+      "elapsedMs": 39.704399999999964,
+      "boundaryVectors": 45,
+      "longestUtf16Page": 50000,
+      "exactBytesRejoined": true,
+      "noCRLFOrSurrogateSplit": true
+    },
+    {
+      "name": "off-thread UTF8 and intermediate errors preserve failure type and no successful partial payload",
+      "status": "pass",
+      "elapsedMs": 97.66010000000006,
+      "utf16PreboundAllowedWorkerUtf8Rejected": true,
+      "intermediateExpansionRejectedWithoutPartialSuccess": true,
+      "multilineLogicalPhysicalPositionPreserved": true
+    }
+  ]
+}

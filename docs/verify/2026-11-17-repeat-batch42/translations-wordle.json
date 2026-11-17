@@ -1,0 +1,26 @@
+{
+  "ko": {
+    "koreanWordle": {
+      "history": {
+        "title": "최근 일일 도전 30개", "hint": "전체 누적 기록은 유지합니다. 완료한 도전만 정답과 추측을 제외한 결과 격자를 볼 수 있어요.", "empty": "아직 일일 도전 기록이 없어요.", "summary": "#{day} · {status} · {count}회 시도", "playing": "진행 중", "won": "성공", "lost": "실패", "show": "결과 보기", "hide": "접기", "copy": "이 결과 복사"
+      },
+      "recordStorage": {
+        "saving": "일일 기록을 기기에 저장하는 중이에요.", "saved": "현재 일일 기록이 기기에 저장됐어요.", "memory": "현재 판은 이 화면에 유지됩니다. 저장 여부는 아래 안내를 확인해 주세요.", "daily": "일일 기록: {reason}", "settings": "설정: {reason}", "legacy": "일부 구버전 통계를 읽지 못했어요. 원본은 유지했으며 읽을 수 있는 통계만 표시합니다.", "reload": "저장본 다시 읽기", "confirm": "기기의 저장본을 불러오면 이 화면의 미저장 일일 진행을 바꿉니다. 다시 불러올까요?", "confirmReload": "저장본으로 바꾸기", "cancel": "현재 판 유지", "reloadSettings": "설정 다시 읽기", "partial": "표시 통계에는 현재 메모리의 진행이 포함될 수 있어요.",
+        "errors": { "corrupt": "저장 형식이 올바르지 않아 자동으로 덮어쓰지 않아요.", "unsupported": "미래 날짜 또는 지원하지 않는 항목이 있어 쓰기를 멈췄어요.", "tooLarge": "읽기 보호 한도(8 MiB 또는 80,000일)를 넘었어요. 원본을 줄이거나 삭제하지 않았어요.", "unavailable": "기기 저장소를 사용할 수 없어요.", "conflict": "다른 기록과 달라 쓰기를 멈췄어요. 현재 판을 유지하거나 저장본을 다시 읽어 주세요.", "writeUnknown": "쓰기 뒤 저장 결과를 확인하지 못했어요. 다시 읽기 전에는 추가로 저장하지 않아요.", "quota": "저장 공간이 부족해 기록을 저장하지 못했어요.", "canceled": "저장 요청이 취소됐어요.", "invalidAction": "이 기록을 저장할 수 없어요." }
+      },
+      "copyRecovery": { "copying": "복사 중…", "failed": "복사하지 못했어요. 아래 전체 결과를 선택해 직접 복사할 수 있어요.", "field": "직접 복사할 전체 결과", "select": "전체 선택", "retry": "복사 다시 시도", "selectionFailed": "자동 선택하지 못했어요. 결과 칸을 눌러 직접 선택해 주세요." }
+    }
+  },
+  "en": {
+    "koreanWordle": {
+      "history": {
+        "title": "Last 30 daily challenges", "hint": "Your full history is retained. Completed challenges show a result grid without the answer or guessed words.", "empty": "No daily challenges yet.", "summary": "#{day} · {status} · {count} attempts", "playing": "In progress", "won": "Won", "lost": "Lost", "show": "View result", "hide": "Collapse", "copy": "Copy this result"
+      },
+      "recordStorage": {
+        "saving": "Saving daily progress on this device.", "saved": "Current daily progress is saved on this device.", "memory": "Your current game remains on this screen. Check the storage notice below.", "daily": "Daily history: {reason}", "settings": "Settings: {reason}", "legacy": "Some older statistics could not be read. Their original data is retained; only readable statistics are shown.", "reload": "Reread saved history", "confirm": "Loading the device's saved history replaces unsaved daily progress on this screen. Load it now?", "confirmReload": "Use saved history", "cancel": "Keep current game", "reloadSettings": "Reread settings", "partial": "Displayed statistics may include progress currently held in memory.",
+        "errors": { "corrupt": "Stored data is malformed and will not be overwritten automatically.", "unsupported": "A future date or unsupported field has stopped further writes.", "tooLarge": "The read protection budget (8 MiB or 80,000 days) was exceeded. Original data was not shortened or deleted.", "unavailable": "Device storage is unavailable.", "conflict": "The saved history differs. Writes have stopped; keep this game or reread the saved history.", "writeUnknown": "The write could not be confirmed. Further saves are paused until you reread the history.", "quota": "There is not enough storage space to save this record.", "canceled": "The save request was canceled.", "invalidAction": "This record cannot be saved." }
+      },
+      "copyRecovery": { "copying": "Copying…", "failed": "Copy failed. Select the full result below and copy it manually.", "field": "Full result for manual copying", "select": "Select all", "retry": "Retry copy", "selectionFailed": "Automatic selection failed. Select the text in the result field manually." }
+    }
+  }
+}

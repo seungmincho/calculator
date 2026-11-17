@@ -1,0 +1,14 @@
+{
+  "ko": { "textToSpeech": { "recovery": {
+    "sentence": "{number}번째 문장에서 멈췄습니다",
+    "repeat": "{count}회 중 {pass}회차를 이어갑니다. 현재 회차 뒤에 {remaining}회가 남아 있습니다.",
+    "retry": "이 문장부터 다시 읽기",
+    "hint": "자동으로 다시 재생하지 않습니다. 음성이나 속도를 바꾼 뒤 다시 시도할 수 있습니다. 본문·반복 구간을 바꾸거나 정지하면 이 위치는 지워집니다."
+  } } },
+  "en": { "textToSpeech": { "recovery": {
+    "sentence": "Stopped at sentence {number}",
+    "repeat": "Continue pass {pass} of {count}. There are {remaining} passes left after the current pass.",
+    "retry": "Retry from this sentence",
+    "hint": "Playback will not restart automatically. You can change the voice or speed before retrying. Editing the text or repeat settings, or pressing Stop, clears this position."
+  } } }
+}
