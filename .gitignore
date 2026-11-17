@@ -50,3 +50,22 @@ next-env.d.ts
 
 # User-specific Everland deployment configuration
 workers/everland/wrangler.local.toml
+
+# 검증 증거(브라우저 캡처·내려받은 파일·미디어)는 로컬에만 둔다. 보고서·검사 스크립트·결과 기록(.md/.mjs/.json)만 추적한다
+/docs/verify/**/browser/
+/docs/verify/**/*.png
+/docs/verify/**/*.jpg
+/docs/verify/**/*.jpeg
+/docs/verify/**/*.webp
+/docs/verify/**/*.gif
+/docs/verify/**/*.wav
+/docs/verify/**/*.webm
+/docs/verify/**/*.mp4
+/docs/verify/**/*.pdf
+/docs/verify/**/*.zip
+/docs/verify/**/*.csv
+/docs/verify/**/*.log
+
+# Codex 첨부 이미지·사용량 기록(공개 저장소에 올리지 않는다)
+.codex-attachments/
+/docs/handoff/2026-11-17-usage-continuation.md
