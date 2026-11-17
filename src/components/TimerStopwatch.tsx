@@ -7,6 +7,7 @@ import '@/lib/i18n/ns/timer'
 import { Play, Pause, RotateCcw, Flag, Plus, Maximize, Minimize, BellOff, Copy, Check, Volume2, Bell } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
 import * as T from '@/utils/timer'
+import TimerRoutine from '@/components/TimerRoutine'
 
 type Mode = 'timer' | 'stopwatch'
 const MODES: Mode[] = ['timer', 'stopwatch']
@@ -40,6 +41,8 @@ export default function TimerStopwatch() {
   const [support, setSupport] = useState({ wake: false, notify: false, vibrate: false })
   const [perm, setPerm] = useState<NotificationPermission>('default')
   const [wakeOn, setWakeOn] = useState(false)
+  const [routineRunning, setRoutineRunning] = useState(false)
+  const routineRunningRef = useRef(false)
   const loaded = useRef(false)
   const audioRef = useRef<AudioContext | null>(null)
   const oneMinRef = useRef(false)
@@ -114,6 +117,7 @@ export default function TimerStopwatch() {
 
   // ── 타이머 조작 ──
   const startTimer = (sec = inputSec) => {
+    if (routineRunningRef.current) return
     if (sec < 1) { setErr(t('countdown.zeroError')); minRef.current?.focus(); return }
     unlockAudio()
     setErr('')
@@ -126,11 +130,13 @@ export default function TimerStopwatch() {
     setMsg(t('announce.started', { time: human(sec * 1000) }))
   }
   const preset = (min: number) => {
+    if (routineRunningRef.current) return
     setCfg((c) => ({ ...c, h: '0', m: String(min), s: '0' }))
     startTimer(min * 60)
   }
   const stopAlarm = () => setRinging(false)
   const toggleTimer = () => {
+    if (routineRunningRef.current) return
     const n = Date.now()
     if (cd.status === 'running') {
       const p = T.pause(cd, n)
@@ -150,6 +156,7 @@ export default function TimerStopwatch() {
     setMsg(t('announce.reset'))
   }
   const addMinute = () => {
+    if (routineRunningRef.current) return
     const n = Date.now()
     if (cd.status === 'idle') {
       const { h, m, s } = T.splitSec(Math.min(T.MAX_SEC, inputSec + 60))
@@ -178,6 +185,7 @@ export default function TimerStopwatch() {
 
   // ── 스톱워치 조작 ──
   const toggleSw = () => {
+    if (routineRunningRef.current) return
     unlockAudio()
     const n = Date.now()
     const next = T.swToggle(sw, n)
@@ -248,7 +256,7 @@ export default function TimerStopwatch() {
   }, [titleText])
 
   // ── 화면 꺼짐 방지 ──
-  const active = cdRunning || swRunning
+  const active = cdRunning || swRunning || routineRunning
   useEffect(() => {
     if (!active || !cfg.wake || !('wakeLock' in navigator)) return
     let lock: WakeLockSentinel | null = null
@@ -274,6 +282,7 @@ export default function TimerStopwatch() {
 
   // ── 전체화면 (iPhone 등 미지원이면 화면 덮기만) ──
   const enterBig = () => {
+    if (routineRunningRef.current) return
     setBig(true)
     document.documentElement.requestFullscreen?.().catch(() => {})
   }
@@ -304,6 +313,7 @@ export default function TimerStopwatch() {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return
       const el = e.target instanceof Element ? e.target : null
+      if (el?.closest('[data-timer-routine]')) return
       if (el?.closest('input, textarea, select, [contenteditable="true"]')) return
       switch (e.code) {
         case 'Space':
@@ -374,12 +384,12 @@ export default function TimerStopwatch() {
     const h = inBig ? 'min-h-14 px-6 text-lg' : 'min-h-12 px-5'
     return (
       <div className="flex flex-wrap justify-center gap-3">
-        <button type="button" onClick={mode === 'timer' ? toggleTimer : toggleSw} autoFocus={inBig} className={`ui-btn ${h} min-w-36`}>
+        <button type="button" onClick={mode === 'timer' ? toggleTimer : toggleSw} disabled={routineRunning} autoFocus={inBig} className={`ui-btn ${h} min-w-36 disabled:opacity-40`}>
           <PrimaryIcon className="w-5 h-5" aria-hidden="true" />
           {primaryLabel}
         </button>
         {mode === 'timer' ? (
-          <button type="button" onClick={addMinute} className={`ui-btn-soft ${h}`}>
+          <button type="button" onClick={addMinute} disabled={routineRunning} className={`ui-btn-soft ${h} disabled:opacity-40`}>
             <Plus className="w-5 h-5" aria-hidden="true" />
             {t('countdown.addMinute')}
           </button>
@@ -399,7 +409,7 @@ export default function TimerStopwatch() {
             {t('fullscreen.exit')}
           </button>
         ) : (
-          <button type="button" ref={fsBtnRef} onClick={enterBig} className={`${softBtn} ${h}`}>
+          <button type="button" ref={fsBtnRef} onClick={enterBig} disabled={routineRunning} className={`${softBtn} ${h}`}>
             <Maximize className="w-5 h-5" aria-hidden="true" />
             {t('fullscreen.enter')}
           </button>
@@ -423,6 +433,20 @@ export default function TimerStopwatch() {
   )
 
   const unitKeys = { h: 'hours', m: 'minutes', s: 'seconds' } as const
+  const changeRoutineRunning = useCallback((running: boolean) => {
+    routineRunningRef.current = running
+    setRoutineRunning(running)
+  }, [])
+  const requestRoutineStart = () => {
+    if (cdRunning || swRunning || ringing) return false
+    unlockAudio()
+    changeRoutineRunning(true)
+    return true
+  }
+  const signalRoutine = useCallback(() => {
+    if (cfg.sound) beep()
+    if (cfg.vibrate) navigator.vibrate?.([150, 100, 150])
+  }, [cfg.sound, cfg.vibrate, beep])
 
   return (
     <div className="space-y-8">
@@ -457,6 +481,7 @@ export default function TimerStopwatch() {
       </div>
 
       <p aria-live="polite" className="sr-only">{msg}</p>
+      {routineRunning && <p role="status" className="rounded-xl bg-subtle p-3 text-sm text-body">{t('routine.runningElsewhere')}</p>}
 
       <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-tab-${mode}`} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section className="lg:col-span-2 ui-card p-6 sm:p-8">
@@ -523,7 +548,7 @@ export default function TimerStopwatch() {
                   <p id={`${uid}-presets`} className="text-sm text-sub text-center mb-2">{t('countdown.presets')}</p>
                   <div role="group" aria-labelledby={`${uid}-presets`} className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                     {PRESETS.map((n) => (
-                      <button key={n} type="button" onClick={() => preset(n)} aria-label={t('countdown.presetStart', { n })} className={`${softBtn} min-h-11 tabular-nums`}>
+                      <button key={n} type="button" onClick={() => preset(n)} disabled={routineRunning} aria-label={t('countdown.presetStart', { n })} className={`${softBtn} min-h-11 tabular-nums`}>
                         {t('countdown.presetLabel', { n })}
                       </button>
                     ))}
@@ -690,6 +715,7 @@ export default function TimerStopwatch() {
         </div>
       )}
 
+      <TimerRoutine otherRunning={cdRunning || swRunning || ringing} onRequestStart={requestRoutineStart} onRunningChange={changeRoutineRunning} onSignal={signalRoutine} />
       <GuideSection namespace="timer" />
     </div>
   )

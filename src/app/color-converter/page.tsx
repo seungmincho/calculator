@@ -3,14 +3,18 @@ import I18nWrapper from '@/components/I18nWrapper'
 import ColorConverter from '@/components/ColorConverter'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import koMessages from '@/../messages/generated/ko/ns/colorConverter.json'
+
+const TITLE = '색상 변환기 - HEX 입력·RGB/HSL 변환·공유 | 툴허브'
+const DESCRIPTION = '3자리·6자리 HEX, 색상 선택기와 RGB/HSL 슬라이더로 고른 색을 HEX·RGB·HSL·HSV·CMYK로 표시합니다. 불완전한 입력은 그대로 유지하고 마지막 유효 색을 확인·복사·공유할 수 있습니다. CMYK는 인쇄 참고값입니다.'
 
 export const metadata: Metadata = {
-  title: '색상 변환기 - HEX, RGB, HSL, CMYK 변환 | 툴허브',
-  description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: '색상변환기, hex변환, rgb변환, hsl변환, cmyk변환, 컬러피커, color converter',
   openGraph: {
-    title: '색상 변환기 - HEX/RGB/HSL/CMYK 변환',
-    description: '다양한 색상 형식을 손쉽게 변환하세요',
+    title: TITLE,
+    description: DESCRIPTION,
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/color-converter/',
@@ -19,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '색상 변환기 - HEX, RGB, HSL, CMYK 변환',
-    description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/color-converter.png'],
   },
   alternates: {
@@ -33,20 +37,16 @@ export default function ColorConverterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '색상 변환기',
-    description: '색상 코드를 HEX, RGB, HSL, HSV, CMYK 형식으로 즉시 변환합니다. 컬러 피커로 색상을 고르면 모든 형식을 한번에 확인하고 복사할 수 있습니다.',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/color-converter/',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['HEX 변환', 'RGB 변환', 'HSL 변환', 'CMYK 변환', '실시간 미리보기']
+    featureList: ['3자리·6자리 불투명 HEX 입력', '색상 선택기·RGB/HSL 슬라이더', 'HEX·RGB·HSL·HSV·CMYK 표시', '불완전 입력·마지막 유효 색 보존', '전체 색상 값 복사·실패 수동 선택·재시도', '유효 색 링크·PNG 공유']
   }
 
-  const faq = [
-    { q: 'HEX, RGB, HSL 색상 코드의 차이는?', a: 'HEX는 #FF5733처럼 16진수로 표현하며 웹 개발에서 가장 널리 사용됩니다. RGB는 rgb(255, 87, 51)처럼 빨강, 초록, 파랑 값(0-255)으로 표현하며 모니터 디스플레이 원리와 동일합니다. HSL은 hsl(14, 100%, 60%)처럼 색상(Hue 0-360°), 채도(Saturation 0-100%), 밝기(Lightness 0-100%)로 표현하며 직관적인 색상 조절에 유리합니다.' },
-    { q: 'CMYK와 RGB의 차이점은?', a: 'RGB는 빛의 삼원색(빨강, 초록, 파랑)을 혼합하는 가산혼합 방식으로, 모니터, TV 등 디스플레이에 사용됩니다. CMYK는 잉크의 사원색(시안, 마젠타, 노랑, 검정)을 혼합하는 감산혼합 방식으로, 인쇄물에 사용됩니다. 모니터에서 보이는 색상과 인쇄 결과가 다를 수 있어 인쇄 작업 시 CMYK 변환이 필수적입니다.' },
-    { q: '웹 접근성을 위한 색상 대비 기준은?', a: 'WCAG 2.1 기준으로 일반 텍스트는 배경과 최소 4.5:1, 큰 텍스트(18pt 이상)는 3:1의 명도 대비를 충족해야 합니다. AAA 등급은 일반 텍스트 7:1, 큰 텍스트 4.5:1을 요구합니다. 예를 들어 흰 배경(#FFFFFF)에 회색 텍스트는 #757575 이상 어두워야 AA 기준을 충족합니다.' },
-  ]
+  const faq = koMessages.colorConverter.guide.faq.items
 
   return (
     <>
@@ -68,16 +68,16 @@ export default function ColorConverterPage() {
             색상 변환기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            색상 변환기는 <strong>HEX, RGB, HSL, HSV, CMYK 색상 코드를 실시간으로 상호 변환</strong>하는 무료 온라인 도구입니다. 컬러 피커로 직접 색상을 선택하거나 코드를 입력하면 모든 형식으로 동시에 변환되며 미리보기를 통해 정확한 색상을 확인할 수 있습니다. 웹 개발자, UI/UX 디자이너, 그래픽 디자이너에게 필수적인 도구입니다.
+            색상 변환기는 <strong>3자리·6자리 HEX를 RGB, HSL, HSV, CMYK 표기로 변환</strong>하는 무료 도구입니다. 색상 선택기·기본 색상·RGB/HSL 슬라이더로도 색을 선택할 수 있습니다. 입력 중에는 원문을 유지하고, 불완전한 값일 때는 마지막 유효 색을 안내합니다. 복사와 공유는 표시된 유효 색을 사용하며 CMYK 값은 인쇄 참고용 근사값입니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             색상 변환기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>웹 개발:</strong> 디자이너에게 받은 HEX 코드를 CSS rgba()로 변환해 투명도를 조절하세요.</li>
-            <li><strong>인쇄 작업:</strong> 화면의 RGB 색상을 CMYK로 변환하여 인쇄 결과와의 차이를 미리 확인하세요.</li>
+            <li><strong>웹 개발:</strong> 3자리 또는 6자리 HEX를 입력하고 CSS에 쓸 RGB/HSL 표기를 복사하세요. 투명도·색 이름·CSS 변수 입력은 지원하지 않습니다.</li>
+            <li><strong>인쇄 작업:</strong> CMYK는 ICC 프로파일을 적용하지 않은 참고값입니다. 실제 결과는 잉크·종이·기기 설정에 따라 별도로 확인하세요.</li>
             <li><strong>HSL 직관적 조절:</strong> HSL로 변환하면 밝기와 채도를 수치로 정밀하게 조절하기 쉽습니다.</li>
-            <li><strong>접근성 확인:</strong> 전경색과 배경색의 대비율이 WCAG 기준(4.5:1 이상)을 충족하는지 확인하세요.</li>
+            <li><strong>복사·공유:</strong> 복사가 실패하면 전체 값을 직접 선택하거나 재시도할 수 있습니다. 공유 주소는 유효한 색만 담고 편집 중인 원문은 담지 않습니다.</li>
             <li><strong>브랜드 가이드라인:</strong> 브랜드 색상을 HEX·RGB·CMYK 값으로 모두 기록해 일관성을 유지하세요.</li>
           </ul>
         </div>

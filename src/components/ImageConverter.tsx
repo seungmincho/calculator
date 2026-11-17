@@ -1,192 +1,177 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect, useId } from 'react'
+import { useState, useCallback, useRef, useEffect, useLayoutEffect, useId } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/imageConverter'
-import { useSearchParams } from '@/hooks/useSearchParams'
 import { Upload, Download, X, Loader2, Image as ImageIcon } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
-import { detectEncoders, formatBytes, savingsPct, uniqueNames } from '@/utils/imageCompress'
-import {
-  acceptFile, convertImage, convertName, detectFormat, nativeHeic, parseSettings, readHead,
-  needsBg, usesQuality, CONVERT_FORMATS, DEFAULTS, FORMAT_LABEL,
-  type ConvertFormat, type ConvertOptions, type SourceFormat,
-} from '@/utils/imageConvert'
+import MobileResultLink from '@/components/MobileResultLink'
+import { detectEncoders, formatBytes, savingsPct } from '@/utils/imageCompress'
+import { convertImage, convertName, nativeHeic, parseSettings, needsBg, usesQuality, CONVERT_FORMATS, DEFAULTS, FORMAT_LABEL, type ConvertFormat, type ConvertOptions } from '@/utils/imageConvert'
+import { createImageConversionQueue, imageConversionKey, type ConversionSnapshot } from '@/utils/imageConversionQueue'
+import { createImageConversionImports } from '@/utils/imageConversionImports'
+import { captureImageConversionZip, createImageConversionZip, imageConversionSettingsUrl, type ConversionZipState } from '@/utils/imageConversionActions'
+import { createShareResultDownloads } from '@/utils/shareResultActions'
 
 type ErrorKind = 'heic' | 'decode' | 'encode' | 'format'
-
-interface Item {
-  id: string
-  file: File
-  src: SourceFormat
-  key?: string // 마지막으로 처리한 설정
-  error?: ErrorKind
-  out?: { blob: Blob; url: string; width: number; height: number; downscaled: boolean; format: ConvertFormat }
-}
-
 interface CompareRow { name: string; use: string; alpha: string; compression: string; compat: string }
-
-const optKey = (o: ConvertOptions) => `${o.format}|${o.quality}|${o.bg}`
-const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
-
-function saveBlob(blob: Blob, name: string) {
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = name
-  a.click()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
+type Model = { options: ConvertOptions; ready: boolean; revision: number }
+type Runtime = { epoch: number; notice: number; queue: ReturnType<typeof createImageConversionQueue>; imports: ReturnType<typeof createImageConversionImports>; zip: ReturnType<typeof createImageConversionZip>; downloads: ReturnType<typeof createShareResultDownloads> }
+const initialSnapshot = (): ConversionSnapshot => ({ items: [], options: { ...DEFAULTS }, key: imageConversionKey(DEFAULTS), settling: false, paused: false, activeId: null, phase: 'idle' })
+const settingsSignature = () => { const query = new URLSearchParams(window.location.search); return JSON.stringify(['f','q','bg'].map(key => query.getAll(key))) }
+const normalizeOptions = (options: ConvertOptions, encoders: { webp: boolean; avif: boolean } | null) => encoders && (options.format === 'avif' && !encoders.avif || options.format === 'webp' && !encoders.webp) ? { ...options, format: DEFAULTS.format } : options
 
 export default function ImageConverter() {
   const t = useTranslations('imageConverter')
-  const sp = useSearchParams()
-  const uidBase = useId()
-  const fmtLabelId = `${uidBase}-fmt`
-
-  // 설정 (URL 공유)
-  const [init] = useState(() => parseSettings(sp.get('f'), sp.get('q'), sp.get('bg')))
-  const [format, setFormat] = useState<ConvertFormat>(init.format)
-  const [quality, setQuality] = useState(init.quality)
-  const [bg, setBg] = useState(init.bg)
-  const [job, setJob] = useState<ConvertOptions>(init) // 슬라이더 연속 변경을 묶은 실제 변환 설정
-
-  const [items, setItems] = useState<Item[]>([])
-  const [working, setWorking] = useState<string | null>(null)
-  const [enc, setEnc] = useState<{ webp: boolean; avif: boolean } | null>(null)
+  const uidBase = useId(), fmtLabelId = `${uidBase}-fmt`
+  const [model, setModel] = useState<Model>({ options: { ...DEFAULTS }, ready: false, revision: 0 })
+  const live = useRef(model), earlyIntent = useRef(false), observedQuery = useRef('')
+  const runtime = useRef<Runtime | null>(null), epoch = useRef(0)
+  const [view, setView] = useState<{ epoch: number; snapshot: ConversionSnapshot }>({ epoch: 0, snapshot: initialSnapshot() })
+  const [enc, setEnc] = useState<{ webp: boolean; avif: boolean } | null>(null), encRef = useRef(enc)
   const [heicNative, setHeicNative] = useState<boolean | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [skipped, setSkipped] = useState(0)
-  const [zipping, setZipping] = useState(false)
-
+  const [isDragging, setIsDragging] = useState(false), [skipped, setSkipped] = useState(0), [reading, setReading] = useState(0)
+  const [importFailed, setImportFailed] = useState(false), [urlFailed, setUrlFailed] = useState(false), [downloadFailed, setDownloadFailed] = useState(false)
+  const [zipState, setZipState] = useState<ConversionZipState>({ status: 'idle' })
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const itemsRef = useRef<Item[]>([])
-  useEffect(() => { itemsRef.current = items }, [items])
-  useEffect(() => () => itemsRef.current.forEach((i) => i.out && URL.revokeObjectURL(i.out.url)), [])
+  const snapshot = view.snapshot, { format, quality, bg } = model.options
+  const jobKey = imageConversionKey(model.options), zipping = zipState.status === 'working'
+  const currentRuntime = () => runtime.current?.epoch === view.epoch ? runtime.current : null
+  const commitSettings = useCallback((options: ConvertOptions, explicit = true, ready = live.current.ready) => {
+    const rt = runtime.current
+    if (!rt) return
+    if (explicit && !live.current.ready) earlyIntent.current = true
+    const next = normalizeOptions(options, encRef.current), changed = imageConversionKey(next) !== imageConversionKey(live.current.options)
+    if (changed) rt.zip.cancel()
+    const value = { options: { ...next }, ready, revision: live.current.revision + 1 }
+    live.current = value; setModel(value); setUrlFailed(false); setDownloadFailed(false)
+    rt.queue.setOptions(value.options, ready ? 250 : 0)
+  }, [])
+  const setFormat = (value: ConvertFormat) => commitSettings({ ...live.current.options, format: value })
+  const setQuality = (value: number) => commitSettings({ ...live.current.options, quality: value })
+  const setBg = (value: string) => commitSettings({ ...live.current.options, bg: value })
+
+  useLayoutEffect(() => {
+    const ownEpoch = ++epoch.current
+    let sequence = 0
+    let rt: Runtime | null = null
+    const owns = () => rt !== null && runtime.current === rt
+    const queue = createImageConversionQueue({ options: live.current.options,
+      process: async (file, options) => { const output = await convertImage(file, options); return { ...output, url: URL.createObjectURL(output.blob) } },
+      release: output => URL.revokeObjectURL(output.url),
+      onChange: value => { if (owns()) setView({ epoch: ownEpoch, snapshot: value }) },
+    })
+    queue.pause()
+    const downloads = createShareResultDownloads(); downloads.activate()
+    const zip = createImageConversionZip({
+      encode: async entries => { const JSZip = (await import('jszip')).default; const archive = new JSZip(); for (const entry of entries) archive.file(entry.name, entry.blob); return archive.generateAsync({ type: 'blob', compression: 'STORE' }) },
+      download: (blob, captured) => {
+        const current = () => owns() && imageConversionKey(live.current.options) === captured.key
+        const extension = FORMAT_LABEL[captured.key.split('|')[0] as ConvertFormat].toLowerCase()
+        const outcome = downloads.download(blob, `images_${extension}.zip`, current)
+        if (outcome === 'failed') throw new Error('download')
+      },
+      onChange: value => { if (owns()) setZipState(value) },
+    })
+    const imports = createImageConversionImports({
+      add: rows => { if (owns()) queue.add(rows.map(row => ({ ...row, id: `${uidBase}-${ownEpoch}-${++sequence}` }))) },
+      onChange: value => { if (owns()) setReading(value) },
+    })
+    rt = { epoch: ownEpoch, notice: 0, queue, imports, zip, downloads }
+    runtime.current = rt; setView({ epoch: ownEpoch, snapshot: queue.getSnapshot() }); setReading(0); setZipState(zip.getSnapshot())
+    if (live.current.ready) queue.resume()
+    return () => { if (owns()) runtime.current = null; imports.dispose(); zip.dispose(); queue.dispose(); downloads.dispose() }
+  }, [uidBase])
 
   useEffect(() => {
+    const rt = runtime.current
+    let active = true
+    const owns = () => active && runtime.current === rt
     setHeicNative(nativeHeic(navigator.userAgent))
-    detectEncoders()
-      .then((e) => {
-        setEnc(e)
-        if (!e.avif) setFormat((f) => (f === 'avif' ? DEFAULTS.format : f))
-        if (!e.webp) setFormat((f) => (f === 'webp' ? DEFAULTS.format : f))
-      })
-      .catch(() => setEnc({ webp: false, avif: false }))
-  }, [])
-
-  // 설정 → 변환 job(250ms 묶음) + URL(기본값과 다른 것만)
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setJob({ format, quality, bg })
-      const p = new URLSearchParams()
-      if (format !== DEFAULTS.format) p.set('f', format)
-      if (usesQuality(format) && quality !== DEFAULTS.quality) p.set('q', String(quality))
-      if (needsBg(format) && bg !== DEFAULTS.bg) p.set('bg', bg.slice(1))
-      const qs = p.toString()
-      window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
-    }, 250)
-    return () => clearTimeout(id)
-  }, [format, quality, bg])
-
-  const jobKey = optKey(job)
-
-  // ── 파일 추가 ──
-  const addFiles = useCallback(async (list: FileList | File[]) => {
-    const files = Array.from(list)
-    const ok = files.filter(acceptFile)
-    setSkipped(files.length - ok.length)
-    if (!ok.length) return
-    const added = await Promise.all(ok.map(async (file) => {
-      let head: Uint8Array | null = null
-      try { head = await readHead(file) } catch { /* 이름·MIME으로 판별 */ }
-      return { id: uid(), file, src: detectFormat(head, file.name, file.type) } as Item
-    }))
-    setItems((prev) => [...prev, ...added])
-  }, [])
-
-  useEffect(() => {
-    const onPaste = (e: ClipboardEvent) => {
-      const files = Array.from(e.clipboardData?.files ?? [])
-      if (files.length) { e.preventDefault(); addFiles(files) }
+    detectEncoders().then(value => {
+      if (!owns()) return
+      encRef.current = value; setEnc(value)
+      const next = normalizeOptions(live.current.options, encRef.current)
+      if (imageConversionKey(next) !== imageConversionKey(live.current.options)) commitSettings(next, false)
+    }).catch(() => { if (owns()) { const value = { webp: false, avif: false }; encRef.current = value; setEnc(value); const next = normalizeOptions(live.current.options, encRef.current); if (imageConversionKey(next) !== imageConversionKey(live.current.options)) commitSettings(next, false) } })
+    const restore = (initial: boolean) => {
+      if (!owns()) return
+      const params = new URLSearchParams(window.location.search)
+      const options = initial && earlyIntent.current ? live.current.options : parseSettings(params.get('f'), params.get('q'), params.get('bg'))
+      commitSettings(options, false, true); observedQuery.current = settingsSignature()
+      if (initial) rt?.queue.resume()
     }
-    window.addEventListener('paste', onPaste)
-    return () => window.removeEventListener('paste', onPaste)
+    const timer = window.setTimeout(function restoreInitialImageConversion() { if (!live.current.ready) restore(true) }, 0)
+    const pop = () => { if (owns() && observedQuery.current !== settingsSignature()) restore(!live.current.ready) }
+    window.addEventListener('popstate', pop)
+    return () => { active = false; window.clearTimeout(timer); window.removeEventListener('popstate', pop) }
+  }, [commitSettings])
+
+  useEffect(() => {
+    if (!model.ready) return
+    const rt = runtime.current
+    const timer = window.setTimeout(function writeImageConversionSettings() {
+      if (!rt || runtime.current !== rt || live.current !== model) return
+      const href = imageConversionSettingsUrl(window.location.href, model.options)
+      try { if (!href) throw new Error('url'); if (href !== window.location.href) window.history.replaceState(window.history.state, '', href); observedQuery.current = settingsSignature(); setUrlFailed(false) }
+      catch { setUrlFailed(true) }
+    }, 250)
+    return () => window.clearTimeout(timer)
+  }, [model])
+
+  const addFiles = useCallback((list: FileList | File[]) => {
+    const rt = runtime.current
+    if (!rt) return
+    const notice = ++rt.notice
+    setImportFailed(false)
+    void rt.imports.add(Array.from(list)).then(outcome => {
+      if (runtime.current !== rt || notice !== rt.notice || outcome.status === 'stale') return
+      setSkipped(outcome.skipped); setImportFailed(outcome.status === 'failed')
+    })
+  }, [])
+  useEffect(() => {
+    const paste = (event: ClipboardEvent) => { const files = Array.from(event.clipboardData?.files ?? []); if (files.length) { event.preventDefault(); addFiles(files) } }
+    window.addEventListener('paste', paste); return () => window.removeEventListener('paste', paste)
   }, [addFiles])
 
-  // ── 순차 변환: 현재 설정으로 처리 안 된 항목을 하나씩 ──
-  useEffect(() => {
-    if (working) return
-    const next = items.find((i) => i.key !== jobKey)
-    if (!next) return
-    setWorking(next.id)
-    const opts = job
-    const key = jobKey
-    convertImage(next.file, opts)
-      .then((o) => ({ o, err: undefined as ErrorKind | undefined }))
-      .catch((e: Error) => ({
-        o: undefined,
-        err: (e.message === 'decode' ? (next.src === 'heic' ? 'heic' : 'decode') : e.message === 'format' ? 'format' : 'encode') as ErrorKind,
-      }))
-      .then(({ o, err }) => {
-        const prev = itemsRef.current.find((i) => i.id === next.id)
-        if (prev) {
-          const out = o && { blob: o.blob, url: URL.createObjectURL(o.blob), width: o.width, height: o.height, downscaled: o.downscaled, format: opts.format }
-          if (prev.out) URL.revokeObjectURL(prev.out.url)
-          setItems((p) => p.map((i) => (i.id === next.id ? { ...i, key, out, error: err } : i)))
-        }
-        setWorking(null)
-      })
-  }, [items, job, jobKey, working])
-
-  const removeItem = (id: string) => {
-    const it = itemsRef.current.find((i) => i.id === id)
-    if (it?.out) URL.revokeObjectURL(it.out.url)
-    setItems((p) => p.filter((i) => i.id !== id))
-  }
-
-  const reset = () => {
-    itemsRef.current.forEach((i) => i.out && URL.revokeObjectURL(i.out.url))
-    setItems([])
-    setSkipped(0)
-  }
-
-  // ── 집계 ──
-  const done = items.filter((i) => i.key === jobKey && i.out)
-  const failed = items.filter((i) => i.key === jobKey && i.error)
+  const removeItem = (id: string) => currentRuntime()?.queue.remove(id)
+  const reset = () => { const rt = currentRuntime(); if (!rt) return; rt.notice++; rt.imports.clear(); rt.zip.cancel(); rt.queue.clear(); setSkipped(0); setImportFailed(false); setDownloadFailed(false) }
+  const items = snapshot.items.map(item => ({ ...item, key: item.attemptKey,
+    out: item.lastSuccess && { ...item.lastSuccess.output, format: item.lastSuccess.options.format },
+    error: item.error ? ((item.error as Error).message === 'decode' ? item.src === 'heic' ? 'heic' : 'decode' : (item.error as Error).message === 'format' ? 'format' : 'encode') as ErrorKind : undefined,
+  }))
+  const done = items.filter(item => !snapshot.settling && item.status === 'done' && item.attemptKey === jobKey && item.lastSuccess?.key === jobKey)
+  const failed = items.filter(item => item.status === 'error' && item.attemptKey === jobKey)
   const pending = items.length - done.length - failed.length
-  const totalIn = done.reduce((s, i) => s + i.file.size, 0)
-  const totalOut = done.reduce((s, i) => s + i.out!.blob.size, 0)
-  const totalPct = savingsPct(totalIn, totalOut)
-  const hasHeicError = failed.some((i) => i.error === 'heic')
-
-  const change = (pct: number) => (pct > 0 ? t('smaller', { pct }) : pct < 0 ? t('larger', { pct: -pct }) : t('same'))
-
-  const downloadAll = async () => {
-    if (done.length === 1) return saveBlob(done[0].out!.blob, convertName(done[0].file.name, done[0].out!.format))
-    setZipping(true)
-    try {
-      const JSZip = (await import('jszip')).default
-      const zip = new JSZip()
-      const names = uniqueNames(done.map((i) => convertName(i.file.name, i.out!.format)))
-      done.forEach((i, n) => zip.file(names[n], i.out!.blob))
-      saveBlob(await zip.generateAsync({ type: 'blob', compression: 'STORE' }), `images_${FORMAT_LABEL[job.format].toLowerCase()}.zip`)
-    } finally {
-      setZipping(false)
-    }
+  const totalIn = done.reduce((sum, item) => sum + item.file.size, 0), totalOut = done.reduce((sum, item) => sum + item.out!.blob.size, 0)
+  const totalPct = savingsPct(totalIn, totalOut), hasHeicError = failed.some(item => item.error === 'heic')
+  const change = (pct: number) => pct > 0 ? t('smaller', { pct }) : pct < 0 ? t('larger', { pct: -pct }) : t('same')
+  const settingsLabel = (options: ConvertOptions) => [FORMAT_LABEL[options.format], usesQuality(options.format) ? t('queue.qualitySetting', { quality: options.quality }) : '', needsBg(options.format) ? t('queue.backgroundSetting', { color: options.bg }) : ''].filter(Boolean).join(' · ')
+  const downloadItem = (id: string, success: NonNullable<ConversionSnapshot['items'][number]['lastSuccess']>) => {
+    const rt = currentRuntime(); if (!rt) return
+    const current = () => runtime.current === rt && rt.queue.getSnapshot().items.find(item => item.id === id)?.lastSuccess === success
+    const item = rt.queue.getSnapshot().items.find(item => item.id === id)
+    if (!item || !current()) return
+    const outcome = rt.downloads.download(success.output.blob, convertName(item.file.name, success.options.format), current)
+    if (outcome !== 'stale') setDownloadFailed(outcome === 'failed')
   }
-
-  const status = !items.length
-    ? ''
-    : pending > 0
-      ? t('statusWorking', { done: done.length + failed.length, total: items.length })
-      : t('statusDone', { n: done.length })
-
-  const compareRows = t.raw('compare.rows') as CompareRow[]
-  const heicSteps = t.raw('heicHelp.items') as string[]
-
+  const downloadAll = () => {
+    const rt = currentRuntime()
+    if (!rt || live.current !== model || !model.ready || rt.queue.getSnapshot().key !== jobKey || rt.zip.getSnapshot() !== zipState) return
+    const captured = captureImageConversionZip(rt.queue.getSnapshot())
+    if (!captured.entries.length) return
+    setDownloadFailed(false)
+    if (captured.entries.length === 1) {
+      rt.zip.cancel()
+      const entry = captured.entries[0]
+      const outcome = rt.downloads.download(entry.blob, entry.name, () => runtime.current === rt && rt.queue.getSnapshot().key === captured.key && !rt.queue.getSnapshot().settling)
+      if (outcome !== 'stale') setDownloadFailed(outcome === 'failed')
+    } else void rt.zip.run(captured)
+  }
+  const status = !items.length ? '' : t(`queue.${snapshot.settling ? 'settling' : snapshot.phase}`)
+  const compareRows = t.raw('compare.rows') as CompareRow[], heicSteps = t.raw('heicHelp.items') as string[]
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" data-image-converter data-conversion-ready={model.ready}>
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -196,6 +181,7 @@ export default function ImageConverter() {
         {/* ── 왼쪽: 업로드 + 설정 ── */}
         <div className="lg:col-span-1 space-y-6 min-w-0">
           <div className="ui-card p-5 space-y-3">
+            <MobileResultLink href="#image-converter-result" label={t('resultTitle')} value={String(done.length)} />
             <button
               type="button"
               className={`w-full border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
@@ -213,6 +199,7 @@ export default function ImageConverter() {
             </button>
             <input
               ref={fileInputRef}
+              data-conversion-input
               type="file"
               accept="image/*,.heic,.heif"
               multiple
@@ -229,6 +216,8 @@ export default function ImageConverter() {
               </p>
             )}
             {skipped > 0 && <p className="text-xs text-amber-700" role="alert">{t('skippedFiles', { n: skipped })}</p>}
+            {reading > 0 && <p data-conversion-reading role="status" className="text-xs text-sub">{t('queue.reading', { n: reading })}</p>}
+            {importFailed && <p data-conversion-import-error role="alert" className="text-sm text-body">{t('queue.importFailed')}</p>}
           </div>
 
           <div className="ui-card p-5 space-y-6">
@@ -238,6 +227,7 @@ export default function ImageConverter() {
                 {CONVERT_FORMATS.filter((f) => f !== 'avif' || enc?.avif).map((f) => (
                   <button
                     key={f}
+                    data-conversion-format={f}
                     type="button"
                     onClick={() => setFormat(f)}
                     aria-pressed={format === f}
@@ -262,6 +252,7 @@ export default function ImageConverter() {
                 </label>
                 <input
                   id={`${uidBase}-q`}
+                  data-conversion-quality
                   type="range" min={10} max={100} step={5}
                   value={quality}
                   onChange={(e) => setQuality(Number(e.target.value))}
@@ -278,6 +269,7 @@ export default function ImageConverter() {
               <div className="flex items-center gap-3">
                 <input
                   id={`${uidBase}-bg`} type="color" value={bg} onChange={(e) => setBg(e.target.value)}
+                  data-conversion-bg
                   aria-describedby={`${uidBase}-bg-hint`}
                   className="w-11 h-11 rounded-xl border border-line-strong bg-surface cursor-pointer shrink-0"
                 />
@@ -290,14 +282,25 @@ export default function ImageConverter() {
 
             <p className="text-xs text-muted leading-relaxed bg-subtle rounded-xl p-3">{t('metaNote')}</p>
 
-            <button type="button" onClick={reset} disabled={!items.length} className="ui-btn-soft w-full px-4 py-3 min-h-11 disabled:opacity-40 disabled:cursor-not-allowed">
+            {urlFailed && <p data-conversion-url-error role="status" className="text-sm text-body">{t('queue.urlWriteFailed')}</p>}
+            <button type="button" data-conversion-action="clear" onClick={reset} disabled={!items.length && !reading} className="ui-btn-soft w-full px-4 py-3 min-h-11 disabled:opacity-40 disabled:cursor-not-allowed">
               {t('reset')}
             </button>
           </div>
         </div>
 
         {/* ── 오른쪽: 결과 ── */}
-        <div className="lg:col-span-2 space-y-6 min-w-0">
+        <div id="image-converter-result" className="lg:col-span-2 space-y-6 min-w-0 scroll-mt-20">
+          <section data-conversion-controls data-conversion-phase={snapshot.phase} data-conversion-settling={snapshot.settling} className="ui-card p-5 space-y-3" aria-labelledby={`${uidBase}-queue`}>
+            <h2 id={`${uidBase}-queue`} className="text-lg font-semibold text-fg">{t('queue.title')}</h2>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" data-conversion-action={snapshot.paused ? 'resume' : 'pause'} disabled={!model.ready} onClick={() => { const rt = currentRuntime(); if (!rt || !live.current.ready) return; if (rt.queue.getSnapshot().paused) rt.queue.resume(); else rt.queue.pause() }} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-40">{t(snapshot.paused ? 'queue.resume' : 'queue.pause')}</button>
+              <button type="button" data-conversion-action="retry" disabled={!model.ready || snapshot.settling || !failed.length} onClick={() => { if (live.current.ready) currentRuntime()?.queue.retryFailed() }} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-40">{t('queue.retryFailed', { n: failed.length })}</button>
+            </div>
+            <p className="text-xs text-sub">{t('queue.counts', { done: done.length, failed: failed.length, waiting: pending })}</p>
+            <p className="text-xs text-muted">{t(snapshot.paused ? 'queue.pausedHint' : 'queue.pauseHint')}</p>
+            <p className="text-xs text-muted">{t('queue.currentOnly')}</p>
+          </section>
           <p role="status" aria-live="polite" className={status ? 'text-sm text-sub' : 'sr-only'}>{status}</p>
           {failed.length > 0 && (
             <p role="alert" className="text-sm text-red-600">{t('statusFailed', { n: failed.length })}</p>
@@ -312,12 +315,20 @@ export default function ImageConverter() {
                   {t('summaryFrom', { size: formatBytes(totalIn) })} · <span className={totalPct > 0 ? 'text-primary font-semibold' : ''}>{change(totalPct)}</span>
                 </p>
               </div>
-              <button type="button" onClick={downloadAll} disabled={pending > 0 || zipping} className="ui-btn px-5 py-3 min-h-11 inline-flex items-center justify-center gap-2">
+              <button type="button" data-conversion-download-all onClick={downloadAll} disabled={!model.ready || snapshot.settling || zipping} className="ui-btn px-5 py-3 min-h-11 inline-flex items-center justify-center gap-2">
                 <Download size={18} aria-hidden />
                 {zipping ? t('zipping') : done.length > 1 ? t('downloadZip', { n: done.length }) : t('download')}
               </button>
             </div>
           )}
+
+          <div className="space-y-2">
+            <p className="text-xs text-muted">{t('queue.zipHint')}</p>
+            {zipping && <div data-conversion-zip-state="working" className="flex flex-wrap items-center gap-2"><p role="status" className="text-sm text-body">{t('queue.zipWorking')}</p><button type="button" data-conversion-action="cancelZip" onClick={() => { const rt = currentRuntime(); if (rt?.zip.getSnapshot() === zipState) rt.zip.cancel() }} className="ui-btn-soft min-h-11 px-4 py-2 text-sm">{t('queue.cancelZip')}</button></div>}
+            {zipState.status === 'canceled' && <p data-conversion-zip-state="canceled" role="status" className="text-sm text-sub">{t('queue.zipCanceled')}</p>}
+            {zipState.status === 'failed' && <div data-conversion-zip-state="failed" className="space-y-2"><p role="alert" className="text-sm text-body">{t('queue.zipFailed')}</p><button type="button" data-conversion-action="retryZip" disabled={!done.length || snapshot.settling} onClick={downloadAll} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-40">{t('queue.retryZip')}</button></div>}
+            {downloadFailed && <p data-conversion-download-error role="alert" className="text-sm text-body">{t('queue.downloadFailed')}</p>}
+          </div>
 
           {hasHeicError && (
             <div role="alert" className="bg-amber-50 text-amber-800 rounded-2xl p-5 text-sm leading-relaxed">
@@ -336,11 +347,11 @@ export default function ImageConverter() {
             ) : (
               <ul className="divide-y divide-line">
                 {items.map((it) => {
-                  const fresh = it.key === jobKey
-                  const busy = working === it.id
+                  const fresh = !snapshot.settling && it.key === jobKey
+                  const busy = it.status === 'processing'
                   const outSize = it.out?.blob.size ?? 0
                   return (
-                    <li key={it.id} className="flex items-center gap-3 py-3">
+                    <li key={it.id} data-conversion-row={it.id} data-conversion-status={it.status} className="flex flex-wrap items-center gap-3 py-3">
                       <div className="w-16 h-16 rounded-xl bg-subtle overflow-hidden shrink-0 flex items-center justify-center">
                         {it.out ? (
                           <img src={it.out.url} alt={it.file.name} className="w-full h-full object-cover" />
@@ -350,7 +361,7 @@ export default function ImageConverter() {
                           <ImageIcon className="text-faint" size={22} aria-hidden />
                         )}
                       </div>
-                      <div className="min-w-0 flex-1">
+                      <div className="min-w-0 flex-1 basis-32">
                         <p className="text-sm font-medium text-fg truncate" title={it.file.name}>{it.file.name}</p>
                         <p className="text-xs text-sub tabular-nums mt-0.5">
                           {FORMAT_LABEL[it.src]} {formatBytes(it.file.size)}
@@ -362,27 +373,32 @@ export default function ImageConverter() {
                             {it.out.downscaled && <> · {t('downscaled')}</>}
                           </p>
                         )}
-                        {!fresh && !it.error && <p className="text-xs text-muted mt-0.5">{busy ? t('itemWorking') : t('itemWaiting')}</p>}
+                        {it.lastSuccess && <p data-conversion-success={fresh && it.status === 'done' ? 'current' : 'previous'} className="text-xs text-sub mt-1">{t(fresh && it.status === 'done' ? 'queue.currentSuccess' : 'queue.previousSuccess', { settings: settingsLabel(it.lastSuccess.options) })}</p>}
+                        {(it.status === 'pending' || busy) && <p className="text-xs text-muted mt-0.5">{busy ? t('itemWorking') : t('itemWaiting')}</p>}
                         {fresh && it.error && <p className="text-xs text-red-600 mt-0.5 leading-relaxed">{t(`error.${it.error}`)}</p>}
                       </div>
-                      {it.out && (
-                        <a
-                          href={it.out.url}
-                          download={convertName(it.file.name, it.out.format)}
-                          aria-label={t('downloadItem', { name: convertName(it.file.name, it.out.format) })}
+                      <div className="flex w-full justify-end gap-2 sm:w-auto">
+                      {it.lastSuccess && (
+                        <button
+                          type="button"
+                          data-conversion-download={it.id}
+                          onClick={() => downloadItem(it.id, it.lastSuccess!)}
+                          aria-label={t('queue.downloadResult', { name: convertName(it.file.name, it.lastSuccess.options.format), settings: settingsLabel(it.lastSuccess.options) })}
                           className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-xl bg-soft text-body hover:bg-subtle shrink-0"
                         >
                           <Download size={18} aria-hidden />
-                        </a>
+                        </button>
                       )}
                       <button
                         type="button"
+                        data-conversion-remove={it.id}
                         onClick={() => removeItem(it.id)}
                         aria-label={t('remove', { name: it.file.name })}
                         className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-xl text-muted hover:bg-soft hover:text-fg shrink-0"
                       >
                         <X size={18} aria-hidden />
                       </button>
+                      </div>
                     </li>
                   )
                 })}

@@ -35,6 +35,12 @@ eq('lotte 3kg 150cm jeju', price('lotte', 3, 150, 'jeju'), 10000)
 // 로젠: 5kg/100cm 7,000 · 10kg/120cm 8,000 · 20kg/140cm 10,000 · 25kg/160cm 13,000 (타권역)
 eq('logen 4kg 130cm', price('logen', 4, 130), 10000)
 // 크기 단계가 없는 업체는 무게만 (업체 최대 크기 안에서)
+// GS Postbox 타권 일반택배와 내륙 반값택배. 가이드의 예시와 무게 경계.
+for (const [kg, pickup, home] of [[0.5, 1900, 4400], [0.501, 2300, 4600], [1, 2300, 5000], [1.08, 2700, 5300], [2, 2700, 5600]]) {
+  eq('GS pickup ' + kg, price('gs_halfprice', kg, 65), pickup)
+  eq('GS home ' + kg, price('gs_standard', kg, 65), home)
+}
+eq('gs half 5.001kg', price('gs_halfprice', 5.001, 65), null)
 eq('gs half 1kg 80cm', price('gs_halfprice', 1, 80), 2300)
 eq('gs half 1kg 81cm', price('gs_halfprice', 1, 81), null)
 // 표 생성용 호출(크기 0)은 무게 단계 그대로

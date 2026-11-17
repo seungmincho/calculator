@@ -7,7 +7,7 @@ import imageResizerMessages from '../../../messages/generated/ko/ns/imageResizer
 
 export const metadata: Metadata = {
   title: '이미지 리사이저 - 크기 조정 | 툴허브',
-  description: '사진 용량 줄이기·크기 조절을 브라우저에서 바로. 픽셀·퍼센트 변경, 500KB 같은 목표 용량 맞추기, 증명사진·여권·SNS 프리셋, 여러 장 한꺼번에 ZIP 저장. 서버 업로드 없이 작동합니다.',
+  description: '사진 크기·목표 용량을 브라우저에서 조절하고 여러 장을 ZIP으로 저장하세요. 자주 쓰는 크기·맞춤 방식·형식·품질 설정을 이름으로 보관해 다시 불러올 수 있습니다. 원본 사진은 서버에 업로드하거나 설정에 저장하지 않습니다.',
   keywords: '이미지 크기 조절, 사진 용량 줄이기, 증명사진 크기, 픽셀 변경, KB 줄이기, 이미지리사이저, 이미지크기조정, 이미지압축, 사진리사이즈, 이미지편집, 온라인이미지도구',
   openGraph: {
     title: '이미지 리사이저 | 툴허브',
@@ -34,13 +34,13 @@ export default function ImageResizerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '이미지 리사이저',
-    description: '사진 용량 줄이기·크기 조절을 브라우저에서 바로. 픽셀·퍼센트 변경, 500KB 같은 목표 용량 맞추기, 증명사진·여권·SNS 프리셋, 여러 장 한꺼번에 ZIP 저장. 서버 업로드 없이 작동합니다.',
+    description: '사진 크기·목표 용량을 조절하고 출력 설정을 이름으로 저장·불러오기. 여러 장 ZIP 다운로드, 원본 사진 서버 업로드 없음.',
     url: 'https://toolhub.ai.kr/image-resizer/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['여러 장 한꺼번에', '픽셀·퍼센트·긴 변 기준', '목표 용량(KB 이하) 맞추기', '증명사진·여권·SNS 프리셋', '늘이기·맞춤·채우기', 'JPG·PNG·WebP', 'EXIF 회전 반영·메타데이터 제거', 'ZIP 다운로드', '서버 업로드 없음']
+    featureList: ['여러 장 한꺼번에', '픽셀·퍼센트·긴 변 기준', '목표 용량(KB 이하) 맞추기', '증명사진·여권·SNS 프리셋', '늘이기·맞춤·채우기', 'JPG·PNG·WebP', 'EXIF 회전 반영·메타데이터 제거', 'ZIP 다운로드', '서버 업로드 없음', '출력 설정 이름 저장·불러오기', '원본 사진을 제외한 설정만 기기 저장']
   }
 
   return (

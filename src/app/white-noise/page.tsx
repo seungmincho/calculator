@@ -4,13 +4,16 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = '백색소음 생성기 - 종료 타이머·소리 설정 저장 | 툴허브'
+const DESCRIPTION = '화이트·핑크·브라운 노이즈, 빗소리·바람·파도 등 6가지 합성 소리를 재생합니다. 종료 타이머와 선택적 30초 페이드, 이름 붙인 설정 6개 저장·불러오기를 지원합니다.'
+
 export const metadata: Metadata = {
-  title: '백색소음 생성기 - 수면, 집중, ASMR | 툴허브',
-  description: '수면과 집중을 위한 백색소음 생성기. 화이트·핑크·브라운 노이즈, 빗소리, 바람, 파도 등 6가지 사운드. 수면 타이머, 볼륨 조절 지원.',
-  keywords: '백색소음, 화이트노이즈, 핑크노이즈, 브라운노이즈, 수면소음, 집중소음, ASMR, 빗소리, white noise',
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: '백색소음, 화이트노이즈, 핑크노이즈, 브라운노이즈, 소리타이머, 소리설정저장, 페이드, 빗소리, white noise',
   openGraph: {
-    title: '백색소음 생성기 | 툴허브',
-    description: '수면·집중을 위한 6가지 소음 생성기. 타이머 지원.',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/white-noise/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -19,8 +22,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '백색소음 생성기 | 툴허브',
-    description: '수면·집중을 위한 백색소음 생성기',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/white-noise.png'],
   },
   alternates: {
@@ -30,16 +33,20 @@ export const metadata: Metadata = {
 
 const faqData = [
   {
-    question: '백색소음이 수면에 도움이 되나요?',
-    answer: '네, 백색소음은 주변 환경 소음을 마스킹하여 수면의 질을 높일 수 있습니다. 연구에 따르면 지속적이고 균일한 소리는 뇌가 갑작스러운 소음 변화에 반응하는 것을 줄여 깊은 수면을 돕습니다.',
+    question: '어떤 소리를 재생할 수 있나요?',
+    answer: '화이트·핑크·브라운 노이즈와 빗소리·바람·파도를 표현한 6가지 합성 소리를 제공합니다. 브라우저에서 직접 생성하며 재생 버튼을 누르기 전에는 오디오를 시작하지 않습니다. 실제 자연 녹음이나 수면·집중 효과를 보증하는 도구는 아닙니다.',
   },
   {
-    question: '핑크노이즈와 브라운노이즈의 차이는?',
-    answer: '화이트노이즈는 모든 주파수가 동일한 세기입니다. 핑크노이즈는 저주파가 강해 자연스러운 느낌이며, 브라운노이즈는 더 깊고 묵직한 저음 중심입니다. 수면에는 핑크/브라운노이즈가, 집중에는 화이트노이즈가 좋다는 연구가 있습니다.',
+    question: '타이머나 소리를 바꾸면 종료 시각도 바뀌나요?',
+    answer: '재생 중 타이머를 바꾸면 지금부터 선택한 5·10·15·30·60분으로 종료 기준을 다시 정합니다. 소리 종류나 음량만 바꾸면 기존 종료 기준을 유지합니다. 타이머 없음은 무기한이며, 화면 복귀 때 이미 기한이 지났으면 다시 소리를 재개하지 않습니다. OS 절전·앱 정지 중 정확한 백그라운드 실행은 보장하지 않습니다.',
   },
   {
-    question: '수면 타이머는 어떻게 사용하나요?',
-    answer: '5분, 10분, 15분, 30분, 60분 중 원하는 시간을 선택하면 해당 시간 후 자동으로 소음이 정지됩니다. 잠들기 전 타이머를 설정하면 배터리와 데이터를 절약할 수 있습니다.',
+    question: '종료 전에 소리를 줄일 수 있나요?',
+    answer: '선택적인 마지막 30초 페이드를 켤 수 있으며 기본은 꺼져 있습니다. 음량 0은 음소거 상태로, 재생 중지와 구분됩니다. 재생이나 재개가 거부되면 성공으로 표시하지 않고 현재 상태를 안내합니다.',
+  },
+  {
+    question: '저장한 설정을 불러오면 바로 소리가 나나요?',
+    answer: '아니요. 불러오기는 진행 중 소리를 정지하고 설정만 적용합니다. 이름 40자 이내로 최대 6개를 저장·이름 변경·삭제할 수 있으며 종류·음량·타이머·페이드만 기기에 저장합니다. 재생 상태·남은 시간·오디오 버퍼는 저장하지 않고 다음 방문에도 자동 재생하지 않습니다.',
   },
 ]
 
@@ -48,7 +55,7 @@ export default function WhiteNoisePage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '백색소음 생성기',
-    description: '수면과 집중을 위한 백색소음 생성기',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/white-noise/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -59,6 +66,9 @@ export default function WhiteNoisePage() {
       '볼륨 조절',
       '수면 타이머 (5~60분)',
       '실시간 소음 전환',
+      '종료 기준을 유지하는 남은 시간 표시',
+      '선택적 마지막 30초 페이드',
+      '이름 붙인 설정 6개 저장·명시 불러오기',
     ],
   }
 
@@ -84,16 +94,16 @@ export default function WhiteNoisePage() {
             백색소음 생성기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            백색소음 생성기는 수면의 질 향상, 집중력 강화, 이명 완화에 도움이 되는 다양한 소음을 브라우저에서 직접 재생하는 도구입니다. 화이트 노이즈, 핑크 노이즈, 브라운 노이즈의 3가지 색 소음과 빗소리, 바람 소리, 파도 소리 등 자연의 소리를 제공합니다. 수면 타이머 기능으로 원하는 시간에 자동 정지되어 밤새 재생될 걱정 없이 잠들 수 있습니다.
+            백색소음 생성기는 6가지 합성 소리와 음량·종료 타이머를 조합하는 도구입니다. 자주 쓰는 설정에 이름을 붙여 저장하고 필요할 때 불러올 수 있습니다. 설정을 불러오거나 페이지를 다시 방문해도 자동으로 소리를 재생하지 않으며 사용자의 재생 동작을 기다립니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             백색소음 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>수면 환경 개선:</strong> 층간소음, 도로 소음이 신경 쓰이는 환경에서 백색소음을 틀면 외부 소음을 마스킹하여 더 깊게 잠들 수 있습니다.</li>
-            <li><strong>공부·재택근무 집중:</strong> 조용한 환경보다 적절한 배경 소음이 오히려 집중력을 높인다는 연구 결과가 있습니다. 핑크 노이즈나 빗소리를 낮은 볼륨으로 설정하면 방해 없이 작업에 몰입할 수 있습니다.</li>
-            <li><strong>이명 완화:</strong> 귀에서 소리가 나는 이명 증상이 있는 경우 백색소음이 이명 소리를 가려 불편함을 줄여줄 수 있습니다.</li>
-            <li><strong>수면 타이머 활용:</strong> 잠들기까지 보통 10~20분이 걸리므로 30분 타이머를 설정하면 잠든 후 소음이 자동으로 꺼져 배터리 소모를 줄일 수 있습니다.</li>
+            <li><strong>소리 비교:</strong> 소리 종류와 음량을 바꿔 원하는 조합을 고르세요. 종류·음량 변경은 타이머의 종료 기준을 늘리지 않습니다.</li>
+            <li><strong>종료 방식:</strong> 정해진 시간이 필요하면 타이머를 선택하고, 끝부분을 서서히 줄이려면 30초 페이드를 켜세요.</li>
+            <li><strong>설정 다시 사용:</strong> 이름으로 저장한 설정을 불러온 뒤 직접 재생하세요. 불러오기는 기존 소리를 멈추고 설정만 바꿉니다.</li>
+            <li><strong>화면 복귀:</strong> 기기 절전이나 앱 정지 뒤에는 표시된 상태와 남은 시간을 확인하세요. 기한이 지난 소리를 자동으로 다시 시작하지 않습니다.</li>
           </ul>
         </div>
       </section>

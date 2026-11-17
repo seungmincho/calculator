@@ -4,7 +4,7 @@ import Link from 'next/link';
 import BrandMark from './BrandMark';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from '@/lib/i18n/shared';
-import { menuConfig, categoryKeys } from '@/config/menuConfig';
+import { menuConfig, categoryKeys, categoryHubs } from '@/config/menuConfig';
 
 // Each category shows top N popular tools in footer for SEO internal linking
 const FOOTER_TOOLS_PER_CATEGORY = 6;
@@ -44,7 +44,9 @@ const Footer = () => {
             return (
               <div key={catKey}>
                 <h3 className="text-sm font-semibold text-fg mb-3 uppercase tracking-wide">
-                  {t(category.titleKey)}
+                  <Link prefetch={false} href={categoryHubs[catKey]} className="hover:underline">
+                    {t(category.titleKey)}
+                  </Link>
                 </h3>
                 <ul className="space-y-2">
                   {topItems.map((item) => (
@@ -69,6 +71,8 @@ const Footer = () => {
             {t('footer.copyright')}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted">
+            <Link prefetch={false} href="/guides/" className="hover:text-primary">{t('navigation.toolGuides')}</Link>
+            <Link prefetch={false} href="/blog/" className="hover:text-primary">{t('navigation.aiNotes')}</Link>
             <Link prefetch={false} href="/tips" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               {t('navigation.financialTips')}
             </Link>

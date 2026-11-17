@@ -7,11 +7,13 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 interface GuideSectionContentProps {
   translate: TranslationFn
   defaultOpen?: boolean
+  panelId?: string
 }
 
-export default function GuideSectionContent({ translate: t, defaultOpen = false }: GuideSectionContentProps) {
+export default function GuideSectionContent({ translate: t, defaultOpen = false, panelId: explicitPanelId }: GuideSectionContentProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
-  const panelId = useId()
+  const generatedPanelId = useId()
+  const panelId = explicitPanelId ?? generatedPanelId
 
   const whatIs = useMemo(() => {
     try {

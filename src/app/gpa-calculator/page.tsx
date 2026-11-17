@@ -6,7 +6,7 @@ import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: '학점 계산기 - 대학교 GPA 평점 계산 | 툴허브',
-  description: '과목별 학점과 성적을 넣으면 학기별·누적 평점(GPA)과 전공 평점을 바로 계산합니다. 4.5·4.3 만점 모두 지원하고, P/F 과목과 재수강 성적 대체, 성적표 붙여넣기, 목표 평점을 위해 남은 학점에서 받아야 할 평균 역산도 됩니다.',
+  description: '과목별 학점과 성적을 넣으면 학기별·누적 평점(GPA)과 전공 평점을 바로 계산합니다. 4.5·4.3 만점, P/F·재수강, 성적표 붙여넣기, 목표 평점 역산을 지원합니다. 성적 시나리오를 저장·비교하고 JSON 백업에서 선택해 복원하세요.',
   keywords: '학점 계산기, GPA 계산기, 대학교 학점, 평점 계산, 4.5 만점, 4.3 만점, 성적 계산기',
   openGraph: {
     title: '학점 계산기 | 툴허브',
@@ -26,7 +26,7 @@ export default function GpaCalculatorPage() {
     url: 'https://toolhub.ai.kr/gpa-calculator/', applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any', browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['4.5/4.3 만점제 지원', '학기별·누적 평점 계산', '전공 평점 계산', 'P/F 과목 처리', '재수강 성적 대체', '성적표 붙여넣기 입력', '목표 평점 역산'],
+    featureList: ['4.5/4.3 만점제 지원', '학기별·누적 평점 계산', '전공 평점 계산', 'P/F 과목 처리', '재수강 성적 대체', '성적표 붙여넣기 입력', '목표 평점 역산', '성적 시나리오 기기 저장·복원', '현재·저장 성적 비교', '저장 시나리오 JSON 백업·선택 복원'],
   }
   const faq = [
     { q: '4.5 만점과 4.3 만점의 차이는?', a: '4.5 만점제는 A+(4.5), A0(4.0), B+(3.5) 등으로 +가 0.5점 차이이며, 한국 대부분의 대학이 사용합니다. 4.3 만점제는 A+(4.3), A0(4.0), A-(3.7) 등으로 +/-가 0.3점 차이이며, 미국식 GPA와 유사합니다. 취업/대학원 지원 시 만점 기준이 다르므로 환산이 필요하며, 공인된 공식 환산법은 없어 보통 4.5 만점 ÷ 4.5 × 4.3 또는 × 4.0으로 비례 변환합니다. 지원처가 정한 환산표가 있으면 그 기준을 따르세요.' },

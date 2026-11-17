@@ -1,5 +1,6 @@
 // 이미지 압축 로직. 순수 함수(맨 위)는 scripts/check-image-compress.ts 로 회귀 체크.
 // 브라우저 함수(decode/encode)는 호출 시점에만 DOM/Canvas API를 건드린다.
+import { reserveUniqueImageNames } from './imageUniqueNames.ts'
 
 export type OutputFormat = 'original' | 'jpeg' | 'webp' | 'avif' | 'png'
 export type Mime = 'image/jpeg' | 'image/png' | 'image/webp' | 'image/avif'
@@ -49,21 +50,17 @@ export function outputName(fileName: string, mime: Mime, suffix = '_compressed')
 
 /** ZIP 안 파일명 중복 방지: a.jpg, a (2).jpg, a (3).jpg */
 export function uniqueNames(names: string[]): string[] {
-  const seen = new Map<string, number>()
-  return names.map((n) => {
-    const key = n.toLowerCase()
-    const c = (seen.get(key) ?? 0) + 1
-    seen.set(key, c)
-    if (c === 1) return n
-    const m = n.match(/^(.*?)(\.[^.]*)?$/)!
-    return `${m[1]} (${c})${m[2] ?? ''}`
-  })
+  return reserveUniqueImageNames(names)
 }
 
 export const isHeic = (f: { name: string; type: string }) =>
   /image\/hei[cf]/i.test(f.type) || /\.hei[cf]$/i.test(f.name)
 
 export interface FitResult<T> { out: T; quality: number; scale: number; ok: boolean }
+export interface FitOptions { minQ?: number; maxQ?: number; steps?: number; maxRounds?: number; minScale?: number; signal?: AbortSignal }
+function checkCompressionSignal(signal?: AbortSignal) {
+  if (signal?.aborted) throw new DOMException('Image compression canceled', 'AbortError')
+}
 
 /**
  * 목표 용량 맞추기. encode(quality, scale)는 결과(size 포함)를 돌려준다.
@@ -73,21 +70,28 @@ export interface FitResult<T> { out: T; quality: number; scale: number; ok: bool
 export async function fitToSize<T extends { size: number }>(
   encode: (quality: number, scale: number) => Promise<T>,
   target: number,
-  { minQ = 0.4, maxQ = 0.92, steps = 6, maxRounds = 8, minScale = 0.05 } = {},
+  { minQ = 0.4, maxQ = 0.92, steps = 6, maxRounds = 8, minScale = 0.05, signal }: FitOptions = {},
 ): Promise<FitResult<T>> {
+  checkCompressionSignal(signal)
+  const attempt = async (quality: number, scale: number) => {
+    checkCompressionSignal(signal)
+    const result = await encode(quality, scale)
+    checkCompressionSignal(signal)
+    return result
+  }
   let scale = 1
   let smallest: FitResult<T> | null = null
   for (let round = 0; round < maxRounds; round++) {
-    const hiOut = await encode(maxQ, scale)
+    const hiOut = await attempt(maxQ, scale)
     if (hiOut.size <= target) return { out: hiOut, quality: maxQ, scale, ok: true }
-    const loOut = await encode(minQ, scale)
+    const loOut = await attempt(minQ, scale)
     if (!smallest || loOut.size < smallest.out.size) smallest = { out: loOut, quality: minQ, scale, ok: false }
     if (loOut.size <= target) {
       let lo = minQ, hi = maxQ, best: FitResult<T> = { out: loOut, quality: minQ, scale, ok: true }
       for (let i = 0; i < steps; i++) {
         const q = Math.round(((lo + hi) / 2) * 100) / 100
         if (q <= lo || q >= hi) break
-        const o = await encode(q, scale)
+        const o = await attempt(q, scale)
         if (o.size <= target) { best = { out: o, quality: q, scale, ok: true }; lo = q } else hi = q
       }
       return best
@@ -105,19 +109,23 @@ export async function fitToSize<T extends { size: number }>(
 export type Source = ImageBitmap | HTMLImageElement
 
 /** EXIF 회전을 반영해 디코드. createImageBitmap(from-image) → 실패 시 <img> (브라우저 기본이 from-image) */
-export async function decodeImage(file: Blob): Promise<{ src: Source; width: number; height: number; close: () => void }> {
+export async function decodeImage(file: Blob, signal?: AbortSignal): Promise<{ src: Source; width: number; height: number; close: () => void }> {
+  checkCompressionSignal(signal)
   if (typeof createImageBitmap === 'function') {
     try {
       const b = await createImageBitmap(file, { imageOrientation: 'from-image' })
+      if (signal?.aborted) { b.close(); checkCompressionSignal(signal) }
       return { src: b, width: b.width, height: b.height, close: () => b.close() }
     } catch { /* Safari HEIC 등은 <img>로 재시도 */ }
   }
+  checkCompressionSignal(signal)
   const url = URL.createObjectURL(file)
   try {
     const img = new Image()
     img.decoding = 'async'
     img.src = url
     await img.decode()
+    checkCompressionSignal(signal)
     return { src: img, width: img.naturalWidth, height: img.naturalHeight, close: () => {} }
   } finally {
     URL.revokeObjectURL(url)
@@ -125,7 +133,8 @@ export async function decodeImage(file: Blob): Promise<{ src: Source; width: num
 }
 
 /** 지정 크기로 그려 인코딩. 브라우저가 해당 포맷을 못 만들면(다른 type 반환) 에러 */
-export async function encodeImage(src: Source, width: number, height: number, mime: Mime, quality: number): Promise<Blob> {
+export async function encodeImage(src: Source, width: number, height: number, mime: Mime, quality: number, signal?: AbortSignal): Promise<Blob> {
+  checkCompressionSignal(signal)
   const draw = (ctx: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D) => {
     ctx.imageSmoothingEnabled = true
     ctx.imageSmoothingQuality = 'high'
@@ -141,15 +150,20 @@ export async function encodeImage(src: Source, width: number, height: number, mi
       if (ctx) { draw(ctx); blob = await c.convertToBlob({ type: mime, quality: q }) }
     } catch { blob = null }
   }
+  checkCompressionSignal(signal)
   if (!blob) {
     const c = document.createElement('canvas')
     c.width = width; c.height = height
-    const ctx = c.getContext('2d')
-    if (!ctx) throw new Error('canvas')
-    draw(ctx)
-    blob = await new Promise<Blob | null>((r) => c.toBlob(r, mime, q))
-    c.width = c.height = 0
+    try {
+      const ctx = c.getContext('2d')
+      if (!ctx) throw new Error('canvas')
+      draw(ctx)
+      blob = await new Promise<Blob | null>((r) => c.toBlob(r, mime, q))
+    } finally {
+      c.width = c.height = 0
+    }
   }
+  checkCompressionSignal(signal)
   if (!blob) throw new Error('encode')
   if (blob.type !== mime) throw new Error('format')
   return blob
@@ -167,17 +181,21 @@ export async function detectEncoders(): Promise<{ webp: boolean; avif: boolean }
 export interface CompressOptions { format: OutputFormat; quality: number; maxSide: number; targetKB: number /* 0 = 화질 모드 */ }
 export interface CompressOutput { blob: Blob; mime: Mime; width: number; height: number; srcWidth: number; srcHeight: number; quality: number; ok: boolean }
 
-export async function compressFile(file: File, o: CompressOptions): Promise<CompressOutput> {
-  const img = await decodeImage(file)
+export async function compressFile(file: File, o: CompressOptions, signal?: AbortSignal): Promise<CompressOutput> {
+  checkCompressionSignal(signal)
+  const img = await decodeImage(file, signal)
   try {
+    checkCompressionSignal(signal)
     const mime = outputMime(o.format, file.type)
     const withSize = async (q: number, scale: number) => {
+      checkCompressionSignal(signal)
       const d = fitDimensions(img.width, img.height, o.maxSide, scale)
-      const blob = await encodeImage(img.src, d.width, d.height, mime, q)
+      const blob = await encodeImage(img.src, d.width, d.height, mime, q, signal)
+      checkCompressionSignal(signal)
       return { blob, ...d, size: blob.size }
     }
     if (o.targetKB > 0) {
-      const r = await fitToSize(withSize, targetBytes(o.targetKB))
+      const r = await fitToSize(withSize, targetBytes(o.targetKB), { signal })
       return { blob: r.out.blob, mime, width: r.out.width, height: r.out.height, srcWidth: img.width, srcHeight: img.height, quality: r.quality, ok: r.ok }
     }
     const r = await withSize(o.quality / 100, 1)

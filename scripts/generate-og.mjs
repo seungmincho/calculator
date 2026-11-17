@@ -57,7 +57,7 @@ for (const file of pages('src/app')) {
 }
 
 mkdirSync('public/og', { recursive: true })
-const browser = await chromium.launch()
+const browser = await chromium.launch(process.env.TOOLHUB_BROWSER_CHANNEL ? { channel: process.env.TOOLHUB_BROWSER_CHANNEL } : {})
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } })
 let n = 0
 for (const t of targets) {

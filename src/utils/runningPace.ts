@@ -36,9 +36,15 @@ export function calculateRunning(distanceKm: number, mode: RunningMode, valueSec
   const finishSeconds = mode === 'time' ? valueSeconds : mode === 'pace' ? distanceKm * valueSeconds : NaN
   if (!Number.isFinite(finishSeconds) || finishSeconds <= 0) return null
   const secondsPerKm = finishSeconds / distanceKm
+  // Keep exact half-second boundaries for the UI's four-decimal distances and integer clocks.
+  // Public callers outside that domain retain their original fractional precision.
+  const distanceUnits = Math.round(distanceKm * 10_000)
+  const exactClock = mode === 'time' && Number.isInteger(valueSeconds) && valueSeconds <= 359_999 &&
+    distanceUnits > 0 && distanceUnits / 10_000 === distanceKm && Number.isSafeInteger(valueSeconds * distanceUnits)
   const splits: Split[] = []
   for (let mark = splitKm; mark < distanceKm; mark += splitKm) {
-    splits.push({ distanceKm: mark, elapsedSeconds: mark * secondsPerKm })
+    const numerator = valueSeconds * mark * 10_000
+    splits.push({ distanceKm: mark, elapsedSeconds: exactClock && Number.isSafeInteger(numerator) ? numerator / distanceUnits : mark * secondsPerKm })
   }
   splits.push({ distanceKm, elapsedSeconds: finishSeconds })
   return { distanceKm, finishSeconds, secondsPerKm, speedKmh: 3600 / secondsPerKm, splits }

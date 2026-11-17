@@ -31,7 +31,7 @@ function fmtPrice(v: number | null, unit: string): string {
   return v.toLocaleString() + unit
 }
 
-export default function ShippingCalc() {
+export default function ShippingCalc({ guideLinks }: { guideLinks?: React.ReactNode }) {
   const t = useTranslations('shippingCalc')
   const searchParams = useSearchParams()
   const hydrated = useHydrated()
@@ -89,6 +89,11 @@ export default function ShippingCalc() {
   }, [actualWeight, girth, destination])
 
   const carrierResults = allResults.filter(r => r.carrier.category === carrierCategory)
+  const compareGs = hydrated && carrierCategory === 'cvs' && searchParams.get('compare') === 'gs25'
+  const pickup = carrierResults.find(r => r.carrier.id === 'gs_halfprice')
+  const homeDelivery = carrierResults.find(r => r.carrier.id === 'gs_standard')
+  const hasParcel = actualWeight > 0 && [width, height, depth].every(side => Number(side) > 0)
+  const savings = hasParcel && pickup?.price != null && homeDelivery?.price != null ? homeDelivery.price - pickup.price : null
   const bestOverall = allResults[0]?.price != null ? allResults[0] : null
   const availableResults = carrierResults.filter(r => r.price !== null)
   const cheapestPrice = availableResults[0]?.price ?? null
@@ -99,6 +104,15 @@ export default function ShippingCalc() {
   const won = (n: number) => n.toLocaleString() + t('result.won')
   // 택배사 표시 문구는 id로 번역 (utils 데이터의 한국어 원본은 비교·검증용)
   const cd = (id: string, k: 'name' | 'service' | 'days' | 'note') => t(`carrierData.${id}.${k}`)
+  let mobileLabel = t('noRates.title')
+  let mobileValue = t('noRates.short')
+  if (compareGs) {
+    mobileLabel = t('gsCompare.title')
+    mobileValue = savings === null ? t('gsCompare.check') : t('gsCompare.saved', { amount: won(savings) })
+  } else if (bestOverall) {
+    mobileLabel = `${cd(bestOverall.carrier.id, 'name')} · ${cd(bestOverall.carrier.id, 'service')}`
+    mobileValue = won(bestOverall.price!)
+  }
   const otherCarriers = allResults
     .filter(r => r.price !== null && r !== bestOverall)
     .filter((r, i, arr) => r.carrier.name !== bestOverall?.carrier.name && arr.findIndex(x => x.carrier.name === r.carrier.name) === i)
@@ -151,6 +165,7 @@ export default function ShippingCalc() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
+        {guideLinks}
       </div>
 
       {/* Main Grid */}
@@ -160,8 +175,8 @@ export default function ShippingCalc() {
           <div className={`${glassCard} ${glassInset} p-4 sm:p-6 space-y-6`}>
             <MobileResultLink
               href="#shipping-result"
-              label={bestOverall ? `${cd(bestOverall.carrier.id, 'name')} · ${cd(bestOverall.carrier.id, 'service')}` : t('noRates.title')}
-              value={bestOverall ? won(bestOverall.price!) : t('noRates.short')}
+              label={mobileLabel}
+              value={mobileValue}
               more={t('jumpToResult')}
             />
 
@@ -172,7 +187,7 @@ export default function ShippingCalc() {
               </label>
               <input
                 id="sc-weight"
-                type="number" inputMode="decimal" step="0.1" min="0"
+                type="number" inputMode="decimal" step="0.001" min="0"
                 value={weight}
                 onChange={e => { setWeight(e.target.value); setShowSaveButton(true) }}
                 placeholder={t('weightPlaceholder')}
@@ -298,6 +313,28 @@ export default function ShippingCalc() {
         {/* ── Results Panel ── */}
         <div id="shipping-result" className="min-w-0 lg:col-span-2 space-y-6 scroll-mt-20">
           <a href="#shipping-input" className="ui-btn-soft inline-flex min-h-11 items-center px-4 py-2 lg:hidden">{t('editInputs')}</a>
+
+          {compareGs && pickup && homeDelivery && (
+            <section aria-labelledby="gs25-heading" className="ui-card p-4 sm:p-6">
+              <h2 id="gs25-heading" className="text-lg font-semibold text-fg">{t('gsCompare.title')}</h2>
+              <p className="mt-1 text-sm text-sub">{t(`gsCompare.${destination}`)}</p>
+              {hasParcel ? (
+                <div aria-live="polite" aria-atomic="true">
+                  <dl className="mt-4 divide-y divide-line">
+                    {[pickup, homeDelivery].map(({ carrier, price, unavailableReason }) => (
+                      <div key={carrier.id} className="flex items-baseline justify-between gap-3 py-2">
+                        <dt className="text-sm text-body">{cd(carrier.id, 'service')}</dt>
+                        <dd className="text-right font-semibold text-fg tabular-nums">{price === null
+                          ? t(`unavailableReason.${unavailableReason}`, { kg: carrier.maxWeight, cm: carrier.maxGirth })
+                          : won(price)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {savings !== null && <p className="mt-3 font-bold text-primary">{t('gsCompare.saved', { amount: won(savings) })}</p>}
+                </div>
+              ) : <p className="mt-3 text-body">{t('gsCompare.enterParcel')}</p>}
+            </section>
+          )}
 
           {/* Overall Best Pick (일반 + 편의점) */}
           {bestOverall && (

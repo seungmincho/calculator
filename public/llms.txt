@@ -6,6 +6,7 @@
 - 각 도구 페이지에는 계산 기준·출처·FAQ가 본문과 JSON-LD(WebApplication·FAQPage)로 들어 있습니다.
 - 결과는 URL 쿼리로 재현됩니다(예: https://toolhub.ai.kr/salary-calculator/?salary=50000000&type=annual). 정적 HTML에는 기본값 결과가 들어 있고, 쿼리 값으로 다시 계산하는 일은 브라우저 JavaScript가 합니다.
 - 언어: 한국어(기본), 일부 영어 UI.
+- [도구 활용 가이드](https://toolhub.ai.kr/guides/): 실제 예시와 도구별 사용법을 주제별로 읽을 수 있습니다.
 
 ## 계산 API (에이전트용, 읽기 전용 JSON)
 
@@ -58,13 +59,13 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [자동차 할부 계산기](https://toolhub.ai.kr/car-loan-calculator/): 자동차 구매 대출 계산
 - [자동차 취등록세 계산기](https://toolhub.ai.kr/car-tax-calculator/): 취등록세와 자동차세
 - [자동차세 계산기](https://toolhub.ai.kr/annual-car-tax/): 배기량·차령별 연간 자동차세와 1월 연납 할인, 전기차·영업용 계산
-- [유류비 계산기](https://toolhub.ai.kr/fuel-calculator/): 업무용 차량 연료비와 감가상각비
-- [퍼센트 계산기](https://toolhub.ai.kr/percent-calculator/): 퍼센트 계산, 증감률, 할인율 등 다양한 비율 계산
+- [유류비 계산기](https://toolhub.ai.kr/fuel-calculator/): 유류비·통행료·주차비 계산, 함께 정산과 주행일지
+- [퍼센트 계산기](https://toolhub.ai.kr/percent-calculator/): 비율·증감률·할인 계산과 결과 6개 비교·전체 TXT
 - [나이 계산기](https://toolhub.ai.kr/age-calculator/): 만 나이, 연 나이, 띠, 별자리 계산
-- [학점 계산기](https://toolhub.ai.kr/gpa-calculator/): 대학교 학점(GPA) 계산, 4.5/4.3 만점
+- [학점 계산기](https://toolhub.ai.kr/gpa-calculator/): GPA 계산·성적 시나리오 저장·비교와 JSON 백업
 - [복리 계산기](https://toolhub.ai.kr/compound-calculator/): 복리 이자 계산, 투자 수익률 시뮬레이션
 - [전기요금 계산기](https://toolhub.ai.kr/electricity-calculator/): 한국 주택용 전기요금 누진제 계산
-- [할인 계산기](https://toolhub.ai.kr/discount-calculator/): 할인율, 할인가, 원가 계산
+- [할인 계산기](https://toolhub.ai.kr/discount-calculator/): 할인율·중복 할인과 수량·쿠폰·배송비 포함 4조건 비교
 - [평수 계산기](https://toolhub.ai.kr/pyeong-calculator/): 평(坪)↔m² 면적 변환
 - [부가세 계산기](https://toolhub.ai.kr/vat-calculator/): 공급가액, 부가세, 합계 계산
 - [전세/월세 전환](https://toolhub.ai.kr/rent-converter/): 전세↔월세 전환율 계산
@@ -76,11 +77,11 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [퇴직금 계산기](https://toolhub.ai.kr/retirement-calculator/): 법정 퇴직금·평균임금, 퇴직소득세와 세후 실수령액, IRP 절세까지
 - [연차 계산기](https://toolhub.ai.kr/annual-leave/): 입사일 기준 연차 일수 계산
 - [가스 요금 계산](https://toolhub.ai.kr/gas-bill/): 도시가스 사용량별 요금 계산
-- [택시 요금 계산](https://toolhub.ai.kr/taxi-fare/): 거리별 예상 택시비와 심야·시외할증 계산
+- [택시 요금 계산](https://toolhub.ai.kr/taxi-fare/): 예상 택시비·심야할증 계산과 자주 가는 이동 조건 저장
 - [카드 할부 계산](https://toolhub.ai.kr/installment-calculator/): 할부 수수료 및 월 납부금 계산
 - [택배비 계산기](https://toolhub.ai.kr/shipping-calculator/): 무게·크기로 우체국·일반·편의점 택배비 비교
 - [주차 요금 계산](https://toolhub.ai.kr/parking-fee/): 주차 시간별 요금 계산
-- [더치페이 계산기](https://toolhub.ai.kr/dutch-pay/): 회식비, 모임비를 정확하게 N분의 1 정산
+- [더치페이 계산기](https://toolhub.ai.kr/dutch-pay/): 항목별 정산·최근 기록 보존·공지와 금액 복사 복구
 - [생활비 계산기](https://toolhub.ai.kr/budget-calculator/): 카테고리별 월간 지출 관리 및 예산 계획
 - [대출 상환 스케줄러](https://toolhub.ai.kr/loan-schedule/): 원리금균등/원금균등 상환 계획표 생성
 - [이사 비용 계산기](https://toolhub.ai.kr/moving-cost/): 평수/이사유형별 이사 비용 견적
@@ -108,10 +109,10 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [판매수수료 계산기](https://toolhub.ai.kr/sales-commission/): 쿠팡·스마트스토어·11번가 카테고리별 판매수수료 비교 계산
 - [취득세 계산기](https://toolhub.ai.kr/acquisition-tax/): 부동산 취득세·농어촌특별세·지방교육세 자동 계산, 다주택 중과 반영
 - [평균 계산기](https://toolhub.ai.kr/average-calculator/): 산술·가중·기하·조화 평균 계산, 편차·분산·표준편차 분석
-- [석차/등급 계산기](https://toolhub.ai.kr/grade-calculator/): 점수로 석차·백분위·등급(9등급제) 자동 계산
-- [학점 변환기](https://toolhub.ai.kr/gpa-converter/): 4.3/4.5 만점 학점 상호 변환, 백분위 환산
-- [수능 등급컷 계산기](https://toolhub.ai.kr/csat-grade/): 2026 수능 과목별 원점수→등급 변환, 백분위·표준점수 분석
-- [수능 D-day · 시간표](https://toolhub.ai.kr/csat-dday/): 2027 수능 카운트다운, 교시별 시간표, 준비물 체크리스트, 가채점표
+- [석차/등급 계산기](https://toolhub.ai.kr/grade-calculator/): 5·9등급 내신 계산과 시험·학기별 입력 8개 저장·복원
+- [학점 변환기](https://toolhub.ai.kr/gpa-converter/): 학점·백분율 환산과 결과 복사·복사 실패 시 수동 선택
+- [수능 등급컷 계산기](https://toolhub.ai.kr/csat-grade/): 전년도 추정컷·원점수 기록과 직접 입력 등급의 단순 목표 비교
+- [수능 D-day · 시간표](https://toolhub.ai.kr/csat-dday/): 수능 날짜·시간표·준비물·공식 안내와 과목별 연습 타이머
 - [컴퓨터 전기세 계산기](https://toolhub.ai.kr/pc-electricity/): PC 부품별 소비전력으로 월간 전기요금 자동 계산
 - [육아휴직급여 계산기](https://toolhub.ai.kr/parental-leave/): 6+6 부모육아휴직제(2025 개편) 반영, 월별 급여 및 부부 시뮬레이션
 - [건강보험료 계산기](https://toolhub.ai.kr/health-insurance/): 직장/지역가입자 보험료 계산, 피부양자 판정, 직장vs지역 비교
@@ -148,53 +149,53 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 
 ## 개발 도구
 
-- [정규식 추출기](https://toolhub.ai.kr/regex-extractor/): 패턴 매칭과 텍스트 추출
+- [정규식 추출기](https://toolhub.ai.kr/regex-extractor/): 정규식 추출·치환, 작업 취소와 전체 결과 복사·TXT
 - [시간 변환기](https://toolhub.ai.kr/time-converter/): 전 세계 시간대 변환
-- [JSON 포맷터](https://toolhub.ai.kr/json-formatter/): JSON 데이터 정리와 검증
+- [JSON 포맷터](https://toolhub.ai.kr/json-formatter/): JSON 검증·정렬·트리 선택값과 정확한 경로 복사·검색식 저장
 - [JSON-XML 변환기](https://toolhub.ai.kr/json-xml-converter/): JSON과 XML 데이터 상호 변환
 - [YAML ↔ JSON 변환기](https://toolhub.ai.kr/yaml-json-converter/): YAML과 JSON 실시간 상호 변환
 - [IP 서브넷 계산기](https://toolhub.ai.kr/subnet-calculator/): CIDR, 서브넷마스크, 호스트 범위 간편 계산
 - [HTML 엔티티 변환기](https://toolhub.ai.kr/html-entity-converter/): HTML 특수문자 인코딩·디코딩, 참조표
-- [JSON-CSV 변환기](https://toolhub.ai.kr/json-csv-converter/): 고성능 JSON과 CSV 양방향 변환
+- [JSON-CSV 변환기](https://toolhub.ai.kr/json-csv-converter/): 여러 줄 CSV·문자열 보존, Worker 변환·취소와 전체 결과 반출
 - [JWT 디코더](https://toolhub.ai.kr/jwt-decoder/): JWT 토큰 분석과 검증
 - [UUID 생성기](https://toolhub.ai.kr/uuid-generator/): 고유 식별자 생성
 - [Cron 테스터](https://toolhub.ai.kr/cron-tester/): 스케줄 표현식 검증
-- [QR 코드 생성기](https://toolhub.ai.kr/qr-generator/): 로고 삽입 QR 코드 제작
+- [QR 코드 생성기](https://toolhub.ai.kr/qr-generator/): 맞춤 QR·서로 다른 QR 30개 ZIP과 A4 묶음 인쇄
 - [바코드 생성기](https://toolhub.ai.kr/barcode-generator/): 다양한 형식 바코드 생성
 - [SQL 포맷터](https://toolhub.ai.kr/sql-formatter/): SQL 쿼리 정리와 최적화
-- [마크다운 에디터](https://toolhub.ai.kr/markdown-editor/): 실시간 미리보기 마크다운 편집기, 툴바 + 분할 화면 + HTML 내보내기
+- [마크다운 에디터](https://toolhub.ai.kr/markdown-editor/): 마크다운 미리보기·파일 열기와 Markdown/HTML 복사 실패 복구
 - [3D 변환기](https://toolhub.ai.kr/3d-viewer/): 3D 파일 변환, 최적화, 프린팅 분석
-- [글자수 세기](https://toolhub.ai.kr/character-counter/): 글자수, 단어수, 문장수 실시간 분석
-- [Base64 변환기](https://toolhub.ai.kr/base64-converter/): 텍스트/파일을 Base64로 인코딩/디코딩
-- [URL 인코더](https://toolhub.ai.kr/url-encoder/): URL 인코딩/디코딩 및 파라미터 분석
+- [글자수 세기](https://toolhub.ai.kr/character-counter/): 글자수·바이트와 5문항 초안·수정본 보관·복사 복구
+- [Base64 변환기](https://toolhub.ai.kr/base64-converter/): Base64·Base64URL 텍스트/파일 변환과 바이너리 다운로드
+- [URL 인코더](https://toolhub.ai.kr/url-encoder/): URL 인코딩·디코딩과 오류를 보존하는 줄별 일괄 변환
 - [해시 생성기](https://toolhub.ai.kr/hash-generator/): MD5, SHA-256 등 해시값 생성
-- [Diff 비교 도구](https://toolhub.ai.kr/diff-viewer/): 두 텍스트의 차이점 시각적 비교
-- [색상 변환기](https://toolhub.ai.kr/color-converter/): HEX, RGB, HSL, CMYK 색상 변환
+- [Diff 비교 도구](https://toolhub.ai.kr/diff-viewer/): 줄 단위 비교·원고 전달·변경 구간 선택 병합·전체 TXT
+- [색상 변환기](https://toolhub.ai.kr/color-converter/): HEX3·6자리 변환·유효 색 공유·색상 값 복사 복구
 - [Lorem Ipsum 생성기](https://toolhub.ai.kr/lorem-ipsum/): 더미 텍스트 생성 (한글/영문)
-- [단위 변환기](https://toolhub.ai.kr/unit-converter/): 길이, 무게, 온도, CSS 단위 변환
-- [텍스트 변환기](https://toolhub.ai.kr/text-converter/): 대소문자, camelCase, snake_case 변환
-- [비밀번호 생성기](https://toolhub.ai.kr/password-generator/): 안전한 비밀번호와 패스프레이즈 생성
-- [디데이 계산기](https://toolhub.ai.kr/dday-calculator/): D-Day 카운터와 날짜 계산
+- [단위 변환기](https://toolhub.ai.kr/unit-converter/): 단일·최대1,000행 단위 변환, 변환 쌍 저장과 전체 TSV·CSV
+- [텍스트 변환기](https://toolhub.ai.kr/text-converter/): 케이스·줄 정리·단계 순서 편집과 30개 이력 되돌리기
+- [비밀번호 생성기](https://toolhub.ai.kr/password-generator/): 비밀번호·PIN·단어 조합 생성, 한 항목 재생성과 복사 실패 복구
+- [디데이 계산기](https://toolhub.ai.kr/dday-calculator/): D-Day·날짜 계산, 현재 일정 복사 복구와 선택 일정 ICS
 - [랜덤 뽑기](https://toolhub.ai.kr/random-picker/): 명단에서 당첨자를 중복 없이 추첨, 검증 링크 공유
-- [타이머/스톱워치](https://toolhub.ai.kr/timer/): 스톱워치, 카운트다운 타이머, 뽀모도로
+- [타이머/스톱워치](https://toolhub.ai.kr/timer/): 타이머·스톱워치와 단계별 루틴 저장·연속 실행
 - [진법 변환기](https://toolhub.ai.kr/base-converter/): 2진수, 8진수, 10진수, 16진수 변환
-- [메모장](https://toolhub.ai.kr/notepad/): 온라인 메모장, 자동 저장
+- [메모장](https://toolhub.ai.kr/notepad/): 메모 작성·검색·백업, 자동 저장 상태와 외부 변경 보호
 - [화면/기기 정보](https://toolhub.ai.kr/screen-info/): 화면 해상도, 브라우저, OS 정보 확인
 - [이모지 검색](https://toolhub.ai.kr/emoji-picker/): 이모지 검색, 복사, 카테고리별 모음
-- [음력 양력 변환기](https://toolhub.ai.kr/lunar-converter/): 음력 ↔ 양력 날짜 변환
+- [음력 양력 변환기](https://toolhub.ai.kr/lunar-converter/): 음력·양력 변환, 이름 붙인 기념일 12개·다음 날짜·캘린더 ICS
 - [IP 주소 확인](https://toolhub.ai.kr/ip-checker/): 내 공인 IP, 위치, ISP 정보 확인
-- [타이핑 테스트](https://toolhub.ai.kr/typing-test/): 타자 속도 측정, 한글/영어 연습
-- [숫자 한글 변환](https://toolhub.ai.kr/number-to-korean/): 숫자를 한글 금액으로 변환
-- [QR코드 스캔](https://toolhub.ai.kr/qr-scanner/): 카메라/이미지로 QR코드 스캔
-- [글꼴 미리보기](https://toolhub.ai.kr/font-preview/): 다양한 폰트로 텍스트 미리보기
-- [세계 시계](https://toolhub.ai.kr/world-clock/): 전 세계 주요 도시 현재 시간
+- [타이핑 테스트](https://toolhub.ai.kr/typing-test/): 한글·영문·내 글 타자 연습과 완료 후 틀린 구간 복습
+- [숫자 한글 변환](https://toolhub.ai.kr/number-to-korean/): 한글·한자·영문 금액 변환, 입력 위치 유지와 단일·일괄 복사 복구
+- [QR코드 스캔](https://toolhub.ai.kr/qr-scanner/): 카메라·이미지 QR 읽기, 최대 10장 순차 처리·실패 재시도·선택 TXT
+- [글꼴 미리보기](https://toolhub.ai.kr/font-preview/): 한글 폰트 비교·스타일 조합 저장·JSON 백업과 선택 가져오기
+- [세계 시계](https://toolhub.ai.kr/world-clock/): 도시별 시차·업무시간 비교, 같은 미팅 순간 공유와 ICS 저장
 - [CSS 그라디언트](https://toolhub.ai.kr/css-gradient/): CSS 그라데이션 코드 생성
 - [초성 추출기](https://toolhub.ai.kr/korean-syllable/): 한글 초성/중성/종성 분리
 - [로마 숫자 변환](https://toolhub.ai.kr/roman-numeral/): 아라비아↔로마 숫자 변환
 - [사업자번호 검증](https://toolhub.ai.kr/business-number/): 사업자등록번호 유효성 검증
 - [색상 팔레트](https://toolhub.ai.kr/color-palette/): 조화로운 색상 조합 생성
-- [화면 비율 계산](https://toolhub.ai.kr/aspect-ratio/): 가로세로 비율, 해상도 계산
-- [텍스트 읽어주기](https://toolhub.ai.kr/text-to-speech/): 글 붙여넣기, 문장별 음성 재생과 속도 조절
+- [화면 비율 계산](https://toolhub.ai.kr/aspect-ratio/): 비율·해상도 계산, 사진 자르기 위치 조절과 안전한 반출
+- [텍스트 읽어주기](https://toolhub.ai.kr/text-to-speech/): 문장·구간 반복과 오류 재시도, 원고·읽던 위치의 기기 내 저장
 - [모스부호 변환](https://toolhub.ai.kr/morse-code/): 텍스트↔모스부호 변환
 - [주민번호 검증](https://toolhub.ai.kr/resident-number/): 주민등록번호 형식 유효성 검증
 - [모니터 테스트](https://toolhub.ai.kr/monitor-test/): 18가지 종합 모니터 품질 검사 도구
@@ -206,12 +207,12 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [SVG 편집기](https://toolhub.ai.kr/svg-editor/): SVG 코드 편집, 최적화, 이미지 변환
 - [API 테스터](https://toolhub.ai.kr/api-tester/): 브라우저에서 REST API 테스트 및 디버깅
 - [파비콘 생성기](https://toolhub.ai.kr/favicon-generator/): 모든 플랫폼용 파비콘 한 번에 생성
-- [포모도로 타이머](https://toolhub.ai.kr/pomodoro/): 25분 집중, 5분 휴식 생산성 타이머
+- [포모도로 타이머](https://toolhub.ai.kr/pomodoro/): 집중·휴식 타이머, 복귀·저장 안내와 오늘 목표·7일 CSV
 - [CSS 단위 변환기](https://toolhub.ai.kr/css-unit-converter/): px, rem, em, vw, vh 단위 변환
 - [인터넷 속도 측정](https://toolhub.ai.kr/speed-test/): 다운로드 속도와 핑(지연 시간) 실시간 측정
 - [인감 도장 생성기](https://toolhub.ai.kr/stamp-generator/): 원형·사각·타원 한글 도장 즉석 생성, PNG 다운로드
 - [유니코드 텍스트 꾸미기](https://toolhub.ai.kr/fancy-text/): 볼드·이탤릭·고딕·취소선 등 23가지 유니코드 폰트로 SNS 텍스트 꾸미기
-- [프레젠테이션 타이머](https://toolhub.ai.kr/presentation-timer/): 발표·회의용 카운트다운 타이머, 구간 알림, 전체화면
+- [프레젠테이션 타이머](https://toolhub.ai.kr/presentation-timer/): 발표 시간 측정부터 구간별 리허설 기록·비교까지
 - [차트 스튜디오](https://toolhub.ai.kr/chart-studio/): JSON·CSV 데이터로 6종 차트 생성 + ECharts/React 코드 자동 생성
 - [이메일 템플릿 생성기](https://toolhub.ai.kr/email-template/): 8가지 카테고리·3가지 톤으로 한국어/영어 비즈니스 이메일 자동 생성
 - [AI 프롬프트 생성기](https://toolhub.ai.kr/prompt-generator/): ChatGPT·Claude·Midjourney용 프롬프트를 역할·톤·형식 선택으로 자동 생성
@@ -226,8 +227,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [영수증 작성기](https://toolhub.ai.kr/receipt-generator/): 간이 영수증 양식 작성, 금액 한글 표기·품목·도장, PDF 출력
 - [급여명세서 작성기](https://toolhub.ai.kr/pay-slip/): 급여명세서 양식 작성, 4대보험·소득세 자동 공제, 계산방법 기재, PDF 출력
 - [인사말 생성기](https://toolhub.ai.kr/greeting-generator/): 연말·신년·명절·감사·거래처 인사말을 상황과 말투에 맞게 골라 복사
-- [칸반보드](https://toolhub.ai.kr/kanban-board/): 드래그 앤 드롭으로 작업 관리, 우선순위·마감일 추적
-- [회의록 작성기](https://toolhub.ai.kr/meeting-minutes/): 5가지 템플릿으로 회의록 작성, Markdown/HTML 내보내기
+- [칸반보드](https://toolhub.ai.kr/kanban-board/): 회의록 할 일 가져오기, 담당자·기한 관리와 모바일 카드 이동
+- [회의록 작성기](https://toolhub.ai.kr/meeting-minutes/): 음성 메모의 문장을 골라 회의록·할 일로 정리하고 저장
 - [Crontab 생성기](https://toolhub.ai.kr/crontab-generator/): 비주얼 UI로 크론 표현식을 쉽게 생성, 한국어 설명 + 다음 실행시간 미리보기
 - [정규식 빌더](https://toolhub.ai.kr/regex-builder/): 시각적으로 정규표현식을 빌드하고 실시간 테스트, 자주 쓰는 패턴 라이브러리
 - [환경변수(.env) 편집기](https://toolhub.ai.kr/env-editor/): .env 파일 편집·변환 도구, Docker/YAML/JSON/Shell 포맷 내보내기
@@ -242,11 +243,11 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [색맹 시뮬레이터](https://toolhub.ai.kr/color-blindness-simulator/): 이미지에 색각이상 필터를 적용하여 색맹/색약 시야를 체험
 - [화면 크기 비교](https://toolhub.ai.kr/screen-compare/): 스마트폰·태블릿·모니터 화면 크기를 실제 비율로 비교
 - [알고리즘 시각화](https://toolhub.ai.kr/algorithm/): SAT 충돌감지 등 핵심 알고리즘을 인터랙티브 시각화로 학습
-- [순서정하기](https://toolhub.ai.kr/order-picker/): 참가자 순서를 랜덤으로 공정하게 정하는 무료 온라인 도구
-- [메뉴 추천 룰렛](https://toolhub.ai.kr/menu-roulette/): 저녁·점심 메뉴 돌림판, 후보 직접 추가·편집
+- [순서정하기](https://toolhub.ai.kr/order-picker/): 랜덤 순서 자동·한 명씩 공개, 전체 결과 복사·TXT 저장
+- [메뉴 추천 룰렛](https://toolhub.ai.kr/menu-roulette/): 메뉴 룰렛·이번 회차 제외와 복구·식사 기록·주간 계획
 - [오늘 뭐 먹지](https://toolhub.ai.kr/menu-picker/): 오늘 뭐 먹지? 룰렛으로 메뉴 추천! 12개 카테고리 300+ 메뉴
-- [돌림판](https://toolhub.ai.kr/roulette/): 항목을 입력하고 돌려서 하나 고르기
-- [팀 나누기](https://toolhub.ai.kr/team-divider/): 이름 입력으로 랜덤 팀 편성
+- [돌림판](https://toolhub.ai.kr/roulette/): 항목 돌림판·현재 결과 복사와 실패 시 원문 선택
+- [팀 나누기](https://toolhub.ai.kr/team-divider/): 참석자 선택·팀 편성 20단계 되돌리기·다시 실행, TXT·복사 복구
 - [제비뽑기](https://toolhub.ai.kr/lottery-draw/): 당첨 제비를 한 장씩 뒤집는 추첨
 - [동전 던지기](https://toolhub.ai.kr/coin-flip/): 앞면 뒷면 랜덤, 누적 통계
 - [주사위 굴리기](https://toolhub.ai.kr/dice-roller/): 주사위 최대 10개, 합계 표시
@@ -274,26 +275,27 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 
 ## 이미지/미디어 도구
 
-- [이미지 리사이저](https://toolhub.ai.kr/image-resizer/): 이미지 크기 조절과 압축
+- [이미지 리사이저](https://toolhub.ai.kr/image-resizer/): 사진 크기·용량 조절과 자주 쓰는 출력 설정 저장
 - [이미지 편집기](https://toolhub.ai.kr/image-editor/): 기본적인 이미지 편집
-- [이미지 변환기](https://toolhub.ai.kr/image-converter/): JPEG/PNG/WebP 이미지 포맷 변환
+- [이미지 변환기](https://toolhub.ai.kr/image-converter/): 이미지 순차 변환·일시정지·실패 재시도·이전 성공과 ZIP
 - [이미지 색상 추출기](https://toolhub.ai.kr/color-extractor/): 이미지에서 색상 추출 및 팔레트 생성
 - [사진 모자이크/블러](https://toolhub.ai.kr/image-mosaic/): 사진에 모자이크나 블러 효과 적용
-- [이미지 워터마크](https://toolhub.ai.kr/image-watermark/): 이미지에 텍스트/이미지 워터마크 추가
-- [이미지 텍스트 추출 (OCR)](https://toolhub.ai.kr/image-ocr/): 이미지에서 텍스트를 자동 인식하여 추출
+- [이미지 워터마크](https://toolhub.ai.kr/image-watermark/): 사진10장 텍스트·로고 워터마크, 순차 처리·재시도와 PNG·ZIP
+- [이미지 텍스트 추출 (OCR)](https://toolhub.ai.kr/image-ocr/): 이미지 순차 인식·편집 원고 보존·실패 재시도·복사 복구와 TXT
 - [서명 생성기](https://toolhub.ai.kr/signature-generator/): 캔버스로 전자 서명 생성
-- [PDF 도구](https://toolhub.ai.kr/pdf-tools/): PDF 합치기, 분할, 회전, 이미지→PDF 변환
+- [PDF 도구](https://toolhub.ai.kr/pdf-tools/): PDF 합치기·분할·페이지 이동/회전/삭제와 최대30개 편집 이력
 - [소음 측정기](https://toolhub.ai.kr/noise-meter/): 마이크로 실시간 데시벨(dB) 측정
 - [수평계·나침반](https://toolhub.ai.kr/spirit-level/): 스마트폰 센서로 기울기·방위 측정
 - [메트로놈](https://toolhub.ai.kr/metronome/): BPM 박자기, 탭 템포, 진동 지원
-- [백색소음 생성기](https://toolhub.ai.kr/white-noise/): 수면·집중을 위한 6가지 소음 생성기
-- [이미지 압축기](https://toolhub.ai.kr/image-compressor/): JPG, PNG, WebP 이미지를 최대 90%까지 용량 줄이기
-- [화면 녹화기](https://toolhub.ai.kr/screen-recorder/): 브라우저에서 바로 화면·창·탭을 녹화하는 무설치 도구
-- [음성 메모](https://toolhub.ai.kr/voice-memo/): 브라우저에서 바로 음성 녹음, 재생, 다운로드
+- [백색소음 생성기](https://toolhub.ai.kr/white-noise/): 6종 합성 소리·종료 타이머·페이드와 설정 6개 저장
+- [이미지 압축기](https://toolhub.ai.kr/image-compressor/): 목표 용량 이미지 압축·일시정지/계속·실패 재시도·완료 결과 ZIP
+- [화면 녹화기](https://toolhub.ai.kr/screen-recorder/): 화면 녹화·다시 찍기, 마지막 성공 영상 보관·다운로드
+- [음성 메모](https://toolhub.ai.kr/voice-memo/): 음성 녹음·전사·기기 저장과 선택한 전사문 TXT 묶음 내보내기
 - [GIF 메이커](https://toolhub.ai.kr/gif-maker/): 여러 이미지를 합쳐 애니메이션 GIF 생성, 프레임 속도 조절
 - [이미지 배경 제거](https://toolhub.ai.kr/background-remover/): 색상 기반 배경 제거 도구, 크로마키/투명 배경 만들기
 - [사진 콜라주](https://toolhub.ai.kr/collage-maker/): 여러 사진을 다양한 레이아웃으로 합쳐 콜라주 이미지 생성
 - [이미지 스크래퍼](https://toolhub.ai.kr/image-scraper/): 웹페이지의 모든 이미지를 수집하고 일괄 다운로드
+- [1분 말하기 연습실](https://toolhub.ai.kr/speaking-practice/): 0·3·5초 녹음 준비, 자기소개·업무 보고 비교와 기록 검색
 
 ## 건강 도구
 
@@ -304,7 +306,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [혈중알코올 계산기](https://toolhub.ai.kr/alcohol-calculator/): 음주 후 혈중알코올 농도 추정
 - [출산 예정일](https://toolhub.ai.kr/due-date/): 마지막 생리일 기준 출산 예정일
 - [혈압 기록](https://toolhub.ai.kr/blood-pressure/): 혈압 기록 및 분류 관리
-- [러닝 페이스 계산기](https://toolhub.ai.kr/running-pace/): 목표 기록·페이스와 1km·5km 누적 스플릿 계산
+- [러닝 페이스 계산기](https://toolhub.ai.kr/running-pace/): 러닝 시간·페이스와 목표 3개 비교·전체 구간표 반출
 - [운동 칼로리 계산기](https://toolhub.ai.kr/exercise-calorie/): 40+ 운동별 MET 기반 소모 칼로리 계산
 - [1RM 계산기](https://toolhub.ai.kr/one-rep-max/): 든 무게와 횟수로 1회 최대 중량과 훈련 강도별 무게 계산
 - [호흡 운동 가이드](https://toolhub.ai.kr/breathing-exercise/): 4-7-8, 박스 호흡 등 스트레스 해소 호흡법
@@ -341,11 +343,11 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [색약 테스트](https://toolhub.ai.kr/color-blind-test/): 이시하라 색약 검사 테스트
 - [로또번호 생성기](https://toolhub.ai.kr/lotto-generator/): 로또 번호 자동 생성
 - [사다리 타기 게임](https://toolhub.ai.kr/ladder-game/): 온라인 사다리 타기
-- [지뢰찾기](https://toolhub.ai.kr/minesweeper/): 클래식 마인스위퍼 퍼즐 게임
+- [지뢰찾기](https://toolhub.ai.kr/minesweeper/): 클래식·오늘의 지뢰찾기, 종료한 클래식 판을 기록 없이 재연습
 - [스도쿠](https://toolhub.ai.kr/sudoku/): 4단계 난이도 숫자 퍼즐 게임
-- [테트리스](https://toolhub.ai.kr/tetris/): 클래식 블록 퍼즐 게임
+- [테트리스](https://toolhub.ai.kr/tetris/): 클래식 블록 퍼즐, 솔로 키보드·터치 패드 조작
 - [숫자야구](https://toolhub.ai.kr/number-baseball/): 숫자 맞추기 두뇌 게임
-- [한글 워들](https://toolhub.ai.kr/korean-wordle/): 매일 새로운 한국어 단어 맞추기 게임
+- [한글 워들](https://toolhub.ai.kr/korean-wordle/): 오늘의 한글 단어, 최근 일일 기록30개와 정답 없는 결과 격자
 - [벽돌깨기](https://toolhub.ai.kr/breakout-game/): 공으로 벽돌을 깨는 클래식 아케이드 게임
 - [카드 솔리테어](https://toolhub.ai.kr/solitaire/): 클래식 클론다이크 1인 카드 게임
 - [15퍼즐](https://toolhub.ai.kr/15-puzzle/): 슬라이딩 타일 퍼즐 - 숫자를 순서대로 정렬하세요

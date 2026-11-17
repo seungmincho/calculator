@@ -6,13 +6,19 @@
  * 계산 로직: src/utils/percent.ts (회귀: node scripts/check-percent.ts)
  */
 
-import { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from 'react'
+import { useState, useMemo, useEffect, useLayoutEffect, useRef, useCallback, type ReactNode } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/percentCalculator'
 import { Copy, Check, Plus, X, RotateCcw, ArrowRight } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import PercentComparisonPanel from '@/components/PercentComparisonPanel'
+import PercentCopyRecovery from '@/components/PercentCopyRecovery'
+import { evaluatePercentCard, createPercentSnapshot, addPercentSnapshot, removePercentSnapshot, percentStateUrl, type PercentSnapshot } from '@/utils/percentComparison'
+import { createPercentOutputOwner, copyPercentText, downloadPercentText, type PercentOutputTarget } from '@/utils/percentComparisonActions'
 import {
   parseNum, parseQuery, round, fmt, fmtKo, percentOf, ratio, change, discount, originalPrice, chainRate, vatSplit,
   type Query,
@@ -39,7 +45,7 @@ interface Res {
 type Out = Res | { error: string }
 
 const seg = (on: boolean) =>
-  `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  `min-h-11 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 const raw = (n: number) => fmt(n, 10)
 const signed = (s: string, n: number) => (n > 0 ? `+${s}` : s)
 
@@ -51,7 +57,7 @@ function Field({ id, label, value, onChange, suffix }: { id: string; label: stri
         <input
           id={id} type="text" inputMode="decimal" autoComplete="off" value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`ui-field px-3 py-2.5 text-right tabular-nums ${suffix ? 'pr-8' : ''}`}
+          className={`ui-field min-h-11 px-3 py-2.5 text-base text-right tabular-nums ${suffix ? 'pr-8' : ''}`}
         />
         {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-faint">{suffix}</span>}
       </div>
@@ -61,8 +67,10 @@ function Field({ id, label, value, onChange, suffix }: { id: string; label: stri
 
 export default function PercentCalculator() {
   const t = useTranslations('percentCalculator')
-  const searchParams = useSearchParams()
-  const ready = useRef(false)
+  const language = useOptionalLanguage()?.language ?? 'ko'
+  const searchParams = useSearchParams(), hydrated = useHydrated(), query = searchParams.toString()
+  const [ready, setReady] = useState(false)
+  const edited = useRef(false), mounted = useRef(false), serial = useRef(0)
 
   const [v, setV] = useState<Record<F, string>>(DEF)
   const [chain, setChain] = useState<string[]>(DEF_CHAIN)
@@ -71,66 +79,74 @@ export default function PercentCalculator() {
   const [showFormula, setShowFormula] = useState(true)
   const [q, setQ] = useState('')
   const [hit, setHit] = useState<CardId | null>(null)
-  const [copied, setCopied] = useState<string | null>(null)
-  const [copyError, setCopyError] = useState<string | null>(null)
-
-  const set = (k: F) => (val: string) => setV((s) => ({ ...s, [k]: val }))
+  const [items, setItems] = useState<readonly PercentSnapshot[]>([])
+  const [notice, setNotice] = useState<'added' | 'duplicate' | 'limit' | null>(null)
+  const [feedback, setFeedback] = useState<{ target: PercentOutputTarget; text: string; request: number; status: 'pending' | 'success' | 'failed' } | null>(null)
+  const owner = useRef(createPercentOutputOwner()), copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const invalidateOutput = useCallback(() => {
+    owner.current.invalidate(); if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    copyTimer.current = null; setFeedback(null)
+  }, [])
+  const markEdited = () => { edited.current = true; invalidateOutput(); setNotice(null) }
+  const set = (k: F) => (val: string) => { markEdited(); setV((s) => ({ ...s, [k]: val })) }
+  useLayoutEffect(() => {
+    const output = owner.current; mounted.current = true; output.mount()
+    return () => { mounted.current = false; output.dispose(); if (copyTimer.current !== null) clearTimeout(copyTimer.current) }
+  }, [])
+  const outputContext = JSON.stringify([v, chain, dec, ko, showFormula, q, items, language, t('comparison.title'), ready])
+  const [feedbackContext, setFeedbackContext] = useState(outputContext)
+  if (feedbackContext !== outputContext) { setFeedbackContext(outputContext); setFeedback(null) }
+  useLayoutEffect(() => {
+    owner.current.invalidate()
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    copyTimer.current = null
+  }, [outputContext])
 
   // URL → 상태 (한 번)
   useEffect(() => {
-    if (ready.current) return
-    const next = { ...DEF }
-    for (const k of KEYS) { const g = searchParams.get(k); if (g !== null) next[k] = g }
-    setV(next)
-    const c = searchParams.get('c')
-    if (c) setChain(c.split(',').slice(0, 5))
-    const d = Number(searchParams.get('d'))
-    if (searchParams.get('d') !== null && d >= 0 && d <= 4) setDec(Math.trunc(d))
-    setKo(searchParams.get('k') === '1')
-    ready.current = true
-  }, [searchParams])
+    if (!hydrated || ready) return
+    let active = true
+    queueMicrotask(() => {
+      if (!active) return
+      if (!edited.current) {
+        const params = new URLSearchParams(query), next = { ...DEF }
+        for (const k of KEYS) { const g = params.get(k); if (g !== null) next[k] = g }
+        setV(next)
+        const c = params.get('c')
+        if (c) setChain(c.split(',').slice(0, 5))
+        const d = Number(params.get('d'))
+        if (params.get('d') !== null && d >= 0 && d <= 4) setDec(Math.trunc(d))
+        setKo(params.get('k') === '1')
+      }
+      setReady(true)
+    })
+    return () => { active = false }
+  }, [hydrated, ready, query])
 
   // 상태 → URL (기본값과 다른 것만)
   useEffect(() => {
-    if (!ready.current) return
-    const p = new URLSearchParams()
-    for (const k of KEYS) if (v[k] !== DEF[k]) p.set(k, v[k])
-    if (chain.join(',') !== DEF_CHAIN.join(',')) p.set('c', chain.join(','))
-    if (dec !== DEF_DEC) p.set('d', String(dec))
-    if (ko) p.set('k', '1')
-    const qs = p.toString()
-    window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
-  }, [v, chain, dec, ko])
+    if (!ready || !edited.current) return
+    const next = percentStateUrl(window.location.href, v, DEF, chain, DEF_CHAIN, dec, DEF_DEC, ko)
+    if (next !== window.location.href) window.history.replaceState(window.history.state, '', next)
+  }, [ready, v, chain, dec, ko])
 
-  const copy = useCallback(async (text: string, id: string) => {
-    const copyWithSelection = () => {
-      const ta = document.createElement('textarea')
-      ta.value = text
-      ta.style.position = 'fixed'
-      ta.style.left = '-999999px'
-      document.body.appendChild(ta)
-      try {
-        ta.select()
-        return document.execCommand('copy')
-      } finally {
-        ta.remove()
-      }
-    }
-    let succeeded = false
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-        succeeded = true
-      } else {
-        succeeded = copyWithSelection()
-      }
-    } catch {
-      try { succeeded = copyWithSelection() } catch { /* Clipboard permission denied. */ }
-    }
-    setCopied(succeeded ? id : null)
-    setCopyError(succeeded ? null : id)
-    if (succeeded) setTimeout(() => setCopied((current) => current === id ? null : current), 1500)
-  }, [])
+  const copy = async (text: string, target: PercentOutputTarget) => {
+    if (!ready || !mounted.current || !text) return
+    invalidateOutput()
+    const token = owner.current.begin(target), current = () => mounted.current && owner.current.current(token)
+    setFeedback({ target, text, request: token.sequence, status: 'pending' })
+    const result = await copyPercentText(text, current)
+    if (result === 'stale' || !current()) return
+    setFeedback({ target, text, request: token.sequence, status: result === 'success' ? 'success' : 'failed' })
+    if (result === 'success') copyTimer.current = setTimeout(() => { if (current()) setFeedback(null) }, 1500)
+  }
+  const download = (text: string) => {
+    if (!ready || !mounted.current || !text) return
+    invalidateOutput()
+    const token = owner.current.begin('download'), current = () => mounted.current && owner.current.current(token)
+    const result = downloadPercentText(text, current)
+    if (result !== 'stale' && current()) setFeedback({ target: 'download', text, request: token.sequence, status: result === 'success' ? 'success' : 'failed' })
+  }
 
   const results = useMemo<Record<CardId, Out>>(() => {
     const num = (x: number) => (ko ? fmtKo(x, dec) : fmt(x, dec))
@@ -138,21 +154,23 @@ export default function PercentCalculator() {
     const cp = (x: number) => String(round(x, dec))
     const E = (k: string) => ({ error: t(`errors.${k}`) })
     // 필수 입력 → 숫자 배열 | 오류
-    const need = (...ks: F[]): number[] | { error: string } => {
+    const need = (kind: CardId, ...ks: F[]): number[] | { error: string } => {
+      const valid = evaluatePercentCard(kind, v, chain)
+      if (!valid.ok) return E(valid.error)
       if (ks.some((k) => !v[k].trim())) return E('empty')
       const ns = ks.map((k) => parseNum(v[k]))
       return ns.some((n) => n === null) ? E('invalid') : (ns as number[])
     }
     const out = {} as Record<CardId, Out>
 
-    let r = need('a', 'b')
+    let r = need('of', 'a', 'b')
     if ('error' in r) out.of = r
     else {
       const [a, p] = r, x = percentOf(a, p)
       out.of = { main: num(x), copy: cp(x), formula: `${raw(a)} × ${raw(p)} ÷ 100 = ${fmt(x, dec)}` }
     }
 
-    r = need('p', 'w')
+    r = need('ratio', 'p', 'w')
     if ('error' in r) out.ratio = r
     else {
       const [part, whole] = r, x = ratio(part, whole)
@@ -166,7 +184,7 @@ export default function PercentCalculator() {
       }
     }
 
-    r = need('f', 't')
+    r = need('change', 'f', 't')
     if ('error' in r) out.change = r
     else {
       const [from, to] = r, { pct: x, diff } = change(from, to)
@@ -182,7 +200,7 @@ export default function PercentCalculator() {
       }
     }
 
-    r = need('dp', 'dr')
+    r = need('discount', 'dp', 'dr')
     if ('error' in r) out.discount = r
     else {
       const [price, rate] = r
@@ -198,7 +216,7 @@ export default function PercentCalculator() {
       }
     }
 
-    r = need('rs', 'rr')
+    r = need('reverse', 'rs', 'rr')
     if ('error' in r) out.reverse = r
     else {
       const [sale, rate] = r
@@ -213,7 +231,9 @@ export default function PercentCalculator() {
     }
 
     const rates = chain.map((s) => (s.trim() ? parseNum(s) : null))
-    if (chain.some((s) => !s.trim())) out.chain = E('empty')
+    const chainValidity = evaluatePercentCard('chain', v, chain)
+    if (!chainValidity.ok) out.chain = E(chainValidity.error)
+    else if (chain.some((s) => !s.trim())) out.chain = E('empty')
     else if (rates.some((n) => n === null)) out.chain = E('invalid')
     else if ((rates as number[]).some((n) => n < 0 || n > 100)) out.chain = E('rateRange')
     else {
@@ -232,7 +252,7 @@ export default function PercentCalculator() {
       }
     }
 
-    r = need('x', 'y')
+    r = need('pp', 'x', 'y')
     if ('error' in r) out.pp = r
     else {
       const [x0, y0] = r, d = y0 - x0, rel = change(x0, y0).pct
@@ -243,7 +263,7 @@ export default function PercentCalculator() {
       }
     }
 
-    r = need('v')
+    r = need('vat', 'v')
     if ('error' in r) out.vat = r
     else {
       const { supply, vat } = vatSplit(r[0])
@@ -258,6 +278,7 @@ export default function PercentCalculator() {
 
   // 한 줄 입력 → 해당 카드 입력칸에 반영
   const onQuery = (text: string) => {
+    markEdited()
     setQ(text)
     const pq: Query | null = parseQuery(text)
     if (!pq) { setHit(null); return }
@@ -272,39 +293,55 @@ export default function PercentCalculator() {
     setHit(pq.kind)
   }
 
-  const reset = () => { setV(DEF); setChain(DEF_CHAIN); setQ(''); setHit(null) }
+  const reset = () => { markEdited(); setV(DEF); setChain(DEF_CHAIN); setQ(''); setHit(null) }
+  const collect = (id: CardId) => {
+    if (!ready || !mounted.current) return
+    const result = results[id]
+    if ('error' in result) return
+    invalidateOutput()
+    const made = createPercentSnapshot({ kind: id, values: v, chain, decimals: dec, korean: ko, main: result.main, formula: result.formula }, String(++serial.current))
+    if (!made.ok) return
+    const added = addPercentSnapshot(items, made.snapshot)
+    if (added.ok) { setItems(added.items); setNotice('added') } else setNotice(added.error)
+  }
+  const copied = feedback?.status === 'success' ? feedback.target : null
+  const copyError = feedback?.status === 'failed' && feedback.target !== 'download' ? feedback.target : null
+  const comparisonStatus = feedback?.target === 'comparison' ? feedback.status === 'pending' ? 'copying' : feedback.status === 'success' ? 'copied' : 'copyFailed'
+    : feedback?.target === 'download' ? feedback.status === 'success' ? 'downloaded' : 'downloadFailed' : null
 
   const card = (id: CardId, inputs: ReactNode, extra?: ReactNode) => {
     const res = results[id]
     return (
-      <section key={id} className={`ui-card p-5 flex flex-col gap-4 ${hit === id ? 'ring-2 ring-primary' : ''}`} aria-labelledby={`pc-${id}`}>
+      <section key={id} data-percent-card={id} className={`ui-card min-w-0 p-5 flex flex-col gap-4 ${hit === id ? 'ring-2 ring-primary' : ''}`} aria-labelledby={`pc-${id}`}>
         <h2 id={`pc-${id}`} className="text-base font-semibold text-fg">{t(`${id}.title`)}</h2>
         <div className="flex gap-2 items-end">{inputs}</div>
         {extra}
         <div className="bg-subtle rounded-2xl p-4 mt-auto" aria-live="polite">
           {'error' in res ? (
-            <p className="text-sm text-amber-700 dark:text-amber-400 py-2">{res.error}</p>
+            <p data-percent-error={id} className="text-sm text-sub py-2">{res.error}</p>
           ) : (
             <>
               <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
+                <div className="min-w-0" data-percent-result={id}>
                   <p className="text-xs text-muted">{t(`${id}.result`)}</p>
                   <p className="text-3xl font-bold text-fg tabular-nums break-all">{res.main}</p>
                 </div>
                 <button
-                  type="button" onClick={() => copy(res.copy, id)}
-                  className="shrink-0 p-2 rounded-lg text-sub hover:bg-soft transition-colors"
+                  type="button" data-percent-copy={id} disabled={!ready} onClick={() => void copy(res.copy, id)}
+                  className="shrink-0 min-h-11 min-w-11 p-2 rounded-lg text-sub hover:bg-soft transition-colors"
                   aria-label={copied === id ? t('common.copied') : t('copy')}
                   title={copied === id ? t('common.copied') : t('copy')}
                 >
                   {copied === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
-              {copyError === id && <p role="alert" className="text-sm text-red-600">{t('copyFailed')}</p>}
+              {copyError === id && <p role="alert" className="text-sm text-sub">{t('copyFailed')}</p>}
               {res.sub && <div className="text-sm text-sub mt-2">{res.sub}</div>}
               {showFormula && (
                 <p className="text-xs text-muted mt-2 font-mono break-all tabular-nums">{res.formula}</p>
               )}
+              <button type="button" data-percent-add={id} disabled={!ready} onClick={() => collect(id)} className="ui-btn-soft min-h-11 px-4 py-2 mt-3">{t('comparison.add')}</button>
+              {feedback?.target === id && feedback.status === 'failed' && <PercentCopyRecovery key={feedback.request} text={feedback.text} onSelectIntent={() => { owner.current.invalidate() }} onRetry={() => void copy(feedback.text, id)} onClose={invalidateOutput} />}
             </>
           )}
         </div>
@@ -325,10 +362,11 @@ export default function PercentCalculator() {
   const hitRes = hit ? results[hit] : null
 
   return (
-    <div className="space-y-6">
+    <div data-percent-ready={ready} className="min-w-0 space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('subtitle')}</p>
+        <a href="#percent-comparison" data-percent-comparison-jump="" className="inline-flex items-center min-h-11 text-primary text-sm mt-2" onClick={invalidateOutput}>{t('comparison.jump')} ({items.length}/6)</a>
       </div>
 
       {/* 한 줄 입력 */}
@@ -357,17 +395,17 @@ export default function PercentCalculator() {
         <div className="flex items-center gap-2" role="group" aria-label={t('settings.decimals')}>
           <span className="text-sub">{t('settings.decimals')}</span>
           {[0, 1, 2, 3, 4].map((d) => (
-            <button key={d} type="button" onClick={() => setDec(d)} className={seg(dec === d)} aria-pressed={dec === d}>{d}</button>
+            <button key={d} type="button" data-percent-decimals={d} onClick={() => { markEdited(); setDec(d) }} className={seg(dec === d)} aria-pressed={dec === d}>{d}</button>
           ))}
         </div>
-        <button type="button" onClick={() => setKo(!ko)} className={seg(ko)} aria-pressed={ko}>{t('settings.koUnit')}</button>
-        <button type="button" onClick={() => setShowFormula(!showFormula)} className={seg(showFormula)} aria-pressed={showFormula}>{t('settings.formula')}</button>
-        <button type="button" onClick={reset} className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-sub hover:bg-soft">
+        <button type="button" data-percent-korean="" onClick={() => { markEdited(); setKo(!ko) }} className={seg(ko)} aria-pressed={ko}>{t('settings.koUnit')}</button>
+        <button type="button" data-percent-formula="" onClick={() => { markEdited(); setShowFormula(!showFormula) }} className={seg(showFormula)} aria-pressed={showFormula}>{t('settings.formula')}</button>
+        <button type="button" data-percent-reset="" onClick={reset} className="ml-auto min-h-11 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-sub hover:bg-soft">
           <RotateCcw className="w-4 h-4" aria-hidden />{t('settings.reset')}
         </button>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {card('of', <>
           <Field id="pc-a" label={t('of.a')} value={v.a} onChange={set('a')} />
           <Field id="pc-b" label={t('of.p')} value={v.b} onChange={set('b')} suffix="%" />
@@ -401,12 +439,12 @@ export default function PercentCalculator() {
               <div key={i} className="flex items-end gap-2">
                 <Field
                   id={`pc-c${i}`} label={t('chain.step', { n: i + 1 })} value={s} suffix="%"
-                  onChange={(val) => setChain((c) => c.map((x, j) => (j === i ? val : x)))}
+                  onChange={(val) => { markEdited(); setChain((c) => c.map((x, j) => (j === i ? val : x))) }}
                 />
                 {chain.length > 1 && (
                   <button
-                    type="button" onClick={() => setChain((c) => c.filter((_, j) => j !== i))}
-                    className="p-2.5 rounded-lg text-sub hover:bg-soft" aria-label={t('chain.remove')}
+                    type="button" data-percent-chain-remove={i} onClick={() => { markEdited(); setChain((c) => c.filter((_, j) => j !== i)) }}
+                    className="min-h-11 min-w-11 p-2.5 rounded-lg text-sub hover:bg-soft" aria-label={t('chain.remove')}
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -414,7 +452,7 @@ export default function PercentCalculator() {
               </div>
             ))}
             {chain.length < 5 && (
-              <button type="button" onClick={() => setChain((c) => [...c, '10'])} className="ui-btn-soft px-3 py-2 text-sm">
+              <button type="button" data-percent-chain-add="" onClick={() => { markEdited(); setChain((c) => [...c, '10']) }} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">
                 <Plus className="w-4 h-4" aria-hidden />{t('chain.add')}
               </button>
             )}
@@ -434,6 +472,12 @@ export default function PercentCalculator() {
           </Link>
         ))}
       </div>
+
+      <PercentComparisonPanel items={items} notice={notice} status={comparisonStatus}
+        onRemove={id => { invalidateOutput(); setNotice(null); setItems(current => removePercentSnapshot(current, id)) }}
+        onClear={() => { invalidateOutput(); setNotice(null); setItems([]) }}
+        onCopy={text => void copy(text, 'comparison')} onDownload={download} />
+      {feedback?.target === 'comparison' && feedback.status === 'failed' && <PercentCopyRecovery key={feedback.request} text={feedback.text} onSelectIntent={() => { owner.current.invalidate() }} onRetry={() => void copy(feedback.text, 'comparison')} onClose={invalidateOutput} />}
 
       <p className="text-xs text-muted">{t('inputHint')}</p>
 

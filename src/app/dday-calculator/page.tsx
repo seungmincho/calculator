@@ -5,13 +5,16 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import ddayCalculatorMessages from '../../../messages/generated/ko/ns/ddayCalculator.json'
 
+const TITLE = '디데이 계산기 - 일정 복사·캘린더 반출 | 툴허브'
+const DESCRIPTION = 'D-Day와 기념일·날짜 차이를 계산하고 저장하세요. 현재 일정 복사 실패를 수동 선택·재시도로 복구하고, 현재 또는 선택한 저장 일정을 종일 ICS로 내려받을 수 있습니다. 파일 준비 중 취소와 일정 변경 시 이전 요청 보호를 지원합니다.'
+
 export const metadata: Metadata = {
-  title: '디데이 계산기 - D-Day·100일 기념일 계산 | 툴허브',
-  description: '수능·시험·여행 D-Day를 저장하고 공유하세요. 연애·결혼·아기 100일/1주년 기념일, 날짜 차이, 날짜 더하기/빼기, 공휴일·영업일 계산까지 한 곳에서.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: '디데이 계산기, D-Day, 수능 디데이, 100일 계산기, 기념일 계산기, 연애 날짜 계산, 날짜 계산, 날짜 차이, 영업일 계산, 공휴일',
   openGraph: {
-    title: '디데이 계산기 | 툴허브',
-    description: 'D-Day 카운트다운·저장·공유, 100일 기념일, 날짜 차이, 영업일 계산',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/dday-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -20,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '디데이 계산기 - D-Day 카운터 & 날짜 계산',
-    description: 'D-Day 카운트다운, 날짜 차이, 영업일 계산을 한 곳에서.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/dday-calculator.png'],
   },
   alternates: {
@@ -34,7 +37,7 @@ export default function DdayCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '디데이 계산기',
-    description: 'D-Day 카운트다운·저장·공유, 100일·주년 기념일, 날짜 차이, 날짜 더하기/빼기 도구',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/dday-calculator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -54,7 +57,10 @@ export default function DdayCalculatorPage() {
       '100일·1주년 기념일 계산 (시작일 포함 선택)',
       '내 D-Day 목록 저장·고정',
       '공휴일 표시 달력',
-      '결과 이미지·링크 공유'
+      '결과 이미지·링크 공유',
+      '입력한 날짜·선택한 저장 일정의 종일 .ics 다운로드',
+      '현재 일정 복사 실패의 전체 선택·재시도',
+      '캘린더 파일 준비 취소와 늦은 요청 보호'
     ]
   }
 
@@ -93,10 +99,11 @@ export default function DdayCalculatorPage() {
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
             <li><strong>수능·시험 D-Day:</strong> 시험 날짜를 입력하면 오늘부터 남은 일수를 한국 시간 기준으로 계산합니다. 2027학년도 수능(2026년 11월 19일), 설날·추석·크리스마스는 프리셋 한 번으로 등록됩니다.</li>
-            <li><strong>영업일 계산:</strong> 계약서 체결 후 '10영업일 이내 지급' 같은 조건을 계산할 때 주말과 법정 공휴일이 자동으로 제외됩니다.</li>
+            <li><strong>영업일 계산:</strong> 계약서 체결 후 ‘10영업일 이내 지급’ 같은 조건을 계산할 때 주말과 법정 공휴일이 자동으로 제외됩니다.</li>
             <li><strong>날짜 더하기/빼기:</strong> 기준일에서 일·주·월·년을 더하거나 빼서 계약 만료일, 보증 기간 종료일 등을 계산할 수 있습니다.</li>
             <li><strong>100일·기념일:</strong> 사귄 날이나 아기가 태어난 날을 넣으면 100일·200일·1주년 날짜와 남은 일수, 아기의 개월 수가 나옵니다.</li>
-            <li><strong>저장·공유:</strong> D-Day를 목록에 저장하고 하나를 고정하면 다음 방문 때 바로 보입니다. 링크를 열면 같은 D-Day가 그대로 열립니다.</li>
+            <li><strong>저장·공유:</strong> D-Day를 목록에 저장하고 하나를 고정하면 다음 방문 때 바로 보입니다. 현재 일정의 명시 공유 링크로 제목과 날짜를 전달할 수 있습니다.</li>
+            <li><strong>복사·캘린더 반출:</strong> 복사에 실패하면 전체 문구를 직접 선택하거나 재시도하세요. 종일 ICS 파일 준비 중에는 취소할 수 있고, 일정이나 다른 반출을 선택하면 이전 요청은 무효가 됩니다.</li>
           </ul>
         </div>
       </section>

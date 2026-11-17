@@ -1,5 +1,6 @@
 // Usage: node scripts/check-loan-fuel-browser.mjs http://127.0.0.1:3040 <artifact-directory>
 // Or: node scripts/check-loan-fuel-browser.mjs --dir out <artifact-directory>
+// Optional: --fuel-only --channel=chrome
 // Uses fresh browser storage and mocked fuel APIs; external requests are blocked.
 import assert from 'node:assert/strict'
 import { readFileSync, mkdirSync, writeFileSync, statSync, createReadStream } from 'node:fs'
@@ -30,9 +31,10 @@ if (localDirectory) {
 }
 let browser
 try {
-  const response = await fetch(`${base}/loan-calculator/`)
+  const response = await fetch(`${base}/${process.argv.includes('--fuel-only') ? 'fuel' : 'loan'}-calculator/`)
   assert.equal(response.status, 200, 'static export must be available before running browser checks')
-  browser = await chromium.launch({ headless: true })
+  const channel = process.argv.find(arg => arg.startsWith('--channel='))?.slice('--channel='.length)
+  browser = await chromium.launch({ headless: true, ...(channel ? { channel } : {}) })
 } catch (error) {
   if (server) await new Promise(resolve => server.close(resolve))
   throw error
@@ -78,6 +80,7 @@ async function load(page) {
 }
 
 async function check(name, run, history, mobile = false) {
+  if (process.argv.includes('--fuel-only') && !name.startsWith('fuel-')) return
   const f = await fixture(history, mobile)
   try {
     await run(f)

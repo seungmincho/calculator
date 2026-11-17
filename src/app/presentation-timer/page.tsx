@@ -7,7 +7,7 @@ import presentationTimerMessages from '../../../messages/generated/ko/ns/present
 
 export const metadata: Metadata = {
   title: '프레젠테이션 타이머 - 발표·회의용 카운트다운 | 툴허브',
-  description: '발표·회의·세미나용 무료 프레젠테이션 타이머. 전체화면 발표자 모드, 마무리 경고 색상, 초과 시간 표시, 도입·본론·Q&A 구간 타이머, 화면 꺼짐 방지, 설정 링크 공유까지.',
+  description: '발표·회의·세미나용 무료 프레젠테이션 타이머. 전체화면 발표자 모드, 마무리 경고 색상, 초과 시간 표시, 도입·본론·Q&A 구간 타이머, 화면 꺼짐 방지, 설정 링크 공유와 구간별 리허설 기록·지난 연습 비교까지.',
   keywords: '프레젠테이션 타이머, 발표 시간 재기, 발표자 타이머, 질의응답 타이머, 아젠다 타이머, 발표 타이머, 회의 타이머, 카운트다운, 전체화면 타이머, 세미나 타이머, presentation timer, countdown timer',
   openGraph: {
     title: '프레젠테이션 타이머 - 발표·회의용 카운트다운 | 툴허브',
@@ -50,6 +50,7 @@ export default function PresentationTimerPage() {
       '프리셋 (3/5/10/15/20/30분, 발표+질의응답)',
       '키보드 단축키 (Space·R·F·↑↓)',
       '설정 링크 공유 · 발표 결과 카드 저장',
+      '구간별 실제 연습 시간 기록·기기 내 저장·지난 연습 비교',
     ],
   }
 

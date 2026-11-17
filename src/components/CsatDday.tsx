@@ -7,18 +7,19 @@ import { Printer, RotateCcw, ExternalLink } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/csatDday'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import ShareResult from '@/components/ShareResult'
 import AddToCalendar from '@/components/AddToCalendar'
 import { CSAT_EXAM_DATE, daysUntil } from '@/utils/csatGrade'
 import {
   kstParts, toMin, fmtMin, slotAt, countdown, timelineStatus, progress, cleanAnswer, isShortAnswer,
-  SCHEDULE, INQ_DETAIL, EXAM_START, TIMELINE, SHEET, type TimelineItem,
+  SCHEDULE, INQ_DETAIL, EXAM_START, TIMELINE, SHEET, PRACTICE_TIMERS, CSAT_GUIDANCE_CHECKED, CSAT_GUIDANCE_URL, type TimelineItem,
 } from '@/utils/csatDday'
 
 const NS = 'csatDday'
 const CHECK_GROUPS: Record<string, string[]> = {
   required: ['admitCard', 'idCard'],
-  personal: ['pencil', 'eraser', 'lead', 'watch'],
+  personal: ['signPen', 'correctionTape', 'pencil', 'eraser', 'lead', 'watch'],
   extra: ['lunch', 'water', 'blanket', 'outer', 'mask', 'tissue'],
 }
 const CHECK_KEYS = Object.values(CHECK_GROUPS).flat()
@@ -55,9 +56,11 @@ function useDateFmt() {
 export default function CsatDday() {
   const t = useTranslations(NS)
   const sp = useSearchParams()
-  const sharedName = (sp.get('name') ?? '').trim().slice(0, 20)
+  const hydrated = useHydrated()
+  const sharedName = hydrated ? (sp.get('name') ?? '').trim().slice(0, 20) : ''
   const [name, setName] = useState('')
-  useEffect(() => { if (sharedName) setName(sharedName) }, [sharedName])
+  const [restoredName, setRestoredName] = useState<string | null>(null)
+  if (hydrated && restoredName !== sharedName) { setRestoredName(sharedName); if (sharedName) setName(sharedName) }
 
   return (
     <div className="space-y-8">
@@ -72,15 +75,31 @@ export default function CsatDday() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
+      <ExamEssentials />
       <Hero />
-      <Cheer name={name} setName={setName} />
-      <Schedule />
       <Checklist />
+      <Schedule />
       <AnswerSheet />
       <Timeline />
+      <Cheer name={name} setName={setName} />
       <Guide />
     </div>
   )
+}
+
+function ExamEssentials() {
+  const t = useTranslations(NS)
+  return <section id="csat-essentials" aria-labelledby="csat-essentials-title" className="ui-card min-w-0 p-4 sm:p-6 space-y-3">
+    <h2 id="csat-essentials-title" className="text-lg font-semibold text-fg">{t('essentials.title')}</h2>
+    <p className="text-xl font-bold text-fg tabular-nums">{t('essentials.arrival', { time: SCHEDULE[0].start })}</p>
+    <p className="text-sm text-body">{t('essentials.required')}</p>
+    <nav aria-label={t('essentials.navigation')} className="flex flex-wrap gap-2">
+      <a href="#csat-checklist" className="ui-btn min-h-11 inline-flex items-center px-3 py-2 text-sm">{t('essentials.checklist')}</a>
+      <a href="#csat-schedule" className="ui-btn-soft min-h-11 inline-flex items-center px-3 py-2 text-sm">{t('essentials.schedule')}</a>
+      <a href="#csat-practice" className="ui-btn-soft min-h-11 inline-flex items-center px-3 py-2 text-sm">{t('essentials.practice')}</a>
+    </nav>
+    <p className="text-xs text-muted">{t('essentials.checked', { date: CSAT_GUIDANCE_CHECKED })} <a href={CSAT_GUIDANCE_URL} target="_blank" rel="noopener noreferrer" className="text-primary underline">{t('essentials.source')}</a></p>
+  </section>
 }
 
 function Hero() {
@@ -100,8 +119,8 @@ function Hero() {
           <p className="mt-1 text-5xl sm:text-6xl font-bold tabular-nums tracking-tight">{ddayText(c.dday)}</p>
           <div className="mt-6 grid grid-cols-4 gap-2 sm:gap-3">
             {([['d', c.d], ['h', c.h], ['m', c.m], ['s', c.s]] as const).map(([k, v]) => (
-              <div key={k} className="rounded-2xl bg-white/15 p-3 text-center">
-                <p className="text-2xl sm:text-3xl font-bold tabular-nums">{k === 'd' ? v : String(v).padStart(2, '0')}</p>
+              <div key={k} className="min-w-0 rounded-2xl bg-white/15 px-1 py-3 sm:p-3 text-center">
+                <p className="whitespace-nowrap text-xl sm:text-3xl font-bold tabular-nums">{k === 'd' ? v : String(v).padStart(2, '0')}</p>
                 <p className="text-xs text-white/70 mt-0.5">{t(`hero.unit.${k}`)}</p>
               </div>
             ))}
@@ -158,7 +177,7 @@ function Cheer({ name, setName }: { name: string; setName: (v: string) => void }
       <input
         value={name} onChange={(e) => setName(e.target.value.slice(0, 20))}
         placeholder={t('cheer.placeholder')} aria-label={t('cheer.placeholder')}
-        className="ui-field px-4 py-3 w-full"
+        className="ui-field min-h-11 min-w-0 px-4 py-3 w-full text-base"
       />
       <div className="rounded-2xl bg-subtle p-5">
         <p className="text-2xl font-bold text-fg tabular-nums">{headline}</p>
@@ -190,7 +209,7 @@ function Schedule() {
   const time = (hhmm: string) => fmtMin(toMin(hhmm) + delta)
 
   return (
-    <div className="ui-card p-6 space-y-4">
+    <div id="csat-schedule" className="ui-card min-w-0 p-4 sm:p-6 space-y-4 scroll-mt-20">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-fg">{t('schedule.title')}</h2>
@@ -199,7 +218,7 @@ function Schedule() {
         {before && !examDay && (
           <button
             onClick={() => setPractice(practice == null ? Date.now() : null)}
-            className={practice == null ? 'ui-btn-soft px-4 py-2 text-sm' : 'ui-btn px-4 py-2 text-sm'}
+            className={practice == null ? 'ui-btn-soft min-h-11 px-4 py-2 text-sm' : 'ui-btn min-h-11 px-4 py-2 text-sm'}
           >
             {t(practice == null ? 'schedule.practiceStart' : 'schedule.practiceStop')}
           </button>
@@ -242,39 +261,54 @@ function Schedule() {
         </table>
       </div>
       <p className="text-xs text-muted">{t('schedule.lang2Note')}</p>
+      <p className="text-xs text-muted">{t('schedule.generalNote')}</p>
 
       <div className="rounded-2xl bg-subtle p-5 space-y-2">
         <p className="text-sm font-semibold text-fg">{t('schedule.inqTitle')}</p>
         <p className="text-xs text-muted">{t('schedule.inqNote')}</p>
         <ul className="text-sm text-sub space-y-1">
           {INQ_DETAIL.map((s) => (
-            <li key={s.key} className="flex justify-between gap-3">
+            <li key={s.key} className="flex flex-wrap justify-between gap-x-3 gap-y-1">
               <span>{t(`schedule.inq.${s.key}`)}</span>
               <span className="tabular-nums whitespace-nowrap">{time(s.start)}–{time(s.end!)}</span>
             </li>
           ))}
         </ul>
+        <ul className="list-disc pl-5 text-sm text-body space-y-2">
+          {(t.raw('schedule.inqRules') as string[]).map(rule => <li key={rule}>{rule}</li>)}
+          <li>{t('schedule.inqSingle')}</li>
+        </ul>
       </div>
+      <section id="csat-practice" aria-labelledby="csat-practice-title" className="space-y-3 border-t border-line pt-4 scroll-mt-20">
+        <h3 id="csat-practice-title" className="font-semibold text-fg">{t('practice.title')}</h3>
+        <p className="text-sm text-sub">{t('practice.description')}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {PRACTICE_TIMERS.map(preset => <Link key={preset.key} href={preset.href} className="ui-btn-soft min-h-11 flex items-center justify-center px-3 py-3 text-sm text-center [overflow-wrap:anywhere]">{t('practice.open', { subject: t(`practice.subjects.${preset.key}`), minutes: preset.minutes })}</Link>)}
+        </div>
+        <p className="text-xs text-muted">{t('practice.limit')}</p>
+      </section>
     </div>
   )
 }
 
 function Checklist() {
   const t = useTranslations(NS)
+  const hydrated = useHydrated()
+  const [restored, setRestored] = useState(false)
   const [checked, setChecked] = useState<Record<string, boolean>>({})
-  useEffect(() => { setChecked(load('csatDday.checklist', {})) }, [])
+  if (hydrated && !restored) { setRestored(true); setChecked(load('csatDday.checklist', {})) }
   const toggle = (k: string) => setChecked((p) => { const n = { ...p, [k]: !p[k] }; save('csatDday.checklist', n); return n })
   const reset = () => { setChecked({}); save('csatDday.checklist', {}) }
   const { done, total } = progress(checked, CHECK_KEYS)
 
   return (
-    <div className="ui-card p-6 space-y-5">
+    <div id="csat-checklist" className="ui-card min-w-0 p-4 sm:p-6 space-y-5 scroll-mt-20">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-fg">{t('checklist.title')}</h2>
-          <p className="text-xs text-muted mt-1">{t('checklist.verifyNote')}</p>
+          <p className="text-xs text-muted mt-1">{t('checklist.verifyNote', { date: CSAT_GUIDANCE_CHECKED })}</p>
         </div>
-        <button onClick={reset} className="ui-btn-soft px-3 py-1.5 text-sm inline-flex items-center gap-1">
+        <button onClick={reset} className="ui-btn-soft min-h-11 px-3 py-1.5 text-sm inline-flex items-center gap-1">
           <RotateCcw className="w-3.5 h-3.5" /> {t('checklist.reset')}
         </button>
       </div>
@@ -293,7 +327,7 @@ function Checklist() {
             <ul className="space-y-1">
               {keys.map((k) => (
                 <li key={k}>
-                  <label className={`flex items-start gap-2 rounded-xl px-2 py-1.5 cursor-pointer hover:bg-soft ${checked[k] ? 'text-faint line-through' : 'text-body'}`}>
+                  <label className={`flex min-h-11 items-start gap-2 rounded-xl px-2 py-2.5 cursor-pointer hover:bg-soft ${checked[k] ? 'text-faint line-through' : 'text-body'}`}>
                     <input type="checkbox" checked={!!checked[k]} onChange={() => toggle(k)} className="mt-0.5 w-4 h-4 shrink-0 accent-[var(--primary)]" />
                     <span className="text-sm break-words">{t(`checklist.items.${k}`)}</span>
                   </label>
@@ -329,10 +363,11 @@ type Sheet = { a: Record<string, string[]>; s: Record<string, string> }
 
 function AnswerSheet() {
   const t = useTranslations(NS)
+  const hydrated = useHydrated()
   const [sheet, setSheet] = useState<Sheet>({ a: {}, s: {} })
   const [subj, setSubj] = useState(SHEET[0].key)
   const [mounted, setMounted] = useState(false)
-  useEffect(() => { setSheet(load('csatDday.sheet', { a: {}, s: {} })); setMounted(true) }, [])
+  if (hydrated && !mounted) { setSheet(load('csatDday.sheet', { a: {}, s: {} })); setMounted(true) }
   const update = (fn: (p: Sheet) => Sheet) => setSheet((p) => { const n = fn(p); save('csatDday.sheet', n); return n })
   const setAns = (key: string, q: number, v: string) => update((p) => {
     const arr = [...(p.a[key] ?? [])]
@@ -344,17 +379,17 @@ function AnswerSheet() {
   const filled = (sheet.a[subj] ?? []).filter(Boolean).length
 
   return (
-    <div className="ui-card p-6 space-y-4">
+    <div id="csat-answer-sheet" className="ui-card min-w-0 p-4 sm:p-6 space-y-4 scroll-mt-20">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-fg">{t('sheet.title')}</h2>
           <p className="text-sm text-muted mt-1">{t('sheet.desc')}</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => window.print()} className="ui-btn px-4 py-2 text-sm inline-flex items-center gap-1.5">
+          <button onClick={() => window.print()} className="ui-btn min-h-11 px-4 py-2 text-sm inline-flex items-center gap-1.5">
             <Printer className="w-4 h-4" /> {t('sheet.print')}
           </button>
-          <button onClick={clear} className="ui-btn-soft px-3 py-2 text-sm">{t('sheet.clear')}</button>
+          <button onClick={clear} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('sheet.clear')}</button>
         </div>
       </div>
 
@@ -364,7 +399,7 @@ function AnswerSheet() {
         {SHEET.map((s) => (
           <button
             key={s.key} role="tab" aria-selected={subj === s.key} onClick={() => setSubj(s.key)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium ${subj === s.key ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+            className={`min-h-11 px-3 py-1.5 rounded-full text-sm font-medium ${subj === s.key ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
           >
             {t(`sheet.subjects.${s.key}`)}
           </button>
@@ -377,7 +412,7 @@ function AnswerSheet() {
           <input
             value={sheet.s[subj] ?? ''} placeholder={t('sheet.selectPlaceholder')} aria-label={t('sheet.selectPlaceholder')}
             onChange={(e) => { const v = e.target.value.slice(0, 20); update((p) => ({ ...p, s: { ...p.s, [subj]: v } })) }}
-            className="ui-field px-3 py-2 text-sm w-full sm:w-56"
+            className="ui-field min-h-11 min-w-0 px-3 py-2 text-base w-full sm:w-56"
           />
         )}
       </div>
@@ -394,7 +429,7 @@ function AnswerSheet() {
               <input
                 value={sheet.a[subj]?.[i] ?? ''} onChange={(e) => setAns(subj, q, e.target.value)}
                 inputMode="numeric" maxLength={short ? 3 : 2} aria-label={t('sheet.qLabel', { q })}
-                className="ui-field w-full mt-1 py-2 text-center tabular-nums"
+                className="ui-field min-h-11 min-w-0 w-full mt-1 py-2 text-base text-center tabular-nums"
               />
             </label>
           )
@@ -415,6 +450,7 @@ function PrintSheet({ sheet }: { sheet: Sheet }) {
       <style>{'@media print{body>*:not(#csat-print){display:none!important}html,body{background:#fff!important}@page{margin:12mm}}'}</style>
       <h1 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t('sheet.printTitle')}</h1>
       <p style={{ marginBottom: 12 }}>{t('sheet.printName')} ________________ &nbsp; {t('sheet.countNote')}</p>
+      <p style={{ marginBottom: 12 }}>{t('sheet.printScope')}</p>
       {SHEET.map((s) => (
         <section key={s.key} style={{ breakInside: 'avoid', marginBottom: 12 }}>
           <p style={{ fontWeight: 700, marginBottom: 4 }}>
@@ -473,7 +509,7 @@ function Timeline() {
         <AddToCalendar file="csat-2027-schedule.ics" events={TIMELINE.filter((x) => !today || (x.end ?? x.start) >= today).map((x) => ({
           uid: `csat-${x.key}-${x.start}`, date: x.start, end: x.end, alarmDays: 1,
           title: x.until ? `${t(`timeline.items.${x.key}`)} (${when(x)})` : t(`timeline.items.${x.key}`),
-          description: 'https://toolhub.ai.kr/csat-dday/',
+          description: `${t('timeline.note')}\nhttps://toolhub.ai.kr/csat-dday/`,
         }))} />
       </div>
     </div>
@@ -525,7 +561,7 @@ function Guide() {
             </li>
           ))}
         </ul>
-        <p className="text-xs text-muted mt-2">{t('guide.sources.note')}</p>
+        <p className="text-xs text-muted mt-2">{t('guide.sources.note', { date: CSAT_GUIDANCE_CHECKED })}</p>
       </section>
     </div>
   )

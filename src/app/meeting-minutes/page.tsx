@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '회의록 작성기 - 회의록 템플릿 & 내보내기 | 툴허브',
-  description: '회의록을 쉽게 작성하세요. 5가지 회의 템플릿, 참석자 관리, 안건·논의·결정사항·액션아이템 기록, Markdown/HTML 내보내기를 지원합니다.',
+  description: '회의록을 쉽게 작성하세요. 5가지 회의 템플릿, 참석자 관리, 안건·논의·결정사항·액션아이템 기록, 음성 메모 전사문에서 선택한 문장 추가와 기기 내 저장, 선택한 할 일의 칸반 연결, Markdown/HTML 내보내기를 지원합니다.',
   keywords: '회의록, 회의록 양식, 회의록 템플릿, 회의 기록, 미팅 노트, 액션아이템, 회의록 작성',
   openGraph: {
     title: '회의록 작성기 | 툴허브',
@@ -38,7 +38,7 @@ export default function MeetingMinutesPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['5가지 회의 템플릿', '참석자 관리', '액션아이템 추적', 'Markdown 내보내기', 'HTML 내보내기']
+    featureList: ['5가지 회의 템플릿', '참석자 관리', '액션아이템 추적·칸반 보드로 연결', '음성 메모 문장 선택·회의록 연결', 'Markdown 내보내기', 'HTML 내보내기']
   }
 
   return (
@@ -64,7 +64,7 @@ export default function MeetingMinutesPage() {
               회의록 작성기란?
             </h2>
             <p className="text-body leading-relaxed mb-6">
-              회의록 작성기는 5가지 회의 유형별 템플릿(정기회의, 브레인스토밍, 프로젝트 킥오프, 1:1 미팅, 교육)을 제공하여 체계적인 회의록을 손쉽게 작성할 수 있는 온라인 도구입니다. 참석자 관리, 안건별 논의 내용·결정사항·액션아이템 기록, Markdown/HTML 내보내기를 지원해 회의 결과를 팀과 빠르게 공유할 수 있습니다.
+              회의록 작성기는 5가지 회의 유형별 템플릿(정기회의, 브레인스토밍, 프로젝트 킥오프, 회고, 고객사 미팅)을 제공하여 체계적인 회의록을 손쉽게 작성할 수 있는 온라인 도구입니다. 참석자 관리, 안건별 논의 내용·결정사항·액션아이템 기록, Markdown/HTML 내보내기를 지원해 회의 결과를 팀과 빠르게 공유할 수 있습니다.
             </p>
             <h3 className="text-lg font-semibold text-fg mb-3">
               회의록 작성기 활용 팁

@@ -4,12 +4,15 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/imageResizer'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
+import ImageResizeProfiles from '@/components/ImageResizeProfiles'
 import { Upload, Download, Trash2, Loader2, Archive, Lock, Unlock } from 'lucide-react'
 import { detectEncoders, formatBytes, outputName, uniqueNames, isHeic } from '@/utils/imageCompress'
 import {
   resizeFile, cmToPx, clampInt, PRESETS, MAX_SIDE, isFixedSize,
   type SizeMode, type Fit, type ResizeFormat, type ResizeOutput, type Preset,
 } from '@/utils/imageResize'
+import { isImageResizeProfileSettings, type ImageResizeProfileSettings } from '@/utils/imageResizeProfiles'
 
 // ── Types / constants ──
 
@@ -53,31 +56,21 @@ const seg = (on: boolean) =>
 export default function ImageResizer() {
   const t = useTranslations('imageResizer')
   const sp = useSearchParams()
+  const hydrated = useHydrated()
+  const [urlRestored, setUrlRestored] = useState(false)
 
-  // 설정 (URL 공유)
-  const [mode, setMode] = useState<SizeMode>(() => {
-    const m = sp.get('m') as SizeMode
-    return MODES.includes(m) ? m : DEF.mode
-  })
-  const [width, setWidth] = useState(() => clampInt(sp.get('w'), 0, MAX_SIDE, 0))
-  const [height, setHeight] = useState(() => clampInt(sp.get('h'), 0, MAX_SIDE, 0))
-  const [lock, setLock] = useState(() => sp.get('l') !== '0')
-  const [percent, setPercent] = useState(() => clampInt(sp.get('p'), 1, 400, DEF.pct))
-  const [longSide, setLongSide] = useState(() => clampInt(sp.get('ls'), 1, MAX_SIDE, DEF.long))
-  const [fit, setFit] = useState<Fit>(() => {
-    const f = sp.get('fit') as Fit
-    return FITS.includes(f) ? f : 'cover'
-  })
-  const [format, setFormat] = useState<ResizeFormat>(() => {
-    const f = sp.get('f') as ResizeFormat
-    return FORMATS.includes(f) ? f : 'jpeg'
-  })
-  const [quality, setQuality] = useState(() => clampInt(sp.get('q'), 10, 100, DEF.q))
-  const [targetKB, setTargetKB] = useState(() => clampInt(sp.get('kb'), 0, 20000, 0))
-  const [bg, setBg] = useState(() => {
-    const b = sp.get('bg')
-    return b && /^[0-9a-f]{6}$/i.test(b) ? `#${b.toLowerCase()}` : DEF.bg
-  })
+  // Match static HTML first, then restore shared settings once before syncing the URL.
+  const [mode, setMode] = useState<SizeMode>(DEF.mode)
+  const [width, setWidth] = useState(0)
+  const [height, setHeight] = useState(0)
+  const [lock, setLock] = useState(true)
+  const [percent, setPercent] = useState(DEF.pct)
+  const [longSide, setLongSide] = useState(DEF.long)
+  const [fit, setFit] = useState<Fit>('cover')
+  const [format, setFormat] = useState<ResizeFormat>('jpeg')
+  const [quality, setQuality] = useState(DEF.q)
+  const [targetKB, setTargetKB] = useState(0)
+  const [bg, setBg] = useState(DEF.bg)
   const [cm, setCm] = useState({ w: '3.5', h: '4.5', dpi: '300' })
 
   const [images, setImages] = useState<Item[]>([])
@@ -92,6 +85,25 @@ export default function ImageResizer() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const imagesRef = useRef<Item[]>([])
   const runGen = useRef(0)
+
+  if (hydrated && !urlRestored) {
+    setUrlRestored(true)
+    const m = sp.get('m') as SizeMode
+    const f = sp.get('fit') as Fit
+    const output = sp.get('f') as ResizeFormat
+    const background = sp.get('bg')
+    setMode(MODES.includes(m) ? m : DEF.mode)
+    setWidth(clampInt(sp.get('w'), 0, MAX_SIDE, 0))
+    setHeight(clampInt(sp.get('h'), 0, MAX_SIDE, 0))
+    setLock(sp.get('l') !== '0')
+    setPercent(clampInt(sp.get('p'), 1, 400, DEF.pct))
+    setLongSide(clampInt(sp.get('ls'), 16, MAX_SIDE, DEF.long))
+    setFit(FITS.includes(f) ? f : 'cover')
+    setFormat(FORMATS.includes(output) ? output : 'jpeg')
+    setQuality(clampInt(sp.get('q'), 10, 100, DEF.q))
+    setTargetKB(clampInt(sp.get('kb'), 0, 20000, 0))
+    setBg(background && /^[0-9a-f]{6}$/i.test(background) ? `#${background.toLowerCase()}` : DEF.bg)
+  }
 
   // 입력 중간값(예: "1" → "1080")도 그대로 처리되지만 1px 미만/빈 값은 막는다
   const kb = targetKB > 0 ? Math.max(10, targetKB) : 0
@@ -110,6 +122,7 @@ export default function ImageResizer() {
 
   // URL 동기화 (기본값과 다른 것만)
   useEffect(() => {
+    if (!urlRestored) return
     const id = setTimeout(() => {
       const p = new URLSearchParams()
       if (mode !== DEF.mode) p.set('m', mode)
@@ -125,10 +138,10 @@ export default function ImageResizer() {
       if (kb) p.set('kb', String(kb))
       if (bg !== DEF.bg) p.set('bg', bg.slice(1))
       const qs = p.toString()
-      window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`)
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`)
     }, 300)
     return () => clearTimeout(id)
-  }, [mode, width, height, lock, fit, pct, ls, format, quality, kb, bg])
+  }, [mode, width, height, lock, fit, pct, ls, format, quality, kb, bg, urlRestored])
 
   // ── 파일 추가 ──
 
@@ -275,6 +288,20 @@ export default function ImageResizer() {
   const cmValid = cmPx.w >= 1 && cmPx.h >= 1 && cmPx.w <= MAX_SIDE && cmPx.h <= MAX_SIDE
 
   const showBg = format === 'jpeg' || (fixed && fit === 'contain')
+  const profileSettings = { mode, width, height, lock, percent, longSide, fit, format, quality, targetKB, bg }
+  const loadProfile = (settings: ImageResizeProfileSettings) => {
+    setMode(settings.mode)
+    setWidth(settings.width)
+    setHeight(settings.height)
+    setLock(settings.lock)
+    setPercent(settings.percent)
+    setLongSide(settings.longSide)
+    setFit(settings.fit)
+    setFormat(settings.format)
+    setQuality(settings.quality)
+    setTargetKB(settings.targetKB)
+    setBg(settings.bg)
+  }
 
   // ── 요약 ──
 
@@ -573,6 +600,7 @@ export default function ImageResizer() {
               <p className="text-xs text-muted leading-relaxed bg-subtle rounded-xl p-3">{t('metaNote')}</p>
             </div>
           </div>
+          <ImageResizeProfiles settings={isImageResizeProfileSettings(profileSettings) ? profileSettings : null} webpSupported={enc?.webp ?? null} onLoad={loadProfile} />
         </div>
 
         {/* ── 오른쪽: 결과 ── */}

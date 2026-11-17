@@ -4,8 +4,10 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/presentationTimer'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import { useDialog } from '@/hooks/useDialog'
 import ShareResult from '@/components/ShareResult'
+import RehearsalPanel from '@/components/RehearsalPanel'
 import {
   type Segment, type Alert, MAX_SEGMENTS, MAX_TOTAL_SEC, MIN_SEG_SEC,
   totalSec, defaultWarnMin, parseSegments, serializeSegments, timerState, alertsBetween,
@@ -38,7 +40,8 @@ function MinutesInput({ sec, min, onCommit, label, className = '' }: {
 }) {
   const fmt = (s: number) => String(+(s / 60).toFixed(2))
   const [v, setV] = useState(fmt(sec))
-  useEffect(() => { if (Math.round(Number(v) * 60) !== sec) setV(fmt(sec)) }, [sec]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [previousSec, setPreviousSec] = useState(sec)
+  if (previousSec !== sec) { setPreviousSec(sec); if (Math.round(Number(v) * 60) !== sec) setV(fmt(sec)) }
   return (
     <input
       type="number" inputMode="decimal" min={min / 60} step={0.5} value={v} aria-label={label}
@@ -56,14 +59,25 @@ function MinutesInput({ sec, min, onCommit, label, className = '' }: {
 export default function PresentationTimer() {
   const t = useTranslations('presentationTimer')
   const sp = useSearchParams()
-
-  const [segs, setSegs] = useState<Segment[]>(() => parseSegments(sp.get('s')) ?? [{ name: '', sec: 600 }])
-  const [warnSec, setWarnSec] = useState(() => {
+  const hydrated = useHydrated()
+  const [initialized, setInitialized] = useState(false)
+  const [segs, setSegs] = useState<Segment[]>([{ name: '', sec: 600 }])
+  const [warnSec, setWarnSec] = useState(defaultWarnMin(600) * 60)
+  const [sound, setSound] = useState(true)
+  const [vibrate, setVibrate] = useState(true)
+  if (hydrated && !initialized) {
+    const restored = parseSegments(sp.get('s')) ?? [{ name: '', sec: 600 }]
     const w = Number(sp.get('w'))
-    return sp.get('w') !== null && Number.isFinite(w) && w >= 0 ? Math.round(w * 60) : defaultWarnMin(totalSec(segs)) * 60
-  })
-  const [sound, setSound] = useState(() => sp.get('snd') !== '0')
-  const [vibrate, setVibrate] = useState(() => sp.get('vib') !== '0')
+    setSegs(restored)
+    setWarnSec(sp.get('w') !== null && Number.isFinite(w) && w >= 0 ? Math.min(MAX_TOTAL_SEC, Math.round(w * 60)) : defaultWarnMin(totalSec(restored)) * 60)
+    setSound(sp.get('snd') !== '0')
+    setVibrate(sp.get('vib') !== '0')
+    setInitialized(true)
+  }
+  const [rehearsal, setRehearsal] = useState(false)
+  const [rehearsalMarks, setRehearsalMarks] = useState<number[]>([])
+  const [rehearsalTitle, setRehearsalTitle] = useState('')
+  const [attemptId, setAttemptId] = useState<string | null>(null)
 
   // 경과 = accMs + (실행 중이면 now - runStart). 인터벌은 화면 갱신만 하고 시간은 performance.now 차이로 계산.
   const [accMs, setAccMs] = useState(0)
@@ -78,9 +92,18 @@ export default function PresentationTimer() {
   const elapsed = accMs + (running ? Math.max(0, now - runStart) : 0)
   const st = timerState(segs, elapsed, warnSec)
   const total = totalSec(segs)
+  const planLocked = rehearsal && (running || elapsed > 0)
+  const readElapsed = () => accMs + (runStart !== null ? Math.max(0, performance.now() - runStart) : 0)
+  const markSegment = () => {
+    if (!rehearsal || !running || rehearsalMarks.length >= segs.length - 1) return
+    const current = readElapsed()
+    if (current - (rehearsalMarks.at(-1) ?? 0) >= 250) setRehearsalMarks(prev => [...prev, current])
+  }
+  const stopAndRead = () => { const current = readElapsed(); setAccMs(current); setRunStart(null); return current }
 
   // ── 공유 링크(URL) 동기화 ──
   useEffect(() => {
+    if (!initialized) return
     const id = setTimeout(() => {
       const p = new URLSearchParams({ s: serializeSegments(segs), w: String(+(warnSec / 60).toFixed(2)) })
       if (!sound) p.set('snd', '0')
@@ -88,7 +111,7 @@ export default function PresentationTimer() {
       window.history.replaceState(null, '', `${window.location.pathname}?${p.toString()}`)
     }, 300)
     return () => clearTimeout(id)
-  }, [segs, warnSec, sound, vibrate])
+  }, [initialized, segs, warnSec, sound, vibrate])
 
   // ── 알림 ──
   const fire = useCallback((alert: Alert) => {
@@ -152,20 +175,22 @@ export default function PresentationTimer() {
       setAccMs((a) => a + (n - runStart))
       setRunStart(null)
     } else {
+      if (!attemptId) setAttemptId(crypto.randomUUID())
       if (sound && !audioRef.current) { try { audioRef.current = new AudioContext() } catch { /* 없음 */ } } // iOS: 사용자 제스처에서 오디오 잠금 해제
       prevElapsedRef.current = accMs
       setNow(n)
       setRunStart(n)
     }
-  }, [runStart, accMs, sound])
+  }, [runStart, accMs, sound, attemptId])
 
   const reset = useCallback(() => {
     setRunStart(null)
     setAccMs(0)
+    setRehearsalMarks([]); setAttemptId(null)
     prevElapsedRef.current = 0
   }, [])
 
-  const adjust = useCallback((deltaSec: number) => setSegs((s) => adjustSegment(s, st.segIndex, deltaSec)), [st.segIndex])
+  const adjust = useCallback((deltaSec: number) => { if (!planLocked) setSegs((s) => adjustSegment(s, st.segIndex, deltaSec)) }, [st.segIndex, planLocked])
 
   const applyPreset = (next: Segment[]) => {
     reset()
@@ -195,7 +220,7 @@ export default function PresentationTimer() {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return
       const el = e.target as HTMLElement | null
-      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)) return
+      if (el?.closest('input, textarea, select, button, a, [contenteditable="true"]')) return
       switch (e.code) {
         case 'Space': toggle(); break
         case 'KeyR': reset(); break
@@ -275,8 +300,8 @@ export default function PresentationTimer() {
     </>
   )
 
-  const iconBtn = 'p-3 rounded-full bg-soft hover:bg-subtle text-body transition-colors'
-  const chip = (on: boolean) => `px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const iconBtn = 'min-h-11 min-w-11 p-3 rounded-full bg-soft hover:bg-subtle text-body transition-colors disabled:opacity-40'
+  const chip = (on: boolean) => `min-h-11 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
   // ── 발표자 모드 ──
   if (speaker) {
@@ -305,13 +330,14 @@ export default function PresentationTimer() {
         <div className="space-y-4">
           {progressBar(st.phase === 'normal' ? 'bg-track' : 'bg-black/15', st.phase === 'normal' ? 'bg-primary' : 'bg-current')}
           <div className="flex items-center justify-center gap-3">
-            <button onClick={() => adjust(-60)} className={`p-3 rounded-full ${btn}`} aria-label={t('subtractMinute')}><Minus size={20} /></button>
+            <button onClick={() => adjust(-60)} disabled={planLocked} className={`p-3 rounded-full ${btn}`} aria-label={t('subtractMinute')}><Minus size={20} /></button>
             <button onClick={reset} className={`p-3 rounded-full ${btn}`} aria-label={t('reset')}><RotateCcw size={20} /></button>
             <button onClick={toggle} className={`p-4 rounded-full ${btn}`} aria-label={running ? t('pause') : t('start')}>
               {running ? <Pause size={26} /> : <Play size={26} />}
             </button>
-            <button onClick={() => adjust(60)} className={`p-3 rounded-full ${btn}`} aria-label={t('addMinute')}><Plus size={20} /></button>
+            <button onClick={() => adjust(60)} disabled={planLocked} className={`p-3 rounded-full ${btn}`} aria-label={t('addMinute')}><Plus size={20} /></button>
           </div>
+          {rehearsal && <button onClick={markSegment} disabled={!running || rehearsalMarks.length >= segs.length - 1} className="ui-btn-soft min-h-11 px-4 py-2 mx-auto block disabled:opacity-40">{t('rehearsal.next')}</button>}
           <p className="hidden sm:block text-center text-sm opacity-60">{t('shortcutsLine')}</p>
         </div>
       </div>
@@ -350,15 +376,15 @@ export default function PresentationTimer() {
           </div>
         )}
 
-        <div className="flex items-center gap-3">
-          <button onClick={() => adjust(-60)} className={iconBtn} aria-label={t('subtractMinute')} title={t('subtractMinute')}><Minus size={18} /></button>
-          <button onClick={reset} className={iconBtn} aria-label={t('reset')} title={t('reset')}><RotateCcw size={18} /></button>
-          <button onClick={toggle} className="ui-btn px-8 py-4 text-lg rounded-full min-w-36">
+        <div className="grid grid-cols-4 sm:flex items-center justify-center gap-2 sm:gap-3">
+          <button onClick={toggle} className="ui-btn col-span-4 sm:order-3 px-8 py-4 text-lg rounded-full min-w-36">
             {running ? <Pause size={22} /> : <Play size={22} />}
             {running ? t('pause') : elapsed > 0 ? t('resume') : t('start')}
           </button>
-          <button onClick={enterSpeaker} className={iconBtn} aria-label={t('speakerMode')} title={t('speakerMode')}><Maximize size={18} /></button>
-          <button onClick={() => adjust(60)} className={iconBtn} aria-label={t('addMinute')} title={t('addMinute')}><Plus size={18} /></button>
+          <button onClick={() => adjust(-60)} disabled={planLocked} className={`${iconBtn} sm:order-1`} aria-label={t('subtractMinute')} title={t('subtractMinute')}><Minus size={18} /></button>
+          <button onClick={reset} className={`${iconBtn} sm:order-2`} aria-label={t('reset')} title={t('reset')}><RotateCcw size={18} /></button>
+          <button onClick={enterSpeaker} className={`${iconBtn} sm:order-4`} aria-label={t('speakerMode')} title={t('speakerMode')}><Maximize size={18} /></button>
+          <button onClick={() => adjust(60)} disabled={planLocked} className={`${iconBtn} sm:order-5`} aria-label={t('addMinute')} title={t('addMinute')}><Plus size={18} /></button>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2">
@@ -369,8 +395,10 @@ export default function PresentationTimer() {
         <p className="hidden sm:block text-xs text-faint">{t('shortcutsLine')}</p>
       </div>
 
+      <RehearsalPanel enabled={rehearsal} onEnabled={setRehearsal} segments={segs} elapsed={elapsed} running={running} marks={rehearsalMarks} onMark={markSegment} stopAndRead={stopAndRead} onReuse={next => { setRehearsal(true); applyPreset(next) }} attemptId={attemptId} title={rehearsalTitle} onTitle={setRehearsalTitle} />
+      {planLocked && <p className="text-sm text-sub">{t('rehearsal.planLocked')}</p>}
       {/* 빠른 설정 */}
-      <div className="ui-card p-6 space-y-3">
+      <fieldset disabled={planLocked} className="ui-card p-6 space-y-3 min-w-0">
         <h2 className="text-sm font-semibold text-body">{t('presets')}</h2>
         <div className="flex flex-wrap gap-2" role="group" aria-label={t('presets')}>
           {[...plainPresets, ...splitPresets, agendaPreset].map((p) => (
@@ -379,27 +407,27 @@ export default function PresentationTimer() {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* 구간·경고 설정 */}
-      <div className="ui-card p-6 space-y-4">
+      <fieldset disabled={planLocked} className="ui-card p-6 space-y-4 min-w-0">
         <div>
           <h2 className="text-sm font-semibold text-body">{t('segments')}</h2>
           <p className="text-xs text-muted mt-1">{t('segmentsHint')}</p>
         </div>
         <div className="space-y-2">
           {segs.map((s, i) => (
-            <div key={i} className="flex items-center gap-2">
+            <div key={i} className="flex flex-wrap sm:flex-nowrap items-center gap-2">
               <input
                 value={s.name} onChange={(e) => setSegName(i, e.target.value)} maxLength={30}
                 placeholder={t('segNamePlaceholder', { n: i + 1 })} aria-label={t('segName')}
-                className="ui-field px-3 py-2 flex-1 min-w-0"
+                className="ui-field px-3 py-3 text-base flex-1 min-w-28"
               />
               <MinutesInput sec={s.sec} min={MIN_SEG_SEC} onCommit={(sec) => setSegSec(i, sec)} label={t('segMinutes')} className="w-24" />
               <span className="text-sm text-muted">{t('minutes')}</span>
               <button
                 onClick={() => removeSeg(i)} disabled={segs.length === 1}
-                className="p-2 rounded-lg text-muted hover:bg-soft disabled:opacity-30" aria-label={t('removeSegment')} title={t('removeSegment')}
+                className="min-h-11 min-w-11 flex items-center justify-center rounded-lg text-muted hover:bg-soft disabled:opacity-30" aria-label={t('removeSegment')} title={t('removeSegment')}
               >
                 <X size={16} />
               </button>
@@ -418,7 +446,7 @@ export default function PresentationTimer() {
           </div>
           <p className="text-xs text-muted mt-1">{t('warningHint')}</p>
         </div>
-      </div>
+      </fieldset>
 
       {/* 공유: 시작 전 = 설정 링크, 멈춘 뒤 = 결과 */}
       <ShareResult

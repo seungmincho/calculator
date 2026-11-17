@@ -5,6 +5,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/urlEncoder'
 import { Copy, Check, ArrowRightLeft, Trash2, Link, Unlink } from 'lucide-react'
 import { glassCard, glassInset } from '@/lib/glass'
+import UrlBatchConverter from '@/components/UrlBatchConverter'
 
 type Mode = 'encode' | 'decode'
 
@@ -23,6 +24,7 @@ export default function UrlEncoder() {
   const [output, setOutput] = useState('')
   const [mode, setMode] = useState<Mode>('encode')
   const [copied, setCopied] = useState(false)
+  const [copyFailed, setCopyFailed] = useState(false)
   const [error, setError] = useState('')
   const [parsedUrl, setParsedUrl] = useState<ParsedUrl | null>(null)
 
@@ -48,6 +50,8 @@ export default function UrlEncoder() {
 
   const handleConvert = useCallback(() => {
     setError('')
+    setCopied(false)
+    setCopyFailed(false)
     setParsedUrl(null)
 
     if (!input.trim()) {
@@ -81,24 +85,31 @@ export default function UrlEncoder() {
     setOutput('')
     setError('')
     setParsedUrl(null)
+    setCopied(false)
+    setCopyFailed(false)
   }, [output])
 
   const handleCopy = useCallback(async () => {
     if (!output) return
+    setCopied(false)
+    setCopyFailed(false)
     try {
       await navigator.clipboard.writeText(output)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     } catch {
-      const textarea = document.createElement('textarea')
-      textarea.value = output
-      document.body.appendChild(textarea)
-      textarea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textarea)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      try {
+        const textarea = document.createElement('textarea')
+        textarea.value = output
+        textarea.style.position = 'fixed'
+        textarea.style.left = '-999999px'
+        document.body.appendChild(textarea)
+        try {
+          textarea.select()
+          if (!document.execCommand('copy')) throw new Error('Copy failed')
+        } finally { textarea.remove() }
+      } catch { setCopyFailed(true); return }
     }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }, [output])
 
   const handleClear = useCallback(() => {
@@ -106,9 +117,14 @@ export default function UrlEncoder() {
     setOutput('')
     setError('')
     setParsedUrl(null)
+    setCopied(false)
+    setCopyFailed(false)
   }, [])
 
   const handleEncodeFullUrl = useCallback(() => {
+    setError('')
+    setCopied(false)
+    setCopyFailed(false)
     if (!input.trim()) return
     try {
       const url = new URL(input)
@@ -116,6 +132,8 @@ export default function UrlEncoder() {
       setParsedUrl(parseUrl(url.href))
     } catch {
       setError(t('errors.invalidUrl'))
+      setOutput('')
+      setParsedUrl(null)
     }
   }, [input, parseUrl, t])
 
@@ -132,13 +150,13 @@ export default function UrlEncoder() {
       </div>
 
       {/* Mode Toggle */}
-      <div className="flex items-center justify-center gap-4 mb-6">
+      <div className="flex items-center justify-center gap-2 mb-6">
         <button
-          onClick={() => { setMode('encode'); setOutput(''); setError(''); setParsedUrl(null); }}
-          className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
+          onClick={() => { setMode('encode'); setOutput(''); setError(''); setParsedUrl(null); setCopied(false); setCopyFailed(false); }}
+          className={`min-h-11 min-w-0 px-3 py-2 rounded-xl font-medium transition-colors flex items-center gap-2 ${
             mode === 'encode'
-              ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
+              ? 'bg-primary text-white'
+              : 'bg-soft text-body hover:bg-subtle'
           }`}
         >
           <Link className="w-4 h-4" />
@@ -146,17 +164,18 @@ export default function UrlEncoder() {
         </button>
         <button
           onClick={handleSwap}
-          className="p-2 rounded-lg bg-soft text-sub hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
+          className="min-h-11 min-w-11 p-2 rounded-xl bg-soft text-sub hover:bg-subtle transition-colors"
+          aria-label={t('actions.swap')}
           title={t('actions.swap')}
         >
           <ArrowRightLeft className="w-5 h-5" />
         </button>
         <button
-          onClick={() => { setMode('decode'); setOutput(''); setError(''); setParsedUrl(null); }}
-          className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
+          onClick={() => { setMode('decode'); setOutput(''); setError(''); setParsedUrl(null); setCopied(false); setCopyFailed(false); }}
+          className={`min-h-11 min-w-0 px-3 py-2 rounded-xl font-medium transition-colors flex items-center gap-2 ${
             mode === 'decode'
-              ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-track text-body hover:bg-gray-300 dark:hover:bg-gray-600'
+              ? 'bg-primary text-white'
+              : 'bg-soft text-body hover:bg-subtle'
           }`}
         >
           <Unlink className="w-4 h-4" />
@@ -165,7 +184,7 @@ export default function UrlEncoder() {
       </div>
 
       {/* Main Content */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Input */}
         <div className={`${glassCard} ${glassInset} border border-line overflow-hidden`}>
           <div className="flex items-center justify-between px-4 py-3 bg-subtle border-b border-line">
@@ -175,9 +194,10 @@ export default function UrlEncoder() {
           </div>
           <textarea
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { setInput(e.target.value); setOutput(''); setError(''); setParsedUrl(null); setCopied(false); setCopyFailed(false) }}
+            aria-label={mode === 'encode' ? t('input.text') : t('input.encoded')}
             placeholder={mode === 'encode' ? t('input.textPlaceholder') : t('input.encodedPlaceholder')}
-            className="w-full h-48 p-4 text-fg bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full h-48 p-4 text-fg bg-transparent resize-none focus:outline-none text-base font-mono leading-relaxed placeholder:text-faint"
             spellCheck={false}
           />
         </div>
@@ -191,7 +211,7 @@ export default function UrlEncoder() {
             <button
               onClick={handleCopy}
               disabled={!output}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-blue-500 hover:bg-blue-600 text-white"
+              className="ui-btn min-h-11 inline-flex items-center gap-2 px-3 py-2 text-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               {copied ? t('actions.copied') : t('actions.copy')}
@@ -200,33 +220,35 @@ export default function UrlEncoder() {
           <textarea
             value={error || output}
             readOnly
-            className={`w-full h-48 p-4 bg-transparent resize-none focus:outline-none text-sm font-mono leading-relaxed ${
+            aria-label={mode === 'encode' ? t('output.encoded') : t('output.text')}
+            className={`w-full h-48 p-4 bg-transparent resize-none focus:outline-none text-base font-mono leading-relaxed ${
               error ? 'text-red-500' : 'text-fg'
             }`}
             spellCheck={false}
           />
         </div>
       </div>
+      {copyFailed && <p role="alert" className="mt-3 rounded-xl bg-subtle p-3 text-sm text-body">{t('copyFailed')}</p>}
 
       {/* Actions */}
-      <div className="flex justify-center gap-4 mt-6">
+      <div className="flex flex-wrap justify-center gap-2 mt-6">
         <button
           onClick={handleConvert}
-          className="px-8 py-3 rounded-xl font-medium bg-blue-500 hover:bg-blue-600 text-white shadow-lg hover:shadow-xl transition-all"
+          className="ui-btn min-h-11 px-4 py-3"
         >
           {mode === 'encode' ? t('actions.encode') : t('actions.decode')}
         </button>
         {mode === 'encode' && (
           <button
             onClick={handleEncodeFullUrl}
-            className="px-6 py-3 rounded-xl font-medium bg-indigo-500 hover:bg-indigo-600 text-white shadow-lg hover:shadow-xl transition-all"
+            className="ui-btn-soft min-h-11 px-4 py-3"
           >
             {t('actions.parseUrl')}
           </button>
         )}
         <button
           onClick={handleClear}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-track hover:bg-gray-300 dark:hover:bg-gray-600 text-body transition-all"
+          className="ui-btn-soft min-h-11 inline-flex items-center gap-2 px-4 py-3"
         >
           <Trash2 className="w-4 h-4" />
           {t('actions.clear')}
@@ -250,7 +272,7 @@ export default function UrlEncoder() {
             </div>
             <div className="flex">
               <span className="w-24 font-medium text-muted">{t('urlAnalysis.path')}</span>
-              <span className="text-fg font-mono">{parsedUrl.pathname}</span>
+              <span className="min-w-0 text-fg font-mono break-all">{parsedUrl.pathname}</span>
             </div>
             {parsedUrl.params.length > 0 && (
               <div>
@@ -258,9 +280,9 @@ export default function UrlEncoder() {
                 <div className="mt-2 space-y-1 ml-4">
                   {parsedUrl.params.map((param, idx) => (
                     <div key={idx} className="flex gap-2">
-                      <span className="text-blue-600 dark:text-blue-400 font-mono">{param.key}</span>
-                      <span className="text-gray-400">=</span>
-                      <span className="text-fg font-mono">{param.value}</span>
+                      <span className="min-w-0 text-primary font-mono break-all">{param.key}</span>
+                      <span className="text-faint">=</span>
+                      <span className="min-w-0 text-fg font-mono break-all">{param.value}</span>
                     </div>
                   ))}
                 </div>
@@ -269,19 +291,21 @@ export default function UrlEncoder() {
             {parsedUrl.hash && (
               <div className="flex">
                 <span className="w-24 font-medium text-muted">{t('urlAnalysis.hash')}</span>
-                <span className="text-fg font-mono">{parsedUrl.hash}</span>
+                <span className="min-w-0 text-fg font-mono break-all">{parsedUrl.hash}</span>
               </div>
             )}
           </div>
         </div>
       )}
 
+      <UrlBatchConverter />
+
       {/* Guide */}
       <div className={`mt-8 ${glassCard} ${glassInset} border border-line p-6`}>
         <h2 className="text-lg font-semibold text-fg mb-4">
           {t('guide.title')}
         </h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 className="text-sm font-medium text-body mb-3">
               {t('guide.whatIs.title')}

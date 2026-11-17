@@ -5,13 +5,16 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import textConverterMessages from '../../../messages/generated/ko/ns/textConverter.json'
 
+const TITLE = '텍스트 변환기 - 케이스·단계 순서·되돌리기 | 툴허브'
+const DESCRIPTION = '대소문자·camelCase·snake_case 변환과 줄 정리를 이어서 적용하세요. 변환 단계의 순서·삭제·초기화를 최대 30개 이력으로 되돌리고 다시 실행하며 현재 원문은 유지합니다.'
+
 export const metadata: Metadata = {
-  title: '텍스트 변환기 - 대소문자, 케이스 변환 | 툴허브',
-  description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case, PascalCase 등 다양한 케이스를 즉시 변환합니다. 개발자 필수 도구.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: '텍스트변환, 대소문자변환, camelcase, snakecase, kebabcase, 케이스변환, text converter',
   openGraph: {
-    title: '텍스트 변환기 - 케이스 변환 도구',
-    description: '다양한 텍스트 케이스를 손쉽게 변환하세요',
+    title: TITLE,
+    description: DESCRIPTION,
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/text-converter/',
@@ -20,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '텍스트 변환기 - 대소문자, 케이스 변환',
-    description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case, PascalCase 등 다양한 케이스를 즉시 변환합니다. 개발자 필수 도구.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/text-converter.png'],
   },
   alternates: {
@@ -34,13 +37,13 @@ export default function TextConverterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '텍스트 변환기',
-    description: '텍스트 대소문자 변환, camelCase, snake_case, kebab-case, PascalCase 등 다양한 케이스를 즉시 변환합니다. 개발자 필수 도구.',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/text-converter/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['12가지 케이스 한 번에 변환(camelCase·snake_case·kebab-case 등)', '줄 정렬·중복 제거·빈 줄 제거', '찾아 바꾸기(정규식 지원)', '줄마다 앞뒤 문자 추가', 'SQL IN·JS 배열 목록 만들기', '전각↔반각 변환', '변환 단계 이어 붙이기']
+    featureList: ['12가지 케이스 한 번에 변환(camelCase·snake_case·kebab-case 등)', '줄 정렬·중복 제거·빈 줄 제거', '찾아 바꾸기(정규식 지원)', '줄마다 앞뒤 문자 추가', 'SQL IN·JS 배열 목록 만들기', '전각↔반각 변환', '변환 단계 이어 붙이기', '단계 위아래 이동·개별 삭제', '추가·이동·삭제·초기화 최대 30개 이력의 되돌리기·다시 실행', '단계 이력 변경 시 원문과 작성 중인 찾기·치환 입력 보존']
   }
 
   return (
@@ -73,6 +76,8 @@ export default function TextConverterPage() {
             <li><strong>URL 슬러그 생성:</strong> 영문 제목을 kebab-case로 바꾸면 SEO 친화적인 URL 슬러그를 만들 수 있습니다. 공백과 특수문자는 하이픈으로 정리됩니다.</li>
             <li><strong>상수명 변환:</strong> SCREAMING_SNAKE_CASE(전체 대문자 + 밑줄)는 프로그램 상수(MAX_VALUE, API_KEY)에 주로 사용되며, 변환 후 바로 코드에 복사할 수 있습니다.</li>
             <li><strong>목록 정리:</strong> 엑셀에서 복사한 값 목록의 중복과 빈 줄을 지우고 가나다순으로 정렬한 뒤 SQL IN 조건이나 배열로 바로 바꿀 수 있습니다. 한글 초성 추출은 한글 자모 분리 도구를 이용하세요.</li>
+            <li><strong>변환 순서 조정:</strong> 여러 단계를 추가한 뒤 위아래로 옮겨 실제 결과를 확인하세요. 같은 변환도 실행 순서에 따라 결과가 달라질 수 있습니다.</li>
+            <li><strong>단계 변경 되돌리기:</strong> 추가·이동·삭제·전체 초기화를 최대 30개 이력으로 되돌리거나 다시 실행하세요. 단계 이력은 현재 원문과 작성 중인 찾기·치환 입력을 바꾸지 않으며 이 페이지에 머무는 동안만 유지됩니다.</li>
           </ul>
         </div>
       </section>

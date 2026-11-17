@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gameSounds'
 import '@/lib/i18n/ns/tetris'
@@ -19,6 +19,8 @@ import {
   COLS, ROWS, HIDDEN, LOCK_DELAY, newGame, step, move, rotate, hardDrop, holdPiece, softDropOne,
   cells, previewCells, dropDistance, onGround, type Game, type PieceType, type ClearInfo,
 } from '@/utils/tetrisEngine'
+import { createTetrisInputOwners, createTetrisActivationGate, tetrisKeyIntent, type TetrisInputAction as Action, type TetrisInputSource, type TetrisInputToken, type TetrisPointerActivation, type TetrisHeldSnapshot } from '@/utils/tetrisInput'
+import { createTetrisGesture, type TetrisGestureToken, type TetrisGestureAction } from '@/utils/tetrisGesture'
 
 // ── 게임 콘텐츠 색 (가이드라인 표준색) ───────────────────────────────────
 const COLORS: Record<PieceType, string> = {
@@ -32,19 +34,12 @@ const NEXT_SHOWN = 5
 const DEFAULT_HANDLING = { das: 170, arr: 50 }
 
 type Status = 'idle' | 'playing' | 'paused' | 'over'
-type Action = 'left' | 'right' | 'down' | 'cw' | 'ccw' | 'hard' | 'hold'
 interface Hud { score: number; lines: number; level: number; hold: PieceType | null; canHold: boolean; queue: PieceType[] }
 interface Result {
   score: number; lines: number; level: number; pieces: number; tetrises: number; tspins: number
   maxCombo: number; ms: number; newBest: boolean
 }
 interface Saved { games: number; totalLines: number; bestLines: number }
-
-const KEYMAP: Record<string, Action> = {
-  ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'down',
-  ArrowUp: 'cw', KeyX: 'cw', KeyZ: 'ccw', ControlLeft: 'ccw', ControlRight: 'ccw',
-  Space: 'hard', KeyC: 'hold', ShiftLeft: 'hold', ShiftRight: 'hold',
-}
 
 const hudOf = (g: Game): Hud => ({
   score: g.score, lines: g.lines, level: g.level, hold: g.hold, canHold: g.canHold, queue: g.queue.slice(0, NEXT_SHOWN),
@@ -75,6 +70,7 @@ export default function Tetris() {
   const [popup, setPopup] = useState<{ id: number; main: string; sub: string; pts: number } | null>(null)
   const [result, setResult] = useState<Result | null>(null)
   const [showNameModal, setShowNameModal] = useState(false)
+  const [runRevision, setRunRevision] = useState(0)
 
   const gameRef = useRef<Game | null>(null)
   const statusRef = useRef<Status>('idle')
@@ -91,7 +87,10 @@ export default function Tetris() {
   const savedRef = useRef(saved)
   const hudKeyRef = useRef('')
   const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const gestRef = useRef<{ x0: number; y0: number; lx: number; ly: number; t0: number; moved: boolean } | null>(null)
+  const mountedRef = useRef(false), gameEpochRef = useRef(0), loopEpochRef = useRef(0), popupEpochRef = useRef(0)
+  const inputRef = useRef(createTetrisInputOwners()), activationRef = useRef(createTetrisActivationGate()), gestureRef = useRef(createTetrisGesture(COLS, ROWS))
+  const padPointers = useRef(new Map<number, { input: TetrisInputToken; activation: TetrisPointerActivation; element: HTMLButtonElement }>())
+  const boardCapture = useRef<{ token: TetrisGestureToken; element: HTMLCanvasElement } | null>(null)
 
   const leaderboard = useLeaderboard('tetris', undefined)
   const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
@@ -99,6 +98,38 @@ export default function Tetris() {
   const gameStartRef = useRef(0)
   const showNameModalRef = useRef(false)
   showNameModalRef.current = showNameModal
+
+  const releaseCapture = useCallback((element: HTMLElement, pointerId: number) => {
+    try { if (typeof element.hasPointerCapture !== 'function' || element.hasPointerCapture(pointerId)) element.releasePointerCapture?.(pointerId) } catch { /* The browser may have already released it. */ }
+  }, [])
+  const applyHeld = useCallback((snapshot: TetrisHeldSnapshot, resetDas = false) => {
+    heldRef.current = { left: snapshot.left, right: snapshot.right, down: snapshot.down }; dirRef.current = snapshot.direction
+    if (resetDas) dasRef.current = { t: 0, arr: 0 }
+  }, [])
+  const resetInput = useCallback((active: boolean, render = true) => {
+    const snapshot = inputRef.current.reset(active)
+    activationRef.current.reset(snapshot.epoch, active); gestureRef.current.reset(snapshot.epoch, active); applyHeld(snapshot, true)
+    const oldPads = [...padPointers.current.values()], oldBoard = boardCapture.current
+    padPointers.current.clear(); boardCapture.current = null
+    for (const entry of oldPads) releaseCapture(entry.element, entry.activation.pointerId)
+    if (oldBoard) releaseCapture(oldBoard.element, oldBoard.token.pointerId)
+    if (render) setRunRevision(snapshot.epoch)
+  }, [applyHeld, releaseCapture])
+  const stopLoop = useCallback(() => {
+    loopEpochRef.current++
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    rafRef.current = null
+  }, [])
+  const clearPopup = useCallback((render = true) => {
+    popupEpochRef.current++
+    if (popupTimerRef.current !== null) clearTimeout(popupTimerRef.current)
+    popupTimerRef.current = null
+    if (render) setPopup(null)
+  }, [])
+  useLayoutEffect(() => {
+    mountedRef.current = true; resetInput(statusRef.current === 'playing')
+    return () => { mountedRef.current = false; resetInput(false, false); stopLoop(); clearPopup(false) }
+  }, [resetInput, stopLoop, clearPopup])
 
   // ── 저장값 로드 (마운트 후) ─────────────────────────────────────────────
   useEffect(() => {
@@ -165,10 +196,10 @@ export default function Tetris() {
 
   // ── 한 판 종료 처리 ─────────────────────────────────────────────────────
   const finish = (g: Game) => {
+    if (!mountedRef.current || gameRef.current !== g || statusRef.current !== 'playing') return
     statusRef.current = 'over'
     setStatus('over')
-    heldRef.current = { left: false, right: false, down: false }
-    dirRef.current = 0
+    resetInput(false); stopLoop(); clearPopup()
     const newBest = g.score > bestRef.current
     if (newBest) {
       bestRef.current = g.score; setBest(g.score)
@@ -194,9 +225,13 @@ export default function Tetris() {
       c.tspin === 'full' ? t('action.tspin') : c.tspin === 'mini' ? t('action.tspinMini') : '',
       lineKey ? t(`action.${lineKey}`) : '',
     ].filter(Boolean).join(' ')
-    setPopup({ id: Date.now(), main, sub: c.combo > 0 ? t('action.combo', { n: c.combo }) : '', pts: c.points })
-    if (popupTimerRef.current) clearTimeout(popupTimerRef.current)
-    popupTimerRef.current = setTimeout(() => setPopup(null), 1200)
+    const token = ++popupEpochRef.current, game = gameRef.current, epoch = gameEpochRef.current
+    setPopup({ id: token, main, sub: c.combo > 0 ? t('action.combo', { n: c.combo }) : '', pts: c.points })
+    if (popupTimerRef.current !== null) clearTimeout(popupTimerRef.current)
+    popupTimerRef.current = setTimeout(() => {
+      if (!mountedRef.current || popupEpochRef.current !== token || gameRef.current !== game || gameEpochRef.current !== epoch) return
+      popupTimerRef.current = null; setPopup(null)
+    }, 1200)
   }
 
   // 엔진 이벤트 → 소리·HUD·팝업·그리기. 매 입력/프레임 후 호출
@@ -222,19 +257,13 @@ export default function Tetris() {
   syncRef.current = sync
 
   // ── 입력 (키보드·버튼·제스처 공용) ─────────────────────────────────────
-  const press = useCallback((a: Action) => {
+  const act = useCallback((a: Action) => {
     const g = gameRef.current
-    if (!g || statusRef.current !== 'playing') return
+    if (!mountedRef.current || !g || statusRef.current !== 'playing') return
     switch (a) {
-      case 'left': case 'right': {
-        const dir = a === 'left' ? -1 : 1
-        heldRef.current[a] = true
-        dirRef.current = dir
-        dasRef.current = { t: 0, arr: 0 }
-        move(g, dir)
-        break
-      }
-      case 'down': heldRef.current.down = true; softDropOne(g); break
+      case 'left': move(g, -1); break
+      case 'right': move(g, 1); break
+      case 'down': softDropOne(g); break
       case 'cw': rotate(g, 1); break
       case 'ccw': rotate(g, -1); break
       case 'hard': hardDrop(g); break
@@ -242,55 +271,63 @@ export default function Tetris() {
     }
     syncRef.current()
   }, [])
-
-  const release = useCallback((a: Action) => {
-    const h = heldRef.current
-    if (a === 'down') h.down = false
-    if (a !== 'left' && a !== 'right') return
-    h[a] = false
-    // 반대 방향을 아직 누르고 있으면 그쪽으로 이어감
-    dirRef.current = h.left ? -1 : h.right ? 1 : 0
-    dasRef.current = { t: 0, arr: 0 }
-  }, [])
+  const press = useCallback((a: Action, source: TetrisInputSource, epoch: number) => {
+    if (!mountedRef.current || statusRef.current !== 'playing') return null
+    const accepted = inputRef.current.press(source, a, epoch)
+    if (!accepted) return null
+    applyHeld(accepted.snapshot, accepted.resetDas); act(a); return accepted.token
+  }, [act, applyHeld])
+  const release = useCallback((token: TetrisInputToken) => {
+    const released = inputRef.current.release(token)
+    if (released) applyHeld(released.snapshot, released.resetDas)
+  }, [applyHeld])
+  const pulse = useCallback((a: Action, epoch: number) => { if (inputRef.current.pulse(a, epoch)) act(a) }, [act])
 
   // ── 시작/일시정지 ───────────────────────────────────────────────────────
   const start = useCallback(() => {
+    if (!mountedRef.current) return
+    stopLoop(); clearPopup(); gameEpochRef.current++
     gameRef.current = newGame()
-    heldRef.current = { left: false, right: false, down: false }
-    dirRef.current = 0
+    resetInput(true)
     playMsRef.current = 0
     gameStartRef.current = Date.now()
     setResult(null)
-    setPopup(null)
+    setShowNameModal(false)
     statusRef.current = 'playing'
     setStatus('playing')
     syncRef.current()
     areaRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-  }, [])
+  }, [resetInput, stopLoop, clearPopup])
 
   const pause = useCallback(() => {
     if (statusRef.current !== 'playing') return
     statusRef.current = 'paused'
     setStatus('paused')
-    heldRef.current = { left: false, right: false, down: false }
-    dirRef.current = 0
-  }, [])
+    resetInput(false); stopLoop(); clearPopup()
+  }, [resetInput, stopLoop, clearPopup])
 
   const resume = useCallback(() => {
     if (statusRef.current !== 'paused') return
     statusRef.current = 'playing'
+    resetInput(true)
     setStatus('playing')
-  }, [])
+  }, [resetInput])
 
   // ── 게임 루프 (플레이 중에만) ──────────────────────────────────────────
   useEffect(() => {
-    if (status !== 'playing') return
+    const g = gameRef.current
+    if (status !== 'playing' || !g || !mountedRef.current) return
+    const loopOwner = loopEpochRef
+    const loop = ++loopEpochRef.current, epoch = gameEpochRef.current
+    const current = () => mountedRef.current && gameRef.current === g && gameEpochRef.current === epoch && loopEpochRef.current === loop && statusRef.current === 'playing' && inputRef.current.getSnapshot().epoch === runRevision
     lastTsRef.current = performance.now()
-    const frame = (ts: number) => {
-      const g = gameRef.current
-      if (!g || statusRef.current !== 'playing') return
-      const dt = Math.min(ts - lastTsRef.current, 100)
-      lastTsRef.current = ts
+    const queue = () => { const reservation = requestAnimationFrame(ts => frame(ts, reservation)); rafRef.current = reservation }
+    const frame = (ts: number, reservation: number) => {
+      if (!current() || rafRef.current !== reservation) return
+      rafRef.current = null
+      const elapsed = ts - lastTsRef.current
+      const dt = Number.isFinite(elapsed) && elapsed >= 0 ? Math.min(elapsed, 100) : 0
+      if (Number.isFinite(ts) && ts >= lastTsRef.current) lastTsRef.current = ts
       playMsRef.current += dt
       // DAS/ARR: 누르는 순간 1칸, DAS 후 1칸, 이후 ARR 간격 (ARR 0 = 벽까지 즉시)
       const dir = dirRef.current
@@ -306,11 +343,11 @@ export default function Tetris() {
       }
       step(g, dt, heldRef.current.down)
       syncRef.current()
-      rafRef.current = requestAnimationFrame(frame)
+      if (current()) queue()
     }
-    rafRef.current = requestAnimationFrame(frame)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
-  }, [status])
+    if (current()) queue()
+    return () => { if (loopOwner.current === loop) stopLoop() }
+  }, [status, runRevision, stopLoop])
 
   // 일시정지/종료 화면도 한 번 그려 둠
   useEffect(() => { draw() }, [status, draw])
@@ -326,73 +363,103 @@ export default function Tetris() {
     }
   }, [pause])
 
-  useEffect(() => () => { if (popupTimerRef.current) clearTimeout(popupTimerRef.current) }, [])
-
   // ── 키보드 ─────────────────────────────────────────────────────────────
   useEffect(() => {
-    const isTyping = (e: KeyboardEvent) => {
-      const el = e.target as HTMLElement | null
-      return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)
-    }
+    const epoch = inputRef.current.getSnapshot().epoch
     const down = (e: KeyboardEvent) => {
-      if (isTyping(e)) return
-      const st = statusRef.current
-      if (e.code === 'KeyP' || e.code === 'Escape') {
-        if (st === 'playing') { e.preventDefault(); pause() } else if (st === 'paused') { e.preventDefault(); resume() }
-        return
-      }
-      if ((e.code === 'Enter' || e.code === 'NumpadEnter') && (st === 'idle' || st === 'over') && !showNameModalRef.current) {
-        e.preventDefault(); start(); return
-      }
-      const a = KEYMAP[e.code]
-      if (!a || st !== 'playing') return
+      if (!mountedRef.current || inputRef.current.getSnapshot().epoch !== epoch) return
+      const intent = tetrisKeyIntent(e, statusRef.current, showNameModalRef.current)
+      if (!intent) return
       e.preventDefault()
-      if (!e.repeat) press(a) // 반복은 DAS/ARR가 처리
+      if (intent.kind === 'action') press(intent.action, intent.source, epoch)
+      else if (intent.kind === 'pause') pause()
+      else if (intent.kind === 'resume') resume()
+      else if (intent.kind === 'start') start()
     }
-    const up = (e: KeyboardEvent) => { const a = KEYMAP[e.code]; if (a) release(a) }
+    const up = (e: KeyboardEvent) => { if (inputRef.current.getSnapshot().epoch !== epoch) return; const token = inputRef.current.getToken({ kind: 'key', code: e.code }); if (token) release(token) }
     window.addEventListener('keydown', down)
     window.addEventListener('keyup', up)
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up) }
-  }, [press, release, pause, resume, start])
+  }, [press, release, pause, resume, start, runRevision])
   // ── 보드 제스처: 탭=회전, 좌우 드래그=칸 단위 이동, 아래 드래그=소프트, 아래로 튕기기=하드, 위로 튕기기=홀드 ─
+  const gesturePoint = (e: React.PointerEvent<HTMLCanvasElement>) => ({ pointerId: e.pointerId, target: 'board', x: e.clientX, y: e.clientY, at: e.timeStamp, width: e.currentTarget.getBoundingClientRect().width })
+  const applyGesture = (plan: readonly TetrisGestureAction[]) => {
+    const g = gameRef.current
+    if (!g || !mountedRef.current || statusRef.current !== 'playing' || inputRef.current.getSnapshot().epoch !== runRevision || !plan.length) return
+    for (const action of plan) {
+      if (action.type === 'move') for (let i = 0; i < action.count; i++) move(g, action.direction)
+      else if (action.type === 'soft') for (let i = 0; i < action.count; i++) softDropOne(g)
+      else if (action.type === 'rotate') rotate(g, 1)
+      else if (action.type === 'hard') hardDrop(g)
+      else if (action.type === 'hold') holdPiece(g)
+    }
+    syncRef.current()
+  }
+  const releaseBoard = (token: TetrisGestureToken) => {
+    const captured = boardCapture.current
+    if (captured?.token !== token) return
+    boardCapture.current = null; releaseCapture(captured.element, token.pointerId)
+  }
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (statusRef.current !== 'playing') return
-    e.currentTarget.setPointerCapture(e.pointerId)
-    gestRef.current = { x0: e.clientX, y0: e.clientY, lx: e.clientX, ly: e.clientY, t0: performance.now(), moved: false }
+    if (!mountedRef.current || statusRef.current !== 'playing') return
+    const token = gestureRef.current.begin(gesturePoint(e), runRevision)
+    if (!token) return
+    boardCapture.current = { token, element: e.currentTarget }
+    try { if (typeof e.currentTarget.setPointerCapture !== 'function') throw new Error('capture'); e.currentTarget.setPointerCapture(e.pointerId) }
+    catch { gestureRef.current.cancel(token); releaseBoard(token) }
   }
   const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const s = gestRef.current, g = gameRef.current
-    if (!s || !g || statusRef.current !== 'playing') return
-    const cell = e.currentTarget.getBoundingClientRect().width / COLS
-    let changed = false
-    while (Math.abs(e.clientX - s.lx) >= cell) {
-      const dir = e.clientX > s.lx ? 1 : -1
-      move(g, dir); s.lx += dir * cell; s.moved = changed = true
-    }
-    while (e.clientY - s.ly >= cell * 1.2) { softDropOne(g); s.ly += cell * 1.2; s.moved = changed = true }
-    if (changed) syncRef.current()
+    const token = gestureRef.current.getToken()
+    if (!token || token.epoch !== runRevision) return
+    applyGesture(gestureRef.current.move(token, gesturePoint(e)))
+    if (gestureRef.current.getToken() !== token) releaseBoard(token)
   }
   const onPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const s = gestRef.current, g = gameRef.current
-    gestRef.current = null
-    if (!s || !g || statusRef.current !== 'playing') return
-    const dx = e.clientX - s.x0, dy = e.clientY - s.y0, dt = performance.now() - s.t0
-    if (!s.moved && Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 350) rotate(g, 1)
-    else if (dt < 300 && dy > 50 && dy > Math.abs(dx) * 1.5) hardDrop(g)
-    else if (dt < 300 && dy < -50 && -dy > Math.abs(dx) * 1.5) holdPiece(g)
-    syncRef.current()
+    const token = gestureRef.current.getToken()
+    if (!token || token.epoch !== runRevision || token.pointerId !== e.pointerId) return
+    const plan = gestureRef.current.end(token, gesturePoint(e)); releaseBoard(token); applyGesture(plan)
+  }
+  const onPointerCancel = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const token = gestureRef.current.getToken()
+    if (token?.epoch === runRevision && gestureRef.current.cancel(token, e.pointerId, 'board')) releaseBoard(token)
   }
 
   // 화면 버튼: 꾹 누르면 DAS/ARR·소프트 드롭 연속
+  const endPadPointer = (a: Action, e: React.PointerEvent<HTMLButtonElement>) => {
+    const entry = padPointers.current.get(e.pointerId)
+    if (!entry || entry.activation.epoch !== runRevision || entry.activation.target !== a || entry.element !== e.currentTarget || e.timeStamp < entry.activation.at) return
+    padPointers.current.delete(e.pointerId); activationRef.current.pointerEnd(entry.activation, e.timeStamp); release(entry.input); releaseCapture(entry.element, e.pointerId)
+  }
   const pad = (a: Action) => ({
+    'data-tetris-pad': a,
+    disabled: status !== 'playing',
     onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
+      if (!mountedRef.current || statusRef.current !== 'playing') return
+      const activation = activationRef.current.pointerDown(e.pointerId, a, e.timeStamp, runRevision)
+      if (!activation) return
       e.preventDefault()
-      e.currentTarget.setPointerCapture?.(e.pointerId)
-      press(a)
+      const accepted = inputRef.current.press({ kind: 'pointer', pointerId: e.pointerId, target: a }, a, runRevision)
+      if (!accepted) { activationRef.current.pointerEnd(activation, e.timeStamp); return }
+      applyHeld(accepted.snapshot, accepted.resetDas)
+      const entry = { input: accepted.token, activation, element: e.currentTarget }; padPointers.current.set(e.pointerId, entry)
+      try { if (typeof e.currentTarget.setPointerCapture !== 'function') throw new Error('capture'); e.currentTarget.setPointerCapture(e.pointerId) }
+      catch { padPointers.current.delete(e.pointerId); activationRef.current.pointerEnd(activation, e.timeStamp); release(accepted.token) }
+      act(a)
     },
-    onPointerUp: () => release(a),
-    onPointerCancel: () => release(a),
-    onLostPointerCapture: () => release(a),
+    onPointerUp: (e: React.PointerEvent<HTMLButtonElement>) => endPadPointer(a, e),
+    onPointerCancel: (e: React.PointerEvent<HTMLButtonElement>) => endPadPointer(a, e),
+    onLostPointerCapture: (e: React.PointerEvent<HTMLButtonElement>) => endPadPointer(a, e),
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      const native = e.nativeEvent as MouseEvent & { pointerId?: number; pointerType?: string }
+      if (activationRef.current.click({ epoch: runRevision, target: a, at: e.timeStamp, pointerId: native.pointerId, pointerType: native.pointerType, detail: e.detail, defaultPrevented: e.defaultPrevented }) === 'activate') pulse(a, runRevision)
+    },
+    onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.defaultPrevented) return
+      if (e.nativeEvent.isComposing || e.keyCode === 229) { e.preventDefault(); return }
+      if (!activationRef.current.keyDown(e.code, a, runRevision, e.repeat)) e.preventDefault()
+    },
+    onKeyUp: (e: React.KeyboardEvent<HTMLButtonElement>) => { if (!activationRef.current.keyUp(e.code, a, runRevision)) e.preventDefault() },
+    onBlur: () => activationRef.current.cancelKeys(a),
     onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
     style: { touchAction: 'manipulation' as const },
   })
@@ -404,10 +471,10 @@ export default function Tetris() {
   }, [leaderboard, hud.score])
 
   const pps = result && result.ms > 0 ? (result.pieces / (result.ms / 1000)).toFixed(2) : '0'
-  const padBtn = 'ui-btn-soft h-14 rounded-xl flex items-center justify-center select-none text-sm font-medium'
+  const padBtn = 'ui-btn-soft h-14 rounded-xl flex items-center justify-center select-none text-sm font-medium disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-tetris-status={status} data-tetris-run={runRevision}>
       {/* 헤더 */}
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -419,7 +486,7 @@ export default function Tetris() {
           onClick={() => sounds.setEnabled(!sounds.enabled)}
           title={sounds.enabled ? tSounds('disabled') : tSounds('enabled')}
           aria-label={sounds.enabled ? tSounds('disabled') : tSounds('enabled')}
-          className="ui-btn-soft p-2.5 rounded-xl shrink-0"
+          className="ui-btn-soft min-h-11 min-w-11 p-2.5 rounded-xl shrink-0"
         >
           {sounds.enabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
         </button>
@@ -456,6 +523,7 @@ export default function Tetris() {
           {/* 보드 */}
           <div className="relative flex-1 min-w-0" style={{ maxWidth: 'min(320px, 42vh)' }}>
             <canvas
+              data-tetris-board=""
               ref={canvasRef}
               width={COLS * CELL}
               height={VIS * CELL}
@@ -464,13 +532,14 @@ export default function Tetris() {
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerUp}
-              onPointerCancel={() => { gestRef.current = null }}
+              onPointerCancel={onPointerCancel}
+              onLostPointerCapture={onPointerCancel}
               onContextMenu={e => e.preventDefault()}
               aria-label={t('title')}
             />
 
             {popup && (
-              <div key={popup.id} className="pointer-events-none absolute inset-x-0 top-1/4 text-center text-white">
+              <div key={popup.id} data-tetris-popup={popup.id} className="pointer-events-none absolute inset-x-0 top-1/4 text-center text-white">
                 {popup.main && <p className="text-lg sm:text-2xl font-extrabold tracking-wide drop-shadow">{popup.main}</p>}
                 {popup.sub && <p className="text-sm sm:text-base font-bold text-yellow-300">{popup.sub}</p>}
                 {popup.pts > 0 && <p className="text-sm font-semibold tabular-nums">+{popup.pts.toLocaleString()}</p>}
@@ -480,7 +549,7 @@ export default function Tetris() {
             {status === 'idle' && (
               <div className="absolute inset-0 bg-black/70 rounded-xl flex flex-col items-center justify-center gap-4 p-4 text-center">
                 <p className="text-white text-2xl font-bold">TETRIS</p>
-                <button type="button" onClick={start} className="ui-btn px-6 py-3">{t('newGame')}</button>
+                <button type="button" data-tetris-start="" onClick={start} className="ui-btn min-h-11 px-6 py-3">{t('newGame')}</button>
                 <p className="text-xs text-gray-300 hidden lg:block">{t('idleHintKeys')}</p>
                 <p className="text-xs text-gray-300 lg:hidden">{t('idleHintTouch')}</p>
               </div>
@@ -488,7 +557,7 @@ export default function Tetris() {
             {status === 'paused' && (
               <div className="absolute inset-0 rounded-xl flex flex-col items-center justify-center gap-4" style={{ backgroundColor: BOARD_BG }}>
                 <p className="text-white text-2xl font-bold">{t('paused')}</p>
-                <button type="button" onClick={resume} className="ui-btn px-6 py-3"><Play className="w-4 h-4" />{t('resume')}</button>
+                <button type="button" data-tetris-resume="" onClick={resume} className="ui-btn min-h-11 px-6 py-3"><Play className="w-4 h-4" />{t('resume')}</button>
               </div>
             )}
             {status === 'over' && result && (
@@ -498,7 +567,7 @@ export default function Tetris() {
                 {result.newBest && (
                   <p className="flex items-center gap-1 text-yellow-300 text-sm font-semibold"><Trophy className="w-4 h-4" />{t('newRecord')}</p>
                 )}
-                <button type="button" onClick={start} className="ui-btn px-6 py-3"><RotateCcw className="w-4 h-4" />{t('playAgain')}</button>
+                <button type="button" data-tetris-start="" onClick={start} className="ui-btn min-h-11 px-6 py-3"><RotateCcw className="w-4 h-4" />{t('playAgain')}</button>
               </div>
             )}
           </div>
@@ -528,17 +597,18 @@ export default function Tetris() {
           <button type="button" className={`${padBtn} col-span-2`} aria-label={t('controls.softDrop')} {...pad('down')}><ArrowDown className="w-6 h-6" /></button>
           <button type="button" className={padBtn} aria-label={t('controls.right')} {...pad('right')}><ArrowRight className="w-6 h-6" /></button>
         </div>
+        <p className="lg:hidden mx-auto max-w-md text-xs text-muted">{t('input.padHint')}</p>
 
         {/* 일시정지/새 게임 */}
         <div className="flex justify-center gap-2">
           {status === 'playing' && (
-            <button type="button" onClick={pause} className="ui-btn-soft px-4 py-2 text-sm"><Pause className="w-4 h-4" />{t('pause')}</button>
+            <button type="button" data-tetris-pause="" onClick={pause} className="ui-btn-soft min-h-11 px-4 py-2 text-sm"><Pause className="w-4 h-4" />{t('pause')}</button>
           )}
           {status === 'paused' && (
-            <button type="button" onClick={resume} className="ui-btn-soft px-4 py-2 text-sm"><Play className="w-4 h-4" />{t('resume')}</button>
+            <button type="button" data-tetris-resume="" onClick={resume} className="ui-btn-soft min-h-11 px-4 py-2 text-sm"><Play className="w-4 h-4" />{t('resume')}</button>
           )}
           {status !== 'idle' && (
-            <button type="button" onClick={start} className="ui-btn-soft px-4 py-2 text-sm"><RotateCcw className="w-4 h-4" />{t('newGame')}</button>
+            <button type="button" data-tetris-start="" onClick={start} className="ui-btn-soft min-h-11 px-4 py-2 text-sm"><RotateCcw className="w-4 h-4" />{t('newGame')}</button>
           )}
         </div>
       </div>
@@ -588,7 +658,7 @@ export default function Tetris() {
 
       {/* 조작 감도 */}
       <details className="ui-card p-4 max-w-xl mx-auto">
-        <summary className="cursor-pointer text-sm font-semibold text-body">{t('settings.title')}</summary>
+        <summary className="min-h-11 cursor-pointer text-sm font-semibold text-body">{t('settings.title')}</summary>
         <div className="mt-4 space-y-4">
           {(['das', 'arr'] as const).map(k => (
             <label key={k} className="block">
@@ -598,6 +668,7 @@ export default function Tetris() {
               </span>
               <input
                 type="range"
+                data-tetris-handling={k}
                 min={k === 'das' ? 50 : 0}
                 max={k === 'das' ? 300 : 100}
                 step={k === 'das' ? 10 : 5}
@@ -609,7 +680,7 @@ export default function Tetris() {
           ))}
           <div className="flex items-center justify-between gap-3">
             <p className="text-xs text-muted">{t('settings.hint')}</p>
-            <button type="button" onClick={() => updateHandling(DEFAULT_HANDLING)} className="ui-btn-soft px-3 py-1.5 text-xs shrink-0">{t('settings.reset')}</button>
+            <button type="button" onClick={() => updateHandling(DEFAULT_HANDLING)} className="ui-btn-soft min-h-11 px-3 py-1.5 text-xs shrink-0">{t('settings.reset')}</button>
           </div>
         </div>
       </details>
@@ -627,7 +698,8 @@ export default function Tetris() {
       {/* 조작 가이드 */}
       <div className="ui-card p-6">
         <h2 className="text-xl font-semibold text-fg mb-4">{t('guide.title')}</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <p className="mb-4 text-sm text-sub">{t('input.focusHint')}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {(['keyboard', 'touch'] as const).map(sec => (
             <div key={sec}>
               <h3 className="text-sm font-semibold text-body mb-3">{t(`guide.${sec}.title`)}</h3>

@@ -2,15 +2,19 @@ import { Metadata } from 'next'
 import PercentCalculator from '@/components/PercentCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
-import ToolFaq from '@/components/ToolFaq'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import koMessages from '@/../messages/generated/ko/ns/percentCalculator.json'
+
+const TITLE = "퍼센트 계산기 - 비율·할인 계산과 결과 비교 | 툴허브"
+const DESCRIPTION = "비율·증감률·할인·퍼센트포인트 등 8가지 계산을 한 화면에서 확인하세요. 결과 최대 6개를 당시 입력·수식과 함께 모아 비교하고 전체 내용을 복사하거나 TXT로 내려받을 수 있습니다. 비교 목록은 페이지 메모리에만 보관합니다."
 
 export const metadata: Metadata = {
-  title: '퍼센트 계산기 - 비율, 증감률, 할인율 계산 | 툴허브',
-  description: '퍼센트 계산기 - A의 B%, 비율, 증감률(인상률), 할인가·정가 역산, 중복 할인, 퍼센트포인트(%p)까지 한 화면에서 바로 계산. "5만원의 15%"처럼 한 줄로 물어보세요.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: '퍼센트 계산기, 퍼센트 계산, 비율 계산, 증감률 계산, 인상률 계산, 할인율 계산, 할인가 계산, 정가 역산, 중복 할인, 퍼센트포인트, 백분율 계산기, percent calculator',
   openGraph: {
-    title: '퍼센트 계산기 | 툴허브',
-    description: '퍼센트 계산, 비율 계산, 증감률, 할인율 등 다양한 퍼센트 계산을 한 곳에서 간편하게',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/percent-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -19,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '퍼센트 계산기 | 툴허브',
-    description: '퍼센트 계산, 비율 계산, 증감률, 할인율 등 다양한 퍼센트 계산을 한 곳에서 간편하게',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/percent-calculator.png'],
   },
   alternates: {
@@ -33,7 +37,7 @@ export default function PercentCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '퍼센트 계산기',
-    description: 'A의 B%, 비율, 증감률, 할인가, 정가 역산, 중복 할인, 퍼센트포인트, 부가세 역산을 한 화면에서 동시에 계산합니다.',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/percent-calculator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -50,14 +54,12 @@ export default function PercentCalculatorPage() {
       '부가세 포함가 → 공급가',
       '한 줄 자연어 입력 (5만원의 15%, 3만→4만)',
       '만·억 단위 표시, 소수점 자릿수 조절, 수식 보기, 결과 복사',
+      "현재 입력·표시 설정을 보존하는 결과 6개 비교",
+      "전체 비교 내용 복사·TXT 다운로드·복사 실패 수동 선택",
     ],
   }
 
-  const faq = [
-    { q: '퍼센트(%)는 어떻게 계산하나요?', a: '기본 퍼센트 계산은 "A의 B% = A × B ÷ 100"입니다. 예를 들어 200의 15%는 200 × 15 ÷ 100 = 30입니다. "A는 B의 몇 %?"는 (A ÷ B) × 100으로 계산합니다. 50은 200의 25%입니다.' },
-    { q: '증감률은 어떻게 계산하나요?', a: '증감률 = (변화 후 값 - 변화 전 값) ÷ 변화 전 값 × 100(%)입니다. 양수면 증가율, 음수면 감소율입니다. 예를 들어 100에서 130으로 변했다면 증가율은 (130-100)÷100×100 = 30%이고, 100에서 80으로 변했다면 감소율은 -20%입니다.' },
-    { q: '할인을 중복 적용하면 어떻게 계산하나요?', a: '할인을 중복 적용할 때는 단순히 할인율을 더하지 않고 순차적으로 곱합니다. 예를 들어 30% 할인 후 추가 20% 할인이면, 원가 × 0.7 × 0.8 = 원가 × 0.56이므로 실제 할인율은 44%입니다. 30% + 20% = 50%가 아님에 주의하세요.' },
-  ]
+  const faq = koMessages.percentCalculator.guide.faq.items
 
   const howToJsonLd = {
     '@context': 'https://schema.org',
@@ -85,7 +87,7 @@ export default function PercentCalculatorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <PercentCalculator />
-              <ToolFaq items={faq} />
+              <FaqJsonLd items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />
@@ -104,6 +106,7 @@ export default function PercentCalculatorPage() {
           <p className="text-body leading-relaxed mb-6">
             퍼센트 계산기는 A의 B%, 비율(A는 B의 몇 %), 증감률·인상률, 할인가와 할인 전 정가 역산, 중복 할인, 퍼센트포인트(%p), 부가세 역산 등 자주 쓰는 백분율 계산을 한 화면에서 동시에 처리하는 무료 온라인 계산기입니다. 쇼핑 할인율, 부가세(10%) 계산, 시험 정답률, 투자 수익률 등 일상과 업무에서 자주 만나는 퍼센트 계산을 빠르고 정확하게 수행할 수 있습니다.
           </p>
+          <p className="text-body leading-relaxed mb-6">각 계산 카드에서 비교에 담기를 누르면 당시 입력·표시 설정·결과 단위·수식을 최대 6개까지 보관합니다. 서로 다른 종류의 차이나 순위는 자동 계산하지 않으며, 새로고침 전에 전체 복사 또는 TXT로 보관할 수 있습니다. 공유 주소에는 계산 입력만 들어가고 비교 목록은 포함되지 않습니다.</p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             퍼센트 계산기 활용 팁
           </h3>

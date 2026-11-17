@@ -2,15 +2,19 @@ import { Metadata } from 'next'
 import QrGenerator from '@/components/QrGenerator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
-import ToolFaq from '@/components/ToolFaq'
+import { FaqJsonLd } from '@/components/ToolFaq'
+import koMessages from '@/../messages/generated/ko/ns/qrGenerator.json'
+
+const TITLE = "QR 코드 생성기 - PNG·ZIP·A4 묶음 인쇄 | 툴허브"
+const DESCRIPTION = "URL·텍스트·Wi-Fi·연락처 QR을 브라우저에서 만드세요. 서로 다른 내용 최대 30개를 PNG ZIP으로 저장하거나 A4 한 장에 6개씩, 최대 5장으로 인쇄합니다. 기존 단일 QR의 로고·색상·SVG·반복 인쇄도 지원합니다."
 
 export const metadata: Metadata = {
-  title: 'QR 코드 생성기 - 무료 QR 제작 | 툴허브',
-  description: 'URL·텍스트·와이파이·연락처·문자·이메일·전화·위치 QR 코드를 가입·만료·워터마크 없이 만드세요. 로고 삽입, 색상·여백, PNG(최대 2048px)·SVG 저장, A4 인쇄용 여러 장까지 브라우저에서 바로 생성합니다.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: 'QR코드, QR생성기, 큐알코드, 바코드, 와이파이QR, 연락처QR, 로고QR, 커스텀QR, 무료QR생성, 개발도구',
   openGraph: {
-    title: 'QR 코드 생성기 | 툴허브',
-    description: '가입·만료·워터마크 없는 QR 코드 생성 — 와이파이·연락처·URL 등 8가지, 로고·SVG·인쇄',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/qr-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -19,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'QR 코드 생성기 - 무료 QR 코드 제작 도구',
-    description: '가입·만료·워터마크 없이 와이파이·연락처·URL QR 코드 만들기',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/qr-generator.png'],
   },
   alternates: {
@@ -33,7 +37,7 @@ export default function QrGeneratorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'QR 코드 생성기',
-    description: 'URL·와이파이·연락처 등 8가지 QR 코드를 가입·만료·워터마크 없이 브라우저에서 생성하는 무료 도구',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/qr-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -51,15 +55,16 @@ export default function QrGeneratorPage() {
       'PNG(최대 2048px)·SVG 다운로드',
       '클립보드 이미지 복사',
       'A4 인쇄용 여러 장',
-      '가입·만료·워터마크 없음(브라우저에서 생성)'
+      '가입·만료·워터마크 없음(브라우저에서 생성)',
+      '서로 다른 텍스트 최대 30행 일괄 QR 생성',
+      '행별 오류 표시·PNG ZIP 다운로드',
+      "서로 다른 QR 1~30개를 A4 2열 3행·최대 5장으로 인쇄",
+      "이름·행 번호만 표시하고 QR 원문은 글자로 인쇄하지 않음",
+      "이미지 준비 취소·재시도와 오래된 인쇄 요청 차단",
     ]
   }
 
-  const faq = [
-    { q: 'QR코드에 담을 수 있는 최대 데이터량은?', a: 'QR코드는 오류 정정 레벨에 따라 최대(L 레벨 기준) 숫자 7,089자, 영문 대문자·숫자 4,296자, 일반 텍스트 2,953바이트까지 담을 수 있습니다. 한글은 글자당 3바이트라 약 980자입니다. 오류 정정 레벨은 L(7%), M(15%), Q(25%), H(30%) 4단계이며, 레벨이 높을수록 손상에 강하지만 데이터 용량은 줄어듭니다. 실용적으로는 URL, 연락처, Wi-Fi 정보 등에 주로 사용됩니다.' },
-    { q: 'QR코드와 바코드의 차이점은?', a: '바코드는 1차원으로 수평 방향의 선으로만 정보를 저장하며 보통 수십 자 이내의 짧은 값을 담습니다. QR코드는 2차원으로 가로·세로 모두 정보를 저장하여 수천 자까지 가능합니다. QR코드는 오류 정정 기능이 있어 일부 손상되어도 읽을 수 있고, 360도 어느 방향에서든 스캔이 가능합니다.' },
-    { q: 'QR코드에 로고를 넣어도 되나요?', a: '네, QR코드의 오류 정정 기능 덕분에 중앙에 로고를 넣어도 스캔이 가능합니다. 단, 로고는 QR코드 폭의 30% 이하로 넣고 오류 정정 레벨을 H로 설정한 뒤, 휴대폰으로 스캔 테스트를 해 보세요. 로고가 너무 크거나 QR코드 모서리의 위치 검출 패턴을 가리면 인식이 안 될 수 있습니다.' },
-  ]
+  const faq = koMessages.qrGenerator.guide.faq.items
 
   return (
     <>
@@ -71,7 +76,7 @@ export default function QrGeneratorPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <I18nWrapper>
               <QrGenerator />
-              <ToolFaq items={faq} />
+              <FaqJsonLd items={faq} />
               <div className="mt-8">
 
                 <RelatedTools />
@@ -90,6 +95,7 @@ export default function QrGeneratorPage() {
           <p className="text-body leading-relaxed mb-6">
             QR 코드 생성기는 URL, 텍스트, 연락처, Wi-Fi 정보 등 다양한 데이터를 QR 코드 이미지로 변환해 주는 무료 온라인 도구입니다. 명함, 메뉴판, 포스터, 마케팅 자료 제작에 활용되며, 로고 삽입과 색상 커스터마이징으로 브랜드 정체성을 유지한 개성 있는 큐알코드를 손쉽게 만들 수 있습니다.
           </p>
+          <p className="text-body leading-relaxed mb-6">일괄 생성의 QR 묶음 인쇄는 서로 다른 코드를 한 번씩 배치합니다. A4 세로 한 장에 2열 3행으로 6개씩, 최대 30개를 5장까지 준비하며 이름과 번호만 글자로 표시합니다. 인쇄 배율 100%에서 용지와 여백을 확인하고 출력 후 스캔해 주세요. 인쇄 준비를 취소해도 완료된 QR 결과는 유지됩니다.</p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             QR 코드 생성기 활용 팁
           </h3>

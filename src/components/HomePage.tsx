@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n/navigation'
 import Link from 'next/link'
 import { Search, Star, ChevronRight, BarChart3, Check } from 'lucide-react'
-import { menuConfig, categoryKeys, categoryHubs, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, categoryHubs, homeContent, isNewTool, type CategoryKey, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 import { getAllRecentTools } from '@/utils/recentTools'
 import { usePopularTools } from '@/hooks/useToolAnalytics'
@@ -25,6 +25,7 @@ const DAILY_PUZZLES = ['/crossword', '/hangman', '/korean-wordle', '/picross', '
 type Item = MenuItem & { categoryKey?: CategoryKey }
 
 const findItem = (href: string) => categoryKeys.flatMap(k => menuConfig[k].items).find(i => i.href === href)
+const recommended = homeContent.recommendedHrefs.map(findItem).filter((item): item is MenuItem => !!item)
 
 function SectionTitle({ children, action, id }: { children: React.ReactNode; action?: React.ReactNode; id?: string }) {
   return (
@@ -98,12 +99,10 @@ export default function HomePage() {
     })
   }, [activeCategory, searchQuery, t])
 
-  const handleToggleFavorite = useCallback((e: React.MouseEvent, href: string) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const handleToggleFavorite = (href: string) => {
     toggleFavorite(href)
     setFavorites(getFavorites())
-  }, [])
+  }
 
   const favoritedItems = useMemo(
     () => categoryKeys.flatMap(k => menuConfig[k].items.filter(i => favorites.includes(i.href))),
@@ -118,12 +117,7 @@ export default function HomePage() {
     menuConfig.games.items[1],
   ], [])
   const popular: MenuItem[] = popularTools.length > 0 ? popularTools : fallbackPopular
-  const recommended = useMemo(
-    () => ['/loan-calculator', '/retirement-calculator', '/json-formatter', '/image-compressor', '/bmi-calculator']
-      .map(href => categoryKeys.flatMap(k => menuConfig[k].items).find(i => i.href === href))
-      .filter((i): i is MenuItem => !!i),
-    [],
-  )
+  const personalTools = favoritedItems.length > 0 ? favoritedItems : recentlyViewedItems
 
   const puzzleItems = useMemo(() => DAILY_PUZZLES.map(findItem).filter((i): i is MenuItem => !!i), [])
 
@@ -191,29 +185,29 @@ export default function HomePage() {
   )
 
   /** 목록 한 줄: 아이콘 + 이름 + 설명 */
-  const ToolRow = ({ item }: { item: MenuItem }) => {
+  const renderToolRow = (item: MenuItem) => {
     const isFav = favorites.includes(item.href)
     return (
-      <Link prefetch={false}
-        href={item.href}
-        className="group relative flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-subtle transition-colors"
-      >
-        <ToolIcon href={item.href} />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 text-[15px] font-semibold text-fg">
-            <span className="truncate">{t(item.labelKey)}</span>
-            {hydrated && isNewTool(item) && <span className="shrink-0 text-[10px] font-bold text-primary">NEW</span>}
+      <div key={item.href} className="group flex items-center rounded-xl pr-2 hover:bg-subtle transition-colors">
+        <Link prefetch={false} href={item.href} className="flex min-w-0 flex-1 items-center gap-3 px-3 py-3">
+          <ToolIcon href={item.href} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 text-[15px] font-semibold text-fg">
+              <span className="truncate">{t(item.labelKey)}</span>
+              {hydrated && isNewTool(item) && <span className="shrink-0 text-[10px] font-bold text-primary">NEW</span>}
+            </div>
+            <div className="text-[13px] text-muted truncate">{t(item.descriptionKey)}</div>
           </div>
-          <div className="text-[13px] text-muted truncate">{t(item.descriptionKey)}</div>
-        </div>
+        </Link>
         <button
-          onClick={(e) => handleToggleFavorite(e, item.href)}
+          type="button"
+          onClick={() => handleToggleFavorite(item.href)}
           className={`shrink-0 p-1 rounded-md transition-opacity ${isFav ? 'opacity-100 text-amber-400' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 text-faint hover:text-amber-400'}`}
           aria-label={isFav ? t('favorites.remove') : t('favorites.add')}
         >
           <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
         </button>
-      </Link>
+      </div>
     )
   }
 
@@ -282,19 +276,24 @@ export default function HomePage() {
           </ol>
         </section>
 
-        <section className="min-w-0">
-          <SectionTitle>
-            {favoritedItems.length > 0 ? t('favorites.title')
-              : recentlyViewedItems.length > 0 ? t('homePage.recentlyViewed.title') : t('header.recommended')}
-          </SectionTitle>
-          <div className="ui-card p-1.5">
-            {(favoritedItems.length > 0 ? favoritedItems
-              : recentlyViewedItems.length > 0 ? recentlyViewedItems : recommended
-            ).slice(0, 5).map(item => (
-              <ToolRow key={item.href} item={item} />
-            ))}
-          </div>
-        </section>
+        <div className="min-w-0 space-y-6">
+          <section aria-labelledby="recommended-tools-title">
+            <SectionTitle id="recommended-tools-title" action={
+              <Link href="/guides/" className="text-sm text-sub hover:text-primary">{t('navigation.toolGuides')} →</Link>
+            }>{t('header.recommended')}</SectionTitle>
+            <div className="ui-card p-1.5">
+              {recommended.map(renderToolRow)}
+            </div>
+          </section>
+          {personalTools.length > 0 && (
+            <section>
+              <SectionTitle>{t(favoritedItems.length > 0 ? 'favorites.title' : 'homePage.recentlyViewed.title')}</SectionTitle>
+              <div className="ui-card p-1.5">
+                {personalTools.slice(0, 5).map(renderToolRow)}
+              </div>
+            </section>
+          )}
+        </div>
 
         <section aria-labelledby="daily-puzzles-title" className="min-w-0 lg:order-first lg:col-span-3">
           <SectionTitle id="daily-puzzles-title">{t('homePage.dailyPuzzles.title')}</SectionTitle>
@@ -404,7 +403,7 @@ export default function HomePage() {
                     </Link>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2">
-                    {items.slice(0, PER_CATEGORY).map(item => <ToolRow key={item.href} item={item} />)}
+                    {items.slice(0, PER_CATEGORY).map(renderToolRow)}
                   </div>
                 </div>
               )
@@ -413,7 +412,7 @@ export default function HomePage() {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2">
-              {filteredTools.map(item => <ToolRow key={item.href} item={item} />)}
+              {filteredTools.map(renderToolRow)}
             </div>
             {filteredTools.length === 0 && (
               <div className="text-center py-16 text-muted">

@@ -7,7 +7,7 @@ import gpaConverterCalcMessages from '../../../messages/generated/ko/ns/gpaConve
 
 export const metadata: Metadata = {
   title: '4.3 4.5 학점 변환기 - 4.0·백분율 환산표 | 툴허브',
-  description: '4.5 만점 3.8은 4.3 만점 3.63. 4.5·4.3·4.0 만점 학점과 백분율(100점)을 한 번에 상호 변환하고 등급(A+~F)까지 확인하세요. 취업·대학원·유학 지원서 학점 환산에 씁니다.',
+  description: '4.5·4.3·4.0 만점 학점과 백분율(100점)을 상호 변환하고 참고 등급을 확인하세요. 환산 결과와 공유 링크를 복사하고, 복사가 막히면 현재 내용을 직접 선택해 옮길 수 있습니다.',
   keywords: '학점 변환기, 4.3 4.5 변환, 4.5 4.3 학점, 학점 백분위 변환, GPA 변환, 4.0 학점 변환, 학점 등급표, 대학원 학점 환산, 백분율 학점',
   openGraph: {
     title: '학점 변환기 - 4.5·4.3·4.0·백분율 | 툴허브',
@@ -40,7 +40,7 @@ export default function GpaConverterPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['4.5·4.3·4.0 만점 상호 변환', '백분율(100점) 환산', '등급(A+~F) 표시', '등급 참고표', '결과 이미지 저장', '링크 공유'],
+    featureList: ['4.5·4.3·4.0 만점 상호 변환', '백분율(100점) 환산', '등급(A+~F) 표시', '등급 참고표', '결과 이미지 저장', '링크 공유', '복사 실패 안내·재시도·현재 결과 수동 복사'],
   }
 
 

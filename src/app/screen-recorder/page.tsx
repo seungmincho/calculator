@@ -4,13 +4,16 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = '화면 녹화기 - 다시 녹화·마지막 성공 결과 보관 | 툴허브'
+const DESCRIPTION = '브라우저에서 화면·창·탭을 녹화하고 일시정지하거나 다시 찍으세요. 마지막 성공 영상은 새 녹화가 정상 완료될 때까지 유지되며 미리보기·다운로드할 수 있습니다. 오디오 연결과 실제 파일 형식도 확인하세요.'
+
 export const metadata: Metadata = {
-  title: '화면 녹화기 - 무료 온라인 스크린 레코더 | 툴허브',
-  description: '무설치 무료 온라인 화면 녹화 도구. 브라우저에서 바로 화면, 창, 탭을 녹화하세요. 시스템 오디오와 마이크도 함께 녹음할 수 있습니다.',
-  keywords: '화면 녹화, 스크린 레코더, 온라인 녹화, 무료 화면 녹화, 브라우저 녹화, 웹캠 녹화, 화면 캡처',
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: '화면 녹화, 스크린 레코더, 온라인 녹화, 무료 화면 녹화, 브라우저 녹화, 다시 녹화, 화면 캡처',
   openGraph: {
-    title: '화면 녹화기 | 툴허브',
-    description: '무설치 무료 온라인 화면 녹화 도구. 브라우저에서 바로 화면을 녹화하세요.',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/screen-recorder/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -19,8 +22,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '화면 녹화기 | 툴허브',
-    description: '무설치 무료 온라인 화면 녹화 도구',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/screen-recorder.png'],
   },
   alternates: {
@@ -33,19 +36,19 @@ export default function ScreenRecorderPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '화면 녹화기',
-    description: '무설치 무료 온라인 화면 녹화 도구',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/screen-recorder/',
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'Any',
-    browserRequirements: 'JavaScript, MediaRecorder API',
+    browserRequirements: 'JavaScript, getDisplayMedia and a supported MediaRecorder format',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['화면 녹화', '창 녹화', '탭 녹화', '오디오 녹음', '일시정지/재개'],
+    featureList: ['지원 브라우저에서 화면·창·탭 녹화', '일시정지·계속·활성 구간 시간', '준비 취소·실패 시 마지막 성공 결과 보존', '새 유효 영상 완료 뒤 결과 교체', '마지막 결과 미리보기·다운로드·명시 삭제', '실제 파일 형식·연결한 오디오 트랙 안내', '마이크 연결 실패 후 명시적인 화면 단독 진행 선택'],
   }
 
   const faq = [
-    { q: '온라인 화면 녹화기의 녹화 파일은 어디에 저장되나요?', a: '녹화된 파일은 서버에 업로드되지 않으며, 브라우저 내에서만 처리됩니다. 다운로드 버튼을 클릭하면 WebM 형식으로 로컬 컴퓨터에 저장됩니다. 개인정보 보호에 안전합니다.' },
-    { q: '시스템 오디오와 마이크를 동시에 녹음할 수 있나요?', a: '네, 오디오 설정에서 "둘 다"를 선택하면 시스템 소리와 마이크 입력을 동시에 녹음할 수 있습니다. 단, 시스템 오디오 녹음은 브라우저 탭 공유 시에만 지원되며, 전체 화면이나 창 공유 시에는 브라우저에 따라 제한될 수 있습니다.' },
-    { q: '녹화 파일을 MP4로 변환할 수 있나요?', a: '현재 브라우저 MediaRecorder API는 WebM 형식으로 녹화합니다. MP4로 변환하려면 녹화 후 별도의 동영상 변환 도구를 사용하시거나, VLC 미디어 플레이어의 변환 기능을 활용하세요. 대부분의 동영상 편집 프로그램에서 WebM 파일을 직접 가져올 수도 있습니다.' },
+    { q: '다시 녹화하다 취소하면 이전 영상도 없어지나요?', a: '마지막 성공 결과 1개는 이번 방문의 메모리에 유지됩니다. 새 녹화의 준비 취소·실패·빈 결과는 이전 영상을 교체하지 않습니다. 새 유효 영상이 완료되거나 결과 삭제를 확인할 때 바뀌며, 페이지를 떠나기 전에 필요한 파일을 내려받으세요.' },
+    { q: '시스템 오디오와 마이크가 실제로 포함됐는지 어떻게 확인하나요?', a: '녹화 시작 때 연결한 트랙을 안내합니다. 시스템 오디오 제공 여부는 브라우저와 공유 대상에 따라 다릅니다. 요청한 마이크를 얻지 못하면 시작 전에 마이크 없이 진행할지 선택하며, 실제 소리는 마지막 결과를 재생해 확인하세요.' },
+    { q: '녹화 형식과 표시 시간은 어떻게 정해지나요?', a: '지원되는 WebM 형식을 먼저 확인하고 실제 결과의 형식과 파일명을 표시합니다. 이 도구는 MP4 변환 기능을 제공하지 않습니다. 표시 시간은 일시정지를 제외한 활성 구간이며 인코딩·기기 절전 등으로 영상 플레이어의 재생 길이와 다를 수 있습니다.' },
   ]
 
   return (
@@ -75,16 +78,16 @@ export default function ScreenRecorderPage() {
             온라인 화면 녹화기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            온라인 화면 녹화기는 별도 프로그램 설치 없이 브라우저에서 바로 화면, 창, 브라우저 탭을 녹화할 수 있는 무료 스크린 레코더입니다. 시스템 오디오와 마이크를 함께 녹음할 수 있어 튜토리얼 영상 제작, 회의 내용 기록, 버그 리포트 화면 첨부, 온라인 강의 녹화 등에 활용됩니다. 녹화 파일은 브라우저 내에서만 처리되어 개인정보 보호에 안전합니다.
+            지원되는 브라우저에서 사용자가 선택한 화면·창·탭을 녹화합니다. 화질·프레임 속도·오디오 설정을 고른 뒤 실제 연결된 트랙을 확인하세요. 녹화 파일은 서버로 업로드하지 않으며 마지막 성공 결과 1개를 이번 방문 동안 보관합니다. 다시 찍기 준비를 취소하거나 새 시도가 실패해도 이전 결과의 미리보기와 다운로드를 유지합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             화면 녹화기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>탭 녹화로 시스템 오디오 캡처:</strong> 전체 화면이나 창 공유보다 브라우저 탭을 공유하면 시스템 오디오(유튜브, 회의 소리 등)를 더 안정적으로 녹음할 수 있습니다.</li>
-            <li><strong>일시정지 기능 활용:</strong> 녹화 중 민감한 정보가 화면에 표시될 때 일시정지 후 해당 부분을 처리하고 재개하면 불필요한 정보가 영상에 포함되지 않습니다.</li>
-            <li><strong>WebM → MP4 변환:</strong> 녹화 파일은 WebM 형식으로 저장됩니다. VLC 미디어 플레이어나 온라인 변환 도구를 이용해 MP4로 변환하면 더 넓은 호환성을 확보할 수 있습니다.</li>
-            <li><strong>고품질 녹화 설정:</strong> 화면 공유 시 해상도를 최대로 설정하고 프레임 속도를 30fps로 선택하면 선명한 화질의 튜토리얼 영상을 만들 수 있습니다.</li>
+            <li><strong>오디오 확인:</strong> 요청한 옵션과 실제 연결된 트랙은 다를 수 있습니다. 짧게 녹화한 결과를 재생해 화면과 소리를 확인하세요.</li>
+            <li><strong>준비 취소:</strong> 화면 선택이나 마이크 준비를 취소하면 뒤늦게 허용된 트랙도 정리합니다. 브라우저의 OS 선택창 자체를 강제로 닫는 기능은 아닙니다.</li>
+            <li><strong>이전 결과 보관:</strong> 새 성공 결과가 확정되기 전에는 이전 영상을 유지합니다. 여러 영상을 저장하려면 각 결과를 교체하거나 페이지를 떠나기 전에 다운로드하세요.</li>
+            <li><strong>시간과 형식:</strong> 일시정지 구간은 표시 시간에서 제외합니다. 결과의 실제 형식을 확인하고 필요한 앱에서 재생 가능한지 직접 확인하세요.</li>
           </ul>
         </div>
       </section>

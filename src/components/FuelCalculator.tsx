@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n/fuelCalculator'
 import {
-  Car,
   Copy,
   Check,
   Download,
@@ -32,7 +31,7 @@ import DatePicker from '@/components/ui/DatePicker'
 import GuideSection from '@/components/GuideSectionContent'
 import { fuelPriceFallback } from '@/utils/fuelPriceFallback'
 import ShareResult from '@/components/ShareResult'
-import MobileResultLink from '@/components/MobileResultLink'
+import { calculateTripCosts, fuelNumber, logFuelCost } from '@/utils/fuelTrip'
 
 type FuelType = 'gasoline' | 'premium_gasoline' | 'diesel' | 'lpg'
 
@@ -93,7 +92,7 @@ const normDate = (s?: string) => {
 }
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 // 공유 링크 판별용 계산 파라미터 — 하나라도 있으면 링크 값을 내 차량 설정(localStorage)보다 우선
-const SHARE_KEYS = ['distance', 'rt', 'vehicleType', 'fuelType', 'eff', 'dm', 'date', 'sido', 'price']
+const SHARE_KEYS = ['distance', 'rt', 'vehicleType', 'fuelType', 'eff', 'dm', 'date', 'sido', 'price', 'mode', 'people', 'toll', 'parking']
 
 async function copyText(text: string) {
   if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text)
@@ -148,29 +147,35 @@ interface DrivingLogEntry {
   tollFee: number
   parkingFee: number
   memo: string
+  settlement?: number
+  people?: number
+  mode?: 'quick' | 'split'
+  snapshot?: VehicleSettings & { priceSource: 'default' | 'manual' | 'opinet'; priceDate: string }
 }
 
-const logKm = (log: DrivingLogEntry) => log.distance * (log.roundTrip ? 2 : 1)
+const logKm = (log: Pick<DrivingLogEntry, 'distance' | 'roundTrip'>) => log.distance * (log.roundTrip ? 2 : 1)
 
 const FuelCalculator = () => {
   const t = useTranslations('fuelCalculator')
   const tc = useTranslations('common')
-  const searchParams = useSearchParams()
+  const currentSearchParams = useSearchParams()
+  const [searchParams] = useState(() => new URLSearchParams(currentSearchParams))
+  const priceRequest = useRef(0)
 
   // Tab state
   const [activeTab, setActiveTab] = useState<'calculator' | 'drivingLog'>('calculator')
 
   // Calculator state
-  const [distance, setDistance] = useState<number>(() => parseFloat(searchParams.get('distance') || '') || 100) // 기본 100km: 첫 화면(서버 HTML 포함)부터 결과 노출
-  const [roundTrip, setRoundTrip] = useState<boolean>(() => searchParams.get('rt') === '1')
-  const [vehicleType, setVehicleType] = useState<string>(() => {
-    const p = searchParams.get('vehicleType')
-    return isVehicleType(p) ? p : 'compact'
-  })
-  const [fuelType, setFuelType] = useState<FuelType>(() => {
-    const p = searchParams.get('fuelType')
-    return isFuelType(p) ? p : 'gasoline'
-  })
+  // First render matches static HTML; restore shared inputs after hydration.
+  const [distance, setDistance] = useState(100)
+  const [roundTrip, setRoundTrip] = useState(false)
+  const [vehicleType, setVehicleType] = useState('compact')
+  const [fuelType, setFuelType] = useState<FuelType>('gasoline')
+  const [mode, setMode] = useState<'quick' | 'split'>('quick')
+  const [people, setPeople] = useState(4)
+  const [tollFee, setTollFee] = useState(0)
+  const [parkingFee, setParkingFee] = useState(0)
+  const [tripMemo, setTripMemo] = useState('')
   const [customEfficiency, setCustomEfficiency] = useState<number>(0)
   const [useCustomEfficiency, setUseCustomEfficiency] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
@@ -236,8 +241,8 @@ const FuelCalculator = () => {
           const s: Partial<VehicleSettings> = JSON.parse(savedSettings)
           if (isVehicleType(s.vehicleType)) setVehicleType(s.vehicleType)
           if (isFuelType(s.fuelType)) setFuelType(s.fuelType)
-          if (s.customEfficiency) setCustomEfficiency(s.customEfficiency)
-          if (s.useCustomEfficiency !== undefined) setUseCustomEfficiency(s.useCustomEfficiency)
+          setCustomEfficiency(fuelNumber(s.customEfficiency, 0, 0, 100))
+          setUseCustomEfficiency(s.useCustomEfficiency === true && fuelNumber(s.customEfficiency, 0, .1, 100) > 0)
         } catch {
           // ignore invalid vehicle settings data
         }
@@ -248,7 +253,12 @@ const FuelCalculator = () => {
     if (savedLogs) {
       try {
         const parsed = JSON.parse(savedLogs)
-        if (Array.isArray(parsed)) setDrivingLogs(parsed)
+        if (Array.isArray(parsed)) setDrivingLogs(parsed.filter(log => log && typeof log.id === 'string' && typeof log.date === 'string' && Number.isFinite(log.distance) && log.distance > 0).map(log => ({
+          ...log,
+          tollFee: fuelNumber(log.tollFee, 0, 0, 10000000, true),
+          parkingFee: fuelNumber(log.parkingFee, 0, 0, 10000000, true),
+          memo: typeof log.memo === 'string' ? log.memo : '',
+        })))
       } catch {
         // ignore invalid driving log data
       }
@@ -257,10 +267,12 @@ const FuelCalculator = () => {
 
   // ── OPINET 유가 가져오기 (실시간 또는 과거 날짜) ──
   const fetchOpinetPrices = useCallback(async (sido?: string, date?: string) => {
+    const request = ++priceRequest.current
     setPriceLoading(true)
     setPriceNoData(false)
     setPriceFallback(null)
     const apply = (p: Partial<Record<FuelType, number>>, basis: string) => {
+      if (request !== priceRequest.current) return
       setFuelPrices(prev => ({
         gasoline: p.gasoline || prev.gasoline,
         premium_gasoline: p.premium_gasoline || prev.premium_gasoline,
@@ -276,9 +288,10 @@ const FuelCalculator = () => {
       if (sido) params.set('sido', sido)
       if (date) params.set('date', date)
       const qs = params.toString()
-      const res = await fetch(`/api/fuel-prices${qs ? `?${qs}` : ''}`)
+      const res = await fetch(`/api/fuel-prices${qs ? `?${qs}` : ''}`, { signal: AbortSignal.timeout(15000) })
       if (!res.ok) throw new Error('API error')
       const data = await res.json()
+      if (request !== priceRequest.current) return
 
       // Supabase 과거 데이터 응답
       if (data.source === 'supabase' && Array.isArray(data.data)) {
@@ -333,16 +346,16 @@ const FuelCalculator = () => {
       }
     } catch {
       // 실패 시 기존 가격 유지 (출처 표시는 그대로)
-      if (date) setPriceNoData(true)
+      if (request === priceRequest.current && date) setPriceNoData(true)
     } finally {
-      setPriceLoading(false)
+      if (request === priceRequest.current) setPriceLoading(false)
     }
   }, [])
 
   // 마운트 시 OPINET 가격 자동 로드 + localStorage에서 감가비 계수/지역 복원
   useEffect(() => {
     const savedMultiplier = safeStorage.getItem('fuel_depreciation_multiplier')
-    if (savedMultiplier) setDepreciationMultiplier(Number(savedMultiplier) || 1.0)
+    if (savedMultiplier) setDepreciationMultiplier(fuelNumber(savedMultiplier, 1, 1, 1.5))
     // 공유 링크의 지역·기준일·유가가 내 저장 지역·실시간 유가보다 우선
     const qSido = searchParams.get('sido')
     const sido = sidoCode(qSido !== null && SIDO_OPTIONS.some(o => o.code === sidoCode(qSido)) ? qSido : safeStorage.getItem('fuel_selected_sido'))
@@ -352,17 +365,19 @@ const FuelCalculator = () => {
     setSelectedDate(date)
     // price = 네 연료 단가 스냅샷(휘발유-고급-경유-LPG) 또는 선택 연료 단가 하나(이전 형식) — 조회하지 않고 그대로 쓴다
     const parts = (searchParams.get('price') ?? '').split('-').map(Number)
+    const sharedFuel = searchParams.get('fuelType')
+    const selectedFuel = isFuelType(sharedFuel) ? sharedFuel : 'gasoline'
     const shared: Partial<Record<FuelType, number>> = parts.length === 1
-      ? { [fuelType]: parts[0] }
+      ? { [selectedFuel]: parts[0] }
       : Object.fromEntries(FUEL_TYPES.map((f, i) => [f, parts[i]]))
     const ok = (n = 0) => n > 0 && n < 10000
-    if (ok(shared[fuelType])) {
+    if (ok(shared[selectedFuel])) {
       setFuelPrices(prev => {
         const next = { ...prev }
         for (const f of FUEL_TYPES) if (ok(shared[f])) next[f] = shared[f]!
         return next
       })
-      setPriceSource(qDate ? 'opinet' : 'manual')
+      setPriceSource(searchParams.get('source') === 'default' ? 'default' : qDate ? 'opinet' : 'manual')
       setPriceDate(qDate)
       return
     }
@@ -372,6 +387,15 @@ const FuelCalculator = () => {
   // 공유 링크의 직접 입력 연비·감가비 계수 복원 (위 localStorage 값보다 우선, 첫 렌더 시점 쿼리 기준)
   useEffect(() => {
     if (!SHARE_KEYS.some(k => searchParams.has(k))) return
+    setDistance(fuelNumber(searchParams.get('distance'), 100, 0, 100000))
+    setRoundTrip(searchParams.get('rt') === '1')
+    const vehicle = searchParams.get('vehicleType'), fuel = searchParams.get('fuelType')
+    setVehicleType(isVehicleType(vehicle) ? vehicle : 'compact')
+    setFuelType(isFuelType(fuel) ? fuel : 'gasoline')
+    setMode(searchParams.get('mode') === 'split' ? 'split' : 'quick')
+    setPeople(fuelNumber(searchParams.get('people'), 4, 1, 100, true))
+    setTollFee(fuelNumber(searchParams.get('toll'), 0, 0, 10000000, true))
+    setParkingFee(fuelNumber(searchParams.get('parking'), 0, 0, 10000000, true))
     const eff = parseFloat(searchParams.get('eff') ?? '')
     if (eff > 0 && eff <= 100) { setCustomEfficiency(eff); setUseCustomEfficiency(true) }
     const dm = parseFloat(searchParams.get('dm') ?? '')
@@ -384,26 +408,29 @@ const FuelCalculator = () => {
     // 기본값은 URL에서 뺌 → 새로고침 시 쿼리 없는 깨끗한 URL(서버 HTML과 일치, hydration 경고 없음)
     const setOrDelete = (key: string, value: string, isDefault: boolean) =>
       isDefault ? url.searchParams.delete(key) : url.searchParams.set(key, value)
-    setOrDelete('distance', String(distance), distance === 100 || distance <= 0)
+    setOrDelete('distance', String(distance), distance === 100)
     setOrDelete('rt', '1', !roundTrip)
     setOrDelete('vehicleType', vehicleType, vehicleType === 'compact')
     setOrDelete('fuelType', fuelType, fuelType === 'gasoline')
     setOrDelete('eff', String(customEfficiency), !(useCustomEfficiency && customEfficiency > 0))
     setOrDelete('dm', String(depreciationMultiplier), depreciationMultiplier === 1)
+    setOrDelete('mode', mode, mode === 'quick')
+    setOrDelete('people', String(people), people === 4)
+    setOrDelete('toll', String(tollFee), tollFee === 0)
+    setOrDelete('parking', String(parkingFee), parkingFee === 0)
     // 유가 기준은 주소창에 남기지 않는다(북마크·새로고침은 최신 유가). 받은 링크의 옛 기준도 여기서 지운다.
-    for (const k of ['date', 'sido', 'price']) url.searchParams.delete(k)
+    for (const k of ['date', 'sido', 'price', 'source']) url.searchParams.delete(k)
     window.history.replaceState({}, '', url)
     // 공유 링크에는 적용된 단가 자체를 박는다 — 과거 유가 DB 공백·전국 평균 산식 차이와 무관하게 받는 사람도 같은 금액.
     // OPINET이면 표시용 기준일(실제 적용된 날짜)과 지역(전국 = 빈 값)도 함께.
-    if (priceSource !== 'default') {
-      url.searchParams.set('price', FUEL_TYPES.map(f => fuelPrices[f]).join('-'))
-      if (priceSource === 'opinet') {
-        url.searchParams.set('date', priceDate)
-        url.searchParams.set('sido', selectedSido)
-      }
+    url.searchParams.set('price', FUEL_TYPES.map(f => fuelPrices[f]).join('-'))
+    url.searchParams.set('source', priceSource)
+    if (priceSource === 'opinet') {
+      url.searchParams.set('date', priceDate)
+      url.searchParams.set('sido', selectedSido)
     }
     setShareUrl(url.toString())
-  }, [distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, depreciationMultiplier, selectedSido, priceSource, priceDate, fuelPrices])
+  }, [distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, depreciationMultiplier, selectedSido, priceSource, priceDate, fuelPrices, mode, people, tollFee, parkingFee])
 
   const efficiency = useCustomEfficiency && customEfficiency > 0
     ? customEfficiency
@@ -412,7 +439,7 @@ const FuelCalculator = () => {
 
   // 유류비 계산 — 렌더 중 계산(useMemo)이라 서버 HTML에도 기본값(100km) 결과가 들어감
   const calculation = useMemo<FuelCalculation | null>(() => {
-    if (tripKm <= 0) return null
+    if (!Number.isFinite(tripKm) || tripKm <= 0 || tripKm > 200000 || !Number.isFinite(efficiency) || efficiency <= 0 || efficiency > 100 || (useCustomEfficiency && customEfficiency <= 0) || fuelPrices[fuelType] <= 0) return null
     const fuelConsumption = tripKm / efficiency
     const fuelCost = fuelConsumption * fuelPrices[fuelType]
     const settlement = fuelCost * depreciationMultiplier
@@ -428,7 +455,10 @@ const FuelCalculator = () => {
       costPerKm: totalCost / tripKm,
       settlementPerKm: settlement / tripKm
     }
-  }, [tripKm, efficiency, fuelPrices, fuelType, depreciationMultiplier, vehicleType])
+  }, [tripKm, efficiency, fuelPrices, fuelType, depreciationMultiplier, vehicleType, useCustomEfficiency, customEfficiency])
+
+  const tripCosts = useMemo(() => calculation ? calculateTripCosts(calculation.settlement, tollFee, parkingFee, people) : null, [calculation, tollFee, parkingFee, people])
+  const resultAmount = tripCosts ? (mode === 'split' ? tripCosts.perPerson : tripCosts.total) : 0
 
   // 유가 출처 문구 (예: "OPINET 서울 · 2026-09-30 기준")
   const sidoKey = SIDO_OPTIONS.find(s => s.code === selectedSido)?.key
@@ -444,6 +474,9 @@ const FuelCalculator = () => {
   }, [fuelPrices])
 
   const savePrices = useCallback(() => {
+    if (FUEL_TYPES.some(f => !Number.isFinite(tempPrices[f]) || tempPrices[f] <= 0 || tempPrices[f] >= 10000)) return
+    priceRequest.current++
+    setPriceLoading(false)
     setFuelPrices(tempPrices)
     setPriceSource('manual')
     setPriceFallback(null)
@@ -458,6 +491,7 @@ const FuelCalculator = () => {
 
   // Vehicle settings functions
   const saveVehicleSettings = useCallback(() => {
+    if (useCustomEfficiency && (customEfficiency <= 0 || customEfficiency > 100)) return
     const settings: VehicleSettings = {
       vehicleType,
       fuelType,
@@ -472,9 +506,11 @@ const FuelCalculator = () => {
     const success = safeStorage.setItem(STORAGE_KEYS.VEHICLE_SETTINGS, JSON.stringify(settings))
     if (success) {
       setHasVehicleSettings(true)
+      safeStorage.setItem('fuel_depreciation_multiplier', String(depreciationMultiplier))
+      safeStorage.setItem('fuel_selected_sido', selectedSido)
       setSettingsFeedback(t('vehicleSettings.saved'))
       setTimeout(() => setSettingsFeedback(null), 2000)
-    }
+    } else setSettingsFeedback(t('experience.storageFailed'))
   }, [vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, depreciationMultiplier, selectedSido, t])
 
   const loadVehicleSettings = useCallback(() => {
@@ -484,14 +520,17 @@ const FuelCalculator = () => {
         const settings: VehicleSettings = JSON.parse(savedSettings)
         if (isVehicleType(settings.vehicleType)) setVehicleType(settings.vehicleType)
         if (isFuelType(settings.fuelType)) setFuelType(settings.fuelType)
-        setCustomEfficiency(settings.customEfficiency)
-        setUseCustomEfficiency(settings.useCustomEfficiency)
-        if (settings.fuelPrices) {
-          setFuelPrices(settings.fuelPrices)
-          setPriceSource('manual')
-        }
-        if (settings.depreciationMultiplier) setDepreciationMultiplier(settings.depreciationMultiplier)
-        if (settings.selectedSido !== undefined) setSelectedSido(sidoCode(settings.selectedSido))
+        setCustomEfficiency(fuelNumber(settings.customEfficiency, 0, 0, 100))
+        setUseCustomEfficiency(settings.useCustomEfficiency === true && fuelNumber(settings.customEfficiency, 0, .1, 100) > 0)
+        const multiplier = fuelNumber(settings.depreciationMultiplier, 1, 1, 1.5)
+        setDepreciationMultiplier(multiplier)
+        safeStorage.setItem('fuel_depreciation_multiplier', String(multiplier))
+        const region = sidoCode(settings.selectedSido)
+        const savedRegion = SIDO_OPTIONS.some(o => o.code === region) ? region : ''
+        setSelectedSido(savedRegion)
+        safeStorage.setItem('fuel_selected_sido', savedRegion)
+        setSelectedDate('')
+        fetchOpinetPrices(savedRegion || undefined)
         setSettingsFeedback(t('vehicleSettings.loaded'))
         setTimeout(() => setSettingsFeedback(null), 2000)
       } catch {
@@ -501,7 +540,7 @@ const FuelCalculator = () => {
       setSettingsFeedback(t('vehicleSettings.noSaved'))
       setTimeout(() => setSettingsFeedback(null), 2000)
     }
-  }, [t])
+  }, [t, fetchOpinetPrices])
 
   const deleteVehicleSettings = useCallback(() => {
     if (window.confirm(t('vehicleSettings.confirmDelete'))) {
@@ -516,12 +555,22 @@ const FuelCalculator = () => {
   const handleLoadFromHistory = useCallback((historyId: string) => {
     const inputs = loadFromHistory(historyId)
     if (inputs) {
-      setDistance(inputs.distance || 0)
+      priceRequest.current++
+      setPriceLoading(false)
+      setPriceNoData(false)
+      setPriceFallback(null)
+      setActiveTab('calculator')
+      setDistance(fuelNumber(inputs.distance, 100, 0, 100000))
       setRoundTrip(!!inputs.roundTrip)
+      setMode(inputs.mode === 'split' ? 'split' : 'quick')
+      setPeople(fuelNumber(inputs.people, 4, 1, 100, true))
+      setTollFee(fuelNumber(inputs.tollFee, 0, 0, 10000000, true))
+      setParkingFee(fuelNumber(inputs.parkingFee, 0, 0, 10000000, true))
+      setTripMemo(typeof inputs.tripMemo === 'string' ? inputs.tripMemo : '')
       setVehicleType(isVehicleType(inputs.vehicleType) ? inputs.vehicleType : 'compact')
       setFuelType(isFuelType(inputs.fuelType) ? inputs.fuelType : 'gasoline')
-      setCustomEfficiency(inputs.customEfficiency || 0)
-      setUseCustomEfficiency(inputs.useCustomEfficiency || false)
+      setCustomEfficiency(fuelNumber(inputs.customEfficiency, 0, 0, 100))
+      setUseCustomEfficiency(inputs.useCustomEfficiency === true && fuelNumber(inputs.customEfficiency, 0, .1, 100) > 0)
       // 감가비 계수가 없는 예전 이력은 1 (정산 유류비 = 유류비 × 계수)
       const dm = Number(inputs.depreciationMultiplier)
       setDepreciationMultiplier(dm >= 1 && dm <= 1.5 ? dm : 1)
@@ -530,17 +579,20 @@ const FuelCalculator = () => {
         const saved = inputs.fuelPrices as Partial<Record<FuelType, number>>
         setFuelPrices(prev => {
           const next = { ...prev }
-          for (const f of FUEL_TYPES) if (Number(saved[f]) > 0) next[f] = Number(saved[f])
+          for (const f of FUEL_TYPES) next[f] = fuelNumber(saved[f], prev[f], 1, 9999)
           return next
         })
-        setPriceSource('manual')
+        setPriceSource(inputs.priceSource === 'opinet' ? 'opinet' : inputs.priceSource === 'default' ? 'default' : 'manual')
+        setPriceDate(normDate(inputs.priceDate))
+        setSelectedSido(sidoCode(inputs.selectedSido))
+        setSelectedDate(normDate(inputs.selectedDate))
       }
     }
   }, [loadFromHistory])
 
   // Format history result for display
   const formatHistoryResult = useCallback((result: Record<string, unknown>) => {
-    const amount = (result.settlement ?? result.totalCost) as number | undefined
+    const amount = (result.tripTotal ?? result.settlement ?? result.totalCost) as number | undefined
     return `${won(amount ?? 0)}${t('share.won')}`
   }, [t])
 
@@ -557,6 +609,8 @@ const FuelCalculator = () => {
       useCustomEfficiency,
       fuelPrices,
       depreciationMultiplier,
+      mode, people, tollFee, parkingFee, tripMemo, priceSource, priceDate, selectedSido, selectedDate,
+      tripTotal: calculateTripCosts(calculation.settlement, tollFee, parkingFee, people).total,
       totalCost: calculation.totalCost
     }
 
@@ -566,50 +620,64 @@ const FuelCalculator = () => {
       fuelCost: calculation.fuelCost,
       depreciationCost: calculation.depreciationCost,
       costPerKm: calculation.costPerKm,
-      fuelConsumption: calculation.fuelConsumption
+      fuelConsumption: calculation.fuelConsumption,
+      tripTotal: calculateTripCosts(calculation.settlement, tollFee, parkingFee, people).total
     }
 
     const success = saveCalculation(inputs, resultData)
     if (success) {
       setIsSaved(true)
       setTimeout(() => setIsSaved(false), 2000)
-    }
-  }, [calculation, distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, depreciationMultiplier, saveCalculation])
+    } else setLogFeedback(t('experience.storageFailed'))
+  }, [calculation, distance, roundTrip, vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, depreciationMultiplier, saveCalculation, mode, people, tollFee, parkingFee, tripMemo, priceSource, priceDate, selectedSido, selectedDate, t])
+
+  const snapshot = useMemo(() => ({
+    vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices,
+    depreciationMultiplier, selectedSido, priceSource, priceDate, savedAt: new Date().toISOString(),
+  }), [vehicleType, fuelType, customEfficiency, useCustomEfficiency, fuelPrices, depreciationMultiplier, selectedSido, priceSource, priceDate])
 
   const persistLogs = useCallback((logs: DrivingLogEntry[]) => {
+    if (!safeStorage.setItem(STORAGE_KEYS.DRIVING_LOG, JSON.stringify(logs))) {
+      setLogFeedback(t('experience.storageFailed'))
+      return false
+    }
     setDrivingLogs(logs)
-    safeStorage.setItem(STORAGE_KEYS.DRIVING_LOG, JSON.stringify(logs))
-  }, [])
+    return true
+  }, [t])
 
   // Driving log functions
   const addDrivingLogEntry = useCallback(() => {
-    if (newLogEntry.distance <= 0) return
+    if (!Number.isFinite(newLogEntry.distance) || newLogEntry.distance <= 0 || newLogEntry.distance > 100000 || (useCustomEfficiency && (customEfficiency <= 0 || customEfficiency > 100))) return
     const entry: DrivingLogEntry = {
       ...newLogEntry,
+      settlement: Math.round(logKm(newLogEntry) / efficiency * fuelPrices[fuelType] * depreciationMultiplier),
+      snapshot,
       date: newLogEntry.date || localDate(),
       id: Date.now().toString() + Math.random().toString(36).slice(2, 11)
     }
-    persistLogs([entry, ...drivingLogs])
+    if (!persistLogs([entry, ...drivingLogs])) return
     // Reset form (날짜·왕복 여부는 유지 → 연속 입력이 빠름)
     setNewLogEntry(prev => ({ ...prev, distance: 0, tollFee: 0, parkingFee: 0, memo: '' }))
-  }, [newLogEntry, drivingLogs, persistLogs])
+  }, [newLogEntry, drivingLogs, persistLogs, efficiency, fuelPrices, fuelType, depreciationMultiplier, snapshot, useCustomEfficiency, customEfficiency])
 
   // 계산기 결과를 주행일지에 바로 추가 (출장일 선택 시 그 날짜로)
   const addCurrentTripToLog = useCallback(() => {
-    if (distance <= 0) return
+    if (!calculation) return
     const entry: DrivingLogEntry = {
       id: Date.now().toString() + Math.random().toString(36).slice(2, 11),
       date: selectedDate || localDate(),
       distance,
       roundTrip,
-      tollFee: 0,
-      parkingFee: 0,
-      memo: ''
+      tollFee,
+      parkingFee,
+      memo: tripMemo,
+      settlement: Math.round(calculation.settlement),
+      snapshot, mode, people,
     }
-    persistLogs([entry, ...drivingLogs])
+    if (!persistLogs([entry, ...drivingLogs])) return
     setLogFeedback(t('trip.addedToLog', { date: entry.date }))
     setTimeout(() => setLogFeedback(null), 2500)
-  }, [distance, roundTrip, selectedDate, drivingLogs, persistLogs, t])
+  }, [distance, roundTrip, selectedDate, drivingLogs, persistLogs, t, calculation, tollFee, parkingFee, tripMemo, snapshot, mode, people])
 
   const removeDrivingLogEntry = useCallback((id: string) => {
     persistLogs(drivingLogs.filter(log => log.id !== id))
@@ -622,10 +690,38 @@ const FuelCalculator = () => {
     }
   }, [t])
 
-  // 주행일지 한 건의 정산 유류비 (현재 차량·유가·감가비 계수 적용)
-  const calculateLogFuelCost = useCallback((km: number): number =>
-    Math.round((km / efficiency) * fuelPrices[fuelType] * depreciationMultiplier),
+  // 새 기록은 저장 금액, 이전 형식 기록은 현재 차량·유가·감가비 계수 적용
+  const calculateLogFuelCost = useCallback((log: DrivingLogEntry): number =>
+    logFuelCost(log.settlement, (logKm(log) / efficiency) * fuelPrices[fuelType] * depreciationMultiplier),
   [efficiency, fuelPrices, fuelType, depreciationMultiplier])
+
+  const loadLogInCalculator = (log: DrivingLogEntry) => {
+    const s = log.snapshot
+    if (s) {
+      priceRequest.current++
+      setPriceLoading(false)
+      setPriceNoData(false)
+      setPriceFallback(null)
+      if (isVehicleType(s.vehicleType)) setVehicleType(s.vehicleType)
+      if (isFuelType(s.fuelType)) setFuelType(s.fuelType)
+      setCustomEfficiency(fuelNumber(s.customEfficiency, 0, 0, 100))
+      setUseCustomEfficiency(s.useCustomEfficiency === true && fuelNumber(s.customEfficiency, 0, .1, 100) > 0)
+      setFuelPrices(prev => Object.fromEntries(FUEL_TYPES.map(f => [f, fuelNumber(s.fuelPrices?.[f], prev[f], 1, 9999)])) as Record<FuelType, number>)
+      setDepreciationMultiplier(fuelNumber(s.depreciationMultiplier, 1, 1, 1.5))
+      setSelectedSido(sidoCode(s.selectedSido))
+      setPriceSource(s.priceSource === 'opinet' ? 'opinet' : s.priceSource === 'default' ? 'default' : 'manual')
+      setPriceDate(normDate(s.priceDate))
+    }
+    setDistance(log.distance)
+    setRoundTrip(!!log.roundTrip)
+    setTollFee(log.tollFee)
+    setParkingFee(log.parkingFee)
+    setTripMemo(log.memo)
+    setSelectedDate(log.date)
+    setMode(log.mode === 'split' ? 'split' : 'quick')
+    setPeople(fuelNumber(log.people, 4, 1, 100, true))
+    setActiveTab('calculator')
+  }
 
   // Filtered logs by date (문자열 비교 — 타임존 영향 없음)
   const filteredLogs = useMemo(() => {
@@ -644,7 +740,7 @@ const FuelCalculator = () => {
     const totalDistance = filteredLogs.reduce((sum, log) => sum + logKm(log), 0)
     const totalTollFee = filteredLogs.reduce((sum, log) => sum + log.tollFee, 0)
     const totalParkingFee = filteredLogs.reduce((sum, log) => sum + log.parkingFee, 0)
-    const totalFuelCost = filteredLogs.reduce((sum, log) => sum + calculateLogFuelCost(logKm(log)), 0)
+    const totalFuelCost = filteredLogs.reduce((sum, log) => sum + calculateLogFuelCost(log), 0)
     return {
       totalDistance,
       totalTollFee,
@@ -660,7 +756,7 @@ const FuelCalculator = () => {
     const logs = drivingLogs.filter(log => log.date.slice(0, 7) === month)
     return {
       count: logs.length,
-      total: logs.reduce((sum, log) => sum + calculateLogFuelCost(logKm(log)) + log.tollFee + log.parkingFee, 0)
+      total: logs.reduce((sum, log) => sum + calculateLogFuelCost(log) + log.tollFee + log.parkingFee, 0)
     }
   }, [drivingLogs, calculateLogFuelCost])
 
@@ -674,25 +770,43 @@ const FuelCalculator = () => {
     source: priceSourceLabel
   })
 
+  const logCondition = useCallback((log: DrivingLogEntry) => {
+    const s = log.snapshot
+    if (!s || !isVehicleType(s.vehicleType) || !isFuelType(s.fuelType)) return conditionLine
+    const regionKey = SIDO_OPTIONS.find(o => o.code === s.selectedSido)?.key ?? 'all'
+    return t('settlement.condition', {
+      vehicle: t(`vehicleTypes.${s.vehicleType}`), fuel: t(`fuelTypes.${s.fuelType}`),
+      efficiency: (s.useCustomEfficiency ? fuelNumber(s.customEfficiency, efficiency, .1, 100) : getAdjustedEfficiency(VEHICLE_TYPES[s.vehicleType].efficiency, s.fuelType)).toFixed(1),
+      price: won(fuelNumber(s.fuelPrices?.[s.fuelType], fuelPrices[s.fuelType], 1, 9999)), multiplier: fuelNumber(s.depreciationMultiplier, 1, 1, 1.5).toFixed(2),
+      source: s.priceSource === 'opinet' ? t('priceSource.opinet', { region: t(`region.names.${regionKey}`), date: s.priceDate }) : t(s.priceSource === 'default' ? 'priceSource.default' : 'priceSource.manual'),
+    })
+  }, [conditionLine, efficiency, fuelPrices, t])
+
+  const logSplitLine = useCallback((log: DrivingLogEntry) => {
+    if (log.mode !== 'split') return ''
+    const c = calculateTripCosts(calculateLogFuelCost(log), log.tollFee, log.parkingFee, log.people ?? 4)
+    return t('experience.splitLine', { people: c.people, amount: won(c.perPerson), last: won(c.lastPerson) })
+  }, [calculateLogFuelCost, t])
+
   // Export driving logs (현재 필터) to CSV
   const exportToCSV = useCallback(() => {
     if (filteredLogs.length === 0) return
-    const q = (s: string) => `"${s.replace(/"/g, '""')}"`
-    const headers = [t('drivingLog.date'), t('drivingLog.distance'), t('trip.roundTrip'), t('settlement.km'), t('drivingLog.tollFee'), t('drivingLog.parkingFee'), t('drivingLog.fuelCost'), t('drivingLog.totalCost'), t('drivingLog.routeMemo')]
+    const q = (s: string) => `"${(/^[=+@\-\t\r]/.test(s) ? "'" + s : s).replace(/"/g, '""')}"`
+    const headers = [t('drivingLog.date'), t('drivingLog.distance'), t('trip.roundTrip'), t('settlement.km'), t('drivingLog.tollFee'), t('drivingLog.parkingFee'), t('drivingLog.fuelCost'), t('drivingLog.totalCost'), t('drivingLog.routeMemo'), t('experience.savedBasis'), t('experience.split')]
     const rows = filteredLogs.map(log => {
-      const fuelCost = calculateLogFuelCost(logKm(log))
-      return [log.date, log.distance, log.roundTrip ? 'Y' : '', logKm(log), log.tollFee, log.parkingFee, fuelCost, log.tollFee + log.parkingFee + fuelCost, q(log.memo)].join(',')
+      const fuelCost = calculateLogFuelCost(log)
+      return [log.date, log.distance, log.roundTrip ? 'Y' : '', logKm(log), log.tollFee, log.parkingFee, fuelCost, log.tollFee + log.parkingFee + fuelCost, q(log.memo), q(logCondition(log)), q(logSplitLine(log))].join(',')
     })
-    rows.push([t('drivingLog.summary.title'), '', '', logSummary.totalDistance, logSummary.totalTollFee, logSummary.totalParkingFee, logSummary.totalFuelCost, logSummary.grandTotal, q(conditionLine)].join(','))
+    rows.push([t('drivingLog.summary.title'), '', '', logSummary.totalDistance, logSummary.totalTollFee, logSummary.totalParkingFee, logSummary.totalFuelCost, logSummary.grandTotal, '', q(t('experience.logBasisHint')), ''].join(','))
     downloadFile('﻿' + [headers.map(q).join(','), ...rows].join('\n'), `${t('share.logFile')}_${localDate()}.csv`, 'text/csv;charset=utf-8')
-  }, [filteredLogs, logSummary, calculateLogFuelCost, conditionLine, t])
+  }, [filteredLogs, logSummary, calculateLogFuelCost, logCondition, logSplitLine, t])
 
   // 주행일지 정산서 텍스트 (결재·메신저 붙여넣기용)
   const copyLogSettlement = useCallback(async () => {
     if (filteredLogs.length === 0) return
     const lines = [...filteredLogs].sort((a, b) => a.date.localeCompare(b.date)).map(log => {
-      const fuelCost = calculateLogFuelCost(logKm(log))
-      return t('settlement.logLine', {
+      const fuelCost = calculateLogFuelCost(log)
+      return [t('settlement.logLine', {
         date: log.date,
         memo: log.memo || '-',
         km: logKm(log).toLocaleString('ko-KR'),
@@ -700,11 +814,11 @@ const FuelCalculator = () => {
         fuel: won(fuelCost),
         extra: won(log.tollFee + log.parkingFee),
         total: won(fuelCost + log.tollFee + log.parkingFee)
-      })
+      }), logCondition(log), logSplitLine(log)].filter(Boolean).join('\n')
     })
     const text = [
       t('settlement.logTitle', { period: filterLabel }),
-      conditionLine,
+      t('experience.logBasisHint'),
       '',
       ...lines,
       '',
@@ -724,11 +838,11 @@ const FuelCalculator = () => {
     } catch (error) {
       console.error('Failed to copy:', error)
     }
-  }, [filteredLogs, logSummary, calculateLogFuelCost, conditionLine, filterLabel, t])
+  }, [filteredLogs, logSummary, calculateLogFuelCost, logCondition, logSplitLine, filterLabel, t])
 
   // 단건 정산서 텍스트
   const settlementText = useMemo(() => {
-    if (!calculation) return ''
+    if (!calculation || !tripCosts) return ''
     return [
       t('settlement.title'),
       t('settlement.distanceLine', {
@@ -745,10 +859,13 @@ const FuelCalculator = () => {
         liters: calculation.fuelConsumption.toFixed(2)
       }),
       t('settlement.amount', { amount: won(calculation.settlement) }),
+      t('experience.extraLine', { toll: won(tollFee), parking: won(parkingFee) }),
+      t('experience.totalLine', { amount: won(tripCosts.total) }),
+      ...(mode === 'split' ? [t('experience.splitLine', { people, amount: won(tripCosts.perPerson), last: won(tripCosts.lastPerson) })] : []),
       '',
       t('settlement.footer')
     ].join('\n')
-  }, [calculation, distance, roundTrip, tripKm, conditionLine, efficiency, fuelPrices, fuelType, depreciationMultiplier, t])
+  }, [calculation, distance, roundTrip, tripKm, conditionLine, efficiency, fuelPrices, fuelType, depreciationMultiplier, t, tripCosts, tollFee, parkingFee, mode, people])
 
   // 결과 복사
   const copyResult = useCallback(async () => {
@@ -792,7 +909,7 @@ const FuelCalculator = () => {
         <div className="flex items-center gap-2 shrink-0">
           <CalculationHistory
             histories={histories}
-            isLoading={false}
+            isLoading={historyLoading}
             onLoadHistory={handleLoadFromHistory}
             onRemoveHistory={removeHistory}
             onClearHistories={clearHistories}
@@ -802,32 +919,32 @@ const FuelCalculator = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-line">
+      <div className="flex flex-wrap gap-2 border-b border-line pb-4">
         <button
           onClick={() => setActiveTab('calculator')}
           aria-pressed={activeTab === 'calculator'}
-          className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+          className={`px-5 py-3 min-h-11 rounded-xl text-sm font-medium transition-colors motion-reduce:transition-none ${
             activeTab === 'calculator'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-muted hover:text-body'
+              ? 'bg-primary text-white'
+              : 'bg-soft text-sub hover:bg-track'
           }`}
         >
           <div className="flex items-center space-x-2">
-            <Calculator className="w-4 h-4" />
+
             <span>{t('tabs.calculator')}</span>
           </div>
         </button>
         <button
           onClick={() => setActiveTab('drivingLog')}
           aria-pressed={activeTab === 'drivingLog'}
-          className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+          className={`px-5 py-3 min-h-11 rounded-xl text-sm font-medium transition-colors motion-reduce:transition-none ${
             activeTab === 'drivingLog'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-muted hover:text-body'
+              ? 'bg-primary text-white'
+              : 'bg-soft text-sub hover:bg-track'
           }`}
         >
           <div className="flex items-center space-x-2">
-            <FileText className="w-4 h-4" />
+
             <span>{t('tabs.drivingLog')}</span>
             {drivingLogs.length > 0 && (
               <span className="bg-primary-soft text-primary px-2 py-0.5 rounded-full text-xs">
@@ -840,61 +957,67 @@ const FuelCalculator = () => {
 
       {/* Calculator Tab */}
       {activeTab === 'calculator' && (
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* 입력 패널 */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* 주행 정보 */}
-            <div className={`ui-card p-6`}>
-              {calculation && <MobileResultLink href="#fuel-calculator-result" className="mb-4" label={roundTrip ? t('result.settlementRoundTrip') : t('result.settlement')} value={`${won(calculation.settlement)}${t('share.won')}`} />}
-              <h2 className="text-xl font-semibold text-fg mb-4">
-                {t('input.tripInfo')}
-              </h2>
+        <div className="space-y-6">
+          <div className="relative grid grid-cols-2 gap-1 rounded-2xl bg-soft p-1 max-w-md" role="group" aria-label={t('experience.mode')}>
+            <span aria-hidden="true" className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-xl bg-primary transition-transform duration-200 motion-reduce:transition-none ${mode === 'split' ? 'translate-x-full' : ''}`} />
+            {(['quick', 'split'] as const).map(m => <button key={m} onClick={() => setMode(m)} aria-pressed={mode === m} className={`relative min-h-11 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors motion-reduce:transition-none ${mode === m ? 'text-white' : 'text-sub'}`}>{t(`experience.${m}`)}</button>)}
+          </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="fuel-distance" className="block text-sm font-medium text-body mb-2">
-                    {roundTrip ? t('trip.oneWayDistance') : t('input.distance')} (km)
-                  </label>
-                  <input
-                    id="fuel-distance"
-                    type="number"
-                    inputMode="decimal"
-                    value={distance || ''}
-                    onChange={(e) => setDistance(Number(e.target.value))}
-                    placeholder="100"
-                    min="0"
-                    step="0.1"
-                    className="w-full ui-field px-3 py-2"
-                  />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <section id="fuel-calculator-result" aria-label={t('result.title')} className="ui-card bg-subtle p-5 sm:p-7 scroll-mt-20 lg:col-start-2 lg:row-start-1">
+              {calculation && tripCosts ? <>
+                <div aria-live="polite" aria-atomic="true">
+                  <p className="text-sm font-medium text-sub">{t(mode === 'split' ? 'experience.perPerson' : 'experience.tripTotal')}</p>
+                  <p className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight text-fg tabular-nums" data-testid="fuel-headline">{won(resultAmount)}<span className="ml-1 text-xl font-semibold">{t('share.won')}</span></p>
+                  <p className="mt-2 text-sm text-sub tabular-nums">{mode === 'split' ? t('experience.splitBasis', { total: won(tripCosts.total), people }) : t('experience.tripBasis', { km: tripKm.toLocaleString('ko-KR'), liters: calculation.fuelConsumption.toFixed(2) })}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl" role="group" aria-label={t('trip.mode')}>
-                  {([false, true] as const).map(rt => (
-                    <button
-                      key={String(rt)}
-                      type="button"
-                      onClick={() => setRoundTrip(rt)}
-                      aria-pressed={roundTrip === rt}
-                      className={`py-2 text-sm font-medium rounded-lg transition-colors ${roundTrip === rt ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-body'}`}
-                    >
-                      {rt ? t('trip.roundTrip') : t('trip.oneWay')}
-                    </button>
-                  ))}
+                <div className="mt-6 pt-4 border-t border-line space-y-3 text-sm">
+                  <div className="flex justify-between gap-3"><span className="text-sub">{t('result.settlement')}</span><span className="text-fg font-medium tabular-nums">{won(tripCosts.fuel)}{t('share.won')}</span></div>
+                  <div className="flex justify-between gap-3"><span className="text-sub">{t('experience.extras')}</span><span className="text-fg font-medium tabular-nums">{won(tripCosts.toll + tripCosts.parking)}{t('share.won')}</span></div>
+                  {mode === 'split' && <div className="flex justify-between gap-3"><span className="text-sub">{t('experience.tripTotal')}</span><span className="text-fg font-semibold tabular-nums">{won(tripCosts.total)}{t('share.won')}</span></div>}
                 </div>
-                {roundTrip && distance > 0 && (
-                  <p className="text-xs text-muted tabular-nums">
-                    {t('trip.roundTripHint', { km: distance.toLocaleString('ko-KR'), total: tripKm.toLocaleString('ko-KR') })}
-                  </p>
-                )}
+                {mode === 'split' && <p className="text-xs text-sub mt-3" data-testid="fuel-split-note">{tripCosts.remainder ? t('experience.remainder', { remainder: tripCosts.remainder, last: won(tripCosts.lastPerson) }) : t('experience.evenSplit')}</p>}
+                {depreciationMultiplier !== 1 && <p className="text-xs text-sub mt-3">{t('experience.multiplierApplied', { multiplier: depreciationMultiplier.toFixed(2) })}</p>}
+                <p className="mt-4 text-xs text-muted">{priceLoading ? tc('loading') : priceSourceLabel} · {won(fuelPrices[fuelType])}{t('share.perLiter')}</p>
+                <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onClick={copyResult} className="ui-btn min-h-11 px-4 py-3 inline-flex items-center justify-center gap-2"><span>{isCopied ? tc('copied') : t('settlement.copy')}</span>{isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}</button>
+                  <button onClick={addCurrentTripToLog} className="ui-btn-soft min-h-11 px-4 py-3">{t('trip.addToLog')}</button>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <button onClick={handleSaveCalculation} className="inline-flex items-center justify-center gap-2 min-h-11 rounded-xl border border-line-strong bg-soft px-4 py-2.5 text-sm font-medium text-body hover:bg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">{isSaved ? <Check className="w-4 h-4" aria-hidden="true" /> : <Save className="w-4 h-4" aria-hidden="true" />}{isSaved ? tc('saved') : t('experience.saveCalculation')}</button>
+                  <button onClick={downloadResult} className="inline-flex items-center justify-center gap-2 min-h-11 rounded-xl border border-line-strong bg-soft px-4 py-2.5 text-sm font-medium text-body hover:bg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><Download className="w-4 h-4" aria-hidden="true" />{tc('export')}</button>
+                </div>
+                <p className="text-xs text-muted mt-2">{t('experience.referenceHint')}</p>
+              </> : <p className="py-8 text-sub" role="status">{t('experience.invalidInput')}</p>}
+              {logFeedback && <p className="mt-3 text-sm text-primary" role="status">{logFeedback}</p>}
+              <button onClick={() => { setDateFilter('thisMonth'); setActiveTab('drivingLog') }} className="mt-4 min-h-11 text-left text-sm text-primary hover:underline">{monthSummary.count > 0 ? t('trip.monthSummary', { count: monthSummary.count, total: won(monthSummary.total) }) : t('experience.openLog')}</button>
+            </section>
+
+            <div className="ui-card p-5 sm:p-7 space-y-5 min-w-0 lg:col-start-1 lg:row-start-1">
+              <div>
+                <label htmlFor="fuel-distance" className="block text-sm font-medium text-body mb-2">{t(roundTrip ? 'trip.oneWayDistance' : 'input.distance')} (km)</label>
+                <input id="fuel-distance" type="number" inputMode="decimal" value={distance || ''} min="0" max="100000" step="0.1" onChange={e => setDistance(fuelNumber(e.target.value, 0, 0, 100000))} className="ui-field w-full px-4 py-3 text-3xl font-semibold tabular-nums" />
+                <div className="grid grid-cols-3 gap-2 mt-3" role="group" aria-label={t('experience.quickDistance')}>
+                  {[50, 100, 200].map(km => <button key={km} onClick={() => setDistance(km)} aria-pressed={distance === km} className={`min-h-11 rounded-xl px-3 py-2 text-sm transition-colors motion-reduce:transition-none ${distance === km ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-track'}`}>{t('experience.km', { km })}</button>)}
+                </div>
               </div>
-            </div>
-
-            {/* 차량 정보 */}
-            <div className={`ui-card p-6`}>
-              <h2 className="text-xl font-semibold text-fg mb-4">
-                {t('input.vehicleInfo')}
-              </h2>
-
-              <div className="space-y-4">
+              <div>
+                <div className="grid grid-cols-2 gap-1 p-1 bg-soft rounded-xl" role="group" aria-label={t('trip.mode')}>
+                  {([false, true] as const).map(rt => <button key={String(rt)} onClick={() => setRoundTrip(rt)} aria-pressed={roundTrip === rt} className={`min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors motion-reduce:transition-none ${roundTrip === rt ? 'bg-primary text-white' : 'text-sub hover:bg-track'}`}>{t(rt ? 'trip.roundTrip' : 'trip.oneWay')}</button>)}
+                </div>
+                <p className="text-xs text-muted tabular-nums mt-2">{t('experience.totalDistance', { km: tripKm.toLocaleString('ko-KR') })}</p>
+              </div>
+              {mode === 'split' && <div>
+                <label htmlFor="fuel-people" className="block text-sm font-medium text-body mb-2">{t('experience.people')}</label>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => setPeople(n => Math.max(1, n - 1))} disabled={people <= 1} aria-label={t('experience.fewerPeople')} className="ui-btn-soft w-11 h-11 shrink-0 disabled:opacity-40">−</button>
+                  <input id="fuel-people" type="number" inputMode="numeric" min="1" max="100" value={people} onChange={e => setPeople(fuelNumber(e.target.value, 1, 1, 100, true))} className="ui-field w-full min-w-0 py-2.5 text-center tabular-nums" />
+                  <button onClick={() => setPeople(n => Math.min(100, n + 1))} disabled={people >= 100} aria-label={t('experience.morePeople')} className="ui-btn-soft w-11 h-11 shrink-0 disabled:opacity-40">+</button>
+                </div>
+                <p className="text-xs text-muted mt-2">{t('experience.peopleHint')}</p>
+              </div>}
+              <section className="border-t border-line pt-4" data-testid="fuel-basic-options">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="fuel-vehicle" className="block text-sm font-medium text-body mb-2">
                     {t('input.vehicleType')}
@@ -903,7 +1026,7 @@ const FuelCalculator = () => {
                     id="fuel-vehicle"
                     value={vehicleType}
                     onChange={(e) => setVehicleType(e.target.value)}
-                    className="w-full ui-field px-3 py-2"
+                    className="w-full min-h-11 ui-field px-3 py-2"
                   >
                     {Object.entries(VEHICLE_TYPES).map(([key, vehicle]) => (
                       <option key={key} value={key}>
@@ -921,112 +1044,13 @@ const FuelCalculator = () => {
                     id="fuel-type"
                     value={fuelType}
                     onChange={(e) => setFuelType(e.target.value as FuelType)}
-                    className="w-full ui-field px-3 py-2"
+                    className="w-full min-h-11 ui-field px-3 py-2"
                   >
-                    <option value="gasoline">{t('fuelTypes.gasoline')} ({fuelPrices.gasoline.toLocaleString()}{t('share.perLiter')})</option>
-                    <option value="premium_gasoline">{t('fuelTypes.premium_gasoline')} ({fuelPrices.premium_gasoline.toLocaleString()}{t('share.perLiter')})</option>
-                    <option value="diesel">{t('fuelTypes.diesel')} ({fuelPrices.diesel.toLocaleString()}{t('share.perLiter')})</option>
-                    <option value="lpg">{t('fuelTypes.lpg')} ({fuelPrices.lpg.toLocaleString()}{t('share.perLiter')})</option>
+                    {FUEL_TYPES.map(ft => <option key={ft} value={ft}>{t(`fuelTypes.${ft}`)} ({priceLoading ? tc('loading') : `${priceSource === 'default' ? t('priceSource.estimate') + ' ' : ''}${won(fuelPrices[ft])}${t('share.perLiter')}`})</option>)}
                   </select>
+                  <p className="text-xs text-muted mt-2" aria-live="polite">{priceLoading ? tc('loading') : priceSourceLabel}</p>
                 </div>
 
-                <div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      type="checkbox"
-                      id="customEfficiency"
-                      checked={useCustomEfficiency}
-                      onChange={(e) => setUseCustomEfficiency(e.target.checked)}
-                      className="mr-2"
-                    />
-                    <label htmlFor="customEfficiency" className="text-sm font-medium text-body">
-                      {t('input.customEfficiency')}
-                    </label>
-                  </div>
-                  {useCustomEfficiency && (
-                    <input
-                      type="number"
-                      aria-label={t('input.customEfficiency')}
-                      value={customEfficiency || ''}
-                      onChange={(e) => setCustomEfficiency(Number(e.target.value))}
-                      placeholder="12.5"
-                      min="1"
-                      max="30"
-                      step="0.1"
-                      className="w-full ui-field px-3 py-2"
-                    />
-                  )}
-                </div>
-
-                {/* Vehicle Settings Buttons */}
-                <div className="pt-3 border-t border-line">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={saveVehicleSettings}
-                      className="ui-btn-soft flex items-center gap-1 px-3 py-1.5 text-xs"
-                    >
-                      <Save className="w-3 h-3" />
-                      <span>{t('vehicleSettings.save')}</span>
-                    </button>
-                    <button
-                      onClick={loadVehicleSettings}
-                      className="ui-btn-soft flex items-center gap-1 px-3 py-1.5 text-xs"
-                    >
-                      <Upload className="w-3 h-3" />
-                      <span>{t('vehicleSettings.load')}</span>
-                    </button>
-                    {hasVehicleSettings && (
-                      <button
-                        onClick={deleteVehicleSettings}
-                        className="flex items-center gap-1 px-3 py-1.5 text-xs text-muted hover:text-red-600 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                        <span>{t('vehicleSettings.delete')}</span>
-                      </button>
-                    )}
-                  </div>
-                  <p className="mt-2 text-xs text-muted" aria-live="polite">
-                    {settingsFeedback ?? t('vehicleSettings.autoApplyHint')}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* 유가 정보 (지역/날짜/가격) */}
-            <div className={`ui-card p-6`}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-fg">
-                  {t('opinet.title')}
-                </h2>
-                {!isEditingPrices ? (
-                  <button
-                    onClick={startEditingPrices}
-                    className="flex items-center gap-1 px-2 py-1.5 text-xs text-muted hover:text-primary rounded-lg transition-colors"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" />
-                    <span>{t('priceSource.edit')}</span>
-                  </button>
-                ) : (
-                  <div className="flex space-x-1">
-                    <button
-                      onClick={savePrices}
-                      className="p-2 text-primary hover:opacity-80 transition-colors"
-                      aria-label={tc('save')}
-                    >
-                      <Save className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={cancelEditingPrices}
-                      className="p-2 text-muted hover:text-body transition-colors"
-                      aria-label={tc('cancel')}
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-3">
                 {/* 지역 선택 */}
                 <div>
                   <label htmlFor="fuel-sido" className="block text-xs font-medium text-sub mb-1">
@@ -1041,7 +1065,7 @@ const FuelCalculator = () => {
                       safeStorage.setItem('fuel_selected_sido', sido)
                       fetchOpinetPrices(sido || undefined, selectedDate || undefined)
                     }}
-                    className="w-full ui-field px-3 py-2 text-sm"
+                    className="w-full min-h-11 ui-field px-3 py-2 text-sm"
                   >
                     {SIDO_OPTIONS.map(s => (
                       <option key={s.code} value={s.code}>{t(`region.names.${s.key}`)}</option>
@@ -1064,7 +1088,7 @@ const FuelCalculator = () => {
                       }}
                       maxDate={new Date()}
                       placeholder={t('region.realtime')}
-                      className="flex-1"
+                      className="flex-1 min-w-0"
                     />
                     {selectedDate && (
                       <button
@@ -1079,19 +1103,161 @@ const FuelCalculator = () => {
                     )}
                   </div>
                   {priceNoData && (
-                    <p className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                    <p className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 ">
                       {t('priceSource.noData')}
                     </p>
                   )}
                   {priceSource === 'opinet' && priceFallback && (
-                    <p role="status" className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                    <p role="status" className="text-xs mt-2 px-3 py-2 rounded-lg bg-amber-50 text-amber-800 ">
                       {t('priceSource.fallback', priceFallback)}
                     </p>
                   )}
                 </div>
 
-                <div className="pt-2 border-t border-line" />
+                </div>
+                <div className="mt-4">
+                  <label htmlFor="fuel-efficiency" className="block text-sm font-medium text-body mb-2">{t('input.efficiency')}</label>
+                  <div className="flex gap-2 items-center">
+                    <input
+                      id="fuel-efficiency"
+                      type="number"
+                      inputMode="decimal"
+                      aria-label={t('input.customEfficiency')}
+                      value={useCustomEfficiency ? customEfficiency || '' : Number(efficiency.toFixed(2))}
+                      onChange={(e) => { setUseCustomEfficiency(true); setCustomEfficiency(Number(e.target.value)) }}
+                      min="0.1"
+                      max="100"
+                      step="0.1"
+                      className="ui-field w-full min-w-0 min-h-11 px-3 py-2 tabular-nums"
+                    />
+                    {useCustomEfficiency && <button onClick={() => { setUseCustomEfficiency(false); setCustomEfficiency(0) }} className="ui-btn-soft shrink-0 min-h-11 px-3 py-2 text-sm">{t('input.resetEfficiency')}</button>}
+                  </div>
+                  <p className="text-xs text-muted mt-2">{t(useCustomEfficiency ? 'input.customEfficiencyHint' : 'input.defaultEfficiencyHint')}</p>
+                </div>
+                <div className="mt-5" data-testid="fuel-adjustment">
+                  <div>
+                    <label htmlFor="fuel-depr" className="block text-sm font-medium text-body mb-2">
+                      {t('depreciation.multiplier')}
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        id="fuel-depr"
+                        type="range"
+                        min="1.0"
+                        max="1.5"
+                        step="0.05"
+                        value={depreciationMultiplier}
+                        onChange={(e) => {
+                          const val = Number(e.target.value)
+                          setDepreciationMultiplier(val)
+                          safeStorage.setItem('fuel_depreciation_multiplier', String(val))
+                        }}
+                        className="flex-1 min-w-0 min-h-11 accent-primary"
+                        aria-label={t('depreciation.multiplier')}
+                      />
+                      <span className="text-sm font-bold text-fg w-12 text-right tabular-nums">
+                        ×{depreciationMultiplier.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-xs text-faint mt-1">
+                      <span>×1.00</span>
+                      <span>×1.50</span>
+                    </div>
+                  </div>
+                  <p className="mt-2 text-xs text-muted">
+                    {t('depreciation.description')}
+                  </p>
+                  {depreciationMultiplier !== 1.0 && (
+                    <button
+                      onClick={() => {
+                        setDepreciationMultiplier(1.0)
+                        safeStorage.setItem('fuel_depreciation_multiplier', '1.0')
+                      }}
+                      className="ui-btn-soft mt-2 min-h-11 px-3 py-2 text-sm"
+                    >
+                      {t('depreciation.reset')}
+                    </button>
+                  )}
+                </div>
+                {hasVehicleSettings && <p className="text-xs text-primary mt-3">{t('experience.savedVehicle')}</p>}
+                {/* Vehicle Settings Buttons */}
+                <div className="pt-3 border-t border-line">
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={saveVehicleSettings}
+                      disabled={useCustomEfficiency && (customEfficiency <= 0 || customEfficiency > 100)}
+                      className="ui-btn-soft flex items-center gap-1 min-h-11 px-3 py-2 text-sm disabled:opacity-40"
+                    >
+                      <Save className="w-3 h-3" />
+                      <span>{t('vehicleSettings.save')}</span>
+                    </button>
+                    <button
+                      onClick={loadVehicleSettings}
+                      className="ui-btn-soft flex items-center gap-1 min-h-11 px-3 py-2 text-sm"
+                    >
+                      <Upload className="w-3 h-3" />
+                      <span>{t('vehicleSettings.load')}</span>
+                    </button>
+                    {hasVehicleSettings && (
+                      <button
+                        onClick={deleteVehicleSettings}
+                        className="flex items-center gap-1 min-h-11 px-3 py-2 text-sm text-muted hover:text-red-600 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        <span>{t('vehicleSettings.delete')}</span>
+                      </button>
+                    )}
+                  </div>
+                  <p className="mt-2 text-xs text-muted" role="status">
+                    {settingsFeedback ?? t('vehicleSettings.autoApplyHint')}
+                  </p>
+                </div>
+              </section>
+              <details className="border-t border-line pt-4">
+                <summary className="min-h-11 cursor-pointer text-sm font-semibold text-fg">{t('experience.extraSettings')}<span className="block mt-1 text-xs font-normal text-muted">{t('experience.extraSummary', { amount: won(tollFee + parkingFee) })}</span></summary>
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                  <div><label htmlFor="fuel-toll" className="block text-xs text-sub mb-2">{t('experience.totalToll')}</label><input id="fuel-toll" type="number" inputMode="numeric" min="0" max="10000000" value={tollFee || ''} placeholder="0" onChange={e => setTollFee(fuelNumber(e.target.value, 0, 0, 10000000, true))} className="ui-field w-full px-3 py-2.5" /></div>
+                  <div><label htmlFor="fuel-parking" className="block text-xs text-sub mb-2">{t('experience.totalParking')}</label><input id="fuel-parking" type="number" inputMode="numeric" min="0" max="10000000" value={parkingFee || ''} placeholder="0" onChange={e => setParkingFee(fuelNumber(e.target.value, 0, 0, 10000000, true))} className="ui-field w-full px-3 py-2.5" /></div>
+                </div>
+                <p className="text-xs text-muted mt-2">{t('experience.extraHint')}</p>
+                <label htmlFor="fuel-trip-memo" className="block text-xs text-sub mt-4 mb-2">{t('drivingLog.routeMemo')}</label><input id="fuel-trip-memo" maxLength={200} value={tripMemo} onChange={e => setTripMemo(e.target.value)} placeholder={t('drivingLog.form.placeholder.route')} className="ui-field w-full px-3 py-2.5" />
+                <p className="text-xs text-muted mt-2">{t('experience.memoHint')}</p>
+              </details>
+              <section className="border-t border-line pt-4">
+              <div className="flex items-center justify-between gap-3 my-4">
+                <h2 className="text-sm font-medium text-fg">
+                  {t('opinet.title')}
+                </h2>
+                {!isEditingPrices ? (
+                  <button
+                    onClick={startEditingPrices}
+                    className="flex items-center gap-1 px-2 py-1.5 text-xs text-muted hover:text-primary rounded-lg transition-colors"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>{t('priceSource.edit')}</span>
+                  </button>
+                ) : (
+                  <div className="flex space-x-1">
+                    <button
+                      onClick={savePrices}
+                      disabled={FUEL_TYPES.some(f => !Number.isFinite(tempPrices[f]) || tempPrices[f] <= 0 || tempPrices[f] >= 10000)}
+                      className="p-3 disabled:opacity-40 text-primary hover:opacity-80 transition-colors"
+                      aria-label={tc('save')}
+                    >
+                      <Save className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={cancelEditingPrices}
+                      className="p-2 text-muted hover:text-body transition-colors"
+                      aria-label={tc('cancel')}
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
 
+              <div className="space-y-3">
                 {/* 유가 표시 */}
                 {FUEL_TYPES.map(ft => (
                   <div key={ft} className="flex justify-between items-center">
@@ -1114,7 +1280,7 @@ const FuelCalculator = () => {
 
                 <div className="pt-3 border-t border-line">
                   <div className="flex items-center justify-between gap-2 text-xs mb-3">
-                    <span className={priceSource === 'default' ? 'text-amber-700 dark:text-amber-300' : 'text-muted'} aria-live="polite">
+                    <span className={priceSource === 'default' ? 'text-muted' : 'text-muted'} aria-live="polite">
                       {priceLoading ? tc('loading') : priceSourceLabel}
                     </span>
                     <button
@@ -1142,111 +1308,27 @@ const FuelCalculator = () => {
                   </p>
                 </div>
               </div>
-            </div>
+              </section>
 
-            {/* 감가비 계수 설정 */}
-            <div className={`ui-card p-6`}>
-              <h2 className="text-lg font-semibold text-fg mb-4">
-                {t('depreciation.title')}
-              </h2>
-              <div className="space-y-3">
-                <div>
-                  <label htmlFor="fuel-depr" className="block text-xs font-medium text-sub mb-1">
-                    {t('depreciation.multiplier')}
-                  </label>
-                  <div className="flex items-center gap-3">
-                    <input
-                      id="fuel-depr"
-                      type="range"
-                      min="1.0"
-                      max="1.5"
-                      step="0.05"
-                      value={depreciationMultiplier}
-                      onChange={(e) => {
-                        const val = Number(e.target.value)
-                        setDepreciationMultiplier(val)
-                        safeStorage.setItem('fuel_depreciation_multiplier', String(val))
-                      }}
-                      className="flex-1 accent-blue-600"
-                      aria-label={t('depreciation.multiplier')}
-                    />
-                    <span className="text-sm font-bold text-fg w-12 text-right tabular-nums">
-                      ×{depreciationMultiplier.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-xs text-faint mt-1">
-                    <span>×1.00</span>
-                    <span>×1.50</span>
-                  </div>
-                </div>
-                <p className="text-xs text-muted">
-                  {t('depreciation.description')}
-                </p>
-                {depreciationMultiplier !== 1.0 && (
-                  <button
-                    onClick={() => {
-                      setDepreciationMultiplier(1.0)
-                      safeStorage.setItem('fuel_depreciation_multiplier', '1.0')
-                    }}
-                    className="text-xs text-primary hover:underline"
-                  >
-                    {t('depreciation.reset')}
-                  </button>
-                )}
-              </div>
             </div>
           </div>
-
-          {/* 결과 패널 */}
-          <div className="lg:col-span-2 space-y-6">
-            {calculation ? (
-              <>
-                {/* 정산 결과 */}
-                <div id="fuel-calculator-result" className="ui-card p-6 scroll-mt-20">
-                  <p className="text-sm font-medium text-muted">
-                    {roundTrip ? t('result.settlementRoundTrip') : t('result.settlement')}
-                  </p>
-                  <p className="text-4xl font-bold text-fg tabular-nums mt-1" aria-live="polite">
-                    {won(calculation.settlement)}<span className="text-2xl ml-0.5">{t('share.won')}</span>
-                  </p>
-                  <p className="text-sm text-sub mt-2 tabular-nums">
-                    {t('result.summaryLine', {
-                      km: tripKm.toLocaleString('ko-KR'),
-                      liters: calculation.fuelConsumption.toFixed(2),
-                      perKm: won(calculation.settlementPerKm)
-                    })}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    <button onClick={copyResult} className="ui-btn flex items-center gap-1.5 px-4 py-2.5 text-sm">
-                      {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      <span>{isCopied ? tc('copied') : t('settlement.copy')}</span>
-                    </button>
-                    <button onClick={addCurrentTripToLog} className="ui-btn-soft flex items-center gap-1.5 px-4 py-2.5 text-sm">
-                      <Plus className="w-4 h-4" />
-                      <span>{t('trip.addToLog')}</span>
-                    </button>
-                    <button onClick={handleSaveCalculation} className="ui-btn-soft flex items-center gap-1.5 px-3 py-2.5 text-sm">
-                      {isSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-                      <span>{tc('save')}</span>
-                    </button>
-                    <button onClick={downloadResult} className="ui-btn-soft flex items-center gap-1.5 px-3 py-2.5 text-sm">
-                      <Download className="w-4 h-4" />
-                      <span>{tc('export')}</span>
-                    </button>
-                  </div>
-                  {(logFeedback || monthSummary.count > 0) && (
-                    <p className="text-xs text-muted mt-3" aria-live="polite">
-                      {logFeedback && <span className="text-fg font-medium mr-2">{logFeedback}</span>}
-                      {monthSummary.count > 0 && (
-                        <button onClick={() => { setDateFilter('thisMonth'); setActiveTab('drivingLog') }} className="text-primary hover:underline tabular-nums">
-                          {t('trip.monthSummary', { count: monthSummary.count, total: won(monthSummary.total) })}
-                        </button>
-                      )}
-                    </p>
-                  )}
-
-                  {/* 산식 + 유가 출처 */}
+          {calculation && tripCosts && <>
+            <ShareResult url={shareUrl} fileName="fuel-cost" text={settlementText} card={{
+              tool: t('title'), label: t(mode === 'split' ? 'experience.perPerson' : 'experience.tripTotal'),
+              headline: `${won(resultAmount)}${t('share.won')}`,
+              sub: mode === 'split' ? t('experience.splitBasis', { total: won(tripCosts.total), people }) : t('experience.tripBasis', { km: tripKm.toLocaleString('ko-KR'), liters: calculation.fuelConsumption.toFixed(2) }),
+              rows: [
+                { label: t('result.settlement'), value: `${won(tripCosts.fuel)}${t('share.won')}` },
+                { label: t('experience.extras'), value: `${won(tripCosts.toll + tripCosts.parking)}${t('share.won')}` },
+                { label: t('result.efficiency'), value: `${efficiency.toFixed(1)}km/L` },
+                { label: t('result.fuelPrice'), value: `${won(fuelPrices[fuelType])}${t('share.perLiter')}` },
+                { label: t('share.priceBasis'), value: priceSourceLabel },
+                ...(mode === 'split' && tripCosts.remainder ? [{ label: t('experience.lastPerson'), value: `${won(tripCosts.lastPerson)}${t('share.won')}` }] : []),
+                ...(depreciationMultiplier !== 1 ? [{ label: t('depreciation.title'), value: `×${depreciationMultiplier.toFixed(2)}` }] : []),
+              ],
+            }} />
+            <details className="ui-card p-5 sm:p-6"><summary className="min-h-11 cursor-pointer font-semibold text-fg">{t('experience.calculationDetails')}</summary>
+                                {/* 산식 + 유가 출처 */}
                   <div className="bg-subtle rounded-2xl p-4 mt-5 text-sm space-y-2">
                     <div className="flex justify-between gap-3">
                       <span className="text-sub">{t('result.distance')}</span>
@@ -1287,7 +1369,7 @@ const FuelCalculator = () => {
                   </div>
 
                   {/* 참고: 감가상각 포함 운행 원가 */}
-                  <div className="grid grid-cols-3 gap-3 mt-4 text-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 text-center">
                     <div className="rounded-xl border border-line p-3">
                       <p className="text-xs text-muted">{t('result.depreciationCost')}</p>
                       <p className="text-base font-semibold text-fg tabular-nums mt-1">{won(calculation.depreciationCost)}{t('share.won')}</p>
@@ -1303,74 +1385,39 @@ const FuelCalculator = () => {
                     </div>
                   </div>
                   <p className="text-xs text-faint mt-2">{t('result.referenceNote')}</p>
-                </div>
 
-                <ShareResult
-                  url={shareUrl}
-                  fileName="fuel-cost"
-                  card={{
-                    tool: t('title'),
-                    label: t('share.label', { vehicle: t(`vehicleTypes.${vehicleType}`), fuel: t(`fuelTypes.${fuelType}`), km: tripKm.toLocaleString('ko-KR') }),
-                    headline: `${won(calculation.settlement)}${t('share.won')}`,
-                    sub: t('result.summaryLine', { km: tripKm.toLocaleString('ko-KR'), liters: calculation.fuelConsumption.toFixed(2), perKm: won(calculation.settlementPerKm) }),
-                    rows: [
-                      { label: t('result.distance'), value: roundTrip ? t('trip.roundTripHint', { km: distance.toLocaleString('ko-KR'), total: tripKm.toLocaleString('ko-KR') }) : `${tripKm.toLocaleString('ko-KR')}km` },
-                      { label: t('result.efficiency'), value: `${efficiency.toFixed(1)}km/L` },
-                      { label: t('result.fuelPrice'), value: `${won(fuelPrices[fuelType])}${t('share.perLiter')}` },
-                      { label: t('share.priceBasis'), value: priceSourceLabel },
-                      ...(depreciationMultiplier !== 1 ? [{ label: t('depreciation.title'), value: `×${depreciationMultiplier.toFixed(2)}` }] : []),
-                    ],
-                  }}
-                  text={t(depreciationMultiplier !== 1 ? 'share.textMultiplier' : 'share.text', { km: tripKm.toLocaleString('ko-KR'), amount: won(calculation.settlement), fuel: t(`fuelTypes.${fuelType}`), price: won(fuelPrices[fuelType]), multiplier: depreciationMultiplier.toFixed(2), basis: priceSourceLabel })}
-                />
-
-                {/* 비용 구성 파이차트 + 연료별 비교 */}
-                <FuelCharts
+            </details>
+            <details className="ui-card p-5 sm:p-6"><summary className="min-h-11 cursor-pointer font-semibold text-fg">{t('experience.comparison')}</summary><div className="mt-4">
+              <FuelCharts
                   fuelCost={Math.round(calculation.fuelCost)}
                   depreciationCost={Math.round(calculation.depreciationCost)}
                   tripKm={tripKm}
                   comparison={FUEL_TYPES.map(ft => {
                     const selectedVehicle = VEHICLE_TYPES[vehicleType]
-                    const fuelColors = { gasoline: '#3b82f6', premium_gasoline: '#8b5cf6', diesel: '#10b981', lpg: '#f59e0b' }
+                    const fill = ft === fuelType ? 'var(--primary)' : 'var(--line-strong)'
                     const eff = useCustomEfficiency && customEfficiency > 0
                       ? customEfficiency
                       : getAdjustedEfficiency(selectedVehicle.efficiency, ft)
                     const cost = (tripKm / eff) * fuelPrices[ft]
-                    return { name: t(`fuelShort.${ft}`), cost: Math.round(cost), fill: fuelColors[ft], isCurrent: ft === fuelType }
+                    return { name: t(`fuelShort.${ft}`), cost: Math.round(cost), fill, isCurrent: ft === fuelType }
                   })}
                 />
-              </>
-            ) : (
-              <div className={`ui-card p-12 text-center`}>
-                <Car className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-muted">
-                  {t('placeholder')}
-                </p>
-              </div>
-            )}
-
-            {/* Calculation History */}
-            <CalculationHistory
-              histories={histories}
-              isLoading={historyLoading}
-              onLoadHistory={handleLoadFromHistory}
-              onRemoveHistory={removeHistory}
-              onClearHistories={clearHistories}
-              formatResult={formatHistoryResult}
-            />
-          </div>
+            </div></details>
+          </>}
         </div>
       )}
 
       {/* Driving Log Tab */}
       {activeTab === 'drivingLog' && (
         <div className="space-y-6">
+          <p className="text-sm text-sub">{t('experience.logBasisHint')}</p>
+          {logFeedback && <p className="text-sm text-primary" role="status">{logFeedback}</p>}
           {/* Add Entry Form */}
           <div className={`ui-card p-6`}>
             <h2 className="text-xl font-semibold text-fg mb-4">
               {t('drivingLog.addEntry')}
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               <div>
                 <label htmlFor="fuel-log-date" className="block text-xs font-medium text-sub mb-1">
                   {t('drivingLog.date')}
@@ -1391,7 +1438,7 @@ const FuelCalculator = () => {
                   id="fuel-log-distance"
                   type="number"
                   value={newLogEntry.distance || ''}
-                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, distance: Number(e.target.value) }))}
+                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, distance: fuelNumber(e.target.value, 0, 0, 100000) }))}
                   placeholder={t('drivingLog.form.placeholder.distance')}
                   min="0"
                   step="0.1"
@@ -1406,7 +1453,7 @@ const FuelCalculator = () => {
                   id="fuel-log-toll"
                   type="number"
                   value={newLogEntry.tollFee || ''}
-                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, tollFee: Math.max(0, Number(e.target.value) || 0) }))}
+                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, tollFee: fuelNumber(e.target.value, 0, 0, 10000000, true) }))}
                   placeholder={t('drivingLog.form.placeholder.tollFee')}
                   min="0"
                   step="100"
@@ -1421,7 +1468,7 @@ const FuelCalculator = () => {
                   id="fuel-log-parking"
                   type="number"
                   value={newLogEntry.parkingFee || ''}
-                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, parkingFee: Math.max(0, Number(e.target.value) || 0) }))}
+                  onChange={(e) => setNewLogEntry(prev => ({ ...prev, parkingFee: fuelNumber(e.target.value, 0, 0, 10000000, true) }))}
                   placeholder={t('drivingLog.form.placeholder.parkingFee')}
                   min="0"
                   step="100"
@@ -1481,7 +1528,7 @@ const FuelCalculator = () => {
                       onClick={() => setDateFilter(f)}
                       aria-pressed={dateFilter === f}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                        dateFilter === f ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-body'
+                        dateFilter === f ? 'bg-primary text-white' : 'text-muted hover:text-body'
                       }`}
                     >
                       {t(`drivingLog.filter.${f}`)}
@@ -1505,7 +1552,6 @@ const FuelCalculator = () => {
                     parking: won(logSummary.totalParkingFee)
                   })}
                 </p>
-                <p className="text-xs text-muted mt-1">{conditionLine}</p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <button onClick={copyLogSettlement} className="ui-btn flex items-center gap-1.5 px-4 py-2 text-sm">
                     {logCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -1544,18 +1590,18 @@ const FuelCalculator = () => {
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.tollFee')}</th>
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.parkingFee')}</th>
                       <th className="text-right py-3 px-2 font-medium text-sub">{t('drivingLog.totalCost')}</th>
-                      <th className="py-3 px-2"></th>
+                      <th className="py-3 px-2"><span className="sr-only">{t('experience.recordActions')}</span></th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredLogs.map((log) => {
                       const km = logKm(log)
-                      const fuelCost = calculateLogFuelCost(km)
+                      const fuelCost = calculateLogFuelCost(log)
                       const total = log.tollFee + log.parkingFee + fuelCost
                       return (
                         <tr key={log.id} className="border-b border-line hover:bg-subtle">
                           <td className="py-3 px-2 whitespace-nowrap">{log.date}</td>
-                          <td className="py-3 px-2 text-body max-w-[180px] truncate">{log.memo}</td>
+                          <td className="py-3 px-2 text-body min-w-40 max-w-xs break-words">{log.memo || '—'}<span className="block text-xs text-muted mt-1">{t(log.settlement !== undefined ? 'experience.savedRecord' : 'experience.legacyRecord')}</span>{log.mode === 'split' && <span className="block text-xs text-sub mt-1">{logSplitLine(log)}</span>}<details className="mt-2 text-xs"><summary className="cursor-pointer py-2 text-sub">{t('experience.savedBasis')}</summary><p className="text-muted py-2">{logCondition(log)}</p></details></td>
                           <td className="py-3 px-2 text-right whitespace-nowrap">
                             {km.toLocaleString('ko-KR')}km
                             {log.roundTrip && <span className="block text-xs text-muted">{t('trip.roundTrip')}</span>}
@@ -1565,9 +1611,10 @@ const FuelCalculator = () => {
                           <td className="py-3 px-2 text-right">{won(log.parkingFee)}{t('share.won')}</td>
                           <td className="py-3 px-2 text-right font-medium text-fg">{won(total)}{t('share.won')}</td>
                           <td className="py-3 px-2">
+                            <button onClick={() => loadLogInCalculator(log)} className="min-h-11 rounded-lg px-3 py-2 text-xs text-primary hover:bg-soft whitespace-nowrap">{t('experience.restoreLog')}</button>
                             <button
                               onClick={() => removeDrivingLogEntry(log.id)}
-                              className="p-1 text-faint hover:text-red-600 transition-colors"
+                              className="p-3 text-muted hover:text-red-600 transition-colors"
                               aria-label={t('drivingLog.delete')}
                             >
                               <Trash2 className="w-4 h-4" />
@@ -1609,7 +1656,7 @@ const FuelCalculator = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Accurate Calculation */}
               <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
@@ -1716,7 +1763,7 @@ const FuelCalculator = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Personal Car */}
               <div className="bg-subtle rounded-xl p-6">
                 <h3 className="text-xl font-semibold text-fg mb-2">
@@ -1770,7 +1817,7 @@ const FuelCalculator = () => {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Fuel Efficiency */}
               <div className="ui-card p-6">
                 <div className="flex items-center space-x-3 mb-4">

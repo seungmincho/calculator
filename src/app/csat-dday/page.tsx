@@ -5,16 +5,19 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import csatDdayMessages from '../../../messages/generated/ko/ns/csatDday.json'
 import { CSAT_EXAM_DATE, CSAT_YEAR } from '@/utils/csatGrade'
+import { CSAT_GUIDANCE_CHECKED, CSAT_GUIDANCE_URL } from '@/utils/csatDday'
 
 const [examY, examM, examD] = CSAT_EXAM_DATE.split('-').map(Number)
+const TITLE = `수능 D-day ${CSAT_YEAR} - 시간표·준비물·과목 연습 | 툴허브`
+const DESC = `${CSAT_YEAR}학년도 수능(${examY}년 ${examM}월 ${examD}일) D-day, 일반 수험생 시간표와 준비물·반입금지 안내를 확인하세요. 공식 안내 확인, 가채점 답 저장·인쇄, 성적 발표 일정과 과목별 연습 타이머를 제공합니다.`
 
 export const metadata: Metadata = {
-  title: '수능 D-day 2027 - 시간표·준비물·가채점표 | 툴허브',
-  description: '2027학년도 수능(2026년 11월 19일 목) D-day 카운트다운과 교시별 시간표, 준비물·반입금지 물품 체크리스트, 인쇄용 가채점표, 성적 발표·정시 일정을 한곳에서 확인하세요.',
-  keywords: '수능 디데이, 수능 D-day, 2027 수능, 수능 시간표, 수능 준비물, 수능 반입금지 물품, 수능 가채점표, 수능 날짜, 수능 성적 발표일, 정시 원서접수',
+  title: TITLE,
+  description: DESC,
+  keywords: `수능 디데이, 수능 D-day, ${CSAT_YEAR} 수능, 수능 시간표, 수능 준비물, 수능 반입금지 물품, 수능 가채점표, 수능 연습 타이머, 수능 성적 발표일, 정시 원서접수`,
   openGraph: {
-    title: '수능 D-day 2027 - 시간표·준비물·가채점표 | 툴허브',
-    description: '2027 수능 카운트다운, 교시별 시간표, 준비물 체크리스트, 가채점표',
+    title: TITLE,
+    description: DESC,
     url: 'https://toolhub.ai.kr/csat-dday/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -23,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '수능 D-day 2027 | 툴허브',
-    description: '2027 수능 카운트다운, 시간표, 준비물, 가채점표',
+    title: TITLE,
+    description: DESC,
     images: ['https://toolhub.ai.kr/og/csat-dday.png'],
   },
   alternates: {
@@ -37,13 +40,13 @@ export default function CsatDdayPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '수능 D-day · 시간표 · 준비물',
-    description: '2027학년도 수능 D-day 카운트다운, 교시별 시간표, 준비물 체크리스트, 가채점표',
+    description: DESC,
     url: 'https://toolhub.ai.kr/csat-dday/',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['수능 D-day 실시간 카운트다운', '교시별 시간표·현재 교시 표시', '준비물·반입금지 물품 체크리스트', '인쇄용 가채점표', '응원 카드 공유', '성적 통지·정시 일정'],
+    featureList: ['수능 D-day 실시간 카운트다운', '교시별 시간표·현재 교시 표시', '준비물·반입금지 물품 체크리스트', '가채점 답 저장·인쇄', '응원 카드 공유', '성적 통지·정시 일정', '공식 유의사항 확인 링크', '과목별 시간으로 설정한 연습 타이머 진입'],
   }
 
   return (
@@ -55,7 +58,7 @@ export default function CsatDdayPage() {
           <I18nWrapper>
             <CsatDday />
             <p className="mt-8 bg-subtle rounded-2xl p-5 text-sm text-sub">
-              기준: {CSAT_YEAR}학년도 대학수학능력시험 시행기본계획(<a href="https://www.suneung.re.kr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">한국교육과정평가원</a> 공고) — 시험일 {examY}년 {examM}월 {examD}일. D-day는 한국시간 기준으로 셉니다.
+              기준: {CSAT_YEAR}학년도 대학수학능력시험 <a href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=105756&lev=0&m=020402&s=moe" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">시행기본계획</a>과 <a href={CSAT_GUIDANCE_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">교육부 수험생 유의사항</a> — 시험일 {examY}년 {examM}월 {examD}일. D-day는 한국시간 기준으로 셉니다. 공식 안내 확인일: {CSAT_GUIDANCE_CHECKED}. 세부 응시 조건은 공식 유의사항과 감독관 안내를 따르세요.
             </p>
             <div className="mt-8">
               <RelatedTools />

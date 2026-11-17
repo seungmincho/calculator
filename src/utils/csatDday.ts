@@ -5,6 +5,9 @@ import { CSAT_EXAM_DATE, daysUntil } from './csatGrade.ts'
 
 const KST_OFFSET = 9 * 3_600_000
 
+export const CSAT_GUIDANCE_CHECKED = '2026-11-17'
+export const CSAT_GUIDANCE_URL = 'https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107599&lev=0'
+
 /** UTC 시각(ms) → KST 날짜·자정 이후 분·초 */
 export function kstParts(ms: number): { date: string; min: number; sec: number } {
   const d = new Date(ms + KST_OFFSET)
@@ -26,7 +29,7 @@ export function kstToMs(date: string, hhmm: string): number {
 
 export interface Slot { key: string; start: string; end?: string; exam?: boolean }
 
-/** 2027학년도 수능 시간표 (평가원 시행기본계획) */
+/** 2027학년도 일반 수험생 시간표. 2026-11-17 교육부·평가원 공식 안내 대조. */
 export const SCHEDULE: Slot[] = [
   { key: 'arrive', start: '08:10' },
   { key: 'kor', start: '08:40', end: '10:00', exam: true },
@@ -37,13 +40,21 @@ export const SCHEDULE: Slot[] = [
   { key: 'lang2', start: '17:05', end: '17:45', exam: true },
 ]
 
-/** 4교시 세부 (예년 기준 — 수험생 유의사항으로 확인) */
+/** 2027 수험생 유의사항: 탐구 1과목 선택자는 inq2 시간에 응시한다. */
 export const INQ_DETAIL: Slot[] = [
   { key: 'hist', start: '14:50', end: '15:20' },
   { key: 'swap', start: '15:20', end: '15:35' },
   { key: 'inq1', start: '15:35', end: '16:05' },
+  { key: 'collect', start: '16:05', end: '16:07' },
   { key: 'inq2', start: '16:07', end: '16:37' },
 ]
+
+/** General-candidate durations only; opening a link configures the existing timer without starting it. */
+export const PRACTICE_TIMERS = (['kor', 'math', 'eng', 'hist', 'inq1', 'lang2'] as const).map(key => {
+  const slot = [...SCHEDULE, ...INQ_DETAIL].find(item => item.key === key)!
+  const minutes = toMin(slot.end!) - toMin(slot.start)
+  return { key, minutes, href: `/timer/?m=${minutes}` }
+})
 
 export const EXAM_START = SCHEDULE[1].start
 export const EXAM_END = SCHEDULE[SCHEDULE.length - 1].end!
@@ -110,7 +121,7 @@ export function timelineStatus(item: TimelineItem, today: string): 'past' | 'now
 export const progress = (checked: Record<string, boolean>, keys: string[]) =>
   ({ done: keys.filter((k) => checked[k]).length, total: keys.length })
 
-/** 가채점표 과목별 문항 수 (예년 기준) */
+/** 2027학년도 시행기본계획 부록3과 대조한 영역별 문항 수. */
 export const SHEET: { key: string; count: number; select?: boolean }[] = [
   { key: 'kor', count: 45, select: true },
   { key: 'math', count: 30, select: true },

@@ -68,6 +68,7 @@
  */
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/marginCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
@@ -489,13 +490,18 @@ export default function MarginCalculator() {
             )}
 
             {/* 배송비 */}
-            <InputField
-              label={t('input.shippingCost')}
-              value={shippingCost}
-              onChange={handleNumberInput(setShippingCost)}
-              unit={t('input.unit')}
-              icon={<Truck className="w-4 h-4" />}
-            />
+            <div>
+              <InputField
+                label={t('input.shippingCost')}
+                value={shippingCost}
+                onChange={handleNumberInput(setShippingCost)}
+                unit={t('input.unit')}
+                icon={<Truck className="w-4 h-4" />}
+              />
+              <Link href="/shipping-calculator/" className="mt-2 inline-block text-sm text-primary hover:underline">
+                {t('input.compareShippingRates')}
+              </Link>
+            </div>
 
             {/* 포장비 */}
             <InputField

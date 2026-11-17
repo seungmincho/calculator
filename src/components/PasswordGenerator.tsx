@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+import { useState, useCallback, useMemo, useEffect, useLayoutEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/passwordGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RefreshCw, Eye, EyeOff, X, ExternalLink } from 'lucide-react'
 import { WORD_LIST } from '@/utils/wordlist'
+import PasswordCopyRecovery from '@/components/PasswordCopyRecovery'
+import { copyPasswordText, createPasswordCopyGuard, regeneratePasswordResult, type PasswordCopyTarget } from '@/utils/passwordActions'
 import {
   DEFAULT_SYMBOLS, cleanSymbols, validate, generatePassword, passwordEntropy, generatePassphrase,
   passphraseEntropy, gradeOf, crackTime, analyzePassword, GRADE_ORDER, type PwOptions, type Grade,
@@ -28,6 +30,21 @@ const DEFAULTS: Settings = {
   excludeAmbiguous: false, noRepeat: false, count: 5, words: 6, sep: 'hyphen', cap: true, addNum: true, pinLength: 6,
 }
 const LEN = { min: 4, max: 128 }, WORDS = { min: 3, max: 10 }, PIN = { min: 4, max: 12 }
+type Announcement = { key: 'announce.generated' | 'actions.regeneratedOne' | 'announce.copied' | 'announce.copiedAll'; n: number } | { key: 'announce.copyFailed' }
+type CopySnapshot = { text: string; target: PasswordCopyTarget; count: number; request: number }
+
+function passwordOptions(tab: Tab, s: Settings): PwOptions {
+  return tab === 'pin'
+    ? { length: s.pinLength, upper: false, lower: false, digits: true, symbols: false, symbolSet: '', excludeAmbiguous: false, noRepeat: s.noRepeat }
+    : { length: s.length, upper: s.upper, lower: s.lower, digits: s.digits, symbols: s.symbols, symbolSet: s.symbolSet, excludeAmbiguous: s.excludeAmbiguous, noRepeat: s.noRepeat }
+}
+const phraseOptions = (s: Settings) => ({ words: s.words, separator: SEPS[s.sep], capitalize: s.cap, addNumber: s.addNum })
+function generatedResults(tab: Tab, s: Settings): string[] {
+  if (tab === 'check') return []
+  const options = passwordOptions(tab, s)
+  if (tab !== 'passphrase' && validate(options)) return []
+  return Array.from({ length: s.count }, () => tab === 'passphrase' ? generatePassphrase(phraseOptions(s), WORD_LIST) : generatePassword(options))
+}
 
 // 한국 사이트에서 흔한 규칙 (특정 사이트를 지칭하지 않음)
 const PRESETS: Record<'koStandard' | 'koLimited' | 'koNoSymbol' | 'max', Partial<Settings>> = {
@@ -80,6 +97,20 @@ function Colored({ value }: { value: string }) {
   )
 }
 
+function PasswordSlider({ id, label, value, range, onChange, valueText }: {
+  id: string; label: string; value: number; range: { min: number; max: number }; onChange: (value: number) => void; valueText: string
+}) {
+  return <div>
+    <div className="flex items-baseline justify-between mb-2">
+      <label htmlFor={id} className="text-sm font-medium text-body">{label}</label>
+      <span className="text-sm font-bold text-fg tabular-nums" aria-hidden="true">{valueText}</span>
+    </div>
+    <input id={id} type="range" min={range.min} max={range.max} value={value} aria-valuetext={valueText}
+      onChange={event => onChange(+event.target.value)} className="w-full h-11 cursor-pointer accent-[var(--primary)]" />
+    <div className="flex justify-between text-xs text-muted tabular-nums" aria-hidden="true"><span>{range.min}</span><span>{range.max}</span></div>
+  </div>
+}
+
 export default function PasswordGenerator() {
   const t = useTranslations('passwordGenerator')
   const searchParams = useSearchParams()
@@ -87,21 +118,54 @@ export default function PasswordGenerator() {
   const [s, setS] = useState<Settings>(DEFAULTS)
   const [ready, setReady] = useState(false)
   const [results, setResults] = useState<string[]>([])
-  const [copied, setCopied] = useState<number | 'all' | null>(null)
-  const [announce, setAnnounce] = useState('')
+  const [copied, setCopied] = useState<PasswordCopyTarget | null>(null)
+  const [announce, setAnnounce] = useState<Announcement | null>(null)
+  const [recovery, setRecovery] = useState<CopySnapshot | null>(null)
+  const [copyPending, setCopyPending] = useState(false)
   const [lenText, setLenText] = useState<string | null>(null)
   const [checkPw, setCheckPw] = useState('')
   const [showPw, setShowPw] = useState(false)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
-  const set = useCallback(<K extends keyof Settings>(k: K, v: Settings[K]) => setS((p) => ({ ...p, [k]: v })), [])
+  const mounted = useRef(false)
+  const copyGuard = useRef(createPasswordCopyGuard())
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const invalidateCopy = useCallback(() => {
+    copyGuard.current.invalidate()
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    copyTimer.current = null
+    setCopied(null); setRecovery(null); setCopyPending(false); setAnnounce(null)
+  }, [])
+  useLayoutEffect(() => {
+    mounted.current = true
+    const guard = copyGuard.current
+    return () => {
+      mounted.current = false; guard.invalidate()
+      if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    }
+  }, [])
+  const changeSettings = useCallback((next: Settings) => {
+    if (!ready) return
+    invalidateCopy(); setS(next)
+    if (tab !== 'check') setResults(generatedResults(tab, next))
+  }, [invalidateCopy, tab, ready])
+  const set = <K extends keyof Settings>(k: K, v: Settings[K]) => changeSettings({ ...s, [k]: v })
+  const changeTab = (next: Tab) => {
+    if (!ready || next === tab) return
+    invalidateCopy(); setTab(next)
+    if (next !== 'check') setResults(generatedResults(next, s))
+  }
 
   // 마운트 후 URL 설정 1회 반영 → 이후 생성 (서버 HTML엔 비밀번호 없음 → hydration 불일치 없음)
   const parsed = useRef(false)
   useEffect(() => {
     if (parsed.current) return
-    parsed.current = true
-    const r = fromParams(searchParams)
-    setTab(r.tab); setS(r.s); setReady(true)
+    const timer = setTimeout(() => {
+      if (!mounted.current) return
+      parsed.current = true
+      const r = fromParams(searchParams)
+      setTab(r.tab); setS(r.s); setResults(generatedResults(r.tab, r.s)); setReady(true)
+    }, 0)
+    return () => clearTimeout(timer)
   }, [searchParams])
 
   useEffect(() => {
@@ -111,50 +175,51 @@ export default function PasswordGenerator() {
     if (url !== `${window.location.pathname}${window.location.search}${window.location.hash}`) window.history.replaceState(null, '', url)
   }, [ready, tab, s])
 
-  const pwOpts: PwOptions = useMemo(() => tab === 'pin'
-    ? { length: s.pinLength, upper: false, lower: false, digits: true, symbols: false, symbolSet: '', excludeAmbiguous: false, noRepeat: s.noRepeat }
-    : { length: s.length, upper: s.upper, lower: s.lower, digits: s.digits, symbols: s.symbols, symbolSet: s.symbolSet, excludeAmbiguous: s.excludeAmbiguous, noRepeat: s.noRepeat },
-  [tab, s])
-  const phraseOpts = useMemo(() => ({ words: s.words, separator: SEPS[s.sep], capitalize: s.cap, addNumber: s.addNum }), [s])
+  const pwOpts = useMemo(() => passwordOptions(tab, s), [tab, s])
+  const phraseOpts = useMemo(() => phraseOptions(s), [s])
   const error = tab === 'random' || tab === 'pin' ? validate(pwOpts) : null
   const bits = tab === 'passphrase' ? passphraseEntropy(phraseOpts, WORD_LIST.length) : passwordEntropy(pwOpts)
 
-  const generate = useCallback(() => {
-    if (tab === 'check') return
-    if (error) { setResults([]); return }
-    setResults(Array.from({ length: s.count }, () => tab === 'passphrase' ? generatePassphrase(phraseOpts, WORD_LIST) : generatePassword(pwOpts)))
-    setCopied(null)
-  }, [tab, error, s.count, phraseOpts, pwOpts])
+  const regenerate = () => {
+    if (!ready || tab === 'check' || error) return
+    invalidateCopy(); setResults(generatedResults(tab, s)); setAnnounce({ key: 'announce.generated', n: s.count })
+  }
+  const regenerateOne = (index: number) => {
+    if (!ready || tab === 'check' || error || !Number.isInteger(index) || index < 0 || index >= results.length) return
+    const next = regeneratePasswordResult(results, index, () => tab === 'passphrase' ? generatePassphrase(phraseOpts, WORD_LIST) : generatePassword(pwOpts))
+    invalidateCopy(); setResults(next); setAnnounce({ key: 'actions.regeneratedOne', n: index + 1 })
+  }
 
-  useEffect(() => { if (ready) generate() }, [ready, generate])
-
-  const regenerate = () => { generate(); setAnnounce(t('announce.generated', { n: s.count })) }
-
-  const copy = useCallback(async (text: string, id: number | 'all') => {
-    try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text)
-      else {
-        const ta = document.createElement('textarea')
-        ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-999999px'
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
-      }
-      setAnnounce(id === 'all' ? t('announce.copiedAll', { n: results.length }) : t('announce.copied', { n: id + 1 }))
-    } catch {
-      setAnnounce(t('announce.copyFailed'))
+  const copy = async (text: string, target: PasswordCopyTarget) => {
+    if (!ready || !mounted.current || tab === 'check' || error || !text) return
+    const guard = copyGuard.current, token = guard.begin()
+    const current = () => mounted.current && guard.isCurrent(token)
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    copyTimer.current = null
+    const snapshot = { text, target, count: results.length, request: token.request }
+    setRecovery(previous => previous?.text === text && previous.target === target ? previous : null)
+    setCopied(null); setCopyPending(true); setAnnounce(null)
+    const outcome = await copyPasswordText(text, current)
+    if (!current() || outcome === 'stale') return
+    setCopyPending(false)
+    if (outcome === 'copied') {
+      setRecovery(null); setCopied(target)
+      setAnnounce(target === 'all' ? { key: 'announce.copiedAll', n: snapshot.count } : { key: 'announce.copied', n: target + 1 })
+      copyTimer.current = setTimeout(() => { if (current()) { setCopied(null); copyTimer.current = null } }, 2000)
+    } else {
+      setRecovery(snapshot); setAnnounce({ key: 'announce.copyFailed' })
     }
-    setCopied(id)
-    setTimeout(() => setCopied((c) => (c === id ? null : c)), 2000)
-  }, [results.length, t])
+  }
 
   const onTabKey = (e: React.KeyboardEvent, i: number) => {
     const next = ({ ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: TABS.length - 1 } as Record<string, number>)[e.key]
     if (next === undefined) return
     e.preventDefault()
     const j = (next + TABS.length) % TABS.length
-    setTab(TABS[j]); tabRefs.current[j]?.focus()
+    changeTab(TABS[j]); tabRefs.current[j]?.focus()
   }
 
-  const applyPreset = (p: Partial<Settings>) => { setS((prev) => ({ ...prev, ...p })); setLenText(null) }
+  const applyPreset = (p: Partial<Settings>) => { changeSettings({ ...s, ...p }); setLenText(null) }
   const presetActive = (p: Partial<Settings>) => (Object.keys(p) as (keyof Settings)[]).every((k) => s[k] === p[k])
 
   const analysis = useMemo(() => (checkPw ? analyzePassword(checkPw) : null), [checkPw])
@@ -169,17 +234,6 @@ export default function PasswordGenerator() {
         {desc && <span id={`pg-${k}-d`} className="block text-xs text-muted mt-0.5">{desc}</span>}
       </span>
     </label>
-  )
-  const slider = (id: string, label: string, value: number, r: { min: number; max: number }, onChange: (n: number) => void, valueText: string) => (
-    <div>
-      <div className="flex items-baseline justify-between mb-2">
-        <label htmlFor={id} className="text-sm font-medium text-body">{label}</label>
-        <span className="text-sm font-bold text-fg tabular-nums" aria-hidden="true">{valueText}</span>
-      </div>
-      <input id={id} type="range" min={r.min} max={r.max} value={value} aria-valuetext={valueText}
-        onChange={(e) => onChange(+e.target.value)} className="w-full h-11 cursor-pointer accent-[var(--primary)]" />
-      <div className="flex justify-between text-xs text-muted tabular-nums" aria-hidden="true"><span>{r.min}</span><span>{r.max}</span></div>
-    </div>
   )
   const seg = (on: boolean) => `min-h-11 px-3 rounded-xl text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'text-body hover:bg-subtle'}`
 
@@ -211,13 +265,13 @@ export default function PasswordGenerator() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <p className="sr-only" aria-live="polite" aria-atomic="true">{announce}</p>
+      <p className="sr-only" aria-live="polite" aria-atomic="true">{announce ? t(announce.key, 'n' in announce ? { n: announce.n } : undefined) : ''}</p>
 
       {/* 모드 탭 */}
       <div role="tablist" aria-label={t('modesLabel')} className="grid grid-cols-4 gap-1 p-1 bg-soft rounded-2xl">
         {TABS.map((k, i) => (
           <button key={k} ref={(el) => { tabRefs.current[i] = el }} role="tab" id={`pg-tab-${k}`} aria-controls="pg-panel"
-            aria-selected={tab === k} tabIndex={tab === k ? 0 : -1} onClick={() => setTab(k)} onKeyDown={(e) => onTabKey(e, i)}
+            aria-selected={tab === k} tabIndex={tab === k ? 0 : -1} onClick={() => changeTab(k)} onKeyDown={(e) => onTabKey(e, i)}
             className={`min-h-11 px-2 rounded-xl text-sm font-semibold transition-colors ${tab === k ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`}>
             {t(`modes.${k}`)}
           </button>
@@ -235,7 +289,7 @@ export default function PasswordGenerator() {
                 <div className="flex gap-2">
                   <input id="pg-check" type={showPw ? 'text' : 'password'} value={checkPw} onChange={(e) => setCheckPw(e.target.value)}
                     autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} data-lpignore="true" data-1p-ignore=""
-                    placeholder={t('check.placeholder')} className="ui-field px-4 py-3 font-mono min-w-0" />
+                    placeholder={t('check.placeholder')} className="ui-field px-4 py-3 text-base font-mono min-w-0" />
                   <button type="button" onClick={() => setShowPw((v) => !v)} aria-pressed={showPw} aria-label={t('check.showLabel')}
                     className="ui-btn-soft shrink-0 w-11 h-12">
                     {showPw ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
@@ -293,15 +347,15 @@ export default function PasswordGenerator() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* 결과 (DOM·모바일에선 먼저, 데스크톱에선 오른쪽) */}
-            <div className="lg:col-span-2 lg:order-2 ui-card p-6 space-y-6">
+            <div className="lg:col-span-2 lg:order-2 ui-card min-w-0 p-4 sm:p-6 space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
-                <div className="flex gap-2">
-                  <button type="button" onClick={regenerate} disabled={!!error} className="ui-btn px-4 min-h-11">
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" data-password-regenerate-all onClick={regenerate} disabled={!ready || !!error} className="ui-btn px-4 min-h-11">
                     <RefreshCw className="w-4 h-4" aria-hidden="true" />{t('generate')}
                   </button>
                   {results.length > 1 && (
-                    <button type="button" onClick={() => copy(results.join('\n'), 'all')} className="ui-btn-soft px-4 min-h-11">
+                    <button type="button" data-password-copy="all" data-password-copied={copied === 'all'} onClick={() => { void copy(results.join('\n'), 'all') }} className="ui-btn-soft px-4 min-h-11">
                       {copied === 'all' ? <Check className="w-4 h-4" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
                       {copied === 'all' ? t('copied') : t('copyAll')}
                     </button>
@@ -315,21 +369,28 @@ export default function PasswordGenerator() {
                 <>
                   {strengthBlock(bits, false)}
                   <p className="text-xs text-muted">{t('strength.basis')}</p>
+                  <p className="text-xs text-muted">{t('actions.oneHint')}</p>
                   <ol className="space-y-2">
                     {results.map((v, i) => (
-                      <li key={`${i}-${v}`} className="flex items-center gap-3 bg-subtle rounded-2xl pl-4 pr-1.5 py-1.5">
-                        <span className="text-xs text-muted tabular-nums w-5 shrink-0" aria-hidden="true">{i + 1}</span>
-                        <span className={`flex-1 min-w-0 font-mono text-fg break-all whitespace-pre-wrap py-2 ${i === 0 ? 'text-lg' : 'text-base'}`}><Colored value={v} /></span>
-                        <button type="button" onClick={() => copy(v, i)} aria-label={t('copyNth', { n: i + 1 })}
-                          className="shrink-0 w-11 h-11 inline-flex items-center justify-center rounded-xl text-sub hover:bg-soft hover:text-fg">
-                          {copied === i ? <Check className="w-5 h-5 text-primary" aria-hidden="true" /> : <Copy className="w-5 h-5" aria-hidden="true" />}
-                        </button>
+                      <li key={i} data-password-row={i} className="grid grid-cols-[1.25rem_minmax(0,1fr)] items-start gap-x-3 gap-y-1 bg-subtle rounded-2xl p-3">
+                        <span className="text-xs text-muted tabular-nums pt-2" aria-hidden="true">{i + 1}</span>
+                        <span data-password-value={i} className={`min-w-0 font-mono text-fg break-all whitespace-pre-wrap py-1 ${i === 0 ? 'text-lg' : 'text-base'}`}><Colored value={v} /></span>
+                        <div className="col-start-2 flex min-w-0 flex-wrap items-center gap-1">
+                          <button type="button" data-password-regenerate={i} onClick={() => regenerateOne(i)} aria-label={t('actions.regenerateNth', { n: i + 1 })} className="ui-btn-soft min-h-11 min-w-0 px-3 py-2 text-sm">
+                            <RefreshCw className="h-4 w-4 shrink-0" aria-hidden="true" />{t('actions.regenerateOne')}
+                          </button>
+                          <button type="button" data-password-copy={i} data-password-copied={copied === i} onClick={() => { void copy(v, i) }} aria-label={t('copyNth', { n: i + 1 })}
+                            className="shrink-0 w-11 h-11 inline-flex items-center justify-center rounded-xl text-sub hover:bg-soft hover:text-fg">
+                            {copied === i ? <Check className="w-5 h-5 text-primary" aria-hidden="true" /> : <Copy className="w-5 h-5" aria-hidden="true" />}
+                          </button>
+                        </div>
                       </li>
                     ))}
                   </ol>
                   {tab !== 'pin' && <p className="text-xs text-muted">{t('result.legend')}</p>}
                 </>
               )}
+              {recovery && <PasswordCopyRecovery key={recovery.request} text={recovery.text} target={recovery.target} count={recovery.count} busy={copyPending} onRetry={() => { void copy(recovery.text, recovery.target) }} onClose={invalidateCopy} />}
               <p className="bg-subtle rounded-2xl p-4 text-sm text-sub">{t('result.notStored')}</p>
               {tab === 'pin' ? <p className="text-sm text-body">{t('result.pinNote')}</p>
                 : grade !== 'veryStrong' && grade !== 'strong' && !error && <p className="text-sm text-body">{t('result.weakHint')}</p>}
@@ -357,12 +418,12 @@ export default function PasswordGenerator() {
                   </div>
 
                   <div>
-                    {slider('pg-len', t('settings.length'), s.length, LEN, (n) => { set('length', n); setLenText(null) }, t('settings.lengthValue', { n: s.length }))}
+                    <PasswordSlider id="pg-len" label={t('settings.length')} value={s.length} range={LEN} onChange={n => { set('length', n); setLenText(null) }} valueText={t('settings.lengthValue', { n: s.length })} />
                     <div className="flex items-center gap-2 mt-2">
                       <label htmlFor="pg-len-n" className="text-xs text-muted">{t('settings.lengthInput')}</label>
                       <input id="pg-len-n" type="number" inputMode="numeric" min={LEN.min} max={LEN.max} value={lenText ?? s.length}
                         onChange={(e) => { setLenText(e.target.value); const n = parseInt(e.target.value); if (n >= LEN.min && n <= LEN.max) set('length', n) }}
-                        onBlur={() => setLenText(null)} className="ui-field px-3 py-2 w-24 min-h-11 tabular-nums" />
+                        onBlur={() => setLenText(null)} className="ui-field px-3 py-2 text-base w-24 min-h-11 tabular-nums" />
                     </div>
                   </div>
 
@@ -379,7 +440,7 @@ export default function PasswordGenerator() {
                       <label htmlFor="pg-sym" className="block text-sm font-medium text-body mb-2">{t('settings.customSpecialChars')}</label>
                       <div className="flex gap-2">
                         <input id="pg-sym" type="text" value={s.symbolSet} onChange={(e) => set('symbolSet', e.target.value)} aria-describedby="pg-sym-d"
-                          autoComplete="off" spellCheck={false} placeholder={t('settings.customSpecialCharsPlaceholder')} className="ui-field px-4 py-3 font-mono min-w-0" />
+                          autoComplete="off" spellCheck={false} placeholder={t('settings.customSpecialCharsPlaceholder')} className="ui-field px-4 py-3 text-base font-mono min-w-0" />
                         <button type="button" onClick={() => set('symbolSet', DEFAULT_SYMBOLS)} className="ui-btn-soft px-3 min-h-11 shrink-0 text-sm">{t('settings.symbolsReset')}</button>
                       </div>
                       <p id="pg-sym-d" className="text-xs text-muted mt-1 break-all">{t('settings.symbolsUsed', { n: symbolsShown.length, chars: symbolsShown || '-' })}</p>
@@ -395,10 +456,10 @@ export default function PasswordGenerator() {
 
               {tab === 'passphrase' && (
                 <>
-                  {slider('pg-words', t('settings.wordCount'), s.words, WORDS, (n) => set('words', n), t('settings.wordValue', { n: s.words }))}
+                  <PasswordSlider id="pg-words" label={t('settings.wordCount')} value={s.words} range={WORDS} onChange={n => set('words', n)} valueText={t('settings.wordValue', { n: s.words })} />
                   <div>
                     <label htmlFor="pg-sep" className="block text-sm font-medium text-body mb-2">{t('settings.separator')}</label>
-                    <select id="pg-sep" value={s.sep} onChange={(e) => set('sep', e.target.value as Sep)} className="ui-field px-4 py-3 min-h-11">
+                    <select id="pg-sep" value={s.sep} onChange={(e) => set('sep', e.target.value as Sep)} className="ui-field px-4 py-3 text-base min-h-11">
                       {(Object.keys(SEPS) as Sep[]).map((k) => <option key={k} value={k}>{t(`settings.separators.${k}`)}</option>)}
                     </select>
                   </div>
@@ -411,7 +472,7 @@ export default function PasswordGenerator() {
 
               {tab === 'pin' && (
                 <>
-                  {slider('pg-pin', t('settings.pinLength'), s.pinLength, PIN, (n) => set('pinLength', n), t('settings.lengthValue', { n: s.pinLength }))}
+                  <PasswordSlider id="pg-pin" label={t('settings.pinLength')} value={s.pinLength} range={PIN} onChange={n => set('pinLength', n)} valueText={t('settings.lengthValue', { n: s.pinLength })} />
                   {checkbox('noRepeat', t('settings.noRepeat'), t('settings.noRepeatDesc'))}
                 </>
               )}

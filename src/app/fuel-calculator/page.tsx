@@ -12,12 +12,12 @@ const sources = [
 ]
 
 export const metadata: Metadata = {
-  title: '유류비 계산기 - 업무용 차량 정산 | 툴허브',
-  description: '업무용 차량 유류비를 주행거리·연비·유가로 계산하고 감가상각비와 경비 처리 기준까지 확인하세요. 오피넷 시·도별 유가(지난 날짜 포함)를 불러오고, 편도·왕복 출장 정산서 복사, 주행일지, 결과 이미지·링크 공유를 지원합니다.',
+  title: '유류비 계산기 - 여행 비용 나누기·출장 정산 | 툴허브',
+  description: '주행거리·연비·유가로 유류비를 계산하고 통행료·주차비까지 함께 나눠 정산하세요. 내 차량 저장, 편도·왕복 계산, 오피넷 지역·날짜별 유가, 출장 정산 계수, 주행일지와 결과 이미지·링크 공유를 지원합니다.',
   keywords: '유류비계산기, 차량연료비, 업무용차량, 연비계산, 감가상각비, 회사경비, 출장비, 교통비정산, 차량유지비, 기름값계산',
   openGraph: {
     title: '유류비 계산기 | 툴허브',
-    description: '회사 업무용 차량 유류비 계산기 - 차종별 연비 + 실시간 유가 + 감가상각비',
+    description: '유류비·통행료·주차비 계산부터 함께 정산, 차량 저장, 주행일지까지',
     url: 'https://toolhub.ai.kr/fuel-calculator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '유류비 계산기 - 회사 업무용 차량 연료비 정산',
-    description: '차종별 연비와 실시간 유가로 정확한 유류비를 계산하세요.',
+    title: '유류비 계산기 - 여행 비용 나누기·출장 정산',
+    description: '내 차로 계산하고 함께 나눠요. 차량 설정 저장과 주행일지도 한곳에서.',
     images: ['https://toolhub.ai.kr/og/fuel-calculator.png'],
   },
   alternates: {
@@ -40,7 +40,7 @@ export default function FuelCalculatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '유류비 계산기',
-    description: '회사 업무용 차량의 연료비와 감가상각비를 계산하는 무료 온라인 도구',
+    description: '유류비·통행료·주차비를 계산하고 함께 정산하며 차량 설정과 주행일지를 저장하는 무료 온라인 도구',
     url: 'https://toolhub.ai.kr/fuel-calculator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -57,6 +57,9 @@ export default function FuelCalculatorPage() {
       '차량 감가상각비 계산',
       '업무용 차량 경비 정산',
       '출장비 교통비 계산',
+      '통행료·주차비를 포함한 인당 정산',
+      '내 차량 설정 저장·자동 복원',
+      '저장 당시 금액을 보관하는 주행일지',
       '결과 이미지·링크 공유',
     ]
   }

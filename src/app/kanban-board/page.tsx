@@ -5,11 +5,11 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: '칸반보드 - 프로젝트 관리 & 할일 관리 | 툴허브',
-  description: '드래그 앤 드롭으로 작업을 관리하세요. 칸반보드로 프로젝트 진행 상황을 시각적으로 추적하고, 우선순위 설정, 마감일 관리, JSON 내보내기를 지원합니다.',
+  description: '회의록에서 고른 할 일을 칸반 카드로 가져오세요. 기존 카드를 보존하면서 담당자·기한을 관리하고, 드래그 또는 모바일 열 선택으로 작업을 이동할 수 있습니다. JSON 백업을 지원합니다.',
   keywords: '칸반보드, 프로젝트 관리, 할일 관리, 태스크 관리, 드래그앤드롭, 업무 관리, TODO, 작업 관리',
   openGraph: {
     title: '칸반보드 - 프로젝트 관리 | 툴허브',
-    description: '드래그 앤 드롭 칸반보드로 프로젝트를 관리하세요.',
+    description: '회의록 할 일을 칸반 카드로 가져와 담당자·기한·진행 상태를 관리하세요.',
     url: 'https://toolhub.ai.kr/kanban-board/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -38,7 +38,7 @@ export default function KanbanBoardPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['드래그 앤 드롭', '우선순위 관리', '마감일 추적', '컬럼 커스터마이징', 'JSON 내보내기/가져오기']
+    featureList: ['회의록 할 일 가져오기·중복 방지', '담당자 편집·검색', '드래그 앤 드롭·모바일 열 이동', '우선순위 관리', '마감일 추적', '컬럼 커스터마이징', 'JSON 내보내기/가져오기']
   }
 
   return (
@@ -73,8 +73,9 @@ export default function KanbanBoardPage() {
             <li><strong>WIP 제한 설정:</strong> '진행 중' 컬럼의 카드 수를 3~5개로 제한하면(WIP Limit) 멀티태스킹을 줄이고 집중력을 높일 수 있습니다.</li>
             <li><strong>우선순위 색상 코딩:</strong> 긴급·높음·보통·낮음 우선순위를 색상으로 구분하면 중요한 작업을 즉시 식별할 수 있습니다.</li>
             <li><strong>마감일 추적:</strong> 카드에 마감일을 설정하면 기한이 임박한 작업을 시각적으로 경고하여 일정 관리가 수월해집니다.</li>
+            <li><strong>회의록 연결:</strong> 선택한 할 일을 회의 전용 열 또는 기존 열로 복사할 수 있습니다. 가져온 뒤의 변경은 원래 회의록에 자동 반영되지 않습니다.</li>
             <li><strong>JSON 내보내기·가져오기:</strong> 작업 데이터를 JSON으로 내보내 백업하거나 다른 도구와 데이터를 교환할 수 있습니다.</li>
-            <li><strong>컬럼 커스터마이징:</strong> 기본 3단계 외에 '검토 중', '테스트' 등 팀 워크플로에 맞는 컬럼을 자유롭게 추가하세요.</li>
+            <li><strong>컬럼 커스터마이징:</strong> 상태별 열 외에 '검토 중', '테스트' 등 팀 워크플로에 맞는 컬럼을 자유롭게 추가하세요.</li>
           </ul>
         </div>
       </section>

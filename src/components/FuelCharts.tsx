@@ -38,7 +38,7 @@ export default function FuelCharts({ fuelCost, depreciationCost, tripKm, compari
   }, [])
 
   return (
-    <div ref={chartsRef} className="grid md:grid-cols-2 gap-6">
+    <div ref={chartsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 min-w-0">
       <div className="ui-card p-6">
         <h3 className="text-base font-semibold text-fg mb-4 flex items-center gap-2">{t('charts.costBreakdown')}</h3>
         <div className="h-64" role="img" aria-label={t('charts.costBreakdownAria', { fuel: fuelCost.toLocaleString('ko-KR'), depreciation: depreciationCost.toLocaleString('ko-KR') })}>
@@ -50,7 +50,7 @@ export default function FuelCharts({ fuelCost, depreciationCost, tripKm, compari
         <div className="h-52" role="img" aria-label={comparison.map(item => t('charts.costItem', { name: item.name, cost: item.cost.toLocaleString('ko-KR') })).join(', ')}>
           {ready ? <FuelComparisonPlot data={comparison} /> : <div aria-hidden="true" className="h-full rounded-xl bg-soft animate-pulse motion-reduce:animate-none" />}
         </div>
-        <p className="text-xs text-gray-400 mt-2 text-center">
+        <p className="text-xs text-muted mt-2 text-center">
           {t('charts.basis', { km: tripKm.toLocaleString() })}
         </p>
       </div>

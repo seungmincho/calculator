@@ -1,10 +1,15 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/textToSpeech'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
+import TtsReadingList from '@/components/TtsReadingList'
+import { captureTtsReadingPosition, resolveTtsReadingVoice, type TtsReadingDraft, type TtsReadingLoad, type TtsReadingResult, type TtsReadingSettings } from '@/utils/ttsReadingRecords'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useHydrated } from '@/hooks/useHydrated'
+import { TEXT_HANDOFF_KEY, clearTextHandoff, isTextHandoffSource, parseTextHandoff } from '@/utils/textHandoff'
+import { captureTtsRecovery, canRetryTtsRecovery, isTtsCancellation, type TtsRecovery } from '@/utils/ttsRecovery'
 import { Play, Pause, Square, ClipboardPaste, WrapText, Eraser, Link2, Check } from 'lucide-react'
 import {
   chunkText, estimateSeconds, formatDuration, tidyText, wordRange, sortVoices, pickVoice,
@@ -24,6 +29,7 @@ const SPEED_PRESETS = [
 
 export default function TextToSpeech() {
   const t = useTranslations('textToSpeech')
+  const language = useOptionalLanguage()?.language ?? 'ko'
   const searchParams = useSearchParams()
   const samples = (t.raw('samples.items') as Sample[] | undefined) ?? []
 
@@ -40,11 +46,42 @@ export default function TextToSpeech() {
   const [cur, setCur] = useState(-1)
   const [word, setWord] = useState<[number, number] | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [recovery, setRecovery] = useState<TtsRecovery | null>(null)
+  const recoveryRef = useRef<TtsRecovery | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
+  const [repeat, setRepeat] = useState(false)
+  const [repeatStart, setRepeatStart] = useState(0)
+  const [repeatEnd, setRepeatEnd] = useState(0)
+  const [repeatCount, setRepeatCount] = useState(3)
+  const [repeatGap, setRepeatGap] = useState(2)
+  const [repeatPass, setRepeatPass] = useState(1)
+  const [waiting, setWaiting] = useState(false)
   const platform: Platform = hydrated ? detectPlatform(navigator.userAgent) : 'other'
   const [initialized, setInitialized] = useState(false)
+  const [localVoicesOnly, setLocalVoicesOnly] = useState(false)
+  const [handoffNotice, setHandoffNotice] = useState('')
+  const [handoffCleanupFailed, setHandoffCleanupFailed] = useState(false)
+  const consumedHandoffRaw = useRef<string | null>(null)
+  const [startFrom, setStartFrom] = useState(0), [readingRevision, setReadingRevision] = useState(0), [textTouched, setTextTouched] = useState(false)
+  const [voiceNotice, setVoiceNotice] = useState<'voiceMissing' | 'noLocalVoice' | null>(null)
+  const voiceIntent = useRef<TtsReadingSettings | null>(null), startRef = useRef(0)
+  const lifetime = useRef({ alive: false, epoch: 0, intent: 0, copy: 0 })
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null), noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const clearAsyncNotice = useCallback(() => {
+    lifetime.current.copy++
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    if (noticeTimer.current !== null) clearTimeout(noticeTimer.current)
+    copyTimer.current = null; noticeTimer.current = null; setCopied(false); setCopyFailed(false); setNotice(null)
+  }, [])
+  const userIntent = useCallback(() => { lifetime.current.intent++; setReadingRevision(value => value + 1); clearAsyncNotice() }, [clearAsyncNotice])
+  useLayoutEffect(() => {
+    const owner = lifetime.current
+    owner.alive = true; owner.epoch++
+    return () => { owner.alive = false; owner.epoch++; owner.intent++; owner.copy++; if (copyTimer.current !== null) clearTimeout(copyTimer.current); if (noticeTimer.current !== null) clearTimeout(noticeTimer.current) }
+  }, [])
+  useLayoutEffect(() => { clearAsyncNotice() }, [language, clearAsyncNotice])
 
   // 정적 HTML과 첫 렌더를 맞춘 다음, 저장 설정보다 공유 링크 값을 우선 복원한다.
   if (hydrated && !initialized) {
@@ -58,36 +95,86 @@ export default function TextToSpeech() {
       }
     } catch { /* 저장소 차단 또는 잘못된 값 */ }
     const q = searchParams.get('t')
-    if (q) setText(q.slice(0, URL_TEXT_LIMIT))
+    if (q && !textTouched) setText(q.slice(0, URL_TEXT_LIMIT))
+    const from = searchParams.get('from')
+    if (isTextHandoffSource(from) && !q && !textTouched) {
+      setLocalVoicesOnly(true)
+      try {
+        const raw = sessionStorage.getItem(TEXT_HANDOFF_KEY)
+        const parsed = parseTextHandoff(raw)
+        const handoff = parsed?.source === from ? parsed : null
+        // Do not consume a valid payload intended for a different source route.
+        if (raw && (!parsed || handoff)) consumedHandoffRaw.current = raw
+        if (handoff) { setText(handoff.text); setHandoffNotice(from === 'notepad' ? 'handoff.notepadLoaded' : 'handoff.loaded') }
+        else setHandoffNotice(from === 'notepad' ? 'handoff.notepadExpired' : 'handoff.expired')
+      } catch { setHandoffNotice(from === 'notepad' ? 'handoff.notepadExpired' : 'handoff.expired') }
+    }
     const r = Number(searchParams.get('r'))
     if (r >= 0.5 && r <= 2) setRate(r)
   }
 
+  useEffect(() => {
+    if (!initialized || consumedHandoffRaw.current === null) return
+    const raw = consumedHandoffRaw.current
+    consumedHandoffRaw.current = null
+    try {
+      if (!clearTextHandoff(sessionStorage, raw)) queueMicrotask(() => setHandoffCleanupFailed(true))
+    } catch { queueMicrotask(() => setHandoffCleanupFailed(true)) }
+  }, [initialized])
+
   const segments = useMemo(() => chunkText(text), [text])
-  const voice = voices.find((v) => v.name === voiceName) ?? null
+  const visibleVoices = localVoicesOnly ? voices.filter(v => v.localService) : voices
+  const voice = visibleVoices.find((v) => v.name === voiceName) ?? (localVoicesOnly ? visibleVoices.find(isKoreanVoice) ?? visibleVoices[0] : null) ?? null
+  const availableVoices = useRef(voices)
+  useLayoutEffect(() => { availableVoices.current = voices }, [voices])
 
   // 재생 루프는 콜백 체인이라 최신 값을 ref로 읽는다
   const session = useRef(0)
   const idx = useRef(0)
+  const pass = useRef(1)
+  const gapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const uttRef = useRef<SpeechSynthesisUtterance | null>(null) // GC로 onend가 안 오는 Chrome 버그 방지
-  const live = useRef({ segments, voice, rate, pitch, volume })
-  useEffect(() => { live.current = { segments, voice, rate, pitch, volume } }, [segments, voice, rate, pitch, volume])
+  const live = useRef({ text, segments, voice, rate, pitch, volume, localVoicesOnly, repeat, repeatStart, repeatEnd, repeatCount, repeatGap })
+  useLayoutEffect(() => { live.current = { text, segments, voice, rate, pitch, volume, localVoicesOnly, repeat, repeatStart, repeatEnd, repeatCount, repeatGap } }, [text, segments, voice, rate, pitch, volume, localVoicesOnly, repeat, repeatStart, repeatEnd, repeatCount, repeatGap])
   const readerRef = useRef<HTMLDivElement>(null)
+
+  const clearRecovery = useCallback(() => {
+    recoveryRef.current = null
+    setRecovery(null)
+    setError(null)
+  }, [])
 
   // ── 음성 목록 (voiceschanged는 비동기, Safari는 이벤트가 없을 때가 있어 몇 번 더 조회) ──
   useEffect(() => {
     if (!('speechSynthesis' in window)) return
     const synth = window.speechSynthesis
     const sessionRef = session
-    synth.cancel() // 새로고침 전 발화가 남아 있는 Chrome 대비
+    const gap = gapTimer
+    const utteranceRef = uttRef
+    // A newly opened handoff tab must not cancel speech already playing in another tab.
+    if (!isTextHandoffSource(new URLSearchParams(window.location.search).get('from'))) synth.cancel()
     let saved: string | null = null
     try { saved = localStorage.getItem(VOICE_KEY) } catch { /* 저장소 차단 */ }
 
     const load = () => {
       const vs = synth.getVoices()
-      if (!vs.length) return
+      if (!vs.length) {
+        // An empty update also revokes the previous voice before the next utterance.
+        availableVoices.current = []
+        live.current = { ...live.current, voice: null }
+        setVoices([])
+        if (live.current.localVoicesOnly) setVoiceNotice('noLocalVoice')
+        return
+      }
       setVoices(sortVoices(vs))
-      setVoiceName((prev) => (prev && vs.some((v) => v.name === prev) ? prev : pickVoice(vs, saved)?.name ?? null))
+      if (voiceIntent.current) {
+        const chosen = resolveTtsReadingVoice(voiceIntent.current, vs)
+        setVoiceName(chosen.voice?.name ?? voiceIntent.current.voiceName)
+        setVoiceNotice(!chosen.playAllowed ? 'noLocalVoice' : chosen.missing ? 'voiceMissing' : null)
+      } else {
+        setVoiceName((prev) => (prev && vs.some((v) => v.name === prev) ? prev : pickVoice(vs, saved)?.name ?? null))
+        setVoiceNotice(live.current.localVoicesOnly && !vs.some(v => v.localService === true) ? 'noLocalVoice' : null)
+      }
       setVoicesLoaded(true)
     }
     load()
@@ -99,7 +186,8 @@ export default function TextToSpeech() {
       timers.forEach(clearTimeout)
       clearTimeout(giveUp)
       sessionRef.current++
-      synth.cancel()
+      if (gap.current) clearTimeout(gap.current)
+      if (utteranceRef.current) synth.cancel()
     }
   }, [])
 
@@ -109,66 +197,117 @@ export default function TextToSpeech() {
   }, [initialized, rate, pitch, volume])
 
   // ── 재생 엔진: 문장(최대 140자) 단위로 이어 읽기 ──
-  const speakFrom = useCallback((start: number) => {
+  const speakFrom = useCallback((start: number, resume = false) => {
+    if (!lifetime.current.alive || !live.current.segments.length) return
+    if (live.current.localVoicesOnly && live.current.voice?.localService !== true) { setVoiceNotice('noLocalVoice'); return }
     const synth = window.speechSynthesis
     const id = ++session.current
+    if (gapTimer.current) clearTimeout(gapTimer.current)
+    setWaiting(false)
+    if (!resume) { pass.current = 1; setRepeatPass(1) }
     synth.cancel()
-    setError(null)
+    clearRecovery()
 
     const run = (k: number) => {
       if (id !== session.current) return
-      const { segments: segs, voice: v, rate: r, pitch: p, volume: vol } = live.current
-      if (k >= segs.length) {
+      const settings = live.current
+      if (settings.localVoicesOnly && settings.voice?.localService !== true) {
+        session.current++; setStatus('stopped'); setWaiting(false); setWord(null); setVoiceNotice('noLocalVoice'); return
+      }
+      const { segments: segs, voice: v, rate: r, pitch: p, volume: vol, repeat: looping, repeatStart: first, repeatEnd: last, repeatCount: times, repeatGap: gap } = settings
+      if (looping && k > last && pass.current < times) {
+        pass.current++
+        setRepeatPass(pass.current)
+        idx.current = first
+        setCur(first); setWord(null); setWaiting(gap > 0)
+        gapTimer.current = setTimeout(() => { if (id === session.current) { setWaiting(false); run(first) } }, gap * 1000)
+        return
+      }
+      if (k >= segs.length || (looping && k > last)) {
         session.current++
         idx.current = 0
+        startRef.current = 0; setStartFrom(0)
         setStatus('stopped'); setCur(-1); setWord(null)
         return
       }
       idx.current = k
       setCur(k); setWord(null)
       const seg = segs[k]
-      const u = new SpeechSynthesisUtterance(seg.text)
-      if (v) { u.voice = v; u.lang = v.lang } else u.lang = 'ko-KR'
-      u.rate = r; u.pitch = p; u.volume = vol
-      u.onboundary = (e) => {
-        if (id !== session.current || (e.name && e.name !== 'word')) return
-        const [a, b] = wordRange(seg.text, e.charIndex, e.charLength)
-        if (b > a) setWord([seg.start + a, seg.start + b])
+      const failedPass = pass.current
+      let settled = false
+      const fail = (code: string) => {
+        if (id !== session.current || settled) return
+        settled = true
+        const generation = ++session.current
+        if (gapTimer.current) clearTimeout(gapTimer.current)
+        setStatus('stopped'); setWord(null); setWaiting(false)
+        if (isTtsCancellation(code)) { idx.current = 0; setCur(-1); clearRecovery(); return }
+        const failed = captureTtsRecovery({ ...settings, generation }, k, failedPass)
+        recoveryRef.current = failed
+        setRecovery(failed)
+        setError(t('error', { code }))
       }
-      u.onend = () => run(k + 1)
-      u.onerror = (e) => {
-        if (id !== session.current || e.error === 'interrupted' || e.error === 'canceled') return
-        session.current++
-        setStatus('stopped'); setWord(null)
-        setError(t('error', { code: e.error }))
-      }
-      uttRef.current = u
-      synth.speak(u)
+      try {
+        const u = new SpeechSynthesisUtterance(seg.text)
+        if (v) { u.voice = v; u.lang = v.lang } else u.lang = 'ko-KR'
+        u.rate = r; u.pitch = p; u.volume = vol
+        u.onboundary = (e) => {
+          if (id !== session.current || settled || uttRef.current !== u || (e.name && e.name !== 'word')) return
+          const [a, b] = wordRange(seg.text, e.charIndex, e.charLength)
+          if (b > a) setWord([seg.start + a, seg.start + b])
+        }
+        u.onend = () => {
+          if (id !== session.current || settled || uttRef.current !== u) return
+          settled = true
+          run(k + 1)
+        }
+        u.onerror = (e) => { if (uttRef.current === u) fail(e.error) }
+        uttRef.current = u
+        synth.speak(u)
+      } catch { fail('synthesis-failed') }
     }
     setStatus('speaking')
-    run(Math.max(0, Math.min(start, live.current.segments.length - 1)))
-  }, [t])
+    const settings = live.current
+    run(settings.repeat ? Math.max(settings.repeatStart, Math.min(start, settings.repeatEnd)) : Math.max(0, Math.min(start, settings.segments.length - 1)))
+  }, [t, clearRecovery])
 
   // 일시정지 = 현재 문장에서 멈추고, 계속 = 그 문장 처음부터. (브라우저 pause()는 Android에서 취소로 동작하고
   // Chrome 온라인 음성에선 재개가 멈추는 버그가 있어 모든 환경에서 같은 동작을 보장하려고 이 방식을 쓴다)
   const pause = useCallback(() => {
     session.current++
+    if (gapTimer.current) clearTimeout(gapTimer.current)
+    setWaiting(false)
     window.speechSynthesis.cancel()
     setStatus('paused'); setWord(null)
   }, [])
 
   const stop = useCallback(() => {
     session.current++
+    if (gapTimer.current) clearTimeout(gapTimer.current)
+    setWaiting(false)
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) window.speechSynthesis.cancel()
     idx.current = 0
+    startRef.current = 0; setStartFrom(0)
     setStatus('stopped'); setCur(-1); setWord(null)
-  }, [])
+    clearRecovery()
+  }, [clearRecovery])
+
+  const retryFailedSentence = () => {
+    const failed = recoveryRef.current
+    if (!canRetryTtsRecovery(failed, { ...live.current, generation: session.current })) { clearRecovery(); return }
+    if (!supported || (live.current.localVoicesOnly && live.current.voice?.localService !== true)) return
+    userIntent()
+    pass.current = failed.pass
+    setRepeatPass(failed.pass)
+    speakFrom(failed.sentenceIndex, true)
+  }
 
   const toggle = useCallback(() => {
+    userIntent()
     if (status === 'speaking') pause()
-    else if (status === 'paused') speakFrom(idx.current)
-    else speakFrom(0)
-  }, [status, pause, speakFrom])
+    else if (status === 'paused') speakFrom(idx.current, true)
+    else speakFrom(startRef.current)
+  }, [status, pause, speakFrom, userIntent])
 
   // Chrome 온라인(Google) 음성은 ~15초 넘게 말하면 끊긴다 → 주기적 pause/resume으로 깨워 둔다 (Android 제외: pause가 cancel로 동작)
   useEffect(() => {
@@ -183,7 +322,7 @@ export default function TextToSpeech() {
   // 단축키: Space 재생/일시정지(입력 중이 아닐 때), Esc 정지
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { if (status !== 'stopped') stop(); return }
+      if (e.key === 'Escape') { if (status !== 'stopped' || recoveryRef.current) { userIntent(); stop() }; return }
       if (e.code !== 'Space' || e.ctrlKey || e.metaKey || e.altKey) return
       const el = e.target as HTMLElement | null
       if (el?.closest('input, textarea, select, button, a, [contenteditable="true"]')) return
@@ -192,7 +331,7 @@ export default function TextToSpeech() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [status, stop, toggle])
+  }, [status, stop, toggle, userIntent])
 
   // 현재 문장이 읽기 화면 밖이면 스크롤(페이지는 건드리지 않음)
   useEffect(() => {
@@ -205,30 +344,40 @@ export default function TextToSpeech() {
   }, [cur])
 
   const changeText = useCallback((next: string) => {
+    userIntent(); setTextTouched(true)
     stop()
     setError(null)
     setCopyFailed(false)
     setCopied(false)
+    setRepeat(false); setRepeatStart(0); setRepeatEnd(0)
     setText(next)
-  }, [stop])
+  }, [stop, userIntent])
 
   const changeVoice = (name: string) => {
+    userIntent(); voiceIntent.current = null; setVoiceNotice(null)
     setVoiceName(name)
     try { localStorage.setItem(VOICE_KEY, name) } catch { /* 무시 */ }
     if (status === 'speaking') {
-      live.current.voice = voices.find((v) => v.name === name) ?? null
-      speakFrom(idx.current)
+      live.current.voice = voices.find((v) => v.name === name && (!live.current.localVoicesOnly || v.localService)) ?? null
+      speakFrom(idx.current, true)
     }
   }
 
-  const flash = (msg: string) => { setNotice(msg); setTimeout(() => setNotice(null), 3000) }
+  const flash = (msg: string) => {
+    if (noticeTimer.current !== null) clearTimeout(noticeTimer.current)
+    const owner = lifetime.current, epoch = owner.epoch, intent = owner.intent
+    setNotice(msg); noticeTimer.current = setTimeout(() => { if (owner.alive && owner.epoch === epoch && owner.intent === intent) setNotice(null) }, 3000)
+  }
 
   const pasteClipboard = async () => {
+    userIntent()
+    const owner = lifetime.current, epoch = owner.epoch, intent = owner.intent
+    const current = () => owner.alive && owner.epoch === epoch && owner.intent === intent
     try {
       const clip = await navigator.clipboard.readText()
-      if (clip.trim()) changeText(clip)
+      if (current() && clip.trim()) changeText(clip)
     } catch {
-      flash(t('tools.pasteFailed'))
+      if (current()) flash(t('tools.pasteFailed'))
     }
   }
 
@@ -241,25 +390,57 @@ export default function TextToSpeech() {
   }, [text, rate])
 
   const copyLink = async () => {
+    const owner = lifetime.current, epoch = owner.epoch, request = ++owner.copy
+    if (!owner.alive) return
+    const current = () => owner.alive && owner.epoch === epoch && owner.copy === request
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    setCopied(false)
     setCopyFailed(false)
     try {
       await navigator.clipboard.writeText(shareUrl)
+      if (!current()) return
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      copyTimer.current = setTimeout(() => { if (current()) setCopied(false) }, 2000)
     } catch {
+      if (!current()) return
       setCopied(false)
       setCopyFailed(true)
     }
+  }
+
+  const captureReadingDraft = (): TtsReadingResult<TtsReadingDraft> => {
+    const settings = live.current
+    const captured = captureTtsReadingPosition(settings.text, { status, currentIndex: idx.current, startFrom: startRef.current,
+      recovery: recoveryRef.current, recoveryContext: { ...settings, generation: session.current } })
+    if (!captured.ok) return captured
+    return { ok: true, value: { text: settings.text, position: captured.value, settings: {
+      voiceName: settings.voice?.name ?? voiceName, rate: settings.rate, pitch: settings.pitch, volume: settings.volume, localVoicesOnly: settings.localVoicesOnly,
+    } } }
+  }
+  const applyReadingRecord = (loaded: TtsReadingLoad): boolean => {
+    if (!initialized || !lifetime.current.alive) return false
+    userIntent(); stop()
+    const { record, segments: restoredSegments } = loaded, saved = record.settings, start = loaded.index ?? 0
+    const selected = resolveTtsReadingVoice(saved, availableVoices.current)
+    voiceIntent.current = { ...saved }
+    setTextTouched(true); setText(record.text); setVoiceName(selected.voice?.name ?? saved.voiceName)
+    setRate(saved.rate); setPitch(saved.pitch); setVolume(saved.volume); setLocalVoicesOnly(saved.localVoicesOnly)
+    setVoiceNotice(!selected.playAllowed ? 'noLocalVoice' : selected.missing ? 'voiceMissing' : null)
+    setRepeat(false); setRepeatStart(0); setRepeatEnd(0); pass.current = 1; setRepeatPass(1)
+    startRef.current = start; setStartFrom(start); idx.current = start; setCur(loaded.index ?? -1)
+    live.current = { text: record.text, segments: restoredSegments, voice: selected.voice, rate: saved.rate, pitch: saved.pitch, volume: saved.volume,
+      localVoicesOnly: saved.localVoicesOnly, repeat: false, repeatStart: 0, repeatEnd: 0, repeatCount, repeatGap }
+    return true
   }
 
   // ── 표시용 계산 ──
   const totalSec = estimateSeconds(text, rate)
   const pos = cur >= 0 && segments[cur] ? (word?.[0] ?? segments[cur].start) : -1
   const remainSec = pos >= 0 ? estimateSeconds(text.slice(pos), rate) : totalSec
-  const koVoices = voices.filter(isKoreanVoice)
-  const otherVoices = voices.filter((v) => !isKoreanVoice(v))
+  const koVoices = visibleVoices.filter(isKoreanVoice)
+  const otherVoices = visibleVoices.filter((v) => !isKoreanVoice(v))
   const noKorean = voicesLoaded && koVoices.length === 0
-  const canPlay = segments.length > 0 && supported
+  const canPlay = initialized && segments.length > 0 && supported && (!localVoicesOnly || voice?.localService === true)
   const tooLongForUrl = text.length > URL_TEXT_LIMIT
   const voiceLabel = (v: SpeechSynthesisVoice) => `${v.name} (${v.lang})${v.localService ? '' : ` · ${t('online')}`}`
 
@@ -275,9 +456,10 @@ export default function TextToSpeech() {
           type="button"
           key={i}
           data-i={i}
-          onClick={() => speakFrom(i)}
+          onClick={() => { userIntent(); speakFrom(i) }}
+          disabled={!canPlay || (repeat && (i < repeatStart || i > repeatEnd))}
           title={t('reader.clickHint')}
-          className={`max-w-full text-left whitespace-pre-wrap break-words rounded px-0.5 -mx-0.5 transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
+          className={`max-w-full text-left whitespace-pre-wrap break-words rounded px-0.5 -mx-0.5 transition-colors disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-primary ${
             active ? 'bg-primary-soft text-primary' : 'hover:bg-soft'
           }`}
         >
@@ -311,7 +493,7 @@ export default function TextToSpeech() {
   }
 
   return (
-    <div className="space-y-8">
+    <div data-tts-root="" data-tts-status={status} data-tts-current={cur} data-tts-start-from={startFrom} data-tts-ready={initialized} className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -321,10 +503,12 @@ export default function TextToSpeech() {
         <div className="min-w-0 lg:col-span-2 space-y-6">
           {/* 텍스트 입력 */}
           <div id="tts-input" className="ui-card p-4 sm:p-6 space-y-4 scroll-mt-20">
+            {handoffNotice && <p role="status" className="text-sm text-sub">{t(handoffNotice)}</p>}
+            {handoffCleanupFailed && <p role="alert" className="text-sm text-sub">{t('handoff.cleanupFailed')}</p>}
             <div className="flex flex-wrap items-center justify-between gap-2">
               <label htmlFor="tts-text" className="text-sm font-semibold text-body">{t('textInput')}</label>
               <div className="flex flex-wrap gap-2">
-                <button onClick={pasteClipboard} className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5">
+                <button data-tts-paste="" onClick={pasteClipboard} className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5">
                   <ClipboardPaste className="w-4 h-4" />{t('tools.paste')}
                 </button>
                 <button onClick={() => changeText(tidyText(text))} disabled={!text} className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-sm font-medium inline-flex items-center gap-1.5 disabled:opacity-45">
@@ -343,20 +527,61 @@ export default function TextToSpeech() {
               className="ui-field px-4 py-3 min-h-[140px] sm:min-h-[180px] text-base leading-relaxed"
             />
             <div id="tts-controls" className="scroll-mt-20 flex flex-wrap items-center gap-3">
-              <button onClick={toggle} disabled={!canPlay} className="ui-btn px-5 py-3 min-w-[128px]">
+              <button data-tts-play="" onClick={toggle} disabled={!canPlay} className="ui-btn px-5 py-3 min-w-[128px]">
                 {status === 'speaking' ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                 {status === 'speaking' ? t('pause') : status === 'paused' ? t('resume') : t('play')}
               </button>
-              <button onClick={stop} disabled={status === 'stopped'} className="bg-soft hover:bg-subtle text-body rounded-xl px-4 py-3 font-semibold inline-flex items-center gap-2 disabled:opacity-45">
+              <button data-tts-stop="" onClick={() => { userIntent(); stop() }} disabled={status === 'stopped' && !recovery && startFrom === 0} className="bg-soft hover:bg-subtle text-body rounded-xl px-4 py-3 font-semibold inline-flex items-center gap-2 disabled:opacity-45">
                 <Square className="w-4 h-4" />{t('stop')}
               </button>
               <div className="text-sm text-sub ml-auto tabular-nums" aria-live="polite">
                 {status === 'speaking' ? t('speaking') : status === 'paused' ? t('paused') : t('stopped')}
-                {status !== 'stopped' && ` · ${t('remaining', { time: formatDuration(remainSec) })}`}
+                {status !== 'stopped' && ` · ${repeat ? t('repeat.progress', { current: repeatPass, total: repeatCount }) : t('remaining', { time: formatDuration(remainSec) })}`}
               </div>
             </div>
-            {error && <p role="alert" className="bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-4 text-sm">{error}</p>}
+            <fieldset className="bg-subtle rounded-2xl p-4 space-y-3" disabled={status !== 'stopped' || !segments.length}>
+              <label className="flex min-h-11 items-center gap-3 text-sm font-semibold text-body cursor-pointer">
+                <input data-tts-repeat="" type="checkbox" checked={repeat} onChange={e => { userIntent(); clearRecovery(); setRepeat(e.target.checked); setRepeatStart(0); setRepeatEnd(Math.max(0, segments.length - 1)) }} className="w-5 h-5 accent-primary" />
+                {t('repeat.enable')}
+              </label>
+              {repeat && <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="min-w-0 text-sm text-body">{t('repeat.start')}
+                  <select className="ui-field w-full min-w-0 mt-1 px-3 py-3 text-base" aria-label={t('repeat.start')} value={repeatStart} onChange={e => { userIntent(); clearRecovery(); const start = Number(e.target.value); setRepeatStart(start); setRepeatEnd(Math.max(start, repeatEnd)) }}>
+                    {segments.map((seg, i) => <option key={i} value={i}>{i + 1}. {seg.text.slice(0, 32)}</option>)}
+                  </select>
+                </label>
+                <label className="min-w-0 text-sm text-body">{t('repeat.end')}
+                  <select className="ui-field w-full min-w-0 mt-1 px-3 py-3 text-base" aria-label={t('repeat.end')} value={repeatEnd} onChange={e => { userIntent(); clearRecovery(); setRepeatEnd(Number(e.target.value)) }}>
+                    {segments.map((seg, i) => i >= repeatStart && <option key={i} value={i}>{i + 1}. {seg.text.slice(0, 32)}</option>)}
+                  </select>
+                </label>
+                <label className="text-sm text-body">{t('repeat.count')}
+                  <select className="ui-field mt-1 px-3 py-3 text-base" aria-label={t('repeat.count')} value={repeatCount} onChange={e => { userIntent(); clearRecovery(); setRepeatCount(Number(e.target.value)) }}>
+                    {[2, 3, 5, 10].map(n => <option key={n} value={n}>{t('repeat.times', { count: n })}</option>)}
+                  </select>
+                </label>
+                <label className="text-sm text-body">{t('repeat.gap')}
+                  <select className="ui-field mt-1 px-3 py-3 text-base" aria-label={t('repeat.gap')} value={repeatGap} onChange={e => { userIntent(); clearRecovery(); setRepeatGap(Number(e.target.value)) }}>
+                    {[0, 2, 5, 10].map(n => <option key={n} value={n}>{t('repeat.seconds', { count: n })}</option>)}
+                  </select>
+                </label>
+              </div>}
+              <p className="text-xs text-muted">{t('repeat.hint')}</p>
+            </fieldset>
+            {waiting && <p role="status" className="text-sm text-primary">{t('repeat.waiting')}</p>}
+            {error && <div className="rounded-2xl border border-line bg-subtle p-4 text-sm text-body space-y-3">
+              <p role="alert">{error}</p>
+              {recovery && <>
+                <p className="font-medium text-fg">{t('recovery.sentence', { number: recovery.sentenceIndex + 1 })}</p>
+                <p className="whitespace-pre-wrap break-words">{recovery.sentence.text}</p>
+                {recovery.settings.repeat && <p className="text-sub">{t('recovery.repeat', { pass: recovery.pass, count: recovery.settings.repeatCount, remaining: recovery.settings.repeatCount - recovery.pass })}</p>}
+                <button data-tts-retry="" type="button" onClick={retryFailedSentence} disabled={!canPlay} className="ui-btn min-h-11 px-4 py-2 text-sm disabled:opacity-45">{t('recovery.retry')}</button>
+                <p className="text-xs text-sub">{t('recovery.hint')}</p>
+                {localVoicesOnly && !voice && <p className="text-xs text-sub">{t('handoff.noLocal')}</p>}
+              </>}
+            </div>}
             {notice && <p role="status" className="text-sm text-sub">{notice}</p>}
+            {status === 'stopped' && startFrom > 0 && <p data-tts-resume-position="" role="status" className="text-sm text-primary">{t('readingList.resumeFrom', { sentence: startFrom + 1 })}</p>}
             <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-sub tabular-nums">
               <span>{t('charCount')} {text.length.toLocaleString()}</span>
               <span>{t('stats.charsNoSpace')} {text.replace(/\s/g, '').length.toLocaleString()}</span>
@@ -379,6 +604,7 @@ export default function TextToSpeech() {
                 ))}
               </div>
             </div>
+            <TtsReadingList ready={initialized} inputRevision={readingRevision} capture={captureReadingDraft} onApply={applyReadingRecord} />
           </div>
 
           {/* 플레이어 + 읽기 화면 */}
@@ -392,10 +618,11 @@ export default function TextToSpeech() {
               <div>
                 <input
                   type="range"
-                  min={0}
-                  max={segments.length - 1}
-                  value={Math.max(cur, 0)}
-                  onChange={(e) => speakFrom(Number(e.target.value))}
+                  disabled={!canPlay}
+                  min={repeat ? repeatStart : 0}
+                  max={repeat ? repeatEnd : segments.length - 1}
+                  value={repeat ? Math.max(repeatStart, Math.min(cur, repeatEnd)) : Math.max(cur, 0)}
+                  onChange={(e) => { userIntent(); speakFrom(Number(e.target.value)) }}
                   aria-label={t('progressLabel')}
                   className="w-full h-11 accent-primary"
                 />
@@ -424,8 +651,8 @@ export default function TextToSpeech() {
           <div className="ui-card p-4 sm:p-6 space-y-5">
             <div>
               <label htmlFor="tts-voice" className="block text-sm font-semibold text-body mb-2">{t('voice')}</label>
-              {voices.length > 0 ? (
-                <select id="tts-voice" value={voiceName ?? ''} onChange={(e) => changeVoice(e.target.value)} className="ui-field px-3 py-2.5 text-base">
+              {visibleVoices.length > 0 ? (
+                <select id="tts-voice" value={voice?.name ?? voiceName ?? ''} onChange={(e) => changeVoice(e.target.value)} className="ui-field px-3 py-2.5 text-base">
                   {koVoices.length > 0 && (
                     <optgroup label={t('voiceGroups.korean')}>
                       {koVoices.map((v) => <option key={v.name} value={v.name}>{voiceLabel(v)}</option>)}
@@ -438,6 +665,10 @@ export default function TextToSpeech() {
               ) : (
                 <p className="text-sm text-muted">{voicesLoaded ? t('noVoices') : t('loadingVoices')}</p>
               )}
+              <label className="mt-3 min-h-11 flex items-center gap-3 text-sm text-body"><input data-tts-local-only="" type="checkbox" checked={localVoicesOnly} onChange={e => { userIntent(); voiceIntent.current = null; setVoiceNotice(null); stop(); setLocalVoicesOnly(e.target.checked) }} className="w-5 h-5 accent-primary" />{t('handoff.localOnly')}</label>
+              {voiceNotice && <p data-tts-voice-notice={voiceNotice} role="status" className="mt-2 text-sm text-sub">{t(`readingList.${voiceNotice}`)}</p>}
+              <p className="text-xs text-muted mt-1">{t('handoff.voicePrivacy')}</p>
+              {localVoicesOnly && voicesLoaded && !visibleVoices.length && <p role="status" className="text-sm text-sub mt-2">{t('handoff.noLocal')}</p>}
               {noKorean && (
                 <div className="mt-3 bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200 rounded-2xl p-4 text-sm space-y-1">
                   <p className="font-semibold">{t('noKoreanVoice.title')}</p>
@@ -452,7 +683,7 @@ export default function TextToSpeech() {
                 {SPEED_PRESETS.map((p) => (
                   <button
                     key={p.key}
-                    onClick={() => setRate(p.rate)}
+                    onClick={() => { userIntent(); setRate(p.rate) }}
                     className={`rounded-xl min-h-11 px-2 py-2 text-sm font-medium ${
                       rate === p.rate ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
@@ -475,7 +706,7 @@ export default function TextToSpeech() {
                 <input
                   id={`tts-${key}`}
                   type="range" min={min} max={max} step={step} value={value}
-                  onChange={(e) => set(Number(e.target.value))}
+                  onChange={(e) => { userIntent(); set(Number(e.target.value)) }}
                   className="w-full h-11 accent-primary"
                 />
               </div>
@@ -483,7 +714,7 @@ export default function TextToSpeech() {
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs text-muted">{t('settingsNote')}</p>
               <button
-                onClick={() => { setRate(1); setPitch(1); setVolume(1) }}
+                onClick={() => { userIntent(); setRate(1); setPitch(1); setVolume(1) }}
                 className="bg-soft hover:bg-subtle text-body rounded-xl min-h-11 px-3 py-1.5 text-xs font-medium shrink-0"
               >
                 {t('resetSettings')}
@@ -493,7 +724,7 @@ export default function TextToSpeech() {
 
           <div className="ui-card p-4 sm:p-6 space-y-3">
             <p className="text-sm font-semibold text-body">{t('share.title')}</p>
-            <button onClick={copyLink} disabled={!text || tooLongForUrl} className="ui-btn-soft w-full px-4 py-2.5 text-sm">
+            <button data-tts-copy-link="" onClick={copyLink} disabled={!initialized || !text || tooLongForUrl} className="ui-btn-soft w-full px-4 py-2.5 text-sm">
               {copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
               {copied ? t('share.copied') : t('share.copy')}
             </button>

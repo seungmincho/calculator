@@ -1,36 +1,25 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef, useMemo, useDeferredValue } from 'react'
+import { useNotepadWorkspace } from '@/hooks/useNotepadWorkspace'
+import NotepadRecovery from './NotepadRecovery'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/notepad'
 import { FileText, Plus, Trash2, Download, Pin, PinOff, Menu, X, Search, Maximize2, Minimize2, Upload, Archive, Replace } from 'lucide-react'
 import { analyze } from '@/utils/charCount'
 import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
+import { captureTextSelection, openTextHandoff, selectedHandoffText, TEXT_HANDOFF_LIMIT, type TextSelectionSnapshot } from '@/utils/textHandoff'
 import {
-  type Note, type Settings, STORAGE_KEY, SETTINGS_KEY, DEFAULT_SETTINGS, FONT_SIZES,
-  newId, parseNotes, parseSettings, backupJson, mergeNotes, sortNotes, searchNotes,
+  type Note, FONT_SIZES,
+  newId, backupJson, sortNotes, searchNotes,
   displayTitle, safeFileName, findAll, nextMatch, replaceAll,
 } from '@/utils/notepad'
 
-const SAVE_DELAY = 400
-
-type SaveState = 'idle' | 'saving' | 'saved' | 'error'
-interface Toast { msg: string; undo?: { notes: Note[]; activeId: string | null } }
+interface Toast { key: string; values?: Record<string, string | number>; undoToken?: number | null }
 
 const blankNote = (): Note => {
   const now = Date.now()
   return { id: newId(), title: '', content: '', createdAt: now, updatedAt: now }
-}
-
-function download(name: string, text: string, type: string) {
-  const url = URL.createObjectURL(new Blob([text], { type }))
-  const a = document.createElement('a')
-  a.href = url
-  a.download = name
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
 /** 실행 취소 기록이 남도록 브라우저 편집 명령으로 삽입. 안 되면 직접 교체 */
@@ -44,11 +33,11 @@ function insertText(ta: HTMLTextAreaElement, text: string): boolean {
 export default function Notepad() {
   const t = useTranslations('notepad')
 
-  const [notes, setNotes] = useState<Note[]>([])
-  const [activeId, setActiveId] = useState<string | null>(null)
-  const [loaded, setLoaded] = useState(false)
-  const [saveState, setSaveState] = useState<SaveState>('idle')
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
+  const workspace = useNotepadWorkspace()
+  const { controller, edit, download, cancelImport } = workspace
+  const notes = useMemo(() => [...workspace.view.notes], [workspace.view.notes])
+  const activeId = workspace.view.activeId, loaded = workspace.view.ready, settings = workspace.settings
+  const [clock, setClock] = useState(0)
   const [query, setQuery] = useState('')
   const [listOpen, setListOpen] = useState(false)
   const [focusMode, setFocusMode] = useState(false)
@@ -57,90 +46,64 @@ export default function Notepad() {
   const [replQ, setReplQ] = useState('')
   const [caseSens, setCaseSens] = useState(false)
   const [toast, setToast] = useState<Toast | null>(null)
+  const [readingSelection, setReadingSelection] = useState<TextSelectionSnapshot | null>(null)
+  const [readingNotice, setReadingNotice] = useState<{ key: string; error: boolean; count?: number } | null>(null)
+  const readingSelectionRef = useRef<TextSelectionSnapshot | null>(null)
 
   const taRef = useRef<HTMLTextAreaElement>(null)
   const findRef = useRef<HTMLInputElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const focusBtnRef = useRef<HTMLButtonElement>(null)
-  const notesRef = useRef(notes)
-  notesRef.current = notes
-  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const skipSave = useRef(false)
   const escPressed = useRef(false)
+  const mounted = useRef(false)
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const toastOwner = useRef(0)
+  const focusTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const focusOwner = useRef(0)
+  const invalidateToast = useCallback(() => { toastOwner.current++; if (toastTimer.current !== null) clearTimeout(toastTimer.current); toastTimer.current = null }, [])
 
+  const clearFocus = useCallback(() => { focusOwner.current++; if (focusTimer.current !== null) clearTimeout(focusTimer.current); focusTimer.current = null }, [])
+  const requestFocus = useCallback((field: 'editor' | 'find', expectedId: string | null) => {
+    clearFocus(); const owner = focusOwner.current
+    focusTimer.current = setTimeout(() => {
+      if (!mounted.current || owner !== focusOwner.current || controller.snapshot().activeId !== expectedId) return
+      focusTimer.current = null
+      const node = field === 'editor' ? taRef.current : findRef.current
+      if (node?.isConnected) node.focus()
+    }, 0)
+  }, [clearFocus, controller])
   const showToast = useCallback((tst: Toast) => {
+    if (!mounted.current) return
+    const owner = ++toastOwner.current
     setToast(tst)
-    if (toastTimer.current) clearTimeout(toastTimer.current)
-    toastTimer.current = setTimeout(() => setToast(null), 6000)
+    if (toastTimer.current !== null) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => {
+      if (!mounted.current || owner !== toastOwner.current) return
+      toastTimer.current = null; setToast(null)
+      if (tst.undoToken != null) controller.clearUndo(tst.undoToken)
+    }, 6000)
+  }, [controller])
+  const closeToast = useCallback(() => {
+    invalidateToast()
+    const token = controller.snapshot().undoToken
+    if (token !== null) controller.clearUndo(token)
+    setToast(null)
+  }, [controller, invalidateToast])
+  useEffect(() => {
+    mounted.current = true
+    const initial = setTimeout(() => setClock(Date.now()), 0)
+    const hide = () => { mounted.current = false; clearFocus(); invalidateToast(); setToast(null) }
+    const show = () => { mounted.current = true }
+    window.addEventListener('pagehide', hide)
+    window.addEventListener('pageshow', show)
+    return () => { mounted.current = false; clearTimeout(initial); clearFocus(); invalidateToast(); window.removeEventListener('pagehide', hide); window.removeEventListener('pageshow', show) }
+  }, [clearFocus, invalidateToast])
+
+  const clearReadingSelection = useCallback(() => {
+    readingSelectionRef.current = null
+    setReadingSelection(null)
+    setReadingNotice(null)
   }, [])
-
-  // ── 저장 ──
-  const persist = useCallback(() => {
-    saveTimer.current = null
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(notesRef.current))
-      setSaveState('saved')
-    } catch {
-      setSaveState('error') // 대개 QuotaExceededError
-    }
-  }, [])
-
-  // 마운트 후 로드 (예전 v1 배열 형식 그대로 읽힘)
-  useEffect(() => {
-    let raw: string | null = null
-    try { raw = localStorage.getItem(STORAGE_KEY) } catch { /* 저장소 차단 */ }
-    let list = parseNotes(raw)
-    if (list === null) {
-      // 깨진 데이터는 덮어쓰기 전에 별도 키로 보존
-      try { localStorage.setItem(`${STORAGE_KEY}-corrupt-${Date.now()}`, raw ?? '') } catch { /* ignore */ }
-      list = []
-    }
-    if (!list.length) list = [blankNote()]
-    const sorted = sortNotes(list)
-    skipSave.current = true
-    setNotes(sorted)
-    setActiveId(sorted[0].id)
-    try { setSettings(parseSettings(localStorage.getItem(SETTINGS_KEY))) } catch { /* ignore */ }
-    setLoaded(true)
-  }, [])
-
-  // 변경 시 디바운스 저장
-  useEffect(() => {
-    if (!loaded) return
-    if (skipSave.current) { skipSave.current = false; return }
-    setSaveState('saving')
-    if (saveTimer.current) clearTimeout(saveTimer.current)
-    saveTimer.current = setTimeout(persist, SAVE_DELAY)
-  }, [notes, loaded, persist])
-
-  // 탭 닫기·전환 직전 남은 저장 즉시 실행
-  useEffect(() => {
-    const flush = () => { if (saveTimer.current) { clearTimeout(saveTimer.current); persist() } }
-    const onVis = () => { if (document.visibilityState === 'hidden') flush() }
-    window.addEventListener('pagehide', flush)
-    document.addEventListener('visibilitychange', onVis)
-    return () => { window.removeEventListener('pagehide', flush); document.removeEventListener('visibilitychange', onVis) }
-  }, [persist])
-
-  // 다른 탭에서 바뀌면 반영. ponytail: 두 탭에서 동시에 같은 메모를 쓰면 마지막 저장이 이김
-  useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key !== STORAGE_KEY) return
-      const list = parseNotes(e.newValue)
-      if (!list) return
-      skipSave.current = true
-      setNotes(list)
-      setActiveId(id => (list.some(n => n.id === id) ? id : sortNotes(list)[0]?.id ?? null))
-    }
-    window.addEventListener('storage', onStorage)
-    return () => window.removeEventListener('storage', onStorage)
-  }, [])
-
-  useEffect(() => {
-    if (!loaded) return
-    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)) } catch { /* ignore */ }
-  }, [settings, loaded])
 
   // ── 파생값 ──
   const active = notes.find(n => n.id === activeId) ?? null
@@ -150,92 +113,104 @@ export default function Notepad() {
   const matchCount = useMemo(() => findAll(active?.content ?? '', findQ, caseSens).length, [active?.content, findQ, caseSens])
   const untitled = t('untitled')
   const nameOf = (n: Note) => displayTitle(n) || untitled
+  const selectedReading = active ? selectedHandoffText(readingSelection, active.id, active.content) : null
+
+  const captureReadingSelection = (keepOnCollapse = false) => {
+    if (!mounted.current) return
+    const textarea = taRef.current
+    const latest = controller.snapshot(), note = latest.notes.find(item => item.id === latest.activeId)
+    if (!textarea || !note || textarea.value !== note.content) return
+    const selection = captureTextSelection(note.id, note.content, textarea.selectionStart, textarea.selectionEnd)
+    if (!selection && keepOnCollapse) return
+    readingSelectionRef.current = selection
+    setReadingSelection(selection)
+  }
+
+  const sendToReader = (selectionOnly: boolean) => {
+    if (!mounted.current) return
+    const latest = controller.snapshot(), note = latest.notes.find(item => item.id === latest.activeId)
+    setReadingNotice(null)
+    if (!note) return
+    const content = selectionOnly ? selectedHandoffText(readingSelectionRef.current, note.id, note.content) : note.content
+    if (content === null) { setReadingNotice({ key: 'selectionChanged', error: true }); return }
+    try {
+      openTextHandoff(content)
+      setReadingNotice({ key: 'sent', error: false, count: content.length })
+    } catch (cause) {
+      const message = cause instanceof Error ? cause.message : ''
+      const key = ['popupBlocked', 'textTooLong', 'emptyText'].includes(message) ? message : 'handoffFailed'
+      setReadingNotice({ key, error: true })
+    }
+  }
 
   // ── 메모 조작 ──
   const updateActive = useCallback((patch: Partial<Note>) => {
-    setNotes(prev => prev.map(n => (n.id === activeId ? { ...n, ...patch, updatedAt: Date.now() } : n)))
-  }, [activeId])
-
+    if (!mounted.current) return
+    const view = controller.snapshot(), now = Date.now()
+    if (!view.ready || !view.activeId) return
+    clearReadingSelection(); clearFocus(); setClock(now)
+    edit(view.notes.map(n => n.id === view.activeId ? { ...n, ...patch, updatedAt: now } : n), view.activeId)
+  }, [controller, edit, clearReadingSelection, clearFocus])
   const createNote = useCallback(() => {
-    const n = blankNote()
-    setNotes(prev => [n, ...prev])
-    setActiveId(n.id)
-    setQuery('')
-    setListOpen(false)
-    setTimeout(() => taRef.current?.focus(), 0)
-  }, [])
-
+    if (!mounted.current || !controller.snapshot().ready) return
+    const view = controller.snapshot(), n = blankNote(), ids = new Set(view.notes.map(note => note.id))
+    let suffix = 0; const baseId = n.id
+    while (ids.has(n.id)) n.id = baseId + '-' + (++suffix)
+    clearReadingSelection(); setClock(Date.now())
+    if (!edit([n, ...view.notes], n.id)) return
+    setQuery(''); setListOpen(false); requestFocus('editor', n.id)
+  }, [controller, edit, clearReadingSelection, requestFocus])
   const deleteNote = useCallback((id: string) => {
-    const snapshot = notesRef.current
-    const rest = snapshot.filter(n => n.id !== id)
-    setNotes(rest)
-    if (id === activeId) setActiveId(sortNotes(rest)[0]?.id ?? null)
-    const gone = snapshot.find(n => n.id === id)
-    showToast({ msg: t('toast.deleted', { name: (gone && displayTitle(gone)) || untitled }), undo: { notes: snapshot, activeId } })
-  }, [activeId, showToast, t, untitled])
-
+    if (!mounted.current) return
+    const view = controller.snapshot(), gone = view.notes.find(n => n.id === id)
+    if (!gone) return
+    const rest = view.notes.filter(n => n.id !== id), selected = id === view.activeId ? sortNotes(rest)[0]?.id ?? null : view.activeId
+    clearReadingSelection(); clearFocus()
+    if (edit(rest, selected, true)) showToast({ key: 'toast.deleted', values: { name: displayTitle(gone) || t('untitled') }, undoToken: controller.snapshot().undoToken })
+  }, [controller, edit, clearReadingSelection, clearFocus, showToast, t])
   const togglePin = useCallback((id: string) => {
-    setNotes(prev => prev.map(n => (n.id === id ? { ...n, pinned: !n.pinned } : n)))
-  }, [])
-
+    if (!mounted.current) return
+    const view = controller.snapshot(); clearFocus()
+    edit(view.notes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n), view.activeId)
+  }, [controller, edit, clearFocus])
+  const selectNote = (id: string) => { if (!mounted.current) return; clearFocus(); clearReadingSelection(); controller.select(id); setListOpen(false) }
   const undo = () => {
-    if (!toast?.undo) return
-    setNotes(toast.undo.notes)
-    setActiveId(toast.undo.activeId)
-    setToast(null)
+    if (!mounted.current || toast?.undoToken == null) return
+    clearFocus()
+    if (workspace.undo(toast.undoToken)) { clearReadingSelection(); closeToast() }
   }
 
   // ── 내보내기·백업·가져오기 ──
   const exportTxt = useCallback(() => {
-    const n = notesRef.current.find(x => x.id === activeId)
+    const view = controller.snapshot(), n = view.notes.find(x => x.id === view.activeId)
     if (!n) return
-    download(`${safeFileName(displayTitle(n) || untitled)}.txt`, n.content, 'text/plain;charset=utf-8')
-  }, [activeId, untitled])
-
+    download(safeFileName(displayTitle(n) || t('untitled')) + '.txt', n.content, 'text/plain;charset=utf-8')
+  }, [controller, download, t])
   const exportBackup = () => {
-    const d = new Date()
-    const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-    download(`toolhub-notepad-backup-${ymd}.json`, backupJson(notes), 'application/json')
+    const date = new Date().toISOString().slice(0, 10)
+    download('toolhub-notepad-backup-' + date + '.json', backupJson([...controller.snapshot().notes]), 'application/json;charset=utf-8')
   }
-
   const importFiles = async (files: FileList | null) => {
-    if (!files?.length) return
-    const snapshot = notesRef.current
-    let cur = snapshot
-    let count = 0
-    let bad = 0
-    for (const f of Array.from(files)) {
-      const text = await f.text()
-      if (/\.json$/i.test(f.name)) {
-        const list = parseNotes(text)
-        if (!list) { bad++; continue }
-        const m = mergeNotes(cur, list)
-        cur = m.notes
-        count += m.added + m.updated
-      } else {
-        const now = Date.now()
-        cur = [{ id: newId(), title: f.name.replace(/\.[^.]+$/, ''), content: text.replace(/\r\n?/g, '\n'), createdAt: now, updatedAt: now }, ...cur]
-        count++
-      }
-    }
+    const captured = files ? Array.from(files) : []
     if (fileRef.current) fileRef.current.value = ''
-    if (count) {
-      setNotes(cur)
-      const first = sortNotes(cur)[0]
-      if (first) setActiveId(first.id)
-    }
-    showToast({ msg: bad ? t('toast.importFailed', { n: count, bad }) : t('toast.imported', { n: count }), undo: count ? { notes: snapshot, activeId } : undefined })
+    if (!captured.length || !mounted.current) return
+    clearFocus(); clearReadingSelection(); closeToast()
+    const result = await workspace.importFiles(captured)
+    if (!result || !mounted.current || result.scope !== controller.snapshot().scope) return
+    setClock(Date.now())
+    showToast({ key: 'importRecovery.result', values: { added: result.added, conflicts: result.conflicts, duplicates: result.duplicates, failed: result.failures.length }, undoToken: result.undoToken })
   }
 
   // ── 찾기·바꾸기 ──
   const findNext = useCallback(() => {
     const ta = taRef.current
-    if (!ta || !findQ) return
+    const view = controller.snapshot(), note = view.notes.find(n => n.id === view.activeId)
+    if (!mounted.current || !ta || !findQ || !note || ta.value !== note.content) return
     const i = nextMatch(ta.value, findQ, ta.selectionEnd, caseSens)
     if (i < 0) return
     ta.focus()
     ta.setSelectionRange(i, i + findQ.length)
-  }, [findQ, caseSens])
+  }, [findQ, caseSens, controller])
 
   const replaceOne = () => {
     const ta = taRef.current
@@ -248,18 +223,15 @@ export default function Notepad() {
   }
 
   const replaceAllNow = () => {
-    if (!active) return
-    const r = replaceAll(active.content, findQ, replQ, caseSens)
-    if (!r.count) return
-    const snapshot = notesRef.current
-    updateActive({ content: r.text })
-    showToast({ msg: t('toast.replaced', { n: r.count }), undo: { notes: snapshot, activeId } })
+    const view = controller.snapshot(), note = view.notes.find(n => n.id === view.activeId)
+    if (!note || !mounted.current) return
+    const result = replaceAll(note.content, findQ, replQ, caseSens)
+    if (!result.count) return
+    clearReadingSelection(); clearFocus(); const now = Date.now(); setClock(now)
+    if (edit(view.notes.map(n => n.id === note.id ? { ...n, content: result.text, updatedAt: now } : n), note.id, true)) showToast({ key: 'toast.replaced', values: { n: result.count }, undoToken: controller.snapshot().undoToken })
   }
-
-  const openFind = () => {
-    setFindOpen(true)
-    setTimeout(() => findRef.current?.focus(), 0)
-  }
+  const openFind = () => { setFindOpen(true); requestFocus('find', controller.snapshot().activeId) }
+  const closeFind = () => { clearFocus(); setFindOpen(false) }
 
   // ── 단축키 ──
   useEffect(() => {
@@ -295,7 +267,7 @@ export default function Notepad() {
 
   // ── 표시 ──
   const relTime = (ts: number) => {
-    const diff = Date.now() - ts
+    const diff = clock - ts
     if (diff < 60_000) return t('time.justNow')
     if (diff < 3_600_000) return t('time.minutes', { n: Math.floor(diff / 60_000) })
     if (diff < 86_400_000) return t('time.hours', { n: Math.floor(diff / 3_600_000) })
@@ -312,16 +284,22 @@ export default function Notepad() {
     [t('stats.bytes'), stats.bytesUtf8.toLocaleString()],
   ]
 
-  const toolBtn = 'ui-btn-soft min-h-10 min-w-10 px-3 py-2 text-sm inline-flex items-center justify-center gap-1.5'
-  const toggleBtn = (on: boolean) => `min-h-10 px-3 py-2 text-sm rounded-xl inline-flex items-center gap-1.5 ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const toolBtn = 'ui-btn-soft min-h-11 min-w-11 px-3 py-2 text-sm inline-flex items-center justify-center gap-1.5'
+  const toggleBtn = (on: boolean) => `min-h-11 px-3 py-2 text-sm rounded-xl inline-flex items-center gap-1.5 ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" data-notepad-root="" data-notepad-ready={loaded}>
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
         <p className="text-sm text-sub mt-2">{t('localOnly')}</p>
       </div>
+
+      <NotepadRecovery view={workspace.view} settingsError={workspace.settingsError} onRetry={() => { clearFocus(); void workspace.retry() }} onRecheck={() => { clearFocus(); workspace.recheck() }} onKeepBoth={(scope, raw) => { clearFocus(); clearReadingSelection(); void workspace.keepBoth(scope, raw) }} onBackup={exportBackup} onRawBackup={raw => download('toolhub-notepad-original.txt', raw, 'text/plain;charset=utf-8')} onRetrySettings={() => { void workspace.retrySettings() }} />
+      {workspace.importStatus === 'reading' && <div className="flex flex-wrap items-center gap-3" role="status" data-notepad-import-status="reading"><p className="text-sm text-sub">{t('importRecovery.reading')}</p><button type="button" data-notepad-import-cancel="" onClick={cancelImport} className="ui-btn-soft min-h-11 px-4 py-2">{t('importRecovery.cancel')}</button></div>}
+      {workspace.importStatus === 'cancelled' && <p role="status" data-notepad-import-status="cancelled" className="text-sm text-sub">{t('importRecovery.cancelled')}</p>}
+      {!!workspace.importSummary?.failures.length && <div className="space-y-2 text-sm text-sub" role="status"><p>{t('importRecovery.failureTitle')}</p><ul>{workspace.importSummary.failures.map((failure, i) => <li key={i} className="[overflow-wrap:anywhere]">{failure.name}: {t('importRecovery.' + failure.error)}</li>)}</ul></div>}
+      {workspace.downloadFailed && <p role="alert" className="text-sm text-sub">{t('importRecovery.downloadFailed')}</p>}
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* 메모 목록 */}
@@ -333,13 +311,13 @@ export default function Notepad() {
           </button>
 
           <div className={`${listOpen ? 'block' : 'hidden'} lg:block ui-card p-4 space-y-3`}>
-            <button onClick={createNote} className="ui-btn w-full px-4 py-3 flex items-center justify-center gap-2">
+            <button data-notepad-new="" disabled={!loaded} onClick={createNote} className="ui-btn w-full px-4 py-3 flex items-center justify-center gap-2">
               <Plus className="w-5 h-5" />{t('newNote')}
             </button>
             <div className="relative">
               <Search className="w-4 h-4 text-faint absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder={t('searchPlaceholder')}
-                aria-label={t('searchPlaceholder')} className="ui-field w-full pl-9 pr-3 py-2.5 text-sm" />
+                aria-label={t('searchPlaceholder')} className="ui-field w-full pl-9 pr-3 py-2.5 text-base" />
             </div>
 
             <ul className="space-y-1 max-h-[55vh] overflow-y-auto -mx-1 px-1">
@@ -350,7 +328,7 @@ export default function Notepad() {
                 const on = n.id === activeId
                 return (
                   <li key={n.id} className={`flex items-stretch rounded-xl border ${on ? 'bg-primary-soft border-primary' : 'border-transparent hover:bg-soft'}`}>
-                    <button onClick={() => { setActiveId(n.id); setListOpen(false) }} aria-current={on || undefined}
+                    <button data-notepad-select={n.id} onClick={() => selectNote(n.id)} aria-current={on || undefined}
                       className="flex-1 min-w-0 text-left px-3 py-2.5">
                       <span className={`flex items-center gap-1 text-sm font-medium truncate ${on ? 'text-primary' : 'text-fg'}`}>
                         {n.pinned && <Pin className="w-3.5 h-3.5 shrink-0" aria-label={t('pinned')} />}
@@ -358,12 +336,12 @@ export default function Notepad() {
                       </span>
                       <span className="block text-xs text-faint mt-0.5">{relTime(n.updatedAt)}</span>
                     </button>
-                    <button onClick={() => togglePin(n.id)} title={n.pinned ? t('unpin') : t('pin')} aria-label={n.pinned ? t('unpin') : t('pin')}
-                      className="w-10 shrink-0 flex items-center justify-center text-faint hover:text-body">
+                    <button data-notepad-pin={n.id} onClick={() => togglePin(n.id)} title={n.pinned ? t('unpin') : t('pin')} aria-label={n.pinned ? t('unpin') : t('pin')}
+                      className="w-11 shrink-0 flex items-center justify-center text-faint hover:text-body">
                       {n.pinned ? <PinOff className="w-4 h-4" /> : <Pin className="w-4 h-4" />}
                     </button>
-                    <button onClick={() => deleteNote(n.id)} title={t('delete')} aria-label={t('delete')}
-                      className="w-10 shrink-0 flex items-center justify-center text-faint hover:text-red-600">
+                    <button data-notepad-delete={n.id} onClick={() => deleteNote(n.id)} title={t('delete')} aria-label={t('delete')}
+                      className="w-11 shrink-0 flex items-center justify-center text-faint hover:text-red-600">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </li>
@@ -374,14 +352,14 @@ export default function Notepad() {
             <div className="pt-3 border-t border-line space-y-2">
               <p className="text-xs text-muted">{t('backupHint')}</p>
               <div className="grid grid-cols-2 gap-2">
-                <button onClick={exportBackup} disabled={!notes.length} className={`${toolBtn} disabled:opacity-50`}>
+                <button data-notepad-backup="" onClick={exportBackup} disabled={!loaded} className={`${toolBtn} disabled:opacity-50`}>
                   <Archive className="w-4 h-4" />{t('backup')}
                 </button>
-                <button onClick={() => fileRef.current?.click()} className={toolBtn}>
+                <button disabled={!loaded} onClick={() => fileRef.current?.click()} className={toolBtn}>
                   <Upload className="w-4 h-4" />{t('import')}
                 </button>
               </div>
-              <input ref={fileRef} type="file" multiple accept=".json,.txt,.md,text/plain,application/json" className="hidden"
+              <input data-notepad-file="" disabled={!loaded} ref={fileRef} type="file" multiple accept=".json,.txt,.md,text/plain,application/json" className="hidden"
                 onChange={e => importFiles(e.target.files)} />
             </div>
           </div>
@@ -394,24 +372,24 @@ export default function Notepad() {
               ? 'fixed inset-0 z-[100] bg-canvas p-3 sm:p-8 flex flex-col overflow-y-auto'
               : 'ui-card p-4 sm:p-6 flex flex-col'}>
               <div className={`flex flex-col gap-3 ${focusMode ? 'w-full max-w-3xl mx-auto flex-1' : ''}`}>
-                <input type="text" value={active.title} onChange={e => updateActive({ title: e.target.value })}
+                <input data-notepad-title="" type="text" value={active.title} onChange={e => updateActive({ title: e.target.value })}
                   placeholder={t('titlePlaceholder')} aria-label={t('titlePlaceholder')}
                   className="w-full px-1 py-2 text-xl font-semibold bg-transparent text-fg border-b border-line focus:outline-none focus:border-primary placeholder:text-faint" />
 
                 <div className="flex flex-wrap gap-2" role="toolbar" aria-label={t('toolbar')}>
-                  <button onClick={() => (findOpen ? setFindOpen(false) : openFind())} className={toggleBtn(findOpen)} aria-pressed={findOpen}>
+                  <button onClick={() => (findOpen ? closeFind() : openFind())} className={toggleBtn(findOpen)} aria-pressed={findOpen}>
                     <Replace className="w-4 h-4" />{t('find.button')}
                   </button>
-                  <select value={settings.fontSize} onChange={e => setSettings(s => ({ ...s, fontSize: Number(e.target.value) }))}
-                    aria-label={t('fontSize')} className="ui-field min-h-10 px-3 py-2 text-sm">
+                  <select value={settings.fontSize} onChange={e => workspace.editSettings({ fontSize: Number(e.target.value) })}
+                    aria-label={t('fontSize')} className="ui-field min-h-11 px-3 py-2 text-base">
                     {FONT_SIZES.map(s => <option key={s} value={s}>{s}px</option>)}
                   </select>
-                  <button onClick={() => setSettings(s => ({ ...s, mono: !s.mono }))} className={toggleBtn(settings.mono)} aria-pressed={settings.mono}>{t('mono')}</button>
-                  <button onClick={() => setSettings(s => ({ ...s, wrap: !s.wrap }))} className={toggleBtn(settings.wrap)} aria-pressed={settings.wrap}>{t('wrap')}</button>
+                  <button onClick={() => workspace.editSettings({ mono: !settings.mono })} className={toggleBtn(settings.mono)} aria-pressed={settings.mono}>{t('mono')}</button>
+                  <button onClick={() => workspace.editSettings({ wrap: !settings.wrap })} className={toggleBtn(settings.wrap)} aria-pressed={settings.wrap}>{t('wrap')}</button>
                   <button ref={focusBtnRef} onClick={() => setFocusMode(f => !f)} className={toolBtn} aria-pressed={focusMode}>
                     {focusMode ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}{focusMode ? t('exitFocus') : t('focus')}
                   </button>
-                  <button onClick={exportTxt} className={toolBtn} title={t('exportShortcut')}>
+                  <button data-notepad-export-txt="" onClick={exportTxt} className={toolBtn} title={t('exportShortcut')}>
                     <Download className="w-4 h-4" />{t('export')}
                   </button>
                 </div>
@@ -420,29 +398,40 @@ export default function Notepad() {
                   <div className="bg-subtle rounded-2xl p-3 space-y-2">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <input ref={findRef} value={findQ} onChange={e => setFindQ(e.target.value)} placeholder={t('find.find')} aria-label={t('find.find')}
-                        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); findNext() } else if (e.key === 'Escape') { e.stopPropagation(); setFindOpen(false) } }}
-                        className="ui-field w-full px-3 py-2.5 text-sm" />
+                        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); findNext() } else if (e.key === 'Escape') { e.stopPropagation(); closeFind() } }}
+                        className="ui-field w-full px-3 py-2.5 text-base" />
                       <input value={replQ} onChange={e => setReplQ(e.target.value)} placeholder={t('find.replace')} aria-label={t('find.replace')}
-                        className="ui-field w-full px-3 py-2.5 text-sm" />
+                        className="ui-field w-full px-3 py-2.5 text-base" />
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <label className="inline-flex items-center gap-2 text-sm text-body min-h-10 pr-2">
+                      <label className="inline-flex items-center gap-2 text-sm text-body min-h-11 pr-2">
                         <input type="checkbox" checked={caseSens} onChange={e => setCaseSens(e.target.checked)} className="w-4 h-4" />{t('find.caseSensitive')}
                       </label>
                       <span className="text-sm text-muted tabular-nums" aria-live="polite">{findQ ? t('find.count', { n: matchCount }) : ''}</span>
                       <div className="flex flex-wrap gap-2 ml-auto">
                         <button onClick={findNext} disabled={!matchCount} className={`${toolBtn} disabled:opacity-50`}>{t('find.next')}</button>
                         <button onClick={replaceOne} disabled={!matchCount} className={`${toolBtn} disabled:opacity-50`}>{t('find.replaceOne')}</button>
-                        <button onClick={replaceAllNow} disabled={!matchCount} className="ui-btn min-h-10 px-3 py-2 text-sm">{t('find.replaceAll')}</button>
+                        <button onClick={replaceAllNow} disabled={!matchCount} className="ui-btn min-h-11 px-3 py-2 text-sm">{t('find.replaceAll')}</button>
                       </div>
                     </div>
                   </div>
                 )}
 
-                <textarea ref={taRef} value={active.content} onChange={e => updateActive({ content: e.target.value })} onKeyDown={onEditorKey} data-keep-escape
+                <textarea data-notepad-content="" ref={taRef} value={active.content} onChange={e => updateActive({ content: e.target.value })} onKeyDown={onEditorKey}
+                  onSelect={() => captureReadingSelection()} onBlur={() => captureReadingSelection(true)} data-keep-escape
                   placeholder={t('contentPlaceholder')} aria-label={t('contentPlaceholder')} spellCheck={false}
                   wrap={settings.wrap ? 'soft' : 'off'} style={{ fontSize: settings.fontSize, tabSize: 4 }}
                   className={`ui-field w-full px-4 py-3 leading-relaxed resize-y ${settings.mono ? 'font-mono' : ''} ${focusMode ? 'flex-1 min-h-[50vh]' : 'h-[60vh] min-h-[320px]'}`} />
+
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2" role="group" aria-label={t('reading.title')}>
+                    <button type="button" disabled={!active.content.trim()} onPointerDown={() => captureReadingSelection(true)} data-notepad-reading="all" onClick={() => sendToReader(false)} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-50">{t('reading.all')}</button>
+                    <button type="button" disabled={!selectedReading} onPointerDown={() => captureReadingSelection(true)} data-notepad-reading="selection" onClick={() => sendToReader(true)} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-50">{t('reading.selection')}</button>
+                  </div>
+                  <p className="text-xs text-muted">{t('reading.hint', { max: TEXT_HANDOFF_LIMIT.toLocaleString() })}</p>
+                  {selectedReading && <p className="text-xs text-sub tabular-nums">{t('reading.selected', { count: selectedReading.length.toLocaleString() })}</p>}
+                  {readingNotice && <p role={readingNotice.error ? 'alert' : 'status'} className="text-sm text-sub">{t(`reading.${readingNotice.key}`, { count: readingNotice.count ?? 0 })}</p>}
+                </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
                   <dl className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
@@ -450,13 +439,7 @@ export default function Notepad() {
                       <div key={k} className="flex gap-1"><dt className="text-muted">{k}</dt><dd className="text-fg font-medium tabular-nums">{v}</dd></div>
                     ))}
                   </dl>
-                  <span className="text-sm text-muted shrink-0" role="status">
-                    {saveState === 'saving' ? t('status.saving') : saveState === 'saved' ? t('status.saved') : ''}
-                  </span>
                 </div>
-                {saveState === 'error' && (
-                  <p className="bg-amber-50 text-amber-800 rounded-xl px-4 py-3 text-sm" role="alert">{t('status.error')}</p>
-                )}
               </div>
             </div>
           ) : (
@@ -466,7 +449,7 @@ export default function Notepad() {
                   <FileText className="w-12 h-12 mx-auto mb-3 text-faint" />
                   <p className="text-fg font-medium">{t('noNotes')}</p>
                   <p className="text-sm text-muted mt-1 mb-4">{t('createFirstNote')}</p>
-                  <button onClick={createNote} className="ui-btn px-4 py-3 inline-flex items-center gap-2"><Plus className="w-5 h-5" />{t('newNote')}</button>
+                  <button data-notepad-new="" disabled={!loaded} onClick={createNote} className="ui-btn px-4 py-3 inline-flex items-center gap-2"><Plus className="w-5 h-5" />{t('newNote')}</button>
                 </div>
               )}
             </div>
@@ -476,9 +459,9 @@ export default function Notepad() {
 
       {toast && (
         <div className="fixed bottom-20 md:bottom-4 left-1/2 -translate-x-1/2 z-[110] w-[calc(100%-2rem)] max-w-md bg-fg text-canvas rounded-2xl shadow-lg px-4 py-2 flex items-center gap-3" role="status">
-          <span className="flex-1 text-sm min-w-0 break-words">{toast.msg}</span>
-          {toast.undo && <button onClick={undo} className="min-h-10 px-3 text-sm font-semibold text-primary">{t('toast.undo')}</button>}
-          <button onClick={() => setToast(null)} aria-label={t('toast.close')} className="min-h-10 min-w-10 flex items-center justify-center opacity-70 hover:opacity-100"><X className="w-4 h-4" /></button>
+          <span className="flex-1 text-sm min-w-0 break-words">{t(toast.key, toast.values)}</span>
+          {toast.undoToken != null && toast.undoToken === workspace.view.undoToken && <button data-notepad-undo="" onClick={undo} className="min-h-11 px-3 text-sm font-semibold text-primary">{t('toast.undo')}</button>}
+          <button data-notepad-toast-close="" onClick={closeToast} aria-label={t('toast.close')} className="min-h-11 min-w-11 flex items-center justify-center opacity-70 hover:opacity-100"><X className="w-4 h-4" /></button>
         </div>
       )}
 

@@ -228,7 +228,7 @@ export const generateHistoryTitle = {
     const distance = Number(inputs.distance) || 0;
     const vehicleType = str(inputs.vehicleType, 'compact');
     const fuelType = str(inputs.fuelType, 'gasoline');
-    const totalCost = Number(inputs.totalCost) || 0;
+    const totalCost = Number(inputs.tripTotal ?? inputs.totalCost) || 0;
 
     const vehicleLabels = {
       light: '경차',

@@ -7,6 +7,7 @@ import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/qrGenerator'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import GuideSection from '@/components/GuideSection'
+import QrBatchGenerator from '@/components/QrBatchGenerator'
 import {
   QR_TYPES, EMPTY_FIELDS, PRINT_LAYOUTS, MIN_CONTRAST,
   buildPayload, normalizeUrl, parseHex, contrastRatio, luminance, density, logoRect, qrSvg, printQrMm,
@@ -31,7 +32,11 @@ const seg = (on: boolean) =>
 
 function ColorField({ id, name, pickLabel, value, onChange }: { id: string; name: string; pickLabel: string; value: string; onChange: (v: string) => void }) {
   const [draft, setDraft] = useState(value)
-  useEffect(() => { if (parseHex(draft) !== value) setDraft(value) }, [value]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    let active = true
+    queueMicrotask(() => { if (active) setDraft(previous => parseHex(previous) === value ? previous : value) })
+    return () => { active = false }
+  }, [value])
   return (
     <div>
       <label htmlFor={id} className={label}>{name}</label>
@@ -78,7 +83,11 @@ export default function QrGenerator() {
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-  useEffect(() => setCanCopy(typeof ClipboardItem !== 'undefined' && !!navigator.clipboard?.write), [])
+  useEffect(() => {
+    let active = true
+    queueMicrotask(() => { if (active) setCanCopy(typeof ClipboardItem !== 'undefined' && !!navigator.clipboard?.write) })
+    return () => { active = false }
+  }, [])
 
   // URL에는 유형과 URL/텍스트만 (Wi-Fi 비밀번호·연락처는 넣지 않음)
   useEffect(() => {
@@ -536,6 +545,8 @@ img{width:${mm}mm;height:${mm}mm}figcaption{font-size:11pt;text-align:center;max
           </div>
         </section>
       </div>
+
+      <QrBatchGenerator />
 
       <GuideSection namespace="qrGenerator" />
     </div>

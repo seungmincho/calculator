@@ -189,15 +189,12 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   return (
     <div
       ref={dialogRef}
-      className="fixed inset-0 z-[200] flex items-start justify-center pt-[15vh]"
+      className="fixed inset-0 z-[200] flex items-start justify-center bg-black/50 pt-[15vh]"
       onClick={closeDialog}
       role="dialog"
       aria-modal="true"
       aria-label={t('common.search')}
     >
-      {/* Backdrop — 헤더(h-16) 아래부터 어둡게 */}
-      <div className="fixed inset-0 top-16 bg-black/50" />
-
       {/* Dialog */}
       <div
         className="relative w-full max-w-xl mx-4 bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden"

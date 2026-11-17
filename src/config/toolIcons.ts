@@ -284,6 +284,7 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/image-compressor': Minimize2,
   '/screen-recorder': Video,
   '/voice-memo': Mic,
+  '/speaking-practice': Mic,
   '/gif-maker': Film,
   '/background-remover': Scissors,
   '/collage-maker': LayoutPanelTop,

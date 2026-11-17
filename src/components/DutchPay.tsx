@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+import { useState, useCallback, useMemo, useEffect, useLayoutEffect, useRef } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/dutchPay'
@@ -8,26 +8,29 @@ import { Copy, Check, Plus, Minus, X, Save, ArrowRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
+import DutchPayCopyRecovery from '@/components/DutchPayCopyRecovery'
+import { DUTCH_PAY_RECENT_KEY, DUTCH_PAY_ACCOUNT_KEY, readDutchPayRecent, prepareDutchPayRecent, decodeDutchPaySavedState,
+  commitDutchPayRecent, withDutchPayLock, createDutchPayAccountWriter,
+  type DutchPayRead, type DutchPayRecent, type DutchPayAccountView, type DutchPayStorageError } from '@/utils/dutchPayStorage'
+import { captureDutchPayCopy, copyDutchPayText, createDutchPayCopyGuard, type DutchPayCopySnapshot, type DutchPayCopyToken } from '@/utils/dutchPayCopy'
 import {
   settle, simpleSplit, encodeState, decodeState, UNITS, MAX_PEOPLE,
   type Person, type Expense, type RoundDir, type State,
 } from '@/utils/dutchPay'
 
 type Mode = 's' | 't'
-interface Recent { d: string; title: string; total: number; n: number; at: number }
+type RecentFeedback = { request: number; status: 'saving' | 'loading' | 'saved' | 'deleted' | 'error'; error?: DutchPayStorageError; formGeneration?: number }
+type CopyFeedback = { token: DutchPayCopyToken; scope: string; snapshot: DutchPayCopySnapshot; status: 'copying' | 'copied' | 'failed' }
 
 const DIRS: RoundDir[] = ['ceil', 'floor', 'round']
 const WEIGHTS = [0.5, 1, 1.5, 2, 3]
-const RECENT_KEY = 'dutchPay.recent'
-const ACCOUNT_KEY = 'dutchPay.account'
 
 const won = (n: number) => Math.round(n).toLocaleString('ko-KR')
 const seg = (on: boolean) =>
-  `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  `min-h-11 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 const chip = (on: boolean) =>
-  `px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-faint line-through hover:bg-subtle'}`
-const load = <T,>(k: string, d: T): T => { try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : d } catch { return d } }
-const store = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch { /* 저장 불가 */ } }
+  `min-h-11 px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-faint line-through hover:bg-subtle'}`
+const storagePort = { getItem: (key: string) => localStorage.getItem(key), setItem: (key: string, value: string) => localStorage.setItem(key, value) }
 
 // 사람 i 삭제 시 index 재배치
 const shift = (x: number, i: number) => (x > i ? x - 1 : x === i ? 0 : x)
@@ -37,7 +40,9 @@ const dropPerson = (list: Expense[], i: number) =>
 export default function DutchPay() {
   const t = useTranslations('dutchPay')
   const searchParams = useSearchParams()
-  const ready = useRef(false)
+  const readyRef = useRef(false), mounted = useRef(false), formGeneration = useRef(0)
+  const [ready, setReady] = useState(false)
+  const [formRevision, setFormRevision] = useState(0)
 
   const defaults = useCallback(() => {
     const names = t.raw('defaults.names') as string[]
@@ -66,10 +71,38 @@ export default function DutchPay() {
   const [unit, setUnit] = useState(100)
   const [dir, setDir] = useState<RoundDir>('ceil')
   const [readOnly, setReadOnly] = useState(false)
-  const [account, setAccount] = useState('')
-  const [recent, setRecent] = useState<Recent[]>([])
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [accountView, setAccountView] = useState<DutchPayAccountView>({ value: '', savedValue: null, status: 'idle' })
+  const [accountWriter] = useState(() => createDutchPayAccountWriter({ storage: storagePort, onChange: setAccountView }))
+  const account = accountView.value
+  const [recent, setRecent] = useState<DutchPayRecent[]>([])
+  const recentBasis = useRef<DutchPayRead<DutchPayRecent[]> | null>(null)
+  const [recentFeedback, setRecentFeedback] = useState<RecentFeedback | null>(null)
+  const recentRequest = useRef(0), recentJob = useRef<{ request: number; kind: 'save' | 'delete' | 'load'; controller: AbortController } | null>(null)
+  const [copyGuard] = useState(createDutchPayCopyGuard)
+  const [copyFeedback, setCopyFeedback] = useState<CopyFeedback | null>(null)
+  const [shareRevision, setShareRevision] = useState(0)
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null), copyScopeRef = useRef('')
+  const copyButtons = useRef(new Map<string, HTMLButtonElement>()), focusAfter = useRef<string | null>(null)
   const [origin, setOrigin] = useState('')
+
+  const invalidateCopy = useCallback(() => {
+    copyGuard.invalidate(); setCopyFeedback(null)
+    if (copyTimer.current !== null) { clearTimeout(copyTimer.current); copyTimer.current = null }
+  }, [copyGuard])
+  const cancelRecent = useCallback(() => {
+    recentRequest.current++; recentJob.current?.controller.abort(); recentJob.current = null
+  }, [])
+  const recheckRecent = useCallback(() => {
+    if (!mounted.current || !readyRef.current) return
+    cancelRecent()
+    const result = readDutchPayRecent(storagePort); recentBasis.current = result
+    if (result.ok) { setRecent(result.value); setRecentFeedback(null) }
+    else setRecentFeedback({ request: recentRequest.current, status: 'error', error: result.error })
+  }, [cancelRecent])
+  useLayoutEffect(() => {
+    mounted.current = true; copyGuard.activate(); accountWriter.activate()
+    return () => { mounted.current = false; copyGuard.dispose(); accountWriter.dispose(); cancelRecent(); if (copyTimer.current !== null) clearTimeout(copyTimer.current) }
+  }, [accountWriter, copyGuard, cancelRecent])
 
   const apply = useCallback((st: State) => {
     const d = defaults()
@@ -80,7 +113,9 @@ export default function DutchPay() {
 
   // URL → 상태 (한 번). ?d=정산, ?ro=1 읽기 전용. 예전 링크(?total=&people=)도 지원
   useEffect(() => {
-    if (ready.current) return
+    if (readyRef.current) return
+    const frame = requestAnimationFrame(() => {
+    if (!mounted.current || readyRef.current) return
     const st = decodeState(searchParams.get('d'))
     if (st) {
       apply(st)
@@ -88,18 +123,35 @@ export default function DutchPay() {
     } else {
       const total = Number(searchParams.get('total'))
       const n = Math.min(MAX_PEOPLE, Math.floor(Number(searchParams.get('people'))))
-      if (total > 0 && n > 0) {
+      if (Number.isFinite(total) && total > 0 && n > 0) {
         const all = Array.from({ length: n }, (_, i) => i)
         setPeople(all.map(() => ({ name: '', weight: 1 })))
         setItems([{ name: t('defaults.item1'), amount: Math.floor(total), payer: 0, among: all }])
         setTrips([])
       }
     }
-    setAccount(load(ACCOUNT_KEY, ''))
-    setRecent(load<Recent[]>(RECENT_KEY, []))
+    accountWriter.initialize()
+    const stored = readDutchPayRecent(storagePort); recentBasis.current = stored
+    if (stored.ok) setRecent(stored.value)
+    else setRecentFeedback({ request: recentRequest.current, status: 'error', error: stored.error })
     setOrigin(window.location.origin + window.location.pathname)
-    ready.current = true
-  }, [searchParams, apply, t])
+    readyRef.current = true; setReady(true)
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [searchParams, apply, t, accountWriter])
+
+  useEffect(() => {
+    const changed = (event: StorageEvent) => {
+      if (!readyRef.current) return
+      if (event.key === null || event.key === DUTCH_PAY_RECENT_KEY) {
+        cancelRecent(); recentBasis.current = { ok: false, error: 'conflict' }
+        setRecentFeedback({ request: recentRequest.current, status: 'error', error: 'conflict' })
+      }
+      if (event.key === null || event.key === DUTCH_PAY_ACCOUNT_KEY) accountWriter.externalChange()
+    }
+    window.addEventListener('storage', changed)
+    return () => window.removeEventListener('storage', changed)
+  }, [accountWriter, cancelRecent])
 
   const state: State = useMemo(() => ({
     mode, title, people, leader, unit, dir, expenses: mode === 's' ? items : trips,
@@ -109,22 +161,13 @@ export default function DutchPay() {
 
   // 상태 → URL
   useEffect(() => {
-    if (!ready.current) return
-    window.history.replaceState(null, '', `${window.location.pathname}?d=${encoded}${readOnly ? '&ro=1' : ''}`)
-  }, [encoded, readOnly])
-
-  const copy = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text)
-      else {
-        const ta = document.createElement('textarea')
-        ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-999999px'
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta)
-      }
-    } catch { /* 권한 없음: 표시만 */ }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
+    if (!ready) return
+    const url = new URL(window.location.href)
+    url.searchParams.set('d', encoded)
+    if (readOnly) url.searchParams.set('ro', '1'); else url.searchParams.delete('ro')
+    url.searchParams.delete('total'); url.searchParams.delete('people')
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, '', url.href)
+  }, [encoded, readOnly, ready])
 
   // ── 계산 ──
   const name = useCallback((i: number) => people[i]?.name.trim() || t('personN', { n: i + 1 }), [people, t])
@@ -148,39 +191,97 @@ export default function DutchPay() {
   // ── 편집 ──
   const list = mode === 's' ? items : trips
   const setList = mode === 's' ? setItems : setTrips
-  const editItem = (k: number, patch: Partial<Expense>) => setList((l) => l.map((e, j) => (j === k ? { ...e, ...patch } : e)))
+  const edit = (action: () => void) => {
+    if (!mounted.current || !readyRef.current || readOnly) return
+    setFormRevision(++formGeneration.current); invalidateCopy()
+    if (recentJob.current?.kind === 'load') { cancelRecent(); setRecentFeedback(null) }
+    action()
+  }
+  const editItem = (k: number, patch: Partial<Expense>) => edit(() => setList((l) => l.map((e, j) => (j === k ? { ...e, ...patch } : e))))
   const toggleAmong = (k: number, i: number) => {
     const e = list[k]
     editItem(k, { among: e.among.includes(i) ? e.among.filter((a) => a !== i) : [...e.among, i].sort((a, b) => a - b) })
   }
-  const addPerson = () => {
+  const addPerson = () => edit(() => {
     if (n >= MAX_PEOPLE) return
     setPeople((p) => [...p, { name: '', weight: 1 }])
     // 새 사람은 기존 "전원" 항목에 자동 포함
     const inc = (l: Expense[]) => l.map((e) => (e.among.length === n ? { ...e, among: [...e.among, n] } : e))
     setItems(inc); setTrips(inc)
-  }
-  const removePerson = (i: number) => {
+  })
+  const removePerson = (i: number) => edit(() => {
     if (n <= 1) return
     setPeople((p) => p.filter((_, j) => j !== i))
     setItems((l) => dropPerson(l, i)); setTrips((l) => dropPerson(l, i))
     setLeader((x) => shift(x, i))
-  }
-  const addItem = () => setList((l) => [...l, { name: '', amount: 0, payer: mode === 's' ? leader : 0, among: people.map((_, i) => i) }])
-  const reset = () => {
+  })
+  const addItem = () => edit(() => setList((l) => [...l, { name: '', amount: 0, payer: mode === 's' ? leader : 0, among: people.map((_, i) => i) }]))
+  const reset = () => edit(() => {
     const d = defaults()
     setTitle(''); setPeople(d.people); setItems(d.items); setTrips(d.trips); setLeader(0); setUnit(100); setDir('ceil')
-  }
+  })
 
-  const saveAccount = (v: string) => { setAccount(v); store(ACCOUNT_KEY, v) }
-  const saveRecent = () => {
-    const entry: Recent = { d: encoded, title: title.trim(), total: res.total, n, at: Date.now() }
-    const next = [entry, ...recent.filter((r) => r.d !== encoded)].slice(0, 10)
-    setRecent(next); store(RECENT_KEY, next)
-    setCopiedId('save'); setTimeout(() => setCopiedId(null), 2000)
+  const saveAccount = (value: string) => {
+    if (!mounted.current || !readyRef.current || readOnly) return
+    invalidateCopy(); void accountWriter.edit(value)
   }
-  const removeRecent = (d: string) => { const next = recent.filter((r) => r.d !== d); setRecent(next); store(RECENT_KEY, next) }
-  const openRecent = (d: string) => { const st = decodeState(d); if (st) { apply(st); setReadOnly(false) } }
+  const accountAction = (kind: 'retry' | 'recheck') => {
+    if (!mounted.current || !readyRef.current || readOnly) return
+    if (kind === 'retry') void accountWriter.retry(); else accountWriter.recheck()
+  }
+  const recentBusy = recentFeedback?.status === 'saving' || recentFeedback?.status === 'loading'
+  const changeRecent = async (kind: 'save' | 'delete', d?: string) => {
+    if (!mounted.current || !readyRef.current || readOnly || recentJob.current) return
+    const basis = recentBasis.current
+    if (!basis?.ok) { setRecentFeedback({ request: recentRequest.current, status: 'error', error: basis && !basis.ok ? basis.error : 'unavailable' }); return }
+    const prepared = kind === 'save' ? prepareDutchPayRecent(state, Date.now()) : null
+    if (prepared && !prepared.ok) { setRecentFeedback({ request: recentRequest.current, status: 'error', error: prepared.error }); return }
+    cancelRecent()
+    const request = recentRequest.current, controller = new AbortController(), generation = formGeneration.current
+    recentJob.current = { request, kind, controller }
+    const current = () => mounted.current && recentRequest.current === request && !controller.signal.aborted
+    setRecentFeedback({ request, status: 'saving', formGeneration: generation })
+    const operation = prepared?.ok ? { kind: 'save' as const, entry: prepared.entry } : { kind: 'delete' as const, d: d ?? '' }
+    const result = await commitDutchPayRecent(basis.raw, operation, { storage: storagePort, signal: controller.signal, current })
+    if (!current()) return
+    recentJob.current = null
+    if (result.ok) {
+      recentBasis.current = { ok: true, raw: result.raw, value: result.value }; setRecent(result.value)
+      setRecentFeedback({ request, status: kind === 'save' ? 'saved' : 'deleted', formGeneration: generation })
+    } else if (result.error !== 'cancelled') {
+      if (['conflict', 'unconfirmed', 'corrupt', 'tooLarge', 'unsupported'].includes(result.error)) recentBasis.current = { ok: false, error: result.error }
+      setRecentFeedback({ request, status: 'error', error: result.error })
+    }
+  }
+  const openRecent = async (d: string) => {
+    if (!mounted.current || !readyRef.current || readOnly || recentJob.current) return
+    const basis = recentBasis.current
+    if (!basis?.ok || !basis.value.some(record => record.d === d)) return
+    cancelRecent()
+    const request = recentRequest.current, controller = new AbortController(), generation = formGeneration.current
+    recentJob.current = { request, kind: 'load', controller }
+    const current = () => mounted.current && recentRequest.current === request && formGeneration.current === generation && !controller.signal.aborted
+    setRecentFeedback({ request, status: 'loading' })
+    try {
+      const result = await withDutchPayLock(DUTCH_PAY_RECENT_KEY, () => {
+        if (!current()) return null
+        const actual = readDutchPayRecent(storagePort)
+        if (!actual.ok) return actual
+        if (actual.raw !== basis.raw) return { ok: false as const, error: 'conflict' as const }
+        return decodeDutchPaySavedState(d)
+      }, controller.signal)
+      if (!current()) return
+      recentJob.current = null
+      if (result?.ok && 'state' in result) {
+        setFormRevision(++formGeneration.current); invalidateCopy(); apply(result.state); setReadOnly(false); setRecentFeedback(null)
+      } else if (result && !result.ok) {
+        recentBasis.current = { ok: false, error: result.error }
+        setRecentFeedback({ request, status: 'error', error: result.error })
+      }
+    } catch {
+      if (current()) { recentJob.current = null; setRecentFeedback({ request, status: 'error', error: 'unavailable' }) }
+    }
+  }
 
   // ── 카톡 공지 ──
   const notice = useMemo(() => {
@@ -210,10 +311,39 @@ export default function DutchPay() {
     return L.join('\n')
   }, [t, title, res.total, n, list, mode, people, name, simple, trip, unit, dir, transfers, readOnly, account, origin, roLink])
 
-  const CopyBtn = ({ text, id, label, onHero }: { text: string; id: string; label?: string; onHero?: boolean }) => (
+  const copyScope = JSON.stringify([ready, encoded, readOnly, notice, t('copied')])
+  useLayoutEffect(() => { copyScopeRef.current = copyScope; copyGuard.invalidate() }, [copyScope, copyGuard])
+  const visibleCopy = copyFeedback?.scope === copyScope && copyGuard.current(copyFeedback.token) ? copyFeedback : null
+  const copiedId = visibleCopy?.status === 'copied' ? visibleCopy.snapshot.id : null
+  useLayoutEffect(() => {
+    if (focusAfter.current === null) return
+    const id = focusAfter.current; focusAfter.current = null
+    const button = copyButtons.current.get(id) ?? copyButtons.current.get('notice')
+    if (button?.isConnected && !button.disabled) button.focus({ preventScroll: true })
+  }, [copyFeedback])
+  const copy = async (text: string, id: string, fromRecovery = false) => {
+    if (!mounted.current || !readyRef.current || copyScopeRef.current !== copyScope) return
+    invalidateCopy(); setShareRevision(value => value + 1)
+    const token = copyGuard.begin()
+    if (!token) return
+    const snapshot = captureDutchPayCopy(id === 'notice' ? 'notice' : id === 'link' ? 'link' : 'amount', id, text)
+    const current = () => mounted.current && copyScopeRef.current === copyScope && copyGuard.current(token)
+    setCopyFeedback({ token, scope: copyScope, snapshot, status: 'copying' })
+    const result = await copyDutchPayText(snapshot, current)
+    if (!current() || result === 'stale') return
+    if (result === 'copied' && fromRecovery) focusAfter.current = id
+    setCopyFeedback({ token, scope: copyScope, snapshot, status: result === 'copied' ? 'copied' : 'failed' })
+    if (result === 'copied') copyTimer.current = setTimeout(() => { if (current()) setCopyFeedback(null) }, 2000)
+  }
+  const closeCopy = () => {
+    if (!visibleCopy || !copyGuard.current(visibleCopy.token)) return
+    focusAfter.current = visibleCopy.snapshot.id; invalidateCopy()
+  }
+  const copyButton = ({ text, id, label }: { text: string; id: string; label?: string }) => (
     <button
-      type="button" onClick={() => copy(text, id)} aria-label={label ?? t('copy')}
-      className={`inline-flex items-center gap-1.5 rounded-lg text-sm font-medium transition-colors ${label ? 'px-3 py-1.5' : 'p-1.5'} ${onHero ? 'hover:bg-white/15 text-white' : 'bg-soft hover:bg-subtle text-body'}`}
+      type="button" data-dutch-copy={id} data-dutch-copied={copiedId === id} ref={button => { if (button) copyButtons.current.set(id, button); else copyButtons.current.delete(id) }}
+      disabled={!ready} onClick={() => void copy(text, id)} aria-label={label ?? t('copy')}
+      className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-lg bg-soft px-3 py-2 text-sm font-medium text-body transition-colors hover:bg-subtle disabled:opacity-40"
     >
       {copiedId === id ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
       {label && <span>{copiedId === id ? t('copied') : label}</span>}
@@ -244,7 +374,7 @@ export default function DutchPay() {
                 </span>
                 <span className="flex items-center gap-2 shrink-0">
                   <span className="font-bold text-fg tabular-nums">{won(x.amount)}{t('won')}</span>
-                  <CopyBtn text={String(x.amount)} id={`tr${k}`} />
+                  {copyButton({ text: String(x.amount), id: `tr${k}` })}
                 </span>
               </li>
             ))}
@@ -293,35 +423,47 @@ export default function DutchPay() {
       </div>
 
       <div className="ui-card p-6 space-y-3">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-base font-semibold text-fg">{t('notice.title')}</h2>
-          <CopyBtn text={notice} id="notice" label={t('notice.copy')} />
+          {copyButton({ text: notice, id: 'notice', label: t('notice.copy') })}
         </div>
         {!readOnly && (
           <div>
             <label htmlFor="dp-account" className="block text-sm font-medium text-body mb-1.5">{t('notice.account')}</label>
             <input
-              id="dp-account" type="text" value={account} maxLength={60}
+              id="dp-account" data-dutch-account type="text" value={account} maxLength={60} disabled={!ready}
               onChange={(e) => saveAccount(e.target.value)} placeholder={t('notice.accountPlaceholder')}
-              className="ui-field w-full px-4 py-2.5"
+              className="ui-field w-full px-4 py-2.5 text-base"
             />
-            <p className="text-xs text-muted mt-1">{t('notice.accountNote')}</p>
+            <p data-dutch-account-status={accountView.status} role="status" className="text-sm text-sub mt-1">{t(accountView.status === 'saved' ? 'storage.accountSaved' : accountView.status === 'saving' ? 'storage.saving' : 'storage.accountDirty')}</p>
+            {accountView.error && <p role="alert" className="text-sm text-body mt-2">{t(`storage.${accountView.error}`)}</p>}
+            {(accountView.status === 'dirty' || accountView.status === 'error') && <div className="mt-2 flex flex-wrap gap-2">
+              <button type="button" data-dutch-account-retry disabled={!ready} onClick={() => accountAction('retry')} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('storage.retry')}</button>
+              <button type="button" data-dutch-account-recheck disabled={!ready} onClick={() => accountAction('recheck')} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('storage.recheck')}</button>
+            </div>}
           </div>
         )}
-        <pre className="bg-subtle rounded-2xl p-4 text-sm text-body whitespace-pre-wrap break-all font-sans max-h-80 overflow-y-auto">{notice}</pre>
+        <pre data-dutch-notice className="bg-subtle rounded-2xl p-4 text-sm text-body whitespace-pre-wrap break-all font-sans max-h-80 overflow-y-auto">{notice}</pre>
         <div className="flex flex-wrap gap-2">
-          <CopyBtn text={roLink} id="link" label={t('copyLink')} />
+          {copyButton({ text: roLink, id: 'link', label: t('copyLink') })}
           {!readOnly && (
-            <button type="button" onClick={saveRecent} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-soft hover:bg-subtle text-body">
-              {copiedId === 'save' ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-              {copiedId === 'save' ? t('recent.saved') : t('recent.save')}
+            <button type="button" data-dutch-save disabled={!ready || recentBusy} onClick={() => void changeRecent('save')} className="inline-flex min-h-11 items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-soft hover:bg-subtle text-body disabled:opacity-40">
+              {recentFeedback?.status === 'saved' && recentFeedback.formGeneration === formRevision ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+              {recentFeedback?.status === 'saved' && recentFeedback.formGeneration === formRevision ? t('storage.saved') : t('recent.save')}
             </button>
           )}
         </div>
+        {!readOnly && recentFeedback && (recentFeedback.status !== 'saved' || recentFeedback.formGeneration === formRevision) && <p data-dutch-recent-status={recentFeedback.status} role={recentFeedback.status === 'error' ? 'alert' : 'status'} className="text-sm text-body">{t(`storage.${recentFeedback.status === 'error' ? recentFeedback.error : recentFeedback.status}`)}</p>}
+        {!readOnly && recentFeedback?.status === 'error' && <div className="space-y-2">
+          <button type="button" data-dutch-recent-recheck disabled={!ready} onClick={recheckRecent} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('storage.recheck')}</button>
+          <p className="text-xs text-sub">{t('storage.recheckHint')}</p>
+        </div>}
         <p className="text-xs text-muted">{t('notice.transferNote')}</p>
       </div>
 
-      <ShareResult
+      {visibleCopy?.status === 'failed' && <DutchPayCopyRecovery snapshot={visibleCopy.snapshot} busy={false} onRetry={() => { if (copyGuard.current(visibleCopy.token)) void copy(visibleCopy.snapshot.text, visibleCopy.snapshot.id, true) }} onClose={closeCopy} />}
+      <span role="status" aria-live="polite" className="sr-only">{visibleCopy?.status === 'copied' ? t('copied') : visibleCopy?.status === 'copying' ? t('copyRecovery.copying') : ''}</span>
+      {ready && <div data-dutch-share-boundary onClickCapture={invalidateCopy}><ShareResult
         card={{
           tool: t('title'),
           label: title.trim() ? t('share.labelTitled', { title: title.trim(), n }) : t('share.label', { n, total: won(res.total) }),
@@ -332,18 +474,19 @@ export default function DutchPay() {
         url={roLink}
         text={notice}
         fileName="dutch-pay"
-      />
+        resultKey={JSON.stringify([copyScope, shareRevision])}
+      /></div>}
     </div>
   )
 
   if (readOnly) {
     return (
-      <div className="space-y-6">
+      <div data-dutch-root data-dutch-ready={ready} data-dutch-readonly={readOnly} className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-fg">{title.trim() || t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('readOnly.banner')}</p>
         </div>
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-3">{results}</div>
           <div className="lg:col-span-2 space-y-4">
             <div className="ui-card p-6">
@@ -357,7 +500,7 @@ export default function DutchPay() {
                 ))}
               </ul>
             </div>
-            <button type="button" onClick={() => setReadOnly(false)} className="ui-btn w-full px-4 py-3">{t('readOnly.edit')}</button>
+            <button type="button" data-dutch-edit-readonly disabled={!ready} onClick={() => { if (mounted.current && readyRef.current) { invalidateCopy(); setReadOnly(false) } }} className="ui-btn w-full px-4 py-3">{t('readOnly.edit')}</button>
           </div>
         </div>
         <GuideSection namespace="dutchPay" />
@@ -366,7 +509,7 @@ export default function DutchPay() {
   }
 
   return (
-    <div className="space-y-6">
+    <div data-dutch-root data-dutch-ready={ready} data-dutch-readonly={readOnly} className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -374,53 +517,53 @@ export default function DutchPay() {
 
       <div className="grid grid-cols-2 gap-2 max-w-xl" role="group" aria-label={t('modeLabel')}>
         {(['s', 't'] as Mode[]).map((m) => (
-          <button key={m} type="button" onClick={() => setMode(m)} aria-pressed={mode === m} className={`${seg(mode === m)} py-3`}>
+          <button key={m} type="button" data-dutch-mode={m} disabled={!ready} onClick={() => edit(() => setMode(m))} aria-pressed={mode === m} className={`${seg(mode === m)} py-3`}>
             {t(`mode.${m}`)}
           </button>
         ))}
       </div>
       <p className="text-sm text-muted -mt-3">{t(`modeHint.${mode}`)}</p>
 
-      <div className="grid lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <div className="lg:col-span-3 space-y-4">
           {/* 모임 + 참가자 */}
           <div className="ui-card p-6 space-y-4">
             {mode === 's' && <MobileResultLink href="#dutch-pay-result" label={heroLabel} value={heroValue} />}
             <div>
               <label htmlFor="dp-title" className="block text-sm font-medium text-body mb-1.5">{t('eventTitle')}</label>
-              <input id="dp-title" type="text" value={title} maxLength={30} onChange={(e) => setTitle(e.target.value)}
-                placeholder={t('eventTitlePlaceholder')} className="ui-field w-full px-4 py-2.5" />
+              <input id="dp-title" data-dutch-title disabled={!ready} type="text" value={title} maxLength={30} onChange={(e) => edit(() => setTitle(e.target.value))}
+                placeholder={t('eventTitlePlaceholder')} className="ui-field w-full px-4 py-2.5 text-base" />
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-body">{t('people')}</span>
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={() => removePerson(n - 1)} disabled={n <= 1} aria-label={t('removePerson')} className="p-1.5 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-40"><Minus className="w-4 h-4" /></button>
+                  <button type="button" onClick={() => removePerson(n - 1)} disabled={!ready || n <= 1} aria-label={t('removePerson')} className="min-h-11 min-w-11 p-1.5 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-40"><Minus className="w-4 h-4" /></button>
                   <span className="text-sm font-semibold text-fg tabular-nums w-10 text-center">{t('countN', { n })}</span>
-                  <button type="button" onClick={addPerson} disabled={n >= MAX_PEOPLE} aria-label={t('addPerson')} className="p-1.5 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-40"><Plus className="w-4 h-4" /></button>
+                  <button type="button" data-dutch-add-person onClick={addPerson} disabled={!ready || n >= MAX_PEOPLE} aria-label={t('addPerson')} className="min-h-11 min-w-11 p-1.5 rounded-lg bg-soft hover:bg-subtle text-body disabled:opacity-40"><Plus className="w-4 h-4" /></button>
                 </div>
               </div>
               <ul className="space-y-2">
                 {people.map((p, i) => (
                   <li key={i} className="flex items-center gap-2">
-                    <input type="text" value={p.name} maxLength={20} aria-label={t('personName')}
-                      onChange={(e) => setPeople((l) => l.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))}
-                      placeholder={t('personN', { n: i + 1 })} className="ui-field flex-1 min-w-0 px-3 py-2" />
-                    <select value={p.weight} aria-label={t('weight')}
-                      onChange={(e) => setPeople((l) => l.map((x, j) => (j === i ? { ...x, weight: Number(e.target.value) } : x)))}
-                      className="ui-field w-auto shrink-0 px-2 py-2 text-sm">
+                    <input type="text" data-dutch-person={i} disabled={!ready} value={p.name} maxLength={20} aria-label={t('personName')}
+                      onChange={(e) => edit(() => setPeople((l) => l.map((x, j) => (j === i ? { ...x, name: e.target.value } : x))))}
+                      placeholder={t('personN', { n: i + 1 })} className="ui-field flex-1 min-w-0 px-3 py-2 text-base" />
+                    <select disabled={!ready} value={p.weight} aria-label={t('weight')}
+                      onChange={(e) => edit(() => setPeople((l) => l.map((x, j) => (j === i ? { ...x, weight: Number(e.target.value) } : x))))}
+                      className="ui-field w-auto shrink-0 px-2 py-2 text-base">
                       {(WEIGHTS.includes(p.weight) ? WEIGHTS : [...WEIGHTS, p.weight].sort((a, b) => a - b)).map((w) => (
                         <option key={w} value={w}>{t('weightX', { w })}</option>
                       ))}
                     </select>
                     {mode === 's' && (
-                      <button type="button" onClick={() => setLeader(i)} aria-pressed={leader === i}
-                        className={`px-2.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap ${leader === i ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}>
+                      <button type="button" disabled={!ready} onClick={() => edit(() => setLeader(i))} aria-pressed={leader === i}
+                        className={`min-h-11 px-2.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap ${leader === i ? 'bg-primary text-white' : 'bg-soft text-sub hover:bg-subtle'}`}>
                         {t('leader')}
                       </button>
                     )}
-                    <button type="button" onClick={() => removePerson(i)} disabled={n <= 1} aria-label={t('removePerson')}
-                      className="p-2 rounded-lg text-faint hover:text-body hover:bg-soft disabled:opacity-30"><X className="w-4 h-4" /></button>
+                    <button type="button" onClick={() => removePerson(i)} disabled={!ready || n <= 1} aria-label={t('removePerson')}
+                      className="min-h-11 min-w-11 p-2 rounded-lg text-faint hover:text-body hover:bg-soft disabled:opacity-30"><X className="w-4 h-4" /></button>
                   </li>
                 ))}
               </ul>
@@ -434,20 +577,20 @@ export default function DutchPay() {
             {list.map((e, k) => (
               <div key={k} className="bg-subtle rounded-2xl p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <input type="text" value={e.name} maxLength={30} aria-label={t('itemName')}
+                  <input type="text" data-dutch-item-name={k} disabled={!ready} value={e.name} maxLength={30} aria-label={t('itemName')}
                     onChange={(ev) => editItem(k, { name: ev.target.value })}
-                    placeholder={t('itemN', { n: k + 1 })} className="ui-field flex-1 min-w-0 px-3 py-2" />
-                  <input type="text" inputMode="numeric" aria-label={t('amount')}
+                    placeholder={t('itemN', { n: k + 1 })} className="ui-field flex-1 min-w-0 px-3 py-2 text-base" />
+                  <input type="text" data-dutch-item-amount={k} disabled={!ready} inputMode="numeric" aria-label={t('amount')}
                     value={e.amount ? e.amount.toLocaleString('ko-KR') : ''} placeholder="0"
                     onChange={(ev) => editItem(k, { amount: Math.min(1e10, Number(ev.target.value.replace(/[^0-9]/g, '')) || 0) })}
-                    className="ui-field w-32 sm:w-36 px-3 py-2 text-right tabular-nums" />
-                  <button type="button" onClick={() => setList((l) => l.filter((_, j) => j !== k))} aria-label={t('removeItem')}
-                    className="p-2 rounded-lg text-faint hover:text-body hover:bg-soft"><X className="w-4 h-4" /></button>
+                    className="ui-field w-28 sm:w-36 px-3 py-2 text-base text-right tabular-nums" />
+                  <button type="button" disabled={!ready} onClick={() => edit(() => setList((l) => l.filter((_, j) => j !== k)))} aria-label={t('removeItem')}
+                    className="min-h-11 min-w-11 p-2 rounded-lg text-faint hover:text-body hover:bg-soft"><X className="w-4 h-4" /></button>
                 </div>
                 {mode === 't' && (
                   <label className="flex items-center gap-2 text-sm text-sub">
                     {t('paidBy')}
-                    <select value={e.payer} onChange={(ev) => editItem(k, { payer: Number(ev.target.value) })} className="ui-field px-2 py-1.5 text-sm">
+                    <select disabled={!ready} value={e.payer} onChange={(ev) => editItem(k, { payer: Number(ev.target.value) })} className="ui-field px-2 py-1.5 text-base">
                       {people.map((_, i) => <option key={i} value={i}>{name(i)}</option>)}
                     </select>
                   </label>
@@ -456,7 +599,7 @@ export default function DutchPay() {
                   <span className="block text-xs text-sub mb-1.5">{t('among')}</span>
                   <div className="flex flex-wrap gap-1.5">
                     {people.map((_, i) => (
-                      <button key={i} type="button" onClick={() => toggleAmong(k, i)} aria-pressed={e.among.includes(i)} className={chip(e.among.includes(i))}>
+                      <button key={i} type="button" disabled={!ready} onClick={() => toggleAmong(k, i)} aria-pressed={e.among.includes(i)} className={chip(e.among.includes(i))}>
                         {name(i)}
                       </button>
                     ))}
@@ -465,7 +608,7 @@ export default function DutchPay() {
                 </div>
               </div>
             ))}
-            <button type="button" onClick={addItem} className="ui-btn-soft w-full px-4 py-2 inline-flex items-center justify-center gap-1.5">
+            <button type="button" data-dutch-add-item disabled={!ready} onClick={addItem} className="ui-btn-soft min-h-11 w-full px-4 py-2 inline-flex items-center justify-center gap-1.5">
               <Plus className="w-4 h-4" />{mode === 's' ? t('addItem') : t('addExpense')}
             </button>
           </div>
@@ -476,7 +619,7 @@ export default function DutchPay() {
               <h2 className="text-base font-semibold text-fg">{t('rounding.title')}</h2>
               <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('rounding.unit')}>
                 {UNITS.map((u) => (
-                  <button key={u} type="button" onClick={() => setUnit(u)} aria-pressed={unit === u} className={seg(unit === u)}>
+                  <button key={u} type="button" disabled={!ready} onClick={() => edit(() => setUnit(u))} aria-pressed={unit === u} className={seg(unit === u)}>
                     {u === 1 ? t('rounding.exact') : t('rounding.unitN', { n: won(u) })}
                   </button>
                 ))}
@@ -484,7 +627,7 @@ export default function DutchPay() {
               {unit > 1 && (
                 <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('rounding.dir')}>
                   {DIRS.map((d) => (
-                    <button key={d} type="button" onClick={() => setDir(d)} aria-pressed={dir === d} className={seg(dir === d)}>{t(`dir.${d}`)}</button>
+                    <button key={d} type="button" disabled={!ready} onClick={() => edit(() => setDir(d))} aria-pressed={dir === d} className={seg(dir === d)}>{t(`dir.${d}`)}</button>
                   ))}
                 </div>
               )}
@@ -493,23 +636,24 @@ export default function DutchPay() {
           )}
 
           <div className="flex gap-2">
-            <button type="button" onClick={reset} className="ui-btn-soft px-4 py-2">{t('reset')}</button>
+            <button type="button" data-dutch-reset disabled={!ready} onClick={reset} className="ui-btn-soft min-h-11 px-4 py-2">{t('reset')}</button>
           </div>
 
           {recent.length > 0 && (
-            <div className="ui-card p-6">
+            <div className="ui-card min-w-0 p-6" data-dutch-recent>
               <h2 className="text-base font-semibold text-fg mb-3">{t('recent.title')}</h2>
+              <p className="text-xs text-sub mb-2">{t('storage.loadHint')}</p>
               <ul className="divide-y divide-line">
                 {recent.map((r) => (
                   <li key={r.d} className="flex items-center gap-2 py-2.5">
-                    <button type="button" onClick={() => openRecent(r.d)} className="flex-1 min-w-0 text-left">
+                    <button type="button" data-dutch-load={r.d} disabled={!ready || recentBusy} aria-label={`${t('storage.load')}: ${r.title || t('text.untitled')}`} onClick={() => void openRecent(r.d)} className="flex-1 min-h-11 min-w-0 text-left disabled:opacity-40">
                       <span className="block text-sm font-medium text-fg truncate">{r.title || t('text.untitled')}</span>
                       <span className="block text-xs text-muted tabular-nums">
                         {new Date(r.at).toLocaleDateString('ko-KR')} · {t('hero.summary', { total: won(r.total), n: r.n })}
                       </span>
                     </button>
-                    <button type="button" onClick={() => removeRecent(r.d)} aria-label={t('recent.delete')}
-                      className="p-2 rounded-lg text-faint hover:text-body hover:bg-soft"><X className="w-4 h-4" /></button>
+                    <button type="button" data-dutch-delete={r.d} disabled={!ready || recentBusy} onClick={() => void changeRecent('delete', r.d)} aria-label={t('recent.delete')}
+                      className="min-h-11 min-w-11 p-2 rounded-lg text-faint hover:text-body hover:bg-soft disabled:opacity-40"><X className="w-4 h-4" /></button>
                   </li>
                 ))}
               </ul>

@@ -1,17 +1,13 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useHydrated } from '@/hooks/useHydrated'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/whiteNoise'
-import { Play, Square, BookOpen, Volume2, Moon, Timer } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
-
-// ── Noise types ──
-type NoiseType = 'white' | 'pink' | 'brown' | 'rain' | 'wind' | 'wave'
-
-const NOISE_TYPES: NoiseType[] = ['white', 'pink', 'brown', 'rain', 'wind', 'wave']
-
-const TIMER_OPTIONS = [0, 5, 10, 15, 30, 60] // minutes, 0 = no timer
+import WhiteNoiseProfiles from '@/components/WhiteNoiseProfiles'
+import { DEFAULT_WHITE_NOISE, WHITE_NOISE_TYPES, WHITE_NOISE_TIMERS, cloneWhiteNoiseSettings, type WhiteNoiseType as NoiseType, type WhiteNoiseSettings } from '@/utils/whiteNoise'
+import { createWhiteNoiseSession, type WhiteNoiseState } from '@/lib/whiteNoise/session'
+import { whiteNoiseBrowserPorts } from '@/lib/whiteNoise/browser'
 
 function createWhiteNoise(ctx: AudioContext): AudioBufferSourceNode {
   const bufferSize = ctx.sampleRate * 2
@@ -100,264 +96,68 @@ function createNatureNoise(ctx: AudioContext, type: 'rain' | 'wind' | 'wave'): A
   return source
 }
 
+function makeNoiseSource(context: AudioContext, type: NoiseType) {
+  if (type === 'pink') return createPinkNoise(context)
+  if (type === 'brown') return createBrownNoise(context)
+  if (type === 'rain' || type === 'wind' || type === 'wave') return createNatureNoise(context, type)
+  return createWhiteNoise(context)
+}
+const initial = (): WhiteNoiseState => ({ phase: 'idle', settings: { ...DEFAULT_WHITE_NOISE }, remainingMs: 0, deadline: null, error: null, generation: 0 })
+const clockText = (ms: number) => { const seconds = Math.ceil(ms / 1000); return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}` }
+
 export default function WhiteNoise() {
-  const t = useTranslations('whiteNoise')
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [noiseType, setNoiseType] = useState<NoiseType>('white')
-  const [volume, setVolume] = useState(50)
-  const [timerMinutes, setTimerMinutes] = useState(0)
-  const [timerRemaining, setTimerRemaining] = useState(0)
-  const [showGuide, setShowGuide] = useState(false)
-
-  const audioContextRef = useRef<AudioContext | null>(null)
-  const sourceRef = useRef<AudioBufferSourceNode | null>(null)
-  const gainRef = useRef<GainNode | null>(null)
-  const timerRef = useRef<number>(0)
-
-  const stopNoise = useCallback(() => {
-    if (sourceRef.current) {
-      try { sourceRef.current.stop() } catch { /* already stopped */ }
-      sourceRef.current = null
-    }
-    if (audioContextRef.current) {
-      audioContextRef.current.close()
-      audioContextRef.current = null
-    }
-    gainRef.current = null
-    if (timerRef.current) {
-      clearInterval(timerRef.current)
-      timerRef.current = 0
-    }
-    setIsPlaying(false)
-    setTimerRemaining(0)
-  }, [])
-
-  const startNoise = useCallback((type: NoiseType) => {
-    stopNoise()
-
-    const ctx = new AudioContext()
-    audioContextRef.current = ctx
-
-    const gain = ctx.createGain()
-    gain.gain.value = volume / 100
-    gain.connect(ctx.destination)
-    gainRef.current = gain
-
-    let source: AudioBufferSourceNode
-    switch (type) {
-      case 'pink': source = createPinkNoise(ctx); break
-      case 'brown': source = createBrownNoise(ctx); break
-      case 'rain':
-      case 'wind':
-      case 'wave': source = createNatureNoise(ctx, type); break
-      default: source = createWhiteNoise(ctx)
-    }
-
-    source.connect(gain)
-    source.start()
-    sourceRef.current = source
-    setIsPlaying(true)
-
-    // Timer
-    if (timerMinutes > 0) {
-      let remaining = timerMinutes * 60
-      setTimerRemaining(remaining)
-      timerRef.current = window.setInterval(() => {
-        remaining--
-        setTimerRemaining(remaining)
-        if (remaining <= 0) {
-          stopNoise()
-        }
-      }, 1000)
-    }
-  }, [volume, timerMinutes, stopNoise])
-
-  const togglePlay = useCallback(() => {
-    if (isPlaying) stopNoise()
-    else startNoise(noiseType)
-  }, [isPlaying, noiseType, startNoise, stopNoise])
-
-  const changeNoiseType = useCallback((type: NoiseType) => {
-    setNoiseType(type)
-    if (isPlaying) {
-      startNoise(type)
-    }
-  }, [isPlaying, startNoise])
-
-  // Update volume in real-time
+  const t = useTranslations('whiteNoise'), hydrated = useHydrated()
+  const [state, setState] = useState<WhiteNoiseState>(initial)
+  const [interaction, setInteraction] = useState(0)
+  const session = useRef<ReturnType<typeof createWhiteNoiseSession> | null>(null)
   useEffect(() => {
-    if (gainRef.current) {
-      gainRef.current.gain.value = volume / 100
-    }
-  }, [volume])
-
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      if (sourceRef.current) try { sourceRef.current.stop() } catch { /* */ }
-      if (audioContextRef.current) audioContextRef.current.close()
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
+    let active = true
+    const current = createWhiteNoiseSession(whiteNoiseBrowserPorts(makeNoiseSource), next => { if (active) setState(next) })
+    session.current = current
+    return () => { active = false; current.dispose(); if (session.current === current) session.current = null }
   }, [])
-
-  const formatTime = (seconds: number): string => {
-    const m = Math.floor(seconds / 60)
-    const s = seconds % 60
-    return `${m}:${s.toString().padStart(2, '0')}`
+  const markInteraction = () => setInteraction(value => value + 1)
+  const change = (patch: Partial<WhiteNoiseSettings>) => {
+    if (!session.current) return
+    markInteraction(); session.current.change({ ...session.current.getSnapshot().settings, ...patch })
   }
-
-  const NOISE_ICONS: Record<NoiseType, string> = {
-    white: '⚪', pink: '🩷', brown: '🟤', rain: '🌧️', wind: '💨', wave: '🌊',
+  const mainAction = () => {
+    const current = session.current
+    if (!current) return
+    markInteraction()
+    const snapshot = current.getSnapshot()
+    if (snapshot.phase === 'suspended') current.resume()
+    else if (snapshot.phase === 'playing' || snapshot.phase === 'preparing') current.stop()
+    else current.start(snapshot.settings)
   }
-
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Moon className="w-6 h-6 text-indigo-500" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+  const stop = () => { markInteraction(); session.current?.stop() }
+  const load = (settings: WhiteNoiseSettings) => {
+    const next = cloneWhiteNoiseSettings(settings)
+    markInteraction(); session.current?.stop(); session.current?.change(next)
+  }
+  const { settings, phase } = state
+  const active = phase === 'playing' || phase === 'suspended' || phase === 'preparing'
+  const status = phase === 'playing' && settings.volume === 0 ? 'muted' : phase === 'error' ? 'idle' : phase
+  const action = phase === 'preparing' ? 'cancel' : phase === 'playing' ? 'stop' : phase === 'suspended' ? 'resume' : phase === 'error' ? 'retry' : 'play'
+  const button = (selected: boolean) => 'min-h-11 rounded-xl px-3 py-2 text-sm font-medium ' + (selected ? 'bg-primary text-white' : 'ui-btn-soft')
+  return <div className="space-y-6">
+    <header><h1 className="text-2xl font-bold text-fg">{t('title')}</h1><p className="mt-1 text-sm text-sub">{t('description')}</p></header>
+    <section data-white-noise-player data-noise-phase={phase} data-noise-generation={state.generation} data-noise-remaining={state.remainingMs ?? ''} data-noise-deadline={state.deadline?.wallEnd ?? ''} className="ui-card min-w-0 space-y-5 p-4 sm:p-6">
+      <div className="space-y-3 text-center">
+        <p data-noise-status role="status" className="text-base font-semibold text-fg">{t(`playback.${status}`)}</p>
+        {active && <p data-noise-clock className="text-2xl font-bold tabular-nums text-fg">{state.remainingMs === null ? t('playback.unlimited') : t('playback.remaining', { time: clockText(state.remainingMs) })}</p>}
+        <div className="flex flex-wrap justify-center gap-2"><button type="button" data-noise-play onClick={mainAction} disabled={!hydrated} className="ui-btn min-h-11 px-6 py-3 text-base">{t(`playback.${action}`)}</button>{phase === 'suspended' && <button type="button" data-noise-stop onClick={stop} className="ui-btn-soft min-h-11 px-4 py-3 text-base">{t('playback.stop')}</button>}</div>
+        {phase === 'suspended' && <p className="text-sm text-sub">{t('playback.resumeHint')}</p>}
+        {state.error && <p role="alert" className="text-sm text-body">{t(`playback.errors.${state.error}`)}</p>}
       </div>
-
-      {/* Main control */}
-      <div className={`${glassCard} ${glassInset} p-8`}>
-        {/* Play button */}
-        <div className="flex justify-center mb-8">
-          <button
-            onClick={togglePlay}
-            className={`w-24 h-24 rounded-full flex items-center justify-center text-white shadow-xl transition-all ${
-              isPlaying
-                ? 'bg-red-600 hover:bg-red-700 scale-105'
-                : 'bg-primary hover:bg-blue-700'
-            }`}
-          >
-            {isPlaying ? <Square className="w-10 h-10" /> : <Play className="w-10 h-10 ml-1" />}
-          </button>
-        </div>
-
-        {/* Timer display */}
-        {timerRemaining > 0 && (
-          <div className="text-center mb-6">
-            <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 tabular-nums">
-              {formatTime(timerRemaining)}
-            </p>
-            <p className="text-xs text-gray-400">{t('remaining')}</p>
-          </div>
-        )}
-
-        {/* Noise type selector */}
-        <div className="mb-6">
-          <label className="text-xs text-muted block mb-2">{t('noiseType')}</label>
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-            {NOISE_TYPES.map(type => (
-              <button
-                key={type}
-                onClick={() => changeNoiseType(type)}
-                className={`py-3 px-2 rounded-xl text-center transition-colors ${
-                  noiseType === type
-                    ? 'bg-soft text-sub ring-2 ring-indigo-300 dark:ring-indigo-600'
-                    : 'bg-subtle text-body hover:bg-gray-100 dark:hover:bg-gray-600'
-                }`}
-              >
-                <span className="text-xl block">{NOISE_ICONS[type]}</span>
-                <span className="text-xs font-medium mt-1 block">{t(`types.${type}`)}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Volume */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-xs text-muted flex items-center gap-1">
-              {t('volume')}
-            </label>
-            <span className="text-xs text-muted">{volume}%</span>
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={volume}
-            onChange={e => setVolume(Number(e.target.value))}
-            className="w-full h-2 bg-track rounded-lg appearance-none cursor-pointer accent-indigo-600"
-          />
-        </div>
-
-        {/* Sleep timer */}
-        <div>
-          <label className="text-xs text-muted flex items-center gap-1 mb-2">
-            {t('sleepTimer')}
-          </label>
-          <div className="flex gap-2 flex-wrap">
-            {TIMER_OPTIONS.map(min => (
-              <button
-                key={min}
-                onClick={() => setTimerMinutes(min)}
-                className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                  timerMinutes === min
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-soft text-body hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
-              >
-                {min === 0 ? t('timerOff') : `${min}${t('timerMin')}`}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Noise descriptions */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <h3 className="text-sm font-semibold text-fg mb-3">{t('aboutNoise')}</h3>
-        <div className="grid sm:grid-cols-2 gap-3">
-          {NOISE_TYPES.map(type => (
-            <div key={type} className="flex items-start gap-2 p-2">
-              <span className="text-lg">{NOISE_ICONS[type]}</span>
-              <div>
-                <p className="text-sm font-medium text-fg">{t(`types.${type}`)}</p>
-                <p className="text-xs text-muted">{t(`typeDesc.${type}`)}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Guide */}
-      <div className={`${glassCard} ${glassInset} p-6`}>
-        <button
-          onClick={() => setShowGuide(!showGuide)}
-          className="w-full flex items-center justify-between"
-          aria-expanded={showGuide}
-        >
-          <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
-            {t('guide.title')}
-          </h2>
-          <span className="text-gray-400 text-xl" aria-hidden="true">{showGuide ? '−' : '+'}</span>
-        </button>
-        {showGuide && (
-          <div className="mt-4 space-y-4 text-sm text-body">
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.benefits.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.benefits.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-fg mb-2">{t('guide.tips.title')}</h3>
-              <ul className="list-disc pl-5 space-y-1">
-                {(t.raw('guide.tips.items') as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
+      <fieldset className="space-y-2"><legend className="mb-2 text-sm font-medium text-body">{t('noiseType')}</legend><div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{WHITE_NOISE_TYPES.map(type => <button key={type} type="button" data-noise-type={type} aria-pressed={settings.type === type} onClick={() => change({ type })} className={button(settings.type === type)}>{t(`types.${type}`)}</button>)}</div></fieldset>
+      <div className="space-y-2"><label htmlFor="white-noise-volume" className="flex items-center justify-between gap-2 text-sm font-medium text-body"><span>{t('volume')}</span><span className="tabular-nums">{settings.volume}%</span></label><input id="white-noise-volume" data-noise-volume type="range" min={0} max={100} step={1} value={settings.volume} onChange={event => change({ volume: Math.max(0, Math.min(100, Math.round(Number(event.target.value)) || 0)) })} className="min-h-11 w-full accent-[var(--primary)]" /></div>
+      <fieldset className="space-y-2"><legend className="mb-2 text-sm font-medium text-body">{t('sleepTimer')}</legend><div className="flex flex-wrap gap-2">{WHITE_NOISE_TIMERS.map(timerMinutes => <button key={timerMinutes} type="button" data-noise-timer={timerMinutes} aria-pressed={settings.timerMinutes === timerMinutes} onClick={() => change({ timerMinutes })} className={button(settings.timerMinutes === timerMinutes)}>{timerMinutes === 0 ? t('profiles.noTimer') : t('profiles.minutes', { minutes: timerMinutes })}</button>)}</div><p className="text-xs leading-relaxed text-muted">{t('playback.timerHint')}</p></fieldset>
+      <div><label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm text-body"><input data-noise-fade type="checkbox" checked={settings.fade} onChange={event => change({ fade: event.target.checked })} className="h-5 w-5 accent-[var(--primary)]" />{t('playback.fade')}</label><p className="text-xs text-muted">{t('playback.fadeHint')}</p></div>
+      <p className="text-xs leading-relaxed text-muted">{t('playback.backgroundHint')}</p>
+    </section>
+    <WhiteNoiseProfiles settings={settings} inputKey={`${interaction}:${JSON.stringify(settings)}`} onLoad={load} />
+    <section className="ui-card min-w-0 p-4 sm:p-6"><h2 className="mb-4 text-lg font-semibold text-fg">{t('aboutNoise')}</h2><div className="grid grid-cols-1 gap-4 sm:grid-cols-2">{WHITE_NOISE_TYPES.map(type => <div key={type}><h3 className="text-sm font-medium text-body">{t(`types.${type}`)}</h3><p className="mt-1 text-sm text-sub">{t(`typeDesc.${type}`)}</p></div>)}</div></section>
+    <details className="ui-card min-w-0 p-4 sm:p-6"><summary className="min-h-11 cursor-pointer text-lg font-semibold text-fg">{t('guide.title')}</summary><div className="mt-3 space-y-4">{(['benefits', 'tips'] as const).map(section => <div key={section}><h3 className="text-sm font-medium text-body">{t(`guide.${section}.title`)}</h3><ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-sub">{(t.raw(`guide.${section}.items`) as string[]).map((item, index) => <li key={index}>{item}</li>)}</ul></div>)}</div></details>
+  </div>
 }

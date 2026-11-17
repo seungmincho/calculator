@@ -107,6 +107,7 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
     lastMessage,
     onDisconnect
   } = usePeerConnection()
+  const processedMessageRef = useRef<PeerMessage | null>(null)
 
   // 플레이어 이름 로드
   useEffect(() => {
@@ -264,7 +265,9 @@ export default function Othello({ initialRoom, isHost: isHostProp, hostPeerId, o
 
   // 메시지 처리
   useEffect(() => {
-    if (!lastMessage) return
+    if (!lastMessage) { processedMessageRef.current = null; return }
+    if (processedMessageRef.current === lastMessage) return
+    processedMessageRef.current = lastMessage
 
     const { type, payload } = lastMessage as PeerMessage
 

@@ -5,13 +5,16 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import passwordGeneratorMessages from '../../../messages/generated/ko/ns/passwordGenerator.json'
 
+const TITLE = '비밀번호 생성기 - 개별 재생성·복사 복구 | 툴허브'
+const DESCRIPTION = '비밀번호·PIN·단어 조합을 현재 설정으로 생성하고 한 항목만 다시 만들 수 있습니다. 나머지 결과는 유지하며 개별·전체 복사의 실패 안내와 수동 선택을 제공합니다. 기존 강도·엔트로피 추정도 확인하세요.'
+
 export const metadata: Metadata = {
-  title: '비밀번호 생성기 - 안전한 패스워드 | 툴허브',
-  description: '강력하고 안전한 비밀번호와 패스프레이즈를 쉽고 빠르게 생성하세요. 비밀번호 강도 분석, 엔트로피 계산, 일괄 생성 및 복사 기능을 제공합니다.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: '비밀번호 생성기, 패스워드 생성, 패스프레이즈, 랜덤 비밀번호, 보안, password generator, 강력한 비밀번호, 비밀번호 강도',
   openGraph: {
-    title: '비밀번호 생성기 | 툴허브',
-    description: '안전한 비밀번호와 패스프레이즈 생성 도구 - 강도 분석, 엔트로피 계산, 일괄 생성',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/password-generator/',
     siteName: '툴허브',
     locale: 'ko_KR',
@@ -20,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '비밀번호 생성기 - 안전한 패스워드 생성 도구',
-    description: '강력하고 안전한 비밀번호와 패스프레이즈를 생성하세요.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/password-generator.png'],
   },
   alternates: {
@@ -34,7 +37,7 @@ export default function PasswordGeneratorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '비밀번호 생성기',
-    description: '강력하고 안전한 비밀번호와 패스프레이즈를 생성하는 도구',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/password-generator/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -52,7 +55,9 @@ export default function PasswordGeneratorPage() {
       '내 비밀번호 강도 검사(흔한 패턴 감지)',
       '엔트로피·평균 크랙 시간 추정',
       '최대 20개 일괄 생성',
-      '원클릭 복사'
+      '현재 설정으로 선택한 한 항목만 재생성',
+      '개별·전체 복사와 실패 시 수동 선택·재시도',
+      '표시 언어 변경 시 생성 결과 보존'
     ]
   }
 
@@ -83,16 +88,16 @@ export default function PasswordGeneratorPage() {
             비밀번호 생성기란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            비밀번호 생성기는 해킹에 강한 안전한 랜덤 비밀번호와 기억하기 쉬운 패스프레이즈를 즉시 생성해주는 무료 보안 도구입니다. 대소문자·숫자·특수문자 조합, 길이(8~128자), 제외 문자 설정 등 세밀한 커스텀이 가능하며, 비밀번호 강도와 엔트로피(비트)를 실시간으로 분석합니다. 생성된 비밀번호는 서버에 전송되지 않아 완전한 개인정보 보호가 보장됩니다.
+            대소문자·숫자·특수문자·길이·제외 문자 설정으로 비밀번호를 만들고 PIN이나 단어 조합도 생성할 수 있습니다. 한 항목 다시 만들기는 기존 생성기를 현재 설정으로 한 번 호출해 그 위치만 교체하며 나머지는 유지합니다. 우연히 같은 값이 나올 수 있고 별도의 중복 방지나 보안성 강화 기능은 아닙니다. 생성 결과와 강도 확인 입력은 URL·기기 저장소·서버에 추가하지 않습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
-            안전한 비밀번호 만들기 팁
+            생성 결과 확인하기
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>길이가 핵심:</strong> 무작위로 만든 12자는 초당 100억 번 대입해도 평균 수십만 년, 16자는 10억 년 이상 걸립니다. 문자 종류를 늘리는 것보다 길이를 늘리는 편이 효과가 큽니다.</li>
-            <li><strong>패스프레이즈 활용:</strong> 무작위 단어 6개 이상 조합(예: ocean-table-forest-lamp-river-cloud)은 기억하기 쉬우면서도 엔트로피가 높아 보안성이 우수합니다.</li>
-            <li><strong>사이트마다 다른 비밀번호:</strong> 하나의 비밀번호를 여러 사이트에서 사용하면 한 곳이 해킹당할 때 모든 계정이 위험해집니다. 패스워드 매니저 사용을 권장합니다.</li>
-            <li><strong>특수문자는 보조 수단:</strong> !@#$% 등을 섞으면 조합 수가 늘지만, 같은 길이를 늘리는 것만큼 효과가 크지는 않습니다. 사이트 규칙이 요구할 때 맞춰 쓰세요.</li>
+            <li><strong>설정과 결과:</strong> 한 항목 재생성은 현재 길이·문자·단어/PIN 옵션을 사용합니다. 설정 변경이나 전체 재생성은 기존처럼 전체 목록을 갱신합니다.</li>
+            <li><strong>복사 확인:</strong> 실제 복사 성공 뒤에만 성공 표시가 나옵니다. 실패하면 현재 값을 직접 선택하거나 재시도할 수 있습니다.</li>
+            <li><strong>화면 이동:</strong> 표시 언어만 바꾸면 값은 유지됩니다. 재생성·설정/탭 이동 뒤 이전 복사 안내는 새 결과에 적용하지 않습니다.</li>
+            <li><strong>추정 수치:</strong> 엔트로피와 크랙 시간은 선택한 문자 집합·길이·가정에 따른 계산값입니다. 특정 계정의 안전이나 실제 공격에 걸리는 시간을 보장하지 않습니다.</li>
           </ul>
         </div>
       </section>

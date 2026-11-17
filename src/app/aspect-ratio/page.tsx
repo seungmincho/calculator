@@ -5,49 +5,53 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import aspectRatioMessages from '../../../messages/generated/ko/ns/aspectRatio.json'
 
+const TITLE = '화면 비율 계산기 - 사진 자르기 위치·해상도 | 툴허브'
+const DESCRIPTION = '16:9·9:16 등 화면 비율과 해상도를 계산하고 사진 자르기 위치를9버튼·슬라이더로 조절하세요. 중앙 여백 채우기, 실제 출력 크기, PNG·JPEG 저장과 복사 실패 복구를 지원합니다.'
+
 export const metadata: Metadata = {
-  title: '화면 비율 계산기 - 16:9·9:16·4:5 해상도 | 툴허브',
-  description: '가로×세로를 넣으면 16:9 같은 비율이 바로 나오는 화면 비율 계산기. 유튜브·쇼츠·릴스·인스타 4:5 규격, 세이프존 미리보기, 내 이미지 자르기/여백 저장, 720p~8K 해상도 표.',
-  keywords: '화면 비율 계산기, aspect ratio calculator, 종횡비, 해상도 계산, 16:9, 9:16, 4:5, 쇼츠 사이즈, 릴스 사이즈, 인스타 피드 사이즈, 유튜브 썸네일 크기',
-  openGraph: { title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/aspect-ratio.png', width: 1200, height: 630, alt: '화면 비율 계산기' }] },
-  twitter: { card: 'summary_large_image', title: '화면 비율 계산기 | 툴허브', description: '종횡비 및 해상도 계산', images: ['https://toolhub.ai.kr/og/aspect-ratio.png'] },
+  title: TITLE, description: DESCRIPTION,
+  keywords: '화면 비율 계산기, aspect ratio calculator, 종횡비, 해상도 계산, 16:9, 9:16, 4:5, 사진 자르기 위치, 이미지 여백, 이미지 크기',
+  openGraph: { title: TITLE, description: DESCRIPTION, url: 'https://toolhub.ai.kr/aspect-ratio/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/aspect-ratio.png', width: 1200, height: 630, alt: '화면 비율 계산기' }] },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['https://toolhub.ai.kr/og/aspect-ratio.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/aspect-ratio/' },
 }
 
 export default function AspectRatioPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면 비율 계산기', description: '종횡비 및 해상도 계산', url: 'https://toolhub.ai.kr/aspect-ratio/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['종횡비 계산', '비율+한 변으로 나머지 계산', '플랫폼 규격 프리셋', '쇼츠·릴스 세이프존', '이미지 자르기/여백 저장', '해상도 표'] }
+  const jsonLd = {
+    '@context': 'https://schema.org', '@type': 'WebApplication', name: '화면 비율 계산기', description: DESCRIPTION,
+    url: 'https://toolhub.ai.kr/aspect-ratio/', applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Any', browserRequirements: 'JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    featureList: ['종횡비·한 변으로 치수 계산', '비율 고정·해상도 예시', '사진9위치·두 축 자르기 조절', '중앙 검정·흰색 여백', '미리보기와 같은 원본 영역 저장', '실제 출력 치수·축소 한도 안내', '이미지 교체 실패 시 마지막 정상 사진 보존', '치수·비율·CSS 복사 실패 복구', '숫자 설정 링크 공유'],
+  }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      {/* 컴포넌트가 화면에 보여 주는 FAQ와 같은 문구 */}
       <FaqJsonLd items={aspectRatioMessages.aspectRatio.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><AspectRatio />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <AspectRatio />
+            <div className="mt-8"><RelatedTools /></div>
+          </I18nWrapper>
         </div>
       </div>
-      {/* SEO 콘텐츠 */}
       <section className="max-w-4xl mx-auto px-4 pb-12">
         <div className="mt-12 border-t border-line pt-8">
-          <h2 className="text-xl font-bold text-fg mb-4">
-            화면 비율(종횡비) 계산기란?
-          </h2>
+          <h2 className="text-xl font-bold text-fg mb-4">화면 비율과 사진 자르기 위치</h2>
           <p className="text-body leading-relaxed mb-6">
-            화면 비율 계산기는 이미지나 동영상의 가로세로 비율(종횡비, Aspect Ratio)을 계산하고 특정 비율을 유지하면서 해상도를 변환하는 무료 온라인 도구입니다. 16:9, 4:3, 1:1, 9:16 등 주요 비율 프리셋과 함께 원하는 한 쪽 치수를 입력하면 나머지 값을 자동으로 계산합니다. 유튜브 썸네일, 인스타그램 이미지, TV 해상도 최적화, 반응형 웹 디자인 작업에 필수적인 도구입니다.
+            가로·세로 픽셀에서 종횡비를 구하거나 선택한 비율에 맞춰 한쪽 치수를 계산합니다.
+            1920×1080의16:9,1080×1920의9:16 같은 예시를 적용하고 사진에서 남길 부분을 직접 고를 수 있습니다.
+            잘라내기는9위치 버튼과 두 슬라이더를 사용하고 여백 채우기는 중앙 정렬을 유지합니다.
           </p>
-          <h3 className="text-lg font-semibold text-fg mb-3">
-            화면 비율 계산기 활용 팁
-          </h3>
+          <h3 className="text-lg font-semibold text-fg mb-3">미리보기와 파일 저장의 범위</h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>유튜브·TV 콘텐츠:</strong> 16:9 비율이 표준이며, FHD(1920×1080), QHD(2560×1440), 4K(3840×2160) 해상도를 활용하세요.</li>
-            <li><strong>인스타그램 최적화:</strong> 피드는 세로 4:5(1080×1350)가 화면을 가장 많이 차지하고, 정사각형은 1:1(1080×1080), 릴스·스토리는 9:16(1080×1920)입니다.</li>
-            <li><strong>쇼츠·릴스 세이프존:</strong> 9:16 영상은 위·아래와 오른쪽에 좋아요·자막·버튼이 겹칩니다. 자막과 로고는 가운데 안전 영역 안에 두세요.</li>
-            <li><strong>DSLR 사진 인화:</strong> 카메라 센서 비율은 3:2(6×4인치, 10×15cm 인화)가 표준이며, 4:3은 마이크로포서드 카메라에 해당합니다.</li>
-            <li><strong>반응형 웹 디자인:</strong> CSS aspect-ratio 속성과 함께 계산 결과를 활용하면 다양한 화면 크기에서 비율을 유지할 수 있습니다.</li>
-            <li><strong>울트라와이드 모니터:</strong> 21:9(2560×1080 또는 3440×1440) 비율은 영상 편집과 멀티태스킹 환경에 최적화되어 있습니다.</li>
+            <li><strong>같은 영역:</strong> 미리보기와 저장은 같은 원본 영역 계산을 사용합니다. 잘리는 여유가 없는 축은 이동하지 않으며 새 사진을 정상적으로 불러오면 중앙50/50으로 시작합니다.</li>
+            <li><strong>입력 파일:</strong> PNG·JPEG·WebP·GIF,8MiB 및16,000,000원본 픽셀 이하를 지원합니다. 애니메이션은 정지 프레임으로 사용하며 파일명만으로 형식을 판단하지 않습니다.</li>
+            <li><strong>출력 크기:</strong> 긴 변8192와16,000,000픽셀 한도를 함께 적용합니다. 계산용 치수와 실제 저장 치수를 구분하고, 축소된 결과는 저장 버튼 근처에서 확인할 수 있습니다.</li>
+            <li><strong>실패와 재시도:</strong> 잘못된 새 파일은 마지막 정상 사진을 지우지 않습니다. 읽기·내보내기 실패 안내를 확인하고 현재 이미지로 다시 시도하세요.</li>
+            <li><strong>안전 영역:</strong> 현재 도구의 참고 오버레이이며 최신 플랫폼 UI를 보장하지 않습니다. 표시선은 파일에 그리지 않고 실제 게시 위치의 조건은 별도로 확인합니다.</li>
+            <li><strong>공유와 복사:</strong> 치수·비율·CSS 복사 실패 시 전체 원문을 선택하거나 재시도합니다. 사진과 파일명은 숫자 설정 링크에 포함하지 않습니다.</li>
           </ul>
         </div>
       </section>

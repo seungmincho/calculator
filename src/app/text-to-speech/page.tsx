@@ -5,8 +5,8 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import textToSpeechMessages from '../../../messages/generated/ko/ns/textToSpeech.json'
 
-const TITLE = "텍스트 읽어주기 (TTS) - 문장 읽기·속도 조절 | 툴허브"
-const DESC = "텍스트를 붙여넣고 한국어 음성으로 들어보세요. 긴 글 문장별 재생, 읽는 부분 표시, 속도 조절, 일시정지와 링크 공유를 지원합니다. 설치·가입 없이 무료로 이용하세요."
+const TITLE = "텍스트 읽어주기 (TTS) - 원고·읽던 문장 저장 | 툴허브"
+const DESC = "문장별·구간 반복으로 글을 듣고, 원고와 읽던 위치를 이 브라우저의 읽기 목록에 최대 8개 저장하세요. 명시적으로 원고를 열어 직접 재생하며 음성·속도 설정과 오류 문장 재시도를 지원합니다."
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 }
 
 export default function TextToSpeechPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '텍스트 읽어주기 (TTS)', description: DESC, url: 'https://toolhub.ai.kr/text-to-speech/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['긴 글 문장 단위 연속 재생', '읽는 문장·단어 하이라이트', '문장 클릭 재생', '속도 프리셋(학습 0.8배)', '한국어 음성 우선·선택 기억', '단축키(Space/Esc)', '링크 공유'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '텍스트 읽어주기 (TTS)', description: DESC, url: 'https://toolhub.ai.kr/text-to-speech/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['시작·끝 문장 구간 반복과 따라 읽기 간격', '긴 글 문장 단위 연속 재생', '읽는 문장·단어 하이라이트', '문장 클릭 재생', '속도 프리셋(학습 0.8배)', '한국어 음성 우선·선택 기억', '단축키(Space/Esc)', '링크 공유', 'OCR·메모장에서 보낸 글 불러오기', '오류가 난 문장부터 명시적으로 다시 읽기', '원고·읽던 문장·설정의 기기 내 읽기 목록8개', '원고 열기 후 자동 발화 없이 명시 재생', '기기 음성만 사용 조건과 음성 없음 안내'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -54,6 +54,7 @@ export default function TextToSpeechPage() {
             <li><strong>외국어 발음 확인:</strong> 영어나 일본어 텍스트를 붙여넣고 원어민 음성으로 발음을 들어보면 언어 학습 효과를 높일 수 있습니다.</li>
             <li><strong>문서 청취(오디오북):</strong> 긴 글이나 보고서를 음성으로 들으면 눈의 피로를 줄이면서도 내용을 파악할 수 있어 멀티태스킹이 가능합니다.</li>
             <li><strong>속도 조절 활용:</strong> 발음 학습 시에는 &apos;느리게(0.8배)&apos;로 천천히, 문서를 빠르게 청취할 때는 1.5~2배속으로 설정하면 효율적입니다.</li>
+            <li><strong>읽기 목록:</strong> 원고와 읽던 문장·설정을 이 브라우저에 저장하고 필요할 때 명시적으로 열어 보세요. 열기는 현재 원고를 바꾸며 자동으로 읽지 않습니다.</li>
             <li><strong>발표·나레이션 원고 점검:</strong> 원고를 넣고 예상 재생 시간과 문장 길이를 확인하면 말하기 어려운 긴 문장을 미리 고칠 수 있습니다.</li>
             <li><strong>접근성 활용:</strong> 시각적 불편이 있거나 읽기가 어려운 분들을 위해 웹 콘텐츠를 음성으로 전달할 때 TTS 기능을 활용하면 접근성이 크게 향상됩니다.</li>
           </ul>

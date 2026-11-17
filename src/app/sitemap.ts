@@ -1,8 +1,10 @@
 import type { MetadataRoute } from 'next'
-import { menuConfig, categoryKeys, categoryHubs } from '@/config/menuConfig'
+import { menuConfig, categoryKeys, categoryHubs, homeContent } from '@/config/menuConfig'
 import { BRACKETS } from './salary-table/lib'
 import { algorithms } from '@/config/algorithmConfig'
 import { csVisualizers } from '@/config/csVisualizerConfig'
+import { guideDate, guidePath, guides } from '@/content/guides/catalog'
+import { blogOpened, blogPath, posts } from '@/content/blog/posts'
 
 export const dynamic = 'force-static'
 export const revalidate = false
@@ -75,15 +77,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const today = '2026-09-16'
   const seen = new Set<string>()
 
-  // 홈
-  const entries: MetadataRoute.Sitemap = [
-    {
-      url: 'https://toolhub.ai.kr/',
-      lastModified: today,
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-  ]
+  const home = {
+    url: 'https://toolhub.ai.kr/',
+    lastModified: homeContent.updatedDate,
+    changeFrequency: 'daily',
+    priority: 1,
+  } satisfies MetadataRoute.Sitemap[number]
+  const entries: MetadataRoute.Sitemap = [home]
+  const blogDates = posts.map(post => post.updated ?? post.published)
+  entries.push({ url: 'https://toolhub.ai.kr/blog/', lastModified: [blogOpened, ...blogDates].sort().at(-1) })
+  for (const post of posts) {
+    entries.push({ url: 'https://toolhub.ai.kr' + blogPath(post.slug), lastModified: post.updated ?? post.published })
+  }
+  const newestGuide = guides.reduce((latest, guide) => guideDate(guide) > latest ? guideDate(guide) : latest, '')
+  entries.push({ url: 'https://toolhub.ai.kr/guides/', lastModified: newestGuide })
+  for (const guide of guides) {
+    entries.push({ url: 'https://toolhub.ai.kr' + guidePath(guide.slug), lastModified: guideDate(guide) })
+  }
 
   // 카테고리 허브 (/calculators, /tools, /media, /health — /games는 menuConfig에 있음)
   for (const key of categoryKeys) {
@@ -92,9 +102,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     seen.add(href)
     // 허브는 도구가 추가·개선될 때 바뀌므로 소속 도구 중 가장 최근 날짜를 쓴다
     const latest = menuConfig[key].items.reduce((max, i) => {
-      const d = i.updatedDate || i.addedDate || ''
-      return d > max ? d : max
+      if (i.addedDate && i.addedDate > max) max = i.addedDate
+      if (i.updatedDate && i.updatedDate > max) max = i.updatedDate
+      return max
     }, '2026-09-17')
+    if (latest > home.lastModified) home.lastModified = latest
     entries.push({ url: `https://toolhub.ai.kr${href}/`, lastModified: latest, changeFrequency: 'weekly', priority: 0.9 })
   }
 

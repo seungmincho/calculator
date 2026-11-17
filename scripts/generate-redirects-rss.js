@@ -4,6 +4,8 @@ const projectFile = name => path.join(__dirname, '..', name);
 
 // menuConfig가 단일 출처 (Node 24 타입 스트리핑으로 .ts 직접 로드)
 const { menuConfig, categoryKeys } = require('../src/config/menuConfig.ts');
+const guides = require('../src/content/guides/catalog.json');
+const { posts } = require('../src/content/blog/posts.ts');
 const menuItems = [...new Map(categoryKeys.flatMap(k => menuConfig[k].items).map(i => [i.href, i])).values()];
 
 // Algorithm sub-page hrefs
@@ -89,6 +91,10 @@ menuItems.forEach(m => allHrefSet.add(m.href));
 algorithmHrefs.forEach(h => allHrefSet.add(h));
 csVisualizerHrefs.forEach(h => allHrefSet.add(h));
 staticRoutes.forEach(h => allHrefSet.add(h));
+allHrefSet.add('/guides');
+guides.forEach(guide => allHrefSet.add('/guides/' + guide.slug));
+allHrefSet.add('/blog');
+posts.forEach(post => allHrefSet.add('/blog/' + post.slug));
 
 const allSorted = [...allHrefSet].sort();
 
@@ -114,13 +120,21 @@ function getTitle(labelKey) {
 // RSS items: menuConfig 도구, 최근 추가·개선순 (updatedDate → addedDate)
 const lookup = key => key.split('.').reduce((o, k) => (o == null ? o : o[k]), ko);
 const itemDate = m => m.updatedDate || m.addedDate || '2026-09-16';
-const menuSorted = [...menuItems].sort((a, b) => itemDate(b).localeCompare(itemDate(a)) || a.href.localeCompare(b.href));
-const rssItems = menuSorted.map(m => {
-  const title = getTitle(m.labelKey);
-  const url = 'https://toolhub.ai.kr' + m.href + '/';
-  const desc = lookup(m.descriptionKey) || '';
+const feedEntries = [
+  ...menuItems.map(item => ({
+    href: item.href, title: getTitle(item.labelKey), desc: lookup(item.descriptionKey) || '', date: itemDate(item),
+  })),
+  ...guides.map(guide => ({
+    href: '/guides/' + guide.slug, title: guide.title, desc: guide.intro, date: guide.updated || guide.published,
+  })),
+  ...posts.map(post => ({
+    href: '/blog/' + post.slug, title: post.title, desc: post.summary, date: post.updated || post.published,
+  })),
+].sort((a, b) => b.date.localeCompare(a.date) || a.href.localeCompare(b.href));
+const rssItems = feedEntries.map(({ href, title, desc, date }) => {
+  const url = 'https://toolhub.ai.kr' + href + '/';
   return '  <item>\n    <title><![CDATA[' + title + ']]></title>\n    <link>' + url + '</link>\n    <guid>' + url + '</guid>\n' +
-    '    <description><![CDATA[' + desc + ']]></description>\n    <pubDate>' + new Date(itemDate(m) + 'T00:00:00+09:00').toUTCString() + '</pubDate>\n  </item>';
+    '    <description><![CDATA[' + desc + ']]></description>\n    <pubDate>' + new Date(date + 'T00:00:00+09:00').toUTCString() + '</pubDate>\n  </item>';
 });
 
 const rfcDate = new Date().toUTCString();

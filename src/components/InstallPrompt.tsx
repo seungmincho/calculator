@@ -12,7 +12,8 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function InstallPrompt() {
-  const t = useTranslations()
+  const t = useTranslations('pwa')
+  const common = useTranslations('common')
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
   const [isInstalled, setIsInstalled] = useState(false)
@@ -22,15 +23,16 @@ export default function InstallPrompt() {
     // Check if we're in a browser environment
     if (typeof window === 'undefined') return
 
-    // Check if already installed
-    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true)
-      return
-    }
-
-    // Detect iOS
+    let active = true
+    let showTimer: ReturnType<typeof setTimeout> | undefined
+    const installed = !!window.matchMedia && window.matchMedia('(display-mode: standalone)').matches
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !('MSStream' in window)
-    setIsIOS(isIOSDevice)
+    queueMicrotask(() => {
+      if (!active) return
+      if (installed) setIsInstalled(true)
+      setIsIOS(isIOSDevice)
+    })
+    if (installed) return () => { active = false }
 
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (event: Event) => {
@@ -38,8 +40,11 @@ export default function InstallPrompt() {
       setDeferredPrompt(event as BeforeInstallPromptEvent)
       
       // Don't show immediately, wait for user interaction or after some time
-      setTimeout(() => {
-        if (!isInstalled && typeof localStorage !== 'undefined' && !localStorage.getItem('pwa-install-dismissed')) {
+      clearTimeout(showTimer)
+      showTimer = setTimeout(() => {
+        let dismissed = false
+        try { dismissed = !!window.localStorage.getItem('pwa-install-dismissed') } catch { /* An optional preference must not stop the prompt. */ }
+        if (active && !isInstalled && !dismissed) {
           setShowInstallPrompt(true)
         }
       }, 10000) // Show after 10 seconds
@@ -56,6 +61,8 @@ export default function InstallPrompt() {
     window.addEventListener('appinstalled', handleAppInstalled)
 
     return () => {
+      active = false
+      clearTimeout(showTimer)
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
       window.removeEventListener('appinstalled', handleAppInstalled)
     }
@@ -65,7 +72,7 @@ export default function InstallPrompt() {
     if (!deferredPrompt) {
       // For iOS or when prompt is not available, show instructions
       if (isIOS) {
-        alert(t('pwa.ios.alert'))
+        alert(t('ios.alert'))
       }
       return
     }
@@ -86,9 +93,7 @@ export default function InstallPrompt() {
 
   const handleDismiss = () => {
     setShowInstallPrompt(false)
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('pwa-install-dismissed', 'true')
-    }
+    try { window.localStorage.setItem('pwa-install-dismissed', 'true') } catch { /* Dismissal still works for this visit. */ }
   }
 
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -107,7 +112,7 @@ export default function InstallPrompt() {
           id="install-button"
           onClick={handleInstallClick}
           className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          aria-label={t('pwa.install.ariaLabel')}
+          aria-label={t('install.ariaLabel')}
         >
           <Download className="w-6 h-6" />
         </button>
@@ -129,16 +134,16 @@ export default function InstallPrompt() {
               </div>
               <div>
                 <h3 id="install-prompt-title" className="text-lg font-semibold text-fg">
-                  {t('pwa.install.title') || '앱으로 설치하기'}
+                  {t('install.title') || '앱으로 설치하기'}
                 </h3>
                 <p className="text-sm text-sub">
-                  {t('pwa.install.subtitle') || '더 빠르고 편리하게 이용하세요'}
+                  {t('install.subtitle') || '더 빠르고 편리하게 이용하세요'}
                 </p>
               </div>
             </div>
             <button
               onClick={handleDismiss}
-              aria-label={t('common.close')}
+              aria-label={common('close')}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
             >
               <X className="w-5 h-5" />
@@ -148,31 +153,31 @@ export default function InstallPrompt() {
           <div className="space-y-3 mb-6">
             <div className="flex items-center text-sm text-sub">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-              {t('pwa.benefits.offline') || '오프라인에서도 사용 가능'}
+              {t('benefits.offline') || '오프라인에서도 사용 가능'}
             </div>
             <div className="flex items-center text-sm text-sub">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-              {t('pwa.benefits.fast') || '빠른 로딩 속도'}
+              {t('benefits.fast') || '빠른 로딩 속도'}
             </div>
             <div className="flex items-center text-sm text-sub">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-              {t('pwa.benefits.homescreen') || '홈 화면에서 바로 실행'}
+              {t('benefits.homescreen') || '홈 화면에서 바로 실행'}
             </div>
             <div className="flex items-center text-sm text-sub">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-              {t('pwa.benefits.storage') || '데이터 절약'}
+              {t('benefits.storage') || '데이터 절약'}
             </div>
           </div>
 
           {isIOS ? (
             <div className="space-y-3 mb-6">
               <p className="text-sm text-sub font-medium">
-                {t('pwa.ios.title')}
+                {t('ios.title')}
               </p>
               <div className="bg-soft p-3 rounded-lg text-sm space-y-1">
-                <p>{t('pwa.ios.step1')}</p>
-                <p>{t('pwa.ios.step2')}</p>
-                <p>{t('pwa.ios.step3')}</p>
+                <p>{t('ios.step1')}</p>
+                <p>{t('ios.step2')}</p>
+                <p>{t('ios.step3')}</p>
               </div>
             </div>
           ) : null}
@@ -182,14 +187,14 @@ export default function InstallPrompt() {
               onClick={handleDismiss}
               className="flex-1 px-4 py-2 text-sub border border-line-strong rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              {t('pwa.install.later') || '나중에'}
+              {t('install.later') || '나중에'}
             </button>
             <button
               onClick={handleInstallClick}
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
             >
               <Download className="w-4 h-4 mr-2" />
-              {t('pwa.install.now') || '지금 설치'}
+              {t('install.now') || '지금 설치'}
             </button>
           </div>
         </div>

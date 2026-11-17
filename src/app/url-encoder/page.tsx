@@ -6,7 +6,7 @@ import ToolFaq from '@/components/ToolFaq'
 
 export const metadata: Metadata = {
   title: 'URL 인코더/디코더 - URL 인코딩/디코딩 변환기 | 툴허브',
-  description: 'URL 인코딩/디코딩 도구. URL 파라미터를 안전하게 인코딩하거나 인코딩된 URL을 원본으로 디코딩합니다. URL 분석 기능 포함.',
+  description: 'URL 파라미터를 인코딩하거나 디코딩하고 URL을 분석·정규화하세요. 최대 100줄을 줄마다 한 번씩 변환하며 오류 행과 원문을 유지합니다. 일괄 결과 복사·TXT·TSV 내보내기를 지원합니다.',
   keywords: 'url인코더, url디코더, url인코딩, url디코딩, 퍼센트인코딩, urlencode, urldecode',
   openGraph: {
     title: 'URL 인코더/디코더 - 온라인 URL 변환 도구',
@@ -39,7 +39,7 @@ export default function UrlEncoderPage() {
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['URL 인코딩', 'URL 디코딩', 'URI 컴포넌트 변환', '실시간 변환']
+    featureList: ['URL 인코딩', 'URL 디코딩', 'URI 컴포넌트 변환', '실시간 변환', '최대 100줄 일괄 변환', '오류 행·원문·줄 번호 보존', 'TXT·TSV 내보내기']
   }
 
   const faq = [

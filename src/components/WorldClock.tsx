@@ -4,36 +4,30 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/worldClock'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import { X, ChevronUp, ChevronDown, Sun, Moon, Link2, Check, Copy, Search } from 'lucide-react'
+import { useHydrated } from '@/hooks/useHydrated'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { X, ChevronUp, ChevronDown, Sun, Moon, Search } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import GuideSection from '@/components/GuideSection'
+import MobileResultLink from '@/components/MobileResultLink'
 import {
   type City, DEFAULT_IDS, resolveCity, searchCities, localParts, offsetMin, isDST, fmtOffset, dayDiff,
-  isNight, hm, ymd, mdw, daySlots, inWork, overlap, ranges, shareLine, MARKETS, marketSession,
+  isNight, hm, ymd, mdw, inWork, MARKETS, marketSession,
 } from '@/utils/worldClock'
+import { initialMeetingCityIds, parseMeetingCityIds, parseMeetingAt, isMeetingInstant, meetingDate, meetingDay, meetingWorkIntervals, defaultMeetingInstant, meetingSlotIndex, meetingShareLine, meetingShareUrl, formatMeetingLocal, MeetingError, MEETING_CITY_LIMIT, type MeetingErrorCode } from '@/utils/worldClockMeeting'
+import { createMeetingActionGuard, copyMeetingText, downloadMeetingCalendar } from '@/utils/worldClockActions'
+import { snapshotMeetingCalendar, MeetingCalendarError, MEETING_DURATIONS, type MeetingCalendarErrorCode } from '@/utils/worldClockCalendar'
 
 const LS_KEY = 'worldClock.cities'
-
-async function copyText(text: string) {
-  try {
-    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return }
-  } catch { /* fallback */ }
-  const ta = document.createElement('textarea')
-  ta.value = text
-  ta.style.position = 'fixed'
-  ta.style.left = '-999999px'
-  document.body.appendChild(ta)
-  ta.select()
-  document.execCommand('copy')
-  document.body.removeChild(ta)
-}
-
-const parseIds = (s: string | null) => (s ?? '').split(',').filter(id => resolveCity(id))
+const control = 'ui-btn-soft min-h-11 px-4 py-2 text-base disabled:opacity-40'
+const field = 'ui-field min-h-11 max-w-full px-3 py-2 text-base'
+type CopyState = { identity: string; kind: string; text: string; status: 'pending' | 'copied' | 'failed' }
+type CalendarState = { identity: string; status: 'pending' | 'started' | 'failed'; error?: MeetingCalendarErrorCode }
 
 export default function WorldClock() {
   const t = useTranslations('worldClock')
-  const searchParams = useSearchParams()
+  const hydrated = useHydrated()
+  const { language } = useLanguage()
   const weekdays = useMemo(() => {
     const d = t.raw('days') as Record<string, string>
     return ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map(k => d[k])
@@ -44,17 +38,33 @@ export default function WorldClock() {
   const [now, setNow] = useState<number | null>(null)
   const [is24h, setIs24h] = useState(true)
   const [query, setQuery] = useState('')
-  const [copied, setCopied] = useState<string | null>(null)
-  // 미팅 플래너
-  const [date, setDate] = useState('')
-  const [sel, setSel] = useState<number | null>(null)
+  const [selectedMs, setSelectedMs] = useState<number | null>(null)
+  const [dateDraft, setDateDraft] = useState<string | null>(null)
+  const [meetingIssue, setMeetingIssue] = useState<MeetingErrorCode | null>(null)
+  const [urlNotice, setUrlNotice] = useState(false)
   const [workStart, setWorkStart] = useState(9)
   const [workEnd, setWorkEnd] = useState(18)
+  const [eventTitle, setEventTitle] = useState('')
+  const [duration, setDuration] = useState(60)
+  const [copyState, setCopyState] = useState<CopyState | null>(null)
+  const [calendarState, setCalendarState] = useState<CalendarState | null>(null)
+  const [selectionFailed, setSelectionFailed] = useState(false)
+  const actions = useRef(createMeetingActionGuard()), alive = useRef(true), initialized = useRef(false)
+  const observedUrl = useRef(''), manual = useRef<HTMLTextAreaElement>(null)
   const dragging = useRef(false)
 
   const cities = useMemo(() => ids.map(resolveCity).filter((c): c is City => !!c), [ids])
+  const tzs = useMemo(() => cities.map(c => c.tz), [cities])
   const base = cities[0]
-  const name = (c: City) => c.ko
+  const name = (c: City) => language === 'ko' ? c.ko : c.en
+  const validSelection = selectedMs !== null && isMeetingInstant(selectedMs, tzs)
+  const date = dateDraft ?? (validSelection && base ? meetingDate(localParts(base.tz, selectedMs)) : '')
+  const identity = JSON.stringify([ids, selectedMs, dateDraft, workStart, workEnd, eventTitle, duration, language])
+  const currentIdentity = useRef(identity)
+  currentIdentity.current = identity
+  const visibleCopy = copyState?.identity === identity ? copyState : null
+  const visibleCalendar = calendarState?.identity === identity ? calendarState : null
+  const invalidate = () => { actions.current.invalidate(); setCopyState(null); setCalendarState(null); setSelectionFailed(false) }
 
   // 1초 틱 (서버/첫 렌더는 null → hydration 안전)
   useEffect(() => {
@@ -63,48 +73,76 @@ export default function WorldClock() {
     return () => clearInterval(iv)
   }, [])
 
-  // 초기화: URL(cities, at) > localStorage > 기본값. 한 번만.
+  // Restore only after hydration. Self synchronization and hash-only navigation never restore private inputs.
   useEffect(() => {
-    if (ready) return
-    const fromUrl = parseIds(searchParams.get('cities'))
-    let init = fromUrl
-    if (!init.length) {
-      try { init = parseIds(localStorage.getItem(LS_KEY)) } catch { /* 저장소 차단 */ }
+    if (!hydrated) return
+    const restore = () => {
+      const params = new URLSearchParams(window.location.search)
+      const key = JSON.stringify([params.get('cities'), params.get('at')])
+      if (initialized.current && observedUrl.current === key) return
+      observedUrl.current = key; initialized.current = true
+      let saved: string | null = null
+      try { saved = localStorage.getItem(LS_KEY) } catch { /* City preference is optional. */ }
+      const initial = initialMeetingCityIds(params.get('cities'), saved), zones = initial.map(id => resolveCity(id)!.tz)
+      const fromUrl = parseMeetingAt(params.get('at'), zones)
+      actions.current.invalidate(); setCopyState(null); setCalendarState(null); setSelectionFailed(false)
+      setIds(initial); setDateDraft(null); setMeetingIssue(null); setUrlNotice(params.has('at') && fromUrl === null)
+      try {
+        const clock = Math.floor(Date.now() / 1000) * 1000
+        if (fromUrl !== null) setSelectedMs(fromUrl)
+        else {
+          if (!isMeetingInstant(clock, zones)) throw new MeetingError('instant')
+          const day = meetingDay(zones[0], meetingDate(localParts(zones[0], clock)))
+          setSelectedMs(defaultMeetingInstant(day, zones, meetingWorkIntervals(zones, day, workStart, workEnd)))
+        }
+      } catch (cause) { setSelectedMs(null); setMeetingIssue(cause instanceof MeetingError ? cause.code : 'instant') }
+      setReady(true)
     }
-    if (init.length) setIds(init)
-    const baseTz = resolveCity((init.length ? init : DEFAULT_IDS)[0])!.tz
-    const at = Number(searchParams.get('at'))
-    const ref = at > 0 ? at * 1000 : Date.now()
-    const l = localParts(baseTz, ref)
-    setDate(ymd(l))
-    setSel(at > 0 ? l.h : null)
-    setReady(true)
-  }, [searchParams, ready])
+    if (!initialized.current) restore()
+    window.addEventListener('popstate', restore)
+    return () => window.removeEventListener('popstate', restore)
+  }, [hydrated, workStart, workEnd])
 
-  // 저장 + URL 동기화 (초기화 이후 변경분만)
   useEffect(() => {
     if (!ready) return
     try { localStorage.setItem(LS_KEY, ids.join(',')) } catch { /* 저장소 차단 */ }
-    const url = new URL(window.location.href)
-    url.searchParams.set('cities', ids.join(','))
-    window.history.replaceState(window.history.state, '', url)
-  }, [ids, ready])
+    if (selectedMs === null || !isMeetingInstant(selectedMs, tzs)) return
+    const url = new URL(meetingShareUrl(window.location.href, ids, selectedMs))
+    observedUrl.current = JSON.stringify([url.searchParams.get('cities'), url.searchParams.get('at')])
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, '', url)
+  }, [ids, ready, selectedMs, tzs])
 
-  const flash = (key: string) => { setCopied(key); setTimeout(() => setCopied(null), 2000) }
+  useEffect(() => {
+    alive.current = true
+    const guard = actions.current
+    const up = () => { dragging.current = false }
+    window.addEventListener('pointerup', up)
+    return () => { alive.current = false; guard.invalidate(); window.removeEventListener('pointerup', up) }
+  }, [])
+
+  useEffect(() => {
+    actions.current.invalidate(); setCopyState(null); setCalendarState(null); setSelectionFailed(false)
+  }, [language])
 
   const allTz = useMemo(() => {
     try { return (Intl as unknown as { supportedValuesOf: (k: string) => string[] }).supportedValuesOf('timeZone') } catch { return [] }
   }, [])
   const results = useMemo(() => searchCities(query, ids, allTz), [query, ids, allTz])
 
-  const add = (id: string) => { setIds(v => (v.includes(id) ? v : [...v, id])); setQuery('') }
-  const remove = (id: string) => setIds(v => v.filter(x => x !== id))
-  const move = (i: number, d: -1 | 1) => setIds(v => {
+  const changeCities = (next: string[]) => {
+    invalidate()
+    const clean = parseMeetingCityIds(next.join(','))
+    if (!clean.length || clean.length !== next.length) { setMeetingIssue('cities'); return }
+    if (selectedMs !== null && !isMeetingInstant(selectedMs, clean.map(id => resolveCity(id)!.tz))) { setMeetingIssue('instant'); return }
+    setIds(clean); setDateDraft(null); setMeetingIssue(null); setUrlNotice(false)
+  }
+  const add = (id: string) => { if (!ids.includes(id)) changeCities([...ids, id]); setQuery('') }
+  const remove = (id: string) => changeCities(ids.filter(x => x !== id))
+  const move = (i: number, d: -1 | 1) => {
     const j = i + d
-    if (j < 0 || j >= v.length) return v
-    const n = [...v];[n[i], n[j]] = [n[j], n[i]]
-    return n
-  })
+    if (j < 0 || j >= ids.length) return
+    const next = [...ids];[next[i], next[j]] = [next[j], next[i]]; changeCities(next)
+  }
 
   const durText = (min: number) => {
     const a = Math.abs(min), h = Math.floor(a / 60), m = a % 60
@@ -112,50 +150,70 @@ export default function WorldClock() {
   }
 
   const fmtClock = useCallback((tz: string, ms: number) =>
-    new Intl.DateTimeFormat('ko-KR', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: !is24h }).format(ms),
-  [is24h])
+    new Intl.DateTimeFormat(language === 'ko' ? 'ko-KR' : 'en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: !is24h }).format(ms),
+  [is24h, language])
 
   // ── 미팅 플래너 ──
-  const slots = useMemo(() => (base && date ? daySlots(base.tz, date) : []), [base, date])
-  const overlapFlags = useMemo(() => overlap(cities.map(c => c.tz), slots, workStart, workEnd), [cities, slots, workStart, workEnd])
-  const overlapRanges = useMemo(() => ranges(overlapFlags), [overlapFlags])
-  const grid = useMemo(() => cities.map(c => slots.map(ms => {
-    const l = localParts(c.tz, ms)
-    return { l, work: inWork(c.tz, ms, workStart, workEnd), night: l.h < 7 || l.h >= 22 }
-  })), [cities, slots, workStart, workEnd])
-
-  // 선택 칸 기본값: 첫 겹침 구간 → 없으면 오전 9시
-  const selIdx = sel ?? (overlapRanges[0]?.[0] ?? 9)
-  const selMs = slots[selIdx]
-  const line = selMs != null ? shareLine(selMs, cities.map(c => ({ tz: c.tz, name: name(c) })), weekdays) : ''
-  const shareUrl = () => {
-    const u = new URL(window.location.href)
-    u.searchParams.set('cities', ids.join(','))
-    if (selMs != null) u.searchParams.set('at', String(Math.floor(selMs / 1000)))
-    return u.toString()
+  const model = useMemo(() => {
+    if (!base || !date) return null
+    try {
+      const day = meetingDay(base.tz, date)
+      return { day, overlap: meetingWorkIntervals(tzs, day, workStart, workEnd), error: null }
+    } catch (cause) { return { day: null, overlap: null, error: cause instanceof MeetingError ? cause.code : 'unsupportedDate' as const } }
+  }, [base, date, tzs, workStart, workEnd])
+  const slots = model?.day?.slots ?? []
+  const selIdx = model?.day && selectedMs !== null ? meetingSlotIndex(model.day, selectedMs) : -1
+  const line = useMemo(() => validSelection && selectedMs !== null ? meetingShareLine(selectedMs, cities, language) : '', [validSelection, selectedMs, cities, language])
+  // Clock ticks must not reformat hundreds of date/offset labels every second.
+  const timeline = useMemo(() => cities.map(city => (model?.day?.slots ?? []).map(slot => ({
+    valid: isMeetingInstant(slot.startMs, tzs),
+    local: localParts(city.tz, slot.startMs),
+    work: inWork(city.tz, slot.startMs, workStart, workEnd),
+    start: isMeetingInstant(slot.startMs, [city.tz]) ? formatMeetingLocal(city.tz, slot.startMs, language) : null,
+    end: isMeetingInstant(slot.endMs, [city.tz]) ? formatMeetingLocal(city.tz, slot.endMs, language) : null,
+  }))), [cities, model, tzs, workStart, workEnd, language])
+  const canExport = ready && validSelection && !dateDraft && !meetingIssue && !model?.error
+  const shareUrl = () => meetingShareUrl(window.location.href, ids, selectedMs!)
+  const localText = (tz: string, instant: number) => isMeetingInstant(instant, [tz]) ? formatMeetingLocal(tz, instant, language) : t('meetingExact.outsideRange')
+  const durationText = (ms: number) => t('meetingExact.durationHMS', { hours: Math.floor(ms / 3600000), minutes: Math.floor(ms / 60000) % 60, seconds: Math.floor(ms / 1000) % 60 })
+  const selectInstant = (ms: number) => {
+    invalidate()
+    if (!isMeetingInstant(ms, tzs)) { setMeetingIssue('instant'); return }
+    setSelectedMs(ms); setDateDraft(null); setMeetingIssue(null); setUrlNotice(false)
   }
-  // 주소창의 at 도 지금 선택과 맞춘다 — 받은 링크의 옛 시각이 새로고침·북마크에 남지 않게
-  useEffect(() => {
-    if (!ready) return
-    const url = new URL(window.location.href)
-    if (sel != null && selMs != null) url.searchParams.set('at', String(Math.floor(selMs / 1000)))
-    else url.searchParams.delete('at')
-    window.history.replaceState(window.history.state, '', url)
-  }, [ready, sel, selMs])
-
-  useEffect(() => {
-    const up = () => { dragging.current = false }
-    window.addEventListener('pointerup', up)
-    return () => window.removeEventListener('pointerup', up)
-  }, [])
-
-  const rangeText = (r: [number, number]) => {
-    const a = localParts(base.tz, slots[r[0]])
-    const endMs = slots[r[1] - 1] + 3600000
-    const b = localParts(base.tz, endMs)
-    return `${hm(a)}–${b.h === 0 && b.mi === 0 ? '24:00' : hm(b)}`
+  const changeDate = (value: string) => {
+    invalidate(); setDateDraft(value); setMeetingIssue(null); setUrlNotice(false)
+    try {
+      const day = meetingDay(base.tz, value)
+      const instant = defaultMeetingInstant(day, tzs, meetingWorkIntervals(tzs, day, workStart, workEnd))
+      setSelectedMs(instant); setDateDraft(null)
+    } catch (cause) { setMeetingIssue(cause instanceof MeetingError ? cause.code : 'date') }
   }
-  const overlapHours = overlapFlags.filter(Boolean).length
+  const changeWork = (kind: 'start' | 'end', value: number) => {
+    invalidate()
+    if (kind === 'start') setWorkStart(value); else setWorkEnd(value)
+  }
+  const requestCopy = async (kind: string, text: string) => {
+    if (!canExport) return
+    const token = actions.current.begin('copy'), key = identity
+    const current = () => alive.current && currentIdentity.current === key && actions.current.isCurrent(token)
+    setCopyState({ identity: key, kind, text, status: 'pending' }); setSelectionFailed(false)
+    const outcome = await copyMeetingText(text, current)
+    if (outcome !== 'stale' && current()) setCopyState({ identity: key, kind, text, status: outcome })
+  }
+  const copyLabel = (kind: string, label: string) => visibleCopy?.kind === kind ? t(visibleCopy.status === 'pending' ? 'copyRecovery.copying' : visibleCopy.status === 'copied' ? 'copied' : label) : t(label)
+  const exportCalendar = async () => {
+    if (!canExport || selectedMs === null) return
+    const key = identity, token = actions.current.begin('calendar')
+    const current = () => alive.current && currentIdentity.current === key && actions.current.isCurrent(token)
+    let snapshot
+    try { snapshot = snapshotMeetingCalendar({ title: eventTitle, startMs: selectedMs, durationMinutes: duration, cityIds: ids }) }
+    catch (cause) { setCalendarState({ identity: key, status: 'failed', error: cause instanceof MeetingCalendarError ? cause.code : 'generate' }); return }
+    setCalendarState({ identity: key, status: 'pending' })
+    const outcome = await downloadMeetingCalendar(snapshot, current)
+    if (outcome !== 'stale' && current()) setCalendarState({ identity: key, status: outcome })
+  }
+  const endMs = selectedMs === null ? null : selectedMs + duration * 60000
 
   return (
     <div className="space-y-8">
@@ -168,7 +226,7 @@ export default function WorldClock() {
         <div className="flex rounded-xl bg-soft p-1 text-sm">
           {[false, true].map(v => (
             <button key={String(v)} onClick={() => setIs24h(v)}
-              className={`px-3 py-1.5 rounded-lg font-medium ${is24h === v ? 'bg-primary text-white' : 'text-body'}`}>
+              className={`min-h-11 px-3 py-2 rounded-lg font-medium ${is24h === v ? 'bg-primary text-white' : 'text-body'}`}>
               {v ? t('format24h') : t('format12h')}
             </button>
           ))}
@@ -193,11 +251,8 @@ export default function WorldClock() {
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <h2 className="text-lg font-semibold text-fg">{t('addCity')}</h2>
           <div className="flex gap-2">
-            <button onClick={() => setIds(DEFAULT_IDS)} className="ui-btn-soft px-3 py-1.5 text-sm">{t('resetDefault')}</button>
-            <button onClick={async () => { await copyText(window.location.href); flash('link') }} className="ui-btn-soft px-3 py-1.5 text-sm">
-              {copied === 'link' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
-              {copied === 'link' ? t('copied') : t('copyLink')}
-            </button>
+            <button onClick={() => changeCities([...DEFAULT_IDS])} className={control}>{t('resetDefault')}</button>
+            <button data-world-copy="link" disabled={!canExport} onClick={() => { void requestCopy('link', shareUrl()) }} className={control}>{copyLabel('link', 'copyLink')}</button>
           </div>
         </div>
         <div className="relative">
@@ -208,14 +263,14 @@ export default function WorldClock() {
             onKeyDown={e => { if (e.key === 'Enter' && results[0]) add(results[0].id); if (e.key === 'Escape') setQuery('') }}
             placeholder={t('searchPlaceholder')}
             aria-label={t('search')}
-            className="ui-field w-full pl-10 pr-4 py-3"
+            className="ui-field w-full pl-10 pr-4 py-3 text-base"
           />
           {query.trim() && (
             <ul className="absolute z-20 mt-2 w-full bg-surface border border-line rounded-xl shadow-lg max-h-72 overflow-auto">
               {results.length ? results.map(c => (
                 <li key={c.id}>
-                  <button onClick={() => add(c.id)} className="w-full text-left px-4 py-2.5 hover:bg-soft flex justify-between gap-3">
-                    <span className="text-fg">{c.ko} <span className="text-muted text-sm">{c.en !== c.ko ? c.en : ''}</span></span>
+                  <button data-world-add={c.id} disabled={ids.length >= MEETING_CITY_LIMIT} onClick={() => add(c.id)} className="min-h-11 w-full text-left px-4 py-2.5 hover:bg-soft flex justify-between gap-3 disabled:opacity-40">
+                    <span className="text-fg">{name(c)} <span className="text-muted text-sm">{c.en !== c.ko ? language === 'ko' ? c.en : c.ko : ''}</span></span>
                     <span className="text-xs text-faint tabular-nums shrink-0">{now ? fmtOffset(offsetMin(c.tz, now)) : c.tz}</span>
                   </button>
                 </li>
@@ -223,10 +278,11 @@ export default function WorldClock() {
             </ul>
           )}
         </div>
+        <p className="text-xs text-muted">{t('meetingExact.cityLimit')}</p>
       </div>
 
       {/* 도시 카드 */}
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4">
         {cities.map((c, i) => {
           const l = now ? localParts(c.tz, now) : null
           const off = now ? offsetMin(c.tz, now) : 0
@@ -234,7 +290,7 @@ export default function WorldClock() {
           const dd = now && base ? dayDiff(c.tz, base.tz, now) : 0
           const night = l ? isNight(l.h) : false
           return (
-            <div key={c.id} className={`ui-card p-5 ${i === 0 ? 'border-primary' : ''}`}>
+            <div key={c.id} data-world-city={c.id} className={`ui-card p-5 ${i === 0 ? 'border-primary' : ''}`}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <h3 className="text-lg font-bold text-fg truncate">
@@ -244,9 +300,9 @@ export default function WorldClock() {
                   <div className="text-xs text-faint truncate">{c.country}</div>
                 </div>
                 <div className="flex items-center shrink-0 -mr-1">
-                  <button onClick={() => move(i, -1)} disabled={i === 0} aria-label={t('moveUp')} className="p-1 rounded-lg hover:bg-soft text-muted disabled:opacity-30"><ChevronUp className="w-4 h-4" /></button>
-                  <button onClick={() => move(i, 1)} disabled={i === cities.length - 1} aria-label={t('moveDown')} className="p-1 rounded-lg hover:bg-soft text-muted disabled:opacity-30"><ChevronDown className="w-4 h-4" /></button>
-                  <button onClick={() => remove(c.id)} aria-label={t('removeCity')} className="p-1 rounded-lg hover:bg-soft text-muted"><X className="w-4 h-4" /></button>
+                  <button data-world-move={`${c.id}:up`} onClick={() => move(i, -1)} disabled={i === 0} aria-label={t('meetingExact.moveCityUp', { city: name(c) })} className="min-h-11 min-w-11 flex items-center justify-center rounded-lg hover:bg-soft text-muted disabled:opacity-30"><ChevronUp className="w-4 h-4" /></button>
+                  <button data-world-move={`${c.id}:down`} onClick={() => move(i, 1)} disabled={i === cities.length - 1} aria-label={t('meetingExact.moveCityDown', { city: name(c) })} className="min-h-11 min-w-11 flex items-center justify-center rounded-lg hover:bg-soft text-muted disabled:opacity-30"><ChevronDown className="w-4 h-4" /></button>
+                  <button data-world-remove={c.id} disabled={cities.length === 1} onClick={() => remove(c.id)} aria-label={t('meetingExact.removeCity', { city: name(c) })} className="min-h-11 min-w-11 flex items-center justify-center rounded-lg hover:bg-soft text-muted disabled:opacity-30"><X className="w-4 h-4" /></button>
                 </div>
               </div>
 
@@ -289,146 +345,84 @@ export default function WorldClock() {
       {!cities.length && <p className="text-sm text-muted">{t('meetingPlanner.noCities')}</p>}
 
       {/* 미팅 플래너 */}
-      {base && date && (
-        <div className="ui-card p-6 space-y-5">
-          <div>
-            <h2 className="text-lg font-semibold text-fg">{t('meetingPlanner.title')}</h2>
-            <p className="text-sm text-muted mt-1">{t('meetingPlanner.description')}</p>
+      {base && ready && (
+        <section id="world-clock-meeting" data-world-meeting className="ui-card min-w-0 space-y-5 p-4 sm:p-6">
+          <div><h2 className="text-lg font-semibold text-fg">{t('meetingPlanner.title')}</h2><p className="mt-1 text-sm text-muted">{t('meetingPlanner.description')}</p></div>
+          {validSelection && selectedMs !== null && <MobileResultLink href="#world-clock-selected" label={t('meetingExact.selected')} value={[localParts(base.tz, selectedMs).h, localParts(base.tz, selectedMs).mi, localParts(base.tz, selectedMs).s].map(value => String(value).padStart(2, '0')).join(':')} />}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <label className="min-w-0 space-y-1 text-sm text-body"><span className="block">{t('meetingPlanner.date', { city: name(base) })}</span><input data-world-date type="date" min="1900-01-01" max="9999-12-31" value={date} onChange={event => changeDate(event.target.value)} className={field + ' w-full min-w-0'} /></label>
+            <label className="space-y-1 text-sm text-body"><span className="block">{t('meetingPlanner.workStart')}</span><select data-world-work="start" value={workStart} onChange={event => changeWork('start', Number(event.target.value))} className={field + ' w-full'}>{Array.from({ length: 24 }, (_, h) => <option key={h} value={h} disabled={h >= workEnd}>{String(h).padStart(2, '0')}:00</option>)}</select></label>
+            <label className="space-y-1 text-sm text-body"><span className="block">{t('meetingPlanner.workEnd')}</span><select data-world-work="end" value={workEnd} onChange={event => changeWork('end', Number(event.target.value))} className={field + ' w-full'}>{Array.from({ length: 24 }, (_, i) => i + 1).map(h => <option key={h} value={h} disabled={h <= workStart}>{String(h).padStart(2, '0')}:00</option>)}</select></label>
           </div>
-
-          <div className="flex flex-wrap gap-4 items-end">
-            <label className="text-sm text-body space-y-1">
-              <span className="block">{t('meetingPlanner.date', { city: name(base) })}</span>
-              <input type="date" value={date} onChange={e => { if (e.target.value) { setDate(e.target.value); setSel(null) } }} className="ui-field px-3 py-2" />
-            </label>
-            <label className="text-sm text-body space-y-1">
-              <span className="block">{t('meetingPlanner.workStart')}</span>
-              <select value={workStart} onChange={e => setWorkStart(Number(e.target.value))} className="ui-field px-3 py-2">
-                {Array.from({ length: 24 }, (_, h) => <option key={h} value={h} disabled={h >= workEnd}>{String(h).padStart(2, '0')}:00</option>)}
-              </select>
-            </label>
-            <label className="text-sm text-body space-y-1">
-              <span className="block">{t('meetingPlanner.workEnd')}</span>
-              <select value={workEnd} onChange={e => setWorkEnd(Number(e.target.value))} className="ui-field px-3 py-2">
-                {Array.from({ length: 24 }, (_, h) => h + 1).map(h => <option key={h} value={h} disabled={h <= workStart}>{String(h).padStart(2, '0')}:00</option>)}
-              </select>
-            </label>
-            <button onClick={() => { if (!now) return; const l = localParts(base.tz, now); setDate(ymd(l)); setSel(l.h) }} className="ui-btn-soft px-4 py-2 text-sm">
-              {t('meetingPlanner.now')}
-            </button>
-          </div>
-
-          <p className="text-xs text-muted">{t('meetingPlanner.hint')}</p>
-
-          {/* 타임라인: 행 = 도시, 열 = 기준 도시의 1시간 */}
-          <div className="overflow-x-auto -mx-2 px-2">
-            <div className="min-w-[720px] select-none" onPointerLeave={() => { dragging.current = false }}>
-              <div className="flex items-end gap-2 mb-1">
-                <div className="w-24 shrink-0" />
-                <div className="flex-1 grid grid-cols-24 gap-px">
-                  {overlapFlags.map((f, i) => (
-                    <div key={i} className={`h-1.5 rounded-full ${f ? 'bg-primary' : 'bg-transparent'}`} title={f ? t('meetingPlanner.overlap') : undefined} />
-                  ))}
-                </div>
+          <button data-world-now type="button" className={control} onClick={() => selectInstant(Math.floor(Date.now() / 1000) * 1000)}>{t('meetingPlanner.now')}</button>
+          <div className="space-y-1 text-xs leading-relaxed text-muted"><p>{t('meetingExact.dateHint')}</p><p>{t('meetingExact.preserved')}</p><p>{t('meetingExact.rangeLimit')}</p><p>{t('meetingExact.zoneData')}</p><p>{t('meetingExact.transitionLimit')}</p></div>
+          {urlNotice && <p role="status" data-world-url-notice className="rounded-xl bg-subtle p-3 text-sm text-body">{t('meetingExact.invalidUrl')}</p>}
+          {(meetingIssue || model?.error) && <p data-world-error role="alert" className="rounded-xl bg-subtle p-3 text-sm text-body">{t('meetingExact.errors.' + (meetingIssue ?? model?.error))}</p>}
+          {model?.day && model.overlap && <>
+            <p data-world-day-ms={model.day.totalMs} className="text-sm font-medium text-body">{t('meetingExact.dayLength', { date, duration: durationText(model.day.totalMs) })}</p>
+            <p className="text-xs text-muted">{t('meetingExact.slotHint')}</p>
+            <div className="overflow-x-auto rounded-xl border border-line p-2" tabIndex={0} aria-label={t('meetingExact.timeline')}>
+              <div className="w-max space-y-2" onPointerLeave={() => { dragging.current = false }}>
+                {cities.map((c, cityIndex) => <div key={c.id} className="flex items-center gap-1" data-world-timeline-city={c.id}>
+                  <span className="w-24 shrink-0 break-words px-1 text-sm font-medium text-body">{name(c)}</span>
+                  {slots.map((slot, index) => {
+                    const { valid, local, work, start, end } = timeline[cityIndex][index]
+                    const overlapMs = model.overlap!.slotOverlapMs[index], slotMs = slot.endMs - slot.startMs
+                    const selected = index === selIdx
+                    const label = t('meetingExact.slotRange', { city: name(c), start: start ?? t('meetingExact.outsideRange'), end: end ?? t('meetingExact.outsideRange'), duration: durationText(slotMs) })
+                    return <button type="button" key={slot.startMs} data-world-slot={index} data-world-slot-city={c.id} data-world-slot-ms={slot.startMs} data-world-slot-duration={slotMs} data-world-overlap-ms={overlapMs}
+                      disabled={!valid} aria-pressed={selected} aria-label={label + (overlapMs > 0 && overlapMs < slotMs ? ' · ' + t('meetingExact.partialOverlap', { duration: durationText(overlapMs) }) : '')} title={label}
+                      onPointerDown={() => { dragging.current = true; selectInstant(slot.startMs) }} onPointerEnter={() => { if (dragging.current) selectInstant(slot.startMs) }} onClick={() => selectInstant(slot.startMs)}
+                      className={'flex min-h-11 w-20 shrink-0 flex-col items-center justify-center rounded-lg border px-1 py-2 text-xs tabular-nums disabled:opacity-30 ' + (selected ? 'border-primary bg-primary text-white' : work ? 'border-line bg-primary-soft text-primary' : 'border-line bg-soft text-sub')}>
+                      <span>{[local.h, local.mi, local.s].map(value => String(value).padStart(2, '0')).join(':')}</span>
+                      <span className="mt-1 text-[10px]">{local.mo}/{local.d}</span>
+                      {overlapMs > 0 && <span className="mt-1 text-[10px]">{t('meetingExact.cellOverlap', { minutes: Math.floor(overlapMs / 60000), seconds: Math.floor(overlapMs / 1000) % 60 })}</span>}
+                    </button>
+                  })}
+                </div>)}
               </div>
-              {cities.map((c, ci) => (
-                <div key={c.id} className="flex items-center gap-2 mb-1">
-                  <div className="w-24 shrink-0 text-sm font-medium text-body truncate">{name(c)}</div>
-                  <div className="flex-1 grid grid-cols-24 gap-px">
-                    {grid[ci]?.map((cell, i) => {
-                      const selected = i === selIdx
-                      const cls = selected ? 'bg-primary text-white'
-                        : cell.work ? 'bg-primary-soft text-primary'
-                          : cell.night ? 'bg-subtle text-faint' : 'bg-soft text-sub'
-                      return (
-                        <button key={i} type="button"
-                          onPointerDown={() => { dragging.current = true; setSel(i) }}
-                          onPointerEnter={() => { if (dragging.current) setSel(i) }}
-                          onClick={() => setSel(i)}
-                          aria-label={`${name(c)} ${hm(cell.l)}`}
-                          aria-pressed={selected}
-                          className={`h-9 rounded text-[11px] leading-none tabular-nums flex flex-col items-center justify-center ${cls}`}>
-                          <span>{cell.l.mi ? `${cell.l.h}:${String(cell.l.mi).padStart(2, '0')}` : cell.l.h}</span>
-                          {cell.l.h === 0 && cell.l.mi === 0 && <span className="text-[9px] opacity-80">{cell.l.mo}/{cell.l.d}</span>}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              ))}
             </div>
-          </div>
-
-          <div className="flex flex-wrap gap-4 text-xs text-sub">
-            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-primary" />{t('meetingPlanner.overlap')}</span>
-            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-primary-soft border border-line" />{t('meetingPlanner.workingHours')}</span>
-            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-soft border border-line" />{t('meetingPlanner.offHours')}</span>
-            <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-subtle border border-line" />{t('meetingPlanner.night')}</span>
-          </div>
-
-          <div className={`rounded-2xl p-4 text-sm ${overlapHours ? 'bg-subtle text-body' : 'bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}`}>
-            {overlapHours
-              ? <>{t('meetingPlanner.overlapFound', { hours: overlapHours })} · {t('meetingPlanner.overlapRanges', { city: name(base), ranges: overlapRanges.map(rangeText).join(', ') })}</>
-              : t('meetingPlanner.noOverlap')}
-            <div className="text-xs text-muted mt-1">{t('meetingPlanner.weekendNote')}</div>
-          </div>
-
-          {/* 선택한 시간 */}
-          {selMs != null && (
-            <div className="bg-subtle rounded-2xl p-5 space-y-3">
-              <div className="text-sm text-muted">{t('meetingPlanner.selected')}</div>
-              <ul className="divide-y divide-line">
-                {cities.map(c => {
-                  const l = localParts(c.tz, selMs)
-                  const work = inWork(c.tz, selMs, workStart, workEnd)
-                  const dd = dayDiff(c.tz, base.tz, selMs)
-                  return (
-                    <li key={c.id} className="flex items-center justify-between gap-3 py-2">
-                      <span className="text-body">{name(c)}</span>
-                      <span className="text-right">
-                        <span className="text-lg font-bold text-fg tabular-nums">{hm(l)}</span>
-                        <span className="text-xs text-muted ml-2">{mdw(l, weekdays)}{dd !== 0 && ` · ${dd > 0 ? t('nextDay') : t('prevDay')}`}</span>
-                        <span className={`ml-2 text-xs ${work ? 'text-primary font-medium' : 'text-faint'}`}>
-                          {work ? t('meetingPlanner.workingHours') : l.h < 7 || l.h >= 22 ? t('meetingPlanner.night') : t('meetingPlanner.offHours')}
-                        </span>
-                      </span>
-                    </li>
-                  )
-                })}
-              </ul>
-              <div className="ui-field px-4 py-3 text-sm text-body break-keep">{line}</div>
-              <div className="flex flex-wrap gap-2">
-                <button onClick={async () => { await copyText(line); flash('line') }} className="ui-btn px-4 py-2.5 text-sm">
-                  {copied === 'line' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied === 'line' ? t('copied') : t('meetingPlanner.copyText')}
-                </button>
-                <button onClick={async () => { await copyText(`${line}\n${shareUrl()}`); flash('share') }} className="ui-btn-soft px-4 py-2.5 text-sm">
-                  {copied === 'share' ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
-                  {copied === 'share' ? t('copied') : t('meetingPlanner.share')}
-                </button>
-              </div>
-              <ShareResult
-                card={{
-                  tool: t('title'),
-                  label: t('meetingPlanner.shareLabel'),
-                  headline: `${mdw(localParts(base.tz, selMs), weekdays)} ${hm(localParts(base.tz, selMs))}`,
-                  sub: name(base),
-                  rows: cities.slice(1, 6).map(c => ({ label: name(c), value: `${mdw(localParts(c.tz, selMs), weekdays)} ${hm(localParts(c.tz, selMs))}` })),
-                }}
-                text={line}
-                url={typeof window !== 'undefined' ? shareUrl() : undefined}
-                fileName="world-clock"
-              />
+            <div className="rounded-xl bg-subtle p-4 text-sm text-body" data-world-overlap-total={model.overlap.totalMs}>
+              <p>{model.overlap.totalMs ? t('meetingExact.overlapDuration', { duration: durationText(model.overlap.totalMs) }) : t('meetingPlanner.noOverlap')}</p>
+              <ul className="mt-2 space-y-1 break-words">{model.overlap.intervals.map(range => <li key={range.startMs} data-world-overlap-start={range.startMs} data-world-overlap-end={range.endMs}>{t('meetingExact.range', { start: localText(base.tz, range.startMs), end: localText(base.tz, range.endMs) })}</li>)}</ul>
+              <p className="mt-2 text-xs text-muted">{t('meetingPlanner.weekendNote')}</p>
             </div>
-          )}
-        </div>
+          </>}
+          {validSelection && selectedMs !== null && <div id="world-clock-selected" data-world-selected-ms={selectedMs} className="min-w-0 scroll-mt-20 space-y-4 rounded-2xl bg-subtle p-4 sm:p-5">
+            <h3 className="font-semibold text-fg">{t('meetingExact.selected')}</h3>
+            <ul className="divide-y divide-line">{cities.map(c => <li key={c.id} data-world-selected-city={c.id} className="space-y-1 py-3"><span className="text-sm font-medium text-body">{name(c)}</span><p className="break-words text-base font-semibold tabular-nums text-fg">{formatMeetingLocal(c.tz, selectedMs, language)}</p></li>)}</ul>
+            <textarea data-world-share-text readOnly aria-label={t('meetingPlanner.copyText')} value={line} className={field + ' min-h-32 w-full resize-y'} />
+            <div className="flex flex-wrap gap-2">
+              <button data-world-copy="line" disabled={!canExport} className="ui-btn min-h-11 px-4 py-2 text-base disabled:opacity-40" onClick={() => { void requestCopy('line', line) }}>{copyLabel('line', 'meetingPlanner.copyText')}</button>
+              <button data-world-copy="share" disabled={!canExport} className={control} onClick={() => { void requestCopy('share', line + '\n' + shareUrl()) }}>{copyLabel('share', 'meetingPlanner.share')}</button>
+            </div>
+            {canExport && <ShareResult card={{ tool: t('title'), label: t('meetingPlanner.shareLabel'), headline: formatMeetingLocal(base.tz, selectedMs, language), sub: name(base), rows: cities.slice(1).map(c => ({ label: name(c), value: formatMeetingLocal(c.tz, selectedMs, language) })) }} text={line} url={shareUrl()} fileName="world-clock" />}
+            <div className="space-y-3 border-t border-line pt-4" data-world-calendar>
+              <h3 className="font-semibold text-fg">{t('meetingCalendar.title')}</h3>
+              <label className="block space-y-1 text-sm text-body"><span>{t('meetingCalendar.titleLabel')}</span><input data-world-event-title value={eventTitle} maxLength={100} placeholder={t('meetingCalendar.titlePlaceholder')} onChange={event => { invalidate(); setEventTitle(event.target.value) }} className={field + ' w-full'} /></label>
+              <label className="block space-y-1 text-sm text-body"><span>{t('meetingCalendar.duration')}</span><select data-world-duration value={duration} onChange={event => { invalidate(); setDuration(Number(event.target.value)) }} className={field + ' w-full'}>{MEETING_DURATIONS.map(minutes => <option value={minutes} key={minutes}>{t('meetingCalendar.minutes', { minutes })}</option>)}</select></label>
+              <ul className="space-y-3 text-sm text-body">{cities.map(c => <li key={c.id} data-world-calendar-city={c.id}><p className="font-medium">{name(c)}</p><p className="break-words">{t('meetingCalendar.start')}: {formatMeetingLocal(c.tz, selectedMs, language)}</p><p className="break-words">{t('meetingCalendar.end')}: {endMs === null ? '' : localText(c.tz, endMs)}</p></li>)}</ul>
+              {endMs !== null && !isMeetingInstant(endMs, tzs) && <p role="alert" className="text-sm text-body">{t('meetingCalendar.errors.end')}</p>}
+              <button data-world-calendar-download disabled={!canExport || visibleCalendar?.status === 'pending'} className="ui-btn min-h-11 px-4 py-3 text-base disabled:opacity-40" onClick={() => { void exportCalendar() }}>{t(visibleCalendar?.status === 'pending' ? 'meetingCalendar.preparing' : 'meetingCalendar.download')}</button>
+              {visibleCalendar && visibleCalendar.status !== 'pending' && <p data-world-calendar-status={visibleCalendar.status} role={visibleCalendar.status === 'failed' ? 'alert' : 'status'} className="text-sm text-body">{t(visibleCalendar.error ? 'meetingCalendar.errors.' + visibleCalendar.error : visibleCalendar.status === 'started' ? 'meetingCalendar.started' : 'meetingCalendar.failed')}</p>}
+              <p className="text-xs leading-relaxed text-muted">{t('meetingCalendar.scope')}</p>
+            </div>
+          </div>}
+        </section>
       )}
+      {visibleCopy?.status === 'failed' && <section data-world-copy-recovery className="ui-card space-y-3 p-4">
+        <p role="alert" className="text-sm text-body">{t('copyRecovery.failed')}</p>
+        <label htmlFor="world-clock-copy-manual" className="block text-sm font-medium text-body">{t('copyRecovery.title')}</label>
+        <textarea id="world-clock-copy-manual" ref={manual} readOnly value={visibleCopy.text} className={field + ' min-h-40 w-full'} />
+        <div className="flex flex-wrap gap-2"><button className={control} onClick={() => { try { if (!manual.current) throw new Error('missing'); manual.current.focus(); manual.current.select(); setSelectionFailed(false) } catch { setSelectionFailed(true) } }}>{t('copyRecovery.selectAll')}</button><button className={control} onClick={() => { void requestCopy(visibleCopy.kind, visibleCopy.text) }}>{t('copyRecovery.retry')}</button><button className={control} onClick={invalidate}>{t('copyRecovery.close')}</button></div>
+        {selectionFailed && <p role="alert" className="text-sm text-body">{t('copyRecovery.selectionFailed')}</p>}
+      </section>}
 
       {/* 증시 정규장 */}
       {base && (
         <div className="ui-card p-6 space-y-4">
           <h2 className="text-lg font-semibold text-fg">{t('markets.title', { city: name(base) })}</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {MARKETS.map(m => {
               const s = now ? marketSession(m, now) : null
               const o = s && localParts(base.tz, s.open), cl = s && localParts(base.tz, s.close)

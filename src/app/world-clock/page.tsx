@@ -4,20 +4,25 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = '세계 시계 - 도시별 시차·미팅 일정 ICS | 툴허브'
+const DESCRIPTION = '주요 도시의 현재 시간과 업무시간 겹침을 비교하세요. 선택한 순간의 분·초를 공유하고 도시별 미팅 시작·종료 시간과 ICS 파일을 확인합니다. 도시 목록 저장과 복사 실패 복구를 지원합니다.'
+
 export const metadata: Metadata = {
-  title: '세계 시계 - 전 세계 주요 도시 현재 시간, 시차 확인 | 툴허브',
-  description: '세계 시계 - 뉴욕, 런던, 도쿄 등 전 세계 주요 도시의 현재 시간과 시차를 확인하세요. 미국 시간, 유럽 시간, 일본 시간 확인.',
-  keywords: '세계 시간, 세계 시계, 미국 시간, 시차 계산, world clock, 뉴욕 시간, 런던 시간',
-  openGraph: { title: '세계 시계 | 툴허브', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/world-clock.png', width: 1200, height: 630, alt: '세계 시계' }] },
-  twitter: { card: 'summary_large_image', title: '세계 시계 | 툴허브', description: '세계 주요 도시 현재 시간', images: ['https://toolhub.ai.kr/og/world-clock.png'] },
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: '세계 시간, 세계 시계, 시차 계산, world clock, 미팅 시간, ICS, 캘린더 일정, 서머타임, 뉴욕 시간, 런던 시간',
+  openGraph: { title: TITLE, description: DESCRIPTION, url: 'https://toolhub.ai.kr/world-clock/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/world-clock.png', width: 1200, height: 630, alt: '세계 시계' }] },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['https://toolhub.ai.kr/og/world-clock.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/world-clock/' },
 }
 
 export default function WorldClockPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '세계 시계', description: '전 세계 주요 도시 현재 시간, 시차 확인', url: 'https://toolhub.ai.kr/world-clock/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주요 도시 실시간 시계', '서울 기준 시차·오늘/내일 표시', '서머타임(DST) 자동 반영', '해외 미팅 시간 플래너(업무시간 겹침)', '미국·한국 증시 정규장 한국시간', '도시 목록 저장·링크 공유'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '세계 시계', description: DESCRIPTION, url: 'https://toolhub.ai.kr/world-clock/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['주요 도시 실시간 시계', '도시별 시차·업무시간 겹침', '기준 도시의 실제 날짜 구간과 DST 표시', '선택 순간의 분·초를 유지하는 링크 공유', '미팅 시작·종료와 단일 일정 ICS 파일', '도시 목록 저장·텍스트/링크 복사 복구'] }
   const faq = [
-    { q: '세계 시간대(타임존)는 어떻게 나뉘나요?', a: '이론상 세계는 경도 15도마다 1시간씩 24개 시간대로 나뉘지만, 실제 경계와 시차는 각 국가·지역이 정합니다. 기준은 영국 그리니치 천문대(GMT/UTC)이며, 동쪽으로 갈수록 시간이 빠릅니다. 한국(KST)은 UTC+9, 일본(JST)은 UTC+9, 미국 동부(EST)는 UTC-5, 서부(PST)는 UTC-8입니다. 일부 지역은 30분(인도 UTC+5:30) 또는 45분(네팔 UTC+5:45) 단위도 있습니다. 서머타임 적용 국가는 계절에 따라 1시간 변동됩니다.' },
-    { q: '서머타임(DST)이란 무엇인가요?', a: '서머타임(Daylight Saving Time)은 여름철에 시계를 1시간 앞당기는 제도로, 일조 시간을 효율적으로 활용하기 위함입니다. 미국, 유럽, 호주 등 약 70개국이 시행합니다. 보통 3-4월에 시작하여 10-11월에 끝납니다. 한국, 일본, 중국 등 아시아 대부분은 서머타임을 시행하지 않습니다. EU는 2019년 유럽의회가 계절별 시간 변경 폐지안을 가결했지만 회원국 간 합의가 이뤄지지 않아 아직 시행되지 않았습니다.' },
+    { q: '공유한 미팅 시간이 도시 순서를 바꿔도 유지되나요?', a: '선택한 시간은 하나의 UTC 순간으로 보존합니다. 도시 순서만 바꾸면 같은 순간을 새 기준 도시의 날짜·시간으로 표시합니다. 공유 링크와 시간 변환기에서 가져온 분·초도 유지하며, 표의 가까운 칸 표시가 실제 선택 순간을 반올림하지 않습니다. 날짜를 직접 바꾸면 해당 날짜의 기본 선택으로 이동합니다.' },
+    { q: '시간표가 항상 24칸인가요?', a: '기준 도시의 실제 날짜 구간을 사용하므로 서머타임 전환일에는 하루가 23시간이나 25시간일 수 있습니다. 반시간 전환과 30·45분 시차도 고려합니다. 건너뛰거나 반복되는 현지 시각과 날짜 끝의 부분 구간은 표에 표시되는 실제 순간을 기준으로 확인하세요. 시간대 정보는 브라우저의 시간대 데이터에 따릅니다.' },
+    { q: '미팅을 캘린더에 어떻게 저장하나요?', a: '제목과 길이 30·60·90·120분을 선택한 뒤 캘린더 파일을 저장합니다. 기본 길이는 60분이며 선택 순간과 종료 순간을 UTC로 담은 단일 ICS 일정입니다. 제목은 1~100자로 입력하고 URL이나 기기 기록에 저장하지 않습니다. 파일을 캘린더 앱에서 직접 가져오며 계정 연동·참석자 초대·반복·알림 설정은 추가하지 않습니다.' },
+    { q: '도시와 복사 결과는 어떻게 보존되나요?', a: '도시 목록은 브라우저에 저장하며 유효한 공유 URL의 도시 목록이 우선합니다. 복사 실패 시 현재 텍스트나 링크를 직접 선택하거나 재시도할 수 있습니다. 일정 파일 생성 중 선택·제목·길이·도시가 바뀌면 이전 결과를 자동으로 내려받지 않습니다.' },
   ]
   return (
     <>
@@ -41,17 +46,17 @@ export default function WorldClockPage() {
             세계 시계란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            세계 시계는 뉴욕, 런던, 도쿄, 베이징, 시드니 등 전 세계 주요 도시의 현재 시간을 실시간으로 표시하고 시차를 한눈에 비교할 수 있는 도구입니다. 한국 시간(KST, UTC+9)을 기준으로 미국·유럽·동남아 등 주요 시간대를 동시에 확인하며, 서머타임(DST) 적용 국가의 시간도 자동으로 반영합니다. 해외 출장 일정 조율, 글로벌 팀 화상 회의 시간 설정, 해외 가족·친구와의 통화 시간 확인에 유용합니다.
+            세계 시계는 주요 도시의 현재 시간과 시차를 비교하고 미팅 시간을 고르는 도구입니다. 도시별 업무시간 겹침과 선택한 순간의 현지 날짜를 확인한 뒤 같은 순간을 링크로 공유하거나 ICS 일정으로 저장할 수 있습니다. 현재 시각을 보는 동작과 미팅 시간을 고르는 동작을 구분하며 선택한 분·초를 유지합니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             세계 시계 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>주요 시차 기준:</strong> 한국(KST)은 UTC+9입니다. 뉴욕(EST)은 한국보다 14시간, 런던(GMT)은 9시간, 파리(CET)는 8시간 느립니다. 서머타임 기간에는 1시간씩 달라집니다.</li>
-            <li><strong>글로벌 팀 미팅:</strong> 서울 오후 2시에 미팅 시 서머타임 기간에는 뉴욕 새벽 1시·런던 오전 6시, 그 외 기간에는 뉴욕 자정·런던 오전 5시입니다. 모든 참가자가 업무 시간인 황금 시간대를 찾는 데 세계 시계를 활용하세요.</li>
-            <li><strong>서머타임 자동 반영:</strong> 미국·유럽은 봄·가을에 서머타임 전환으로 시차가 1시간 변동됩니다. 세계 시계는 이를 자동으로 반영하여 정확한 현지 시간을 표시합니다.</li>
+            <li><strong>미팅 날짜 확인:</strong> 같은 순간도 도시별 날짜가 다를 수 있습니다. 시작·종료 시간을 각 도시에서 확인하세요.</li>
+            <li><strong>도시 순서 변경:</strong> 기준 도시를 바꿔도 선택 순간은 유지됩니다. 날짜를 직접 바꾸는 동작과 구분하세요.</li>
+            <li><strong>서머타임 전환:</strong> 반복되거나 건너뛰는 현지 시각이 있을 수 있습니다. 고정된 24시간 표보다 실제 날짜 구간을 기준으로 확인하세요.</li>
             <li><strong>도시 추가:</strong> 한글·영문 도시명이나 국가명으로 검색해 추가하고, 순서를 바꾸면 맨 위 도시가 시차 계산의 기준이 됩니다. 목록은 브라우저에 저장되고 링크로 공유할 수 있습니다.</li>
-            <li><strong>미국 주식 장 시간:</strong> 뉴욕 증시(NYSE·NASDAQ) 정규장은 현지 09:30~16:00으로, 한국시간으로는 서머타임 기간 22:30~05:00, 그 외 기간 23:30~06:00입니다.</li>
+            <li><strong>일정 반출:</strong> 원하는 제목과 길이를 정한 뒤 ICS 파일을 받아 캘린더 앱으로 가져오세요. 링크에는 일정 제목을 넣지 않습니다.</li>
           </ul>
         </div>
       </section>

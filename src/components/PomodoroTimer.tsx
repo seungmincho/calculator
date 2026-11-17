@@ -1,8 +1,14 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pomodoroTimer'
+import PomodoroGoalPanel, { type PomodoroStatsStatus } from '@/components/PomodoroGoalPanel'
+import { parsePomodoroStats, pomodoroLocalDay, readPomodoroValue, savePomodoroStats, withPomodoroLock, POMODORO_STATS_KEY, type PomodoroDailyStat, type PomodoroRead } from '@/utils/pomodoroGoal'
+import { createPomodoroBrowserSession, initialPomodoroBrowserState, pomodoroBrowserPorts } from '@/lib/pomodoro/browserSession'
+import { type PomodoroTransition } from '@/lib/pomodoro/session'
+import { DEFAULT_POMODORO_SETTINGS, pomodoroDisplaySeconds, type PomodoroPhase as Phase, type PomodoroSettings as TimerSettings, type PomodoroTask as Task } from '@/utils/pomodoroSession'
+import PomodoroRecovery from '@/components/PomodoroRecovery'
 import { useDialog } from '@/hooks/useDialog'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import {
@@ -10,63 +16,9 @@ import {
   SkipForward, Plus, Trash2, Check, ChevronDown, ChevronUp, X
 } from 'lucide-react'
 
-// ── Types ──────────────────────────────────────────────────────
-type Phase = 'work' | 'shortBreak' | 'longBreak'
-
-interface TimerSettings {
-  workDuration: number       // minutes
-  shortBreakDuration: number
-  longBreakDuration: number
-  longBreakInterval: number  // every N pomodoros
-  autoStart: boolean
-  notificationsEnabled: boolean
-  soundEnabled: boolean
-  soundVolume: number        // 0-100
-}
-
-interface Task {
-  id: string
-  text: string
-  completed: boolean
-  estimatedPomodoros: number
-  completedPomodoros: number
-}
-
-interface DailyStat {
-  date: string  // YYYY-MM-DD
-  count: number
-  minutes: number
-}
-
-interface SavedTimerState {
-  phase: Phase
-  timeLeft: number
-  isRunning: boolean
-  currentRound: number
-  completedRounds: number
-  totalWorkSeconds: number
-  lastTickTime: number  // Date.now() of last tick
-  settings: TimerSettings
-}
-
-// ── Constants ──────────────────────────────────────────────────
-const STORAGE_KEYS = {
-  settings: 'pomodoro-settings',
-  tasks: 'pomodoro-tasks',
-  stats: 'pomodoro-daily-stats',
-  timerState: 'pomodoro-timer-state',
-} as const
-
-const DEFAULT_SETTINGS: TimerSettings = {
-  workDuration: 25,
-  shortBreakDuration: 5,
-  longBreakDuration: 15,
-  longBreakInterval: 4,
-  autoStart: false,
-  notificationsEnabled: false,
-  soundEnabled: true,
-  soundVolume: 70,
-}
+type DailyStat = PomodoroDailyStat
+const DEFAULT_SETTINGS = DEFAULT_POMODORO_SETTINGS
+const STORAGE_KEYS = { stats: POMODORO_STATS_KEY } as const
 
 // ── Audio Helpers ──────────────────────────────────────────────
 function playAlarm(volume: number) {
@@ -95,34 +47,14 @@ function playPreviewSound(volume: number) {
   playAlarm(volume)
 }
 
-// ── localStorage Helpers ───────────────────────────────────────
-function loadFromStorage<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key)
-    if (!raw) return fallback
-    return JSON.parse(raw) as T
-  } catch {
-    return fallback
-  }
-}
-
-function saveToStorage(key: string, value: unknown) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value))
-  } catch {
-    // storage full or unavailable
-  }
-}
-
 // ── Date Helpers ───────────────────────────────────────────────
 function getTodayStr(): string {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  return pomodoroLocalDay()
 }
 
-function getWeekDates(): string[] {
+function getWeekDates(today: string): string[] {
   const dates: string[] = []
-  const now = new Date()
+  const now = new Date(`${today}T12:00:00`)
   const day = now.getDay() // 0=Sun
   const monday = new Date(now)
   monday.setDate(now.getDate() - ((day + 6) % 7))
@@ -134,13 +66,12 @@ function getWeekDates(): string[] {
   return dates
 }
 
-function getStreak(stats: DailyStat[]): number {
+function getStreak(stats: DailyStat[], todayStr: string): number {
   if (stats.length === 0) return 0
   const statMap = new Map(stats.map(s => [s.date, s.count]))
   let streak = 0
-  const d = new Date()
+  const d = new Date(`${todayStr}T12:00:00`)
   // Check today first
-  const todayStr = getTodayStr()
   if (!statMap.get(todayStr)) {
     // If no pomodoros today, check yesterday as streak start
     d.setDate(d.getDate() - 1)
@@ -162,115 +93,99 @@ function getStreak(stats: DailyStat[]): number {
 export default function PomodoroTimer() {
   const t = useTranslations('pomodoroTimer')
 
-  // Settings
-  const [settings, setSettings] = useState<TimerSettings>(DEFAULT_SETTINGS)
+  const [runtime, setRuntime] = useState(initialPomodoroBrowserState)
+  const { phase, isRunning, currentRound, completedRounds, settings } = runtime.timer
+  const timeLeft = pomodoroDisplaySeconds(runtime.timer.remainingMs)
+  const tasks = runtime.tasks
   const [showSettings, setShowSettings] = useState(false)
   const [tempSettings, setTempSettings] = useState<TimerSettings>(DEFAULT_SETTINGS)
   const tc = useTranslations('common')
   const settingsRef = useRef<HTMLDivElement>(null)
   useDialog(showSettings, () => setShowSettings(false), settingsRef)
-
-  // Timer
-  const [phase, setPhase] = useState<Phase>('work')
-  const [timeLeft, setTimeLeft] = useState(DEFAULT_SETTINGS.workDuration * 60)
-  const [isRunning, setIsRunning] = useState(false)
-  const [currentRound, setCurrentRound] = useState(1)
-  const [completedRounds, setCompletedRounds] = useState(0)
-  const [totalWorkSeconds, setTotalWorkSeconds] = useState(0)
-
-  // Tasks
-  const [tasks, setTasks] = useState<Task[]>([])
   const [newTaskText, setNewTaskText] = useState('')
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null)
   const [showTasks, setShowTasks] = useState(true)
-
-  // Stats
   const [dailyStats, setDailyStats] = useState<DailyStat[]>([])
-
-  // UI state
+  const [statsStatus, setStatsStatus] = useState<PomodoroStatsStatus>('loading')
+  const [localDay, setLocalDay] = useState('')
   const [flashPhase, setFlashPhase] = useState(false)
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
   const [mounted, setMounted] = useState(false)
+  const originalTitleRef = useRef('')
+  const statsRaw = useRef<string | null>(null)
+  const statsBaseline = useRef('[]')
+  const statsBlocked = useRef(false)
+  const sessionRef = useRef<ReturnType<typeof createPomodoroBrowserSession> | null>(null)
+  const activeTaskRef = useRef<string | null>(null)
+  const transitionRef = useRef<(event: PomodoroTransition) => void>(() => {})
+  const flashTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const setSettings = useCallback((update: (current: TimerSettings) => TimerSettings) => {
+    const session = sessionRef.current
+    if (!session) return
+    const next = update(session.getSnapshot().timer.settings)
+    session.updatePreferences({ soundEnabled: next.soundEnabled, soundVolume: next.soundVolume,
+      notificationsEnabled: next.notificationsEnabled, autoStart: next.autoStart })
+  }, [])
+  const setTasks = useCallback((update: Task[] | ((current: Task[]) => Task[])) => sessionRef.current?.setTasks(update), [])
 
-  // Refs
-  const lastTickRef = useRef<number>(Date.now())
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const originalTitleRef = useRef<string>('')
-
-  // ── Init from localStorage ──────────────────────────────────
   useEffect(() => {
-    setMounted(true)
+    let active = true
     originalTitleRef.current = document.title
-
-    const savedSettings = loadFromStorage<TimerSettings>(STORAGE_KEYS.settings, DEFAULT_SETTINGS)
-    setSettings(savedSettings)
-    setTempSettings(savedSettings)
-
-    const savedTasks = loadFromStorage<Task[]>(STORAGE_KEYS.tasks, [])
-    setTasks(savedTasks)
-
-    const savedStats = loadFromStorage<DailyStat[]>(STORAGE_KEYS.stats, [])
-    setDailyStats(savedStats)
-
-    // Restore timer state
-    const savedState = loadFromStorage<SavedTimerState | null>(STORAGE_KEYS.timerState, null)
-    if (savedState) {
-      setPhase(savedState.phase)
-      setCurrentRound(savedState.currentRound)
-      setCompletedRounds(savedState.completedRounds)
-      setTotalWorkSeconds(savedState.totalWorkSeconds)
-      setSettings(savedState.settings)
-
-      if (savedState.isRunning && savedState.lastTickTime) {
-        // Calculate elapsed time since last tick
-        const elapsed = Math.floor((Date.now() - savedState.lastTickTime) / 1000)
-        const remaining = Math.max(0, savedState.timeLeft - elapsed)
-        setTimeLeft(remaining)
-        if (remaining > 0) {
-          setIsRunning(true)
-        }
-      } else {
-        setTimeLeft(savedState.timeLeft)
-      }
-    }
-
-    // Check notification permission
-    if (typeof Notification !== 'undefined') {
-      setNotificationPermission(Notification.permission)
-    }
-
+    queueMicrotask(() => {
+      if (!active) return
+      let savedStats: PomodoroRead<DailyStat[]>
+      try { savedStats = readPomodoroValue(localStorage, STORAGE_KEYS.stats, raw => parsePomodoroStats(raw, getTodayStr())) }
+      catch { savedStats = { ok: false, error: 'unavailable' } }
+      if (savedStats.ok) {
+        statsRaw.current = savedStats.raw; statsBaseline.current = JSON.stringify(savedStats.value)
+        statsBlocked.current = false; setDailyStats(savedStats.value); setStatsStatus('ready')
+      } else { statsBlocked.current = true; setStatsStatus(savedStats.error === 'corrupt' ? 'corrupt' : 'unavailable') }
+      setLocalDay(getTodayStr())
+      const session = createPomodoroBrowserSession(pomodoroBrowserPorts(() => activeTaskRef.current),
+        value => { if (active) setRuntime(value) }, event => { if (active) transitionRef.current(event) })
+      sessionRef.current = session
+      setTempSettings(session.getSnapshot().timer.settings)
+      if (typeof Notification !== 'undefined') setNotificationPermission(Notification.permission)
+      setMounted(true)
+    })
     return () => {
+      active = false; sessionRef.current?.dispose(); sessionRef.current = null
+      if (flashTimeout.current) clearTimeout(flashTimeout.current)
       document.title = originalTitleRef.current
     }
   }, [])
 
-  // ── Save timer state on changes ─────────────────────────────
-  useEffect(() => {
-    if (!mounted) return
-    const state: SavedTimerState = {
-      phase, timeLeft, isRunning, currentRound,
-      completedRounds, totalWorkSeconds, lastTickTime: Date.now(), settings,
-    }
-    saveToStorage(STORAGE_KEYS.timerState, state)
-  }, [phase, timeLeft, isRunning, currentRound, completedRounds, totalWorkSeconds, settings, mounted])
-
-  // ── Save settings ───────────────────────────────────────────
-  useEffect(() => {
-    if (!mounted) return
-    saveToStorage(STORAGE_KEYS.settings, settings)
-  }, [settings, mounted])
-
-  // ── Save tasks ──────────────────────────────────────────────
-  useEffect(() => {
-    if (!mounted) return
-    saveToStorage(STORAGE_KEYS.tasks, tasks)
-  }, [tasks, mounted])
-
   // ── Save stats ──────────────────────────────────────────────
+  const persistStats = useCallback(async () => {
+    if (!mounted || statsBlocked.current) return
+    const next = JSON.stringify(dailyStats)
+    if (next === statsBaseline.current) return
+    try {
+      const result = await withPomodoroLock(STORAGE_KEYS.stats, () => {
+        if (statsBlocked.current || next === statsBaseline.current) return null
+        const write = savePomodoroStats(localStorage, statsRaw.current, dailyStats, getTodayStr())
+        if (write.ok) {
+          statsRaw.current = write.raw
+          statsBaseline.current = next
+        } else if (write.error === 'conflict' || write.error === 'corrupt' || write.error === 'invalid') statsBlocked.current = true
+        return write
+      })
+      if (result) setStatsStatus(result.ok ? 'ready' : result.error === 'conflict' ? 'conflict' : result.error === 'corrupt' || result.error === 'invalid' ? 'corrupt' : 'failed')
+    } catch { setStatsStatus('failed') }
+  }, [dailyStats, mounted])
+  useEffect(() => {
+    let active = true
+    queueMicrotask(() => { if (active) void persistStats() })
+    return () => { active = false }
+  }, [persistStats])
+
   useEffect(() => {
     if (!mounted) return
-    saveToStorage(STORAGE_KEYS.stats, dailyStats)
-  }, [dailyStats, mounted])
+    const updateDay = () => setLocalDay(getTodayStr())
+    const timer = setInterval(updateDay, 60_000)
+    document.addEventListener('visibilitychange', updateDay)
+    return () => { clearInterval(timer); document.removeEventListener('visibilitychange', updateDay) }
+  }, [mounted])
 
   // ── Phase helpers ───────────────────────────────────────────
   const getPhaseTotal = useCallback((p: Phase, s: TimerSettings) => {
@@ -293,7 +208,7 @@ export default function PomodoroTimer() {
     if (result === 'granted') {
       setSettings(s => ({ ...s, notificationsEnabled: true }))
     }
-  }, [])
+  }, [setSettings])
 
   const sendNotification = useCallback((title: string, body: string) => {
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
@@ -305,123 +220,30 @@ export default function PomodoroTimer() {
     }
   }, [])
 
-  // ── Timer control ───────────────────────────────────────────
-  const stopTimer = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    setIsRunning(false)
-  }, [])
-
-  const recordPomodoroStat = useCallback((workMinutes: number) => {
-    setDailyStats(prev => {
-      const today = getTodayStr()
-      const existing = prev.find(s => s.date === today)
-      if (existing) {
-        return prev.map(s => s.date === today
-          ? { ...s, count: s.count + 1, minutes: s.minutes + workMinutes }
-          : s
-        )
-      }
-      return [...prev, { date: today, count: 1, minutes: workMinutes }]
+  const recordPomodoroStat = useCallback((workMinutes: number, observedAt: number) => {
+    const today = pomodoroLocalDay(new Date(observedAt))
+    setLocalDay(today)
+    setDailyStats(previous => {
+      const existing = previous.find(row => row.date === today)
+      return existing ? previous.map(row => row.date === today ? { ...row, count: row.count + 1, minutes: row.minutes + workMinutes } : row)
+        : [...previous, { date: today, count: 1, minutes: workMinutes }]
     })
-
-    // Increment active task's completed pomodoros
-    if (activeTaskId) {
-      setTasks(prev => prev.map(task =>
-        task.id === activeTaskId
-          ? { ...task, completedPomodoros: task.completedPomodoros + 1 }
-          : task
-      ))
-    }
-  }, [activeTaskId])
-
-  const handlePhaseComplete = useCallback((
-    currentPhase: Phase, rounds: number, completed: number, s: TimerSettings
-  ) => {
-    stopTimer()
-
-    // Sound
-    if (s.soundEnabled) {
-      playAlarm(s.soundVolume)
-    }
-
-    // Screen flash
+  }, [])
+  const handleTransition = useCallback((event: PomodoroTransition) => {
+    if (event.kind === 'expiredAdvance') return
+    if (event.settings.soundEnabled) playAlarm(event.settings.soundVolume)
     setFlashPhase(true)
-    setTimeout(() => setFlashPhase(false), 1500)
-
-    // Record stats
-    if (currentPhase === 'work') {
-      setTotalWorkSeconds(prev => prev + s.workDuration * 60)
-      recordPomodoroStat(s.workDuration)
+    if (flashTimeout.current) clearTimeout(flashTimeout.current)
+    flashTimeout.current = setTimeout(() => setFlashPhase(false), 1500)
+    if (event.kind === 'completed') {
+      if (event.phase === 'work') recordPomodoroStat(event.workMinutes, event.observedAt)
+      if (event.settings.notificationsEnabled) {
+        const nextLabel = event.nextPhase === 'work' ? t('phaseWork') : event.nextPhase === 'shortBreak' ? t('phaseShortBreak') : t('phaseLongBreak')
+        sendNotification(t('notificationTitle'), event.phase === 'work' ? t('notificationWorkDone', { next: nextLabel }) : t('notificationBreakDone'))
+      }
     }
-
-    // Determine next phase
-    let nextPhase: Phase
-    let nextRound = rounds
-    let nextCompleted = completed
-
-    if (currentPhase === 'work') {
-      nextCompleted = completed + 1
-      nextPhase = (nextCompleted % s.longBreakInterval === 0) ? 'longBreak' : 'shortBreak'
-    } else {
-      nextPhase = 'work'
-      nextRound = currentPhase === 'longBreak' ? 1 : rounds + 1
-    }
-
-    // Notification
-    if (s.notificationsEnabled) {
-      const nextLabel = nextPhase === 'work' ? t('phaseWork')
-        : nextPhase === 'shortBreak' ? t('phaseShortBreak')
-        : t('phaseLongBreak')
-      sendNotification(
-        t('notificationTitle'),
-        currentPhase === 'work'
-          ? t('notificationWorkDone', { next: nextLabel })
-          : t('notificationBreakDone')
-      )
-    }
-
-    setCompletedRounds(nextCompleted)
-    setCurrentRound(nextRound)
-    setPhase(nextPhase)
-    setTimeLeft(getPhaseTotal(nextPhase, s))
-
-    if (s.autoStart) {
-      setIsRunning(true)
-    }
-  }, [stopTimer, getPhaseTotal, recordPomodoroStat, sendNotification, t])
-
-  // ── Main timer tick with drift correction ───────────────────
-  useEffect(() => {
-    if (!isRunning) return
-
-    lastTickRef.current = Date.now()
-
-    intervalRef.current = setInterval(() => {
-      const now = Date.now()
-      const elapsed = Math.round((now - lastTickRef.current) / 1000)
-      lastTickRef.current = now
-
-      setTimeLeft(prev => {
-        const next = prev - elapsed
-        if (next <= 0) return 0
-        return next
-      })
-    }, 1000)
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [isRunning])
-
-  // ── Watch for timeLeft=0 ────────────────────────────────────
-  useEffect(() => {
-    if (timeLeft === 0 && isRunning) {
-      handlePhaseComplete(phase, currentRound, completedRounds, settings)
-    }
-  }, [timeLeft, isRunning, phase, currentRound, completedRounds, settings, handlePhaseComplete])
+  }, [recordPomodoroStat, sendNotification, t])
+  useLayoutEffect(() => { activeTaskRef.current = activeTaskId; transitionRef.current = handleTransition }, [activeTaskId, handleTransition])
 
   // ── Update document title ───────────────────────────────────
   useEffect(() => {
@@ -436,42 +258,18 @@ export default function PomodoroTimer() {
   }, [timeLeft, phase, isRunning, mounted, phaseLabels, getPhaseTotal, settings, t])
 
   // ── User actions ────────────────────────────────────────────
-  const handleStartPause = useCallback(() => {
-    if (isRunning) {
-      stopTimer()
-    } else {
-      setIsRunning(true)
-    }
-  }, [isRunning, stopTimer])
-
-  const handleSkip = useCallback(() => {
-    handlePhaseComplete(phase, currentRound, completedRounds, settings)
-  }, [phase, currentRound, completedRounds, settings, handlePhaseComplete])
-
-  const handleResetPhase = useCallback(() => {
-    stopTimer()
-    setTimeLeft(getPhaseTotal(phase, settings))
-  }, [stopTimer, phase, settings, getPhaseTotal])
-
-  const handleResetAll = useCallback(() => {
-    stopTimer()
-    setPhase('work')
-    setTimeLeft(settings.workDuration * 60)
-    setCurrentRound(1)
-    setCompletedRounds(0)
-    setTotalWorkSeconds(0)
-  }, [stopTimer, settings.workDuration])
-
-  const handleSaveSettings = useCallback(() => {
-    setSettings(tempSettings)
-    stopTimer()
-    setPhase('work')
-    setTimeLeft(tempSettings.workDuration * 60)
-    setCurrentRound(1)
-    setCompletedRounds(0)
-    setTotalWorkSeconds(0)
-    setShowSettings(false)
-  }, [tempSettings, stopTimer])
+  const expired = runtime.timer.notice === 'restoredExpired' || runtime.timer.notice === 'clockGapExpired'
+  const timerBlocked = runtime.timer.notice === 'conflict' || runtime.timer.notice === 'unconfirmed'
+    || runtime.stores.timer.status === 'conflict' || runtime.stores.timer.status === 'unconfirmed'
+  const handleStartPause = () => {
+    if (expired) sessionRef.current?.advanceExpired()
+    else if (isRunning) sessionRef.current?.pause()
+    else sessionRef.current?.start()
+  }
+  const handleSkip = () => { if (expired) sessionRef.current?.advanceExpired(); else sessionRef.current?.skip() }
+  const handleResetPhase = () => sessionRef.current?.resetPhase()
+  const handleResetAll = () => sessionRef.current?.resetAll()
+  const handleSaveSettings = () => { sessionRef.current?.applySettings(tempSettings); setShowSettings(false) }
 
   const openSettings = useCallback(() => {
     setTempSettings(settings)
@@ -492,24 +290,24 @@ export default function PomodoroTimer() {
     setTasks(prev => [...prev, task])
     setNewTaskText('')
     if (!activeTaskId) setActiveTaskId(task.id)
-  }, [newTaskText, activeTaskId])
+  }, [newTaskText, activeTaskId, setTasks])
 
   const toggleTask = useCallback((id: string) => {
     setTasks(prev => prev.map(task =>
       task.id === id ? { ...task, completed: !task.completed } : task
     ))
-  }, [])
+  }, [setTasks])
 
   const deleteTask = useCallback((id: string) => {
     setTasks(prev => prev.filter(task => task.id !== id))
     if (activeTaskId === id) setActiveTaskId(null)
-  }, [activeTaskId])
+  }, [activeTaskId, setTasks])
 
   const updateTaskEstimate = useCallback((id: string, est: number) => {
     setTasks(prev => prev.map(task =>
       task.id === id ? { ...task, estimatedPomodoros: Math.max(1, est) } : task
     ))
-  }, [])
+  }, [setTasks])
 
   // ── Computed values ─────────────────────────────────────────
   const phaseTotal = getPhaseTotal(phase, settings)
@@ -542,22 +340,21 @@ export default function PomodoroTimer() {
   }
 
   const colors = phaseColorMap[phase]
-  const totalWorkMinutes = Math.floor(totalWorkSeconds / 60)
 
   // Today stats
-  const todayStr = getTodayStr()
+  const todayStr = localDay || getTodayStr()
   const todayStat = dailyStats.find(s => s.date === todayStr)
   const todayPomodoros = todayStat?.count ?? 0
   const todayMinutes = todayStat?.minutes ?? 0
 
   // Weekly stats
-  const weekDates = useMemo(() => getWeekDates(), [])
+  const weekDates = useMemo(() => getWeekDates(todayStr), [todayStr])
   const weekStats = useMemo(() => weekDates.map(date => {
     const stat = dailyStats.find(s => s.date === date)
     return { date, count: stat?.count ?? 0, minutes: stat?.minutes ?? 0 }
   }), [weekDates, dailyStats])
   const maxWeekCount = Math.max(...weekStats.map(s => s.count), 1)
-  const streak = useMemo(() => getStreak(dailyStats), [dailyStats])
+  const streak = useMemo(() => getStreak(dailyStats, todayStr), [dailyStats, todayStr])
 
   const dayLabels = useMemo(() => {
     try { return (t.raw('weekDays') as string[]) } catch { return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] }
@@ -576,7 +373,7 @@ export default function PomodoroTimer() {
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
           <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -584,7 +381,7 @@ export default function PomodoroTimer() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSettings(s => ({ ...s, soundEnabled: !s.soundEnabled }))}
-            className="p-2 rounded-lg bg-soft hover:bg-subtle text-body"
+            className="min-w-11 min-h-11 p-2 rounded-lg bg-soft hover:bg-subtle text-body"
             aria-label={settings.soundEnabled ? t('soundOff') : t('soundOn')}
             title={settings.soundEnabled ? t('soundOff') : t('soundOn')}
           >
@@ -598,7 +395,7 @@ export default function PomodoroTimer() {
                 requestNotificationPermission()
               }
             }}
-            className="p-2 rounded-lg bg-soft hover:bg-subtle text-body"
+            className="min-w-11 min-h-11 p-2 rounded-lg bg-soft hover:bg-subtle text-body"
             aria-label={settings.notificationsEnabled ? t('notifOff') : t('notifOn')}
             title={settings.notificationsEnabled ? t('notifOff') : t('notifOn')}
           >
@@ -606,7 +403,7 @@ export default function PomodoroTimer() {
           </button>
           <button
             onClick={openSettings}
-            className="p-2 rounded-lg bg-soft hover:bg-subtle text-body"
+            className="min-w-11 min-h-11 p-2 rounded-lg bg-soft hover:bg-subtle text-body"
             aria-label={t('settings')}
             title={t('settings')}
           >
@@ -620,14 +417,10 @@ export default function PomodoroTimer() {
         {(['work', 'shortBreak', 'longBreak'] as Phase[]).map(p => (
           <button
             key={p}
-            onClick={() => {
-              if (p !== phase) {
-                stopTimer()
-                setPhase(p)
-                setTimeLeft(getPhaseTotal(p, settings))
-              }
-            }}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+            disabled={!mounted || timerBlocked}
+            data-pomodoro-phase={p}
+            onClick={() => sessionRef.current?.selectPhase(p)}
+            className={`min-h-11 flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
               p === phase
                 ? 'bg-primary text-white font-semibold'
                 : 'bg-soft text-muted hover:bg-subtle'
@@ -639,7 +432,7 @@ export default function PomodoroTimer() {
       </div>
 
       {/* Main Timer Card */}
-      <div className={`${glassCard} ${glassInset} p-8 flex flex-col items-center gap-6`}>
+      <div data-pomodoro-timer data-phase={phase} data-running={isRunning} data-remaining-ms={runtime.timer.remainingMs} data-phase-id={runtime.timer.phaseId} data-notice={runtime.timer.notice ?? ""} className={`${glassCard} ${glassInset} p-4 sm:p-8 flex flex-col items-center gap-6`}>
         {/* Active task display */}
         {activeTask && !activeTask.completed && (
           <div className={`text-sm font-medium ${colors.text} flex items-center gap-2`}>
@@ -688,10 +481,11 @@ export default function PomodoroTimer() {
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex w-full items-center justify-center gap-2 sm:gap-4">
           <button
             onClick={handleResetPhase}
-            className="p-3 rounded-full bg-soft hover:bg-subtle text-sub"
+            disabled={!mounted || timerBlocked}
+            className="min-h-11 min-w-11 shrink-0 p-3 rounded-full bg-soft hover:bg-subtle text-sub disabled:opacity-40"
             aria-label={t('resetPhase')}
             title={t('resetPhase')}
           >
@@ -700,16 +494,19 @@ export default function PomodoroTimer() {
 
           <button
             onClick={handleStartPause}
-            className={`flex items-center gap-2 px-8 py-4 rounded-full bg-primary hover:bg-blue-700 text-white font-semibold text-lg transition-colors`}
-            aria-label={isRunning ? t('pause') : t('start')}
+            data-pomodoro-toggle
+            disabled={!mounted || timerBlocked || runtime.timer.settling}
+            className="flex min-w-0 min-h-11 items-center justify-center gap-2 px-4 sm:px-8 py-4 rounded-full bg-primary text-white font-semibold text-base sm:text-lg disabled:opacity-40"
+            aria-label={expired ? t('reliability.advanceExpired') : isRunning ? t('pause') : t('start')}
           >
             {isRunning ? <Pause size={24} /> : <Play size={24} />}
-            {isRunning ? t('pause') : t('start')}
+            {expired ? t('reliability.advanceExpired') : isRunning ? t('pause') : t('start')}
           </button>
 
           <button
             onClick={handleSkip}
-            className="p-3 rounded-full bg-soft hover:bg-subtle text-sub"
+            disabled={!mounted || timerBlocked}
+            className="min-h-11 min-w-11 shrink-0 p-3 rounded-full bg-soft hover:bg-subtle text-sub disabled:opacity-40"
             aria-label={t('skip')}
             title={t('skip')}
           >
@@ -717,9 +514,12 @@ export default function PomodoroTimer() {
           </button>
         </div>
 
+        {runtime.timer.settling && <p role="status" className="text-sm text-sub">{t('reliability.settling')}</p>}
+        {runtime.timer.notice && <div role="status" className="w-full rounded-2xl bg-subtle p-4 text-sm text-sub"><p>{t(`reliability.${runtime.timer.notice}`)}</p>{expired && <p className="mt-2">{t('reliability.advanceHint')}</p>}</div>}
+        <p className="text-sm text-muted text-center">{t('reliability.timeHint')}</p>
         {/* Quick toggles */}
-        <div className="flex items-center gap-6 text-sm text-sub">
-          <label className="flex items-center gap-2 cursor-pointer select-none">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-sm text-sub">
+          <label className="min-h-11 flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
               checked={settings.autoStart}
@@ -730,7 +530,8 @@ export default function PomodoroTimer() {
           </label>
           <button
             onClick={handleResetAll}
-            className="flex items-center gap-1 hover:text-red-500 transition-colors"
+            disabled={!mounted || timerBlocked}
+            className="min-h-11 flex items-center gap-1 hover:text-red-500 transition-colors"
           >
             <RotateCcw size={14} />
             {t('resetAll')}
@@ -738,11 +539,15 @@ export default function PomodoroTimer() {
         </div>
       </div>
 
+      <PomodoroGoalPanel dailyStats={dailyStats} today={mounted ? todayStr : ''} statsStatus={statsStatus} onRetryStats={() => void persistStats()} />
+      <PomodoroRecovery stores={runtime.stores} onReload={kind => sessionRef.current?.reload(kind) ?? Promise.resolve(false)}
+        onDiscard={(kind, raw) => sessionRef.current?.discard(kind, raw) ?? Promise.resolve(false)} onCancel={() => sessionRef.current?.cancelPending()} />
+
       {/* Task Management */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <button
           onClick={() => setShowTasks(v => !v)}
-          className="flex items-center justify-between w-full text-left"
+          className="min-h-11 flex items-center justify-between w-full text-left"
         >
           <h2 className="text-lg font-semibold text-fg">{t('taskTitle')}</h2>
           {showTasks ? <ChevronUp size={20} className="text-faint" /> : <ChevronDown size={20} className="text-faint" />}
@@ -758,13 +563,13 @@ export default function PomodoroTimer() {
                 onChange={e => setNewTaskText(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addTask()}
                 placeholder={t('taskPlaceholder')}
-                className={`flex-1 px-3 py-2 ${glassInput} text-sm`}
+                className={`min-w-0 min-h-11 flex-1 px-3 py-2 ${glassInput} text-base`}
               />
               <button
                 onClick={addTask}
                 disabled={!newTaskText.trim()}
                 aria-label={t('taskAdd')}
-                className="px-3 py-2 rounded-lg bg-primary text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="min-w-11 min-h-11 px-3 py-2 rounded-lg bg-primary text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Plus size={18} />
               </button>
@@ -790,7 +595,7 @@ export default function PomodoroTimer() {
                       role="checkbox"
                       aria-checked={task.completed}
                       aria-label={t('taskDone', { task: task.text })}
-                      className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                      className={`flex-shrink-0 min-w-11 min-h-11 rounded border-2 flex items-center justify-center transition-colors ${
                         task.completed
                           ? 'bg-primary border-primary text-white'
                           : 'border-line-strong hover:border-primary'
@@ -803,7 +608,7 @@ export default function PomodoroTimer() {
                       type="button"
                       onClick={e => { e.stopPropagation(); if (!task.completed) setActiveTaskId(task.id === activeTaskId ? null : task.id) }}
                       aria-pressed={task.id === activeTaskId}
-                      className={`flex-1 text-left cursor-pointer text-sm text-body ${task.completed ? 'line-through' : ''}`}
+                      className={`min-w-0 min-h-11 flex-1 break-words text-left cursor-pointer text-sm text-body ${task.completed ? 'line-through' : ''}`}
                     >
                       {task.text}
                     </button>
@@ -816,14 +621,14 @@ export default function PomodoroTimer() {
                         max={99}
                         value={task.estimatedPomodoros}
                         onChange={e => updateTaskEstimate(task.id, parseInt(e.target.value) || 1)}
-                        className="w-10 text-center text-xs px-1 py-0.5 border border-line-strong rounded bg-field text-fg"
+                        className="w-14 min-h-11 text-center text-base px-1 py-1 border border-line-strong rounded bg-field text-fg"
                         title={t('taskEstimate')}
                       />
                     </div>
                     <button
                       onClick={e => { e.stopPropagation(); deleteTask(task.id) }}
                       aria-label={t('taskDelete', { task: task.text })}
-                      className="flex-shrink-0 p-1 text-faint hover:text-red-500"
+                      className="flex-shrink-0 min-w-11 min-h-11 p-2 text-faint hover:text-red-500"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -1081,7 +886,7 @@ export default function PomodoroTimer() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6`}>
         <h2 className="text-xl font-semibold text-fg mb-4">{t('guideTitle')}</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 className="font-medium text-body mb-2">{t('guideHowTitle')}</h3>
             <ol className="space-y-2">

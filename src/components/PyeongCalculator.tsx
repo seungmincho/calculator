@@ -4,7 +4,6 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/pyeongCalculator'
-import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, RotateCcw, ArrowRight } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
@@ -53,33 +52,42 @@ const seg = (on: boolean) =>
 const chip = (on: boolean) =>
   `min-h-10 px-2 py-2 rounded-lg text-sm font-medium transition-colors tabular-nums ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
-export default function PyeongCalculator() {
+export default function PyeongCalculator({ guideLinks }: { guideLinks?: React.ReactNode }) {
   const t = useTranslations('pyeongCalculator')
-  const sp = useSearchParams()
-
-  // 공유 링크 복원 (구버전 ?value=&from=sqm 호환)
-  const [area, setArea] = useState<{ unit: Unit; text: string }>(() => ({
-    unit: sp.get('from') === 'pyeong' ? 'pyeong' : 'sqm',
-    text: sp.get('value') ?? '84',
-  }))
-  const [method, setMethod] = useState<Method>(() => (sp.get('method') === 'dim' ? 'dim' : 'area'))
-  const [width, setWidth] = useState(() => sp.get('w') ?? '10')
-  const [depth, setDepth] = useState(() => sp.get('d') ?? '8')
-  const [areaType, setAreaType] = useState<AreaType>(() => (sp.get('type') === 'supply' ? 'supply' : 'exclusive'))
-  const [ratio, setRatio] = useState<number>(() => {
-    const r = parseInt(sp.get('r') || '', 10)
-    return r >= RATIO_MIN && r <= RATIO_MAX ? r : DEFAULT_RATIO
-  })
-  const [price, setPrice] = useState(() => {
-    const p = sp.get('price')
-    if (p === null) return won(DEFAULT_PRICE)
-    const n = parseNum(p)
-    return n > 0 ? won(n) : ''
-  })
-  const [otherCommon, setOtherCommon] = useState(() => sp.get('etc') ?? '')
-  const [service, setService] = useState(() => sp.get('svc') ?? '')
+  const [linkReady, setLinkReady] = useState(false)
+  const [area, setArea] = useState<{ unit: Unit; text: string }>({ unit: 'sqm', text: '84' })
+  const [method, setMethod] = useState<Method>('area')
+  const [width, setWidth] = useState('10')
+  const [depth, setDepth] = useState('8')
+  const [areaType, setAreaType] = useState<AreaType>('exclusive')
+  const [ratio, setRatio] = useState(DEFAULT_RATIO)
+  const [price, setPrice] = useState(won(DEFAULT_PRICE))
+  const [otherCommon, setOtherCommon] = useState('')
+  const [service, setService] = useState('')
   const [unitPrice, setUnitPrice] = useState<{ unit: Unit; text: string }>({ unit: 'pyeong', text: '4,000' })
   const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  // 정적 HTML의 기본값으로 hydration한 뒤 공유 주소를 읽고 나서 주소 쓰기를 시작한다.
+  useEffect(() => {
+    function restoreFromLocation() {
+      const query = new URLSearchParams(window.location.search)
+      setArea({ unit: query.get('from') === 'pyeong' ? 'pyeong' : 'sqm', text: query.get('value') ?? '84' })
+      setMethod(query.get('method') === 'dim' ? 'dim' : 'area')
+      setWidth(query.get('w') ?? '10')
+      setDepth(query.get('d') ?? '8')
+      setAreaType(query.get('type') === 'supply' ? 'supply' : 'exclusive')
+      const r = Number.parseInt(query.get('r') ?? '', 10)
+      setRatio(r >= RATIO_MIN && r <= RATIO_MAX ? r : DEFAULT_RATIO)
+      const p = parseNum(query.get('price') ?? String(DEFAULT_PRICE))
+      setPrice(p > 0 ? won(p) : '')
+      setOtherCommon(query.get('etc') ?? '')
+      setService(query.get('svc') ?? '')
+      setLinkReady(true)
+    }
+    restoreFromLocation()
+    window.addEventListener('popstate', restoreFromLocation)
+    return () => window.removeEventListener('popstate', restoreFromLocation)
+  }, [])
 
   const m2 = useMemo(() => {
     if (method === 'dim') return parseNum(width) * parseNum(depth)
@@ -94,7 +102,9 @@ export default function PyeongCalculator() {
   const parts = areaBreakdown(split.exclusive, split.supply, etcNum, svcNum)
   const sides = roomSides(m2)
 
-  const shareUrl = useCallback(() => {
+  useEffect(() => {
+    if (!linkReady) return
+    const path = window.location.pathname
     const p = new URLSearchParams()
     if (method === 'dim') {
       p.set('method', 'dim')
@@ -109,13 +119,14 @@ export default function PyeongCalculator() {
     if (priceNum !== DEFAULT_PRICE) p.set('price', String(priceNum))
     if (etcNum > 0) p.set('etc', String(etcNum))
     if (svcNum > 0) p.set('svc', String(svcNum))
-    return `${window.location.pathname}?${p.toString()}`
-  }, [method, width, depth, area, areaType, ratio, priceNum, etcNum, svcNum])
-
-  useEffect(() => {
-    const id = setTimeout(() => window.history.replaceState(null, '', shareUrl()), 300)
+    const search = '?' + p.toString()
+    const id = setTimeout(() => {
+      if (window.location.pathname === path && window.location.search !== search) {
+        window.history.replaceState(window.history.state, '', path + search + window.location.hash)
+      }
+    }, 300)
     return () => clearTimeout(id)
-  }, [shareUrl])
+  }, [linkReady, method, width, depth, area, areaType, ratio, priceNum, etcNum, svcNum])
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
     try {
@@ -211,6 +222,7 @@ export default function PyeongCalculator() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
+        {guideLinks}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

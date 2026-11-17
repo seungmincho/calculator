@@ -1,11 +1,15 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/typingTest'
-import { RotateCcw, Shuffle, Copy, Check, Trash2 } from 'lucide-react'
+import { RotateCcw, Shuffle, Trash2 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import ShareResult from '@/components/ShareResult'
+import CustomTypingWorkspace from '@/components/CustomTypingWorkspace'
+import TypingSummaryCopy from '@/components/TypingSummaryCopy'
+import TypingMistakePractice from '@/components/TypingMistakePractice'
+import { captureTypingReview, collectTypingReviewErrors, type TypingReviewSnapshot } from '@/utils/typingReview'
 import {
   TEXTS, type Lang, type CharStatus, diffTyped, correctKeystrokes, perMinute, wpm,
   accuracy, topMissed, gradeLevel, vsAverage, dayNumber, dailyIndex, streamText,
@@ -44,6 +48,8 @@ const CHAR_CLASS: Record<CharStatus, string> = {
 export default function TypingTest() {
   const t = useTranslations('typingTest')
 
+  const [workspace, setWorkspace] = useState<'standard' | 'custom'>('standard')
+  const [standardRun, setStandardRun] = useState(0)
   const [mode, setMode] = useState<Mode>('daily')
   const [lang, setLang] = useState<Lang>('ko')
   const [sec, setSec] = useState<Sec>(60)
@@ -52,17 +58,27 @@ export default function TypingTest() {
   const [typed, setTyped] = useState('')
   const [startAt, setStartAt] = useState<number | null>(null)
   const [now, setNow] = useState(0)
+  const [liveAcc, setLiveAcc] = useState(100)
   const [result, setResult] = useState<Result | null>(null)
+  const [reviewSnapshot, setReviewSnapshot] = useState<TypingReviewSnapshot | null>(null), [reviewFailed, setReviewFailed] = useState(false)
   const [history, setHistory] = useState<Entry[]>([])
   const [daily, setDaily] = useState<Record<number, DayRec>>({})
-  const [copied, setCopied] = useState(false)
 
+  const mounted = useRef(false)
+  const standardActive = useRef(true)
+  const runGeneration = useRef(0)
+  const finished = useRef(false)
+  const composing = useRef(false)
   const errorsRef = useRef(new Map<number, string>())
   const reachedRef = useRef(0)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const caretRef = useRef<HTMLSpanElement>(null)
   const typedRef = useRef('')
+  const reviewErrors = useRef<readonly number[]>([]), reviewInvalid = useRef(false), reviewOrigin = useRef(0)
+  const invalidate = useCallback(() => { runGeneration.current++ }, [])
+  useLayoutEffect(() => { mounted.current = true; return () => { mounted.current = false; invalidate() } }, [invalidate])
+  useLayoutEffect(() => { standardActive.current = workspace === 'standard' }, [workspace])
 
   const L: Lang = mode === 'daily' ? 'ko' : lang
   const target = useMemo(() => {
@@ -75,26 +91,42 @@ export default function TypingTest() {
 
   // ── 마운트: 기록·오늘 회차·공유 링크 파라미터 ─────────────────────────────
   useEffect(() => {
-    setToday(dayNumber(Date.now()))
-    setHistory(load<Entry[]>(HISTORY_KEY, []))
-    setDaily(load<Record<number, DayRec>>(DAILY_KEY, {}))
-    const q = new URLSearchParams(window.location.search)
-    const m = q.get('mode') as Mode
-    if (MODES.includes(m)) setMode(m)
-    if (q.get('lang') === 'en') setLang('en')
-    const i = Number(q.get('i'))
-    if (Number.isInteger(i) && i >= 0) setIdx(i)
-    else setIdx(Math.floor(Math.random() * 1000))
-    if (q.get('sec') === '30') setSec(30)
+    const restore = window.setTimeout(() => {
+      if (!mounted.current) return
+      setToday(dayNumber(Date.now()))
+      setHistory(load<Entry[]>(HISTORY_KEY, []))
+      setDaily(load<Record<number, DayRec>>(DAILY_KEY, {}))
+      const q = new URLSearchParams(window.location.search)
+      const m = q.get('mode') as Mode
+      if (MODES.includes(m)) setMode(m)
+      if (q.get('lang') === 'en') setLang('en')
+      const i = Number(q.get('i'))
+      if (Number.isInteger(i) && i >= 0) setIdx(i)
+      else setIdx(Math.floor(Math.random() * 1000))
+      if (q.get('sec') === '30') setSec(30)
+    }, 0)
+    return () => window.clearTimeout(restore)
   }, [])
 
   const reset = useCallback(() => {
-    setTyped(''); setStartAt(null); setResult(null)
+    setStandardRun(++runGeneration.current)
+    setTyped(''); typedRef.current = ''; setStartAt(null); setResult(null); setNow(0); setLiveAcc(100)
+    finished.current = false; composing.current = false
     errorsRef.current = new Map(); reachedRef.current = 0
+    reviewErrors.current = []; reviewInvalid.current = false; setReviewSnapshot(null); setReviewFailed(false)
     if (boxRef.current) boxRef.current.scrollTop = 0
   }, [])
   // 버튼을 누른 뒤에만 입력칸으로 포커스 (첫 방문 시 모바일 키보드가 뜨지 않게)
-  const focusInput = () => setTimeout(() => inputRef.current?.focus(), 0)
+  const focusInput = () => setTimeout(() => { if (mounted.current && standardActive.current) inputRef.current?.focus() }, 0)
+
+  const chooseStandard = (next: Mode) => {
+    if (workspace !== 'standard' || mode !== next) reset()
+    standardActive.current = true; setWorkspace('standard'); setMode(next); focusInput()
+  }
+  const chooseCustom = () => {
+    if (workspace === 'custom') return
+    standardActive.current = false; reset(); setWorkspace('custom')
+  }
 
   // 설정이 바뀌면 새 판 + URL 동기화 (공유 링크 = 같은 글로 도전)
   useEffect(() => {
@@ -112,10 +144,10 @@ export default function TypingTest() {
   }, [mode, lang, idx, sec, today, reset])
 
   const statuses = useMemo(() => diffTyped(target, typed), [target, typed])
-  typedRef.current = typed
 
   const finish = useCallback((value: string, end: number) => {
-    if (startAt === null) return
+    if (!mounted.current || !standardActive.current || runGeneration.current !== standardRun || finished.current || startAt === null) return
+    finished.current = true
     const ms = mode === 'time' ? sec * 1000 : Math.max(1, end - startAt)
     const st = diffTyped(target, value)
     const keys = correctKeystrokes(target, value, st)
@@ -137,18 +169,25 @@ export default function TypingTest() {
       newBest: history.some(h => h.lang === L) && speed > prevBest,
       day: mode === 'daily' ? today : undefined,
     })
-  }, [startAt, mode, sec, target, T, L, history, daily, today])
+    try {
+      // Timed completion uses only already committed errors, never finalizes an active IME composition.
+      if (reviewInvalid.current) throw new Error('invalidReview')
+      setReviewSnapshot(captureTypingReview(++reviewOrigin.current, target, L, reviewErrors.current))
+    } catch { setReviewSnapshot(null); setReviewFailed(true) }
+  }, [startAt, mode, sec, target, T, L, history, daily, today, standardRun])
 
   // 진행 중 시계 (시간제는 여기서 종료 판정)
   useEffect(() => {
-    if (startAt === null || result) return
+    if (workspace !== 'standard' || startAt === null || result) return
+    const generation = standardRun
     const id = setInterval(() => {
+      if (!mounted.current || !standardActive.current || runGeneration.current !== generation || finished.current) return
       const n = Date.now()
       setNow(n)
       if (mode === 'time' && n - startAt >= sec * 1000) finish(typedRef.current, n)
     }, 200)
     return () => clearInterval(id)
-  }, [startAt, result, mode, sec, finish])
+  }, [startAt, result, mode, sec, finish, standardRun, workspace])
 
   // 긴 글/시간제: 캐럿이 보이도록 박스 스크롤
   useEffect(() => {
@@ -158,18 +197,21 @@ export default function TypingTest() {
     }
   }, [typed])
 
-  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (result) return
-    const value = [...e.target.value.replace(/[\r\n]/g, '')].slice(0, T.length).join('')
+  const updateTyping = (raw: string, isComposing: boolean) => {
+    if (!mounted.current || !standardActive.current || runGeneration.current !== standardRun || result || finished.current) return
+    const value = [...raw.replace(/[\r\n]/g, '')].slice(0, T.length).join('')
+    try { reviewErrors.current = collectTypingReviewErrors(reviewErrors.current, target, value, isComposing) }
+    catch { reviewInvalid.current = true }
     const n = Date.now()
     if (startAt === null && value) { setStartAt(n); setNow(n) }
     const st = diffTyped(target, value)
     const U = [...value]
     st.forEach((s, i) => { if (s === 'wrong' && !errorsRef.current.has(i)) errorsRef.current.set(i, U[i]) })
     reachedRef.current = Math.max(reachedRef.current, st.filter(s => s === 'correct' || s === 'wrong').length)
-    setTyped(value)
+    setLiveAcc(accuracy(reachedRef.current, errorsRef.current.size))
+    typedRef.current = value; setTyped(value)
     const last = st[T.length - 1]
-    if (mode !== 'time' && U.length === T.length && last !== 'composing' && startAt !== null) finish(value, n)
+    if (!isComposing && mode !== 'time' && U.length === T.length && last !== 'composing' && startAt !== null) finish(value, n)
   }
 
   // ── 표시용 값 ──────────────────────────────────────────────────────────────
@@ -177,7 +219,6 @@ export default function TypingTest() {
   const liveSpeed = elapsed < 1000 ? 0
     : L === 'ko' ? perMinute(correctKeystrokes(target, typed, statuses), elapsed)
       : wpm(statuses.filter(s => s === 'correct').length, elapsed)
-  const liveAcc = accuracy(reachedRef.current, errorsRef.current.size)
   const unit = (n: number, l: Lang = L) => t(l === 'ko' ? 'unit.ko' : 'unit.en', { n: n.toLocaleString() })
   const caretAt = statuses.includes('composing') ? -1 : [...typed].length
   const done = statuses.filter(s => s === 'correct').length
@@ -194,12 +235,7 @@ export default function TypingTest() {
     t('share.text', { lang: t(`language.${result.lang === 'ko' ? 'korean' : 'english'}`), speed: unit(result.speed, result.lang), acc: result.acc }),
     result.day ? t('daily.label', { n: result.day }) : '',
   ].filter(Boolean).join(' · ') : ''
-  const copyText = async () => {
-    try { await navigator.clipboard.writeText(`${shareText}\n${window.location.href}`) } catch { /* 권한 없음 */ }
-    setCopied(true); setTimeout(() => setCopied(false), 2000)
-  }
-
-  const seg = (on: boolean) => `px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
+  const seg = (on: boolean) => `min-h-11 px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 
   return (
     <div className="space-y-8">
@@ -212,10 +248,12 @@ export default function TypingTest() {
       <div className="ui-card p-6 space-y-4">
         <div className="flex flex-wrap gap-2" role="group" aria-label={t('modeLabel')}>
           {MODES.map(m => (
-            <button key={m} onClick={() => { setMode(m); focusInput() }} className={seg(mode === m)} aria-pressed={mode === m}>{t(`mode.${m}`)}</button>
+            <button key={m} data-typing-mode={m} onClick={() => chooseStandard(m)} className={seg(workspace === 'standard' && mode === m)} aria-pressed={workspace === 'standard' && mode === m}>{t(`mode.${m}`)}</button>
           ))}
+          <button type="button" data-typing-mode="custom" onClick={chooseCustom} className={seg(workspace === 'custom')} aria-pressed={workspace === 'custom'}>{t('custom.title')}</button>
         </div>
-        <div className="flex flex-wrap items-center gap-4">
+        <p className="text-xs text-muted">{t('custom.switchNotice')}</p>
+        {workspace === 'standard' && <div className="flex flex-wrap items-center gap-4">
           {mode !== 'daily' && (
             <div className="flex gap-2" role="group" aria-label={t('languageLabel')}>
               {(['ko', 'en'] as Lang[]).map(l => (
@@ -239,11 +277,13 @@ export default function TypingTest() {
               {streak(daily, today) > 0 && <> · {t('daily.streak', { n: streak(daily, today) })}</>}
             </div>
           )}
-        </div>
+        </div>}
       </div>
 
+      <CustomTypingWorkspace active={workspace === 'custom'} />
+      {workspace === 'standard' && <>
       {/* 타자 영역 */}
-      <div className="ui-card p-6">
+      <div data-standard-typing className="ui-card p-6">
         <div className="grid grid-cols-3 gap-3 mb-5">
           <div>
             <div className="text-xs text-muted">{mode === 'time' ? t('live.left') : t('live.time')}</div>
@@ -281,10 +321,14 @@ export default function TypingTest() {
         </div>
 
         <textarea
+          key={standardRun}
+          data-standard-input
           ref={inputRef}
           value={typed}
-          onChange={onChange}
-          onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); if (e.key === 'Escape') reset() }}
+          onCompositionStart={() => { if (standardActive.current && runGeneration.current === standardRun) composing.current = true }}
+          onCompositionEnd={event => { if (!standardActive.current || runGeneration.current !== standardRun) return; composing.current = false; updateTyping(event.currentTarget.value, false) }}
+          onChange={event => updateTyping(event.target.value, composing.current || (event.nativeEvent as InputEvent).isComposing === true)}
+          onKeyDown={e => { if (e.nativeEvent.isComposing || e.keyCode === 229) return; if (e.key === 'Enter') e.preventDefault(); if (e.key === 'Escape') reset() }}
           onPaste={e => e.preventDefault()}
           onDrop={e => e.preventDefault()}
           disabled={!!result}
@@ -300,11 +344,11 @@ export default function TypingTest() {
         />
 
         <div className="flex flex-wrap gap-2 mt-4">
-          <button onClick={() => { reset(); focusInput() }} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5">
+          <button onClick={() => { reset(); focusInput() }} className="ui-btn-soft min-h-11 px-4 py-2 inline-flex items-center gap-1.5">
             <RotateCcw className="w-4 h-4" /> {t('restart')}
           </button>
           {mode !== 'daily' && (
-            <button onClick={() => { setIdx(i => i + 1); focusInput() }} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5">
+            <button onClick={() => { setIdx(i => i + 1); focusInput() }} className="ui-btn-soft min-h-11 px-4 py-2 inline-flex items-center gap-1.5">
               <Shuffle className="w-4 h-4" /> {t('nextText')}
             </button>
           )}
@@ -314,7 +358,7 @@ export default function TypingTest() {
 
       {/* 결과 */}
       {result && (
-        <div className="space-y-4">
+        <div data-standard-result className="space-y-4">
           <div className="ui-hero p-6">
             <div className="text-sm text-white/70">
               {result.day ? t('daily.label', { n: result.day }) : t(`mode.${result.mode}`)} · {t(`language.${result.lang === 'ko' ? 'korean' : 'english'}`)}
@@ -366,14 +410,14 @@ export default function TypingTest() {
               fileName="toolhub-typing"
             />
             <div className="flex flex-wrap gap-2">
-              <button onClick={copyText} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5">
-                {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />} {copied ? t('result.copied') : t('result.copyText')}
-              </button>
-              <button onClick={() => { reset(); focusInput() }} className="ui-btn px-4 py-2 inline-flex items-center gap-1.5">
+              <TypingSummaryCopy text={`${shareText}\n${window.location.href}`} contextKey={`standard-${standardRun}`} />
+              <button onClick={() => { reset(); focusInput() }} className="ui-btn min-h-11 px-4 py-2 inline-flex items-center gap-1.5">
                 <RotateCcw className="w-4 h-4" /> {t('result.retry')}
               </button>
             </div>
           </div>
+          {reviewFailed && <p data-typing-review-unavailable="" role="status" className="rounded-xl bg-subtle p-4 text-sm text-body">{t('review.unavailable')}</p>}
+          <TypingMistakePractice snapshot={reviewSnapshot} active={workspace === 'standard'} />
         </div>
       )}
 
@@ -415,6 +459,7 @@ export default function TypingTest() {
           </div>
         </div>
       )}
+      </>}
 
       {/* 가이드 */}
       <div className="ui-card p-6 space-y-6">

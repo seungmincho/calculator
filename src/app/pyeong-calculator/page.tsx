@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
+import { guides, guideLink } from '@/content/guides/catalog'
 import PyeongCalculator from '@/components/PyeongCalculator'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
@@ -23,10 +25,16 @@ export default function PyeongCalculatorPage() {
       <FaqJsonLd items={pyeongCalculatorMessages.pyeongCalculator.guide.faq.items} />
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <I18nWrapper><PyeongCalculator />  <div className="mt-8">
-    <RelatedTools />
-  </div>
-</I18nWrapper>
+          <I18nWrapper>
+            <PyeongCalculator guideLinks={
+              <ul className="mt-2 space-y-1 text-sm">
+                {guides.filter(guide => guide.tools.includes('pyeong-calculator')).map(guide => (
+                  <li key={guide.slug}><Link href={guideLink(guide, 'pyeong-calculator')} className="font-semibold text-primary hover:underline">{guide.title}</Link></li>
+                ))}
+              </ul>
+            } />
+            <div className="mt-8"><RelatedTools /></div>
+          </I18nWrapper>
         </div>
       </div>
       {/* SEO 콘텐츠 */}

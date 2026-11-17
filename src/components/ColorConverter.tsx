@@ -1,458 +1,163 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Check } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/colorConverter'
-import { Copy, Check, Palette, RefreshCw } from 'lucide-react'
-import { glassCard, glassInset } from '@/lib/glass'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
+import MobileResultLink from '@/components/MobileResultLink'
+import ShareResult from '@/components/ShareResult'
+import { colorQueryUrl, convertOpaqueColor, hslColorHex, parseOpaqueHex, readColorQuery, rgbColorHex } from '@/utils/colorConversion'
+import { copyShareResultLink, createShareResultRequests, type ShareResultToken } from '@/utils/shareResultActions'
 
-interface ColorValues {
-  hex: string
-  rgb: { r: number; g: number; b: number }
-  hsl: { h: number; s: number; l: number }
-  hsv: { h: number; s: number; v: number }
-  cmyk: { c: number; m: number; y: number; k: number }
-}
+const DEFAULT_COLOR = '#3B82F6'
+const PRESETS = ['#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E', '#10B981', '#14B8A6', '#06B6D4', '#0EA5E9', '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#D946EF', '#EC4899', '#F43F5E', '#78716C', '#64748B', '#000000']
+type Model = { draft: string; lastValid: string; ready: boolean; revision: number; shareUrl: string | null; queryError: 'invalid' | 'writeFailed' | null }
+type Format = 'hex' | 'rgb' | 'hsl' | 'hsv' | 'cmyk'
+type CopyView = { owner: ReturnType<typeof createShareResultRequests>; token: ShareResultToken; format: Format; text: string; status: 'copying' | 'copied' | 'failed'; selectionFailed?: boolean }
+const colorSignature = () => JSON.stringify(new URLSearchParams(window.location.search).getAll('color'))
 
 export default function ColorConverter() {
-  const t = useTranslations('colorConverter')
-  const [hex, setHex] = useState('#3B82F6')
-  const [copied, setCopied] = useState<string | null>(null)
-
-  const hexToRgb = useCallback((hex: string): { r: number; g: number; b: number } | null => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null
-  }, [])
-
-  const rgbToHex = useCallback((r: number, g: number, b: number): string => {
-    return '#' + [r, g, b].map(x => {
-      const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16)
-      return hex.length === 1 ? '0' + hex : hex
-    }).join('').toUpperCase()
-  }, [])
-
-  const rgbToHsl = useCallback((r: number, g: number, b: number): { h: number; s: number; l: number } => {
-    r /= 255
-    g /= 255
-    b /= 255
-    const max = Math.max(r, g, b)
-    const min = Math.min(r, g, b)
-    let h = 0
-    let s = 0
-    const l = (max + min) / 2
-
-    if (max !== min) {
-      const d = max - min
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-      switch (max) {
-        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-        case g: h = ((b - r) / d + 2) / 6; break
-        case b: h = ((r - g) / d + 4) / 6; break
-      }
-    }
-
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      l: Math.round(l * 100)
-    }
-  }, [])
-
-  const hslToRgb = useCallback((h: number, s: number, l: number): { r: number; g: number; b: number } => {
-    h /= 360
-    s /= 100
-    l /= 100
-    let r, g, b
-
-    if (s === 0) {
-      r = g = b = l
-    } else {
-      const hue2rgb = (p: number, q: number, t: number) => {
-        if (t < 0) t += 1
-        if (t > 1) t -= 1
-        if (t < 1/6) return p + (q - p) * 6 * t
-        if (t < 1/2) return q
-        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6
-        return p
-      }
-      const q = l < 0.5 ? l * (1 + s) : l + s - l * s
-      const p = 2 * l - q
-      r = hue2rgb(p, q, h + 1/3)
-      g = hue2rgb(p, q, h)
-      b = hue2rgb(p, q, h - 1/3)
-    }
-
-    return {
-      r: Math.round(r * 255),
-      g: Math.round(g * 255),
-      b: Math.round(b * 255)
-    }
-  }, [])
-
-  const rgbToHsv = useCallback((r: number, g: number, b: number): { h: number; s: number; v: number } => {
-    r /= 255
-    g /= 255
-    b /= 255
-    const max = Math.max(r, g, b)
-    const min = Math.min(r, g, b)
-    let h = 0
-    const v = max
-    const d = max - min
-    const s = max === 0 ? 0 : d / max
-
-    if (max !== min) {
-      switch (max) {
-        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-        case g: h = ((b - r) / d + 2) / 6; break
-        case b: h = ((r - g) / d + 4) / 6; break
-      }
-    }
-
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      v: Math.round(v * 100)
-    }
-  }, [])
-
-  const rgbToCmyk = useCallback((r: number, g: number, b: number): { c: number; m: number; y: number; k: number } => {
-    r /= 255
-    g /= 255
-    b /= 255
-    const k = 1 - Math.max(r, g, b)
-    if (k === 1) return { c: 0, m: 0, y: 0, k: 100 }
-    return {
-      c: Math.round(((1 - r - k) / (1 - k)) * 100),
-      m: Math.round(((1 - g - k) / (1 - k)) * 100),
-      y: Math.round(((1 - b - k) / (1 - k)) * 100),
-      k: Math.round(k * 100)
-    }
-  }, [])
-
-  const colorValues = useMemo((): ColorValues | null => {
-    const rgb = hexToRgb(hex)
-    if (!rgb) return null
-    return {
-      hex: hex.toUpperCase(),
-      rgb,
-      hsl: rgbToHsl(rgb.r, rgb.g, rgb.b),
-      hsv: rgbToHsv(rgb.r, rgb.g, rgb.b),
-      cmyk: rgbToCmyk(rgb.r, rgb.g, rgb.b)
-    }
-  }, [hex, hexToRgb, rgbToHsl, rgbToHsv, rgbToCmyk])
-
-  const handleCopy = useCallback(async (value: string, key: string) => {
-    try {
-      await navigator.clipboard.writeText(value)
-      setCopied(key)
-      setTimeout(() => setCopied(null), 2000)
-    } catch {
-      const textarea = document.createElement('textarea')
-      textarea.value = value
-      document.body.appendChild(textarea)
-      textarea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textarea)
-      setCopied(key)
-      setTimeout(() => setCopied(null), 2000)
-    }
-  }, [])
-
-  const handleRandomColor = useCallback(() => {
-    const randomHex = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase()
-    setHex(randomHex)
-  }, [])
-
-  const handleRgbChange = useCallback((component: 'r' | 'g' | 'b', value: number) => {
-    if (!colorValues) return
-    const newRgb = { ...colorValues.rgb, [component]: value }
-    setHex(rgbToHex(newRgb.r, newRgb.g, newRgb.b))
-  }, [colorValues, rgbToHex])
-
-  const handleHslChange = useCallback((component: 'h' | 's' | 'l', value: number) => {
-    if (!colorValues) return
-    const newHsl = { ...colorValues.hsl, [component]: value }
-    const rgb = hslToRgb(newHsl.h, newHsl.s, newHsl.l)
-    setHex(rgbToHex(rgb.r, rgb.g, rgb.b))
-  }, [colorValues, hslToRgb, rgbToHex])
-
-  // Predefined color palette
-  const presetColors = [
-    '#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16',
-    '#22C55E', '#10B981', '#14B8A6', '#06B6D4', '#0EA5E9',
-    '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#D946EF',
-    '#EC4899', '#F43F5E', '#78716C', '#64748B', '#000000'
+  const t = useTranslations('colorConverter'), language = useOptionalLanguage()?.language ?? 'ko'
+  const [model, setModel] = useState<Model>({ draft: DEFAULT_COLOR, lastValid: DEFAULT_COLOR, ready: false, revision: 0, shareUrl: null, queryError: null })
+  const live = useRef(model), earlyIntent = useRef(false), observedColor = useRef(''), mounted = useRef(false)
+  const [copyView, setCopyView] = useState<CopyView | null>(null), [shareRevision, setShareRevision] = useState(0)
+  const manual = useRef<HTMLTextAreaElement>(null)
+  const scope = JSON.stringify([model.draft, model.lastValid, model.revision, model.ready, model.shareUrl, language, t('title'), t('copy.failed'), t('share.notice', { hex: model.lastValid })])
+  const owner = useMemo(() => createShareResultRequests(scope), [scope]), ownerRef = useRef(owner)
+  useLayoutEffect(() => { mounted.current = true; ownerRef.current = owner; owner.activate(); return () => { mounted.current = false; owner.dispose() } }, [owner])
+  const visible = copyView?.owner === owner && owner.current(copyView.token) ? copyView : null
+  const values = useMemo(() => convertOpaqueColor(model.lastValid)!, [model.lastValid])
+  const invalid = parseOpaqueHex(model.draft) === null
+  const formats: { key: Format; text: string }[] = [
+    { key: 'hex', text: values.hex },
+    { key: 'rgb', text: `rgb(${values.rgb.r}, ${values.rgb.g}, ${values.rgb.b})` },
+    { key: 'hsl', text: `hsl(${values.hsl.h}, ${values.hsl.s}%, ${values.hsl.l}%)` },
+    { key: 'hsv', text: `hsv(${values.hsv.h}, ${values.hsv.s}%, ${values.hsv.v}%)` },
+    { key: 'cmyk', text: `cmyk(${values.cmyk.c}%, ${values.cmyk.m}%, ${values.cmyk.y}%, ${values.cmyk.k}%)` },
   ]
 
-  return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-          <Palette className="w-7 h-7 text-pink-500" />
-          {t('title')}
-        </h1>
-        <p className="text-sm text-muted mt-1">
-          {t('description')}
-        </p>
-      </div>
+  function invalidateOutputs() { ownerRef.current.invalidate(); setCopyView(null); setShareRevision(previous => previous + 1) }
+  function commit(next: Model, write: boolean) {
+    let value = next
+    if (next.ready) {
+      const shareUrl = colorQueryUrl(window.location.href, next.lastValid)
+      value = { ...next, shareUrl }
+      if (shareUrl === null) value.queryError = 'writeFailed'
+      else if (write && shareUrl !== window.location.href) {
+        try { window.history.replaceState(window.history.state, '', shareUrl) }
+        catch { value.queryError = 'writeFailed' }
+      }
+      observedColor.current = colorSignature()
+    }
+    live.current = value; setModel(value)
+  }
+  function changeDraft(draft: string) {
+    if (!mounted.current) return
+    if (!live.current.ready) earlyIntent.current = true
+    invalidateOutputs()
+    const valid = parseOpaqueHex(draft)
+    commit({ ...live.current, draft, lastValid: valid ?? live.current.lastValid, revision: live.current.revision + 1, queryError: null }, valid !== null)
+  }
+  function commitColor(input: string | null) {
+    const hex = parseOpaqueHex(input)
+    if (hex) changeDraft(hex)
+  }
+  function rgbChange(channel: 'r' | 'g' | 'b', value: number) {
+    const rgb = { ...convertOpaqueColor(live.current.lastValid)!.rgb, [channel]: value }
+    commitColor(rgbColorHex(rgb.r, rgb.g, rgb.b))
+  }
+  function hslChange(channel: 'h' | 's' | 'l', value: number) {
+    const hsl = { ...convertOpaqueColor(live.current.lastValid)!.hsl, [channel]: value }
+    commitColor(hslColorHex(hsl.h, hsl.s, hsl.l))
+  }
+  useEffect(() => {
+    let active = true
+    function restoreColor(initial: boolean) {
+      if (!active) return
+      const previous = live.current, query = readColorQuery(new URLSearchParams(window.location.search))
+      invalidateOutputs()
+      if (initial && earlyIntent.current) { commit({ ...previous, ready: true, revision: previous.revision + 1 }, parseOpaqueHex(previous.draft) !== null); return }
+      if (query.status === 'invalid') { commit({ ...previous, ready: true, revision: previous.revision + 1, queryError: 'invalid' }, false); return }
+      const hex = query.status === 'valid' ? query.hex : DEFAULT_COLOR
+      commit({ draft: hex, lastValid: hex, ready: true, revision: previous.revision + 1, shareUrl: null, queryError: null }, query.status === 'valid')
+    }
+    const timer = window.setTimeout(function restoreInitialColor() { if (!live.current.ready) restoreColor(true) }, 0)
+    const pop = () => {
+      if (!active) return
+      if (colorSignature() !== observedColor.current) restoreColor(!live.current.ready)
+      else {
+        invalidateOutputs()
+        commit({ ...live.current, revision: live.current.revision + 1 }, false)
+      }
+    }
+    window.addEventListener('popstate', pop)
+    return () => { active = false; window.clearTimeout(timer); window.removeEventListener('popstate', pop) }
+    // Refs preserve current drafts when locale/catalog changes; restoration is lifecycle-owned.
+  }, [])
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Color Preview & Picker */}
-        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-subtle border-b border-line">
-            <span className="text-sm font-medium text-body">
-              {t('preview.title')}
-            </span>
-          </div>
-          <div className="p-6">
-            {/* Color Preview */}
-            <div
-              className="w-full h-32 rounded-xl shadow-inner mb-4 transition-colors"
-              style={{ backgroundColor: hex }}
-            />
+  async function copy(format: Format, text: string) {
+    if (!mounted.current || !model.ready || live.current !== model || ownerRef.current !== owner) return
+    const token = owner.begin()
+    if (!token) return
+    setShareRevision(previous => previous + 1)
+    const view: CopyView = { owner, token, format, text, status: 'copying' }
+    setCopyView(view)
+    const outcome = await copyShareResultLink(text, () => owner.current(token))
+    if (!owner.current(token) || outcome === 'stale') return
+    setCopyView({ ...view, status: outcome === 'copied' ? 'copied' : 'failed' })
+    if (outcome === 'copied') owner.later(token, () => setCopyView(previous => previous?.token === token ? null : previous), 2000)
+  }
+  function selectManual(view: CopyView) {
+    const current = () => view.owner === ownerRef.current && view.owner.current(view.token)
+    if (!current()) return
+    try {
+      if (!manual.current) throw new Error('missingField')
+      manual.current.focus(); if (!current()) return
+      manual.current.select(); if (!current()) return
+      manual.current.setSelectionRange(0, view.text.length)
+      if (current()) setCopyView({ ...view, selectionFailed: false })
+    } catch { if (current()) setCopyView({ ...view, selectionFailed: true }) }
+  }
+  function shareStarted() {
+    if (!mounted.current || ownerRef.current !== owner || live.current !== model) return
+    owner.invalidate(); setCopyView(null)
+  }
 
-            {/* Color Picker */}
-            <div className="flex gap-4 mb-4">
-              <input
-                type="color"
-                value={hex}
-                onChange={(e) => setHex(e.target.value)}
-                className="w-16 h-10 rounded cursor-pointer"
-              />
-              <input
-                type="text"
-                value={hex}
-                onChange={(e) => setHex(e.target.value)}
-                className="flex-1 px-4 py-2 rounded-lg border border-line bg-field text-fg font-mono uppercase"
-                maxLength={7}
-              />
-              <button
-                onClick={handleRandomColor}
-                className="px-4 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white transition-all"
-                title={t('actions.random')}
-              >
-                <RefreshCw className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Preset Colors */}
-            <div className="grid grid-cols-10 gap-2">
-              {presetColors.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setHex(color)}
-                  className={`w-full aspect-square rounded-lg border-2 transition-all hover:scale-110 ${
-                    hex.toUpperCase() === color ? 'border-gray-900 dark:border-white' : 'border-transparent'
-                  }`}
-                  style={{ backgroundColor: color }}
-                  title={color}
-                />
-              ))}
-            </div>
-          </div>
+  return <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-6" data-color-workspace data-color-last-valid={model.lastValid}>
+    <header><h1 className="text-2xl font-bold text-fg">{t('title')}</h1><p className="mt-2 text-sm text-sub">{t('description')}</p></header>
+    {model.queryError && <p data-color-query-error={model.queryError} role="status" className="rounded-xl bg-subtle p-4 text-sm text-body">{t(`query.${model.queryError}`)}</p>}
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <section className="ui-card min-w-0 p-4 sm:p-5 space-y-4" aria-labelledby="color-input-title">
+        <MobileResultLink href="#color-converter-result" label={t('values.title')} value={model.lastValid} />
+        <h2 id="color-input-title" className="text-lg font-semibold text-fg">{t('preview.title')}</h2>
+        <div data-color-preview className="h-32 rounded-xl border border-line" role="img" aria-label={`${t('preview.title')}: ${model.lastValid}`} style={{ backgroundColor: model.lastValid }} />
+        <div><label htmlFor="color-hex" className="mb-2 block text-sm font-medium text-body">{t('input.label')}</label>
+          <input id="color-hex" data-color-draft type="text" value={model.draft} onChange={event => changeDraft(event.target.value)} aria-invalid={invalid} aria-describedby={invalid ? 'color-input-hint color-input-error color-last-valid-notice' : 'color-input-hint'} spellCheck={false} autoComplete="off" className="ui-field min-w-0 w-full px-3 py-3 text-base font-mono" />
+          <p id="color-input-hint" className="mt-2 text-xs leading-relaxed text-muted">{t('input.hint')}</p>
+          {invalid && <div className="mt-3 space-y-2"><p id="color-input-error" role="alert" className="text-sm text-body">{t('input.invalid')}</p><p id="color-last-valid-notice" className="text-sm text-sub">{t('input.lastValid', { hex: model.lastValid })}</p><button type="button" data-color-restore onClick={() => commitColor(live.current.lastValid)} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('input.restore')}</button></div>}
         </div>
-
-        {/* Color Values */}
-        <div className={`${glassCard} ${glassInset} overflow-hidden`}>
-          <div className="px-4 py-3 bg-subtle border-b border-line">
-            <span className="text-sm font-medium text-body">
-              {t('values.title')}
-            </span>
-          </div>
-          {colorValues && (
-            <div className="p-4 space-y-4">
-              {/* HEX */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
-                <div>
-                  <span className="text-xs font-medium text-muted">HEX</span>
-                  <p className="font-mono text-fg">{colorValues.hex}</p>
-                </div>
-                <button
-                  onClick={() => handleCopy(colorValues.hex, 'hex')}
-                  className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-                >
-                  {copied === 'hex' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-gray-500" />}
-                </button>
-              </div>
-
-              {/* RGB */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
-                <div>
-                  <span className="text-xs font-medium text-muted">RGB</span>
-                  <p className="font-mono text-fg">
-                    rgb({colorValues.rgb.r}, {colorValues.rgb.g}, {colorValues.rgb.b})
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(`rgb(${colorValues.rgb.r}, ${colorValues.rgb.g}, ${colorValues.rgb.b})`, 'rgb')}
-                  className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-                >
-                  {copied === 'rgb' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-gray-500" />}
-                </button>
-              </div>
-
-              {/* HSL */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
-                <div>
-                  <span className="text-xs font-medium text-muted">HSL</span>
-                  <p className="font-mono text-fg">
-                    hsl({colorValues.hsl.h}, {colorValues.hsl.s}%, {colorValues.hsl.l}%)
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(`hsl(${colorValues.hsl.h}, ${colorValues.hsl.s}%, ${colorValues.hsl.l}%)`, 'hsl')}
-                  className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-                >
-                  {copied === 'hsl' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-gray-500" />}
-                </button>
-              </div>
-
-              {/* HSV */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
-                <div>
-                  <span className="text-xs font-medium text-muted">HSV/HSB</span>
-                  <p className="font-mono text-fg">
-                    hsv({colorValues.hsv.h}, {colorValues.hsv.s}%, {colorValues.hsv.v}%)
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(`hsv(${colorValues.hsv.h}, ${colorValues.hsv.s}%, ${colorValues.hsv.v}%)`, 'hsv')}
-                  className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-                >
-                  {copied === 'hsv' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-gray-500" />}
-                </button>
-              </div>
-
-              {/* CMYK */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-subtle">
-                <div>
-                  <span className="text-xs font-medium text-muted">CMYK</span>
-                  <p className="font-mono text-fg">
-                    cmyk({colorValues.cmyk.c}%, {colorValues.cmyk.m}%, {colorValues.cmyk.y}%, {colorValues.cmyk.k}%)
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(`cmyk(${colorValues.cmyk.c}%, ${colorValues.cmyk.m}%, ${colorValues.cmyk.y}%, ${colorValues.cmyk.k}%)`, 'cmyk')}
-                  className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
-                >
-                  {copied === 'cmyk' ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-gray-500" />}
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* RGB/HSL Sliders */}
-      {colorValues && (
-        <div className="mt-6 grid md:grid-cols-2 gap-6">
-          {/* RGB Sliders */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-medium text-body mb-4">RGB</h3>
-            <div className="space-y-4">
-              {(['r', 'g', 'b'] as const).map((c) => (
-                <div key={c} className="flex items-center gap-4">
-                  <span className="w-4 font-mono text-sm text-gray-500 uppercase">{c}</span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="255"
-                    value={colorValues.rgb[c]}
-                    onChange={(e) => handleRgbChange(c, parseInt(e.target.value))}
-                    className={`flex-1 h-2 rounded-lg appearance-none cursor-pointer ${
-                      c === 'r' ? 'accent-red-500' : c === 'g' ? 'accent-green-500' : 'accent-blue-500'
-                    }`}
-                  />
-                  <span className="w-10 text-right font-mono text-sm text-fg">
-                    {colorValues.rgb[c]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* HSL Sliders */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <h3 className="text-sm font-medium text-body mb-4">HSL</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <span className="w-4 font-mono text-sm text-gray-500">H</span>
-                <input
-                  type="range"
-                  min="0"
-                  max="360"
-                  value={colorValues.hsl.h}
-                  onChange={(e) => handleHslChange('h', parseInt(e.target.value))}
-                  className="flex-1 h-2 rounded-lg appearance-none cursor-pointer"
-                  style={{ background: 'linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)' }}
-                />
-                <span className="w-10 text-right font-mono text-sm text-fg">
-                  {colorValues.hsl.h}°
-                </span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="w-4 font-mono text-sm text-gray-500">S</span>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={colorValues.hsl.s}
-                  onChange={(e) => handleHslChange('s', parseInt(e.target.value))}
-                  className="flex-1 h-2 rounded-lg appearance-none cursor-pointer accent-pink-500"
-                />
-                <span className="w-10 text-right font-mono text-sm text-fg">
-                  {colorValues.hsl.s}%
-                </span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="w-4 font-mono text-sm text-gray-500">L</span>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={colorValues.hsl.l}
-                  onChange={(e) => handleHslChange('l', parseInt(e.target.value))}
-                  className="flex-1 h-2 rounded-lg appearance-none cursor-pointer accent-gray-500"
-                />
-                <span className="w-10 text-right font-mono text-sm text-fg">
-                  {colorValues.hsl.l}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Guide */}
-      <div className={`mt-6 ${glassCard} ${glassInset} p-6`}>
-        <h2 className="text-lg font-semibold text-fg mb-4">
-          {t('guide.title')}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-sub">
-          <div>
-            <h3 className="font-medium text-body mb-2">{t('guide.formats.title')}</h3>
-            <ul className="space-y-1">
-              <li><strong>HEX:</strong> {t('guide.formats.hex')}</li>
-              <li><strong>RGB:</strong> {t('guide.formats.rgb')}</li>
-              <li><strong>HSL:</strong> {t('guide.formats.hsl')}</li>
-              <li><strong>CMYK:</strong> {t('guide.formats.cmyk')}</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-medium text-body mb-2">{t('guide.useCases.title')}</h3>
-            <ul className="space-y-1">
-              {(t.raw('guide.useCases.items') as string[]).map((item, idx) => (
-                <li key={idx}>• {item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
+        <div className="flex flex-wrap items-end gap-3"><div><label htmlFor="color-picker" className="mb-2 block text-sm text-body">{t('input.picker')}</label><input id="color-picker" data-color-picker type="color" value={model.lastValid} onChange={event => commitColor(event.target.value)} className="h-11 w-16 cursor-pointer rounded-lg border border-line bg-field p-1" /></div><button type="button" data-color-random onClick={() => commitColor('#' + Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, '0'))} className="ui-btn-soft min-h-11 px-4 py-2 text-sm">{t('actions.random')}</button></div>
+        <fieldset><legend className="mb-2 text-sm font-medium text-body">{t('presets.label')}</legend><div className="grid grid-cols-5 gap-1.5 xl:grid-cols-10 xl:gap-1">{PRESETS.map(hex => <button key={hex} type="button" data-color-preset={hex} aria-label={t('presets.choose', { hex })} aria-pressed={model.lastValid === hex} title={hex} onClick={() => commitColor(hex)} className={`flex min-h-11 min-w-11 items-center justify-center rounded-lg border-2 ${model.lastValid === hex ? 'border-primary' : 'border-line'}`} style={{ backgroundColor: hex }}>{model.lastValid === hex && <span className="rounded-full bg-surface p-1 text-primary"><Check size={16} aria-hidden="true" /></span>}</button>)}</div></fieldset>
+      </section>
+      <section id="color-converter-result" className="ui-card min-w-0 scroll-mt-20 p-4 sm:p-5 space-y-4" aria-labelledby="color-values-title">
+        <h2 id="color-values-title" className="text-lg font-semibold text-fg">{t('values.title')}</h2>
+        {invalid && <p className="text-sm text-sub">{t('input.lastValid', { hex: model.lastValid })}</p>}
+        <dl className="space-y-3">{formats.map(item => <div key={item.key} data-color-value={item.key} className="flex min-w-0 flex-wrap items-center justify-between gap-2 rounded-xl bg-subtle p-3"><div className="min-w-0"><dt className="text-xs font-medium text-sub">{t(`formats.${item.key}`)}</dt><dd className="mt-1 break-words font-mono text-base text-fg [overflow-wrap:anywhere]">{item.text}</dd></div><button type="button" data-color-copy={item.key} aria-label={t('copy.format', { format: t(`formats.${item.key}`) })} disabled={!model.ready || visible?.status === 'copying' && visible.format === item.key} onClick={() => void copy(item.key, item.text)} className="ui-btn-soft min-h-11 shrink-0 px-3 py-2 text-sm disabled:opacity-50">{t(visible?.format === item.key && visible.status === 'copying' ? 'copy.copying' : visible?.format === item.key && visible.status === 'copied' ? 'copy.copied' : 'copy.action')}</button></div>)}</dl>
+        <p className="text-xs leading-relaxed text-muted">{t('share.cmykNote')}</p>
+        {visible && <div data-color-output={visible.status} role="status" aria-live="polite" className="text-sm text-body">{t(visible.status === 'copying' ? 'copy.copying' : visible.status === 'copied' ? 'copy.copied' : 'copy.failed')}</div>}
+        {visible?.status === 'failed' && <section data-color-recovery className="rounded-xl bg-subtle p-4 space-y-3" aria-labelledby="color-recovery-title">
+          <h3 id="color-recovery-title" className="font-semibold text-fg">{t('copy.recoveryTitle')}</h3><label htmlFor="color-copy-manual" className="block text-sm text-body">{t('copy.field')}</label><textarea ref={manual} id="color-copy-manual" readOnly value={visible.text} rows={3} className="ui-field w-full min-w-0 px-3 py-3 text-base font-mono" />
+          <div className="flex flex-wrap gap-2"><button type="button" data-color-recovery-action="select" onClick={() => selectManual(visible)} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('copy.select')}</button><button type="button" data-color-recovery-action="retry" onClick={() => { if (owner.current(visible.token)) void copy(visible.format, visible.text) }} className="ui-btn min-h-11 px-3 py-2 text-sm">{t('copy.retry')}</button><button type="button" data-color-recovery-action="close" onClick={() => { if (owner.current(visible.token)) { owner.invalidate(); setCopyView(null) } }} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('copy.close')}</button></div>
+          {visible.selectionFailed && <p role="status" className="text-sm text-body">{t('copy.selectionFailed')}</p>}
+        </section>}
+        {model.ready && model.shareUrl && <div className="space-y-3" data-color-share-boundary onClickCapture={shareStarted}><p className="text-xs leading-relaxed text-sub">{t('share.notice', { hex: model.lastValid })}</p><ShareResult url={model.shareUrl} resultKey={`${scope}:${shareRevision}`} fileName={`color-${model.lastValid.slice(1)}`} card={{ tool: t('title'), label: t('share.label'), headline: model.lastValid, rows: formats.slice(1).map(item => ({ label: t(`formats.${item.key}`), value: item.text })) }} /></div>}
+      </section>
     </div>
-  )
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <section className="ui-card min-w-0 p-4 sm:p-5 space-y-4" aria-labelledby="color-rgb-title"><h2 id="color-rgb-title" className="font-semibold text-fg">{t('formats.rgb')}</h2>{(['r', 'g', 'b'] as const).map((channel, index) => <div key={channel}><label htmlFor={`color-${channel}`} className="flex justify-between gap-3 text-sm text-body"><span>{t(`channels.${['red', 'green', 'blue'][index]}`)}</span><span className="font-mono tabular-nums">{values.rgb[channel]}</span></label><input id={`color-${channel}`} data-color-channel={channel} type="range" min={0} max={255} value={values.rgb[channel]} onChange={event => rgbChange(channel, Number(event.target.value))} className={`min-h-11 w-full cursor-pointer ${channel === 'r' ? 'accent-red-500' : channel === 'g' ? 'accent-green-500' : 'accent-blue-500'}`} /></div>)}<p className="text-xs text-muted">{t('input.sliderHint')}</p></section>
+      <section className="ui-card min-w-0 p-4 sm:p-5 space-y-4" aria-labelledby="color-hsl-title"><h2 id="color-hsl-title" className="font-semibold text-fg">{t('formats.hsl')}</h2>{(['h', 's', 'l'] as const).map((channel, index) => <div key={channel}><label htmlFor={`color-${channel}`} className="flex justify-between gap-3 text-sm text-body"><span>{t(`channels.${['hue', 'saturation', 'lightness'][index]}`)}</span><span className="font-mono tabular-nums">{values.hsl[channel]}{channel === 'h' ? '°' : '%'}</span></label><input id={`color-${channel}`} data-color-channel={channel} type="range" min={0} max={channel === 'h' ? 360 : 100} value={values.hsl[channel]} onChange={event => hslChange(channel, Number(event.target.value))} className="min-h-11 w-full cursor-pointer accent-primary" style={channel === 'h' ? { background: 'linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)' } : undefined} /></div>)}<p className="text-xs text-muted">{t('input.sliderHint')}</p></section>
+    </div>
+    <section className="ui-card p-4 sm:p-5 space-y-4"><h2 className="text-lg font-semibold text-fg">{t('guide.title')}</h2><div className="grid grid-cols-1 gap-6 md:grid-cols-2"><div><h3 className="mb-2 text-sm font-semibold text-fg">{t('guide.formats.title')}</h3><dl className="space-y-2 text-sm text-sub">{(['hex', 'rgb', 'hsl', 'cmyk'] as const).map(format => <div key={format}><dt className="font-medium text-body">{t(`formats.${format}`)}</dt><dd>{t(`guide.formats.${format}`)}</dd></div>)}</dl></div><div><h3 className="mb-2 text-sm font-semibold text-fg">{t('guide.useCases.title')}</h3><ul className="list-disc space-y-2 pl-5 text-sm text-sub">{(t.raw('guide.useCases.items') as string[]).map(item => <li key={item}>{item}</li>)}</ul></div></div></section>
+  </div>
 }

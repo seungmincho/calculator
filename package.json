@@ -5,12 +5,12 @@
   "packageManager": "npm@11.9.0",
   "scripts": {
     "dev": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && next dev --turbopack -p 3039",
-    "build": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && next build && node scripts/fix-rsc-paths.js",
-    "export": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && next build && node scripts/fix-rsc-paths.js",
+    "build": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && node scripts/generate-redirects-rss.js && next build && node scripts/fix-rsc-paths.js",
+    "export": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && node scripts/generate-redirects-rss.js && next build && node scripts/fix-rsc-paths.js",
     "start": "next start",
     "lint": "eslint .",
     "wrangler:dev": "wrangler pages dev out --compatibility-date=2025-12-09",
-    "wrangler:deploy": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && next build && node scripts/fix-rsc-paths.js && wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main",
+    "wrangler:deploy": "node scripts/generate-scoped-messages.mjs && node scripts/generate-everland-assets.mjs && node scripts/generate-redirects-rss.js && next build && node scripts/fix-rsc-paths.js && wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main",
     "deploy": "wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main",
     "cf:deploy": "npm run build && wrangler pages deploy out --commit-dirty=true --commit-message=deploy --branch=main",
     "icons": "node scripts/generate-icons.mjs && python scripts/make-ico.py",
@@ -27,6 +27,8 @@
     "@codemirror/search": "^6.6.0",
     "@codemirror/state": "^6.5.4",
     "@codemirror/view": "^6.39.13",
+    "@huggingface/transformers": "^3.8.1",
+    "@mlc-ai/web-llm": "^0.2.88",
     "@supabase/supabase-js": "^2.89.0",
     "@types/js-yaml": "^4.0.9",
     "@types/qrcode": "^1.5.6",
@@ -44,6 +46,7 @@
     "jsonpath-plus": "^10.3.0",
     "jsonrepair": "^3.13.2",
     "jspdf": "^3.0.4",
+    "jsqr": "1.4.0",
     "jszip": "^3.10.1",
     "lucide-react": "^0.516.0",
     "next": "16.0.8",
@@ -64,13 +67,13 @@
     "@types/nprogress": "^0.2.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "esbuild": "^0.17.19",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.8",
     "node-fetch": "^3.3.2",
     "playwright": "^1.58.2",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
-    "wrangler": "^3.114.15",
-    "esbuild": "^0.17.19"
+    "wrangler": "^3.114.15"
   }
 }

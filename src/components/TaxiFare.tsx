@@ -1,6 +1,7 @@
 'use client'
 
 import MobileResultLink from '@/components/MobileResultLink'
+import TaxiSavedTrips from '@/components/TaxiSavedTrips'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
@@ -13,6 +14,7 @@ import {
   getSchedule, nightRateFor, computeFare, estimateMinutes, perPerson,
   type RegionKey, type TaxiType, type Traffic,
 } from '@/utils/taxiFare'
+import { isTaxiTripConditions, type TaxiTripConditions } from '@/utils/taxiSavedTrips'
 
 const DISTANCE_PRESETS = [3, 5, 10, 20, 30]
 const TRAFFICS: Traffic[] = ['smooth', 'normal', 'heavy']
@@ -116,6 +118,23 @@ export default function TaxiFare() {
   const won = t('result.won')
   const hh = (h: number | null) => String(h).padStart(2, '0')
   const split = perPerson(fare.total, people)
+
+  const tripConditions = {
+    distance: distance.trim() === '' ? Number.NaN : Number(distance),
+    time: displayedTime.trim() === '' ? Number.NaN : Number(displayedTime),
+    timeAuto, traffic, region, taxiType, hour, outOfCity, people,
+  }
+  const loadTrip = (conditions: TaxiTripConditions) => {
+    setDistance(String(conditions.distance))
+    setTime(String(conditions.time))
+    setTimeAuto(conditions.timeAuto)
+    setTraffic(conditions.traffic)
+    setRegion(conditions.region)
+    setTaxiType(conditions.taxiType)
+    setHour(conditions.hour)
+    setOutOfCity(conditions.outOfCity)
+    setPeople(conditions.people)
+  }
 
   const handleReset = () => {
     setDistance('5')
@@ -238,6 +257,7 @@ export default function TaxiFare() {
         <div id="taxi-input" className="min-w-0 lg:col-span-1 scroll-mt-20">
           <div className="ui-card p-4 sm:p-6 space-y-6">
             <MobileResultLink href="#taxi-result" label={t('result.total')} value={`${fare.total.toLocaleString()}${won}`} more={t('jumpToResult')} />
+            <TaxiSavedTrips conditions={isTaxiTripConditions(tripConditions) ? tripConditions : null} onLoad={loadTrip} />
             <div>
               <label htmlFor="taxi-region" className={labelCls}>{t('region')}</label>
               <select

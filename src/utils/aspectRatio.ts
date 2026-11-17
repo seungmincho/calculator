@@ -2,10 +2,17 @@
  * 화면 비율 계산 순수 로직. 검증: node scripts/check-aspect-ratio.ts
  */
 
-export const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b))
+export const ASPECT_CALC_MAX_SIDE = 16_000_000
+const finiteSide = (value: number) => Number.isFinite(value) && value > 0 && value <= ASPECT_CALC_MAX_SIDE
+export function gcd(a: number, b: number): number {
+  if (!Number.isSafeInteger(a) || !Number.isSafeInteger(b) || a < 0 || b < 0) return 0
+  while (b !== 0) { const remainder = a % b; a = b; b = remainder }
+  return a
+}
 
 /** 1920×1080 → [16, 9] (정수 픽셀 기준) */
 export function reduceRatio(w: number, h: number): [number, number] {
+  if (!finiteSide(w) || !finiteSide(h)) return [0, 0]
   const W = Math.round(w), H = Math.round(h)
   if (W <= 0 || H <= 0) return [0, 0]
   const g = gcd(W, H)
@@ -22,7 +29,7 @@ export const COMMON_RATIOS: [number, number][] = [
  * exact = 약분 결과와 같은 비율인지. 3% 넘게 벗어나면 null.
  */
 export function nearestCommon(w: number, h: number): { label: string; exact: boolean } | null {
-  if (w <= 0 || h <= 0) return null
+  if (!finiteSide(w) || !finiteSide(h)) return null
   const r = w / h
   let best: { label: string; err: number; val: number } | null = null
   for (const [a, b] of COMMON_RATIOS) {
@@ -41,12 +48,15 @@ export function parseRatio(s: string): number | null {
   const m = s.trim().match(/^(\d+(?:\.\d+)?)\s*(?:[:/x×]\s*(\d+(?:\.\d+)?))?$/i)
   if (!m) return null
   const a = parseFloat(m[1]), b = m[2] ? parseFloat(m[2]) : 1
-  return a > 0 && b > 0 ? a / b : null
+  const ratio = a / b
+  // CollageMaker also uses this parser. Tool-specific limits belong in its caller.
+  return Number.isFinite(a) && Number.isFinite(b) && a > 0 && b > 0 && Number.isFinite(ratio) && ratio > 0 ? ratio : null
 }
 
 /** 짧은 변 기준 해상도 표 (영상 규격 표기: 1080p = 짧은 변 1080). 긴 변은 짝수로 반올림 */
 export const LADDER = [480, 720, 1080, 1440, 2160, 4320] as const
 export function resolutionLadder(ratio: number) {
+  if (!Number.isFinite(ratio) || ratio < 1 / ASPECT_CALC_MAX_SIDE || ratio > ASPECT_CALC_MAX_SIDE) return []
   return LADDER.map((short) => {
     const longExact = short * (ratio >= 1 ? ratio : 1 / ratio)
     const long = Math.round(longExact / 2) * 2
@@ -63,6 +73,7 @@ export interface Rect { x: number; y: number; w: number; h: number }
  * pad : 목표 캔버스 위에 원본을 그릴 영역 — 여백(레터박스/필러박스)
  */
 export function fitImage(sw: number, sh: number, tw: number, th: number): { crop: Rect; pad: Rect; cutPct: number } {
+  if (![sw, sh, tw, th].every(finiteSide)) return { crop: { x: 0, y: 0, w: 0, h: 0 }, pad: { x: 0, y: 0, w: 0, h: 0 }, cutPct: 0 }
   const t = tw / th
   const s = sw / sh
   const crop: Rect = s > t

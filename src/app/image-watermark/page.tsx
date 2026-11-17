@@ -4,20 +4,25 @@ import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = '이미지 워터마크 - 여러 사진에 텍스트·로고, PNG·ZIP | 툴허브'
+const DESCRIPTION = '사진 최대 10장에 같은 텍스트나 로고 워터마크를 순서대로 적용하세요. 위치·크기·투명도·회전·타일을 설정하고, 중지·계속·실패 재시도 후 현재 결과를 원본 크기 PNG 또는 ZIP으로 내려받습니다.'
+
 export const metadata: Metadata = {
-  title: '이미지 워터마크 - 텍스트/이미지 워터마크 추가 | 툴허브',
-  description: '이미지에 텍스트 또는 이미지 워터마크를 추가하세요. 위치, 크기, 투명도, 회전, 타일 반복 등 다양한 옵션을 지원합니다.',
-  keywords: '이미지 워터마크, 사진 워터마크, 워터마크 넣기, watermark, 저작권 보호',
-  openGraph: { title: '이미지 워터마크 | 툴허브', description: '이미지에 텍스트/이미지 워터마크 추가', url: 'https://toolhub.ai.kr/image-watermark/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-watermark.png', width: 1200, height: 630, alt: '이미지 워터마크' }] },
-  twitter: { card: 'summary_large_image', title: '이미지 워터마크 | 툴허브', description: '이미지에 텍스트/이미지 워터마크 추가', images: ['https://toolhub.ai.kr/og/image-watermark.png'] },
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: '이미지 워터마크, 사진 워터마크, 여러 사진 워터마크, 텍스트 워터마크, 로고 워터마크, PNG, ZIP',
+  openGraph: { title: TITLE, description: DESCRIPTION, url: 'https://toolhub.ai.kr/image-watermark/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-watermark.png', width: 1200, height: 630, alt: '이미지 워터마크' }] },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['https://toolhub.ai.kr/og/image-watermark.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-watermark/' },
 }
 
 export default function ImageWatermarkPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 워터마크', description: '이미지에 텍스트/이미지 워터마크 추가', url: 'https://toolhub.ai.kr/image-watermark/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['텍스트 워터마크', '이미지 워터마크', '투명도 조절', '타일 반복'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 워터마크', description: DESCRIPTION, url: 'https://toolhub.ai.kr/image-watermark/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['사진 최대 10장 순차 처리', '텍스트·로고 워터마크와 9개 위치', '투명도·회전·타일 반복', '명시 만들기·중지·계속·실패 재시도', '현재 성공 결과의 원본 크기 PNG·선택 ZIP', '새 설정·파일 변경 뒤 이전 작업 보호'] }
   const faq = [
-    { q: '워터마크의 적절한 투명도와 위치는?', a: '텍스트 워터마크는 투명도 30-50%가 적절하며, 이미지가 잘 보이면서도 저작권을 표시할 수 있습니다. 위치는 우하단이 가장 일반적이나, 도용 방지를 위해서는 대각선 타일 반복이 효과적입니다. 로고 워터마크는 투명도 20-40%로 설정하고, 이미지 크기의 10-20% 비율이 적당합니다. 크롭으로 제거하기 어렵도록 중앙이나 반복 배치를 권장합니다.' },
-    { q: '워터마크가 필요한 경우는?', a: '① 온라인에 공개하는 사진의 저작권 보호 ② 스톡 사진 미리보기(구매 전 도용 방지) ③ 문서의 \'기밀\', \'초안\' 등 상태 표시 ④ 브랜드 로고 삽입을 통한 마케팅 ⑤ SNS 업로드 시 출처 표시. 개인 사진은 메타데이터(EXIF)에 저작권 정보를 기록하는 것도 보조적으로 유용합니다.' },
+    { q: '여러 사진에 같은 워터마크를 어떻게 넣나요?', a: '사진을 고르고 텍스트 또는 로고와 위치·크기·투명도 등을 정한 뒤 모두 만들기를 누릅니다. 한 장씩 처리하며 중지·계속과 실패한 항목만 재시도를 제공합니다. 설정을 바꾸면 새로 만들어야 현재 설정의 결과를 내려받을 수 있습니다.' },
+    { q: '사진과 로고의 한도는 얼마인가요?', a: '사진은 최대 10개, 파일당 8MiB·합계 40MiB·원본 16,777,216픽셀 이하입니다. 로고는 4MiB·4,194,304픽셀 이하이며 실제 파일 내용과 디코딩 크기를 확인합니다. 완료 결과 Blob의 합계는 80MiB까지입니다.' },
+    { q: '원본 해상도와 애니메이션은 유지되나요?', a: '미리보기는 축소해서 표시하고 결과는 실제 디코딩된 원본 크기의 PNG로 만듭니다. PNG·JPEG·WebP·GIF를 읽으며 애니메이션은 한 프레임만 사용합니다. 선택한 현재 성공 결과를 PNG 또는 ZIP으로 받을 수 있습니다.' },
+    { q: '문구와 사진이 저장되나요?', a: '이 도구는 사진·로고·문구를 브라우저 메모리에서 처리하며 서버·URL·기기 기록에 저장하지 않습니다. 텍스트는 200자까지이며 줄바꿈은 공백으로 처리합니다. 실패한 로고 교체는 마지막 유효 로고를 유지하고 실패를 알립니다.' },
   ]
   return (
     <>
@@ -38,17 +43,17 @@ export default function ImageWatermarkPage() {
             이미지 워터마크란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            이미지 워터마크는 사진이나 그림 위에 텍스트나 로고 이미지를 반투명하게 삽입하여 저작권을 표시하고 무단 도용을 방지하는 기술입니다. 사진작가, 디자이너, 유튜버, 블로거 등 콘텐츠 창작자들이 자신의 작업물을 온라인에 공개할 때 반드시 필요하며, 투명도·위치·크기·회전·타일 반복 등 다양한 옵션으로 개성 있는 워터마크를 만들 수 있습니다.
+            사진 위에 이름·출처·문서 상태나 로고를 표시하는 도구입니다. 여러 사진에 같은 설정을 순서대로 적용하고 각 결과를 확인할 수 있습니다. 위치·크기·투명도·회전·타일을 조절하되 원래 사진의 중요한 부분을 가리지 않는지 미리보기를 확인하세요.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 워터마크 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>도용 방지 타일 반복:</strong> 워터마크를 전체 이미지에 대각선으로 반복 배치하면 특정 부분을 잘라내도 제거하기 어렵습니다.</li>
-            <li><strong>적절한 투명도 설정:</strong> 너무 진하면 사진 감상을 방해하고, 너무 옅으면 효과가 없습니다. 투명도 30~50%가 가장 일반적입니다.</li>
-            <li><strong>브랜드 로고 삽입:</strong> 텍스트 대신 로고 이미지를 워터마크로 사용하면 브랜드 인지도를 높이면서 저작권도 보호됩니다.</li>
+            <li><strong>같은 설정 적용:</strong> 문구와 로고를 정한 뒤 모두 만들기를 누르세요. 옵션을 바꾸는 동안 사진을 자동으로 다시 처리하지 않습니다.</li>
+            <li><strong>미리보기 확인:</strong> 작은 사진과 큰 사진에서 문구·로고의 위치와 비율을 각각 확인하세요. 결과는 원본 크기로 만들어집니다.</li>
+            <li><strong>실패한 사진 확인:</strong> 깨진 파일이나 한도 초과 항목은 오류로 남습니다. ZIP에 포함될 현재 성공 결과 수를 확인하세요.</li>
             <li><strong>SNS 사진 공유:</strong> 인스타그램·블로그에 올리는 여행 사진이나 요리 사진에 닉네임이나 계정명을 워터마크로 넣어보세요.</li>
-            <li><strong>문서 상태 표시:</strong> '초안', '기밀', 'DRAFT' 등 텍스트 워터마크를 문서 이미지에 삽입하여 배포 상태를 명확히 표시하세요.</li>
+            <li><strong>문서 상태 표시:</strong> 초안·기밀·DRAFT 같은 문구로 문서 이미지의 상태를 표시할 수 있습니다. 워터마크가 원본 복사나 편집을 막는 것은 아닙니다.</li>
           </ul>
         </div>
       </section>

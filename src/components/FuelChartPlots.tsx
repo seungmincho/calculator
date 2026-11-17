@@ -25,8 +25,8 @@ export function CostPiePlot({ fuelCost, depreciationCost }: { fuelCost: number; 
           label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
           labelLine={false}
         >
-          <Cell fill="#3b82f6" />
-          <Cell fill="#f97316" />
+          <Cell fill="var(--primary)" />
+          <Cell fill="var(--line-strong)" />
         </Pie>
         <Tooltip formatter={(value) => t('charts.won', { value: Number(value ?? 0).toLocaleString() })} />
       </PieChart>
@@ -39,9 +39,9 @@ export function FuelComparisonPlot({ data }: { data: FuelComparisonItem[] }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-        <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-        <YAxis tickFormatter={(value) => t('charts.thousand', { value: Math.round(value / 1000) })} tick={{ fontSize: 11, fill: '#9ca3af' }} width={45} />
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" />
+        <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'var(--muted)' }} />
+        <YAxis tickFormatter={(value) => t('charts.thousand', { value: Math.round(value / 1000) })} tick={{ fontSize: 11, fill: 'var(--muted)' }} width={45} />
         <Tooltip formatter={(value) => [t('charts.won', { value: Number(value ?? 0).toLocaleString() }), t('charts.fuel')]} />
         <Bar dataKey="cost" radius={[4, 4, 0, 0]}>
           {data.map((entry, index) => (

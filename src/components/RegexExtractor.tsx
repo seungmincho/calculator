@@ -1,31 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from '@/hooks/useSearchParams'
-import { Search, Replace, Filter, Copy, Download, Upload, RefreshCw, Zap, Eye, EyeOff, AlertCircle, CheckCircle, Share2, Save, Trash2, FileText, Code, Mail, Globe, Hash, Calendar, Lightbulb, Target, BookOpen, Wand2, HelpCircle } from 'lucide-react'
+import { useState } from 'react'
+import { Search, Replace, Filter, Eye, EyeOff, AlertCircle, Trash2, FileText, Code, Mail, Globe, Hash, Calendar, Lightbulb, Target, BookOpen, Wand2, HelpCircle } from 'lucide-react'
 import { useTranslations } from '@/lib/i18n'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
 import '@/lib/i18n/ns/regexExtractor'
 import CalculationHistory from './CalculationHistory'
 import { useCalculationHistory } from '@/hooks/useCalculationHistory'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
-
-interface RegexResult {
-  operation: 'grep' | 'replace' | 'extract'
-  pattern: string
-  flags: string
-  inputText: string
-  outputText: string
-  matches: RegexMatch[]
-  timestamp: number
-}
-
-interface RegexMatch {
-  match: string
-  groups: string[]
-  index: number
-  line: number
-}
+import { glassCard, glassInset } from '@/lib/glass'
+import { useRegexWorkspace } from '@/hooks/useRegexWorkspace'
+import RegexResultPanel from './RegexResultPanel'
+import MobileResultLink from './MobileResultLink'
+import { regexBetweenPattern, type RegexJob } from '@/utils/regexEngine'
 
 interface PresetPattern {
   name: string
@@ -36,25 +22,20 @@ interface PresetPattern {
 }
 
 export default function RegexExtractor() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
   const t = useTranslations('regexExtractor')
   const tCommon = useTranslations('common')
   
-  const [operation, setOperation] = useState<'grep' | 'replace' | 'extract'>('grep')
-  const [pattern, setPattern] = useState('')
-  const [flags, setFlags] = useState('g')
-  const [replacement, setReplacement] = useState('')
-  const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
-  const [matches, setMatches] = useState<RegexMatch[]>([])
-  const [isValid, setIsValid] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('')
+  const locale = useOptionalLanguage()?.language ?? 'ko'
+  const workspace = useRegexWorkspace(locale)
+  const { operation, pattern, flags, replacement, inputText } = workspace.draft
+  const isValid = workspace.error !== 'invalidRegex'
+  const errorMessage = workspace.error ? t(`execution.errors.${workspace.error}`) : ''
+  const setPattern = (value: string) => workspace.edit({ pattern: value })
+  const setReplacement = (value: string) => workspace.edit({ replacement: value })
+  const setInputText = (value: string) => workspace.edit({ inputText: value })
+  const [saved, setSaved] = useState<{ revision: number; id: number; status: 'saved' | 'saveFailed' } | null>(null)
   const [showPresets, setShowPresets] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('common')
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [showShareButton, setShowShareButton] = useState(false)
-  const [isCopied, setIsCopied] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
   const [showPatternBuilder, setShowPatternBuilder] = useState(false)
   const [smartMode, setSmartMode] = useState('')
@@ -108,15 +89,7 @@ export default function RegexExtractor() {
       title: t('smartModes.extractBetween.title'),
       description: t('smartModes.extractBetween.description'),
       placeholder: t('smartModes.extractBetween.placeholder'),
-      generatePattern: (input: string) => {
-        const parts = input.trim().split(/\s+/)
-        if (parts.length >= 2) {
-          const start = parts[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-          const end = parts[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-          return `${start}([^${end}]*)${end}`
-        }
-        return `\\(([^)]*)\\)` // 기본값: 괄호 안 내용
-      },
+      generatePattern: regexBetweenPattern,
       operation: 'extract' as const
     },
     {
@@ -176,37 +149,10 @@ export default function RegexExtractor() {
     }
   ]
 
-  // 스마트 모드 적용
   const applySmartMode = () => {
     const mode = smartModes.find(m => m.id === smartMode)
     if (!mode) return
-
-    if (mode.special && mode.id === 'remove-duplicates') {
-      // 중복 제거 특별 처리
-      const lines = inputText.split('\n')
-      const uniqueLines = Array.from(new Set(lines))
-      setOutputText(uniqueLines.join('\n'))
-      setMatches([])
-      return
-    }
-
-    const generatedPattern = mode.generatePattern(userDescription)
-    setPattern(generatedPattern)
-    setOperation(mode.operation)
-    
-    if (mode.operation === 'replace') {
-      if (mode.id === 'replace-spaces') {
-        setReplacement(userDescription || '_')
-      } else if (mode.id === 'capitalize-words') {
-        setReplacement('$1'.toUpperCase())
-      }
-    }
-
-    updateURL({ 
-      pattern: encodeURIComponent(generatedPattern), 
-      operation: mode.operation,
-      ...(mode.operation === 'replace' && { replacement: userDescription || '_' })
-    })
+    workspace.edit({ operation: mode.operation, pattern: mode.generatePattern(userDescription), replacement: mode.id === 'replace-spaces' ? userDescription || '_' : mode.id === 'capitalize-words' ? '' : replacement, transform: mode.id === 'remove-duplicates' ? 'dedupe' : mode.id === 'capitalize-words' ? 'uppercaseMatch' : 'none' })
   }
 
   // 패턴 설명 생성
@@ -230,7 +176,7 @@ export default function RegexExtractor() {
       '\\': t('explain.escape')
     }
 
-    let explanation = pattern
+    let explanation = pattern.slice(0, 500)
     Object.entries(explanations).forEach(([regex, desc]) => {
       const safeRegex = regex.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
       explanation = explanation.replace(new RegExp(safeRegex, 'g'), `[${desc}]`)
@@ -239,223 +185,20 @@ export default function RegexExtractor() {
     return explanation
   }
 
-  // 정규식 처리 함수
-  const processText = useCallback(() => {
-    if (!pattern.trim()) {
-      setOutputText('')
-      setMatches([])
-      return
-    }
-
-    setIsProcessing(true)
-    
-    try {
-      const regex = new RegExp(pattern, flags)
-      setIsValid(true)
-      setErrorMessage('')
-      
-      const lines = inputText.split('\n')
-      let results: RegexMatch[] = []
-      let output = ''
-      
-      if (operation === 'grep') {
-        // grep: 패턴이 포함된 라인만 추출
-        const matchingLines = lines.filter((line, index) => {
-          const matches = line.match(regex)
-          if (matches) {
-            results.push({
-              match: line,
-              groups: matches.slice(1) || [],
-              index: line.indexOf(matches[0]),
-              line: index + 1
-            })
-            return true
-          }
-          return false
-        })
-        output = matchingLines.join('\n')
-        
-      } else if (operation === 'replace') {
-        // replace: 패턴을 replacement로 교체
-        output = inputText.replace(regex, replacement)
-        
-        // 매치된 항목들 기록
-        let match
-        const globalRegex = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g')
-        while ((match = globalRegex.exec(inputText)) !== null) {
-          const lineNumber = inputText.substring(0, match.index).split('\n').length
-          results.push({
-            match: match[0],
-            groups: match.slice(1) || [],
-            index: match.index,
-            line: lineNumber
-          })
-          if (!flags.includes('g')) break
-        }
-        
-      } else if (operation === 'extract') {
-        // extract: 패턴과 일치하는 부분만 추출
-        const matches = inputText.match(regex) || []
-        output = matches.join('\n')
-        
-        // 상세한 매치 정보
-        let match
-        const globalRegex = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g')
-        while ((match = globalRegex.exec(inputText)) !== null) {
-          const lineNumber = inputText.substring(0, match.index).split('\n').length
-          results.push({
-            match: match[0],
-            groups: match.slice(1) || [],
-            index: match.index,
-            line: lineNumber
-          })
-          if (!flags.includes('g')) break
-        }
-      }
-      
-      setOutputText(output)
-      setMatches(results)
-      setShowShareButton(true)
-      
-    } catch (error) {
-      setIsValid(false)
-      setErrorMessage(error instanceof Error ? error.message : t('error.invalidRegex'))
-      setOutputText('')
-      setMatches([])
-    }
-    
-    setIsProcessing(false)
-  }, [pattern, flags, replacement, inputText, operation])
-
-  // 실시간 처리
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      processText()
-    }, 300) // 300ms 디바운스
-
-    return () => clearTimeout(timeoutId)
-  }, [processText])
-
-  // URL 파라미터 처리
-  useEffect(() => {
-    const operationParam = searchParams.get('operation')
-    const patternParam = searchParams.get('pattern')
-    const flagsParam = searchParams.get('flags')
-    const inputParam = searchParams.get('input')
-
-    if (operationParam && ['grep', 'replace', 'extract'].includes(operationParam)) {
-      setOperation(operationParam as 'grep' | 'replace' | 'extract')
-    }
-    if (patternParam) setPattern(decodeURIComponent(patternParam))
-    if (flagsParam) setFlags(flagsParam)
-    if (inputParam) setInputText(decodeURIComponent(inputParam))
-  }, [searchParams])
-
-  // URL 업데이트
-  const updateURL = (newParams: Record<string, string>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value) {
-        params.set(key, value)
-      } else {
-        params.delete(key)
-      }
-    })
-    router.replace(`?${params.toString()}`, { scroll: false })
-  }
-
-  // 플래그 토글
-  const toggleFlag = (flag: string) => {
-    const newFlags = flags.includes(flag) 
-      ? flags.replace(flag, '') 
-      : flags + flag
-    setFlags(newFlags)
-    updateURL({ flags: newFlags })
-  }
-
-  // 프리셋 패턴 적용
-  const applyPreset = (preset: PresetPattern) => {
-    setPattern(preset.pattern)
-    setShowPresets(false)
-    updateURL({ pattern: encodeURIComponent(preset.pattern) })
-  }
-
-  // 파일 업로드
+  const toggleFlag = (flag: string) => workspace.edit({ flags: flags.includes(flag) ? flags.replace(flag, '') : flags + flag }, true)
+  const applyPreset = (preset: PresetPattern) => { setPattern(preset.pattern); setShowPresets(false) }
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const content = e.target?.result as string
-        setInputText(content)
-        updateURL({ input: encodeURIComponent(content) })
-      }
-      reader.readAsText(file)
-    }
+    const file = event.target.files?.[0]; event.target.value = ''; workspace.upload(file)
   }
-
-  // 결과 다운로드
-  const downloadResult = () => {
-    const blob = new Blob([outputText], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `regex-${operation}-result.txt`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
-
-  // 복사 기능
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
-    } catch (err) {
-      console.error('복사 실패:', err)
-    }
-  }
-
-  // 공유 기능
-  const handleShare = async () => {
-    try {
-      const url = window.location.href
-      await navigator.clipboard.writeText(url)
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
-    } catch (err) {
-      console.error('공유 실패:', err)
-    }
-  }
-
-  // 계산 저장
   const handleSaveCalculation = () => {
-    if (!pattern.trim()) return
-    
-    saveCalculation(
-      {
-        operation,
-        pattern,
-        flags,
-        replacement: operation === 'replace' ? replacement : '',
-        inputLength: inputText.length,
-        matchCount: matches.length,
-        processedAt: new Date().toISOString()
-      },
-      {
-        operation,
-        pattern,
-        flags,
-        inputText,
-        outputText,
-        matches,
-        timestamp: Date.now()
-      }
+    const snapshot = workspace.currentSnapshot()
+    if (!snapshot) return
+    const { job, result } = snapshot
+    const success = saveCalculation(
+      { operation: job.operation, pattern: job.pattern, flags: job.flags, replacement: job.replacement, transform: job.transform, inputLength: job.inputText.length, matchCount: result.matchCount, processedAt: new Date().toISOString() },
+      { ...job, outputText: result.outputText, matchCount: result.matchCount, matches: result.details, timestamp: Date.now() },
     )
-    
-    setShowShareButton(false)
+    setSaved({ revision: snapshot.revision, id: snapshot.id, status: success ? 'saved' : 'saveFailed' })
   }
 
   // 카테고리별 프리셋 필터링
@@ -478,7 +221,7 @@ export default function RegexExtractor() {
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap gap-3 items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-fg">
             {t('title')}
@@ -489,43 +232,39 @@ export default function RegexExtractor() {
         </div>
         <CalculationHistory
           histories={histories}
-          isLoading={false}
+          isLoading={!workspace.ready}
           onLoadHistory={(historyId) => {
             const inputs = loadFromHistory(historyId)
-            if (inputs) {
-              setOperation(inputs.operation || 'grep')
-              setPattern(inputs.pattern || '')
-              setFlags(inputs.flags || 'g')
-              setReplacement(inputs.replacement || '')
-              // 입력 텍스트는 이력의 result 쪽에 저장됨
-              const saved = histories.find(h => h.id === historyId)?.result
-              setInputText(String(inputs.inputText ?? saved?.inputText ?? ''))
-            }
+            if (!inputs) return
+            const savedResult = histories.find(h => h.id === historyId)?.result
+            const operation: RegexJob['operation'] = inputs.operation === 'extract' || inputs.operation === 'replace' ? inputs.operation : 'grep'
+            const transform = inputs.transform ?? savedResult?.transform
+            workspace.replaceDraft({ operation, pattern: typeof inputs.pattern === 'string' ? inputs.pattern : '', flags: typeof inputs.flags === 'string' ? inputs.flags : 'g', replacement: typeof inputs.replacement === 'string' ? inputs.replacement : '', inputText: typeof inputs.inputText === 'string' ? inputs.inputText : typeof savedResult?.inputText === 'string' ? savedResult.inputText : '', transform: transform === 'dedupe' && operation === 'grep' ? 'dedupe' : transform === 'uppercaseMatch' && operation === 'replace' ? 'uppercaseMatch' : 'none' })
           }}
           onRemoveHistory={removeHistory}
           onClearHistories={clearHistories}
           formatResult={(result: Record<string, unknown>) => {
             // 매치 수는 inputs.matchCount에 저장되고 result에는 matches 배열이 있음
-            const matchCount = Array.isArray(result.matches) ? result.matches.length : Number(result.matchCount) || 0
-            return `${matchCount}개 매치`
+            const matchCount = typeof result.matchCount === 'number' ? result.matchCount : Array.isArray(result.matches) ? result.matches.length : 0
+            return t('execution.historyMatches', { count: matchCount })
           }}
         />
       </div>
 
       {/* 초보자를 위한 스마트 모드 */}
       <div className="bg-subtle rounded-2xl p-6 mb-8">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-wrap gap-3 items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <Wand2 className="w-6 h-6 text-muted" />
             <h2 id="rx-smart" className="text-xl font-bold text-fg">
               {t('smartMode.title')}
             </h2>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setShowGuide(!showGuide)}
               aria-expanded={showGuide}
-              className="flex items-center space-x-2 px-3 py-1 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
+              className="flex items-center space-x-2 min-h-11 px-3 py-2 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
             >
               <BookOpen className="w-4 h-4" />
               <span className="text-sm">{t('smartMode.guide')}</span>
@@ -533,7 +272,7 @@ export default function RegexExtractor() {
             <button
               onClick={() => setShowPatternBuilder(!showPatternBuilder)}
               aria-expanded={showPatternBuilder}
-              className="flex items-center space-x-2 px-3 py-1 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
+              className="flex items-center space-x-2 min-h-11 px-3 py-2 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
             >
               <Target className="w-4 h-4" />
               <span className="text-sm">{t('smartMode.patternBuilder')}</span>
@@ -546,7 +285,7 @@ export default function RegexExtractor() {
         </p>
 
         {/* 스마트 모드 선택 */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4" role="group" aria-labelledby="rx-smart">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4" role="group" aria-labelledby="rx-smart">
           {smartModes.map((mode) => (
             <button
               key={mode.id}
@@ -573,19 +312,20 @@ export default function RegexExtractor() {
 
         {/* 사용자 입력 */}
         {smartMode && (
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             <input
               type="text"
               value={userDescription}
               onChange={(e) => setUserDescription(e.target.value)}
               aria-label={smartModes.find(m => m.id === smartMode)?.title}
               placeholder={smartModes.find(m => m.id === smartMode)?.placeholder}
-              className="flex-1 px-4 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg"
+              className="flex-1 min-w-0 min-h-11 text-base px-4 py-2 border border-line-strong rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg"
               disabled={!!smartModes.find(m => m.id === smartMode)?.noInput}
             />
             <button
               onClick={applySmartMode}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              disabled={!workspace.ready}
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:brightness-95 transition-colors flex items-center space-x-2"
             >
               <Lightbulb className="w-4 h-4" />
               <span>{t('smartMode.apply')}</span>
@@ -597,20 +337,20 @@ export default function RegexExtractor() {
       {/* 정규식 가이드 */}
       {showGuide && (
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-wrap gap-3 items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-fg flex items-center">
               {t('guide.regexBasics')}
             </h3>
             <button
               onClick={() => setShowGuide(false)}
-              className="p-1 text-faint hover:text-sub"
+              className="min-h-11 min-w-11 p-2 text-faint hover:text-sub"
               aria-label={tCommon('close')}
             >
               <EyeOff className="w-5 h-5" />
             </button>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium text-fg mb-3">
                 {t('guide.basicSymbols')}
@@ -657,13 +397,13 @@ export default function RegexExtractor() {
       {/* 패턴 빌더 */}
       {showPatternBuilder && (
         <div className={`${glassCard} ${glassInset} p-6 mb-8`}>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-wrap gap-3 items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-fg flex items-center">
               {t('patternBuilder.title')}
             </h3>
             <button
               onClick={() => setShowPatternBuilder(false)}
-              className="p-1 text-faint hover:text-sub"
+              className="min-h-11 min-w-11 p-2 text-faint hover:text-sub"
               aria-label={tCommon('close')}
             >
               <EyeOff className="w-5 h-5" />
@@ -692,7 +432,7 @@ export default function RegexExtractor() {
               <button
                 key={item.symbol}
                 onClick={() => setPattern(pattern + item.symbol)}
-                className="p-2 bg-soft rounded-lg hover:bg-subtle transition-colors text-center"
+                className="min-h-11 p-2 bg-soft rounded-lg hover:bg-subtle transition-colors text-center"
               >
                 <code className="block font-mono text-sm">{item.symbol}</code>
                 <span className="text-xs text-muted">{t(`patternBuilder.symbols.${item.key}`)}</span>
@@ -702,16 +442,20 @@ export default function RegexExtractor() {
         </div>
       )}
 
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* 입력 패널 */}
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
+          <MobileResultLink href="#regex-extractor-result" label={t('results.title')} value={workspace.completed ? t('execution.historyMatches', { count: workspace.completed.result.matchCount }) : t('execution.status.idle')} />
+          <p className="text-sm text-sub">{t('execution.limits')}</p>
+          {workspace.url && workspace.url.kind !== 'ready' && <p role="status" data-regex-url-error className="text-sm text-sub">{t(`execution.url.${workspace.url.kind}`)}</p>}
+          {workspace.warnings.map(warning => <p role="status" key={warning} className="text-sm text-sub">{t(`execution.url.${warning}`)}</p>)}
           {/* 작업 유형 선택 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
             <h2 id="rx-op" className="text-xl font-bold text-fg mb-4 flex items-center">
               {t('operation.title')}
             </h2>
             
-            <div className="grid grid-cols-3 gap-3" role="group" aria-labelledby="rx-op">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" role="group" aria-labelledby="rx-op">
               {[
                 { key: 'grep', icon: Filter, label: t('operation.grep'), desc: t('operation.grepDesc') },
                 { key: 'replace', icon: Replace, label: t('operation.replace'), desc: t('operation.replaceDesc') },
@@ -720,9 +464,9 @@ export default function RegexExtractor() {
                 <button
                   key={key}
                   aria-pressed={operation === key}
+                  disabled={!workspace.ready}
                   onClick={() => {
-                    setOperation(key as 'grep' | 'replace' | 'extract')
-                    updateURL({ operation: key })
+                    workspace.edit({ operation: key as RegexJob['operation'] })
                   }}
                   className={`p-4 rounded-lg border-2 text-left transition-all ${
                     operation === key
@@ -740,14 +484,14 @@ export default function RegexExtractor() {
 
           {/* 정규식 패턴 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap gap-3 items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-fg">
                 {t('pattern.title')}
               </h3>
               <button
                 onClick={() => setShowPresets(!showPresets)}
                 aria-expanded={showPresets}
-                className="flex items-center space-x-2 px-3 py-1 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
+                className="flex items-center space-x-2 min-h-11 px-3 py-2 bg-primary-soft text-primary rounded-lg hover:brightness-95 transition-colors"
               >
                 <Eye className="w-4 h-4" />
                 <span className="text-sm">{t('pattern.presets')}</span>
@@ -757,15 +501,15 @@ export default function RegexExtractor() {
             <div className="relative">
               <input
                 type="text"
+                id="regex-pattern"
                 value={pattern}
                 onChange={(e) => {
                   setPattern(e.target.value)
-                  updateURL({ pattern: encodeURIComponent(e.target.value) })
                 }}
                 placeholder={t('pattern.placeholder')}
                 aria-label={t('pattern.title')}
                 aria-invalid={!isValid}
-                className={`w-full px-4 py-3 border rounded-lg font-mono text-sm focus:ring-2 focus:border-transparent bg-field text-fg ${
+                className={`w-full px-4 py-3 border rounded-lg font-mono text-base focus:ring-2 focus:border-transparent bg-field text-fg ${
                   isValid 
                     ? 'border-line-strong focus:ring-primary' 
                     : 'border-red-500 focus:ring-red-500'
@@ -779,7 +523,7 @@ export default function RegexExtractor() {
             </div>
             
             {errorMessage && (
-              <div className="mt-2 text-sm text-red-600 dark:text-red-400">
+              <div className="mt-2 text-sm text-red-600">
                 {errorMessage}
               </div>
             )}
@@ -789,11 +533,11 @@ export default function RegexExtractor() {
               <div className="mt-3 p-3 bg-subtle rounded-lg">
                 <div className="flex items-start space-x-2">
                   <HelpCircle className="w-4 h-4 text-muted mt-0.5 flex-shrink-0" />
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-sm font-medium text-fg mb-1">
                       {t('pattern.explanation')}
                     </div>
-                    <div className="text-sm text-sub font-mono">
+                    <div className="text-sm text-sub font-mono [overflow-wrap:anywhere]">
                       {explainPattern(pattern)}
                     </div>
                   </div>
@@ -806,13 +550,14 @@ export default function RegexExtractor() {
               <label id="rx-flags" className="block text-sm font-medium text-body mb-2">
                 {t('flags.title')}
               </label>
-              <div className="flex space-x-2" role="group" aria-labelledby="rx-flags">
+              <p className="text-sm text-sub mb-2">{t('execution.activeFlags', { flags: flags || t('execution.noFlags') })}</p>
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="rx-flags">
                 {[
                   { flag: 'g', label: 'Global', desc: t('flags.global') },
                   { flag: 'i', label: 'Ignore Case', desc: t('flags.ignoreCase') },
                   { flag: 'm', label: 'Multiline', desc: t('flags.multiline') },
                   { flag: 's', label: 'Dotall', desc: t('flags.dotall') }
-                ].map(({ flag, label, desc }) => (
+                ].map(({ flag, desc }) => (
                   <button
                     key={flag}
                     onClick={() => toggleFlag(flag)}
@@ -842,7 +587,7 @@ export default function RegexExtractor() {
                   value={replacement}
                   onChange={(e) => setReplacement(e.target.value)}
                   placeholder={t('replacement.placeholder')}
-                  className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg"
+                  className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-base focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg"
                 />
                 <div className="mt-1 text-xs text-muted">
                   {t('replacement.help')}
@@ -854,13 +599,13 @@ export default function RegexExtractor() {
           {/* 프리셋 패턴 */}
           {showPresets && (
             <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-wrap gap-3 items-center justify-between mb-4">
                 <h3 id="rx-presets" className="text-lg font-semibold text-fg">
                   {t('presets.title')}
                 </h3>
                 <button
                   onClick={() => setShowPresets(false)}
-                  className="p-1 text-faint hover:text-sub"
+                  className="min-h-11 min-w-11 p-2 text-faint hover:text-sub"
                   aria-label={tCommon('close')}
                 >
                   <EyeOff className="w-5 h-5" />
@@ -874,7 +619,7 @@ export default function RegexExtractor() {
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     aria-pressed={selectedCategory === category}
-                    className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-sm transition-colors ${
+                    className={`flex items-center space-x-1 min-h-11 px-3 py-2 rounded-lg text-sm transition-colors ${
                       selectedCategory === category
                         ? 'bg-primary text-white'
                         : 'bg-soft text-body hover:bg-subtle'
@@ -900,7 +645,7 @@ export default function RegexExtractor() {
                     <div className="text-sm text-sub">
                       {t(`presets.descriptions.${preset.name}`)}
                     </div>
-                    <div className="text-xs text-muted font-mono mt-1">
+                    <div className="text-xs text-muted font-mono mt-1 [overflow-wrap:anywhere]">
                       {preset.example}
                     </div>
                   </button>
@@ -911,26 +656,27 @@ export default function RegexExtractor() {
 
           {/* 입력 텍스트 */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap gap-3 items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-fg">
                 {t('input.title')}
               </h3>
-              <div className="flex space-x-2">
-                <label className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle cursor-pointer transition-colors">
+              <div className="flex flex-wrap gap-2">
+                <label className="flex items-center space-x-2 min-h-11 px-3 py-2 bg-soft text-body rounded-lg hover:bg-subtle cursor-pointer transition-colors focus-within:ring-2 focus-within:ring-primary">
                   <span className="text-sm">{t('input.upload')}</span>
                   <input
+                    data-regex-file
+                    disabled={!workspace.ready}
                     type="file"
                     accept=".txt,.log,.csv,.json,.xml,.html,.js,.ts,.py,.java,.cpp,.c,.h"
                     onChange={handleFileUpload}
-                    className="hidden"
+                    className="sr-only"
                   />
                 </label>
                 <button
                   onClick={() => {
                     setInputText('')
-                    updateURL({ input: '' })
                   }}
-                  className="flex items-center space-x-2 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
+                  className="flex items-center space-x-2 min-h-11 px-3 py-2 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span className="text-sm">{tCommon('clear')}</span>
@@ -939,17 +685,19 @@ export default function RegexExtractor() {
             </div>
             
             <textarea
+              id="regex-input"
               value={inputText}
               onChange={(e) => {
                 setInputText(e.target.value)
-                updateURL({ input: encodeURIComponent(e.target.value) })
               }}
               placeholder={t('input.placeholder')}
               aria-label={t('input.title')}
               rows={12}
-              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg resize-none"
+              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-base focus:ring-2 focus:ring-primary focus:border-transparent bg-field text-fg resize-none"
             />
             
+            {workspace.reading && <p role="status" className="text-sm text-sub">{t('execution.reading')}</p>}
+            {workspace.fileError && <p role="status" data-regex-file-error className="text-sm text-sub">{t(`execution.errors.${workspace.fileError}`)}</p>}
             <div className="mt-2 text-sm text-muted">
               {t('input.stats', { 
                 lines: inputText.split('\n').length, 
@@ -959,130 +707,7 @@ export default function RegexExtractor() {
           </div>
         </div>
 
-        {/* 결과 패널 */}
-        <div className="space-y-6">
-          {/* 매치 정보 */}
-          {pattern && (
-            <div className={`${glassCard} ${glassInset} p-6`}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-fg flex items-center">
-                  {isValid ? (
-                    <CheckCircle className="w-5 h-5 mr-2 text-green-500" />
-                  ) : (
-                    <AlertCircle className="w-5 h-5 mr-2 text-red-500" />
-                  )}
-                  {t('results.matchInfo')}
-                </h3>
-                {isProcessing && (
-                  <RefreshCw className="w-5 h-5 text-primary animate-spin" />
-                )}
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-3 bg-subtle rounded-lg" aria-live="polite" aria-atomic="true">
-                  <div className="text-2xl font-bold text-fg">{matches.length}</div>
-                  <div className="text-sm text-sub">{t('results.matches')}</div>
-                </div>
-                <div className="text-center p-3 bg-subtle rounded-lg">
-                  <div className="text-2xl font-bold text-fg">{outputText.split('\n').filter(line => line.trim()).length}</div>
-                  <div className="text-sm text-sub">{t('results.outputLines')}</div>
-                </div>
-                <div className="text-center p-3 bg-subtle rounded-lg">
-                  <div className="text-2xl font-bold text-fg">{outputText.length}</div>
-                  <div className="text-sm text-sub">{t('results.outputChars')}</div>
-                </div>
-                <div className="text-center p-3 bg-subtle rounded-lg">
-                  <div className="text-2xl font-bold text-fg">{((matches.length / Math.max(inputText.split('\n').length, 1)) * 100).toFixed(1)}%</div>
-                  <div className="text-sm text-body">{t('results.matchRate')}</div>
-                </div>
-              </div>
-
-              {/* 매치 상세 정보 (처음 5개만) */}
-              {matches.length > 0 && (
-                <div className="mt-4">
-                  <h4 className="text-sm font-medium text-body mb-2">
-                    {t('results.matchDetails')}
-                  </h4>
-                  <div className="space-y-2 max-h-32 overflow-y-auto">
-                    {matches.slice(0, 5).map((match, index) => (
-                      <div key={index} className="text-xs bg-subtle p-2 rounded">
-                        <div className="font-mono text-fg">"{match.match}"</div>
-                        <div className="text-muted">
-                          {t('matchDetail.line', { line: match.line })}, {t('matchDetail.index', { index: match.index })}
-                          {match.groups.length > 0 && ` | ${t('matchDetail.groups', { groups: match.groups.join(', ') })}`}
-                        </div>
-                      </div>
-                    ))}
-                    {matches.length > 5 && (
-                      <div className="text-xs text-muted text-center">
-                        ... {t('results.moreMatches', { count: matches.length - 5 })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* 결과 출력 */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-fg">
-                {t('results.title')}
-              </h3>
-              <div className="flex space-x-2">
-                {outputText && (
-                  <>
-                    <button
-                      onClick={() => copyToClipboard(outputText)}
-                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
-                    >
-                      <Copy className="w-4 h-4" />
-                      <span className="text-sm">{isCopied ? tCommon('copied') : tCommon('copy')}</span>
-                    </button>
-                    <button
-                      onClick={downloadResult}
-                      className="flex items-center space-x-1 px-3 py-1 bg-soft text-body rounded-lg hover:bg-subtle transition-colors"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span className="text-sm">{t('results.download')}</span>
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-            
-            <textarea
-              value={outputText}
-              readOnly
-              placeholder={t('results.placeholder')}
-              aria-label={t('results.title')}
-              rows={15}
-              className="w-full px-4 py-3 border border-line-strong rounded-lg font-mono text-sm bg-subtle text-fg resize-none"
-            />
-          </div>
-
-          {/* 공유/저장 버튼 */}
-          {showShareButton && outputText && (
-            <div className="flex space-x-3">
-              <button
-                onClick={handleShare}
-                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-subtle px-4 py-3 rounded-lg text-body transition-colors"
-              >
-                <Share2 className="w-5 h-5" />
-                <span>{t('results.share')}</span>
-              </button>
-              
-              <button
-                onClick={handleSaveCalculation}
-                className="flex-1 inline-flex items-center justify-center space-x-2 bg-soft hover:bg-subtle px-4 py-3 rounded-lg text-body transition-colors"
-              >
-                <Save className="w-5 h-5" />
-                <span>{tCommon('save')}</span>
-              </button>
-            </div>
-          )}
-        </div>
+        <RegexResultPanel workspace={workspace} onSave={handleSaveCalculation} saveStatus={saved && saved.revision === workspace.revision && saved.id === workspace.completed?.id ? saved.status : null} />
       </div>
 
       {/* 사용 가이드 */}
@@ -1091,7 +716,7 @@ export default function RegexExtractor() {
           {t('guide.title')}
         </h3>
         
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <h4 className="text-lg font-semibold text-fg mb-3">
               {t('guide.operationsTitle')}

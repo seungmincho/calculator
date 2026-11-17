@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import DailyTips from '@/components/DailyTips'
 import ToolsShowcase from '@/components/ToolsShowcase'
+import ToolGuideLink from '@/components/ToolGuideLink'
 import Breadcrumb from '@/components/Breadcrumb'
 import SkipToContent from '@/components/SkipToContent'
 import ToolTracker from '@/components/ToolTracker'
@@ -196,6 +197,7 @@ export default function RootLayout({
               <ErrorBoundary>
                 {children}
               </ErrorBoundary>
+              <ToolGuideLink />
             </main>
 
             {/* Social Share FAB + Back to Top */}

@@ -166,6 +166,9 @@ export default function BrokerageFeeCalculator() {
                   </button>
                 ))}
               </div>
+              <Link href="/pyeong-calculator/" className="mt-2 inline-block text-sm text-primary hover:underline">
+                {t('prop.convertArea')}
+              </Link>
             </div>
 
             {money('bf-amt', t(`amount.${deal}`), amt, setAmt, deal === 'monthly' ? [1_000 * MAN, 5_000 * MAN] : [1_000 * MAN, 5_000 * MAN, EOK])}

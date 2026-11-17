@@ -2,6 +2,8 @@
 const CACHE_NAME = 'toolhub-v4.35.16'
 const STATIC_CACHE_NAME = 'toolhub-static-v4.35.16'
 const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.16'
+// Strict end assertion also rejects a trailing newline; model/unknown caches are not site-owned.
+const OWNED_CACHE_NAME = /^toolhub-(?:static-|dynamic-)?v\d+(?:\.\d+)*(?![\s\S])/
 
 // Files to cache immediately (trailing slashes match trailingSlash:true in next.config).
 // 도구 페이지는 미리 받지 않음 — 방문한 페이지만 fetch 핸들러가 캐시 (첫 방문 모바일 데이터 절약)
@@ -42,7 +44,8 @@ self.addEventListener('activate', (event) => {
       caches.keys().then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            if (cacheName !== STATIC_CACHE_NAME &&
+            if (OWNED_CACHE_NAME.test(cacheName) &&
+                cacheName !== STATIC_CACHE_NAME &&
                 cacheName !== DYNAMIC_CACHE_NAME &&
                 cacheName !== CACHE_NAME) {
               return caches.delete(cacheName)
@@ -80,10 +83,30 @@ self.addEventListener('fetch', (event) => {
   if (!hasExtension && !url.pathname.endsWith('/')) {
     url.pathname += '/'
   }
-  const normalizedRequest = new Request(url.toString(), event.request)
+  const normalizedUrl = url.toString()
+  let normalizedRequest = event.request
+  if (normalizedUrl !== event.request.url) {
+    // RequestInit rejects mode=navigate. Preserve navigation fetch options while
+    // requesting the normalized same-origin page; unchanged URLs need no clone.
+    normalizedRequest = event.request.mode === 'navigate'
+      ? new Request(normalizedUrl, {
+        method: event.request.method,
+        headers: event.request.headers,
+        mode: 'same-origin',
+        credentials: event.request.credentials,
+        cache: event.request.cache,
+        redirect: event.request.redirect,
+        referrer: event.request.referrer,
+        referrerPolicy: event.request.referrerPolicy,
+        integrity: event.request.integrity,
+        signal: event.request.signal,
+        keepalive: event.request.keepalive
+      })
+      : new Request(normalizedUrl, event.request)
+  }
 
   event.respondWith(
-    caches.match(normalizedRequest).then((cachedResponse) => {
+    caches.match(normalizedRequest).catch(() => undefined).then((cachedResponse) => {
       // Return cached version if available
       if (cachedResponse) {
         // Update cache in background for dynamic content
@@ -110,13 +133,13 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Serve offline page for navigation requests
         if (event.request.destination === 'document') {
-          return caches.match('/offline/') || new Response(
+          return caches.match('/offline/').catch(() => undefined).then(offlineResponse => offlineResponse || new Response(
             generateOfflinePage(),
             { 
               headers: { 'Content-Type': 'text/html' },
               status: 200
             }
-          )
+          ))
         }
         
         // Return empty response for other requests

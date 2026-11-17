@@ -1,4 +1,7 @@
 import { registerMessages } from '@/lib/i18n'
+import { loadTranslationFallback } from '@/lib/i18n/translationFetch'
 import messages from '../../../../messages/generated/ko/ns/connect4.json'
 
-registerMessages(messages)
+registerMessages(messages, context => context?.retry
+  ? loadTranslationFallback('/i18n/en/ns/connect4.d0b4d204deafbed7.json', ['connect4'])
+  : import('../../../../messages/generated/en/ns/connect4.json').then(module => module.default))

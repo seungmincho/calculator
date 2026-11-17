@@ -14,6 +14,9 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gpaConverterCalc'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
+import GpaCopyRecovery from '@/components/GpaCopyRecovery'
+import { copyGpaText, createGpaCopyGuard, gpaShareUrl, readGpaCopyQuery, type GpaCopyTarget } from '@/utils/gpaCopy'
 import { Copy, Check, Link as LinkIcon, Download } from 'lucide-react'
 import NextLink from 'next/link'
 
@@ -112,22 +115,35 @@ export default function GpaConverter() {
   const t = useTranslations('gpaConverterCalc')
   const searchParams = useSearchParams()
 
-  const [scale, setScale] = useState<Scale>(() => {
-    const s = searchParams.get('scale') as Scale
-    return SCALE_MAX[s] ? s : '4.5'
-  })
-  const [inputValue, setInputValue] = useState(() => searchParams.get('v') ?? '')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const hydrated = useHydrated()
+  const [urlRestored, setUrlRestored] = useState(false)
+  const [scale, setScale] = useState<Scale>('4.5')
+  const [inputValue, setInputValue] = useState('')
+  const copyGuard = useMemo(createGpaCopyGuard, [])
+  const [copyState, setCopyState] = useState<{ target: GpaCopyTarget; status: 'copying' | 'copied' | 'failed'; text: string; context: string } | null>(null)
   const [saved, setSaved] = useState(false)
+
+  if (hydrated && !urlRestored) {
+    const restored = readGpaCopyQuery(searchParams)
+    setScale(restored.scale)
+    setInputValue(restored.inputValue)
+    setUrlRestored(true)
+  }
+
+  const changeScale = (value: Scale) => {
+    if (scale === value) return
+    copyGuard.invalidate(); setCopyState(null); setScale(value)
+  }
+  const changeInput = (value: string) => {
+    copyGuard.invalidate(); setCopyState(null); setInputValue(value)
+  }
 
   // URL 공유: 기본값(4.5·빈 값)은 쿼리에서 빼서 깨끗한 URL 유지
   useEffect(() => {
-    const p = new URLSearchParams()
-    if (scale !== '4.5') p.set('scale', scale)
-    if (inputValue) p.set('v', inputValue)
-    const qs = p.toString()
-    window.history.replaceState(window.history.state, '', qs ? `?${qs}` : window.location.pathname)
-  }, [scale, inputValue])
+    if (!urlRestored) return
+    const url = gpaShareUrl(window.location.href, scale, inputValue)
+    if (url !== window.location.href) window.history.replaceState(window.history.state, '', url)
+  }, [scale, inputValue, urlRestored])
 
   const num = inputValue.trim() === '' ? NaN : Number(inputValue)
   const result = useMemo(() => (Number.isNaN(num) ? null : convert(num, scale)), [num, scale])
@@ -136,25 +152,6 @@ export default function GpaConverter() {
   const suggest = invalid && num > SCALE_MAX[scale]
     ? SCALES.slice().sort((a, b) => SCALE_MAX[a] - SCALE_MAX[b]).find((s) => SCALE_MAX[s] >= num)
     : undefined
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const ta = document.createElement('textarea')
-        ta.value = text
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-    } catch { /* silent */ }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
 
   const guideSections = t.raw('guide.sections') as GuideSection[]
   const faq = t.raw('guide.faq.items') as { q: string; a: string }[] | undefined
@@ -175,6 +172,21 @@ export default function GpaConverter() {
     ].join('\n')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, scale, inputValue, t])
+
+  const copyContext = JSON.stringify([scale, inputValue, resultText])
+  const currentCopy = copyState?.context === copyContext ? copyState : null
+  const copiedId = currentCopy?.status === 'copied' ? currentCopy.target : null
+  useEffect(() => () => copyGuard.invalidate(), [copyGuard, copyContext])
+
+  const copyToClipboard = async (target: GpaCopyTarget) => {
+    if (!urlRestored || (target === 'result' && !resultText)) return
+    const text = target === 'result' ? resultText : gpaShareUrl(window.location.href, scale, inputValue)
+    const token = copyGuard.begin(target)
+    setCopyState({ target, status: 'copying', text, context: copyContext })
+    const outcome = await copyGpaText(text, () => copyGuard.isCurrent(token))
+    if (outcome === 'stale' || !copyGuard.isCurrent(token)) return
+    setCopyState({ target, status: outcome, text, context: copyContext })
+  }
 
   const saveAsImage = useCallback(() => {
     if (!result) return
@@ -224,9 +236,9 @@ export default function GpaConverter() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 좌: 입력 */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 min-w-0">
           <div className="ui-card p-6 space-y-5">
             <div>
               <label className="block text-sm font-medium text-body mb-2">{t('scaleLabel')}</label>
@@ -234,9 +246,9 @@ export default function GpaConverter() {
                 {SCALES.map((s) => (
                   <button
                     key={s}
-                    onClick={() => setScale(s)}
+                    onClick={() => changeScale(s)}
                     aria-pressed={scale === s}
-                    className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`min-h-11 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                       scale === s ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
                     }`}
                   >
@@ -257,10 +269,10 @@ export default function GpaConverter() {
                   min="0"
                   max={SCALE_MAX[scale]}
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={(e) => changeInput(e.target.value)}
                   placeholder={scale === '100' ? '88' : t('input.placeholder')}
                   aria-invalid={invalid}
-                  className="ui-field px-4 py-3 w-full text-lg tabular-nums"
+                  className="ui-field min-w-0 px-4 py-3 w-full text-lg tabular-nums"
                 />
                 <span className="text-sm text-muted whitespace-nowrap">/ {SCALE_MAX[scale]}</span>
               </div>
@@ -280,8 +292,10 @@ export default function GpaConverter() {
 
             <div className="space-y-2 pt-2">
               <button
-                onClick={() => copyToClipboard(window.location.href, 'link')}
-                className="ui-btn w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm"
+                onClick={() => { void copyToClipboard('link') }}
+                disabled={!urlRestored}
+                aria-busy={currentCopy?.target === 'link' && currentCopy.status === 'copying'}
+                className="ui-btn min-h-11 w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm disabled:opacity-40"
               >
                 {copiedId === 'link' ? <><Check className="w-4 h-4" />{t('copyLinkDone')}</> : <><LinkIcon className="w-4 h-4" />{t('copyLink')}</>}
               </button>
@@ -293,24 +307,29 @@ export default function GpaConverter() {
                 {saved ? <><Check className="w-4 h-4" />{t('saveImageDone')}</> : <><Download className="w-4 h-4" />{t('saveImage')}</>}
               </button>
             </div>
+            {currentCopy?.target === 'link' && currentCopy.status === 'copying' && <p role="status" className="text-sm text-sub">{t('copyRecovery.copying')}</p>}
+            {currentCopy?.target === 'link' && currentCopy.status === 'failed' && <GpaCopyRecovery target="link" text={currentCopy.text} onRetry={() => { void copyToClipboard('link') }} />}
           </div>
         </div>
 
         {/* 우: 결과 + 참고표 */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 min-w-0 space-y-6">
           <div className="ui-card p-6" aria-live="polite">
-            <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <h2 className="text-lg font-semibold text-fg">{t('result.title')}</h2>
               {result && (
                 <button
-                  onClick={() => copyToClipboard(resultText, 'result')}
-                  className="ui-btn-soft inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
+                  onClick={() => { void copyToClipboard('result') }}
+                  aria-busy={currentCopy?.target === 'result' && currentCopy.status === 'copying'}
+                  className="ui-btn-soft min-h-11 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm"
                 >
                   {copiedId === 'result' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   {copiedId === 'result' ? t('copied') : t('copyResult')}
                 </button>
               )}
             </div>
+            {currentCopy?.target === 'result' && currentCopy.status === 'copying' && <p role="status" className="mb-4 text-sm text-sub">{t('copyRecovery.copying')}</p>}
+            {currentCopy?.target === 'result' && currentCopy.status === 'failed' && <div className="mb-4"><GpaCopyRecovery target="result" text={currentCopy.text} onRetry={() => { void copyToClipboard('result') }} /></div>}
 
             {!inputValue.trim() ? (
               <p className="text-faint text-sm">{t('result.empty')}</p>
@@ -320,7 +339,7 @@ export default function GpaConverter() {
                   {t('result.invalidRange')} — {t('result.rangeHint', { max: SCALE_MAX[scale] })}
                 </p>
                 {suggest && (
-                  <button onClick={() => setScale(suggest)} className="ui-btn-soft px-3 py-1.5 text-sm">
+                  <button onClick={() => changeScale(suggest)} className="ui-btn-soft min-h-11 px-3 py-1.5 text-sm">
                     {t('result.switchScale', { scale: scaleLabel(suggest) })}
                   </button>
                 )}

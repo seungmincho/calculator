@@ -1,10 +1,14 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useLayoutEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/qrScanner'
-import { Camera, Image as ImageIcon, Copy, Check, ExternalLink, Trash2, ScanLine, BookOpen, QrCode } from 'lucide-react'
-import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { Camera, Image as ImageIcon, Copy, Check, ExternalLink, Trash2, ScanLine, QrCode } from 'lucide-react'
+import { glassCard, glassInset } from '@/lib/glass'
+import QrBatchScanner from '@/components/QrBatchScanner'
+import QrCopyRecovery from '@/components/QrCopyRecovery'
+import { copyQrText } from '@/utils/qrClipboard'
+import { QR_SCAN_HISTORY_KEY, readQrScanHistory, writeQrScanHistory, withQrHistoryLock, type QrHistoryRead, type QrHistoryError } from '@/utils/qrScanHistory'
 
 // Type declaration for BarcodeDetector API
 declare class BarcodeDetector {
@@ -33,6 +37,8 @@ function detectContentType(text: string): string {
 export default function QrScanner() {
   const t = useTranslations('qrScanner')
   const [activeTab, setActiveTab] = useState<TabType>('camera')
+  const [imageMode, setImageMode] = useState<'single' | 'batch'>('single')
+  const [batchVisited, setBatchVisited] = useState(false)
   const [isScanning, setIsScanning] = useState(false)
   const [scanResult, setScanResult] = useState<string | null>(null)
   const [resultType, setResultType] = useState<string>('text')
@@ -41,38 +47,60 @@ export default function QrScanner() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [isBrowserSupported, setIsBrowserSupported] = useState(true)
   const [isDragging, setIsDragging] = useState(false)
+  const [historyError, setHistoryError] = useState<QrHistoryError | null>(null)
+  const [copyRecovery, setCopyRecovery] = useState<{ id: string; text: string } | null>(null)
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const animationRef = useRef<number | null>(null)
   const detectorRef = useRef<BarcodeDetector | null>(null)
+  const mounted = useRef(false), cameraGeneration = useRef(0), cameraRunning = useRef(false), copyGeneration = useRef(0), imageGeneration = useRef(0)
+  const imageReader = useRef<FileReader | null>(null), imageElement = useRef<HTMLImageElement | null>(null)
+  const historySnapshot = useRef<QrHistoryRead>({ ok: false, error: 'unavailable' })
+  const refreshHistory = useCallback(() => {
+    copyGeneration.current++; setCopiedId(null); setCopyRecovery(null)
+    let result: QrHistoryRead
+    try { result = readQrScanHistory(window.localStorage) } catch { result = { ok: false, error: 'unavailable' } }
+    historySnapshot.current = result
+    if (result.ok) { setHistory(result.items); setHistoryError(null) } else setHistoryError(result.error)
+  }, [])
 
   // Load history from localStorage
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('qrScanHistory')
-      if (saved) {
-        setHistory(JSON.parse(saved))
-      }
-    } catch (error) {
-      console.error('Failed to load history:', error)
+    let active = true
+    queueMicrotask(() => { if (active) refreshHistory() })
+    const changed = (event: StorageEvent) => {
+      if (event.key !== null && event.key !== QR_SCAN_HISTORY_KEY) return
+      if (historySnapshot.current.ok && event.key !== null && historySnapshot.current.raw === event.newValue) return
+      copyGeneration.current++; setCopiedId(null); setCopyRecovery(null)
+      historySnapshot.current = { ok: false, error: 'conflict' }; setHistoryError('conflict')
     }
-  }, [])
+    window.addEventListener('storage', changed)
+    return () => { active = false; window.removeEventListener('storage', changed) }
+  }, [refreshHistory])
 
   // Check browser support
   useEffect(() => {
-    if ('BarcodeDetector' in window) {
-      setIsBrowserSupported(true)
-      detectorRef.current = new BarcodeDetector({ formats: ['qr_code'] })
-    } else {
-      setIsBrowserSupported(false)
-    }
+    let active = true
+    void (async () => {
+      try {
+        if (!('BarcodeDetector' in window) || typeof BarcodeDetector.getSupportedFormats !== 'function' || !(await BarcodeDetector.getSupportedFormats()).includes('qr_code')) throw new Error('unsupported')
+        const detector = new BarcodeDetector({ formats: ['qr_code'] })
+        if (active) { detectorRef.current = detector; setIsBrowserSupported(true) }
+      } catch { if (active) { detectorRef.current = null; setIsBrowserSupported(false) } }
+    })()
+    return () => { active = false }
   }, [])
 
   // Cleanup camera on unmount
-  useEffect(() => {
+  useLayoutEffect(() => {
+    mounted.current = true
     return () => {
+      // These are live cancellation counters, not captured DOM nodes.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      mounted.current = false; cameraGeneration.current++; cameraRunning.current = false; copyGeneration.current++; imageGeneration.current++
+      imageReader.current?.abort(); if (imageElement.current) { imageElement.current.onload = null; imageElement.current.onerror = null; imageElement.current.src = '' }
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop())
       }
@@ -82,27 +110,25 @@ export default function QrScanner() {
     }
   }, [])
 
-  const addToHistory = useCallback((content: string, type: string) => {
-    const newResult: ScanResult = {
-      content,
-      type,
-      timestamp: Date.now()
-    }
-    const newHistory = [newResult, ...history.filter(h => h.content !== content)].slice(0, 20)
-    setHistory(newHistory)
+  const addToHistory = useCallback(async (content: string, type: string) => {
+    const previous = historySnapshot.current
+    if (!previous.ok) { setHistoryError(previous.error); return }
     try {
-      localStorage.setItem('qrScanHistory', JSON.stringify(newHistory))
-    } catch (error) {
-      console.error('Failed to save history:', error)
-    }
-  }, [history])
+      const result = await withQrHistoryLock(() => mounted.current ? writeQrScanHistory(previous, [{ content, type, timestamp: Date.now() }, ...previous.items.filter(item => item.content !== content)].slice(0, 20), window.localStorage) : null)
+      if (!mounted.current || !result) return
+      historySnapshot.current = result
+      if (result.ok) { setHistory(result.items); setHistoryError(null) } else setHistoryError(result.error)
+    } catch { if (mounted.current) setHistoryError('unavailable') }
+  }, [])
 
   const handleScanSuccess = useCallback((content: string) => {
+    copyGeneration.current++; setCopiedId(null); setCopyRecovery(null)
     const type = detectContentType(content)
     setScanResult(content)
     setResultType(type)
-    addToHistory(content, type)
+    void addToHistory(content, type)
     setIsScanning(false)
+    cameraGeneration.current++; cameraRunning.current = false
 
     // Stop camera
     if (streamRef.current) {
@@ -116,11 +142,12 @@ export default function QrScanner() {
   }, [addToHistory])
 
   const scanFrame = useCallback(async () => {
-    if (!videoRef.current || !canvasRef.current || !detectorRef.current || !isScanning) {
+    if (!videoRef.current || !canvasRef.current || !detectorRef.current || !cameraRunning.current) {
       return
     }
 
     const video = videoRef.current
+    const generation = cameraGeneration.current
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
@@ -135,6 +162,7 @@ export default function QrScanner() {
 
     try {
       const barcodes = await detectorRef.current.detect(canvas)
+      if (!mounted.current || generation !== cameraGeneration.current || !cameraRunning.current) return
       if (barcodes.length > 0) {
         handleScanSuccess(barcodes[0].rawValue)
         return
@@ -143,8 +171,8 @@ export default function QrScanner() {
       console.error('Detection error:', error)
     }
 
-    animationRef.current = requestAnimationFrame(scanFrame)
-  }, [isScanning, handleScanSuccess])
+    if (mounted.current && generation === cameraGeneration.current && cameraRunning.current) animationRef.current = requestAnimationFrame(scanFrame)
+  }, [handleScanSuccess])
 
   const startCamera = async () => {
     if (!isBrowserSupported) {
@@ -154,23 +182,29 @@ export default function QrScanner() {
 
     setCameraError(null)
     setScanResult(null)
+    copyGeneration.current++; setCopiedId(null); setCopyRecovery(null)
+    const request = ++cameraGeneration.current
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' }
       })
+      if (!mounted.current || request !== cameraGeneration.current || !videoRef.current) { stream.getTracks().forEach(track => track.stop()); return }
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         streamRef.current = stream
+        cameraRunning.current = true
         setIsScanning(true)
 
         videoRef.current.onloadedmetadata = () => {
-          videoRef.current?.play()
+          if (request !== cameraGeneration.current || !cameraRunning.current) return
+          void videoRef.current?.play().catch(() => { if (mounted.current && request === cameraGeneration.current) setCameraError('permission') })
           scanFrame()
         }
       }
     } catch (error) {
+      if (!mounted.current || request !== cameraGeneration.current) return
       console.error('Camera error:', error)
       setCameraError('permission')
       setIsScanning(false)
@@ -178,6 +212,7 @@ export default function QrScanner() {
   }
 
   const stopCamera = () => {
+    cameraGeneration.current++; cameraRunning.current = false
     setIsScanning(false)
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop())
@@ -189,22 +224,34 @@ export default function QrScanner() {
     }
   }
 
+  const cancelSingleImage = () => {
+    imageGeneration.current++; imageReader.current?.abort(); imageReader.current = null
+    if (imageElement.current) { imageElement.current.onload = null; imageElement.current.onerror = null; imageElement.current.src = ''; imageElement.current = null }
+    copyGeneration.current++; setCopiedId(null); setCopyRecovery(null)
+  }
+  const openBatch = () => { stopCamera(); cancelSingleImage(); setActiveTab('image'); setImageMode('batch'); setBatchVisited(true); setScanResult(null) }
+
   const scanImageFile = async (file: File) => {
     if (!isBrowserSupported || !detectorRef.current || !canvasRef.current) {
       return
     }
 
     setScanResult(null)
+    cancelSingleImage()
+    const request = imageGeneration.current
+    const current = () => mounted.current && request === imageGeneration.current
 
     const img = new Image()
     const reader = new FileReader()
+    imageReader.current = reader; imageElement.current = img
 
     reader.onload = (e) => {
-      if (!e.target?.result) return
+      if (!current() || !e.target?.result) return
       img.src = e.target.result as string
     }
 
     img.onload = async () => {
+      if (!current()) return
       const canvas = canvasRef.current
       if (!canvas) return
 
@@ -217,6 +264,7 @@ export default function QrScanner() {
 
       try {
         const barcodes = await detectorRef.current!.detect(canvas)
+        if (!current()) return
         if (barcodes.length > 0) {
           handleScanSuccess(barcodes[0].rawValue)
         } else {
@@ -224,10 +272,12 @@ export default function QrScanner() {
           setResultType('text')
         }
       } catch (error) {
+        if (!current()) return
         console.error('Image scan error:', error)
         setScanResult('')
       }
     }
+    reader.onerror = img.onerror = () => { if (current()) setScanResult('') }
 
     reader.readAsDataURL(file)
   }
@@ -259,34 +309,22 @@ export default function QrScanner() {
   }
 
   const copyToClipboard = async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      setCopiedId(id)
-      setTimeout(() => setCopiedId(null), 2000)
-    }
+    const request = ++copyGeneration.current, current = () => mounted.current && request === copyGeneration.current
+    setCopiedId(null); setCopyRecovery(null)
+    const copied = await copyQrText(text, current)
+    if (!current() || copied === null) return
+    if (copied) { setCopiedId(id); setTimeout(() => { if (current()) setCopiedId(null) }, 2000) }
+    else setCopyRecovery({ id, text })
   }
 
-  const clearHistory = () => {
-    setHistory([])
+  const clearHistory = async () => {
+    const previous = historySnapshot.current
     try {
-      localStorage.removeItem('qrScanHistory')
-    } catch (error) {
-      console.error('Failed to clear history:', error)
-    }
+      const result = await withQrHistoryLock(() => mounted.current ? writeQrScanHistory(previous, [], window.localStorage) : null)
+      if (!mounted.current || !result) return
+      historySnapshot.current = result
+      if (result.ok) { setHistory([]); setHistoryError(null); copyGeneration.current++; setCopyRecovery(null); setCopiedId(null) } else setHistoryError(result.error)
+    } catch { if (mounted.current) setHistoryError('unavailable') }
   }
 
   const getTypeLabel = (type: string): string => {
@@ -330,9 +368,8 @@ export default function QrScanner() {
               <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-100">
                 {t('unsupported.title')}
               </h3>
-              <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                {t('unsupported.description')}
-              </p>
+              <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">{t('batch.nativeUnavailable')}</p>
+              <button type="button" onClick={openBatch} className="ui-btn-soft mt-3 min-h-11 px-3 py-2 text-sm">{t('batch.open')}</button>
             </div>
           </div>
         </div>
@@ -344,6 +381,7 @@ export default function QrScanner() {
           onClick={() => {
             setActiveTab('camera')
             stopCamera()
+            cancelSingleImage()
             setScanResult(null)
           }}
           className={`px-6 py-3 font-medium rounded-t-lg transition-colors ${
@@ -361,6 +399,7 @@ export default function QrScanner() {
           onClick={() => {
             setActiveTab('image')
             stopCamera()
+            cancelSingleImage()
             setScanResult(null)
           }}
           className={`px-6 py-3 font-medium rounded-t-lg transition-colors ${
@@ -444,6 +483,11 @@ export default function QrScanner() {
           </div>
         ) : (
           <div className="space-y-4">
+            <div role="group" aria-label={t('batch.mode')} className="flex gap-2">
+              <button type="button" aria-pressed={imageMode === 'single'} onClick={() => { cancelSingleImage(); setImageMode('single'); setScanResult(null) }} className={`min-h-11 flex-1 rounded-xl px-3 py-2 text-sm font-medium ${imageMode === 'single' ? 'bg-primary text-white' : 'bg-soft text-body'}`}>{t('batch.single')}</button>
+              <button type="button" aria-pressed={imageMode === 'batch'} onClick={openBatch} className={`min-h-11 flex-1 rounded-xl px-3 py-2 text-sm font-medium ${imageMode === 'batch' ? 'bg-primary text-white' : 'bg-soft text-body'}`}>{t('batch.multipleMode')}</button>
+            </div>
+            {imageMode === 'single' && <>
             {/* Image Upload Zone */}
             <div
               onDragOver={handleDragOver}
@@ -472,9 +516,11 @@ export default function QrScanner() {
             </div>
 
             <canvas ref={canvasRef} className="hidden" />
+            </>}
           </div>
         )}
       </div>
+      {batchVisited && <div hidden={activeTab !== 'image' || imageMode !== 'batch'} className="ui-card min-w-0 p-4 sm:p-6"><QrBatchScanner active={activeTab === 'image' && imageMode === 'batch'} /></div>}
 
       {/* Scan Result */}
       {scanResult !== null && (
@@ -560,6 +606,8 @@ export default function QrScanner() {
         </div>
       )}
 
+      {copyRecovery && <QrCopyRecovery text={copyRecovery.text} onRetry={() => { void copyToClipboard(copyRecovery.text, copyRecovery.id) }} onClose={() => { copyGeneration.current++; setCopyRecovery(null) }} />}
+      {historyError && <div className="ui-card space-y-3 p-4"><p role="alert" className="text-sm text-body">{t(`batch.historyErrors.${historyError}`)}</p><button type="button" onClick={refreshHistory} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('batch.refreshHistory')}</button></div>}
       {/* History */}
       {history.length > 0 && (
         <div className={`${glassCard} ${glassInset} p-6`}>
@@ -568,8 +616,8 @@ export default function QrScanner() {
               {t('history')}
             </h2>
             <button
-              onClick={clearHistory}
-              className="flex items-center space-x-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
+              onClick={() => { void clearHistory() }}
+              className="flex min-h-11 items-center space-x-2 text-body transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               <span className="text-sm font-medium">{t('clearHistory')}</span>
@@ -598,7 +646,8 @@ export default function QrScanner() {
                   </div>
                   <button
                     onClick={() => copyToClipboard(item.content, `history-${index}`)}
-                    className="flex-shrink-0 p-2 rounded-lg bg-track hover:bg-line-strong transition-colors"
+                    aria-label={`${t('copy')} ${index + 1}`}
+                    className="min-h-11 min-w-11 flex-shrink-0 p-2 rounded-lg bg-track hover:bg-line-strong transition-colors"
                   >
                     {copiedId === `history-${index}` ? (
                       <Check className="w-4 h-4 text-green-600 dark:text-green-400" />

@@ -25,8 +25,13 @@ export function splitSentences(text: string): Segment[] {
   return out
 }
 
-/** max자를 넘는 문장을 쉼표 → 공백 순으로 끊어 max 이하 조각으로 만든다(오프셋 유지). */
+function checkChunkLimit(max: number): void {
+  if (!Number.isSafeInteger(max) || max < 1) throw new RangeError('max must be a positive safe integer')
+}
+
+/** UTF-16 max 기준. max=1의 한 surrogate pair만 2칸을 허용하며 원문 offset을 유지한다. */
 export function splitLong(seg: Segment, max: number): Segment[] {
+  checkChunkLimit(max)
   const out: Segment[] = []
   let { start } = seg
   const { end } = seg
@@ -35,6 +40,8 @@ export function splitLong(seg: Segment, max: number): Segment[] {
     let cut = Math.max(win.lastIndexOf(', '), win.lastIndexOf('，'), win.lastIndexOf('、'))
     cut = cut > max * 0.4 ? cut + 1 : win.lastIndexOf(' ')
     if (cut <= 0) cut = max
+    const offset = start - seg.start
+    if (/[\uD800-\uDBFF]/.test(seg.text[offset + cut - 1] ?? '') && /[\uDC00-\uDFFF]/.test(seg.text[offset + cut] ?? '')) cut += cut === 1 ? 1 : -1
     let next = start + cut
     out.push(trim({ start, end: next }))
     while (next < end && /\s/.test(seg.text[next - seg.start])) next++
@@ -52,6 +59,7 @@ export function splitLong(seg: Segment, max: number): Segment[] {
 
 /** 재생 단위: 문장 분리 후 긴 문장은 max자 이하로. Chrome 원격 음성은 ~15초 넘는 발화를 끊는다. */
 export function chunkText(text: string, max = 140): Segment[] {
+  checkChunkLimit(max)
   return splitSentences(text).flatMap((s) => (s.text.length > max ? splitLong(s, max) : [s]))
 }
 

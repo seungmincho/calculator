@@ -150,25 +150,24 @@ const Header = () => {
   return (<>
     <header ref={headerRef} className="bg-surface border-b border-line sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-14 gap-2 lg:gap-6">
+        <div className="flex items-center h-14 gap-2 xl:gap-4">
           <Link prefetch={false} href="/" className="flex items-center gap-2 shrink-0 whitespace-nowrap">
             <BrandMark />
             <span className="text-[17px] font-bold tracking-tight text-fg">{t('header.title')}</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="relative hidden lg:flex min-w-0 items-center gap-0.5 whitespace-nowrap text-[15px] font-medium flex-1" aria-label={t('common.menu')}>
+          <nav className="relative hidden lg:flex min-w-0 items-center whitespace-nowrap text-sm font-medium flex-1 xl:gap-0.5 xl:text-[15px]" aria-label={t('common.menu')}>
             {categoryKeys.map((key) => (
-              <div key={key} className="min-w-0">
+              <div key={key} className="shrink-0">
                 <button
                   onClick={() => handleDropdownToggle(key)}
-                  className={`flex max-w-full items-center gap-1 px-3 py-1.5 rounded-lg transition-colors ${openDropdown === key ? 'text-fg bg-soft' : 'text-sub hover:text-fg hover:bg-soft'}`}
+                  className={`flex items-center gap-1 px-1.5 py-1.5 rounded-lg transition-colors xl:px-2 ${openDropdown === key ? 'text-fg bg-soft' : 'text-sub hover:text-fg hover:bg-soft'}`}
                   title={menuItems[key].title}
-                  aria-label={menuItems[key].title}
                   aria-expanded={openDropdown === key}
                   aria-haspopup="true"
                 >
-                  <span className="truncate">{menuItems[key].title}</span>
+                  <span>{t(`header.categories.${key}`)}</span>
                   <ChevronDown className={`w-3.5 h-3.5 shrink-0 text-faint transition-transform ${openDropdown === key ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -224,23 +223,24 @@ const Header = () => {
               </div>
             ))}
 
-            <Link prefetch={false} href="/algorithm" title={t('navigation.algorithm')} className="hidden xl:inline-flex min-w-0 px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
-              <span className="truncate">{t('navigation.algorithm')}</span>
+            <Link prefetch={false} href="/algorithm" className="shrink-0 px-1.5 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors xl:px-2">
+              {t('navigation.algorithm')}
             </Link>
-            <Link prefetch={false} href="/tips" title={t('navigation.financialTips')} className="hidden xl:inline-flex min-w-0 px-3 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors">
-              <span className="truncate">{t('navigation.financialTips')}</span>
+            <Link prefetch={false} href="/tips" className="shrink-0 px-1.5 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft transition-colors xl:px-2">
+              {t('navigation.financialTips')}
             </Link>
+            <Link prefetch={false} href="/blog/" className="shrink-0 px-1.5 py-1.5 rounded-lg text-sub hover:text-fg hover:bg-soft xl:px-2">{t('navigation.aiNotes')}</Link>
           </nav>
 
           <div className="hidden lg:flex items-center gap-1 shrink-0">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 w-44 xl:w-56 px-3 py-1.5 rounded-lg bg-soft text-faint hover:text-muted text-sm transition-colors"
+              className="flex h-9 w-9 items-center justify-center gap-2 rounded-lg bg-soft text-faint hover:text-muted text-sm transition-colors xl:w-36 xl:px-3"
               aria-label={t('common.search')}
             >
               <Search className="w-4 h-4" />
-              <span className="flex-1 text-left">{t('common.search')}</span>
-              <kbd className="px-1.5 text-[11px] font-sans text-faint border border-line rounded bg-surface">⌘K</kbd>
+              <span className="hidden flex-1 text-left xl:block">{t('common.search')}</span>
+              <kbd className="hidden px-1.5 text-[11px] font-sans text-faint border border-line rounded bg-surface xl:inline">⌘K</kbd>
             </button>
             <ThemeToggle />
             <LanguageToggle />
@@ -362,6 +362,9 @@ const Header = () => {
                 </Link>
                 <Link prefetch={false} href="/tips" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
                   {t('navigation.financialTips')}
+                </Link>
+                <Link prefetch={false} href="/blog/" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-2.5 text-[15px] font-medium text-body hover:bg-soft rounded-lg">
+                  {t('navigation.aiNotes')}
                 </Link>
               </div>
             </nav>

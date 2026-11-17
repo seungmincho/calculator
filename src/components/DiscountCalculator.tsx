@@ -1,11 +1,14 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/discountCalculator'
 import { Tag, Copy, Check, RotateCcw, Plus, Percent, X, Link } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import MobileResultLink from '@/components/MobileResultLink'
+import DiscountComparison from '@/components/DiscountComparison'
+import { createDiscountComparisonExamples, decodeDiscountComparison, DISCOUNT_COMPARISON_PARAM, type DiscountConditionDraft } from '@/utils/discountComparison'
+import { copyDiscountComparison, createDiscountComparisonGuard, type DiscountActionToken } from '@/utils/discountComparisonActions'
 
 type CalculationMode = 'discountRate' | 'finalPrice' | 'discountAmount'
 
@@ -14,16 +17,33 @@ interface MultiDiscount {
   rate: number
 }
 
+type BasicParameters = { mode: CalculationMode; original: number; rate: number; amount: number; final: number }
+function basicResultUrl(href: string, values: BasicParameters, removeComparison = false): string {
+  const url = new URL(href)
+  for (const [key, value] of Object.entries(values)) url.searchParams.set(key, String(value))
+  if (removeComparison) url.searchParams.delete(DISCOUNT_COMPARISON_PARAM)
+  return url.href
+}
+type BasicCopyFeedback = { context: string; token: DiscountActionToken; id: string; text: string; kind: 'copied' | 'failed'; selectionFailed?: boolean }
+
 export default function DiscountCalculator() {
   const t = useTranslations('discountCalculator')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [copyError, setCopyError] = useState(false)
+  const [copyFeedback, setCopyFeedback] = useState<BasicCopyFeedback | null>(null)
+  const [copyGuard] = useState(createDiscountComparisonGuard)
+  const copyContextRef = useRef(''), copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null), mounted = useRef(false)
+  const copyField = useRef<HTMLTextAreaElement>(null)
   const [ready, setReady] = useState(false)
   const [mode, setMode] = useState<CalculationMode>('discountRate')
   const [originalPrice, setOriginalPrice] = useState(100000)
   const [discountRate, setDiscountRate] = useState(20)
   const [discountAmount, setDiscountAmount] = useState(20000)
   const [finalPrice, setFinalPrice] = useState(80000)
+  const [comparisonRows, setComparisonRows] = useState<DiscountConditionDraft[]>(createDiscountComparisonExamples)
+  const [comparisonRevision, setComparisonRevision] = useState(0)
+  const [comparisonDirty, setComparisonDirty] = useState(false)
+  const [comparisonLinkError, setComparisonLinkError] = useState(false)
+  const [locationRevision, setLocationRevision] = useState(0)
+  const [outputRevision, setOutputRevision] = useState(0)
 
   // Multi discount states
   const [multiDiscounts, setMultiDiscounts] = useState<MultiDiscount[]>([
@@ -48,57 +68,69 @@ export default function DiscountCalculator() {
       setDiscountRate(number('rate', 20, 100))
       setDiscountAmount(number('amount', 20000))
       setFinalPrice(number('final', 80000))
+      const comparisonParams = params.getAll(DISCOUNT_COMPARISON_PARAM)
+      const comparison = comparisonParams.length > 1 ? { kind: 'invalid' as const } : decodeDiscountComparison(comparisonParams[0])
+      if (comparison.kind === 'ready') setComparisonRows(comparison.rows.map(row => ({ ...row })))
+      setComparisonLinkError(comparison.kind === 'invalid')
+      setComparisonRevision(previous => previous + 1)
       setReady(true)
     })
     return () => cancelAnimationFrame(frame)
   }, [])
 
-  // Update the share URL without navigating or resetting the calculator.
+  const basicParameters = useMemo(() => ({ mode, original: originalPrice, rate: discountRate, amount: discountAmount, final: finalPrice }), [mode, originalPrice, discountRate, discountAmount, finalPrice])
+  // Keep unrelated parameters/hash/history state. Comparison data is written only
+  // into an explicit share link, and a user comparison edit removes its old URL value.
   useEffect(() => {
     if (!ready) return
-    const params = new URLSearchParams()
-    params.set('mode', mode)
-    params.set('original', String(originalPrice))
-    params.set('rate', String(discountRate))
-    params.set('amount', String(discountAmount))
-    params.set('final', String(finalPrice))
-    window.history.replaceState(null, '', window.location.pathname + '?' + params.toString())
-  }, [ready, mode, originalPrice, discountRate, discountAmount, finalPrice])
+    const next = basicResultUrl(window.location.href, basicParameters, comparisonDirty)
+    if (next !== window.location.href) window.history.replaceState(window.history.state, '', next)
+  }, [ready, basicParameters, comparisonDirty, comparisonRevision])
+  useEffect(() => {
+    const update = () => setLocationRevision(previous => previous + 1)
+    window.addEventListener('hashchange', update); window.addEventListener('popstate', update)
+    return () => { window.removeEventListener('hashchange', update); window.removeEventListener('popstate', update) }
+  }, [])
+  const comparisonBaseUrl = ready ? basicResultUrl(window.location.href, basicParameters, true) : ''
+  const comparisonOutput = useCallback(() => { copyGuard.invalidate(); setCopyFeedback(null) }, [copyGuard])
+  const editComparison = useCallback((next: DiscountConditionDraft[]) => {
+    if (!ready) return
+    copyGuard.invalidate(); setCopyFeedback(null)
+    setComparisonRows(next.map(row => ({ ...row }))); setComparisonRevision(previous => previous + 1)
+    setComparisonDirty(true); setComparisonLinkError(false)
+  }, [ready, copyGuard])
+  const copyContext = JSON.stringify([ready, basicParameters, multiDiscounts, comparisonRevision, locationRevision, t('copy')])
+  useLayoutEffect(() => { copyContextRef.current = copyContext; copyGuard.invalidate() }, [copyContext, copyGuard])
+  useLayoutEffect(() => {
+    mounted.current = true
+    return () => { mounted.current = false; copyGuard.invalidate(); if (copyTimer.current !== null) clearTimeout(copyTimer.current) }
+  }, [copyGuard])
+  const currentCopy = copyFeedback?.context === copyContext && copyGuard.current(copyFeedback.token) ? copyFeedback : null
+  const copiedId = currentCopy?.kind === 'copied' ? currentCopy.id : null
 
   // ── Copy helpers ───────────────────────────────────────────────────────────
   const copyToClipboard = useCallback(async (text: string, id: string) => {
-    const copyWithSelection = () => {
-      const textarea = document.createElement('textarea')
-      textarea.value = text
-      textarea.style.position = 'fixed'
-      textarea.style.left = '-999999px'
-      document.body.appendChild(textarea)
-      try {
-        textarea.select()
-        return document.execCommand('copy')
-      } finally {
-        textarea.remove()
-      }
-    }
-    let succeeded = false
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-        succeeded = true
-      } else {
-        succeeded = copyWithSelection()
-      }
-    } catch {
-      try { succeeded = copyWithSelection() } catch { /* Clipboard permission denied. */ }
-    }
-    setCopiedId(succeeded ? id : null)
-    setCopyError(!succeeded)
-    if (succeeded) setTimeout(() => setCopiedId(null), 2000)
-  }, [])
+    if (!mounted.current || !ready || copyContextRef.current !== copyContext) return
+    setOutputRevision(previous => previous + 1)
+    const token = copyGuard.begin(), current = () => mounted.current && copyContextRef.current === copyContext && copyGuard.current(token)
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    setCopyFeedback(null)
+    const outcome = await copyDiscountComparison(text, current)
+    if (!current() || outcome === 'stale') return
+    setCopyFeedback({ context: copyContext, token, id, text, kind: outcome === 'copied' ? 'copied' : 'failed' })
+    if (outcome === 'copied') copyTimer.current = setTimeout(() => { if (current()) setCopyFeedback(null) }, 2000)
+  }, [ready, copyContext, copyGuard])
 
   const copyLink = useCallback(() => {
-    copyToClipboard(window.location.href, 'link')
-  }, [copyToClipboard])
+    void copyToClipboard(basicResultUrl(window.location.href, basicParameters, true), 'link')
+  }, [basicParameters, copyToClipboard])
+  const selectionFailed = () => {
+    if (mounted.current && copyContextRef.current === copyContext) setCopyFeedback(previous => previous?.context === copyContext && previous.kind === 'failed' ? { ...previous, selectionFailed: true } : previous)
+  }
+  const selectCopyText = () => {
+    try { if (!copyField.current) throw new Error('Missing field'); copyField.current.focus(); copyField.current.select(); copyField.current.setSelectionRange(0, currentCopy?.text.length ?? 0) }
+    catch { selectionFailed() }
+  }
 
   // Quick rate buttons
   const quickRates = [10, 20, 30, 40, 50, 60, 70, 80, 90]
@@ -225,10 +257,15 @@ export default function DiscountCalculator() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
-      {copyError && <p role="alert" className="fixed bottom-4 right-4 z-50 max-w-sm rounded-xl bg-red-700 px-4 py-3 text-sm text-white shadow-lg">{t('copyFailed')}</p>}
+      {currentCopy?.kind === 'failed' && <div className="space-y-3 rounded-xl bg-subtle p-4">
+        <p role="alert" className="text-sm text-body">{t('copyFailed')}</p>
+        <label className="block space-y-2 text-sm text-body">{t('comparison.basicManualCopy')}<textarea ref={copyField} data-discount-basic-manual readOnly rows={3} value={currentCopy.text} className="ui-field w-full min-w-0 px-3 py-3 text-base" onFocus={event => { try { event.target.select() } catch { selectionFailed() } }} /></label>
+        <div className="flex flex-wrap gap-2"><button type="button" data-discount-basic-select className="ui-btn-soft min-h-11 px-4 py-2" onClick={selectCopyText}>{t('comparison.selectText')}</button><button type="button" data-discount-basic-retry className="ui-btn-soft min-h-11 px-4 py-2" onClick={() => void copyToClipboard(currentCopy.text, currentCopy.id)}>{t('comparison.retryCopy')}</button></div>
+        {currentCopy.selectionFailed && <p role="status" className="text-sm text-body">{t('comparison.selectionFailed')}</p>}
+      </div>}
 
       {/* Main Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Panel - Settings */}
         <div className="lg:col-span-1">
           <div className={`${glassCard} ${glassInset} p-6 space-y-6`}>
@@ -240,6 +277,8 @@ export default function DiscountCalculator() {
               </label>
               <div className="flex flex-col gap-2">
                 <button
+                  data-discount-basic-mode="discountRate"
+                  disabled={!ready}
                   onClick={() => setMode('discountRate')}
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'discountRate'
@@ -253,6 +292,8 @@ export default function DiscountCalculator() {
                   </div>
                 </button>
                 <button
+                  data-discount-basic-mode="finalPrice"
+                  disabled={!ready}
                   onClick={() => setMode('finalPrice')}
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'finalPrice'
@@ -266,6 +307,8 @@ export default function DiscountCalculator() {
                   </div>
                 </button>
                 <button
+                  data-discount-basic-mode="discountAmount"
+                  disabled={!ready}
                   onClick={() => setMode('discountAmount')}
                   className={`px-4 py-3 rounded-lg font-medium transition-colors text-left ${
                     mode === 'discountAmount'
@@ -283,14 +326,15 @@ export default function DiscountCalculator() {
 
             {/* Original Price Input */}
             <div>
-              <label className="block text-sm font-medium text-body mb-2">
+              <label htmlFor="discount-original" className="block text-sm font-medium text-body mb-2">
                 {t('originalPrice')}
               </label>
               <input
+                id="discount-original" data-discount-basic-field="original" disabled={!ready}
                 type="number"
                 value={originalPrice}
                 onChange={(e) => setOriginalPrice(Math.max(0, Number(e.target.value)))}
-                className={`w-full px-3 py-2 ${glassInput}`}
+                className={`w-full min-w-0 min-h-11 px-3 py-2 text-base ${glassInput}`}
                 min="0"
               />
             </div>
@@ -299,15 +343,16 @@ export default function DiscountCalculator() {
             {mode === 'discountRate' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-body mb-2">
+                  <label htmlFor="discount-rate" className="block text-sm font-medium text-body mb-2">
                     {t('discountRate')}
                   </label>
                   <div className="flex gap-2">
                     <input
+                      id="discount-rate" data-discount-basic-field="rate" disabled={!ready}
                       type="number"
                       value={discountRate}
                       onChange={(e) => setDiscountRate(Math.min(100, Math.max(0, Number(e.target.value))))}
-                      className={`flex-1 px-3 py-2 ${glassInput}`}
+                      className={`min-w-0 min-h-11 flex-1 px-3 py-2 text-base ${glassInput}`}
                       min="0"
                       max="100"
                       step="0.1"
@@ -327,8 +372,9 @@ export default function DiscountCalculator() {
                     {quickRates.map(rate => (
                       <button
                         key={rate}
+                        disabled={!ready}
                         onClick={() => setDiscountRate(rate)}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        className={`min-h-11 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                           discountRate === rate
                             ? 'bg-primary text-white'
                             : 'bg-soft text-body hover:bg-subtle'
@@ -344,16 +390,17 @@ export default function DiscountCalculator() {
 
             {mode === 'finalPrice' && (
               <div>
-                <label className="block text-sm font-medium text-body mb-2">
+                <label htmlFor="discount-final" className="block text-sm font-medium text-body mb-2">
                   {t('finalPrice')}
                 </label>
                 <input
+                  id="discount-final" data-discount-basic-field="final" disabled={!ready}
                   type="number"
                   value={finalPrice}
                   onChange={(e) => setFinalPrice(Math.max(0, Number(e.target.value)))}
                   aria-invalid={invalidFinalPrice}
                   aria-describedby={invalidFinalPrice ? 'discount-final-price-error' : undefined}
-                  className={`w-full px-3 py-2 ${glassInput}`}
+                  className={`w-full min-w-0 min-h-11 px-3 py-2 text-base ${glassInput}`}
                   min="0"
                 />
               </div>
@@ -361,32 +408,35 @@ export default function DiscountCalculator() {
 
             {mode === 'discountAmount' && (
               <div>
-                <label className="block text-sm font-medium text-body mb-2">
+                <label htmlFor="discount-amount" className="block text-sm font-medium text-body mb-2">
                   {t('discountAmount')}
                 </label>
                 <input
+                  id="discount-amount" data-discount-basic-field="amount" disabled={!ready}
                   type="number"
                   value={discountAmount}
                   onChange={(e) => setDiscountAmount(Math.max(0, Number(e.target.value)))}
-                  className={`w-full px-3 py-2 ${glassInput}`}
+                  className={`w-full min-w-0 min-h-11 px-3 py-2 text-base ${glassInput}`}
                   min="0"
                 />
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
+                data-discount-basic-action="reset" disabled={!ready}
                 onClick={reset}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
+                className="min-h-11 flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-soft hover:bg-subtle text-body rounded-lg transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
-                {t('reset')}
+                {t('comparison.resetBasic')}
               </button>
               <button
+                data-discount-basic-action="copy-link" disabled={!ready}
                 onClick={copyLink}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-subtle hover:bg-soft text-primary rounded-lg transition-colors"
-                title={t('copyLink')}
+                className="min-h-11 flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-subtle hover:bg-soft text-primary rounded-lg transition-colors"
+                title={t('comparison.basicLink')}
               >
                 {copiedId === 'link' ? (
                   <>
@@ -396,11 +446,12 @@ export default function DiscountCalculator() {
                 ) : (
                   <>
                     <Link className="w-4 h-4" />
-                    <span className="text-sm font-medium">{t('copyLink')}</span>
+                    <span className="text-sm font-medium">{t('comparison.basicLink')}</span>
                   </>
                 )}
               </button>
             </div>
+            <p className="text-xs text-sub">{t('comparison.basicLinkHint')}</p>
           </div>
 
           {/* Multi Discount Section */}
@@ -419,10 +470,12 @@ export default function DiscountCalculator() {
                     {index + 1}.
                   </span>
                   <input
+                    data-discount-multi-rate={index} disabled={!ready}
+                    aria-label={t('comparison.multiRateLabel', { index: index + 1 })}
                     type="number"
                     value={discount.rate}
                     onChange={(e) => updateMultiDiscountRate(discount.id, Number(e.target.value))}
-                    className={`flex-1 px-3 py-2 ${glassInput}`}
+                    className={`min-w-0 min-h-11 flex-1 px-3 py-2 text-base ${glassInput}`}
                     min="0"
                     max="100"
                     step="0.1"
@@ -430,8 +483,9 @@ export default function DiscountCalculator() {
                   <span className="text-body">%</span>
                   {multiDiscounts.length > 1 && (
                     <button
+                      data-discount-multi-remove={index} disabled={!ready}
                       onClick={() => removeMultiDiscount(discount.id)}
-                      className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                      className="min-h-11 min-w-11 p-2 text-body hover:bg-soft rounded-lg transition-colors"
                       title={t('removeDiscount')}
                       aria-label={t('removeDiscount')}
                     >
@@ -444,8 +498,9 @@ export default function DiscountCalculator() {
 
             {multiDiscounts.length < 3 && (
               <button
+                data-discount-multi-add disabled={!ready}
                 onClick={addMultiDiscount}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-subtle text-primary hover:bg-soft rounded-lg transition-colors"
+                className="min-h-11 w-full flex items-center justify-center gap-2 px-4 py-2 bg-subtle text-primary hover:bg-soft rounded-lg transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 {t('addDiscount')}
@@ -453,7 +508,7 @@ export default function DiscountCalculator() {
             )}
 
             {/* Multi Discount Result */}
-            <div className="mt-4 pt-4 border-t border-line space-y-2">
+            <div data-discount-multi-result={multiResult.finalPrice} className="mt-4 pt-4 border-t border-line space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-sub">{t('originalPrice')}</span>
                 <span className="font-medium text-fg">₩{formatCurrency(originalPrice)}</span>
@@ -484,7 +539,7 @@ export default function DiscountCalculator() {
 
         {/* Right Panel - Results */}
         <div className="lg:col-span-2">
-          <div id="discount-calculator-result" className={`${glassCard} ${glassInset} p-6 space-y-6 scroll-mt-20`}>
+          <div id="discount-calculator-result" data-discount-basic-result={invalidFinalPrice ? undefined : result.final} className={`${glassCard} ${glassInset} p-6 space-y-6 scroll-mt-20`}>
             {invalidFinalPrice && <p id="discount-final-price-error" role="alert" className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">{t('finalPriceAboveOriginal')}</p>}
             {/* Result Cards Grid */}
             <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${invalidFinalPrice ? 'hidden' : ''}`}>
@@ -493,8 +548,9 @@ export default function DiscountCalculator() {
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('originalPrice')}</h3>
                   <button
+                    data-discount-basic-copy="original" disabled={!ready}
                     onClick={() => copyToClipboard(formatCurrency(result.original), 'original')}
-                    className="p-1 hover:bg-white/20 rounded transition-colors"
+                    className="min-h-11 min-w-11 p-1 hover:bg-white/20 rounded transition-colors"
                     title={t('copy')}
                   >
                     {copiedId === 'original' ? (
@@ -512,8 +568,9 @@ export default function DiscountCalculator() {
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('discountRate')}</h3>
                   <button
+                    data-discount-basic-copy="rate" disabled={!ready}
                     onClick={() => copyToClipboard(formatPercent(result.discountRate), 'rate')}
-                    className="p-1 hover:bg-white/20 rounded transition-colors"
+                    className="min-h-11 min-w-11 p-1 hover:bg-white/20 rounded transition-colors"
                     title={t('copy')}
                   >
                     {copiedId === 'rate' ? (
@@ -531,8 +588,9 @@ export default function DiscountCalculator() {
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('savings')}</h3>
                   <button
+                    data-discount-basic-copy="savings" disabled={!ready}
                     onClick={() => copyToClipboard(formatCurrency(result.savings), 'savings')}
-                    className="p-1 hover:bg-white/20 rounded transition-colors"
+                    className="min-h-11 min-w-11 p-1 hover:bg-white/20 rounded transition-colors"
                     title={t('copy')}
                   >
                     {copiedId === 'savings' ? (
@@ -550,8 +608,9 @@ export default function DiscountCalculator() {
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-medium opacity-90">{t('finalPrice')}</h3>
                   <button
+                    data-discount-basic-copy="final" disabled={!ready}
                     onClick={() => copyToClipboard(formatCurrency(result.final), 'final')}
-                    className="p-1 hover:bg-white/20 rounded transition-colors"
+                    className="min-h-11 min-w-11 p-1 hover:bg-white/20 rounded transition-colors"
                     title={t('copy')}
                   >
                     {copiedId === 'final' ? (
@@ -655,6 +714,8 @@ export default function DiscountCalculator() {
           </div>
         </div>
       </div>
+
+      <DiscountComparison rows={comparisonRows} onChange={editComparison} revision={comparisonRevision} outputRevision={outputRevision} onOutput={comparisonOutput} ready={ready} baseUrl={comparisonBaseUrl} basicPrice={invalidFinalPrice ? null : result.final} multiPrice={multiResult.finalPrice} linkError={comparisonLinkError} />
 
       {/* Guide Section */}
       <div className={`${glassCard} ${glassInset} p-6`}>

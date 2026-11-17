@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { useState, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/ddayCalculator'
 import { useSearchParams } from '@/hooks/useSearchParams'
@@ -14,6 +14,15 @@ import {
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
+import DdayCalendarExport from '@/components/DdayCalendarExport'
+import DdayCopyRecovery from '@/components/DdayCopyRecovery'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
+import { createDdayExportRequests, ddayExportUrl, type DdayExportToken } from '@/utils/ddayExportActions'
+import { copyShareResultLink } from '@/utils/shareResultActions'
+import {
+  DDAY_SAVED_KEY, DdayCalendarError, ddayCalendarErrorCode, parseSavedDdays, withDdaySavedLock, writeSavedDdays,
+  type DdayCalendarErrorCode,
+} from '@/utils/ddayCalendar'
 
 type Mode = 'dday' | 'anniv' | 'diff' | 'add'
 type AddUnit = 'days' | 'weeks' | 'months' | 'years'
@@ -22,7 +31,6 @@ type AnnivType = 'couple' | 'marriage' | 'baby'
 const MODES: Mode[] = ['dday', 'anniv', 'diff', 'add']
 const UNITS: AddUnit[] = ['days', 'weeks', 'months', 'years']
 const ANNIV_TYPES: AnnivType[] = ['couple', 'marriage', 'baby']
-const SAVED_KEY = 'dday-saved'
 const ANNIV_KEY = 'dday-anniv'
 const H = getKoreanHolidays
 
@@ -35,22 +43,9 @@ function writeLS(key: string, v: unknown) {
 
 const asList = (v: unknown) => (Array.isArray(v) ? (v as string[]) : [])
 
-async function copyText(text: string) {
-  try {
-    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return }
-  } catch { /* 폴백 */ }
-  const ta = document.createElement('textarea')
-  ta.value = text
-  ta.style.position = 'fixed'
-  ta.style.left = '-999999px'
-  document.body.appendChild(ta)
-  ta.select()
-  document.execCommand('copy')
-  document.body.removeChild(ta)
-}
-
 const DdayCalculator = () => {
   const t = useTranslations('ddayCalculator')
+  const language = useOptionalLanguage()?.language ?? 'ko'
   const searchParams = useSearchParams()
   const weekdays = asList(t.raw('date.weekdays'))
   const fmt = useCallback((s: string) => {
@@ -66,6 +61,11 @@ const DdayCalculator = () => {
   const [title, setTitle] = useState('')
   const [target, setTarget] = useState('')
   const [saved, setSaved] = useState<SavedDday[]>([])
+  const [savedError, setSavedError] = useState<DdayCalendarErrorCode | null>(null)
+  const [savedBusy, setSavedBusy] = useState(false)
+  const savedRaw = useRef<string | null>(null)
+  const savedBlocked = useRef(false)
+  const savedBusyRef = useRef(false)
 
   const [annivType, setAnnivType] = useState<AnnivType>('couple')
   const [annivStart, setAnnivStart] = useState('')
@@ -80,7 +80,31 @@ const DdayCalculator = () => {
   const [subtract, setSubtract] = useState(false)
   const [businessOnly, setBusinessOnly] = useState(false)
 
-  const [copied, setCopied] = useState(false)
+  const [editRevision, setEditRevision] = useState(0), [shareRevision, setShareRevision] = useState(0)
+  const [, setOutputRender] = useState(0)
+  const outputContext = JSON.stringify([mode, title, target, today, editRevision, language, t('exportActions.failed')])
+  const outputOwner = useMemo(() => createDdayExportRequests(outputContext), [outputContext])
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [copyView, setCopyView] = useState<{ owner: typeof outputOwner; token: DdayExportToken; text: string; status: 'copying' | 'copied' | 'failed' } | null>(null)
+  const currentCopy = copyView?.owner === outputOwner && outputOwner.current(copyView.token) ? copyView : null
+  const copied = currentCopy?.status === 'copied'
+  const clearCopyTimer = () => { if (copyTimer.current !== null) clearTimeout(copyTimer.current); copyTimer.current = null }
+  useLayoutEffect(() => {
+    outputOwner.activate()
+    return () => { outputOwner.dispose(); if (copyTimer.current !== null) clearTimeout(copyTimer.current); copyTimer.current = null }
+  }, [outputOwner])
+  const editEvent = (change: () => void) => {
+    outputOwner.invalidate(); clearCopyTimer(); setCopyView(null); setEditRevision(value => value + 1); setShareRevision(value => value + 1); change()
+  }
+  const beginOutput = () => {
+    const token = outputOwner.begin()
+    if (!token) return null
+    clearCopyTimer(); setCopyView(null); setShareRevision(value => value + 1)
+    return { token, current: () => outputOwner.current(token) }
+  }
+  const shareStarted = () => {
+    outputOwner.invalidate(); clearCopyTimer(); setCopyView(null); setOutputRender(value => value + 1)
+  }
 
   // ── 초기화: URL 파라미터 → 고정한 D-day → 다음 수능 ──
   const inited = useRef(false)
@@ -90,7 +114,15 @@ const DdayCalculator = () => {
     const now = todayKST()
     setToday(now)
     const p = searchParams
-    const list = readLS<SavedDday[]>(SAVED_KEY, []).filter(s => isValidDate(s.date))
+    let list: SavedDday[] = []
+    try {
+      const raw = localStorage.getItem(DDAY_SAVED_KEY)
+      list = parseSavedDdays(raw)
+      savedRaw.current = raw
+    } catch (error) {
+      savedBlocked.current = true
+      setSavedError(ddayCalendarErrorCode(error, 'savedUnavailable'))
+    }
     setSaved(list)
     const m = p.get('mode') as Mode | null
     if (m && MODES.includes(m)) setMode(m)
@@ -105,7 +137,7 @@ const DdayCalculator = () => {
       setTarget(csat.date); setTitle(t('presets.csat'))
     }
 
-    const a = readLS<{ start?: string; type?: AnnivType; inc?: boolean }>(ANNIV_KEY, {})
+    const a = readLS<{ start?: string; type?: AnnivType; inc?: boolean }>(ANNIV_KEY, {}) || {}
     const urlStart = m === 'anniv' ? p.get('start') : null
     setAnnivStart(isValidDate(urlStart) ? urlStart : isValidDate(a.start) ? a.start : addDays(now, -80))
     const ty = (m === 'anniv' ? p.get('type') : null) ?? a.type
@@ -149,7 +181,58 @@ const DdayCalculator = () => {
     if (today && isValidDate(annivStart)) writeLS(ANNIV_KEY, { start: annivStart, type: annivType, inc: includeStart })
   }, [today, annivStart, annivType, includeStart])
 
-  const updateSaved = useCallback((next: SavedDday[]) => { setSaved(next); writeLS(SAVED_KEY, next) }, [])
+  useEffect(() => {
+    const changed = (event: StorageEvent) => {
+      if ((event.key === DDAY_SAVED_KEY || event.key === null) && event.newValue !== savedRaw.current) {
+        savedBlocked.current = true
+        setSavedError('savedConflict')
+      }
+    }
+    window.addEventListener('storage', changed)
+    return () => window.removeEventListener('storage', changed)
+  }, [])
+
+  const reloadSaved = () => {
+    try {
+      const raw = localStorage.getItem(DDAY_SAVED_KEY)
+      const list = parseSavedDdays(raw)
+      savedRaw.current = raw
+      savedBlocked.current = false
+      setSaved(list)
+      setSavedError(null)
+    } catch (error) {
+      savedBlocked.current = true
+      setSavedError(ddayCalendarErrorCode(error, 'savedUnavailable'))
+    }
+  }
+
+  const updateSaved = useCallback(async (next: SavedDday[]) => {
+    if (savedBlocked.current || savedBusyRef.current) return
+    savedBusyRef.current = true
+    setSavedBusy(true)
+    try {
+      await withDdaySavedLock(() => {
+        if (savedBlocked.current) return
+        const raw = writeSavedDdays(localStorage, savedRaw.current, next)
+        savedRaw.current = raw
+        setSaved(next)
+        setSavedError(null)
+      })
+    } catch (error) {
+      const code = ddayCalendarErrorCode(error, 'savedUnavailable')
+      if (code === 'savedConflict' || code === 'savedCorrupt' || code === 'savedUnsupported') savedBlocked.current = true
+      setSavedError(code)
+    } finally { savedBusyRef.current = false; setSavedBusy(false) }
+  }, [])
+
+  const readSavedForExport = () => {
+    if (savedBlocked.current) throw new DdayCalendarError(savedError ?? 'savedUnavailable')
+    try {
+      const raw = localStorage.getItem(DDAY_SAVED_KEY)
+      if (raw !== savedRaw.current) throw new DdayCalendarError('savedConflict')
+      return parseSavedDdays(raw)
+    } catch (error) { throw new DdayCalendarError(ddayCalendarErrorCode(error, 'savedUnavailable')) }
+  }
 
   // ── D-day ──
   const dday = useMemo(() => {
@@ -165,11 +248,11 @@ const DdayCalculator = () => {
 
   const saveCurrent = () => {
     if (!isValidDate(target) || isSaved) return
-    updateSaved([...saved, { id: `${Date.now()}`, title: displayTitle, date: target, pinned: saved.length === 0 }])
+    void updateSaved([...saved, { id: crypto.randomUUID(), title: displayTitle, date: target, pinned: saved.length === 0 }])
   }
   const togglePin = (id: string) => updateSaved(saved.map(s => ({ ...s, pinned: s.id === id ? !s.pinned : false })))
   const remove = (id: string) => updateSaved(saved.filter(s => s.id !== id))
-  const load = (s: { title: string; date: string }) => { setMode('dday'); setTitle(s.title); setTarget(s.date) }
+  const load = (s: { title: string; date: string }) => editEvent(() => { setMode('dday'); setTitle(s.title); setTarget(s.date) })
 
   const ddayShareText = dday ? `${displayTitle} ${dday.label} · ${fmt(target)}` : ''
 
@@ -206,11 +289,18 @@ const DdayCalculator = () => {
   }, [base, addValue, addUnit, subtract, businessOnly])
   const addStats = useMemo(() => (addResult ? rangeStats(base, addResult, H) : null), [addResult, base])
 
-  const onCopy = async (text: string) => {
-    await copyText(`${text}\n${window.location.href}`)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  const copySnapshot = async (text: string) => {
+    const request = beginOutput()
+    if (!request) return
+    const view = { owner: outputOwner, token: request.token, text, status: 'copying' as const }
+    setCopyView(view)
+    const outcome = await copyShareResultLink(text, request.current)
+    if (!request.current() || outcome === 'stale') return
+    setCopyView({ ...view, status: outcome === 'copied' ? 'copied' : 'failed' })
+    if (outcome === 'copied') copyTimer.current = setTimeout(() => { if (request.current()) setCopyView(null) }, 2000)
   }
+  const eventUrl = today && dday ? ddayExportUrl(window.location.href, { title: displayTitle, date: target }) : undefined
+  const onCopy = () => { if (eventUrl && dday) void copySnapshot(`${ddayShareText}\n${eventUrl}`) }
 
   const segBtn = (active: boolean) =>
     `px-3 py-2 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
@@ -219,7 +309,7 @@ const DdayCalculator = () => {
     [t('hero.weeksDays', { w: s.weeks, d: s.restDays }), t('hero.business', { n: s.business }), t('hero.weekend', { n: s.weekend }), t('hero.holiday', { n: s.holiday })].join(' · ')
 
   return (
-    <div className="space-y-6">
+    <div data-dday-root="" data-dday-mode={mode} data-dday-output-context={editRevision} className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -227,7 +317,7 @@ const DdayCalculator = () => {
 
       <div className="grid grid-cols-4 gap-1 p-1 bg-soft rounded-2xl" role="tablist">
         {MODES.map(k => (
-          <button key={k} role="tab" aria-selected={mode === k} onClick={() => setMode(k)}
+          <button key={k} role="tab" aria-selected={mode === k} onClick={() => editEvent(() => setMode(k))}
             className={`px-2 py-2.5 rounded-xl text-sm font-semibold transition-colors ${mode === k ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`}>
             {t(`modes.${k}`)}
           </button>
@@ -235,20 +325,20 @@ const DdayCalculator = () => {
       </div>
 
       {mode === 'dday' && (
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="min-w-0 lg:col-span-1 space-y-6">
             <div className="ui-card p-6 space-y-4">
               {dday && <MobileResultLink href="#dday-calculator-result" label={displayTitle} value={dday.label} />}
               <div>
                 <label className={label} htmlFor="dday-title">{t('dday.eventName')}</label>
-                <input id="dday-title" type="text" value={title} maxLength={40} onChange={e => setTitle(e.target.value)}
-                  placeholder={t('dday.eventNamePlaceholder')} className="ui-field w-full px-4 py-3" />
+                <input id="dday-title" type="text" value={title} maxLength={40} onChange={e => editEvent(() => setTitle(e.target.value))}
+                  placeholder={t('dday.eventNamePlaceholder')} className="ui-field min-h-11 w-full px-4 py-3 text-base" />
               </div>
               <div>
                 <label className={label} htmlFor="dday-date">{t('dday.targetDate')}</label>
-                <input id="dday-date" type="date" value={target} onChange={e => setTarget(e.target.value)} className="ui-field w-full px-4 py-3" />
+                <input id="dday-date" type="date" value={target} onChange={e => editEvent(() => setTarget(e.target.value))} className="ui-field min-h-11 w-full px-4 py-3 text-base" />
               </div>
-              <button onClick={saveCurrent} disabled={!dday || isSaved} className="ui-btn w-full px-4 py-3">
+              <button onClick={saveCurrent} disabled={!dday || isSaved || savedBusy || !!savedError} className="ui-btn w-full px-4 py-3">
                 {isSaved ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                 {isSaved ? t('saved.done') : t('saved.add')}
               </button>
@@ -271,6 +361,10 @@ const DdayCalculator = () => {
 
             <div className="ui-card p-6">
               <h2 className="text-base font-semibold text-fg mb-3">{t('saved.title')}</h2>
+              {savedError && <div role="alert" className="mb-3 rounded-xl bg-subtle p-3 text-sm text-body">
+                <p>{t(`calendarExport.errors.${savedError}`)}</p>
+                <button type="button" onClick={reloadSaved} disabled={savedBusy} className="ui-btn-soft mt-3 min-h-11 px-3 py-2">{t('calendarExport.reloadSaved')}</button>
+              </div>}
               {sortedSaved.length === 0 ? (
                 <p className="text-sm text-muted">{t('saved.empty')}</p>
               ) : (
@@ -285,11 +379,11 @@ const DdayCalculator = () => {
                           <span className="block text-xs text-muted">{fmt(s.date)}</span>
                         </button>
                         <span className={`text-sm font-bold tabular-nums ${d >= 0 ? 'text-primary' : 'text-muted'}`}>{today ? ddayLabel(d) : ''}</span>
-                        <button onClick={() => togglePin(s.id)} aria-label={s.pinned ? t('saved.unpin') : t('saved.pin')} title={s.pinned ? t('saved.unpin') : t('saved.pin')}
-                          className={`p-2 rounded-lg ${s.pinned ? 'text-primary' : 'text-faint hover:text-body'}`}>
+                        <button onClick={() => togglePin(s.id)} disabled={savedBusy || !!savedError} aria-label={s.pinned ? t('saved.unpin') : t('saved.pin')} title={s.pinned ? t('saved.unpin') : t('saved.pin')}
+                          className={`min-h-11 min-w-11 flex items-center justify-center p-2 rounded-lg ${s.pinned ? 'text-primary' : 'text-faint hover:text-body'}`}>
                           {s.pinned ? <Pin className="w-4 h-4" /> : <PinOff className="w-4 h-4" />}
                         </button>
-                        <button onClick={() => remove(s.id)} aria-label={t('saved.delete')} title={t('saved.delete')} className="p-2 rounded-lg text-faint hover:text-red-500">
+                        <button onClick={() => remove(s.id)} disabled={savedBusy || !!savedError} aria-label={t('saved.delete')} title={t('saved.delete')} className="min-h-11 min-w-11 flex items-center justify-center p-2 rounded-lg text-faint hover:text-red-500">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </li>
@@ -301,7 +395,7 @@ const DdayCalculator = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-2 space-y-6">
+          <div className="min-w-0 lg:col-span-2 space-y-6">
             <div id="dday-calculator-result" className="ui-hero p-6 sm:p-8 scroll-mt-20">
               <p className="text-white/80 text-sm font-medium truncate">{displayTitle}</p>
               <p className="text-6xl sm:text-7xl font-bold tabular-nums mt-2" aria-live="polite">{dday ? dday.label : 'D-'}</p>
@@ -314,7 +408,8 @@ const DdayCalculator = () => {
             </div>
             {dday && (
               <div className="flex flex-wrap gap-2">
-                <ShareResult
+                <div data-dday-share="" onClickCapture={shareStarted}><ShareResult
+                  url={eventUrl} resultKey={`${outputContext}:${shareRevision}`}
                   fileName={`dday-${target}`}
                   text={ddayShareText}
                   card={{
@@ -325,12 +420,23 @@ const DdayCalculator = () => {
                       { label: t('shareText.rowHoliday'), value: t('hero.holiday', { n: dday.stats.holiday }) },
                     ],
                   }}
-                />
-                <button onClick={() => onCopy(ddayShareText)} className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-soft text-body hover:bg-track">
-                  {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />} {copied ? t('shareText.copied') : t('shareText.copyText')}
+                /></div>
+                <button data-dday-copy="" onClick={onCopy} disabled={currentCopy?.status === 'copying'} className="inline-flex min-h-11 items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-soft text-body hover:bg-track disabled:opacity-45">
+                  {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />} {copied ? t('shareText.copied') : currentCopy?.status === 'copying' ? t('exportActions.copying') : t('shareText.copyText')}
                 </button>
               </div>
             )}
+            {currentCopy?.status === 'failed' && <DdayCopyRecovery text={currentCopy.text}
+              onRetry={() => { if (outputOwner.current(currentCopy.token)) void copySnapshot(currentCopy.text) }}
+              onClose={() => { if (outputOwner.current(currentCopy.token)) { outputOwner.invalidate(); setCopyView(null) } }} />}
+            <DdayCalendarExport
+              current={{ title: displayTitle, date: target, id: !savedError ? saved.find(item => item.title === displayTitle && item.date === target)?.id : undefined }}
+              saved={sortedSaved}
+              savedAvailable={!!today && !savedError && !savedBusy}
+              readSaved={readSavedForExport}
+              contextKey={outputContext}
+              onBeginOutput={() => beginOutput()?.current ?? null}
+            />
             {isValidDate(target) && <MiniCalendar target={target} today={today} fmt={fmt} holidayName={holidayName} />}
           </div>
         </div>

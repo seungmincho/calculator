@@ -1,12 +1,17 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import NextLink from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gpaCalculator'
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
+import GpaScenarioPanel from '@/components/GpaScenarioPanel'
+import {
+  GPA_AUTOSAVE_KEY, gpaStorageError, parseGpaAutosave, withGpaStorageLock, writeGpaAutosave,
+  type GpaSnapshot, type GpaStorageError,
+} from '@/utils/gpaScenarios'
 import {
   type Course, type Semester as BaseSemester, type GpaScale,
   GRADE_VALUES, computeStats, supersededIds, normalizeGrade, requiredAverage, minGradeFor, parseCourses,
@@ -17,7 +22,6 @@ interface Semester extends BaseSemester {
   isExpanded: boolean
 }
 
-const STORAGE_KEY = 'gpa-calculator-v2'
 const CREDIT_OPTIONS = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6]
 
 let seq = 0
@@ -61,6 +65,10 @@ export default function GpaCalculator() {
   // 공유 링크(?c=)로 연 성적: 이 기기의 내 기록(localStorage)을 덮어쓰지 않음
   const [fromLink, setFromLink] = useState(false)
   const [focusId, setFocusId] = useState<string | null>(null)
+  const [autosaveError, setAutosaveError] = useState<GpaStorageError | null>(null)
+  const [autosaveSaved, setAutosaveSaved] = useState(false)
+  const autosaveRaw = useRef<string | null>(null)
+  const autosaveBlocked = useRef(false)
 
   // 복원: 공유 링크(c) 또는 localStorage → URL(scale/target/rem) 순으로 덮어씀
   useEffect(() => {
@@ -69,6 +77,7 @@ export default function GpaCalculator() {
     let nextScale: GpaScale = urlScale === '4.3' ? '4.3' : '4.5'
     const shared = params.get('c')
     if (shared) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Restore browser-only input after the deterministic server render.
       setSemesters(decodeSemesters(shared, nextScale).map(courses => ({
         id: uid(), isExpanded: true,
         courses: courses.length ? courses.map(c => ({ ...c, id: uid() })) : [emptyCourse()],
@@ -76,33 +85,74 @@ export default function GpaCalculator() {
       setIsSample(false)
       setFromLink(true)
     } else try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
-      if (saved && Array.isArray(saved.semesters) && saved.semesters.length) {
-        if (!urlScale && saved.scale === '4.3') nextScale = '4.3'
-        setSemesters(saved.semesters.map((s: Semester) => ({
+      const raw = localStorage.getItem(GPA_AUTOSAVE_KEY)
+      autosaveRaw.current = raw
+      const result = parseGpaAutosave(raw)
+      if (!result.ok) {
+        autosaveBlocked.current = true
+        setAutosaveError(result.error)
+      } else if (result.snapshot) {
+        const saved = result.snapshot
+        if (!urlScale) nextScale = saved.scale
+        setSemesters(saved.semesters.map(s => ({
           ...s,
           isExpanded: s.isExpanded !== false,
-          courses: (s.courses || []).map(c => ({ ...c, credits: Number(c.credits) || 0, grade: normalizeGrade(c.grade || '', nextScale) })),
+          courses: s.courses.map(c => ({ ...c, grade: normalizeGrade(c.grade, nextScale) })),
         })))
         setIsSample(false)
         if (saved.targetGpa) setTargetGpa(String(saved.targetGpa))
         if (saved.remainingCredits) setRemainingCredits(String(saved.remainingCredits))
       }
-    } catch { /* 저장소 차단/손상 → 예시 데이터 유지 */ }
+    } catch (error) {
+      autosaveBlocked.current = true
+      setAutosaveError(gpaStorageError(error))
+    }
     if (params.get('target')) setTargetGpa(params.get('target') as string)
     if (params.get('rem')) setRemainingCredits(params.get('rem') as string)
     setScale(nextScale)
     setLoaded(true)
   }, [])
 
-  // 저장 + URL 동기화 (예시 데이터·공유받은 성적은 저장하지 않음)
+  // Other tabs must never silently replace this tab's active draft.
+  useEffect(() => {
+    if (fromLink) return
+    const changed = (event: StorageEvent) => {
+      if ((event.key === GPA_AUTOSAVE_KEY || event.key === null) && event.newValue !== autosaveRaw.current) {
+        autosaveBlocked.current = true
+        setAutosaveSaved(false)
+        setAutosaveError('conflict')
+      }
+    }
+    window.addEventListener('storage', changed)
+    return () => window.removeEventListener('storage', changed)
+  }, [fromLink])
+
+  // Saved drafts are validated and written under a lock, preserving corrupt and newer data.
+  useEffect(() => {
+    if (!loaded || isSample || fromLink || autosaveBlocked.current) return
+    let cancelled = false
+    void Promise.resolve().then(() => {
+      if (cancelled) return
+      setAutosaveSaved(false)
+      return withGpaStorageLock(GPA_AUTOSAVE_KEY, () => {
+        if (cancelled || autosaveBlocked.current) return
+        const result = writeGpaAutosave(window.localStorage, autosaveRaw.current, { scale, semesters, targetGpa, remainingCredits })
+        if (result.ok) {
+          autosaveRaw.current = result.raw
+          setAutosaveSaved(true)
+          setAutosaveError(null)
+        } else {
+          if (result.error === 'conflict' || result.error === 'corrupt' || result.error === 'unsupported') autosaveBlocked.current = true
+          setAutosaveError(result.error)
+        }
+      })
+    }).catch(error => { if (!cancelled) setAutosaveError(gpaStorageError(error)) })
+    return () => { cancelled = true }
+  }, [loaded, isSample, fromLink, scale, semesters, targetGpa, remainingCredits])
+
+  // URL 동기화 (예시 데이터·공유받은 성적은 내 자동저장에 쓰지 않음)
   useEffect(() => {
     if (!loaded) return
-    if (!isSample && !fromLink) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ scale, semesters, targetGpa, remainingCredits }))
-      } catch { /* quota/차단 무시 */ }
-    }
     const url = new URL(window.location.href)
     url.searchParams.set('scale', scale)
     if (targetGpa) url.searchParams.set('target', targetGpa)
@@ -118,6 +168,7 @@ export default function GpaCalculator() {
   useEffect(() => {
     if (!focusId) return
     document.getElementById(`gpa-course-${focusId}`)?.focus()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Clear the one-shot focus request after updating the DOM.
     setFocusId(null)
   }, [focusId, semesters])
 
@@ -214,6 +265,18 @@ export default function GpaCalculator() {
     setPasteMsg('')
   }, [])
 
+  const currentSnapshot = useMemo<GpaSnapshot>(() => ({ scale, semesters, targetGpa, remainingCredits }), [scale, semesters, targetGpa, remainingCredits])
+  const restoreScenario = useCallback((snapshot: GpaSnapshot) => {
+    setScale(snapshot.scale)
+    setSemesters(snapshot.semesters.map(semester => ({ ...semester, isExpanded: semester.isExpanded !== false })))
+    setTargetGpa(snapshot.targetGpa)
+    setRemainingCredits(snapshot.remainingCredits)
+    setIsSample(false)
+    setPasteMsg('')
+    setFocusId(null)
+    // Keep a shared-link session isolated from this device's autosaved grades.
+  }, [])
+
   // 공유 링크: 과목 목록은 주소창 대신 공유할 때만 담음 (window 미사용 → 첫 렌더 결정적)
   const shareUrl = useMemo(() => {
     const q = new URLSearchParams({ scale })
@@ -234,9 +297,9 @@ export default function GpaCalculator() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Panel */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="min-w-0 lg:col-span-1 space-y-6">
           {/* Scale */}
           <div className="ui-card p-6">
             <MobileResultLink href="#gpa-calculator-result" className="mb-4" label={t('result.cumulativeGpa')} value={`${fmt(cumulative.gpa)} / ${maxScale}`} />
@@ -245,10 +308,10 @@ export default function GpaCalculator() {
               <button onClick={() => changeScale('4.5')} className={segBtn(scale === '4.5')}>{t('scale45')}</button>
               <button onClick={() => changeScale('4.3')} className={segBtn(scale === '4.3')}>{t('scale43')}</button>
             </div>
-            <button onClick={reset} className="w-full mt-3 ui-btn-soft px-4 py-2 font-medium">
+            <button onClick={reset} className="w-full min-h-11 mt-3 ui-btn-soft px-4 py-2 font-medium">
               {t('reset')}
             </button>
-            <p className="text-xs text-muted mt-3">{t('savedNotice')}</p>
+            <p className="text-xs text-muted mt-3" role="status">{t(fromLink ? 'sharedNotice' : autosaveError ? `autosave.errors.${autosaveError}` : isSample ? 'savedNotice' : autosaveSaved ? 'autosave.saved' : 'autosave.pending')}</p>
             <NextLink href="/gpa-converter/" className="block text-sm text-primary mt-2 hover:underline">
               {t('converterLink')}
             </NextLink>
@@ -276,7 +339,7 @@ export default function GpaCalculator() {
                   min={0}
                   max={maxScale}
                   step={0.01}
-                  className="w-full px-3 py-2 ui-field text-sm"
+                  className="w-full min-h-11 px-3 py-2 ui-field text-base"
                 />
               </label>
               <label className="block">
@@ -288,7 +351,7 @@ export default function GpaCalculator() {
                   onChange={e => setRemainingCredits(e.target.value)}
                   placeholder="30"
                   min={1}
-                  className="w-full px-3 py-2 ui-field text-sm"
+                  className="w-full min-h-11 px-3 py-2 ui-field text-base"
                 />
                 <span className="block text-xs text-muted mt-1">{t('reverse.remainingHint')}</span>
               </label>
@@ -328,7 +391,7 @@ export default function GpaCalculator() {
               onChange={e => { setPasteText(e.target.value); setPasteMsg('') }}
               rows={5}
               placeholder={t('paste.placeholder')}
-              className="w-full px-3 py-2 ui-field text-sm font-mono"
+              className="w-full px-3 py-2 ui-field text-base font-mono"
             />
             <button
               onClick={importPasted}
@@ -342,7 +405,7 @@ export default function GpaCalculator() {
         </div>
 
         {/* Right Panel */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="min-w-0 lg:col-span-2 space-y-6">
           {/* Cumulative Results */}
           <div id="gpa-calculator-result" className="ui-card p-6 scroll-mt-20">
             <div className="flex items-baseline justify-between gap-3 mb-4">
@@ -407,6 +470,8 @@ export default function GpaCalculator() {
             />
           </div>
 
+          <GpaScenarioPanel current={currentSnapshot} fromLink={fromLink} onRestore={restoreScenario} />
+
           {/* Semesters */}
           <div className="space-y-4">
             <p className="text-xs text-muted">{t('enterHint')}</p>
@@ -433,7 +498,7 @@ export default function GpaCalculator() {
                         onClick={() => removeSemester(semester.id)}
                         aria-label={t('removeSemester')}
                         title={t('removeSemester')}
-                        className="text-muted hover:text-red-600 shrink-0"
+                        className="flex min-h-11 min-w-11 items-center justify-center text-muted hover:text-red-600 shrink-0"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
@@ -468,27 +533,27 @@ export default function GpaCalculator() {
                                 }}
                                 placeholder={t('coursePlaceholder')}
                                 aria-label={t('courseName')}
-                                className={`w-full px-3 py-2 ui-field text-sm ${isOld ? 'line-through' : ''}`}
+                                className={`w-full min-h-11 px-3 py-2 ui-field text-base ${isOld ? 'line-through' : ''}`}
                               />
                             </div>
-                            <div className="col-span-3 sm:col-span-2">
+                            <div className="col-span-6 min-w-0 sm:col-span-2">
                               <select
                                 value={course.credits}
                                 onChange={e => updateCourse(semester.id, course.id, { credits: Number(e.target.value) })}
                                 aria-label={t('credits')}
-                                className="w-full px-2 py-2 ui-field text-sm"
+                                className="w-full min-h-11 px-2 py-2 ui-field text-base"
                               >
                                 {(CREDIT_OPTIONS.includes(course.credits) ? CREDIT_OPTIONS : [...CREDIT_OPTIONS, course.credits]).map(v => (
                                   <option key={v} value={v}>{v}</option>
                                 ))}
                               </select>
                             </div>
-                            <div className="col-span-4 sm:col-span-2">
+                            <div className="col-span-6 min-w-0 sm:col-span-2">
                               <select
                                 value={course.grade}
                                 onChange={e => updateCourse(semester.id, course.id, { grade: e.target.value })}
                                 aria-label={t('grade')}
-                                className="w-full px-2 py-2 ui-field text-sm"
+                                className="w-full min-h-11 px-2 py-2 ui-field text-base"
                               >
                                 <option value="">{t('selectGrade')}</option>
                                 {gradeOptions.map(g => (
@@ -498,8 +563,8 @@ export default function GpaCalculator() {
                                 <option value="NP">NP</option>
                               </select>
                             </div>
-                            <div className="col-span-4 sm:col-span-3 flex items-center gap-3 text-xs text-body">
-                              <label className="flex items-center gap-1 cursor-pointer">
+                            <div className="col-span-10 sm:col-span-3 flex flex-wrap items-center gap-x-3 text-xs text-body">
+                              <label className="flex min-h-11 items-center gap-1 cursor-pointer">
                                 <input
                                   type="checkbox"
                                   checked={!!course.major}
@@ -508,7 +573,7 @@ export default function GpaCalculator() {
                                 />
                                 {t('major')}
                               </label>
-                              <label className="flex items-center gap-1 cursor-pointer" title={t('retakeHint')}>
+                              <label className="flex min-h-11 items-center gap-1 cursor-pointer" title={t('retakeHint')}>
                                 <input
                                   type="checkbox"
                                   checked={!!course.retake}
@@ -518,13 +583,13 @@ export default function GpaCalculator() {
                                 {t('retake')}
                               </label>
                             </div>
-                            <div className="col-span-1 flex justify-center">
+                            <div className="col-span-2 sm:col-span-1 flex justify-center">
                               {semester.courses.length > 1 && (
                                 <button
                                   onClick={() => removeCourse(semester.id, course.id)}
                                   aria-label={t('remove')}
                                   title={t('remove')}
-                                  className="text-muted hover:text-red-600"
+                                  className="flex min-h-11 min-w-11 items-center justify-center text-muted hover:text-red-600"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -537,7 +602,7 @@ export default function GpaCalculator() {
 
                       <button
                         onClick={() => addCourse(semester.id)}
-                        className="w-full ui-btn-soft px-4 py-2 font-medium"
+                        className="w-full min-h-11 ui-btn-soft px-4 py-2 font-medium"
                       >
                         {t('addCourse')}
                       </button>

@@ -5,17 +5,20 @@ import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
 import imageOcrMessages from '../../../messages/generated/ko/ns/imageOcr.json'
 
+const TITLE = '이미지 텍스트 추출 - 원고 보존·순차 OCR·복사 복구 | 툴허브'
+const DESCRIPTION = '사진 속 글자를 순서대로 인식하고 편집하세요. 현재 파일 완료 뒤 일시정지·실패만 재시도하며 이전 성공 원고와 인식 중 편집을 보존합니다. 현재·전체 복사 복구, TXT 다운로드와 읽어주기 전달을 지원합니다.'
+
 export const metadata: Metadata = {
-  title: '이미지 텍스트 추출 (OCR) - 사진에서 글자 인식 | 툴허브',
-  description: '이미지에서 텍스트를 추출하는 OCR 도구입니다. 한국어, 영어, 일본어, 중국어를 지원하며, 추출된 텍스트를 복사하거나 다운로드할 수 있습니다.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: 'OCR, 이미지 텍스트 추출, 사진 글자 인식, 텍스트 인식, 광학문자인식',
-  openGraph: { title: '이미지 텍스트 추출 (OCR) | 툴허브', description: '이미지에서 텍스트를 추출하는 OCR 도구', url: 'https://toolhub.ai.kr/image-ocr/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-ocr.png', width: 1200, height: 630, alt: '이미지 텍스트 추출 (OCR)' }] },
-  twitter: { card: 'summary_large_image', title: '이미지 텍스트 추출 (OCR) | 툴허브', description: '이미지에서 텍스트를 추출하는 OCR 도구', images: ['https://toolhub.ai.kr/og/image-ocr.png'] },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: 'https://toolhub.ai.kr/image-ocr/', siteName: '툴허브', locale: 'ko_KR', type: 'website', images: [{ url: 'https://toolhub.ai.kr/og/image-ocr.png', width: 1200, height: 630, alt: '이미지 텍스트 추출 (OCR)' }] },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['https://toolhub.ai.kr/og/image-ocr.png'] },
   alternates: { canonical: 'https://toolhub.ai.kr/image-ocr/' },
 }
 
 export default function ImageOcrPage() {
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 텍스트 추출 (OCR)', description: '이미지에서 텍스트를 추출하는 OCR 도구', url: 'https://toolhub.ai.kr/image-ocr/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한국어 OCR', '영어 OCR', '일본어 OCR', '텍스트 복사', '결과 다운로드'] }
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebApplication', name: '이미지 텍스트 추출 (OCR)', description: DESCRIPTION, url: 'https://toolhub.ai.kr/image-ocr/', applicationCategory: 'UtilityApplication', operatingSystem: 'Any', browserRequirements: 'JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' }, featureList: ['한국어·영어·일본어·중국어 간체/번체 인식', '순차 인식·현재 파일 뒤 일시정지·실패만 재시도', '이전 성공 원고와 인식 중 편집 보존', '편집 원고 교체·정리·초기화 확인', '현재·전체 복사 실패 복구·TXT 요청', '편집 원고를 읽어주기로 전달'] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -35,17 +38,17 @@ export default function ImageOcrPage() {
             이미지 OCR(광학 문자 인식)이란?
           </h2>
           <p className="text-body leading-relaxed mb-6">
-            OCR(Optical Character Recognition, 광학 문자 인식)은 이미지나 사진 속에 있는 텍스트를 컴퓨터가 읽고 편집 가능한 텍스트로 변환하는 기술입니다. 이 도구는 100개 이상의 언어를 지원하는 Tesseract.js 엔진으로 브라우저에서 직접 한국어, 영어, 일본어, 중국어(간체·번체)를 인식합니다. 서버에 이미지를 전송하지 않아 개인정보 보호에 안전합니다.
+            이미지 OCR은 사진·스캔 문서·스크린샷의 글자를 편집 가능한 텍스트로 만드는 도구입니다. 한국어·영어·일본어·중국어 간체/번체를 선택해 브라우저에서 한 장씩 인식합니다. 현재 파일이 끝난 뒤 일시정지하거나 실패한 파일만 재시도할 수 있습니다. 인식 서버로 이미지를 업로드하지 않으며 엔진·언어 데이터는 필요할 때 내려받습니다.
           </p>
           <h3 className="text-lg font-semibold text-fg mb-3">
             이미지 텍스트 추출 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
-            <li><strong>스캔 문서 디지털화:</strong> 종이 문서를 촬영하거나 스캔한 이미지에서 텍스트를 추출하여 편집 가능한 디지털 파일로 변환하세요.</li>
-            <li><strong>영수증·명함 정보 추출:</strong> 영수증 금액, 명함의 연락처 등을 직접 타이핑하지 않고 OCR로 빠르게 추출할 수 있습니다.</li>
-            <li><strong>인식률 향상 방법:</strong> 이미지가 기울어진 경우 회전 보정 기능을 사용하고, 해상도는 300dpi 이상을 권장합니다.</li>
-            <li><strong>다국어 혼합 문서:</strong> 한국어와 영어가 섞인 문서는 다중 언어 모드(kor+eng)를 선택하면 인식률이 향상됩니다.</li>
-            <li><strong>손글씨 주의:</strong> OCR은 인쇄 텍스트에 최적화되어 있으며 손글씨는 인식률이 낮을 수 있습니다.</li>
+            <li><strong>이전 원고 보존:</strong> 새 인식이 실패해도 이전 성공 결과를 유지합니다. 인식 중 새로 편집한 원고는 늦은 결과로 덮어쓰지 않습니다.</li>
+            <li><strong>설정과 결과 구분:</strong> 언어·보정·회전을 바꾸어도 기존 결과는 유지합니다. 새 설정을 적용하려면 다시 인식을 선택하고, 편집 원고 교체 확인을 읽어 주세요.</li>
+            <li><strong>복사와 TXT:</strong> 현재 결과 또는 결과가 있는 항목의 전체 원고를 목록 순서대로 사용합니다. 처리 중이거나 실패한 항목의 이전 성공 원고도 포함합니다.</li>
+            <li><strong>복사 실패 복구:</strong> 자동 복사가 실패하면 전체 내용을 열어 직접 선택하거나 다시 시도합니다. TXT 안내는 다운로드 요청을 뜻하며 저장 완료 확인은 아닙니다.</li>
+            <li><strong>원본 대조:</strong> 낮은 신뢰도 표시와 원본을 확인해 글자를 수정하세요. 텍스트를 찾지 못한 정상 결과는 인식 실패와 구분해 안내합니다.</li>
           </ul>
         </div>
       </section>

@@ -8,8 +8,12 @@ import {
   FileUp, FileText, Download, Trash2, GripVertical, ArrowUp, ArrowDown, ArrowLeft, ArrowRight,
   RotateCw, RotateCcw, AlertCircle, CheckCircle2, Loader2, ArrowDownAZ, Undo2,
 } from 'lucide-react'
-import { PDFDocument, degrees, EncryptedPDFError, type PDFImage } from 'pdf-lib'
+import { PDFDocument, EncryptedPDFError, type PDFImage } from 'pdf-lib'
 import GuideSection from '@/components/GuideSection'
+import PdfHistoryControls from '@/components/PdfHistoryControls'
+import { createPdfPageHistory, editPdfPages, undoPdfPageEdit, redoPdfPageEdit, pdfPageFocusKey, pdfHistoryShortcut, type PdfPageHistory, type PdfPageEdit } from '@/utils/pdfEditHistory'
+import { createPdfTaskGuard, snapshotPdfItems } from '@/utils/pdfTaskGuard'
+import { createOrganizedPdf, snapshotPdfOrganize } from '@/utils/pdfOrganizeExport'
 import { formatBytes, uniqueNames, decodeImage, encodeImage } from '@/utils/imageCompress'
 import {
   parsePageRanges, planSplit, pageLabel, outName, isPdf, move, pageSize, fitRect, jpegOrientation, MM,
@@ -21,8 +25,6 @@ const TABS: Tab[] = ['merge', 'split', 'organize', 'imageToPdf']
 
 interface PdfItem { id: string; file: File; pages: number }
 interface ImgItem { id: string; file: File; url: string }
-/** 페이지 정리 카드. w·h는 원본 회전까지 반영한 보이는 크기, rot은 사용자가 더한 회전 */
-interface PageCard { key: string; src: number; rot: number; w: number; h: number }
 type Status =
   | { kind: 'idle' }
   | { kind: 'working'; msg: string; done: number; total: number }
@@ -50,8 +52,8 @@ function useDragSort(onMove: (from: number, to: number) => void) {
   return { props, over }
 }
 
-function DropZone({ accept, multiple, title, hint, compact, onFiles }: {
-  accept: string; multiple?: boolean; title: string; hint: string; compact?: boolean; onFiles: (f: File[]) => void
+function DropZone({ accept, multiple, title, hint, compact, onFiles, inputId }: {
+  accept: string; multiple?: boolean; title: string; hint: string; compact?: boolean; onFiles: (f: File[]) => void; inputId?: string
 }) {
   const [drag, setDrag] = useState(false)
   return (
@@ -68,6 +70,7 @@ function DropZone({ accept, multiple, title, hint, compact, onFiles }: {
       <span className="text-xs text-muted">{hint}</span>
       <input
         type="file"
+        id={inputId}
         accept={accept}
         multiple={multiple}
         className="sr-only"
@@ -84,16 +87,12 @@ export default function PdfTools() {
   const sp = useSearchParams()
   const urlTab = sp.get('tab')
   const [tab, setTab] = useState<Tab>('merge')
+  const tabRef = useRef<Tab>('merge')
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [result, setResult] = useState<Result | null>(null)
   const [announce, setAnnounce] = useState('')
   const busy = status.kind === 'working'
-
-  // ── 탭 (URL ?tab=) ──
-  useEffect(() => {
-    const v = urlTab === 'rotate' ? 'organize' : urlTab
-    if (v && (TABS as string[]).includes(v)) setTab(v as Tab)
-  }, [urlTab])
+  const task = useRef(createPdfTaskGuard())
 
   const resultRef = useRef<Result | null>(null)
   const clearResult = useCallback(() => {
@@ -102,10 +101,29 @@ export default function PdfTools() {
     setResult(null)
   }, [])
 
-  const selectTab = (next: Tab, focus = false) => {
-    setTab(next)
-    setStatus({ kind: 'idle' })
+  const invalidate = useCallback(() => {
+    task.current.invalidate()
     clearResult()
+    setStatus({ kind: 'idle' })
+  }, [clearResult])
+  const beginTask = () => {
+    const token = task.current.begin()
+    clearResult()
+    setStatus({ kind: 'working', msg: t('working.saving'), done: 0, total: 1 })
+    return token
+  }
+  const taskStatus = (token: number, next: Status) => { if (task.current.isCurrent(token)) setStatus(next) }
+
+  // URL changes invalidate unfinished work without discarding any tab's inputs.
+  useEffect(() => {
+    const v = urlTab === 'rotate' ? 'organize' : urlTab
+    if (v && (TABS as string[]).includes(v) && v !== tabRef.current) { invalidate(); tabRef.current = v as Tab; setTab(v as Tab) }
+  }, [urlTab, invalidate])
+
+  const selectTab = (next: Tab, focus = false) => {
+    tabRef.current = next
+    setTab(next)
+    invalidate()
     const url = new URL(window.location.href)
     if (next === 'merge') url.searchParams.delete('tab'); else url.searchParams.set('tab', next)
     window.history.replaceState(window.history.state, '', url)
@@ -122,7 +140,8 @@ export default function PdfTools() {
   }
 
   // ── 공통: 결과 저장 ──
-  const finish = useCallback((data: BlobPart, name: string, type: string, msg: string) => {
+  const finish = useCallback((token: number, data: BlobPart, name: string, type: string, msg: string) => {
+    if (!task.current.isCurrent(token)) return
     clearResult()
     const blob = new Blob([data], { type })
     const r = { url: URL.createObjectURL(blob), name, size: blob.size }
@@ -132,8 +151,7 @@ export default function PdfTools() {
     a.href = r.url
     a.download = name
     document.body.appendChild(a)
-    a.click()
-    a.remove()
+    try { a.click() } finally { a.remove() }
     setStatus({ kind: 'done', msg })
   }, [clearResult])
 
@@ -143,24 +161,28 @@ export default function PdfTools() {
       : t('error.load', { name }), [t])
 
   /** PDF 여러 개 읽어 쪽수 확인. 실패·비PDF는 오류 메시지로 모아 알림 */
-  const readPdfs = useCallback(async (files: File[]): Promise<{ items: PdfItem[]; docs: PDFDocument[] }> => {
+  const readPdfs = useCallback(async (files: File[], token: number): Promise<{ items: PdfItem[]; docs: PDFDocument[] }> => {
     const pdfs = files.filter(isPdf)
     const errors: string[] = []
     if (pdfs.length < files.length) errors.push(t('error.skipped', { count: files.length - pdfs.length }))
     const items: PdfItem[] = []
     const docs: PDFDocument[] = []
     for (let i = 0; i < pdfs.length; i++) {
+      if (!task.current.isCurrent(token)) return { items: [], docs: [] }
       setStatus({ kind: 'working', msg: t('working.reading', { done: i + 1, total: pdfs.length }), done: i, total: pdfs.length })
       await tick()
+      if (!task.current.isCurrent(token)) return { items: [], docs: [] }
       try {
         const doc = await loadPdf(pdfs[i])
+        if (!task.current.isCurrent(token)) return { items: [], docs: [] }
         items.push({ id: uid(), file: pdfs[i], pages: doc.getPageCount() })
         docs.push(doc)
       } catch (e) {
+        if (!task.current.isCurrent(token)) return { items: [], docs: [] }
         errors.push(pdfError(e, pdfs[i].name))
       }
     }
-    setStatus(errors.length ? { kind: 'error', msg: errors.join(' ') } : { kind: 'idle' })
+    if (task.current.isCurrent(token)) setStatus(errors.length ? { kind: 'error', msg: errors.join(' ') } : { kind: 'idle' })
     return { items, docs }
   }, [pdfError, t])
 
@@ -169,34 +191,37 @@ export default function PdfTools() {
   // ════ 합치기 ════
   const [mergeFiles, setMergeFiles] = useState<PdfItem[]>([])
   const addMerge = async (files: File[]) => {
-    if (!files.length || busy) return
-    clearResult()
-    const { items } = await readPdfs(files)
-    setMergeFiles((prev) => [...prev, ...items])
+    if (!files.length) return
+    const token = beginTask()
+    const { items } = await readPdfs(files, token)
+    if (task.current.isCurrent(token)) setMergeFiles((prev) => [...prev, ...items])
   }
-  const moveMerge = (from: number, to: number) => { setMergeFiles((p) => move(p, from, to)); moveMsg(from, to) }
+  const moveMerge = (from: number, to: number) => { invalidate(); setMergeFiles((p) => move(p, from, to)); moveMsg(from, to) }
   const mergeTotalPages = mergeFiles.reduce((s, f) => s + f.pages, 0)
 
   const runMerge = async () => {
     if (mergeFiles.length < 2) { setStatus({ kind: 'error', msg: t('merge.errorMin') }); return }
-    const out = await PDFDocument.create()
-    for (let i = 0; i < mergeFiles.length; i++) {
-      const f = mergeFiles[i]
-      setStatus({ kind: 'working', msg: t('merge.working', { done: i + 1, total: mergeFiles.length }), done: i, total: mergeFiles.length + 1 })
-      await tick()
-      try {
+    const token = beginTask(), files = snapshotPdfItems(mergeFiles)
+    try {
+      const out = await PDFDocument.create()
+      for (let i = 0; i < files.length; i++) {
+        if (!task.current.isCurrent(token)) return
+        const f = files[i]
+        taskStatus(token, { kind: 'working', msg: t('merge.working', { done: i + 1, total: files.length }), done: i, total: files.length + 1 })
+        await tick()
+        if (!task.current.isCurrent(token)) return
         const src = await loadPdf(f.file)
+        if (!task.current.isCurrent(token)) return
         const pages = await out.copyPages(src, src.getPageIndices())
+        if (!task.current.isCurrent(token)) return
         pages.forEach((p) => out.addPage(p))
-      } catch (e) {
-        setStatus({ kind: 'error', msg: pdfError(e, f.file.name) })
-        return
       }
-    }
-    setStatus({ kind: 'working', msg: t('working.saving'), done: mergeFiles.length, total: mergeFiles.length + 1 })
-    await tick()
-    const bytes = await out.save()
-    finish(bytes as BlobPart, outName(mergeFiles[0].file.name, t('suffix.merged')), 'application/pdf', t('merge.success', { pages: out.getPageCount() }))
+      taskStatus(token, { kind: 'working', msg: t('working.saving'), done: files.length, total: files.length + 1 })
+      await tick()
+      if (!task.current.isCurrent(token)) return
+      const bytes = await out.save()
+      finish(token, bytes as BlobPart, outName(files[0].file.name, t('suffix.merged')), 'application/pdf', t('merge.success', { pages: out.getPageCount() }))
+    } catch (e) { taskStatus(token, { kind: 'error', msg: pdfError(e, files[0].file.name) }) }
   }
 
   // ════ 나누기 ════
@@ -208,10 +233,10 @@ export default function PdfTools() {
   const [everyN, setEveryN] = useState(2)
 
   const loadSplit = async (files: File[]) => {
-    if (!files.length || busy) return
-    clearResult()
-    const { items } = await readPdfs(files.slice(0, 1))
-    if (!items[0]) return
+    if (!files.length) return
+    const token = beginTask()
+    const { items } = await readPdfs(files.slice(0, 1), token)
+    if (!task.current.isCurrent(token) || !items[0]) return
     setSplitDoc(items[0])
     setRangeText('')
     setRangeTouched(false)
@@ -228,60 +253,94 @@ export default function PdfTools() {
   const runSplit = async () => {
     if (!splitDoc) return
     if (!groups.length) { setRangeTouched(true); focusSoon('pdf-range'); return }
-    let src: PDFDocument
-    try { src = await loadPdf(splitDoc.file) } catch (e) { setStatus({ kind: 'error', msg: pdfError(e, splitDoc.file.name) }); return }
-    const names = uniqueNames(groups.map((g) => outName(splitDoc.file.name, `p${pageLabel(g)}`)))
-    const outs: Uint8Array[] = []
-    for (let i = 0; i < groups.length; i++) {
-      setStatus({ kind: 'working', msg: t('split.working', { done: i + 1, total: groups.length }), done: i, total: groups.length + 1 })
-      if (i % 5 === 0) await tick()
-      const doc = await PDFDocument.create()
-      ;(await doc.copyPages(src, groups[i])).forEach((p) => doc.addPage(p))
-      outs.push(await doc.save())
-    }
-    const msg = t('split.success', { count: groups.length })
-    if (outs.length === 1) { finish(outs[0] as BlobPart, names[0], 'application/pdf', msg); return }
-    setStatus({ kind: 'working', msg: t('working.zipping'), done: groups.length, total: groups.length + 1 })
-    await tick()
-    const JSZip = (await import('jszip')).default
-    const zip = new JSZip()
-    outs.forEach((b, i) => zip.file(names[i], b))
-    const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' })
-    finish(blob, outName(splitDoc.file.name, t('suffix.split'), 'zip'), 'application/zip', msg)
+    const token = beginTask(), file = splitDoc.file, selectedGroups = groups.map(group => [...group])
+    try {
+      const src = await loadPdf(file)
+      if (!task.current.isCurrent(token)) return
+      const names = uniqueNames(selectedGroups.map((g) => outName(file.name, `p${pageLabel(g)}`)))
+      const outs: Uint8Array[] = []
+      for (let i = 0; i < selectedGroups.length; i++) {
+        if (!task.current.isCurrent(token)) return
+        taskStatus(token, { kind: 'working', msg: t('split.working', { done: i + 1, total: selectedGroups.length }), done: i, total: selectedGroups.length + 1 })
+        if (i % 5 === 0) await tick()
+        if (!task.current.isCurrent(token)) return
+        const doc = await PDFDocument.create()
+        if (!task.current.isCurrent(token)) return
+        const copied = await doc.copyPages(src, selectedGroups[i])
+        if (!task.current.isCurrent(token)) return
+        copied.forEach((p) => doc.addPage(p))
+        outs.push(await doc.save())
+      }
+      if (!task.current.isCurrent(token)) return
+      const msg = t('split.success', { count: selectedGroups.length })
+      if (outs.length === 1) { finish(token, outs[0] as BlobPart, names[0], 'application/pdf', msg); return }
+      taskStatus(token, { kind: 'working', msg: t('working.zipping'), done: selectedGroups.length, total: selectedGroups.length + 1 })
+      const JSZip = (await import('jszip')).default
+      if (!task.current.isCurrent(token)) return
+      const zip = new JSZip()
+      outs.forEach((b, i) => zip.file(names[i], b))
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' })
+      finish(token, blob, outName(file.name, t('suffix.split'), 'zip'), 'application/zip', msg)
+    } catch (e) { taskStatus(token, { kind: 'error', msg: pdfError(e, file.name) }) }
   }
 
   // ════ 페이지 정리 (삭제·회전·순서) ════
   const [orgDoc, setOrgDoc] = useState<PdfItem | null>(null)
-  const [orgInit, setOrgInit] = useState<PageCard[]>([])
-  const [cards, setCards] = useState<PageCard[]>([])
+  const [history, setHistory] = useState(createPdfPageHistory)
+  const historyRef = useRef(history)
+  const cards = history.present, orgInit = history.initial
+  const installHistory = (next: PdfPageHistory) => { historyRef.current = next; setHistory(next) }
+  const applyHistory = (next: PdfPageHistory, focus = false, preferred?: string) => {
+    const before = historyRef.current
+    if (next === before) return false
+    invalidate()
+    installHistory(next)
+    if (focus) {
+      const key = pdfPageFocusKey(before.present, next.present, preferred)
+      focusSoon(key !== null ? `pdf-pg-del-${key}` : next.past.length ? 'pdf-org-undo' : 'pdf-org-redo')
+    }
+    return true
+  }
+  const editPages = (action: PdfPageEdit) => applyHistory(editPdfPages(historyRef.current, action))
+  const historyStep = (direction: 'undo' | 'redo') => {
+    const next = direction === 'undo' ? undoPdfPageEdit(historyRef.current) : redoPdfPageEdit(historyRef.current)
+    if (applyHistory(next, true)) setAnnounce(t(direction === 'undo' ? 'history.undone' : 'history.redone'))
+  }
+  const onOrganizeKey = (event: KeyboardEvent) => {
+    if (tab !== 'organize' || !orgDoc) return
+    const target = event.target as HTMLElement
+    const direction = pdfHistoryShortcut({ ...event, isComposing: event.nativeEvent.isComposing, editable: !!target.closest?.('input, textarea, select, [contenteditable="true"], [contenteditable=""]') })
+    if (!direction || !(direction === 'undo' ? historyRef.current.past.length : historyRef.current.future.length)) return
+    event.preventDefault(); historyStep(direction)
+  }
 
   const loadOrganize = async (files: File[]) => {
-    if (!files.length || busy) return
-    clearResult()
-    const { items, docs } = await readPdfs(files.slice(0, 1))
-    if (!items[0]) return
+    if (!files.length) return
+    const token = beginTask()
+    const { items, docs } = await readPdfs(files.slice(0, 1), token)
+    if (!task.current.isCurrent(token) || !items[0]) return
     const init = docs[0].getPages().map((p, i) => {
       const { width, height } = p.getSize()
       const turned = norm(p.getRotation().angle) % 180 !== 0
       return { key: String(i), src: i, rot: 0, w: turned ? height : width, h: turned ? width : height }
     })
     setOrgDoc(items[0])
-    setOrgInit(init)
-    setCards(init)
+    installHistory(createPdfPageHistory(init))
+    setAnnounce(t('history.replaced'))
   }
-  const rotateCard = (i: number, deg: number) => setCards((c) => c.map((x, j) => (j === i ? { ...x, rot: norm(x.rot + deg) } : x)))
-  const rotateAll = (deg: number) => setCards((c) => c.map((x) => ({ ...x, rot: norm(x.rot + deg) })))
+  const rotateCard = (i: number, deg: number) => editPages({ kind: 'rotate', index: i, degrees: deg })
+  const rotateAll = (deg: number) => editPages({ kind: 'rotateAll', degrees: deg })
   const removeCard = (i: number) => {
     const card = cards[i]
+    if (!card) return
     const next = cards[i + 1] ?? cards[i - 1]
-    setCards((c) => c.filter((_, j) => j !== i))
+    applyHistory(editPdfPages(historyRef.current, { kind: 'remove', index: i }), true, next?.key)
     setAnnounce(t('a11y.pageDeleted', { n: card.src + 1 }))
-    focusSoon(next ? `pdf-pg-del-${next.key}` : 'pdf-org-reset')
   }
   const moveCard = (from: number, to: number, focusId?: string) => {
-    if (to < 0 || to >= cards.length) return
+    if (to < 0 || to >= cards.length || !cards[from] || from === to) return
     setAnnounce(t('a11y.pageMoved', { n: cards[from].src + 1, to: to + 1 }))
-    setCards((c) => move(c, from, to))
+    editPages({ kind: 'move', from, to })
     if (focusId) focusSoon(focusId)
   }
   const removedCount = orgInit.length - new Set(cards.map((c) => c.src)).size
@@ -290,20 +349,13 @@ export default function PdfTools() {
   const runOrganize = async () => {
     if (!orgDoc) return
     if (!cards.length) { setStatus({ kind: 'error', msg: t('organize.errorEmpty') }); return }
-    setStatus({ kind: 'working', msg: t('working.saving'), done: 0, total: 1 })
-    await tick()
+    const token = beginTask(), snapshot = snapshotPdfOrganize(orgDoc.file, historyRef.current.present)
     try {
-      const src = await loadPdf(orgDoc.file)
-      const out = await PDFDocument.create()
-      const pages = await out.copyPages(src, cards.map((c) => c.src))
-      pages.forEach((p, i) => {
-        if (cards[i].rot) p.setRotation(degrees(norm(p.getRotation().angle + cards[i].rot)))
-        out.addPage(p)
-      })
-      const bytes = await out.save()
-      finish(bytes as BlobPart, outName(orgDoc.file.name, t('suffix.edited')), 'application/pdf', t('organize.success', { pages: cards.length }))
+      await tick()
+      const bytes = await createOrganizedPdf(snapshot, () => task.current.isCurrent(token))
+      if (bytes) finish(token, bytes as BlobPart, outName(snapshot.file.name, t('suffix.edited')), 'application/pdf', t('organize.success', { pages: snapshot.cards.length }))
     } catch (e) {
-      setStatus({ kind: 'error', msg: pdfError(e, orgDoc.file.name) })
+      taskStatus(token, { kind: 'error', msg: pdfError(e, snapshot.file.name) })
     }
   }
 
@@ -316,52 +368,70 @@ export default function PdfTools() {
   useEffect(() => { imgsRef.current = imgs }, [imgs])
 
   const addImages = (files: File[]) => {
+    if (!files.length) return
     const ok = files.filter((f) => f.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|bmp)$/i.test(f.name))
-    clearResult()
+    invalidate()
     setStatus(ok.length < files.length ? { kind: 'error', msg: t('error.skippedImages', { count: files.length - ok.length }) } : { kind: 'idle' })
     setImgs((p) => [...p, ...ok.map((file) => ({ id: uid(), file, url: URL.createObjectURL(file) }))])
   }
-  const removeImg = (i: number) => setImgs((p) => { URL.revokeObjectURL(p[i].url); return p.filter((_, j) => j !== i) })
-  const moveImg = (from: number, to: number) => { setImgs((p) => move(p, from, to)); moveMsg(from, to) }
+  const removeImg = (i: number) => { invalidate(); setImgs((p) => { URL.revokeObjectURL(p[i].url); return p.filter((_, j) => j !== i) }) }
+  const moveImg = (from: number, to: number) => { invalidate(); setImgs((p) => move(p, from, to)); moveMsg(from, to) }
 
   const runImages = async () => {
     if (!imgs.length) { setStatus({ kind: 'error', msg: t('imageToPdf.errorEmpty') }); return }
-    const pdf = await PDFDocument.create()
+    const token = beginTask(), images = snapshotPdfItems(imgs), selectedPaper = paper, selectedOrient = orient
     const margin = marginMm * MM
-    for (let i = 0; i < imgs.length; i++) {
-      const { file } = imgs[i]
-      setStatus({ kind: 'working', msg: t('imageToPdf.working', { done: i + 1, total: imgs.length }), done: i, total: imgs.length + 1 })
-      await tick()
-      try {
+    let activeName = images[0].file.name
+    try {
+      const pdf = await PDFDocument.create()
+      for (let i = 0; i < images.length; i++) {
+        if (!task.current.isCurrent(token)) return
+        const { file } = images[i]
+        activeName = file.name
+        taskStatus(token, { kind: 'working', msg: t('imageToPdf.working', { done: i + 1, total: images.length }), done: i, total: images.length + 1 })
+        await tick()
+        if (!task.current.isCurrent(token)) return
         const bytes = new Uint8Array(await file.arrayBuffer())
+        if (!task.current.isCurrent(token)) return
         const jpg = bytes[0] === 0xff && bytes[1] === 0xd8
         const png = bytes[0] === 0x89 && bytes[1] === 0x50
         let image: PDFImage | null = null
         // JPG·PNG는 원본 그대로(화질 손실 없음). EXIF 회전된 사진과 그 밖의 형식만 다시 그림
         if (jpg && jpegOrientation(bytes) === 1) image = await pdf.embedJpg(bytes)
         else if (png) image = await pdf.embedPng(bytes).catch(() => null)
+        if (!task.current.isCurrent(token)) return
         if (!image) {
           const d = await decodeImage(file)
-          try { image = await pdf.embedJpg(new Uint8Array(await (await encodeImage(d.src, d.width, d.height, 'image/jpeg', 0.92)).arrayBuffer())) }
+          try {
+            if (!task.current.isCurrent(token)) return
+            const encoded = await encodeImage(d.src, d.width, d.height, 'image/jpeg', 0.92)
+            if (!task.current.isCurrent(token)) return
+            const encodedBytes = await encoded.arrayBuffer()
+            if (!task.current.isCurrent(token)) return
+            image = await pdf.embedJpg(new Uint8Array(encodedBytes))
+          }
           finally { d.close() }
         }
-        const [pw, ph] = pageSize(paper, orient, image.width, image.height, margin)
+        if (!task.current.isCurrent(token)) return
+        const [pw, ph] = pageSize(selectedPaper, selectedOrient, image.width, image.height, margin)
         pdf.addPage([pw, ph]).drawImage(image, fitRect(image.width, image.height, pw, ph, margin))
-      } catch {
-        setStatus({ kind: 'error', msg: t('error.image', { name: file.name }) })
-        return
       }
-    }
-    setStatus({ kind: 'working', msg: t('working.saving'), done: imgs.length, total: imgs.length + 1 })
-    await tick()
-    const bytes = await pdf.save()
-    finish(bytes as BlobPart, outName(imgs[0].file.name, t('suffix.images')), 'application/pdf', t('imageToPdf.success', { count: imgs.length }))
+      taskStatus(token, { kind: 'working', msg: t('working.saving'), done: images.length, total: images.length + 1 })
+      await tick()
+      if (!task.current.isCurrent(token)) return
+      const bytes = await pdf.save()
+      finish(token, bytes as BlobPart, outName(images[0].file.name, t('suffix.images')), 'application/pdf', t('imageToPdf.success', { count: images.length }))
+    } catch { taskStatus(token, { kind: 'error', msg: t('error.image', { name: activeName }) }) }
   }
 
   // 언마운트 시 objectURL 정리
-  useEffect(() => () => {
-    imgsRef.current.forEach((i) => URL.revokeObjectURL(i.url))
-    if (resultRef.current) URL.revokeObjectURL(resultRef.current.url)
+  useEffect(() => {
+    const guard = task.current
+    return () => {
+      guard.invalidate()
+      imgsRef.current.forEach((i) => URL.revokeObjectURL(i.url))
+      if (resultRef.current) URL.revokeObjectURL(resultRef.current.url)
+    }
   }, [])
 
   // ── 공용 UI ──
@@ -448,7 +518,7 @@ export default function PdfTools() {
       <div className="grid gap-1 p-1 rounded-xl bg-soft" style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}>
         {options.map(([v, label]) => (
           <label key={String(v)} className="flex items-center justify-center min-h-11 px-2 rounded-lg text-sm font-medium text-center cursor-pointer text-body has-[:checked]:bg-primary has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary">
-            <input type="radio" name={name} className="sr-only" checked={value === v} onChange={() => set(v)} />
+            <input type="radio" name={name} className="sr-only" checked={value === v} onChange={() => { invalidate(); set(v) }} />
             {label}
           </label>
         ))}
@@ -507,8 +577,8 @@ export default function PdfTools() {
         <DropZone accept=".pdf,application/pdf" multiple title={t(mergeFiles.length ? 'drop.more' : 'drop.pdfMulti')} hint={t('common.pdfOnly')} compact={mergeFiles.length > 0} onFiles={addMerge} />
         {mergeFiles.length > 0 && fileList(
           mergeFiles.map((f) => ({ ...f, meta: t('common.meta', { pages: f.pages, size: formatBytes(f.file.size) }) })),
-          mergeDrag, moveMerge, (i) => setMergeFiles((p) => p.filter((_, j) => j !== i)),
-          () => setMergeFiles(byName), () => setMergeFiles([]),
+          mergeDrag, moveMerge, (i) => { invalidate(); setMergeFiles((p) => p.filter((_, j) => j !== i)) },
+          () => { invalidate(); setMergeFiles(byName) }, () => { invalidate(); setMergeFiles([]) },
         )}
       </>
     )
@@ -526,7 +596,8 @@ export default function PdfTools() {
   } else if (tab === 'split') {
     main = splitDoc ? (
       <>
-        {docHeader(splitDoc, () => { setSplitDoc(null); clearResult(); setStatus({ kind: 'idle' }) })}
+        {docHeader(splitDoc, () => { invalidate(); setSplitDoc(null) })}
+        <DropZone inputId="pdf-split-file" accept=".pdf,application/pdf" compact title={t('history.replace')} hint={t('history.replaceHint')} onFiles={loadSplit} />
         <div>
           <p className="text-sm font-medium text-body mb-2">{t('split.previewTitle')}</p>
           {groups.length ? (
@@ -548,7 +619,7 @@ export default function PdfTools() {
         </div>
       </>
     ) : (
-      <DropZone accept=".pdf,application/pdf" title={t('drop.pdfSingle')} hint={t('common.pdfOnly')} onFiles={loadSplit} />
+      <DropZone inputId="pdf-split-file" accept=".pdf,application/pdf" title={t('drop.pdfSingle')} hint={t('common.pdfOnly')} onFiles={loadSplit} />
     )
     side = (
       <>
@@ -563,13 +634,13 @@ export default function PdfTools() {
                 inputMode="text"
                 autoComplete="off"
                 value={rangeText}
-                onChange={(e) => setRangeText(e.target.value)}
+                onChange={(e) => { invalidate(); setRangeText(e.target.value) }}
                 onBlur={() => rangeText && setRangeTouched(true)}
                 placeholder={t('split.rangePlaceholder')}
                 disabled={!splitDoc}
                 aria-invalid={!!rangeErr}
                 aria-describedby={rangeErr ? 'pdf-range-hint pdf-range-err' : 'pdf-range-hint'}
-                className="ui-field px-4 py-3"
+                className="ui-field px-4 py-3 text-base"
               />
               <p id="pdf-range-hint" className="mt-1.5 text-xs text-muted">{t('split.rangeHint')}</p>
               {rangeErr && (
@@ -579,7 +650,7 @@ export default function PdfTools() {
               )}
             </div>
             <label className="flex items-center gap-3 min-h-11 text-sm text-body cursor-pointer">
-              <input type="checkbox" checked={separate} onChange={(e) => setSeparate(e.target.checked)} className="size-5 accent-primary" />
+              <input type="checkbox" checked={separate} onChange={(e) => { invalidate(); setSeparate(e.target.checked) }} className="size-5 accent-primary" />
               {t('split.separate')}
             </label>
           </div>
@@ -593,8 +664,8 @@ export default function PdfTools() {
               min={1}
               max={Math.max(1, splitPages)}
               value={everyN}
-              onChange={(e) => setEveryN(Math.max(1, Math.floor(Number(e.target.value)) || 1))}
-              className="ui-field px-4 py-3 tabular-nums"
+              onChange={(e) => { invalidate(); setEveryN(Math.max(1, Math.floor(Number(e.target.value)) || 1)) }}
+              className="ui-field px-4 py-3 text-base tabular-nums"
             />
           </div>
         )}
@@ -605,7 +676,9 @@ export default function PdfTools() {
   } else if (tab === 'organize') {
     main = orgDoc ? (
       <>
-        {docHeader(orgDoc, () => { setOrgDoc(null); setCards([]); setOrgInit([]); clearResult(); setStatus({ kind: 'idle' }) })}
+        {docHeader(orgDoc, () => { invalidate(); setOrgDoc(null); installHistory(createPdfPageHistory()) })}
+        <PdfHistoryControls undoCount={history.past.length} redoCount={history.future.length} onUndo={() => historyStep('undo')} onRedo={() => historyStep('redo')} />
+        <DropZone inputId="pdf-org-file" accept=".pdf,application/pdf" compact title={t('history.replace')} hint={t('history.replaceHint')} onFiles={loadOrganize} />
         <p className="text-sm text-muted">{t('organize.hint')}</p>
         {cards.length ? (
           <ol className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" aria-label={t('a11y.pageList')}>
@@ -614,7 +687,7 @@ export default function PdfTools() {
               const turned = c.rot % 180 !== 0
               const [dw, dh] = turned ? [c.h, c.w] : [c.w, c.h]
               return (
-                <li key={c.key} {...cardDrag.props(i)} className={`flex flex-col items-center gap-2 p-2 rounded-xl border bg-surface ${cardDrag.over === i ? 'border-primary' : 'border-line'}`}>
+                <li key={c.key} data-pdf-page={n} data-pdf-rotation={c.rot} {...cardDrag.props(i)} className={`flex flex-col items-center gap-2 p-2 rounded-xl border bg-surface ${cardDrag.over === i ? 'border-primary' : 'border-line'}`}>
                   <div className="h-32 w-full flex items-center justify-center cursor-grab">
                     <div
                       className="flex items-center justify-center rounded-md border border-line-strong bg-subtle"
@@ -651,7 +724,7 @@ export default function PdfTools() {
         )}
       </>
     ) : (
-      <DropZone accept=".pdf,application/pdf" title={t('drop.pdfSingle')} hint={t('common.pdfOnly')} onFiles={loadOrganize} />
+      <DropZone inputId="pdf-org-file" accept=".pdf,application/pdf" title={t('drop.pdfSingle')} hint={t('common.pdfOnly')} onFiles={loadOrganize} />
     )
     side = (
       <>
@@ -666,11 +739,13 @@ export default function PdfTools() {
           <button type="button" onClick={() => rotateAll(90)} disabled={!cards.length} className="inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-xl text-sm text-body bg-soft hover:bg-subtle disabled:opacity-40">
             <RotateCw className="w-4 h-4" aria-hidden />{t('organize.rotateAllRight')}
           </button>
-          <button type="button" id="pdf-org-reset" onClick={() => setCards(orgInit)} disabled={!orgChanged} className="col-span-2 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-xl text-sm text-body bg-soft hover:bg-subtle disabled:opacity-40">
+          <button type="button" id="pdf-org-reset" onClick={() => editPages({ kind: 'reset' })} disabled={!orgChanged} className="col-span-2 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-xl text-sm text-body bg-soft hover:bg-subtle disabled:opacity-40">
             <Undo2 className="w-4 h-4" aria-hidden />{t('organize.reset')}
           </button>
         </div>
         {actionBtn(t('organize.button'), runOrganize, !orgDoc || !cards.length)}
+        <p className="text-xs leading-relaxed text-muted">{t('history.memoryOnly')}</p>
+        <p className="text-xs leading-relaxed text-muted">{t('history.snapshot')}</p>
       </>
     )
   } else {
@@ -680,7 +755,7 @@ export default function PdfTools() {
         {imgs.length > 0 && fileList(
           imgs.map((m) => ({ ...m, thumb: m.url, meta: formatBytes(m.file.size) })),
           imgDrag, moveImg, removeImg,
-          () => setImgs(byName), () => setImgs((p) => { p.forEach((m) => URL.revokeObjectURL(m.url)); return [] }),
+          () => { invalidate(); setImgs(byName) }, () => { invalidate(); setImgs((p) => { p.forEach((m) => URL.revokeObjectURL(m.url)); return [] }) },
         )}
       </>
     )
@@ -723,7 +798,7 @@ export default function PdfTools() {
         ))}
       </div>
 
-      <div id="pdf-panel" role="tabpanel" aria-labelledby={`pdf-tab-${tab}`} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div id="pdf-panel" data-pdf-tab={tab} role="tabpanel" aria-labelledby={`pdf-tab-${tab}`} onKeyDown={onOrganizeKey} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 ui-card p-4 sm:p-6 space-y-4 min-w-0">{main}</div>
         <div className="lg:col-span-1">
           <div className="ui-card p-4 sm:p-6 space-y-5 lg:sticky lg:top-20">

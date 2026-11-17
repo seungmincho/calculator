@@ -4,8 +4,10 @@ import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/markdownEditor'
 import GuideSection from '@/components/GuideSection'
+import MarkdownCopyRecovery from '@/components/MarkdownCopyRecovery'
 import { useFullscreenEscape } from '@/hooks/useFullscreenEscape'
 import { renderMarkdown, textStats, htmlDocument, plain, MD_CSS } from '@/utils/markdown'
+import { copyMarkdownContent, createMarkdownActionGuard, readMarkdownTextFile, type MarkdownCopySnapshot, type MarkdownCopyTarget } from '@/utils/markdownActions'
 
 type ViewMode = 'split' | 'editor' | 'preview'
 
@@ -14,13 +16,49 @@ const MAX_IMAGE_BYTES = 2 * 1024 * 1024 // base64로 문서에 박히고 localSt
 
 const fileBase = (title: string) => (title.replace(/[\\/:*?"<>|\n]/g, '').trim().slice(0, 40) || 'document')
 
+function legacyTextCopy(text: string): boolean {
+  const active = document.activeElement
+  const field = document.createElement('textarea')
+  field.value = text; field.readOnly = true
+  field.style.position = 'fixed'; field.style.left = '-999999px'
+  document.body.appendChild(field)
+  try { field.focus(); field.select(); field.setSelectionRange(0, text.length); return document.execCommand('copy') === true }
+  finally { field.remove(); if (active instanceof HTMLElement) active.focus({ preventScroll: true }) }
+}
+
+function legacyRichCopy(html: string): boolean {
+  const selection = window.getSelection()
+  if (!selection) return false
+  const active = document.activeElement
+  const previous = Array.from({ length: selection.rangeCount }, (_, index) => selection.getRangeAt(index).cloneRange())
+  const element = document.createElement('div')
+  element.innerHTML = html // Only the existing renderer's sanitized HTML reaches this boundary.
+  element.style.position = 'fixed'; element.style.left = '-999999px'
+  document.body.appendChild(element)
+  try {
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    selection.removeAllRanges(); selection.addRange(range)
+    return document.execCommand('copy') === true
+  } finally {
+    selection.removeAllRanges(); element.remove()
+    for (const range of previous) { try { selection.addRange(range) } catch { /* Previous nodes may no longer exist. */ } }
+    if (active instanceof HTMLElement) active.focus({ preventScroll: true })
+  }
+}
+
 export default function MarkdownEditor() {
   const t = useTranslations('markdownEditor')
   const sample = t('sample')
-  const [markdown, setMarkdown] = useState(sample)
+  const [sampleBaseline, setSampleBaseline] = useState(sample)
+  const [markdown, setMarkdownState] = useState(sample)
   const [viewMode, setViewMode] = useState<ViewMode>('split')
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [copying, setCopying] = useState<MarkdownCopyTarget | null>(null)
+  const [copyRecovery, setCopyRecovery] = useState<{ target: MarkdownCopyTarget; snapshot: MarkdownCopySnapshot } | null>(null)
+  const [reading, setReading] = useState(false)
+  const [fileNotice, setFileNotice] = useState<'loaded' | 'tooLarge' | 'unsupported' | 'failed' | 'imageFailed' | null>(null)
   const [showHeadingMenu, setShowHeadingMenu] = useState(false)
   const [showToc, setShowToc] = useState(false)
   const [saveState, setSaveState] = useState<'idle' | 'saved' | 'failed'>('idle')
@@ -31,6 +69,35 @@ export default function MarkdownEditor() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const fullscreenBtnRef = useRef<HTMLButtonElement>(null)
   const loaded = useRef(false)
+  const mounted = useRef(true)
+  const activeReader = useRef<FileReader | null>(null)
+  const [actionGuard] = useState(createMarkdownActionGuard)
+  const abortReader = useCallback(() => {
+    const reader = activeReader.current
+    activeReader.current = null
+    if (reader) { try { reader.abort() } catch { /* Already completed. */ } }
+  }, [])
+  const cancelPendingRead = useCallback(() => {
+    actionGuard.invalidateReads(); abortReader(); setReading(false); setFileNotice(null); setNotice('')
+  }, [actionGuard, abortReader])
+  const setMarkdown = useCallback((value: string) => {
+    actionGuard.invalidateDocument(); abortReader()
+    setCopiedId(null); setCopying(null); setCopyRecovery(null)
+    setReading(false); setFileNotice(null); setNotice('')
+    setMarkdownState(value)
+  }, [actionGuard, abortReader])
+
+  useEffect(() => {
+    mounted.current = true
+    return () => { mounted.current = false; actionGuard.invalidateDocument(); abortReader() }
+  }, [actionGuard, abortReader])
+
+  useEffect(() => {
+    const input = fileInputRef.current
+    if (!input) return
+    input.addEventListener('cancel', cancelPendingRead)
+    return () => input.removeEventListener('cancel', cancelPendingRead)
+  }, [cancelPendingRead])
 
   // ── 마운트: 초안 복원 + 모바일은 편집/미리보기 탭 방식 ──
   useEffect(() => {
@@ -40,22 +107,22 @@ export default function MarkdownEditor() {
     } catch { /* storage 차단 */ }
     if (!window.matchMedia('(min-width: 1024px)').matches) setViewMode('editor')
     loaded.current = true
-  }, [])
+  }, [setMarkdown])
 
   // ── 자동 저장 (예제 그대로면 저장 안 함) ──
   useEffect(() => {
     if (!loaded.current) return
     const id = setTimeout(() => {
       try {
-        if (markdown === sample) localStorage.removeItem(DRAFT_KEY)
+        if (markdown === sampleBaseline) localStorage.removeItem(DRAFT_KEY)
         else localStorage.setItem(DRAFT_KEY, markdown)
-        setSaveState(markdown === sample ? 'idle' : 'saved')
+        setSaveState(markdown === sampleBaseline ? 'idle' : 'saved')
       } catch {
         setSaveState('failed')
       }
     }, 600)
     return () => clearTimeout(id)
-  }, [markdown, sample])
+  }, [markdown, sampleBaseline])
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -77,56 +144,29 @@ export default function MarkdownEditor() {
   const stats = useMemo(() => textStats(markdown), [markdown])
   const docTitle = headings[0]?.text || plain(markdown.split('\n').find((l) => l.trim()) ?? '') || 'document'
 
-  const flash = useCallback((id: string) => {
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
-
-  const copyText = useCallback(async (text: string, id: string) => {
+  const copy = useCallback(async (target: MarkdownCopyTarget) => {
+    const token = actionGuard.beginCopy()
+    const current = () => mounted.current && actionGuard.isCurrent(token)
+    const snapshot = { markdown, html }
+    setCopiedId(null); setCopyRecovery(null); setCopying(target)
     try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text)
-      else {
-        const ta = document.createElement('textarea')
-        ta.value = text
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
-    } catch { /* ignore */ }
-    flash(id)
-  }, [flash])
-
-  // 블로그·노션·구글문서에 붙여넣으면 서식이 유지되는 복사 (text/html + text/plain)
-  const copyRich = useCallback(async () => {
-    try {
-      if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            'text/html': new Blob([html], { type: 'text/html' }),
-            'text/plain': new Blob([markdown], { type: 'text/plain' }),
-          }),
-        ])
+      const outcome = await copyMarkdownContent(snapshot, target, {
+        writeText: navigator.clipboard?.writeText ? text => navigator.clipboard.writeText(text) : undefined,
+        writeRich: typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write ? (richHtml, text) => navigator.clipboard.write([
+          new ClipboardItem({ 'text/html': new Blob([richHtml], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) }),
+        ]) : undefined,
+        fallbackText: legacyTextCopy, fallbackRich: legacyRichCopy,
+      }, current)
+      if (!current() || outcome === 'stale') return
+      if (outcome === 'copied') {
+        setCopiedId(target)
+        setTimeout(() => { if (current()) setCopiedId(null) }, 2000)
       } else {
-        const div = document.createElement('div')
-        div.innerHTML = html
-        div.style.position = 'fixed'
-        div.style.left = '-999999px'
-        document.body.appendChild(div)
-        const range = document.createRange()
-        range.selectNodeContents(div)
-        const sel = window.getSelection()
-        sel?.removeAllRanges()
-        sel?.addRange(range)
-        document.execCommand('copy')
-        sel?.removeAllRanges()
-        document.body.removeChild(div)
+        setCopyRecovery({ target, snapshot })
       }
-    } catch { /* ignore */ }
-    flash('rich')
-  }, [html, markdown, flash])
+    } catch { if (current()) setCopyRecovery({ target, snapshot }) }
+    finally { if (current()) setCopying(null) }
+  }, [actionGuard, markdown, html])
 
   const download = useCallback((content: string, ext: 'md' | 'html') => {
     const blob = new Blob([content], { type: ext === 'md' ? 'text/markdown;charset=utf-8' : 'text/html;charset=utf-8' })
@@ -150,13 +190,11 @@ export default function MarkdownEditor() {
     ta.setSelectionRange(start, end)
     let ok = false
     try { ok = document.execCommand('insertText', false, text) } catch { /* 미지원 */ }
-    if (!ok) {
-      ta.setRangeText(text, start, end, 'end')
-      setMarkdown(ta.value)
-    }
+    if (!ok) ta.setRangeText(text, start, end, 'end')
+    setMarkdown(ta.value)
     const s = selStart ?? start + text.length
     ta.setSelectionRange(s, selEnd ?? s)
-  }, [])
+  }, [setMarkdown])
 
   const wrap = useCallback((before: string, after: string, placeholder: string) => {
     const ta = textareaRef.current
@@ -183,41 +221,69 @@ export default function MarkdownEditor() {
     replaceRange(ta.selectionStart, ta.selectionEnd, text)
   }, [replaceRange])
 
-  const embedImage = useCallback((file: File) => {
-    if (file.size > MAX_IMAGE_BYTES) { setNotice(t('imageTooLarge')); return }
+  const readBrowserFile = useCallback((file: File, kind: 'text' | 'image') => new Promise<string>((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => {
-      const alt = file.name.replace(/\.[^.]+$/, '').replace(/[[\]]/g, '') || 'image'
-      insertAtCursor(`![${alt}](${reader.result})`)
-    }
-    reader.readAsDataURL(file)
-  }, [insertAtCursor, t])
+    activeReader.current = reader
+    const finish = () => { if (activeReader.current === reader) activeReader.current = null }
+    reader.onload = () => { finish(); if (typeof reader.result === 'string') resolve(reader.result); else reject(new Error('read')) }
+    reader.onerror = reader.onabort = () => { finish(); reject(new Error('read')) }
+    try { if (kind === 'text') reader.readAsText(file); else reader.readAsDataURL(file) }
+    catch (error) { finish(); reject(error) }
+  }), [])
 
-  const loadTextFile = useCallback((file: File) => {
-    const reader = new FileReader()
-    reader.onload = () => { if (typeof reader.result === 'string') setMarkdown(reader.result) }
-    reader.readAsText(file)
-  }, [])
+  const embedImage = useCallback(async (file: File) => {
+    cancelPendingRead()
+    const token = actionGuard.beginRead()
+    const current = () => mounted.current && actionGuard.isCurrent(token)
+    if (file.size > MAX_IMAGE_BYTES) { setNotice(t('imageTooLarge')); return }
+    const base = textareaRef.current?.value ?? markdown
+    const start = textareaRef.current?.selectionStart ?? base.length
+    const end = textareaRef.current?.selectionEnd ?? start
+    setReading(true)
+    try {
+      const data = await readBrowserFile(file, 'image')
+      if (!current()) return
+      const alt = file.name.replace(/\.[^.]+$/, '').replace(/[[\]]/g, '') || 'image'
+      const text = `![${alt}](${data})`
+      if (textareaRef.current) replaceRange(start, end, text)
+      else setMarkdown(base.slice(0, start) + text + base.slice(end))
+    } catch { if (current()) setFileNotice('imageFailed') }
+    finally { if (current()) setReading(false) }
+  }, [actionGuard, cancelPendingRead, markdown, readBrowserFile, replaceRange, setMarkdown, t])
+
+  const loadTextFile = useCallback(async (file: File) => {
+    cancelPendingRead()
+    const token = actionGuard.beginRead()
+    const current = () => mounted.current && actionGuard.isCurrent(token)
+    setReading(true)
+    const outcome = await readMarkdownTextFile(file, () => readBrowserFile(file, 'text'), current)
+    if (!current() || outcome.status === 'stale') return
+    setReading(false)
+    if (outcome.status === 'ready') { setMarkdown(outcome.text); setFileNotice('loaded') }
+    else setFileNotice(outcome.error === 'type' ? 'unsupported' : outcome.error === 'size' ? 'tooLarge' : 'failed')
+  }, [actionGuard, cancelPendingRead, readBrowserFile, setMarkdown])
 
   const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) loadTextFile(file)
+    if (file) void loadTextFile(file)
+    else cancelPendingRead()
     e.target.value = ''
-  }, [loadTextFile])
+  }, [loadTextFile, cancelPendingRead])
 
   const handlePaste = useCallback((e: React.ClipboardEvent<HTMLTextAreaElement>) => {
     // 워드·엑셀 복사는 텍스트와 함께 그림도 실어 보내므로, 텍스트가 있으면 평소대로 붙여넣기
     const file = Array.from(e.clipboardData.files).find((f) => f.type.startsWith('image/'))
     if (!file || e.clipboardData.getData('text/plain')) return
     e.preventDefault()
-    embedImage(file)
+    void embedImage(file)
   }, [embedImage])
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLTextAreaElement>) => {
     const file = e.dataTransfer.files[0]
     if (!file) return
-    if (file.type.startsWith('image/')) { e.preventDefault(); embedImage(file) }
-    else if (/\.(md|markdown|txt)$/i.test(file.name)) { e.preventDefault(); loadTextFile(file) }
+    e.preventDefault()
+    if (file.type.startsWith('image/')) void embedImage(file)
+    else void loadTextFile(file)
   }, [embedImage, loadTextFile])
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -258,11 +324,16 @@ export default function MarkdownEditor() {
   }, [viewMode])
 
   const newDoc = () => { if (!markdown.trim() || window.confirm(t('confirmNew'))) setMarkdown('') }
-  const loadSample = () => { if (markdown === sample || !markdown.trim() || window.confirm(t('confirmSample'))) setMarkdown(sample) }
+  const loadSample = () => {
+    if (markdown === sample || !markdown.trim() || window.confirm(t('confirmSample'))) {
+      setSampleBaseline(sample)
+      setMarkdown(sample)
+    }
+  }
 
-  const btnCls = 'px-2.5 py-1.5 text-xs font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors select-none whitespace-nowrap'
+  const btnCls = 'min-h-11 min-w-11 px-2.5 py-1.5 text-xs font-medium bg-soft hover:bg-subtle text-body rounded-lg transition-colors select-none whitespace-nowrap'
   const segCls = (on: boolean) =>
-    `px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
+    `min-h-11 px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${on ? 'bg-primary text-white' : 'text-sub hover:text-fg'}`
   const paneH = isFullscreen ? 'flex-1 min-h-0' : 'h-[65vh] min-h-[360px]'
   const sep = <div className="w-px h-5 bg-line" />
 
@@ -289,14 +360,14 @@ export default function MarkdownEditor() {
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
-            <input ref={fileInputRef} type="file" accept=".md,.txt,.markdown" onChange={handleFileUpload} className="hidden" />
+            <input ref={fileInputRef} data-markdown-file-input type="file" accept=".md,.txt,.markdown" aria-label={t('upload')} onChange={handleFileUpload} className="hidden" />
             <button onClick={newDoc} className={btnCls}>{t('newDoc')}</button>
-            <button onClick={() => fileInputRef.current?.click()} className={btnCls}>{t('upload')}</button>
+            <button onClick={() => { cancelPendingRead(); fileInputRef.current?.click() }} className={btnCls}>{t('upload')}</button>
             <button onClick={loadSample} className={btnCls}>{t('loadSample')}</button>
             <button
               onClick={() => setShowToc((v) => !v)}
               aria-pressed={showToc}
-              className={`${showToc ? 'px-2.5 py-1.5 text-xs font-medium bg-primary text-white rounded-lg' : btnCls} hidden lg:inline-block`}
+              className={`${showToc ? 'min-h-11 px-2.5 py-1.5 text-xs font-medium bg-primary text-white rounded-lg' : btnCls} hidden lg:inline-block`}
             >
               {t('toc')}
             </button>
@@ -323,7 +394,7 @@ export default function MarkdownEditor() {
                     <button
                       key={level}
                       role="menuitem"
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-soft text-body"
+                      className="block min-h-11 w-full text-left px-4 py-2 text-sm hover:bg-soft text-body"
                       onClick={() => {
                         linePrefix('#'.repeat(level) + ' ', `H${level} ${t('insert.heading')}`)
                         setShowHeadingMenu(false)
@@ -410,7 +481,7 @@ export default function MarkdownEditor() {
                   onPaste={handlePaste}
                   onDrop={handleDrop}
                   onScroll={syncScroll}
-                  className={`w-full p-4 font-mono text-sm leading-relaxed text-fg bg-surface resize-none focus:outline-none ${paneH}`}
+                  className={`w-full p-4 font-mono text-base leading-relaxed text-fg bg-surface resize-none focus:outline-none ${paneH}`}
                   spellCheck={false}
                   placeholder={t('placeholder')}
                   aria-label={t('editor')}
@@ -434,7 +505,7 @@ export default function MarkdownEditor() {
         </div>
 
         {/* ── 상태 + 내보내기 ── */}
-        <div className="ui-card px-4 py-3 space-y-3">
+        <div className={`ui-card px-4 py-3 space-y-3 ${isFullscreen && copyRecovery ? 'max-h-[50vh] overflow-y-auto shrink-0' : ''}`}>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted tabular-nums">
             <span>{t('charCount')} <b className="font-semibold text-body">{stats.chars.toLocaleString()}</b></span>
             <span>{t('charNoSpace')} <b className="font-semibold text-body">{stats.charsNoSpace.toLocaleString()}</b></span>
@@ -443,18 +514,21 @@ export default function MarkdownEditor() {
             <span>{t('readTime', { n: stats.readMin })}</span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button onClick={copyRich} className="ui-btn px-4 py-2 text-sm">
-              {copiedId === 'rich' ? t('copied') : t('copyRich')}
+            <button data-markdown-copy="rich" onClick={() => { void copy('rich') }} className="ui-btn min-h-11 px-4 py-2 text-sm">
+              {copying === 'rich' ? t('copyRecovery.copying') : copiedId === 'rich' ? t('copied') : t('copyRich')}
             </button>
-            <button onClick={() => copyText(markdown, 'md')} className="ui-btn-soft px-3 py-2 text-sm">
-              {copiedId === 'md' ? t('copied') : t('copyMarkdown')}
+            <button data-markdown-copy="md" onClick={() => { void copy('md') }} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">
+              {copying === 'md' ? t('copyRecovery.copying') : copiedId === 'md' ? t('copied') : t('copyMarkdown')}
             </button>
-            <button onClick={() => copyText(html, 'html')} className="ui-btn-soft px-3 py-2 text-sm">
-              {copiedId === 'html' ? t('copied') : t('copyHtml')}
+            <button data-markdown-copy="html" onClick={() => { void copy('html') }} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">
+              {copying === 'html' ? t('copyRecovery.copying') : copiedId === 'html' ? t('copied') : t('copyHtml')}
             </button>
-            <button onClick={downloadMd} className="ui-btn-soft px-3 py-2 text-sm">{t('exportMd')}</button>
-            <button onClick={downloadHtml} className="ui-btn-soft px-3 py-2 text-sm">{t('exportHtml')}</button>
+            <button onClick={downloadMd} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('exportMd')}</button>
+            <button onClick={downloadHtml} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('exportHtml')}</button>
           </div>
+          {copyRecovery && <MarkdownCopyRecovery key={copyRecovery.target} target={copyRecovery.target} snapshot={copyRecovery.snapshot} onRetry={() => { void copy(copyRecovery.target) }} onClose={() => setCopyRecovery(null)} />}
+          {reading && <p role="status" className="text-sm text-sub">{t('fileRead.reading')}</p>}
+          {fileNotice && <p role={fileNotice === 'loaded' ? 'status' : 'alert'} className="text-sm text-body">{t(`fileRead.${fileNotice}`)}</p>}
           {notice ? (
             <p className="text-xs text-amber-600" role="alert">{notice}</p>
           ) : (

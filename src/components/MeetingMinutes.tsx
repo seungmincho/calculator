@@ -4,70 +4,55 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/meetingMinutes'
 import {
-  Plus, Trash2, Copy, Check, FileText, Download, Printer,
+  Plus, Trash2, Copy, Check, Download, Printer,
   Users, Calendar, ChevronDown, ChevronUp, Save, FolderOpen,
-  Clock, MapPin, User, MessageSquare, CheckSquare, Lightbulb
+  MapPin, User
 } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
+import { useHydrated } from '@/hooks/useHydrated'
+import { useSearchParams } from '@/hooks/useSearchParams'
+import MeetingTranscriptPanel from '@/components/MeetingTranscriptPanel'
+import MeetingActionExportPanel from '@/components/MeetingActionExportPanel'
+import { type MeetingData, type Attendee, type AgendaItem, type DiscussionPoint, type ActionItem, type ActionStatus, type ExportFormat, type TemplateId, formatForExport, parseMeetingData, parseMeetingSlots, appendMeetingExcerpts, meetingStorageWrite, MEETING_AUTO_KEY, MEETING_SLOTS_KEY } from '@/utils/meetingMinutes'
+import { MEETING_HANDOFF_KEY, parseMeetingHandoff, type MeetingHandoff, type MeetingExcerpt } from '@/utils/meetingHandoff'
+import { createMeetingKanbanHandoff, openMeetingKanbanHandoff } from '@/utils/meetingKanban'
 
 // ── Types ──────────────────────────────────────────────────────────────────
-
-type AttendeeStatus = 'present' | 'absent' | 'remote'
-type ActionStatus = 'pending' | 'in-progress' | 'done'
-type ExportFormat = 'text' | 'markdown' | 'html'
-type TemplateId = 'weekly' | 'kickoff' | 'brainstorming' | 'retrospective' | 'client'
-
-interface Attendee {
-  id: string
-  name: string
-  role: string
-  status: AttendeeStatus
-}
-
-interface AgendaItem {
-  id: string
-  title: string
-  notes: string
-  duration: string
-}
-
-interface DiscussionPoint {
-  id: string
-  speaker: string
-  content: string
-}
-
-interface ActionItem {
-  id: string
-  task: string
-  assignee: string
-  dueDate: string
-  status: ActionStatus
-}
-
-interface MeetingData {
-  title: string
-  date: string
-  time: string
-  location: string
-  locationType: 'online' | 'offline'
-  organizer: string
-  attendees: Attendee[]
-  agenda: AgendaItem[]
-  discussions: DiscussionPoint[]
-  actions: ActionItem[]
-  decisions: string
-  nextMeeting: string
-  notes: string
-}
 
 // ── Defaults ───────────────────────────────────────────────────────────────
 
 const newId = () => Math.random().toString(36).slice(2, 9)
 
+type MeetingSlot = { name: string; data: MeetingData }
+
+function hasSameActionIds(left: MeetingData, right: MeetingData): boolean {
+  if (!left.actions.length || left.actions.length !== right.actions.length) return false
+  const leftIds = new Set(left.actions.map(action => action.id))
+  const rightIds = new Set(right.actions.map(action => action.id))
+  return leftIds.size === left.actions.length && rightIds.size === right.actions.length && right.actions.every(action => leftIds.has(action.id))
+}
+
+function withKanbanIdentity(meeting: MeetingData, knownMeetings: MeetingData[]): MeetingData {
+  if (meeting.kanbanSourceId) return meeting
+  const known = knownMeetings.find(candidate => candidate.kanbanSourceId && hasSameActionIds(meeting, candidate))
+  return { ...meeting, kanbanSourceId: known?.kanbanSourceId ?? crypto.randomUUID() }
+}
+
+/** Old snapshots share identity only through identical nonempty action-ID sets. */
+function backfillKanbanSlotIds(slots: MeetingSlot[], meeting: MeetingData): MeetingSlot[] {
+  if (!meeting.kanbanSourceId) return slots
+  let changed = false
+  const next = slots.map(slot => {
+    if (slot.data.kanbanSourceId || !hasSameActionIds(slot.data, meeting)) return slot
+    changed = true
+    return { ...slot, data: { ...slot.data, kanbanSourceId: meeting.kanbanSourceId } }
+  })
+  return changed ? next : slots
+}
+
 const emptyData = (): MeetingData => ({
   title: '',
-  date: new Date().toISOString().slice(0, 10),
+  date: '',
   time: '10:00',
   location: '',
   locationType: 'offline',
@@ -132,147 +117,15 @@ const TEMPLATES: Record<TemplateId, Partial<MeetingData>> = {
   },
 }
 
-const LS_AUTO_KEY = 'meetingMinutes_auto'
-const LS_SLOTS_KEY = 'meetingMinutes_slots'
+
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function formatForExport(data: MeetingData, format: ExportFormat, t: ReturnType<typeof useTranslations>): string {
-  const title = data.title || t('export.docTitle')
-  const place = `${data.location} (${data.locationType === 'online' ? t('online') : t('offline')})`
-  const dur = (d: string) => (d ? ` ${t('durationTag', { n: d })}` : '')
-  const statusLabel = (st: string) => t(st === 'done' ? 'done' : st === 'in-progress' ? 'inProgress' : 'pending')
-  const attendeeList = data.attendees
-    .map(a => `${a.name}${a.role ? ` (${a.role})` : ''}`)
-    .join(', ')
-
-  const agendaText = data.agenda
-    .map((a, i) => `${i + 1}. ${a.title}${dur(a.duration)}${a.notes ? `\n   ${a.notes}` : ''}`)
-    .join('\n')
-
-  const discussionText = data.discussions
-    .map((d, i) => `${i + 1}. ${d.speaker ? `[${d.speaker}] ` : ''}${d.content}`)
-    .join('\n')
-
-  const actionText = data.actions
-    .map((a, i) => `${i + 1}. ${a.task} — ${t('export.owner')}: ${a.assignee || '-'}, ${t('dueDate')}: ${a.dueDate || '-'} [${statusLabel(a.status)}]`)
-    .join('\n')
-
-  if (format === 'markdown') {
-    return `# ${title}
-
-## ${t('export.basicInfo')}
-| ${t('export.field')} | ${t('export.value')} |
-|------|------|
-| ${t('date')} | ${data.date} |
-| ${t('time')} | ${data.time} |
-| ${t('location')} | ${place} |
-| ${t('organizer')} | ${data.organizer} |
-| ${t('attendees')} | ${attendeeList} |
-
-## ${t('agenda')}
-${agendaText}
-
-## ${t('discussion')}
-${discussionText}
-
-## ${t('decisions')}
-${data.decisions}
-
-## ${t('actionItems')}
-${actionText}
-
-## ${t('nextMeeting')}
-${data.nextMeeting}
-
-## ${t('extraNotes')}
-${data.notes}
-`
-  }
-
-  if (format === 'html') {
-    return `<!DOCTYPE html>
-<html lang="${t('export.htmlLang')}">
-<head>
-<meta charset="UTF-8">
-<title>${title}</title>
-<style>
-  body { font-family: 'Malgun Gothic', sans-serif; max-width: 800px; margin: 40px auto; color: #1a1a1a; line-height: 1.6; }
-  h1 { border-bottom: 2px solid #3b82f6; padding-bottom: 8px; }
-  h2 { border-left: 4px solid #3b82f6; padding-left: 12px; margin-top: 28px; }
-  table { width: 100%; border-collapse: collapse; }
-  td, th { border: 1px solid #ddd; padding: 8px 12px; }
-  th { background: #f3f4f6; }
-  ol { padding-left: 20px; }
-  .status-done { color: #16a34a; font-weight: bold; }
-  .status-inprogress { color: #d97706; font-weight: bold; }
-  .status-pending { color: #6b7280; }
-  @media print { body { margin: 20px; } }
-</style>
-</head>
-<body>
-<h1>${title}</h1>
-<table>
-<tr><th>${t('date')}</th><td>${data.date}</td><th>${t('time')}</th><td>${data.time}</td></tr>
-<tr><th>${t('location')}</th><td>${place}</td><th>${t('organizer')}</th><td>${data.organizer}</td></tr>
-<tr><th>${t('attendees')}</th><td colspan="3">${attendeeList}</td></tr>
-</table>
-<h2>${t('agenda')}</h2>
-<ol>${data.agenda.map(a => `<li><strong>${a.title}</strong>${dur(a.duration)}${a.notes ? `<br><small>${a.notes}</small>` : ''}</li>`).join('')}</ol>
-<h2>${t('discussion')}</h2>
-<ol>${data.discussions.map(d => `<li>${d.speaker ? `<strong>[${d.speaker}]</strong> ` : ''}${d.content}</li>`).join('')}</ol>
-<h2>${t('decisions')}</h2>
-<p>${data.decisions.replace(/\n/g, '<br>')}</p>
-<h2>${t('actionItems')}</h2>
-<table><tr><th>#</th><th>${t('export.task')}</th><th>${t('assignee')}</th><th>${t('dueDate')}</th><th>${t('status')}</th></tr>
-${data.actions.map((a, i) => {
-  const cls = a.status === 'done' ? 'status-done' : a.status === 'in-progress' ? 'status-inprogress' : 'status-pending'
-  return `<tr><td>${i + 1}</td><td>${a.task}</td><td>${a.assignee}</td><td>${a.dueDate}</td><td class="${cls}">${statusLabel(a.status)}</td></tr>`
-}).join('')}
-</table>
-<h2>${t('nextMeeting')}</h2>
-<p>${data.nextMeeting}</p>
-<h2>${t('extraNotes')}</h2>
-<p>${data.notes.replace(/\n/g, '<br>')}</p>
-</body>
-</html>`
-  }
-
-  // plain text
-  return `=====================================
-${title}
-=====================================
-${t('date')}: ${data.date}  ${t('time')}: ${data.time}
-${t('location')}: ${place}
-${t('organizer')}: ${data.organizer}
-${t('attendees')}: ${attendeeList}
-
-[ ${t('agenda')} ]
-${agendaText}
-
-[ ${t('discussion')} ]
-${discussionText}
-
-[ ${t('decisions')} ]
-${data.decisions}
-
-[ ${t('actionItems')} ]
-${actionText}
-
-[ ${t('nextMeeting')} ]
-${data.nextMeeting}
-
-[ ${t('extraNotes')} ]
-${data.notes}
-=====================================`
-}
-
 // ── Sub-components ─────────────────────────────────────────────────────────
 
-function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
+function SectionHeader({ title }: { title: string }) {
   return (
     <div className="flex items-center gap-2 mb-4">
-      <span className="text-primary">{icon}</span>
       <h2 className="text-lg font-semibold text-body">{title}</h2>
     </div>
   )
@@ -282,31 +135,90 @@ function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }
 
 export default function MeetingMinutes() {
   const t = useTranslations('meetingMinutes')
+  const hydrated = useHydrated(), searchParams = useSearchParams()
   const [data, setData] = useState<MeetingData>(emptyData)
   const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit')
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [saveSlots, setSaveSlots] = useState<{ name: string; data: MeetingData }[]>([])
+  const [saveSlots, setSaveSlots] = useState<MeetingSlot[]>([])
   const [showSaveSlots, setShowSaveSlots] = useState(false)
   const [slotName, setSlotName] = useState('')
   const printRef = useRef<HTMLDivElement>(null)
+  const [ready, setReady] = useState(false)
+  const [savedRaw, setSavedRaw] = useState<string | null>(null)
+  const [slotsRaw, setSlotsRaw] = useState<string | null>(null)
+  const [storageError, setStorageError] = useState('')
+  const [draftBlocked, setDraftBlocked] = useState(false)
+  const [slotsBlocked, setSlotsBlocked] = useState(false)
+  const [source, setSource] = useState<MeetingHandoff | null>(null)
+  const [importNotice, setImportNotice] = useState('')
+  const [slotNotice, setSlotNotice] = useState('')
+  const [meetingRevision, setMeetingRevision] = useState(0)
+  if (hydrated && !ready) {
+    let loaded: MeetingData | null = null
+    try {
+      const raw = localStorage.getItem(MEETING_AUTO_KEY)
+      loaded = parseMeetingData(raw)
+      const now = new Date(), date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+      setData(loaded ?? { ...emptyData(), date }); setSavedRaw(raw)
+    } catch { setDraftBlocked(true); setStorageError('storage.unreadable') }
+    try { const raw = localStorage.getItem(MEETING_SLOTS_KEY); setSaveSlots(parseMeetingSlots(raw)); setSlotsRaw(raw) }
+    catch { setSlotsBlocked(true); setStorageError('storage.unreadable') }
+    if (searchParams.get('from') === 'voice') {
+      try {
+        const incoming = parseMeetingHandoff(sessionStorage.getItem(MEETING_HANDOFF_KEY))
+        if (incoming && !loaded?.importedSources?.includes(incoming.id)) setSource(incoming)
+        else setImportNotice(incoming ? 'import.alreadyImported' : 'import.unavailable')
+      } catch { setImportNotice('import.unavailable') }
+    }
+    setReady(true)
+  }
+
+  const persistDraft = useCallback((next: MeetingData) => {
+    if (!ready || draftBlocked) return false
+    try {
+      const raw = JSON.stringify(next); parseMeetingData(raw)
+      meetingStorageWrite(localStorage, MEETING_AUTO_KEY, raw, savedRaw)
+      setSavedRaw(raw); setStorageError(''); return true
+    } catch (error) {
+      const conflict = error instanceof Error && error.message === 'conflict'
+      setStorageError(conflict ? 'storage.conflict' : 'storage.failed')
+      if (conflict) setDraftBlocked(true)
+      return false
+    }
+  }, [ready, draftBlocked, savedRaw])
 
   // Auto-save
   useEffect(() => {
-    const timer = setTimeout(() => {
-      try { localStorage.setItem(LS_AUTO_KEY, JSON.stringify(data)) } catch { /* noop */ }
-    }, 800)
+    if (!ready || draftBlocked || JSON.stringify(data) === savedRaw) return
+    const timer = setTimeout(() => persistDraft(data), 800)
     return () => clearTimeout(timer)
-  }, [data])
+  }, [data, ready, draftBlocked, savedRaw, persistDraft])
 
-  // Load auto-save + slots on mount
   useEffect(() => {
+    if (!ready || JSON.stringify(data) === savedRaw) return
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = '' }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [data, ready, savedRaw])
+
+  const dismissSource = () => {
+    try { sessionStorage.removeItem(MEETING_HANDOFF_KEY) } catch { /* The draft source ID also prevents a second import. */ }
+    const url = new URL(window.location.href)
+    url.searchParams.delete('from')
+    window.history.replaceState(window.history.state, '', url)
+    setSource(null)
+  }
+  const applyExcerpts = (entries: MeetingExcerpt[]) => {
+    if (!source) return false
     try {
-      const raw = localStorage.getItem(LS_AUTO_KEY)
-      if (raw) setData(JSON.parse(raw) as MeetingData)
-      const slotRaw = localStorage.getItem(LS_SLOTS_KEY)
-      if (slotRaw) setSaveSlots(JSON.parse(slotRaw))
-    } catch { /* noop */ }
-  }, [])
+      const next = appendMeetingExcerpts(data, source, entries)
+      if (!persistDraft(next)) return false
+      setData(next); dismissSource(); setImportNotice('import.applied'); setActiveTab('edit'); return true
+    } catch (error) {
+      setImportNotice(error instanceof Error && error.message === 'alreadyImported' ? 'import.alreadyImported' : 'import.invalidSelection')
+      return false
+    }
+  }
 
   // ── Data helpers ──────────────────────────────────────────────────────
 
@@ -362,6 +274,23 @@ export default function MeetingMinutes() {
   const removeAction = (id: string) =>
     setData(prev => ({ ...prev, actions: prev.actions.filter(a => a.id !== id) }))
 
+  const reviewActions = () => {
+    setActiveTab('edit')
+    requestAnimationFrame(() => document.getElementById('meeting-actions')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
+
+  const sendActionsToKanban = (items: ActionItem[]) => {
+    const next = withKanbanIdentity(data, saveSlots.map(slot => slot.data))
+    const payload = createMeetingKanbanHandoff(next.kanbanSourceId!, next.title.trim() ? next.title : t('untitled'), items)
+    // Keep old named snapshots stable even after another meeting has been loaded.
+    const updatedSlots = backfillKanbanSlotIds(saveSlots, next)
+    if (updatedSlots !== saveSlots && !persistSlots(updatedSlots)) throw new Error('storageFailed')
+    // Retain the identity already written to slots if saving this draft then fails.
+    setData(next)
+    if (!persistDraft(next)) throw new Error('storageFailed')
+    openMeetingKanbanHandoff(payload)
+  }
+
   // ── Export ────────────────────────────────────────────────────────────
 
   const copyToClipboard = useCallback(async (text: string, id: string) => {
@@ -375,10 +304,11 @@ export default function MeetingMinutes() {
         ta.style.left = '-999999px'
         document.body.appendChild(ta)
         ta.select()
-        document.execCommand('copy')
+        const copied = document.execCommand('copy')
         document.body.removeChild(ta)
+        if (!copied) throw new Error('copyFailed')
       }
-    } catch { /* noop */ }
+    } catch { setStorageError('storage.copyFailed'); return }
     setCopiedId(id)
     setTimeout(() => setCopiedId(null), 2000)
   }, [])
@@ -401,43 +331,51 @@ export default function MeetingMinutes() {
   // ── Save slots ────────────────────────────────────────────────────────
 
   const saveSlot = () => {
-    if (!slotName.trim()) return
-    const updated = [...saveSlots.filter(s => s.name !== slotName.trim()), { name: slotName.trim(), data }]
-    setSaveSlots(updated)
-    try { localStorage.setItem(LS_SLOTS_KEY, JSON.stringify(updated)) } catch { /* noop */ }
-    setSlotName('')
+    if (!slotName.trim() || !ready || slotsBlocked) return
+    const next = withKanbanIdentity(data, saveSlots.map(slot => slot.data))
+    const updated = backfillKanbanSlotIds([...saveSlots.filter(s => s.name !== slotName.trim()), { name: slotName.trim(), data: next }], next)
+    if (persistSlots(updated)) { setData(next); setSlotName(''); setSlotNotice('storage.slotSaved') }
   }
 
-  const loadSlot = (slot: { name: string; data: MeetingData }) => {
-    setData(slot.data)
+  const loadSlot = (slot: MeetingSlot) => {
+    const next = withKanbanIdentity(slot.data, [data, ...saveSlots.map(saved => saved.data)])
+    const selectedSlotUpdated = slot.data.kanbanSourceId ? saveSlots : saveSlots.map(saved => saved.name === slot.name ? { ...saved, data: next } : saved)
+    const updatedSlots = backfillKanbanSlotIds(selectedSlotUpdated, next)
+    if (updatedSlots !== saveSlots && !persistSlots(updatedSlots)) return
+    setData(next)
+    setMeetingRevision(value => value + 1)
     setShowSaveSlots(false)
   }
 
   const deleteSlot = (name: string) => {
     const updated = saveSlots.filter(s => s.name !== name)
-    setSaveSlots(updated)
-    try { localStorage.setItem(LS_SLOTS_KEY, JSON.stringify(updated)) } catch { /* noop */ }
+    if (persistSlots(updated)) setSlotNotice('storage.slotDeleted')
   }
 
-  const inputClass = `${glassInput} px-3 py-2 text-sm`
-  const smallInputClass = 'px-2 py-1.5 border border-line-strong rounded-md bg-field text-fg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm'
+  const persistSlots = (next: typeof saveSlots) => {
+    if (!ready || slotsBlocked) return false
+    try { const raw = JSON.stringify(next); parseMeetingSlots(raw); meetingStorageWrite(localStorage, MEETING_SLOTS_KEY, raw, slotsRaw); setSlotsRaw(raw); setSaveSlots(next); setStorageError(''); return true }
+    catch (error) { setSlotNotice(''); setStorageError(error instanceof Error && error.message === 'conflict' ? 'storage.conflict' : 'storage.failed'); return false }
+  }
+
+  const inputClass = `${glassInput} min-w-0 px-3 py-3 text-base`
+  const smallInputClass = 'ui-field min-w-0 px-3 py-3 text-base'
 
   const statusColors: Record<ActionStatus, string> = {
     pending: 'bg-soft text-body',
-    'in-progress': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    done: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+    'in-progress': 'bg-primary-soft text-primary',
+    done: 'bg-subtle text-body',
   }
 
   // ── Render ────────────────────────────────────────────────────────────
 
   return (
-    <div className="space-y-6 print:space-y-4">
+    <div className="space-y-6 break-words print:space-y-4">
       {/* Header */}
       <div className={`${glassCard} ${glassInset} p-6 print:shadow-none`}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
-              <FileText className="w-6 h-6 text-primary" />
               {t('title')}
             </h1>
             <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -445,19 +383,28 @@ export default function MeetingMinutes() {
           {/* Tab switcher */}
           <div className="flex gap-2 print:hidden">
             <button
-              onClick={() => setActiveTab('edit')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'edit' ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
+              onClick={() => setActiveTab('edit')} aria-pressed={activeTab === 'edit'}
+              className={`min-h-11 min-w-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'edit' ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
             >
               {t('editTab')}
             </button>
             <button
-              onClick={() => setActiveTab('preview')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'preview' ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
+              onClick={() => setActiveTab('preview')} aria-pressed={activeTab === 'preview'}
+              className={`min-h-11 min-w-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'preview' ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'}`}
             >
               {t('previewTab')}
             </button>
           </div>
         </div>
+      </div>
+
+      {source && <MeetingTranscriptPanel key={source.id} source={source} onApply={applyExcerpts} onDismiss={dismissSource} blocked={draftBlocked || !ready} />}
+      <div className="space-y-2 print:hidden" aria-live="polite">
+        {importNotice && <p className="text-sm text-body">{t(importNotice)}</p>}
+        {importNotice === 'import.applied' && activeTab === 'edit' && <a href="#meeting-actions" className="inline-flex items-center min-h-11 text-sm text-primary">{t('import.reviewActions')}</a>}
+        {(storageError || draftBlocked || slotsBlocked) && <p role="alert" className="text-sm text-body">{t(storageError || 'storage.unreadable')}</p>}
+        {ready && !draftBlocked && <p className="text-xs text-muted">{t(JSON.stringify(data) === savedRaw ? 'storage.saved' : 'storage.unsaved')}</p>}
+        {storageError && !draftBlocked && <button type="button" onClick={() => persistDraft(data)} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('storage.retry')}</button>}
       </div>
 
       {/* Toolbar */}
@@ -469,7 +416,7 @@ export default function MeetingMinutes() {
             <button
               key={id}
               onClick={() => applyTemplate(id)}
-              className="px-3 py-1.5 text-xs bg-subtle text-sub rounded-md hover:bg-primary-soft transition-colors border border-line"
+              className="min-h-11 min-w-11 px-3 py-1.5 text-xs bg-subtle text-sub rounded-md hover:bg-primary-soft transition-colors border border-line"
             >
               {t(`templates.${id}`)}
             </button>
@@ -478,22 +425,22 @@ export default function MeetingMinutes() {
           <div className="flex-1" />
 
           {/* Export */}
-          <button onClick={() => copyToClipboard(formatForExport(data, 'text', t), 'copy-text')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
+          <button onClick={() => copyToClipboard(formatForExport(data, 'text', t), 'copy-text')} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             {copiedId === 'copy-text' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {t('copyText')}
           </button>
-          <button onClick={() => exportFile('markdown')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
+          <button onClick={() => exportFile('markdown')} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             <Download className="w-4 h-4" /> MD
           </button>
-          <button onClick={() => exportFile('html')} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
+          <button onClick={() => exportFile('html')} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             <Download className="w-4 h-4" /> HTML
           </button>
-          <button onClick={handlePrint} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
+          <button onClick={handlePrint} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-body rounded-md hover:bg-track transition-colors">
             <Printer className="w-4 h-4" /> {t('print')}
           </button>
 
           {/* Save slots */}
-          <button onClick={() => setShowSaveSlots(v => !v)} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-sub rounded-md hover:bg-primary-soft transition-colors">
+          <button onClick={() => setShowSaveSlots(v => !v)} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-1.5 text-sm bg-soft text-sub rounded-md hover:bg-primary-soft transition-colors">
             <Save className="w-4 h-4" />
             {t('saveSlots')}
             {showSaveSlots ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -506,25 +453,27 @@ export default function MeetingMinutes() {
             <div className="flex gap-2">
               <input
                 className={`${smallInputClass} flex-1`}
+                aria-label={t('slotNamePlaceholder')} maxLength={80}
                 placeholder={t('slotNamePlaceholder')}
                 value={slotName}
                 onChange={e => setSlotName(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && saveSlot()}
               />
-              <button onClick={saveSlot} className="px-3 py-1.5 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700 transition-colors">
+              <button onClick={saveSlot} disabled={!ready || slotsBlocked || !slotName.trim()} className="min-h-11 min-w-11 px-3 py-1.5 bg-primary text-white rounded-md text-sm hover:bg-primary-hover transition-colors">
                 {t('saveBtn')}
               </button>
             </div>
+            {slotNotice && <p role="status" className="text-sm text-sub">{t(slotNotice)}</p>}
             {saveSlots.length > 0 && (
               <div className="space-y-1">
                 {saveSlots.map(slot => (
-                  <div key={slot.name} className="flex items-center justify-between bg-surface rounded-md px-3 py-2">
+                  <div key={slot.name} className="flex flex-wrap gap-2 items-center justify-between bg-surface rounded-md px-3 py-2">
                     <span className="text-sm text-body">{slot.name}</span>
                     <div className="flex gap-2">
-                      <button onClick={() => loadSlot(slot)} className="text-xs text-primary hover:underline flex items-center gap-1">
+                      <button onClick={() => loadSlot(slot)} className="min-h-11 min-w-11 text-xs text-primary hover:underline flex items-center gap-1">
                         <FolderOpen className="w-3 h-3" /> {t('load')}
                       </button>
-                      <button onClick={() => deleteSlot(slot.name)} className="text-xs text-red-500 hover:underline flex items-center gap-1">
+                      <button onClick={() => deleteSlot(slot.name)} className="min-h-11 min-w-11 text-xs text-red-500 hover:underline flex items-center gap-1">
                         <Trash2 className="w-3 h-3" /> {t('delete')}
                       </button>
                     </div>
@@ -536,15 +485,17 @@ export default function MeetingMinutes() {
         )}
       </div>
 
+      <MeetingActionExportPanel key={meetingRevision} actions={data.actions} meetingTitle={data.title} ready={ready} blocked={draftBlocked} onSend={sendActionsToKanban} onReviewActions={reviewActions} onAddAction={() => { addAction(); reviewActions() }} />
+
       {activeTab === 'edit' ? (
         <>
           {/* Meeting Info */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<Calendar className="w-5 h-5" />} title={t('meetingInfo')} />
+            <SectionHeader title={t('meetingInfo')} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-body mb-1">{t('meetingTitle')}</label>
-                <input className={inputClass} value={data.title} onChange={e => update('title', e.target.value)} placeholder={t('meetingTitlePlaceholder')} />
+                <input aria-label={t('meetingTitle')} className={inputClass} value={data.title} onChange={e => update('title', e.target.value)} placeholder={t('meetingTitlePlaceholder')} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-body mb-1">{t('date')}</label>
@@ -574,11 +525,11 @@ export default function MeetingMinutes() {
 
           {/* Attendees */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<Users className="w-5 h-5" />} title={t('attendees')} />
+            <SectionHeader title={t('attendees')} />
             <div className="space-y-2 mb-3">
               {data.attendees.map((a, idx) => (
                 <div key={a.id} className="flex flex-wrap gap-2 items-center">
-                  <span className="text-xs text-gray-400 w-5 text-right">{idx + 1}.</span>
+                  <span className="text-xs text-muted w-5 text-right">{idx + 1}.</span>
                   <input className={`${smallInputClass} flex-1 min-w-24`} placeholder={t('attendeeName')} value={a.name} onChange={e => updateAttendee(a.id, 'name', e.target.value)} />
                   <input className={`${smallInputClass} flex-1 min-w-24`} placeholder={t('attendeeRole')} value={a.role} onChange={e => updateAttendee(a.id, 'role', e.target.value)} />
                   <select className={`${smallInputClass} min-w-20`} value={a.status} onChange={e => updateAttendee(a.id, 'status', e.target.value)}>
@@ -586,18 +537,18 @@ export default function MeetingMinutes() {
                     <option value="absent">{t('absent')}</option>
                     <option value="remote">{t('remote')}</option>
                   </select>
-                  <button onClick={() => removeAttendee(a.id)} className="text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => removeAttendee(a.id)} className="min-h-11 min-w-11 text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4" /></button>
                 </div>
               ))}
             </div>
-            <button onClick={addAttendee} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
+            <button onClick={addAttendee} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addAttendee')}
             </button>
           </div>
 
           {/* Agenda */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<FileText className="w-5 h-5" />} title={t('agenda')} />
+            <SectionHeader title={t('agenda')} />
             <div className="space-y-3 mb-3">
               {data.agenda.map((a, idx) => (
                 <div key={a.id} className="border border-line rounded-lg p-3 space-y-2">
@@ -605,68 +556,68 @@ export default function MeetingMinutes() {
                     <span className="text-sm font-semibold text-primary mt-2 w-5 shrink-0">{idx + 1}.</span>
                     <input className={`${smallInputClass} flex-1`} placeholder={t('agendaTitle')} value={a.title} onChange={e => updateAgenda(a.id, 'title', e.target.value)} />
                     <input className={`${smallInputClass} w-16`} placeholder={t('minutes')} type="number" min="0" value={a.duration} onChange={e => updateAgenda(a.id, 'duration', e.target.value)} />
-                    <button onClick={() => removeAgenda(a.id)} className="text-red-400 hover:text-red-600 p-1 mt-0.5"><Trash2 className="w-4 h-4" /></button>
+                    <button onClick={() => removeAgenda(a.id)} className="min-h-11 min-w-11 text-red-400 hover:text-red-600 p-1 mt-0.5"><Trash2 className="w-4 h-4" /></button>
                   </div>
                   <textarea className={`${inputClass} resize-none`} rows={2} placeholder={t('agendaNotes')} value={a.notes} onChange={e => updateAgenda(a.id, 'notes', e.target.value)} />
                 </div>
               ))}
             </div>
-            <button onClick={addAgenda} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
+            <button onClick={addAgenda} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addAgenda')}
             </button>
           </div>
 
           {/* Discussion */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<MessageSquare className="w-5 h-5" />} title={t('discussion')} />
+            <SectionHeader title={t('discussion')} />
             <div className="space-y-2 mb-3">
               {data.discussions.map((d, idx) => (
                 <div key={d.id} className="flex flex-wrap gap-2 items-start">
-                  <span className="text-xs text-gray-400 w-5 text-right mt-2">{idx + 1}.</span>
+                  <span className="text-xs text-muted w-5 text-right mt-2">{idx + 1}.</span>
                   <input className={`${smallInputClass} w-28 shrink-0`} placeholder={t('speaker')} value={d.speaker} onChange={e => updateDiscussion(d.id, 'speaker', e.target.value)} />
                   <textarea className={`${smallInputClass} flex-1 min-w-40 resize-none`} rows={2} placeholder={t('discussionContent')} value={d.content} onChange={e => updateDiscussion(d.id, 'content', e.target.value)} />
-                  <button onClick={() => removeDiscussion(d.id)} className="text-red-400 hover:text-red-600 p-1 mt-1"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => removeDiscussion(d.id)} className="min-h-11 min-w-11 text-red-400 hover:text-red-600 p-1 mt-1"><Trash2 className="w-4 h-4" /></button>
                 </div>
               ))}
             </div>
-            <button onClick={addDiscussion} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
+            <button onClick={addDiscussion} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addDiscussion')}
             </button>
           </div>
 
           {/* Decisions */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<Lightbulb className="w-5 h-5" />} title={t('decisions')} />
+            <SectionHeader title={t('decisions')} />
             <textarea className={`${inputClass} resize-none`} rows={4} placeholder={t('decisionsPlaceholder')} value={data.decisions} onChange={e => update('decisions', e.target.value)} />
           </div>
 
           {/* Action Items */}
-          <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<CheckSquare className="w-5 h-5" />} title={t('actionItems')} />
+          <div id="meeting-actions" className={`scroll-mt-20 ${glassCard} ${glassInset} p-6`}>
+            <SectionHeader title={t('actionItems')} />
             <div className="space-y-2 mb-3">
               {data.actions.map((a, idx) => (
                 <div key={a.id} className="flex flex-wrap gap-2 items-center border border-line rounded-lg p-2">
-                  <span className="text-xs text-gray-400 w-5 text-right">{idx + 1}.</span>
-                  <input className={`${smallInputClass} flex-1 min-w-40`} placeholder={t('actionTask')} value={a.task} onChange={e => updateAction(a.id, 'task', e.target.value)} />
-                  <input className={`${smallInputClass} w-24`} placeholder={t('assignee')} value={a.assignee} onChange={e => updateAction(a.id, 'assignee', e.target.value)} />
-                  <input type="date" className={`${smallInputClass} w-36`} value={a.dueDate} onChange={e => updateAction(a.id, 'dueDate', e.target.value)} />
-                  <select className={`${smallInputClass} w-24 ${statusColors[a.status]}`} value={a.status} onChange={e => updateAction(a.id, 'status', e.target.value)}>
+                  <span className="text-xs text-muted w-5 text-right">{idx + 1}.</span>
+                  <input aria-label={t('actionTask')} className={`${smallInputClass} flex-1 min-w-40`} placeholder={t('actionTask')} value={a.task} onChange={e => updateAction(a.id, 'task', e.target.value)} />
+                  <input aria-label={t('assignee')} className={`${smallInputClass} w-24`} placeholder={t('assignee')} value={a.assignee} onChange={e => updateAction(a.id, 'assignee', e.target.value)} />
+                  <input aria-label={t('dueDate')} type="date" className={`${smallInputClass} w-36`} value={a.dueDate} onChange={e => updateAction(a.id, 'dueDate', e.target.value)} />
+                  <select aria-label={t('status')} className={`${smallInputClass} w-24 ${statusColors[a.status]}`} value={a.status} onChange={e => updateAction(a.id, 'status', e.target.value)}>
                     <option value="pending">{t('pending')}</option>
                     <option value="in-progress">{t('inProgress')}</option>
                     <option value="done">{t('done')}</option>
                   </select>
-                  <button onClick={() => removeAction(a.id)} className="text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => removeAction(a.id)} className="min-h-11 min-w-11 text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4" /></button>
                 </div>
               ))}
             </div>
-            <button onClick={addAction} className="flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
+            <button onClick={addAction} className="min-h-11 min-w-11 flex items-center gap-1.5 px-3 py-2 text-sm bg-subtle text-sub rounded-lg hover:bg-primary-soft transition-colors">
               <Plus className="w-4 h-4" /> {t('addAction')}
             </button>
           </div>
 
           {/* Next meeting + extra notes */}
           <div className={`${glassCard} ${glassInset} p-6`}>
-            <SectionHeader icon={<Clock className="w-5 h-5" />} title={t('nextMeeting')} />
+            <SectionHeader title={t('nextMeeting')} />
             <input className={inputClass} value={data.nextMeeting} onChange={e => update('nextMeeting', e.target.value)} placeholder={t('nextMeetingPlaceholder')} />
             <div className="mt-4">
               <label className="block text-sm font-medium text-body mb-1">{t('extraNotes')}</label>
@@ -679,8 +630,8 @@ export default function MeetingMinutes() {
         <div ref={printRef} className={`${glassCard} ${glassInset} p-8 print:shadow-none print:p-0`}>
           <div className="max-w-3xl mx-auto space-y-6">
             <div>
-              <h1 className="text-2xl font-bold text-fg border-b-2 border-blue-600 pb-2">{data.title || t('untitled')}</h1>
-              <div className="mt-3 grid grid-cols-2 gap-x-8 gap-y-1 text-sm text-sub">
+              <h1 className="text-2xl font-bold text-fg border-b-2 border-primary pb-2">{data.title || t('untitled')}</h1>
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-1 text-sm text-sub">
                 <div className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {data.date} {data.time}</div>
                 <div className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {data.location} ({data.locationType === 'online' ? t('online') : t('offline')})</div>
                 <div className="flex items-center gap-1"><User className="w-4 h-4" /> {t('organizer')}: {data.organizer}</div>
@@ -693,7 +644,7 @@ export default function MeetingMinutes() {
                 <h2 className="text-base font-semibold text-body mb-2">{t('attendees')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {data.attendees.map(a => (
-                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-gray-400 line-through' : a.status === 'remote' ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
+                    <span key={a.id} className={`px-2 py-1 rounded-full text-xs ${a.status === 'absent' ? 'bg-soft text-muted line-through' : a.status === 'remote' ? 'bg-primary-soft text-primary' : 'bg-soft text-sub'}`}>
                       {a.name}{a.role ? ` · ${a.role}` : ''}
                     </span>
                   ))}
@@ -705,10 +656,10 @@ export default function MeetingMinutes() {
               <div>
                 <h2 className="text-base font-semibold text-body mb-2">{t('agenda')}</h2>
                 <ol className="space-y-2 list-decimal list-inside">
-                  {data.agenda.map((a, i) => (
+                  {data.agenda.map(a => (
                     <li key={a.id} className="text-sm text-body">
                       <span className="font-medium">{a.title}</span>
-                      {a.duration ? <span className="ml-1 text-xs text-gray-400">{t('durationTag', { n: a.duration })}</span> : null}
+                      {a.duration ? <span className="ml-1 text-xs text-muted">{t('durationTag', { n: a.duration })}</span> : null}
                       {a.notes && <p className="ml-4 mt-1 text-muted">{a.notes}</p>}
                     </li>
                   ))}
@@ -757,7 +708,7 @@ export default function MeetingMinutes() {
                           <td className="border border-line px-3 py-2 text-body">{a.task}</td>
                           <td className="border border-line px-3 py-2 text-body">{a.assignee}</td>
                           <td className="border border-line px-3 py-2 text-body">{a.dueDate}</td>
-                          <td className={`border border-line px-3 py-2 font-medium ${a.status === 'done' ? 'text-green-600 dark:text-green-400' : a.status === 'in-progress' ? 'text-yellow-600 dark:text-yellow-400' : 'text-muted'}`}>
+                          <td className={`border border-line px-3 py-2 font-medium ${a.status === 'done' ? 'text-body' : a.status === 'in-progress' ? 'text-primary' : 'text-muted'}`}>
                             {a.status === 'done' ? t('done') : a.status === 'in-progress' ? t('inProgress') : t('pending')}
                           </td>
                         </tr>
@@ -788,7 +739,7 @@ export default function MeetingMinutes() {
       {/* Guide */}
       <div className={`${glassCard} ${glassInset} p-6 print:hidden`}>
         <h2 className="text-xl font-semibold text-fg mb-6">{t('guide.title')}</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {(t.raw('guide.sections') as { title: string; items: string[] }[]).map((section, i) => (
             <div key={i} className="bg-subtle rounded-xl p-4">
               <h3 className="font-semibold text-fg mb-3">{section.title}</h3>

@@ -5,10 +5,12 @@ import RelatedTools from '@/components/RelatedTools'
 import OrderPickerClient from './OrderPickerClient'
 import ToolFaq from '@/components/ToolFaq'
 
+const TITLE = "순서정하기 - 자동·한 명씩 공개, 결과 TXT | 툴허브"
+const DESCRIPTION = "참가자 순서를 한 번 섞고 자동 또는 한 명씩 공개하세요. 현재 순서를 유지하며 모두 공개하거나 다시 뽑을 수 있습니다. 완전히 공개한 결과를 복사·TXT로 저장하고 복사 실패 시 원문 선택·재시도를 이용하세요."
+
 export const metadata: Metadata = {
-  title: '순서정하기 게임 - 랜덤 순서 뽑기, 발표·회식 순서 | 툴허브',
-  description:
-    '참가자 이름만 넣고 뽑기를 누르면 랜덤으로 순서가 정해집니다. 1위부터 카드가 한 장씩 뒤집히며 공개되고, 결과는 복사해 단톡방에 바로 붙여 넣을 수 있어요. 발표 순서·청소 당번·게임 차례 정하기에 무료로.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     '순서정하기 게임',
     '순서 정하기 게임',
@@ -25,9 +27,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: '툴허브' }],
   openGraph: {
-    title: '순서정하기 게임 - 무료 랜덤 순서 뽑기 | 툴허브',
-    description:
-      '참가자 이름을 입력하면 랜덤으로 순서를 뽑아드립니다. 발표 순서, 회식 자리, 게임 순서를 공정하게 결정하세요.',
+    title: TITLE,
+    description: DESCRIPTION,
     type: 'website',
     url: 'https://toolhub.ai.kr/order-picker/',
     siteName: '툴허브',
@@ -43,8 +44,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '순서정하기 게임 - 무료 랜덤 순서 뽑기 | 툴허브',
-    description: '참가자 이름 입력 → 랜덤 순서 뽑기. 발표·회식·게임 순서를 공정하게 결정.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/order-picker.png'],
   },
   alternates: {
@@ -68,8 +69,7 @@ export default function OrderPickerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '순서정하기 게임',
-    description:
-      '참가자 이름을 입력하면 랜덤으로 순서를 뽑아주는 무료 온라인 순서정하기 게임. 발표 순서, 회식 자리, 게임 순서 등에 활용.',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/order-picker/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
@@ -79,8 +79,9 @@ export default function OrderPickerPage() {
     featureList: [
       '랜덤 순서 뽑기',
       '참가자 이름 직접 입력',
-      '카드 한 장씩 순차 공개',
-      '결과 복사 및 공유',
+      '자동 공개·한 명씩 공개·모두 공개',
+      '완전히 공개한 결과 복사·UTF-8 TXT',
+      '복사 실패 원문 선택·재시도',
       '다크모드 지원',
     ],
   }
@@ -107,13 +108,13 @@ export default function OrderPickerPage() {
         '@type': 'HowToStep',
         position: 3,
         name: '카드 공개',
-        text: '1위부터 카드가 한 장씩 자동으로 공개됩니다. 기다리지 않으려면 "전체 공개" 버튼으로 한 번에 확인합니다.',
+        text: '자동 공개 또는 한 명씩 공개를 선택합니다. 모드를 바꿔도 현재 순서는 유지되며 "전체 공개"로 모두 확인할 수 있습니다.',
       },
       {
         '@type': 'HowToStep',
         position: 4,
         name: '결과 복사',
-        text: '공개된 순서를 복사 버튼으로 클립보드에 저장하여 메신저나 메모에 공유합니다.',
+        text: '카드를 모두 공개한 뒤 전체 순서를 복사하거나 TXT로 저장합니다. 복사가 실패하면 원문 선택과 재시도를 사용합니다.',
       },
       {
         '@type': 'HowToStep',
@@ -125,9 +126,9 @@ export default function OrderPickerPage() {
   }
 
   const faq = [
-    { q: '순서정하기 게임은 정말 무작위인가요?', a: '네. 뽑기를 누를 때마다 브라우저의 난수로 참가자 순서를 새로 섞습니다. 계산이 모두 내 브라우저 안에서 이루어지고 서버로 전송되지 않으므로, 누군가 결과를 미리 정해 두거나 바꿀 수 없습니다.' },
-    { q: '참가자를 몇 명까지 입력할 수 있나요?', a: '최소 2명부터 인원 제한 없이 추가할 수 있습니다(이름은 20자까지). 결과 카드는 0.5초 간격으로 한 장씩 공개되므로, 인원이 많을 때는 "전체 공개" 버튼으로 한 번에 볼 수 있습니다.' },
-    { q: '결과를 저장하거나 공유할 수 있나요?', a: '카드가 모두 공개되면 "결과 복사" 버튼으로 "1위: 이름" 형식의 목록을 복사해 카카오톡·슬랙 등에 붙여 넣을 수 있습니다. 주소창 링크에는 참가자 명단이 담겨 있어, 링크를 보내면 같은 명단으로 바로 뽑을 수 있습니다.' },
+    { q: '순서정하기 게임은 정말 무작위인가요?', a: '네. 뽑기를 누를 때마다 브라우저의 난수로 참가자 순서를 새로 섞습니다. 한 번 뽑은 순서는 자동·수동 공개 모드를 바꿔도 유지됩니다. 브라우저에서 계산하며 별도 장기 저장은 추가하지 않습니다.' },
+    { q: '참가자를 몇 명까지 입력할 수 있나요?', a: '최소 2명부터 인원 제한 없이 추가할 수 있습니다(이름은 20자까지). 자동 공개는 0.5초 간격이며 한 명씩 직접 공개할 수도 있습니다. 공개 중에는 명단 편집이 잠기고, 완료 뒤 명단을 바꾸면 이전 결과가 초기화됩니다.' },
+    { q: '결과를 저장하거나 공유할 수 있나요?', a: '카드가 모두 공개되면 순서를 복사하거나 UTF-8 TXT로 내려받습니다. 실패한 복사는 원문 선택·재시도로 복구합니다. 주소창 링크에는 참가자 명단이 담겨 있어, 링크를 보내면 같은 명단으로 바로 뽑을 수 있습니다.' },
     { q: '순서정하기와 사다리타기의 차이는 무엇인가요?', a: '순서뽑기는 전체 참가자의 순서를 한 번에 랜덤으로 배정합니다. 사다리타기는 각 참가자가 특정 "결과"(예: 벌칙, 역할)에 1:1로 매핑됩니다. 단순히 발표나 진행 순서를 정할 때는 순서뽑기가, 역할이나 결과를 배정할 때는 사다리타기가 더 적합합니다.' },
     { q: '로그인 없이 무료로 사용할 수 있나요?', a: '네, 완전 무료이며 회원가입이나 로그인이 필요하지 않습니다. 스마트폰·태블릿·PC 브라우저에서 앱 설치 없이 바로 쓸 수 있습니다.' },
   ]
@@ -173,12 +174,12 @@ export default function OrderPickerPage() {
               브라우저에서 바로 사용할 수 있어 앱 설치가 필요 없고, 스마트폰·태블릿·PC 모두에서 작동합니다.
             </p>
             <p className="text-body leading-relaxed mb-3">
-              뽑기를 누를 때마다 브라우저 안에서 순서를 무작위로 섞고, 1위부터 카드를 한 장씩 뒤집어 공개합니다.
-              결과가 하나씩 드러나기 때문에 오프라인 모임에서도 긴장감 있게 진행할 수 있습니다.
+              뽑기를 누를 때마다 브라우저 안에서 순서를 한 번 섞고, 자동 또는 한 명씩 직접 공개합니다.
+              공개 방식을 바꿔도 현재 순서는 유지되며, 모두 공개한 결과는 복사하거나 TXT로 저장할 수 있습니다.
             </p>
             <p className="text-body leading-relaxed">
               순서정하기, 순서 뽑기, 랜덤 순서 정하기 등 다양한 이름으로 불리지만, 모두 같은 기능입니다.
-              사다리타기와 달리 "누가 몇 번째인지"를 한 번에 결정하는 데 특화되어 있습니다.
+              사다리타기와 달리 &quot;누가 몇 번째인지&quot;를 한 번에 결정하는 데 특화되어 있습니다.
             </p>
           </div>
 
@@ -235,11 +236,11 @@ export default function OrderPickerPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">3</span>
-                <span>1위부터 카드가 한 장씩 자동으로 뒤집히며 순서가 공개됩니다. &quot;전체 공개&quot; 버튼으로 한 번에 모두 볼 수도 있습니다.</span>
+                <span>자동 또는 한 명씩 공개를 선택하세요. 공개 모드를 바꿔도 같은 순서가 이어지고, &quot;전체 공개&quot;로 모두 확인할 수 있습니다.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">4</span>
-                <span>결과를 복사하여 카카오톡이나 슬랙 등 메신저로 바로 공유하세요.</span>
+                <span>모든 카드를 공개한 뒤 전체 결과를 복사하거나 TXT로 저장하세요. 복사 실패 시 원문 선택·재시도를 사용할 수 있습니다.</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-soft text-sub text-sm font-bold flex items-center justify-center">5</span>

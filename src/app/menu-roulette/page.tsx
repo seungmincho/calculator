@@ -5,9 +5,10 @@ import DecisionTools from '@/components/DecisionTools'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import decisionMessages from '../../../messages/generated/ko/ns/decisionTools.json'
 
 const TITLE = "저녁메뉴 추천 룰렛 - 점심·저녁 메뉴 돌림판 | 툴허브"
-const DESC = "오늘 뭐 먹지? 저녁·점심 메뉴를 고르고 바로 돌려보세요. 한식·중식·일식 등 메뉴 모음, 후보 직접 추가·삭제, 결과 복사와 이미지 저장을 무료로 이용할 수 있습니다."
+const DESC = "점심·저녁 후보를 룰렛으로 고르고 뽑힌 메뉴를 이번에만 제외하거나 복구하세요. 원본 후보와 식사 기록·주간 계획을 보존하며, 후보 링크 공유·결과 복사 복구·이미지 저장을 지원합니다."
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -83,8 +84,13 @@ export default function MenuRoulettePage() {
       '메뉴 항목 자유 추가/삭제',
       '저녁·점심·한식·중식 등 9가지 메뉴 프리셋',
       '회전 애니메이션 룰렛',
-      '결과 이미지 저장·복사, 메뉴 목록 링크 공유',
+      '결과 이미지 저장·복사·실패 시 원문 선택과 재시도',
+      '메뉴 목록 링크 공유',
       '모바일·PC 모두 지원',
+      '날짜별 식사 기록과 최근 7일 메뉴 제외',
+      '주간 메뉴 계획·빈 날짜 채우기·7일 TXT 복사',
+      '계획 저장과 실제 식사 기록 추가 분리',
+      '원본 후보를 유지하는 이번 회차 제외·개별 및 모두 복구',
     ],
   }
 
@@ -117,25 +123,18 @@ export default function MenuRoulettePage() {
         '@type': 'HowToStep',
         position: 4,
         name: '결과 확인',
-        text: '룰렛이 멈추면 오늘의 메뉴가 결정됩니다! 결과 화면에 선택된 메뉴가 크게 표시됩니다.',
+        text: '결과를 확인하고 이번에 원하지 않는 메뉴는 임시 제외한 뒤 다시 돌리세요. 같은 이름의 후보도 함께 제외하며 원본 목록은 보존합니다.',
       },
       {
         '@type': 'HowToStep',
         position: 5,
         name: '결과 공유',
-        text: '주소창 링크에는 현재 메뉴 목록이 담겨 있습니다. 링크를 복사해 팀원이나 친구에게 보내면 같은 룰렛을 돌릴 수 있고, 결과는 이미지로 저장할 수도 있습니다.',
+        text: '링크에는 원래 후보 목록만 담기며 뽑힌 결과나 임시 제외는 넣지 않습니다. 결과는 따로 복사하거나 이미지로 저장할 수 있습니다.',
       },
     ],
   }
 
-  const faq = [
-    { q: '메뉴 추천 룰렛은 무료인가요?', a: '네, 완전 무료입니다. 회원가입이나 앱 설치 없이 브라우저에서 바로 사용할 수 있어요. PC, 스마트폰, 태블릿 모두 지원합니다.' },
-    { q: '룰렛에 메뉴를 몇 개까지 추가할 수 있나요?', a: '2개부터 최대 12개까지 올릴 수 있습니다. 메뉴 이름(20자 이내)을 입력하고 추가 버튼을 누르면 되며, 원하지 않는 항목은 언제든 삭제할 수 있어요.' },
-    { q: '어떤 메뉴 프리셋이 있나요?', a: '처음에는 저녁메뉴 프리셋(삼겹살·치킨·피자·파스타·초밥·국밥·찜닭·부대찌개·마라탕·쌀국수·족발·보쌈)이 채워져 있습니다. 점심메뉴 프리셋에는 김치찌개·제육볶음·돈까스·비빔밥·냉면·라멘·짜장면·짬뽕·우동·덮밥·샐러드·김밥이 들어 있고, 한식·중식·일식·양식·분식·야식배달·카페·벌칙 프리셋도 있어요.' },
-    { q: '룰렛 결과를 친구에게 공유할 수 있나요?', a: '네! 현재 입력한 메뉴 목록이 URL에 자동으로 담기므로, 주소창의 링크를 복사해서 카카오톡이나 메신저로 공유하면 같은 룰렛을 친구도 돌릴 수 있어요. 결과가 나오면 "이미지"로 결과 카드를 저장하거나 "복사"로 메뉴 이름을 복사할 수도 있습니다.' },
-    { q: '오늘 뭐 먹지? 메뉴 추천과는 무엇이 다른가요?', a: '메뉴 룰렛은 내가 정한 후보 중에서 하나를 뽑는 도구이고, 오늘 뭐 먹지? 메뉴 추천은 300가지가 넘는 메뉴 중에서 상황·카테고리에 맞춰 골라 주는 도구입니다. 후보가 떠오르지 않을 때는 메뉴 추천을 먼저 써 보세요.' },
-    { q: '오늘 점심 메뉴 정할 때 말고 다른 용도로도 쓸 수 있나요?', a: '물론입니다. 저녁 메뉴 결정, 디저트 선택, 카페 메뉴 고르기, 모임 장소 결정, 벌칙 정하기 등 다양한 상황에서 활용할 수 있어요.' },
-  ]
+  const faq = decisionMessages.decisionTools.menu.faq
 
   return (
     <>
@@ -301,11 +300,11 @@ export default function MenuRoulettePage() {
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                <span><strong className="text-fg">결과 확인:</strong> 룰렛이 멈추면 오늘의 메뉴가 결정됩니다! 결과 화면에 선택된 메뉴가 크게 표시됩니다.</span>
+                <span><strong className="text-fg">결과 확인:</strong> 결과를 보고 이번에 원하지 않는 메뉴는 임시 제외하세요. 같은 이름의 후보가 함께 빠지며 원본 후보는 복구할 수 있습니다.</span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-7 h-7 bg-soft text-body rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                <span><strong className="text-fg">결과 공유:</strong> 주소창 링크에 현재 메뉴 목록이 담겨 있으니 그대로 복사해 보내면 같은 룰렛을 돌릴 수 있습니다. 결과는 이미지로 저장할 수도 있어요.</span>
+                <span><strong className="text-fg">결과 공유:</strong> 링크에는 원래 후보 목록만 담기고 결과나 임시 제외는 들어가지 않습니다. 결과는 따로 복사하거나 이미지로 저장할 수 있습니다.</span>
               </li>
             </ol>
           </div>

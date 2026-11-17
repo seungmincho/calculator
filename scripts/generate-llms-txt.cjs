@@ -30,6 +30,7 @@ const out = [
   '- 각 도구 페이지에는 계산 기준·출처·FAQ가 본문과 JSON-LD(WebApplication·FAQPage)로 들어 있습니다.',
   '- 결과는 URL 쿼리로 재현됩니다(예: ' + `${SITE}/salary-calculator/?salary=50000000&type=annual` + '). 정적 HTML에는 기본값 결과가 들어 있고, 쿼리 값으로 다시 계산하는 일은 브라우저 JavaScript가 합니다.',
   '- 언어: 한국어(기본), 일부 영어 UI.',
+  '- [도구 활용 가이드](' + url('/guides') + '): 실제 예시와 도구별 사용법을 주제별로 읽을 수 있습니다.',
   '',
   '## 계산 API (에이전트용, 읽기 전용 JSON)',
   '',

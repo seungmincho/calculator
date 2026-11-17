@@ -3,14 +3,18 @@ import I18nWrapper from '@/components/I18nWrapper'
 import UnitConverter from '@/components/UnitConverter'
 import RelatedTools from '@/components/RelatedTools'
 import ToolFaq from '@/components/ToolFaq'
+import unitMessages from '../../../messages/generated/ko/ns/unitConverter.json'
+
+const TITLE = '단위 변환기 - 여러 값 변환·TSV·CSV | 툴허브'
+const DESCRIPTION = '단일 값 환산과 변환 쌍 저장, 같은 조합의 최대1,000행 변환을 제공합니다. 빈 행·오류를 보존하고 처음200행 미리보기와 전체 결과 복사·CSV를 구분합니다. 일괄 원문은 공유 URL이나 최근 기록에 추가하지 않습니다.'
 
 export const metadata: Metadata = {
-  title: '단위 변환기 - 길이, 무게, 온도, CSS 단위 변환 | 툴허브',
-  description: '길이·무게·넓이(평)·부피·온도·속도·데이터(KB/KiB)·압력·에너지·연비·요리(컵·큰술)·전통 단위(근·돈·자)·CSS까지. 값 하나로 모든 단위를 한 번에 환산합니다.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: '단위변환기, 단위 변환, 길이변환, 무게변환, 온도변환, 인치 센치, 파운드 kg, 평 제곱미터, 고기 한근, 금 한돈, 연비 환산, 컵 ml, KiB, px rem, unit converter',
   openGraph: {
-    title: '단위 변환기 - 다양한 단위 변환',
-    description: '길이, 무게, 온도, CSS 단위 등을 변환하세요',
+    title: TITLE,
+    description: DESCRIPTION,
     type: 'website',
     siteName: '툴허브',
     url: 'https://toolhub.ai.kr/unit-converter/',
@@ -19,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '단위 변환기 - 길이, 무게, 온도, CSS 단위 변환',
-    description: '길이·무게·넓이(평)·부피·온도·속도·데이터(KB/KiB)·압력·에너지·연비·요리(컵·큰술)·전통 단위(근·돈·자)·CSS까지. 값 하나로 모든 단위를 한 번에 환산합니다.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['https://toolhub.ai.kr/og/unit-converter.png'],
   },
   alternates: {
@@ -33,20 +37,16 @@ export default function UnitConverterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: '단위 변환기',
-    description: '길이·무게·넓이(평)·부피·온도·속도·데이터(KB/KiB)·압력·에너지·연비·요리(컵·큰술)·전통 단위(근·돈·자)·CSS까지. 값 하나로 모든 단위를 한 번에 환산합니다.',
+    description: DESCRIPTION,
     url: 'https://toolhub.ai.kr/unit-converter/',
     applicationCategory: 'UtilityApplication',
     operatingSystem: 'Any',
     browserRequirements: 'JavaScript',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
-    featureList: ['14개 분야 단위 동시 환산', '평·근·돈·자 전통 단위', 'KB/KiB 구분', '연비 km/L·L/100km·mpg', '한국/미국 계량컵', '단위 검색', '유효숫자 조절·지수 표기', '링크 공유']
+    featureList: ['14개 분야 단위 동시 환산', '평·근·돈·자 전통 단위', 'KB/KiB 구분', '연비 km/L·L/100km·mpg', '한국/미국 계량컵', '단위 검색', '유효숫자 조절·지수 표기', '단일 값 링크 공유', '변환 쌍 이름 저장·수동 불러오기', '현재 숫자를 보존한 정밀도·rem 기준 복원', '최대1,000행 명시 변환', '빈 행·오류 보존', '200행 미리보기와 전체 TSV·CSV']
   }
 
-  const faq = [
-    { q: '한국에서 사용하는 평(坪)은 몇 제곱미터인가요?', a: '1평은 약 3.3058㎡(정확히 400/121㎡)입니다. 한국 부동산에서는 아직 평 단위가 관행적으로 사용되지만, 2007년부터 법적으로는 ㎡를 사용해야 합니다. 환산 공식: 평 → ㎡ = 평 × 3.3058, ㎡ → 평 = ㎡ × 0.3025. 예를 들어 25평 아파트는 약 82.6㎡, 33평은 약 109.1㎡입니다.' },
-    { q: '화씨(°F)와 섭씨(°C) 변환 공식은?', a: '섭씨를 화씨로: °F = (°C × 9/5) + 32. 화씨를 섭씨로: °C = (°F - 32) × 5/9. 주요 기준점: 물의 어는점 0°C = 32°F, 물의 끓는점 100°C = 212°F, 체온 36.5°C = 97.7°F. 화씨는 미국과 팔라우·마셜 제도·케이맨 제도·라이베리아 등 일부 지역에서만 공식적으로 쓰이고, 대부분의 국가는 섭씨를 사용합니다.' },
-    { q: '1마일은 몇 킬로미터인가요?', a: '1마일(mile)은 정확히 1.609344km입니다. 반대로 1km는 약 0.6214마일입니다. 미국, 영국, 미얀마 등 일부 국가에서 마일을 사용합니다. 관련 단위: 1해리(nautical mile) = 1.852km, 1피트(foot) = 0.3048m, 1인치(inch) = 2.54cm, 1야드(yard) = 0.9144m입니다.' },
-  ]
+  const faq = unitMessages.unitConverter.guide.faq.items
 
   return (
     <>
@@ -75,6 +75,8 @@ export default function UnitConverterPage() {
             단위 변환기 활용 팁
           </h3>
           <ul className="list-disc list-inside space-y-2 text-body">
+            <li><strong>여러 값 변환:</strong> 같은 단위 조합으로 한 줄에 숫자 하나를 입력하고 변환하세요. 최대1,000개 물리 행·50,000 UTF-16단위이며 빈 행과 오류를 보존합니다. 화면은200행까지 미리 보지만 전체 TSV·CSV는 실행 결과 전체를 사용합니다.</li>
+            <li><strong>이전 결과 확인:</strong> 실행 뒤 원문이나 단위를 바꾸면 이전 결과 표시를 확인하고 다시 변환하세요. 일괄 원문은 기존 단일 값 URL·즐겨찾기·최근 기록과 별도로 처리합니다.</li>
             <li><strong>부동산 평수 계산:</strong> 1평은 약 3.306㎡입니다. 아파트 분양 광고의 평수를 제곱미터로 변환하거나 등기부등본의 ㎡ 면적을 평으로 환산할 때 활용하세요.</li>
             <li><strong>해외 레시피 단위:</strong> 미국 레시피의 1컵은 약 236.6mL로 한국 계량컵(200mL)보다 큽니다. 요리 탭에서 컵·큰술·작은술을 mL로 바로 비교하세요.</li>
             <li><strong>데이터 용량:</strong> 1TB 저장장치가 Windows에서 약 931GB로 보이는 건 1000 단위(TB)와 1024 단위(TiB) 차이 때문입니다.</li>

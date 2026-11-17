@@ -3,6 +3,8 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/fontPreview'
+import FontPairPreview from '@/components/FontPairPreview'
+import type { FontPairState } from '@/utils/fontPairing'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Copy, Check, Search, Star, Pin, X, ExternalLink, Upload, Link2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react'
 import {
@@ -22,7 +24,7 @@ interface Look { size: number; weight: number; lh: number; ls: number; align: Al
 
 /** 같은 href가 이미 있으면 건너뛰고, 새 CSS가 로드되면 같은 폰트의 이전 CSS 제거 (깜빡임 방지) */
 function ensureCss(key: string, url: string) {
-  if ([...document.querySelectorAll('link[rel="stylesheet"]')].some(l => l.getAttribute('href') === url)) return
+  if ([...document.querySelectorAll('link[rel="stylesheet"][data-fp]')].some(l => l.getAttribute('href') === url)) return
   const old = document.querySelectorAll(`link[data-fp="${key}"]`)
   const link = document.createElement('link')
   link.rel = 'stylesheet'
@@ -38,7 +40,11 @@ function useInView<T extends Element>() {
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    if (!('IntersectionObserver' in window)) { setInView(true); return }
+    if (!('IntersectionObserver' in window)) {
+      let active = true
+      queueMicrotask(() => { if (active) setInView(true) })
+      return () => { active = false }
+    }
     const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { rootMargin: '300px' })
     io.observe(el)
     return () => io.disconnect()
@@ -131,6 +137,8 @@ export default function FontPreview() {
   const [favOnly, setFavOnly] = useState(false)
   // 모바일: 스타일 설정 6개가 첫 화면을 다 차지해 글꼴 목록이 안 보인다 → 글자 크기만 두고 접는다
   const [moreStyle, setMoreStyle] = useState(false)
+  const [pairOpen, setPairOpen] = useState(false)
+  const [pairDraft, setPairDraft] = useState<FontPairState | null>(null)
   const more = moreStyle ? '' : 'hidden sm:block'
   const [favs, setFavs] = useState<string[]>([])
   const [pins, setPins] = useState<string[]>([])
@@ -146,23 +154,29 @@ export default function FontPreview() {
   // 초기화: URL > 기본값, 즐겨찾기는 localStorage. 한 번만.
   useEffect(() => {
     if (ready) return
-    const p = searchParams
-    const tx = p.get('t')
-    if (tx) { setText(tx); setSubset(tx) }
-    setLook(l => ({
-      ...l,
-      size: clampNum(p.get('s'), 12, 120, DEF.size),
-      weight: nearestWeight(WEIGHTS, clampNum(p.get('w'), 100, 900, DEF.weight)),
-      lh: clampNum(p.get('lh'), 0.8, 3, DEF.lh),
-      ls: clampNum(p.get('ls'), -10, 20, DEF.ls),
-      dark: p.get('bg') === 'dark',
-    }))
-    setPins(parseIds(p.get('f')))
-    try {
-      const saved = JSON.parse(localStorage.getItem(FAV_KEY) ?? '[]')
-      if (Array.isArray(saved)) setFavs(saved.filter((x): x is string => typeof x === 'string'))
-    } catch { /* 저장소 차단 */ }
-    setReady(true)
+    let active = true
+    queueMicrotask(() => {
+      if (!active) return
+      const p = searchParams
+      if (p.get('pair') === '1') setPairOpen(true)
+      const tx = p.get('t')
+      if (tx) { setText(tx); setSubset(tx) }
+      setLook(l => ({
+        ...l,
+        size: clampNum(p.get('s'), 12, 120, DEF.size),
+        weight: nearestWeight(WEIGHTS, clampNum(p.get('w'), 100, 900, DEF.weight)),
+        lh: clampNum(p.get('lh'), 0.8, 3, DEF.lh),
+        ls: clampNum(p.get('ls'), -10, 20, DEF.ls),
+        dark: p.get('bg') === 'dark',
+      }))
+      setPins(parseIds(p.get('f')))
+      try {
+        const saved = JSON.parse(localStorage.getItem(FAV_KEY) ?? '[]')
+        if (Array.isArray(saved)) setFavs(saved.filter((x): x is string => typeof x === 'string'))
+      } catch { /* 저장소 차단 */ }
+      setReady(true)
+    })
+    return () => { active = false }
   }, [searchParams, ready])
 
   // URL 동기화 (기본값은 생략)
@@ -256,6 +270,17 @@ export default function FontPreview() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
+      <section className="space-y-3">
+        <div>
+          <button type="button" onClick={() => setPairOpen(open => !open)} aria-expanded={pairOpen} aria-controls="font-pair-panel"
+            className="ui-btn-soft min-h-11 px-4 py-2 text-sm">{t(pairOpen ? 'pairing.close' : 'pairing.open')}</button>
+          <p className="mt-2 text-sm text-sub">{t('pairing.entryHint')}</p>
+        </div>
+        <div id="font-pair-panel" hidden={!pairOpen}>
+          {pairOpen && <FontPairPreview savedState={pairDraft} onStateChange={setPairDraft} />}
+        </div>
+      </section>
+
       {/* 텍스트 + 스타일 */}
       <div className="ui-card p-6 space-y-5">
         <div>
@@ -272,7 +297,7 @@ export default function FontPreview() {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
           <div>
             <label htmlFor="fp-size" className={label}>{t('fontSize')}: {look.size}px</label>
             <input id="fp-size" type="range" min={12} max={120} value={look.size}
@@ -332,7 +357,7 @@ export default function FontPreview() {
             <h2 className="text-lg font-semibold text-fg">{t('compareTitle', { n: pinned.length, max: MAX_PIN })}</h2>
             <button onClick={() => setPins([])} className="text-sm text-sub hover:text-fg">{t('clearCompare')}</button>
           </div>
-          <div className={`grid gap-4 ${pinned.length > 1 ? 'md:grid-cols-2' : ''}`}>
+          <div className={`grid grid-cols-1 gap-4 ${pinned.length > 1 ? 'md:grid-cols-2' : ''}`}>
             {pinned.map(f => card(f, `pin-${f.id}`))}
           </div>
           {pinned.length === 1 && <p className="text-sm text-muted">{t('compareHint')}</p>}
@@ -390,7 +415,7 @@ export default function FontPreview() {
         <h2 className="text-lg font-semibold text-fg">{t('fonts')} <span className="text-sm font-normal text-muted">{t('count', { n: list.length })}</span></h2>
         {list.length === 0
           ? <p className="ui-card p-8 text-center text-sm text-muted">{t('noResults')}</p>
-          : <div className="grid md:grid-cols-2 gap-4">{list.map(f => card(f, f.id))}</div>}
+          : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{list.map(f => card(f, f.id))}</div>}
       </section>
 
       {/* 가이드 */}

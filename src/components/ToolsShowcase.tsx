@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslations } from '@/lib/i18n/shared'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Wrench, Star, ChevronDown } from 'lucide-react'
+import { Star, ChevronDown } from 'lucide-react'
 import ToolIcon from './ToolIcon'
-import { glassCard, glassInset } from '@/lib/glass'
 import { menuConfig, categoryKeys, isNewTool, type MenuItem } from '@/config/menuConfig'
 import { getFavorites, toggleFavorite } from '@/utils/favorites'
 
@@ -16,12 +15,7 @@ export default function ToolsShowcase() {
   const [favorites, setFavorites] = useState<string[]>([])
   const [isExpanded, setIsExpanded] = useState(false)
 
-  useEffect(() => {
-    setFavorites(getFavorites())
-  }, [])
-
-  // Hide on home page since HomePage has its own tools grid
-  if (pathname === '/') return null
+  if (pathname === '/' || pathname === '/blog' || pathname.startsWith('/blog/')) return null
 
   const totalTools = categoryKeys.reduce((sum, key) => sum + menuConfig[key].items.length, 0)
 
@@ -112,7 +106,10 @@ export default function ToolsShowcase() {
       {!isExpanded && (
         <div className="text-center">
           <button
-            onClick={() => setIsExpanded(true)}
+            onClick={() => {
+              setFavorites(getFavorites())
+              setIsExpanded(true)
+            }}
             aria-expanded={false}
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-line text-sub hover:text-fg hover:bg-subtle transition-colors"
           >
@@ -125,19 +122,6 @@ export default function ToolsShowcase() {
             <ChevronDown className="w-4 h-4" />
           </button>
         </div>
-      )}
-
-      {/* 접힘: 크롤러용 경량 링크 목록만 (카드 242개 = 페이지당 ~500KB라 펼칠 때만 렌더) */}
-      {!isExpanded && (
-        <nav hidden aria-label={t('toolsShowcase.title')}>
-          {categoryKeys.map((categoryKey) => (
-            <ul key={categoryKey}>
-              {menuConfig[categoryKey].items.map((item) => (
-                <li key={item.href}><a href={`${item.href}/`}>{t(item.labelKey)}</a></li>
-              ))}
-            </ul>
-          ))}
-        </nav>
       )}
 
       {isExpanded && (

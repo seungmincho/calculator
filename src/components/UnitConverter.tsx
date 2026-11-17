@@ -1,14 +1,24 @@
 'use client'
 
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+import { useState, useCallback, useMemo, useEffect, useLayoutEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/unitConverter'
 import { useSearchParams } from '@/hooks/useSearchParams'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Copy, Check, ArrowUpDown, Search, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
+import UnitFavorites from '@/components/UnitFavorites'
+import UnitBatchConverter from '@/components/UnitBatchConverter'
+import UnitCopyRecovery from '@/components/UnitCopyRecovery'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
+import { createUnitCopyController, type UnitCopyState, type UnitCopyRequest } from '@/utils/unitBatchActions'
+import {
+  UNIT_FAVORITE_PRECISIONS, applyUnitFavorite, isUnitFavoritePair, isUnitRecent, parseUnitRecent,
+  type UnitFavoritePair, type UnitRecent,
+} from '@/utils/unitFavorites'
 import {
   CATEGORIES, TRADITIONAL, convert, findUnit, formatNum, isLinear, parseInput, searchUnits, unitsOf,
   type Category,
@@ -20,10 +30,8 @@ const DEFAULT_PAIR: Record<Category, [string, string]> = {
   pressure: ['psi', 'kPa'], energy: ['kcal', 'kJ'], fuel: ['kmL', 'L100km'], cooking: ['cupKr', 'mL'],
   traditional: ['', ''], css: ['px', 'rem'],
 }
-const SIG_OPTIONS = [4, 6, 8, 10, 12, 15]
+const SIG_OPTIONS = UNIT_FAVORITE_PRECISIONS
 const RECENT_KEY = 'unitConverter.recent'
-type Recent = { c: Category; f: string; t: string; v: string }
-
 interface State { c: Category; f: string; t: string; v: string; p: number; rb: number }
 
 function decode(sp: URLSearchParams): State {
@@ -43,22 +51,56 @@ function decode(sp: URLSearchParams): State {
 
 export default function UnitConverter() {
   const t = useTranslations('unitConverter')
+  const language = useOptionalLanguage()?.language ?? 'ko'
   const searchParams = useSearchParams()
-  const [s, setS] = useState<State>(() => decode(searchParams))
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const hydrated = useHydrated()
+  const [urlRestored, setUrlRestored] = useState(false)
+  const [s, setS] = useState<State>(() => decode(new URLSearchParams()))
+  const [copyState, setCopyState] = useState<UnitCopyState | null>(null), [shareRevision, setShareRevision] = useState(0)
+  const [batchOpen, setBatchOpen] = useState(false), [batchVisited, setBatchVisited] = useState(false)
   const [query, setQuery] = useState('')
-  const [recent, setRecent] = useState<Recent[]>([])
+  const [recent, setRecent] = useState<UnitRecent[]>([])
+  const [recentIssue, setRecentIssue] = useState<'invalidData' | 'unavailable' | null>(null)
+  const recentWritable = useRef(false)
+  const recentTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const set = (p: Partial<State>) => setS((prev) => ({ ...prev, ...p }))
+  const batchRef = useRef<HTMLDivElement>(null), edited = useRef(false), latestContext = useRef('')
+  const clipboard = useRef<ReturnType<typeof createUnitCopyController> | null>(null)
+  const invalidateCopy = useCallback(() => { clipboard.current?.invalidate() }, [])
+  const invalidateOutputs = useCallback(() => { invalidateCopy(); setShareRevision(value => value + 1) }, [invalidateCopy])
+  const set = (p: Partial<State>) => {
+    if (Object.entries(p).every(([key, value]) => s[key as keyof State] === value)) return
+    edited.current = true; latestContext.current = ''; invalidateOutputs(); setS(prev => ({ ...prev, ...p }))
+  }
+  useLayoutEffect(() => {
+    const owner = createUnitCopyController({ after: (callback, ms) => { const timer = setTimeout(callback, ms); return () => clearTimeout(timer) } }, setCopyState)
+    clipboard.current = owner
+    return () => { owner.dispose(); clipboard.current = null; latestContext.current = '' }
+  }, [])
+
+  // Keep static HTML and the first render identical; restore shared input before URL/history writes.
+  if (hydrated && !urlRestored) {
+    setUrlRestored(true)
+    if (!edited.current) setS(decode(searchParams))
+  }
 
   const uname = useCallback((id: string) => t(`u.${id}`), [t])
   const value = parseInput(s.v)
   const valid = Number.isFinite(value)
   const opts = useMemo(() => ({ remBase: s.rb }), [s.rb])
   const fmt = (x: number, grouping = true) => formatNum(x, s.p, grouping)
+  const copyContext = JSON.stringify([s, language, t('batchCopy.failed'), urlRestored])
+  useLayoutEffect(() => { latestContext.current = copyContext })
+  useLayoutEffect(() => { invalidateOutputs() }, [copyContext, invalidateOutputs])
+  useEffect(() => { if (batchOpen) batchRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }) }, [batchOpen])
+  const requestCopy = useCallback((request: UnitCopyRequest) => {
+    if (!urlRestored || latestContext.current !== copyContext || !clipboard.current) return
+    setShareRevision(value => value + 1); void clipboard.current.request(request)
+  }, [copyContext, urlRestored])
 
   // URL 동기화
   useEffect(() => {
+    if (!urlRestored) return
     const url = new URL(window.location.href)
     url.searchParams.set('c', s.c)
     if (s.c === 'traditional') { url.searchParams.delete('f'); url.searchParams.delete('t') }
@@ -66,46 +108,57 @@ export default function UnitConverter() {
     url.searchParams.set('v', s.v)
     if (s.p !== 10) url.searchParams.set('p', String(s.p)); else url.searchParams.delete('p')
     if (s.c === 'css' && s.rb !== 16) url.searchParams.set('rb', String(s.rb)); else url.searchParams.delete('rb')
-    window.history.replaceState({}, '', url)
-  }, [s])
+    window.history.replaceState(window.history.state, '', url)
+  }, [s, urlRestored])
 
   // 최근 변환: 로드 + 입력 멈춘 뒤 1.5초에 저장
   useEffect(() => {
     try {
-      const raw = JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]')
-      if (Array.isArray(raw)) setRecent(raw.filter((r: Recent) => (CATEGORIES as string[]).includes(r?.c)).slice(0, 8))
-    } catch { /* 손상된 값 무시 */ }
+      const parsed = parseUnitRecent(localStorage.getItem(RECENT_KEY))
+      if (parsed.status === 'ready') {
+        setRecent(parsed.entries)
+        recentWritable.current = true
+      } else setRecentIssue('invalidData')
+    } catch { setRecentIssue('unavailable') }
   }, [])
   useEffect(() => {
-    if (!valid || s.c === 'traditional') return
+    if (!urlRestored || !valid || s.c === 'traditional') return
     const id = setTimeout(() => {
-      setRecent((prev) => {
-        const item: Recent = { c: s.c, f: s.f, t: s.t, v: s.v }
-        const next = [item, ...prev.filter((r) => !(r.c === item.c && r.f === item.f && r.t === item.t && r.v === item.v))].slice(0, 8)
-        try { localStorage.setItem(RECENT_KEY, JSON.stringify(next)) } catch { /* 저장 불가 무시 */ }
-        return next
-      })
-    }, 1500)
-    return () => clearTimeout(id)
-  }, [s.c, s.f, s.t, s.v, valid])
-
-  const copy = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text)
-      else {
-        const ta = document.createElement('textarea')
-        ta.value = text
-        ta.style.position = 'fixed'
-        ta.style.left = '-999999px'
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
+      recentTimer.current = null
+      const item = { c: s.c, f: s.f, t: s.t, v: s.v }
+      if (!recentWritable.current || !isUnitRecent(item)) return
+      try {
+        const stored = parseUnitRecent(localStorage.getItem(RECENT_KEY))
+        if (stored.status !== 'ready') {
+          recentWritable.current = false
+          setRecentIssue('invalidData')
+          return
+        }
+        const next = [item, ...stored.entries.filter((r) => !(r.c === item.c && r.f === item.f && r.t === item.t && r.v === item.v))].slice(0, 8)
+        const raw = JSON.stringify(next)
+        localStorage.setItem(RECENT_KEY, raw)
+        if (localStorage.getItem(RECENT_KEY) !== raw) throw new Error('Recent history write failed')
+        setRecent(next)
+        setRecentIssue(null)
+      } catch {
+        recentWritable.current = false
+        setRecentIssue('unavailable')
       }
-    } catch { /* 권한 없음 */ }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
+    }, 1500)
+    recentTimer.current = id
+    return () => { clearTimeout(id); if (recentTimer.current === id) recentTimer.current = null }
+  }, [s.c, s.f, s.t, s.v, valid, urlRestored])
+
+  const clearRecent = () => {
+    if (recentTimer.current !== null) { clearTimeout(recentTimer.current); recentTimer.current = null }
+    try {
+      localStorage.removeItem(RECENT_KEY)
+      if (localStorage.getItem(RECENT_KEY) !== null) throw new Error('Recent history clear failed')
+      setRecent([])
+      setRecentIssue(null)
+      recentWritable.current = true
+    } catch { setRecentIssue('unavailable') }
+  }
 
   const changeCategory = (c: Category) => {
     const [f, to] = DEFAULT_PAIR[c]
@@ -129,6 +182,8 @@ export default function UnitConverter() {
   const from = findUnit(s.c, s.f)
   const to = findUnit(s.c, s.t)
   const result = valid ? convert(s.c, s.f, s.t, value, opts) : NaN
+  const currentPair = { c: s.c, f: s.f, t: s.t, p: s.p, rb: s.rb }
+  const loadFavorite = (pair: UnitFavoritePair) => set(applyUnitFavorite(s, pair))
   const rows = units.map((u) => ({ u, x: valid ? convert(s.c, s.f, u.id, value, opts) : NaN }))
   const trad = TRADITIONAL.map(([cat, id, metric]) => ({
     cat, id, metric, x: valid ? convert(cat, id, metric, value) : NaN,
@@ -140,16 +195,21 @@ export default function UnitConverter() {
     const [m, e] = str.split('e')
     return e === undefined ? <>{str}</> : <>{m} × 10<sup>{Number(e)}</sup></>
   }
-  const CopyBtn = ({ text, id }: { text: string; id: string }) => (
+  const copyBtn = (text: string, id: string) => (
     <button
       type="button"
-      onClick={(e) => { e.stopPropagation(); copy(text, id) }}
-      className="p-2 rounded-lg text-faint hover:text-body hover:bg-soft shrink-0"
+      data-unit-copy={id} data-unit-copied={copyState?.id === id && copyState.status === 'copied'}
+      disabled={!urlRestored || copyState?.id === id && copyState.status === 'copying'}
+      onClick={(e) => { e.stopPropagation(); requestCopy({ text, id, label: text }) }}
+      className="min-h-11 min-w-11 p-2 rounded-lg text-faint hover:text-body hover:bg-soft shrink-0 disabled:opacity-40"
       aria-label={t('copy')}
     >
-      {copiedId === id ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+      {copyState?.id === id && copyState.status === 'copied' ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
     </button>
   )
+  const recovery = copyState?.status === 'failed' ? <UnitCopyRecovery key={copyState.token.sequence} text={copyState.text} label={copyState.label} busy={false}
+    onRetry={() => { const owner = clipboard.current; if (owner?.getSnapshot()?.token === copyState.token) { setShareRevision(value => value + 1); void owner.retry(copyState.token) } }}
+    onClose={() => clipboard.current?.close(copyState.token)} /> : null
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -157,6 +217,7 @@ export default function UnitConverter() {
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
+      {copyState?.id !== 'batch' && recovery}
 
       {/* 단위 검색 */}
       <div className="relative">
@@ -201,9 +262,10 @@ export default function UnitConverter() {
           <button
             key={c}
             role="tab"
+            data-unit-category={c}
             aria-selected={s.c === c}
             onClick={() => changeCategory(c)}
-            className={`px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`min-h-11 px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${
               s.c === c ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-track'
             }`}
           >
@@ -212,11 +274,12 @@ export default function UnitConverter() {
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 입력 */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="min-w-0 lg:col-span-1 space-y-6">
           <div className="ui-card p-6 space-y-4">
             {s.c !== 'traditional' && from && to && valid && Number.isFinite(result) && <MobileResultLink href="#unit-converter-result" label={`${fmt(value)} ${from.sym} =`} value={`${fmt(result)} ${to.sym}`} />}
+            <UnitFavorites pair={isUnitFavoritePair(currentPair) ? currentPair : null} traditional={s.c === 'traditional'} onLoad={loadFavorite} />
             <div>
               <label htmlFor="uc-value" className="block text-sm font-medium text-body mb-2">{t('value')}</label>
               <input
@@ -236,28 +299,30 @@ export default function UnitConverter() {
               <>
                 <div>
                   <label htmlFor="uc-from" className="block text-sm font-medium text-body mb-2">{t('from')}</label>
-                  <select id="uc-from" value={s.f} onChange={(e) => set({ f: e.target.value })} className="ui-field w-full px-4 py-3">
+                  <select id="uc-from" value={s.f} onChange={(e) => set({ f: e.target.value })} className="ui-field min-h-11 w-full px-4 py-3 text-base">
                     {units.map((u) => <option key={u.id} value={u.id}>{uname(u.id)} ({u.sym})</option>)}
                   </select>
                 </div>
                 <div className="flex justify-center">
-                  <button onClick={swap} className="ui-btn-soft px-4 py-2 inline-flex items-center gap-1.5 text-sm" aria-label={t('swap')}>
+                  <button data-unit-swap="" onClick={swap} className="ui-btn-soft min-h-11 px-4 py-2 inline-flex items-center gap-1.5 text-sm" aria-label={t('swap')}>
                     <ArrowUpDown className="w-4 h-4" /> {t('swap')}
                   </button>
                 </div>
                 <div>
                   <label htmlFor="uc-to" className="block text-sm font-medium text-body mb-2">{t('to')}</label>
-                  <select id="uc-to" value={s.t} onChange={(e) => set({ t: e.target.value })} className="ui-field w-full px-4 py-3">
+                  <select id="uc-to" value={s.t} onChange={(e) => set({ t: e.target.value })} className="ui-field min-h-11 w-full px-4 py-3 text-base">
                     {units.map((u) => <option key={u.id} value={u.id}>{uname(u.id)} ({u.sym})</option>)}
                   </select>
                 </div>
               </>
             )}
 
+            <div className="space-y-2"><button type="button" data-unit-batch-toggle="" aria-expanded={batchOpen} aria-controls="unit-batch-panel" onClick={() => { setBatchVisited(true); setBatchOpen(value => !value) }} className="ui-btn-soft min-h-11 w-full px-4 py-2 text-sm">{t(batchOpen ? 'batch.close' : 'batch.open')}</button><p className="text-xs text-muted">{t('batch.entryHint')}</p></div>
+
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="uc-sig" className="block text-sm font-medium text-body mb-2">{t('precision')}</label>
-                <select id="uc-sig" value={s.p} onChange={(e) => set({ p: Number(e.target.value) })} className="ui-field w-full px-3 py-2.5">
+                <select id="uc-sig" value={s.p} onChange={(e) => set({ p: Number(e.target.value) })} className="ui-field min-h-11 w-full px-3 py-2.5 text-base">
                   {SIG_OPTIONS.map((n) => <option key={n} value={n}>{t('sigDigits', { n })}</option>)}
                 </select>
               </div>
@@ -267,7 +332,7 @@ export default function UnitConverter() {
                   <input
                     id="uc-rb" type="number" min={1} value={s.rb}
                     onChange={(e) => { const n = Number(e.target.value); if (n > 0 && n < 1000) set({ rb: n }) }}
-                    className="ui-field w-full px-3 py-2.5"
+                    className="ui-field min-h-11 w-full px-3 py-2.5 text-base"
                   />
                 </div>
               )}
@@ -282,7 +347,7 @@ export default function UnitConverter() {
                 <p className="text-3xl font-bold text-fg tabular-nums break-all">
                   <Num x={result} /> <span className="text-lg font-semibold text-sub">{to.sym}</span>
                 </p>
-                <CopyBtn text={fmt(result, false)} id="main" />
+                {copyBtn(fmt(result, false), 'main')}
               </div>
               <p className="text-xs text-muted">
                 {isLinear(s.c)
@@ -290,7 +355,8 @@ export default function UnitConverter() {
                   : t(`formula.${s.c}`)}
               </p>
               {valid && Number.isFinite(result) && (
-                <ShareResult
+                <div data-unit-share-boundary="" onClickCapture={invalidateCopy}><ShareResult
+                  resultKey={JSON.stringify([copyContext, shareRevision])}
                   className="pt-2"
                   card={{
                     tool: t('title'),
@@ -300,22 +366,23 @@ export default function UnitConverter() {
                       .map((r) => ({ label: `${uname(r.u.id)} (${r.u.sym})`, value: fmt(r.x) })),
                   }}
                   text={`${fmt(value)} ${from.sym} = ${fmt(result)} ${to.sym}`}
-                />
+                /></div>
               )}
             </div>
           )}
 
-          {recent.length > 0 && (
+          {(recent.length > 0 || recentIssue) && (
             <div className="ui-card p-6">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm font-semibold text-fg">{t('recent')}</h2>
                 <button
-                  onClick={() => { setRecent([]); try { localStorage.removeItem(RECENT_KEY) } catch { /* 무시 */ } }}
-                  className="text-xs text-muted hover:text-body"
+                  onClick={clearRecent}
+                  className="min-h-11 px-2 text-xs text-muted hover:text-body"
                 >
                   {t('clearRecent')}
                 </button>
               </div>
+              {recentIssue && <p role="alert" className="mb-3 text-sm text-sub">{t(recentIssue === 'invalidData' ? 'favorites.recentInvalid' : 'favorites.recentUnavailable')}</p>}
               <div className="flex flex-wrap gap-2">
                 {recent.map((r) => {
                   const a = findUnit(r.c, r.f), b = findUnit(r.c, r.t)
@@ -324,7 +391,7 @@ export default function UnitConverter() {
                     <button
                       key={`${r.c}.${r.f}.${r.t}.${r.v}`}
                       onClick={() => set({ c: r.c, f: r.f, t: r.t, v: r.v })}
-                      className="px-3 py-1.5 rounded-full bg-soft text-body text-sm hover:bg-track"
+                      className="min-h-11 px-3 py-1.5 rounded-full bg-soft text-body text-sm hover:bg-track"
                     >
                       {r.v} {a.sym} → {b.sym}
                     </button>
@@ -336,7 +403,11 @@ export default function UnitConverter() {
         </div>
 
         {/* 전체 단위 목록 */}
-        <div className="lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
+          <div id="unit-batch-panel" ref={batchRef} hidden={!batchOpen} className="scroll-mt-20">
+            {batchVisited && <UnitBatchConverter pair={isUnitFavoritePair(currentPair) ? currentPair : null} ready={urlRestored} copyState={copyState}
+              onCopy={requestCopy} onInvalidateCopy={invalidateOutputs} onBeginOutput={invalidateOutputs} recovery={copyState?.id === 'batch' ? recovery : undefined} />}
+          </div>
           <div className="ui-card p-2 sm:p-4">
             <h2 className="text-sm font-semibold text-fg px-3 pt-3 pb-2">
               {s.c === 'traditional' ? t('tradTitle', { v: valid ? fmt(value) : '—' }) : t('allUnits', { v: valid ? fmt(value) : '—', unit: from?.sym ?? '' })}
@@ -359,7 +430,7 @@ export default function UnitConverter() {
                       <p className="text-fg font-semibold tabular-nums text-right break-all">
                         <Num x={r.x} /> <span className="text-sm text-sub font-normal">{r.msym}</span>
                       </p>
-                      <CopyBtn text={fmt(r.x, false)} id={`trad.${r.id}`} />
+                      {copyBtn(fmt(r.x, false), `trad.${r.id}`)}
                     </div>
                   </li>
                 ))
@@ -387,7 +458,7 @@ export default function UnitConverter() {
                         <p className={`font-semibold tabular-nums text-right break-all ${isTo ? 'text-primary' : 'text-fg'}`}>
                           <Num x={x} />
                         </p>
-                        <CopyBtn text={fmt(x, false)} id={u.id} />
+                        {copyBtn(fmt(x, false), u.id)}
                       </div>
                     </li>
                   )

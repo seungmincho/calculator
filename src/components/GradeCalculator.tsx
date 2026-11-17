@@ -6,37 +6,38 @@
  * 계산 로직·근거 출처: src/utils/gradeRank.ts
  */
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/gradeCalc'
 import { Plus, X } from 'lucide-react'
 import ShareResult from '@/components/ShareResult'
+import GradeSavedRecords from '@/components/GradeSavedRecords'
 import { gradeOf, boundaries, weightedAverage, systemForYear, CUMULATIVE, type GradeSystem } from '@/utils/gradeRank'
+import { GRADE_ENTRY_YEARS, gradeInputUnits, type GradeRecordSnapshot } from '@/utils/gradeSavedRecords'
 
 interface Row { id: number; name: string; units: string; rank: string; ties: string; total: string }
 
-const YEARS = [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028]
+const YEARS: readonly number[] = GRADE_ENTRY_YEARS
 const FIELDS = ['name', 'units', 'rank', 'ties', 'total'] as const
 
-let nextId = 100
-const row = (name: string, units: string, rank: string, ties: string, total: string): Row => ({ id: nextId++, name, units, rank, ties, total })
+const row = (name: string, units: string, rank: string, ties: string, total: string, id: number): Row => ({ id, name, units, rank, ties, total })
 
 // 첫 화면에 결과가 바로 보이도록 현실적인 예시 (180명 학년 기준)
 const SAMPLE = (): Row[] => [
-  row('국어', '4', '12', '1', '180'),
-  row('수학', '4', '30', '1', '180'),
-  row('영어', '4', '8', '3', '180'),
-  row('통합사회', '3', '40', '1', '180'),
-  row('통합과학', '3', '70', '1', '180'),
+  row('국어', '4', '12', '1', '180', 1),
+  row('수학', '4', '30', '1', '180', 2),
+  row('영어', '4', '8', '3', '180', 3),
+  row('통합사회', '3', '40', '1', '180', 4),
+  row('통합과학', '3', '70', '1', '180', 5),
 ]
 
 const encodeRows = (rows: Row[]) =>
   rows.map((r) => FIELDS.map((f) => r[f].replace(/[~|]/g, '')).join('~')).join('|')
 
 const decodeRows = (s: string): Row[] =>
-  s.split('|').slice(0, 30).map((part) => {
+  s.split('|').slice(0, 30).map((part, index) => {
     const [name = '', units = '', rank = '', ties = '1', total = ''] = part.split('~')
-    return row(name.slice(0, 30), units, rank, ties || '1', total)
+    return row(name.slice(0, 30), units, rank, ties || '1', total, index + 1)
   })
 
 /** 3월 학년 시작 기준 현재 고1의 입학년도 */
@@ -55,19 +56,26 @@ export default function GradeCalculator() {
   const [rows, setRows] = useState<Row[]>(SAMPLE)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [loaded, setLoaded] = useState(false)
+  // Initial/URL rows use deterministic IDs; edits allocate IDs only in this mounted instance.
+  const nextId = useRef(100)
 
   // 복원: URL(sys, y, s) → 없으면 현재 고1 입학년도 기준 기본값
   useEffect(() => {
+    let active = true
     const p = new URLSearchParams(window.location.search)
     const y = int(p.get('y') || '')
     const year = YEARS.includes(y) ? y : currentFreshmanYear()
-    setEntryYear(year)
     const sys = p.get('sys')
-    setSystem(sys === '5' || sys === '9' ? (Number(sys) as GradeSystem) : systemForYear(year))
     const s = p.get('s')
-    if (s) setRows(decodeRows(s))
-    else if (p.get('rank') && p.get('total')) setRows([row('', '1', p.get('rank')!, '1', p.get('total')!)]) // 구버전 링크
-    setLoaded(true)
+    queueMicrotask(() => {
+      if (!active) return
+      setEntryYear(year)
+      setSystem(sys === '5' || sys === '9' ? (Number(sys) as GradeSystem) : systemForYear(year))
+      if (s) setRows(decodeRows(s))
+      else if (p.get('rank') && p.get('total')) setRows([row('', '1', p.get('rank')!, '1', p.get('total')!, 1)]) // 구버전 링크
+      setLoaded(true)
+    })
+    return () => { active = false }
   }, [])
 
   useEffect(() => {
@@ -90,7 +98,7 @@ export default function GradeCalculator() {
 
   const addRow = () => {
     const last = rows[rows.length - 1]
-    const r = row('', last?.units || '4', '', '1', last?.total || '')
+    const r = row('', last?.units || '4', '', '1', last?.total || '', nextId.current++)
     setRows((prev) => [...prev, r])
     setSelectedId(r.id)
   }
@@ -98,7 +106,19 @@ export default function GradeCalculator() {
   const removeRow = (id: number) => setRows((prev) => (prev.length > 1 ? prev.filter((r) => r.id !== id) : prev))
 
   const reset = () => {
-    setRows([row('', '4', '', '1', '')])
+    setRows([row('', '4', '', '1', '', nextId.current++)])
+    setSelectedId(null)
+  }
+
+  const currentRecord = useMemo<GradeRecordSnapshot>(() => ({
+    entryYear, system,
+    rows: rows.map(({ name, units, rank, ties, total }) => ({ name, units, rank, ties, total })),
+  }), [entryYear, system, rows])
+
+  const restoreRecord = (snapshot: GradeRecordSnapshot) => {
+    setEntryYear(snapshot.entryYear)
+    setSystem(snapshot.system)
+    setRows(snapshot.rows.map(({ name, units, rank, ties, total }) => row(name, units, rank, ties, total, nextId.current++)))
     setSelectedId(null)
   }
 
@@ -106,7 +126,7 @@ export default function GradeCalculator() {
     () => rows.map((r) => {
       const empty = !r.rank.trim() || !r.total.trim()
       const res = empty ? null : gradeOf(int(r.rank), int(r.ties || '1'), int(r.total), system)
-      return { row: r, res, invalid: !empty && !res, units: parseFloat(r.units) || 0 }
+      return { row: r, res, invalid: !empty && !res, units: gradeInputUnits(r.units) ?? 0 }
     }),
     [rows, system]
   )
@@ -133,9 +153,9 @@ export default function GradeCalculator() {
         <p className="text-sm text-muted mt-1">{t('description')}</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 설정 + 평균 */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-1 space-y-6 min-w-0">
           <div className="ui-card p-6 space-y-4">
             <h2 className="text-lg font-semibold text-fg">{t('settings.title')}</h2>
             <div>
@@ -144,7 +164,7 @@ export default function GradeCalculator() {
                 id="grade-entry-year"
                 value={entryYear}
                 onChange={(e) => changeYear(Number(e.target.value))}
-                className="w-full px-4 py-3 ui-field"
+                className="w-full px-4 py-3 ui-field text-base"
               >
                 {YEARS.map((y) => <option key={y} value={y}>{t('settings.yearOption', { year: y })}</option>)}
               </select>
@@ -199,7 +219,7 @@ export default function GradeCalculator() {
         </div>
 
         {/* 과목별 입력 */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6 min-w-0">
           <div className="ui-card p-6">
             <h2 className="text-lg font-semibold text-fg mb-1">{t('subjects.title')}</h2>
             <p className="text-xs text-muted mb-4">{t('subjects.tiesHelp')}</p>
@@ -227,13 +247,13 @@ export default function GradeCalculator() {
                             placeholder={f === 'name' ? t('subjects.namePlaceholder') : f === 'ties' ? '1' : ''}
                             onChange={(e) => update(r.id, f, e.target.value)}
                             aria-label={headers[i]}
-                            className="w-full px-3 py-2 ui-field text-sm tabular-nums"
+                            className="w-full min-h-11 px-3 py-2 ui-field text-base tabular-nums"
                           />
                         </label>
                       ))}
                       <button
                         onClick={() => setSelectedId(r.id)}
-                        className="text-left sm:text-center text-sm"
+                        className="min-h-11 text-left sm:text-center text-sm"
                         aria-label={t('subjects.select')}
                       >
                         {res ? (
@@ -245,7 +265,7 @@ export default function GradeCalculator() {
                       <button
                         onClick={() => removeRow(r.id)}
                         disabled={rows.length === 1}
-                        className="justify-self-end sm:justify-self-center p-1.5 rounded-lg text-muted hover:bg-soft disabled:opacity-30"
+                        className="justify-self-end sm:justify-self-center min-h-11 min-w-11 p-1.5 rounded-lg text-muted hover:bg-soft disabled:opacity-30"
                         aria-label={t('subjects.remove')}
                       >
                         <X className="w-4 h-4" />
@@ -269,6 +289,8 @@ export default function GradeCalculator() {
               <button onClick={reset} className="ui-btn-soft px-4 py-2.5 font-medium">{t('input.reset')}</button>
             </div>
           </div>
+
+          <GradeSavedRecords current={currentRecord} ready={loaded} onRestore={restoreRecord} />
 
           {/* 선택 과목 기준 등급 구간 */}
           <div className="ui-card p-6">

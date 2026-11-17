@@ -1,19 +1,22 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/imageCompressor'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { Upload, Download, Trash2, Loader2, Archive } from 'lucide-react'
 import {
-  compressFile, detectEncoders, formatBytes, savingsPct, outputName, outputMime, uniqueNames, isHeic,
+  compressFile, detectEncoders, formatBytes, savingsPct, outputName, outputMime, isHeic,
   type OutputFormat, type CompressOutput,
 } from '@/utils/imageCompress'
+import { createImageCompressionQueue, imageCompressionKey, type ImageQueueSnapshot } from '@/utils/imageCompressionQueue'
+import { captureImageZip, createImageZipRunner, type ImageZipState } from '@/utils/imageZipSnapshot'
 
 // ── Types / constants ──
 
 type Mode = 'quality' | 'target'
 type ErrCode = 'heic' | 'decode' | 'format'
+type DisplayOutput = CompressOutput & { url: string }
 
 interface Item {
   id: string
@@ -21,7 +24,7 @@ interface Item {
   previewUrl: string
   status: 'pending' | 'processing' | 'done' | 'error'
   key?: string // 어떤 설정으로 처리됐는지 — 설정이 바뀌면 다시 처리
-  out?: CompressOutput & { url: string }
+  out?: DisplayOutput
   error?: ErrCode
 }
 
@@ -44,9 +47,15 @@ const num = (v: string | null, lo: number, hi: number, d: number) => {
 }
 const kbLabel = (kb: number) => (kb >= 1000 ? `${kb / 1000}MB` : `${kb}KB`)
 const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+const saveBlob = (href: string, name: string) => {
+  const link = document.createElement('a')
+  link.href = href; link.download = name
+  document.body.appendChild(link)
+  try { link.click() } finally { link.remove() }
+}
 
 const chip = (on: boolean) =>
-  `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+  `min-h-11 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors motion-reduce:transition-none disabled:opacity-40 disabled:cursor-not-allowed ${
     on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'
   }`
 
@@ -68,25 +77,78 @@ export default function ImageCompressor() {
   const [images, setImages] = useState<Item[]>([])
   const [enc, setEnc] = useState<{ webp: boolean; avif: boolean } | null>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const [busy, setBusy] = useState(false)
-  const [zipping, setZipping] = useState(false)
+  const [queueState, setQueueState] = useState<Pick<ImageQueueSnapshot<DisplayOutput>, 'paused' | 'phase'>>({ paused: false, phase: 'idle' })
+  const [zipState, setZipState] = useState<ImageZipState>({ busy: false, error: null })
   const [skipped, setSkipped] = useState(0)
   const [compareId, setCompareId] = useState<string | null>(null)
   const [pos, setPos] = useState(50)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const imagesRef = useRef<Item[]>([])
-  const runGen = useRef(0)
+  const previews = useRef(new Map<string, string>())
+  const queue = useRef<ReturnType<typeof createImageCompressionQueue<DisplayOutput>> | null>(null)
+  const zipRunner = useRef<ReturnType<typeof createImageZipRunner> | null>(null)
+  const downloadUrls = useRef(new Map<string, ReturnType<typeof setTimeout>>())
 
   // 입력 중간값(예: "1" → "1080") 보호
   const kb = Math.max(20, targetKB || 0)
   const side = maxSide > 0 ? Math.max(100, maxSide) : 0
-  const key = `${mode === 'target' ? `t${kb}` : `q${quality}`}|${format}|${side}`
+  const options = useMemo(() => ({ format, quality, maxSide: side, targetKB: mode === 'target' ? kb : 0 }), [format, quality, side, mode, kb])
+  const initialOptions = useRef(options)
+  const key = imageCompressionKey(options)
+  const busy = queueState.phase === 'running' || queueState.phase === 'pausing'
+  const zipping = zipState.busy
 
-  useEffect(() => { imagesRef.current = images }, [images])
+  useLayoutEffect(() => {
+    const retainedPreviews = previews.current, retainedDownloads = downloadUrls.current
+    const nextQueue = createImageCompressionQueue<DisplayOutput>({
+      options: initialOptions.current,
+      process: async (file, settings, signal) => {
+        const out = await compressFile(file, settings, signal)
+        return { ...out, url: URL.createObjectURL(out.blob) }
+      },
+      release: out => URL.revokeObjectURL(out.url),
+      onChange: snapshot => {
+        setQueueState({ paused: snapshot.paused, phase: snapshot.phase })
+        setImages(snapshot.items.flatMap(item => {
+          const previewUrl = retainedPreviews.get(item.id)
+          if (!previewUrl) return []
+          const message = item.error instanceof Error ? item.error.message : ''
+          const error: ErrCode | undefined = item.status === 'error' ? message === 'format' ? 'format' : isHeic(item.file) ? 'heic' : 'decode' : undefined
+          return [{ ...item, previewUrl, error }]
+        }))
+      },
+    })
+    const nextZip = createImageZipRunner({
+      encode: async entries => {
+        const JSZip = (await import('jszip')).default
+        const zip = new JSZip()
+        entries.forEach(entry => zip.file(entry.name, entry.blob))
+        return zip.generateAsync({ type: 'blob', compression: 'STORE' })
+      },
+      download: (blob, snapshot) => {
+        const url = URL.createObjectURL(blob)
+        try { saveBlob(url, `compressed_${snapshot.entries.length}.zip`) }
+        catch (error) { URL.revokeObjectURL(url); throw error }
+        const timer = setTimeout(() => { URL.revokeObjectURL(url); retainedDownloads.delete(url) }, 10000)
+        retainedDownloads.set(url, timer)
+      },
+      onChange: setZipState,
+    })
+    queue.current = nextQueue; zipRunner.current = nextZip
+    return () => {
+      nextQueue.dispose(); nextZip.dispose()
+      retainedPreviews.forEach(url => URL.revokeObjectURL(url)); retainedPreviews.clear()
+      retainedDownloads.forEach((timer, url) => { clearTimeout(timer); URL.revokeObjectURL(url) }); retainedDownloads.clear()
+      if (queue.current === nextQueue) queue.current = null
+      if (zipRunner.current === nextZip) zipRunner.current = null
+    }
+  }, [])
+  useLayoutEffect(() => { queue.current?.setOptions(options) }, [options])
 
   useEffect(() => {
-    detectEncoders().then(setEnc).catch(() => setEnc({ webp: false, avif: false }))
+    let active = true
+    detectEncoders().then(value => { if (active) setEnc(value) }).catch(() => { if (active) setEnc({ webp: false, avif: false }) })
+    return () => { active = false }
   }, [])
 
   // URL 동기화 (기본값과 다른 것만)
@@ -106,14 +168,17 @@ export default function ImageCompressor() {
   // ── 파일 추가 ──
 
   const addFiles = useCallback((list: FileList | File[]) => {
-    const ok: Item[] = []
+    if (!queue.current) return
+    const ok: { id: string; file: File }[] = []
     let bad = 0
     Array.from(list).forEach((file) => {
       if (!(file.type.startsWith('image/') || isHeic(file)) || file.type === 'image/svg+xml' || file.size > MAX_FILE) { bad++; return }
-      ok.push({ id: uid(), file, previewUrl: URL.createObjectURL(file), status: 'pending' })
+      const id = uid()
+      previews.current.set(id, URL.createObjectURL(file))
+      ok.push({ id, file })
     })
     setSkipped(bad)
-    if (ok.length) setImages((prev) => [...prev, ...ok])
+    if (ok.length) queue.current.add(ok)
   }, [])
 
   useEffect(() => {
@@ -125,92 +190,31 @@ export default function ImageCompressor() {
     return () => window.removeEventListener('paste', onPaste)
   }, [addFiles])
 
-  const patch = (id: string, p: Partial<Item>) =>
-    setImages((prev) => prev.map((i) => (i.id === id ? { ...i, ...p } : i)))
-
-  // ── 자동 압축: 설정 변경/파일 추가 시 한 장씩 순차 처리 (메모리·UI 반응성) ──
-  useEffect(() => {
-    const gen = ++runGen.current
-    const opts = { format, quality, maxSide: side, targetKB: mode === 'target' ? kb : 0 }
-    const timer = setTimeout(async () => {
-      const todo = imagesRef.current.filter((i) => i.key !== key || i.status === 'pending' || i.status === 'processing')
-      if (!todo.length) { setBusy(false); return }
-      setBusy(true)
-      for (const it of todo) {
-        if (runGen.current !== gen) return
-        if (!imagesRef.current.some((i) => i.id === it.id)) continue
-        patch(it.id, { status: 'processing' })
-        let next: Partial<Item>
-        try {
-          const out = await compressFile(it.file, opts)
-          if (runGen.current !== gen) return
-          if (!imagesRef.current.some((i) => i.id === it.id)) continue
-          next = { status: 'done', key, out: { ...out, url: URL.createObjectURL(out.blob) }, error: undefined }
-        } catch (e) {
-          if (runGen.current !== gen) return
-          const msg = e instanceof Error ? e.message : ''
-          next = { status: 'error', key, out: undefined, error: msg === 'format' ? 'format' : isHeic(it.file) ? 'heic' : 'decode' }
-        }
-        const old = imagesRef.current.find((i) => i.id === it.id)?.out?.url
-        if (old) URL.revokeObjectURL(old)
-        patch(it.id, next)
-      }
-      if (runGen.current === gen) setBusy(false)
-    }, 300)
-    return () => clearTimeout(timer)
-    // key가 모든 설정을 담고 있음
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, images.length])
-
-  // 언마운트 시 진행 중단 + object URL 해제
-  useEffect(() => () => {
-    runGen.current++
-    imagesRef.current.forEach((i) => { URL.revokeObjectURL(i.previewUrl); if (i.out) URL.revokeObjectURL(i.out.url) })
-  }, [])
-
-  // ── 삭제 ──
-
-  const revoke = (i: Item) => { URL.revokeObjectURL(i.previewUrl); if (i.out) URL.revokeObjectURL(i.out.url) }
+  // Queue owns result URLs; the screen owns original preview URLs.
   const removeImage = (id: string) => {
-    const it = images.find((i) => i.id === id)
-    if (it) revoke(it)
-    setImages((prev) => prev.filter((i) => i.id !== id))
+    const preview = previews.current.get(id)
+    if (preview) URL.revokeObjectURL(preview)
+    previews.current.delete(id)
+    queue.current?.remove(id)
   }
   const removeAll = () => {
-    images.forEach(revoke)
-    setImages([])
-    setSkipped(0)
+    previews.current.forEach(url => URL.revokeObjectURL(url)); previews.current.clear()
+    queue.current?.clear()
+    setSkipped(0); setCompareId(null)
   }
 
-  // ── 다운로드 ──
-
-  const saveBlob = (href: string, name: string) => {
-    const a = document.createElement('a')
-    a.href = href
-    a.download = name
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
+  const done = images.filter(item => item.status === 'done' && item.key === key && item.out)
+  const downloadImage = (id: string) => {
+    const snapshot = queue.current?.getSnapshot()
+    if (!snapshot || snapshot.key !== key) return
+    const item = snapshot.items.find(row => row.id === id && row.status === 'done' && row.key === key && row.out)
+    if (item?.out) saveBlob(item.out.url, outputName(item.file.name, item.out.mime))
   }
-
-  const done = images.filter((i) => i.status === 'done' && i.key === key && i.out)
-
-  const downloadZip = async () => {
-    if (!done.length) return
-    setZipping(true)
-    try {
-      const JSZip = (await import('jszip')).default
-      const zip = new JSZip()
-      const names = uniqueNames(done.map((i) => outputName(i.file.name, i.out!.mime)))
-      done.forEach((i, n) => zip.file(names[n], i.out!.blob))
-      // 이미 압축된 이미지라 재압축 이득 없음 → STORE
-      const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' })
-      const url = URL.createObjectURL(blob)
-      saveBlob(url, `compressed_${done.length}.zip`)
-      setTimeout(() => URL.revokeObjectURL(url), 10000)
-    } finally {
-      setZipping(false)
-    }
+  const downloadZip = () => {
+    const snapshot = queue.current?.getSnapshot()
+    if (!snapshot || snapshot.key !== key) return
+    const captured = captureImageZip(snapshot, (file, output) => outputName(file.name, output.mime))
+    if (captured.entries.length) void zipRunner.current?.run(captured)
   }
 
   // ── 설정 ──
@@ -230,6 +234,8 @@ export default function ImageCompressor() {
   const totalOut = done.reduce((s, i) => s + i.out!.blob.size, 0)
   const finished = images.filter((i) => i.key === key && (i.status === 'done' || i.status === 'error')).length
   const missed = done.filter((i) => !i.out!.ok).length
+  const failed = images.filter(item => item.status === 'error' && item.key === key).length
+  const waiting = images.length - done.length - failed
   const compare = done.find((i) => i.id === compareId) ?? done[0]
 
   return (
@@ -265,6 +271,7 @@ export default function ImageCompressor() {
             </div>
             <input
               ref={fileInputRef}
+              data-image-input=""
               type="file"
               accept="image/*,.heic,.heif"
               multiple
@@ -284,7 +291,7 @@ export default function ImageCompressor() {
                   <button
                     key={p.id}
                     onClick={() => applyPreset(p)}
-                    className={`text-left rounded-xl border px-3 py-2 transition-colors ${
+                    className={`min-h-11 text-left rounded-xl border px-3 py-2 transition-colors motion-reduce:transition-none ${
                       presetActive(p) ? 'border-primary bg-primary-soft text-primary' : 'border-line text-body hover:bg-subtle'
                     }`}
                   >
@@ -303,7 +310,7 @@ export default function ImageCompressor() {
                   <button
                     key={m}
                     onClick={() => setMode(m)}
-                    className={`rounded-lg py-2 text-sm font-semibold transition-colors ${mode === m ? 'bg-primary text-white' : 'text-sub'}`}
+                    className={`min-h-11 rounded-lg py-2 text-sm font-semibold transition-colors motion-reduce:transition-none ${mode === m ? 'bg-primary text-white' : 'text-sub'}`}
                   >
                     {t(m === 'quality' ? 'modeQuality' : 'modeTarget')}
                   </button>
@@ -323,7 +330,7 @@ export default function ImageCompressor() {
                   max={100}
                   value={quality}
                   onChange={(e) => setQuality(Number(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full min-h-11 accent-primary"
                   aria-label={t('quality')}
                 />
                 <div className="flex justify-between text-xs text-faint mt-1">
@@ -346,7 +353,7 @@ export default function ImageCompressor() {
                     inputMode="numeric"
                     value={targetKB || ''}
                     onChange={(e) => setTargetKB(Number(e.target.value) || 0)}
-                    className="ui-field px-3 py-2 text-sm"
+                    className="ui-field min-h-11 w-full min-w-0 px-3 py-2 text-base"
                     aria-label={t('targetCustom')}
                     placeholder={t('targetCustom')}
                   />
@@ -361,7 +368,7 @@ export default function ImageCompressor() {
               <p className="text-sm font-medium text-body mb-2">{t('format')}</p>
               <div className="flex flex-wrap gap-2">
                 {FORMATS.map((f) => (
-                  <button key={f} onClick={() => setFormat(f)} disabled={formatDisabled(f)} className={chip(format === f)}>
+                  <button key={f} data-image-format={f} onClick={() => setFormat(f)} disabled={formatDisabled(f)} className={chip(format === f)}>
                     {f === 'original' ? t('formatOriginal') : f === 'jpeg' ? 'JPG' : f === 'webp' ? 'WebP' : f.toUpperCase()}
                   </button>
                 ))}
@@ -388,7 +395,7 @@ export default function ImageCompressor() {
                   inputMode="numeric"
                   value={maxSide || ''}
                   onChange={(e) => setMaxSide(Math.max(0, Number(e.target.value) || 0))}
-                  className="ui-field px-3 py-2 text-sm"
+                  className="ui-field min-h-11 w-full min-w-0 px-3 py-2 text-base"
                   aria-label={t('sideCustom')}
                   placeholder={t('sideCustom')}
                 />
@@ -401,6 +408,20 @@ export default function ImageCompressor() {
 
         {/* ── 오른쪽: 결과 ── */}
         <div className="lg:col-span-2 space-y-6 min-w-0">
+          {(images.length > 0 || zipping || !!zipState.error) && <section data-image-queue-controls="" className="ui-card min-w-0 p-5 space-y-3" aria-label={t('queue.title')}>
+            <h2 className="text-base font-semibold text-fg">{t('queue.title')}</h2>
+            {images.length > 0 && <>
+              <div className="flex flex-wrap gap-2">
+                <button data-image-action={queueState.paused ? 'resume' : 'pause'} onClick={() => queueState.paused ? queue.current?.resume() : queue.current?.pause()} className="ui-btn min-h-11 px-4 py-2 text-sm">{t(queueState.paused ? 'queue.resume' : 'queue.pause')}</button>
+                <button data-image-action="retry" disabled={!failed} onClick={() => queue.current?.retryFailed()} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-40">{t('queue.retryFailed', { n: failed })}</button>
+              </div>
+              <p role="status" aria-live="polite" className="text-sm text-body">{t(`queue.${queueState.phase}`)} · {t('queue.counts', { done: done.length, failed, waiting })}</p>
+              <p className="text-xs leading-relaxed text-muted">{t(queueState.paused ? 'queue.pausedHint' : 'queue.cancelHint')}</p>
+            </>}
+            <p className="text-xs leading-relaxed text-muted">{t('queue.zipHint')}</p>
+            {zipping && <p role="status" className="text-sm text-sub">{t('queue.zipWorking')}</p>}
+            {!!zipState.error && <p role="alert" className="text-sm text-body">{t('queue.zipFailed')}</p>}
+          </section>}
           {done.length > 0 && (
             <div className="ui-hero p-6 space-y-4">
               <div>
@@ -420,17 +441,18 @@ export default function ImageCompressor() {
               <div className="flex flex-wrap gap-2">
                 {done.length > 1 ? (
                   <button
+                    data-image-zip=""
                     onClick={downloadZip}
-                    disabled={zipping || busy}
-                    className="inline-flex items-center gap-2 bg-surface text-primary rounded-xl px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
+                    className="inline-flex min-h-11 items-center gap-2 bg-surface text-primary rounded-xl px-4 py-2.5 text-sm font-semibold"
                   >
-                    {zipping ? <Loader2 size={16} className="animate-spin" /> : <Archive size={16} />}
-                    {t('downloadZip', { n: done.length })}
+                    {zipping ? <Loader2 size={16} className="animate-spin motion-reduce:animate-none" /> : <Archive size={16} />}
+                    {zipping ? t('queue.restartZip') : t('downloadZip', { n: done.length })}
                   </button>
                 ) : (
                   <button
-                    onClick={() => saveBlob(done[0].out!.url, outputName(done[0].file.name, done[0].out!.mime))}
-                    className="inline-flex items-center gap-2 bg-surface text-primary rounded-xl px-4 py-2.5 text-sm font-semibold"
+                    data-image-download={done[0].id}
+                    onClick={() => downloadImage(done[0].id)}
+                    className="inline-flex min-h-11 items-center gap-2 bg-surface text-primary rounded-xl px-4 py-2.5 text-sm font-semibold"
                   >
                     <Download size={16} />
                     {t('download')}
@@ -471,7 +493,7 @@ export default function ImageCompressor() {
                 max={100}
                 value={pos}
                 onChange={(e) => setPos(Number(e.target.value))}
-                className="w-full accent-blue-600"
+                className="w-full min-h-11 accent-primary"
                 aria-label={t('compareTitle')}
               />
               <p className="text-xs text-muted">{t('compareHint')}</p>
@@ -492,24 +514,26 @@ export default function ImageCompressor() {
                     {t('listTitle', { n: images.length })}
                     {busy && (
                       <span className="ml-2 inline-flex items-center gap-1 text-primary font-medium">
-                        <Loader2 size={14} className="animate-spin" />
+                        <Loader2 size={14} className="animate-spin motion-reduce:animate-none" />
                         {finished}/{images.length}
                       </span>
                     )}
                   </p>
-                  <button onClick={removeAll} className="text-sm text-sub hover:text-fg px-2 py-1 rounded-lg hover:bg-soft">
+                  <button data-image-action="clear" onClick={removeAll} className="min-h-11 text-sm text-sub hover:text-fg px-2 py-1 rounded-lg hover:bg-soft">
                     {t('removeAll')}
                   </button>
                 </div>
 
                 {images.map((it) => {
-                  const out = it.status === 'done' ? it.out : undefined
+                  const out = it.status === 'done' && it.key === key ? it.out : undefined
                   const pct = out ? savingsPct(it.file.size, out.blob.size) : 0
                   const selected = compare?.id === it.id
                   return (
                     <div
                       key={it.id}
-                      className={`flex gap-3 items-center border rounded-xl p-3 ${selected ? 'border-primary' : 'border-line'}`}
+                      data-image-row={it.id}
+                      data-image-status={it.status}
+                      className={`grid grid-cols-[4rem_minmax(0,1fr)] sm:flex gap-3 items-center border rounded-xl p-3 ${selected ? 'border-primary' : 'border-line'}`}
                     >
                       <button
                         onClick={() => out && setCompareId(it.id)}
@@ -553,17 +577,18 @@ export default function ImageCompressor() {
                           </p>
                         ) : (
                           <p className="text-xs text-muted mt-1 inline-flex items-center gap-1">
-                            {it.status === 'processing' && <Loader2 size={12} className="animate-spin" />}
+                            {it.status === 'processing' && <Loader2 size={12} className="animate-spin motion-reduce:animate-none" />}
                             {formatBytes(it.file.size)} · {t(it.status === 'processing' ? 'processing' : 'waiting')}
                           </p>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-1 shrink-0">
+                      <div className="col-span-2 flex items-center justify-end gap-1 shrink-0">
                         {out && (
                           <button
-                            onClick={() => saveBlob(out.url, outputName(it.file.name, out.mime))}
-                            className="p-2 text-primary hover:bg-primary-soft rounded-lg"
+                            data-image-download={it.id}
+                            onClick={() => downloadImage(it.id)}
+                            className="min-h-11 min-w-11 p-2 text-primary hover:bg-primary-soft rounded-lg"
                             title={t('download')}
                             aria-label={t('download')}
                           >
@@ -571,8 +596,9 @@ export default function ImageCompressor() {
                           </button>
                         )}
                         <button
+                          data-image-remove={it.id}
                           onClick={() => removeImage(it.id)}
-                          className="p-2 text-faint hover:text-fg hover:bg-soft rounded-lg"
+                          className="min-h-11 min-w-11 p-2 text-faint hover:text-fg hover:bg-soft rounded-lg"
                           title={t('remove')}
                           aria-label={t('remove')}
                         >

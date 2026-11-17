@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo, useLayoutEffect } from 'react'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/decisionTools'
@@ -18,6 +18,16 @@ import {
 } from 'lucide-react'
 import { glassCard, glassInset, glassInput } from '@/lib/glass'
 import { shuffle } from '@/utils/password' // Fisher–Yates (sort+random은 편향)
+import MealHistoryPanel from '@/components/MealHistoryPanel'
+import MealPlanPanel from '@/components/MealPlanPanel'
+import MenuRoundExclusions from '@/components/MenuRoundExclusions'
+import MobileResultLink from '@/components/MobileResultLink'
+import DecisionResultCopyRecovery from '@/components/DecisionResultCopyRecovery'
+import { createOrderRevealController, isOrderBusy, canRevealNext, canRevealAll, canExportOrder, type OrderRevealSnapshot } from '@/utils/orderReveal'
+import { copyDecisionResult, createDecisionResultDownloads, createDecisionResultGuard, createOrderResultSnapshot, createRouletteResultSnapshot, type DecisionResultSnapshot } from '@/utils/decisionResultActions'
+import { useHydrated } from '@/hooks/useHydrated'
+import { MEAL_HISTORY_KEY, MAX_MEAL_RECORDS, parseMealHistory, excludedMeals, localDateKey, dateNumber, type MealRecord, type MealHistory } from '@/utils/mealHistory'
+import { createMenuRoundExclusions, updateMenuRoundContext, excludeMenuRoundName, restoreMenuRoundName, restoreAllMenuRoundNames, createMenuSpinGuard, type MenuRoundChange } from '@/utils/menuRoundExclusions'
 
 interface DecisionToolsProps {
   initialTab?: 'roulette' | 'order'
@@ -79,6 +89,22 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   const searchParams = useSearchParams()
 
   const [activeTab, setActiveTab] = useState<'roulette' | 'order'>(initialTab)
+  const mounted = useRef(false), tabRef = useRef(activeTab)
+  const [copiedTarget, setCopiedTarget] = useState<'roulette' | 'order' | null>(null)
+  const [copyPending, setCopyPending] = useState(false)
+  const [copyRecovery, setCopyRecovery] = useState<{ snapshot: DecisionResultSnapshot; request: number } | null>(null)
+  const [downloadError, setDownloadError] = useState(false)
+  const copyGuard = useRef(createDecisionResultGuard())
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const downloads = useRef<ReturnType<typeof createDecisionResultDownloads> | null>(null)
+  const orderCopyRef = useRef<HTMLButtonElement>(null), rouletteCopyRef = useRef<HTMLButtonElement>(null), drawRef = useRef<HTMLButtonElement>(null)
+  const revealFocus = useRef<'copy' | 'draw' | null>(null)
+  const recoveryFocus = useRef<'roulette' | 'order' | null>(null)
+  const invalidateCopy = useCallback(() => {
+    copyGuard.current.invalidate()
+    if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+    copyTimer.current = null; setCopiedTarget(null); setCopyPending(false); setCopyRecovery(null)
+  }, [])
 
   // ─── Roulette state ───────────────────────────────────────────────────────
   // 초기값은 결정적 기본값(정적 HTML = 첫 클라이언트 렌더). 공유 링크 파라미터는 마운트 후 적용.
@@ -92,8 +118,82 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   const [spinResult, setSpinResult] = useState<string | null>(null)
   const [spinHistory, setSpinHistory] = useState<string[]>([])
   const [showHistory, setShowHistory] = useState(false)
-  const [rouletteCopied, setRouletteCopied] = useState(false)
+  const [rouletteRun, setRouletteRun] = useState(0)
+  const rouletteRunRef = useRef(0), rouletteResultRef = useRef<string | null>(null), spinningRef = useRef(false)
+  const [spinGuard] = useState(createMenuSpinGuard)
+  const menuSpinRef = useRef<HTMLButtonElement>(null), menuFocusRevision = useRef<number | null>(null)
+  const clearRouletteResult = useCallback(() => {
+    spinGuard.invalidate()
+    rouletteResultRef.current = null; setSpinResult(null)
+    setRouletteRun(++rouletteRunRef.current); invalidateCopy()
+  }, [invalidateCopy, spinGuard])
   const [wheelSaved, setWheelSaved] = useState(false)
+  const [meals, setMeals] = useState<MealRecord[]>([])
+  const [excludeDays, setExcludeDays] = useState<0 | 1 | 7>(1)
+  const [mealReady, setMealReady] = useState(false)
+  const [mealRaw, setMealRaw] = useState<string | null | undefined>(undefined)
+  const [today, setToday] = useState('')
+  const [mealError, setMealError] = useState('')
+  const [mealNotice, setMealNotice] = useState('')
+  const hydrated = useHydrated()
+  if (hydrated && menuMode && !mealReady) {
+    try { const raw = localStorage.getItem(MEAL_HISTORY_KEY); const saved = parseMealHistory(raw); setMeals(saved.records); setExcludeDays(saved.excludeDays); setMealRaw(raw) }
+    catch { setMealError('weekly.storageFailed') }
+    setToday(localDateKey()); setMealReady(true)
+  }
+  useEffect(() => {
+    if (!menuMode) return
+    const update = () => { if (!isSpinning) setToday(localDateKey()) }
+    const timer = setInterval(update, 60000)
+    window.addEventListener('focus', update)
+    return () => { clearInterval(timer); window.removeEventListener('focus', update) }
+  }, [menuMode, isSpinning])
+  const excluded = useMemo(() => excludedMeals(meals, today, excludeDays), [meals, today, excludeDays])
+  const [menuRound, setMenuRound] = useState(() => createMenuRoundExclusions(rouletteItems, menuMode ? excluded : []))
+  const nextMenuRound = updateMenuRoundContext(menuRound, rouletteItems, menuMode ? excluded : [])
+  if (nextMenuRound !== menuRound) {
+    setMenuRound(nextMenuRound)
+    if (menuMode) { setSpinResult(null); setIsSpinning(false); setWheelSaved(false) }
+  }
+  const menuRoundRef = useRef(menuRound)
+  const mealEligibleItems = useMemo(() => menuMode ? menuRound.eligible.map(item => item.value) : rouletteItems, [menuMode, menuRound.eligible, rouletteItems])
+  const wheelItems = useMemo(() => menuMode ? menuRound.items.map(item => item.value) : rouletteItems, [menuMode, menuRound.items, rouletteItems])
+  useLayoutEffect(() => {
+    if (menuRoundRef.current !== menuRound) {
+      menuRoundRef.current = menuRound
+      if (menuMode) { spinGuard.invalidate(); rouletteResultRef.current = null; spinningRef.current = false; copyGuard.current.invalidate() }
+    }
+    if (menuFocusRevision.current !== null) {
+      const requested = menuFocusRevision.current; menuFocusRevision.current = null
+      if (requested === menuRound.revision && mounted.current && tabRef.current === 'roulette' && !menuSpinRef.current?.disabled) menuSpinRef.current?.focus({ preventScroll: true })
+    }
+  }, [menuRound, menuMode, spinGuard])
+  const persistMeals = (next: MealHistory) => {
+    try {
+      const currentRaw = localStorage.getItem(MEAL_HISTORY_KEY)
+      const current = parseMealHistory(currentRaw)
+      if (mealRaw === undefined || currentRaw !== mealRaw) {
+        setMeals(current.records); setExcludeDays(current.excludeDays); setMealRaw(currentRaw)
+        setMealError('mealPlan.historyConflict'); setMealNotice('')
+        return false
+      }
+      const raw = JSON.stringify(next); parseMealHistory(raw); localStorage.setItem(MEAL_HISTORY_KEY, raw)
+      if (localStorage.getItem(MEAL_HISTORY_KEY) !== raw) throw new Error('Meal history write failed')
+      setMealRaw(raw); setMeals(next.records); setExcludeDays(next.excludeDays); setMealError(''); clearRouletteResult()
+      return true
+    } catch { setMealError('weekly.storageFailed'); setMealNotice(''); return false }
+  }
+  const addMeal = (name: string, date: string) => {
+    if (!mealReady || isSpinning) return false
+    const clean = name.trim()
+    if (!clean || clean.length > 80 || dateNumber(date) === null || date > localDateKey()) { setMealError('weekly.invalid'); return false }
+    if (meals.some(record => record.name === clean && record.date === date)) { setMealError('weekly.duplicate'); return false }
+    if (meals.length >= MAX_MEAL_RECORDS) { setMealError('weekly.full'); return false }
+    if (persistMeals({ records: [{ id: crypto.randomUUID(), name: clean, date }, ...meals], excludeDays })) { setMealNotice(t('weekly.saved', { name: clean })); return true }
+    return false
+  }
+  const changeExclusion = (days: 0 | 1 | 7) => { if (!isSpinning && persistMeals({ records: meals, excludeDays: days })) setMealNotice('') }
+  const deleteMeal = (id: string) => { if (!isSpinning && persistMeals({ records: meals.filter(record => record.id !== id), excludeDays })) setMealNotice(t('weekly.deleted')) }
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const angleRef = useRef(0)
@@ -105,11 +205,103 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   // ─── Order Picker state ──────────────────────────────────────────────────
   const [orderItems, setOrderItems] = useState<string[]>(defaultParticipants)
   const [newOrderItem, setNewOrderItem] = useState('')
-  const [orderResult, setOrderResult] = useState<string[]>([])
-  const [revealedCount, setRevealedCount] = useState(0)
-  const [isShuffling, setIsShuffling] = useState(false)
-  const [orderCopied, setOrderCopied] = useState(false)
-  const [isRevealing, setIsRevealing] = useState(false)
+  const [orderState, setOrderState] = useState<OrderRevealSnapshot>(() => ({ runId: 0, phase: 'idle', mode: 'auto', items: [], revealedCount: 0, active: initialTab === 'order' }))
+  const [orderController] = useState(() => createOrderRevealController({ shuffle, onChange: next => { if (mounted.current) setOrderState(next) } }, initialTab === 'order'))
+  const orderResult = orderState.items, revealedCount = orderState.revealedCount
+  const isShuffling = orderState.phase === 'shuffling' && orderState.mode === 'auto'
+  const orderBusy = isOrderBusy(orderState)
+  const orderExport = useMemo(() => createOrderResultSnapshot(orderState, (rank, name) => t('order.copyLine', { rank, name })), [orderState, t])
+  const rouletteExport = useMemo(() => createRouletteResultSnapshot(spinResult, rouletteRun), [spinResult, rouletteRun])
+  const exportKey = JSON.stringify([activeTab, orderExport, rouletteExport])
+  const [lastExportKey, setLastExportKey] = useState(exportKey)
+  if (lastExportKey !== exportKey) {
+    setLastExportKey(exportKey); setCopiedTarget(null); setCopyPending(false); setCopyRecovery(null); setDownloadError(false)
+  }
+  const exportRef = useRef({ key: exportKey, order: orderExport, roulette: rouletteExport })
+  useLayoutEffect(() => {
+    mounted.current = true
+    spinGuard.activate()
+    orderController.setActive(tabRef.current === 'order')
+    const guard = copyGuard.current
+    return () => {
+      mounted.current = false; orderController.setActive(false); guard.invalidate(); spinGuard.dispose(); spinningRef.current = false; menuFocusRevision.current = null
+      if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+      downloads.current?.dispose(); downloads.current = null
+    }
+  }, [orderController, spinGuard])
+  useLayoutEffect(() => {
+    tabRef.current = activeTab
+    orderController.setActive(activeTab === 'order')
+  }, [activeTab, orderController])
+  useLayoutEffect(() => {
+    if (exportRef.current.key !== exportKey) {
+      copyGuard.current.invalidate()
+      if (copyTimer.current !== null) clearTimeout(copyTimer.current)
+      copyTimer.current = null
+    }
+    exportRef.current = { key: exportKey, order: orderExport, roulette: rouletteExport }
+  }, [exportKey, orderExport, rouletteExport])
+  useLayoutEffect(() => {
+    const requested = revealFocus.current
+    if (!requested) return
+    revealFocus.current = null
+    const target = requested === 'copy' ? orderCopyRef.current : drawRef.current
+    if (target && !target.disabled) target.focus({ preventScroll: true })
+  }, [orderState])
+  useLayoutEffect(() => {
+    if (!recoveryFocus.current || copyPending) return
+    const target = recoveryFocus.current === 'order' ? orderCopyRef.current : rouletteCopyRef.current
+    recoveryFocus.current = null
+    if (target && !target.disabled) target.focus({ preventScroll: true })
+  }, [copiedTarget, copyPending])
+  const currentExport = (snapshot: DecisionResultSnapshot) => {
+    if (!mounted.current || tabRef.current !== snapshot.target || exportRef.current[snapshot.target]?.text !== snapshot.text) return false
+    return snapshot.target === 'order'
+      ? orderController.getSnapshot().runId === snapshot.runId && canExportOrder(orderController.getSnapshot())
+      : !spinningRef.current && rouletteRunRef.current === snapshot.runId && rouletteResultRef.current === snapshot.text
+  }
+  const applyMenuRoundChange = (change: MenuRoundChange) => {
+    if (!change.ok || !change.changed) return
+    menuRoundRef.current = change.state; setMenuRound(change.state); menuFocusRevision.current = change.state.revision
+    clearRouletteResult(); setWheelSaved(false)
+  }
+  const excludeCurrentMenu = () => {
+    if (!menuMode || !mounted.current || tabRef.current !== 'roulette' || spinningRef.current || !rouletteExport || !currentExport(rouletteExport)) return
+    applyMenuRoundChange(excludeMenuRoundName(menuRoundRef.current, rouletteExport.text, menuRound.revision))
+  }
+  const restoreMenu = (name: string, revision: number) => {
+    if (!menuMode || !mounted.current || tabRef.current !== 'roulette' || spinningRef.current) return
+    applyMenuRoundChange(restoreMenuRoundName(menuRoundRef.current, name, revision))
+  }
+  const restoreMenus = (revision: number) => {
+    if (!menuMode || !mounted.current || tabRef.current !== 'roulette' || spinningRef.current) return
+    applyMenuRoundChange(restoreAllMenuRoundNames(menuRoundRef.current, revision))
+  }
+  const excludePreview = menuMode && spinResult ? excludeMenuRoundName(menuRound, spinResult, menuRound.revision) : null
+  const copyResult = async (snapshot: DecisionResultSnapshot | null) => {
+    if (!snapshot || !currentExport(snapshot)) return
+    const fromRecovery = copyRecovery?.snapshot === snapshot
+    invalidateCopy(); const token = copyGuard.current.begin()
+    setCopyPending(true)
+    const current = () => copyGuard.current.isCurrent(token) && currentExport(snapshot)
+    const outcome = await copyDecisionResult(snapshot, current)
+    if (!current()) return
+    setCopyPending(false)
+    if (outcome === 'copied') {
+      if (fromRecovery) recoveryFocus.current = snapshot.target
+      setCopiedTarget(snapshot.target)
+      copyTimer.current = setTimeout(() => { if (current()) { setCopiedTarget(null); copyTimer.current = null } }, 2000)
+    } else if (outcome === 'failed') setCopyRecovery({ snapshot, request: token.request })
+  }
+  const closeCopyRecovery = () => {
+    const target = copyRecovery?.snapshot.target === 'roulette' ? rouletteCopyRef.current : orderCopyRef.current
+    invalidateCopy()
+    if (target && !target.disabled) target.focus({ preventScroll: true })
+  }
+  const switchTab = (tab: 'roulette' | 'order') => {
+    if (!mounted.current || tab === tabRef.current) return
+    invalidateCopy(); tabRef.current = tab; orderController.setActive(tab === 'order'); setActiveTab(tab)
+  }
 
   // ─── URL restore (마운트 1회) ─────────────────────────────────────────────
   // 아래 URL sync 효과보다 먼저 선언해야 함(효과는 선언 순서대로 실행 → sync가 URL을 기본값으로 덮기 전에 읽음).
@@ -197,13 +389,13 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   }, [])
 
   useEffect(() => {
-    drawWheel(currentAngle, rouletteItems)
+    drawWheel(currentAngle, wheelItems)
     // canvasSize 변경 시 width 속성 재설정으로 비트맵이 지워지므로 다시 그려야 함 (첫 화면 빈 원 버그)
-  }, [currentAngle, rouletteItems, drawWheel, canvasSize])
+  }, [currentAngle, wheelItems, drawWheel, canvasSize])
 
   // ─── Spin logic ───────────────────────────────────────────────────────────
   const spin = useCallback(() => {
-    if (isSpinning || rouletteItems.length < 2) return
+    if (!mounted.current || tabRef.current !== 'roulette' || spinningRef.current || wheelItems.length < 2) return
 
     // clear confetti
     if (confettiRafRef.current) cancelAnimationFrame(confettiRafRef.current)
@@ -214,8 +406,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
       if (ctx) ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height)
     }
 
-    setIsSpinning(true)
-    setSpinResult(null)
+    clearRouletteResult()
+    const token = spinGuard.begin(rouletteRunRef.current)
+    if (!token) return
+    spinningRef.current = true; setIsSpinning(true)
 
     // 시간 기준으로 종료한다. 속도 감쇠만 쓰면 최소 회전수에 도달하지 못할 수 있다.
     const startAngle = angleRef.current
@@ -224,24 +418,27 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     const startedAt = performance.now()
 
     const animate = (now: number) => {
+      if (!mounted.current || !spinningRef.current || !spinGuard.current(token, rouletteRunRef.current)) return
       const progress = Math.min(1, (now - startedAt) / duration)
       angleRef.current = startAngle + travel * (1 - Math.pow(1 - progress, 3))
       setCurrentAngle(angleRef.current)
 
       if (progress >= 1) {
+        if (!spinGuard.finish(token, rouletteRunRef.current)) return
         // determine result: pointer is at top (angle = -PI/2 from canvas)
         // The item under the top is determined by normalizing the angle
-        const sliceAngle = (2 * Math.PI) / rouletteItems.length
+        const sliceAngle = (2 * Math.PI) / wheelItems.length
         // top of canvas is at -PI/2; find which segment contains that angle
         const normalizedAngle = ((angleRef.current % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
         // pointer at top = -PI/2 => in wheel coords that's 3PI/2 from 0
         const pointerAngle = ((3 * Math.PI) / 2 - normalizedAngle + 2 * Math.PI) % (2 * Math.PI)
-        const index = Math.floor(pointerAngle / sliceAngle) % rouletteItems.length
-        const result = rouletteItems[index]
+        const index = Math.floor(pointerAngle / sliceAngle) % wheelItems.length
+        const result = wheelItems[index]
 
-        setSpinResult(result)
+        rouletteResultRef.current = result; setSpinResult(result)
         setSpinHistory(prev => [result, ...prev].slice(0, 20))
-        setIsSpinning(false)
+        spinningRef.current = false; setIsSpinning(false)
+        rafRef.current = null
 
         // launch confetti
         launchConfetti()
@@ -252,7 +449,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     }
 
     rafRef.current = requestAnimationFrame(animate)
-  }, [isSpinning, rouletteItems])
+  }, [wheelItems, clearRouletteResult, spinGuard])
 
   const launchConfetti = () => {
     const canvas = confettiCanvasRef.current
@@ -269,8 +466,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
       alpha: 1,
     }))
     confettiRef.current = particles
+    const run = rouletteRunRef.current
 
     const animateConfetti = () => {
+      if (!mounted.current || rouletteRunRef.current !== run) return
       const ctx = canvas.getContext('2d')
       if (!ctx) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -310,47 +509,29 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   // ─── Roulette item management ─────────────────────────────────────────────
   const addRouletteItem = () => {
     const trimmed = newRouletteItem.trim()
-    if (isSpinning || !trimmed || rouletteItems.length >= 12) return
-    setSpinResult(null)
-    setRouletteCopied(false)
+    if (!mounted.current || tabRef.current !== 'roulette' || spinningRef.current || !trimmed || rouletteItems.length >= 12) return
+    clearRouletteResult()
     setRouletteItems(prev => [...prev, trimmed])
     setNewRouletteItem('')
   }
 
   const removeRouletteItem = (index: number) => {
-    if (isSpinning || rouletteItems.length <= 2) return
-    setSpinResult(null)
-    setRouletteCopied(false)
+    if (!mounted.current || tabRef.current !== 'roulette' || spinningRef.current || rouletteItems.length <= 2) return
+    clearRouletteResult()
     setRouletteItems(prev => prev.filter((_, i) => i !== index))
   }
 
   const applyPreset = (key: keyof typeof PRESETS) => {
-    if (isSpinning) return
-    setSpinResult(null)
-    setRouletteCopied(false)
+    if (!mounted.current || tabRef.current !== 'roulette' || spinningRef.current) return
+    clearRouletteResult()
+    if (menuMode) { const next = updateMenuRoundContext(menuRoundRef.current, PRESETS[key].slice(0, 12), excluded, true); menuRoundRef.current = next; setMenuRound(next); setWheelSaved(false) }
     setRouletteItems(PRESETS[key].slice(0, 12))
   }
 
-  const copyRouletteResult = async () => {
-    if (!spinResult) return
-    try {
-      await navigator.clipboard.writeText(spinResult)
-    } catch {
-      const ta = document.createElement('textarea')
-      ta.value = spinResult
-      ta.style.position = 'fixed'
-      ta.style.left = '-999999px'
-      document.body.appendChild(ta)
-      ta.select()
-      document.execCommand('copy')
-      document.body.removeChild(ta)
-    }
-    setRouletteCopied(true)
-    setTimeout(() => setRouletteCopied(false), 2000)
-  }
+  const copyRouletteResult = () => { void copyResult(rouletteExport) }
 
   const saveWheelImage = () => {
-    if (!spinResult) return
+    if (!spinResult || !rouletteExport || !currentExport(rouletteExport)) return
     const W = 600, H = 340
     const canvas = document.createElement('canvas')
     canvas.width = W; canvas.height = H
@@ -373,87 +554,48 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
     link.href = canvas.toDataURL('image/png')
     link.click()
     setWheelSaved(true)
-    setTimeout(() => setWheelSaved(false), 2000)
+    setTimeout(() => { if (currentExport(rouletteExport)) setWheelSaved(false) }, 2000)
   }
 
   // ─── Order Picker logic ───────────────────────────────────────────────────
   const addOrderItem = () => {
     const trimmed = newOrderItem.trim()
-    if (!trimmed) return
+    if (!mounted.current || tabRef.current !== 'order' || isOrderBusy(orderController.getSnapshot()) || !trimmed) return
+    invalidateCopy(); orderController.reset()
     setOrderItems(prev => [...prev, trimmed])
     setNewOrderItem('')
   }
 
   const removeOrderItem = (index: number) => {
-    if (orderItems.length <= 2) return
+    if (!mounted.current || tabRef.current !== 'order' || isOrderBusy(orderController.getSnapshot()) || orderItems.length <= 2 || index < 0 || index >= orderItems.length) return
+    invalidateCopy(); orderController.reset()
     setOrderItems(prev => prev.filter((_, i) => i !== index))
   }
 
-  const startOrder = useCallback(async () => {
-    if (isShuffling || isRevealing || orderItems.length < 2) return
-    setIsShuffling(true)
-    setOrderResult([])
-    setRevealedCount(0)
-
-    await new Promise(r => setTimeout(r, 400))
-
-    const shuffled = shuffle(orderItems)
-    setOrderResult(shuffled)
-    setIsShuffling(false)
-    setIsRevealing(true)
-
-    for (let i = 1; i <= shuffled.length; i++) {
-      await new Promise(r => setTimeout(r, 500))
-      setRevealedCount(i)
-    }
-    setIsRevealing(false)
-  }, [isShuffling, isRevealing, orderItems])
-
-  const revealAll = useCallback(() => {
-    if (orderResult.length === 0) return
-    setRevealedCount(orderResult.length)
-    setIsRevealing(false)
-  }, [orderResult])
-
+  const startOrder = () => {
+    if (!mounted.current || tabRef.current !== 'order') return
+    if (orderController.start(orderItems, orderState.runId)) invalidateCopy()
+  }
+  const revealNext = () => {
+    if (!mounted.current || tabRef.current !== 'order' || orderController.getSnapshot().runId !== orderState.runId) return
+    if (canRevealNext(orderController.getSnapshot()) && orderController.getSnapshot().revealedCount + 1 === orderResult.length) revealFocus.current = 'copy'
+    orderController.revealNext(orderState.runId)
+  }
+  const revealAll = () => {
+    if (!mounted.current || tabRef.current !== 'order' || orderController.getSnapshot().runId !== orderState.runId || !canRevealAll(orderController.getSnapshot())) return
+    revealFocus.current = 'copy'; orderController.revealAll(orderState.runId)
+  }
   const resetOrder = () => {
-    setOrderResult([])
-    setRevealedCount(0)
-    setIsRevealing(false)
-    setIsShuffling(false)
+    if (!mounted.current || tabRef.current !== 'order' || orderController.getSnapshot().runId !== orderState.runId) return
+    revealFocus.current = 'draw'; invalidateCopy(); orderController.reset(orderState.runId)
   }
-
-  const copyOrderResult = async () => {
-    if (orderResult.length === 0) return
-    const text = orderResult.map((name, i) => t('order.copyLine', { rank: i + 1, name })).join('\n')
-    try {
-      await navigator.clipboard.writeText(text)
-    } catch {
-      const ta = document.createElement('textarea')
-      ta.value = text
-      ta.style.position = 'fixed'
-      ta.style.left = '-999999px'
-      document.body.appendChild(ta)
-      ta.select()
-      document.execCommand('copy')
-      document.body.removeChild(ta)
-    }
-    setOrderCopied(true)
-    setTimeout(() => setOrderCopied(false), 2000)
-  }
-
-  const rankColor = (rank: number) => {
-    if (rank === 0) return 'from-yellow-400 to-amber-500'  // gold
-    if (rank === 1) return 'from-gray-300 to-gray-400'     // silver
-    if (rank === 2) return 'from-amber-600 to-amber-700'   // bronze
-    return 'from-blue-500 to-indigo-600'
-  }
-
-  const rankLabel = (rank: number) => {
-    const label = t('order.rank', { rank: rank + 1 })
-    if (rank === 0) return `${label} 🥇`
-    if (rank === 1) return `${label} 🥈`
-    if (rank === 2) return `${label} 🥉`
-    return label
+  const copyOrderResult = () => { void copyResult(orderExport) }
+  const downloadOrder = () => {
+    if (!orderExport || !currentExport(orderExport)) return
+    setDownloadError(false)
+    downloads.current ??= createDecisionResultDownloads()
+    const outcome = downloads.current.download(orderExport, () => currentExport(orderExport))
+    if (outcome === 'failed' && currentExport(orderExport)) setDownloadError(true)
   }
 
   // ─── Canvas responsive size ───────────────────────────────────────────────
@@ -472,7 +614,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
   }, [])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-roulette-run={rouletteRun} data-roulette-spinning={isSpinning}>
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-fg">
@@ -493,9 +635,10 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
           {(['roulette', 'order'] as const).map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => switchTab(tab)}
+              data-decision-tab={tab}
               aria-pressed={activeTab === tab}
-              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`min-h-11 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab
                   ? 'bg-primary text-white shadow-sm'
                   : 'text-muted hover:text-gray-700 dark:hover:text-gray-200'
@@ -539,13 +682,14 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
               {/* Item list */}
               <ul className="space-y-2 max-h-64 overflow-y-auto">
                 {rouletteItems.map((item, i) => (
-                  <li key={i} className="flex items-center gap-2">
+                  <li key={i} data-menu-candidate-index={menuMode ? i : undefined} data-menu-temporarily-excluded={menuMode ? menuRound.excluded.includes(item.trim()) : undefined} className="flex items-center gap-2">
                     <span
                       className="w-3 h-3 rounded-full flex-shrink-0"
                       style={{ backgroundColor: WHEEL_COLORS[i % WHEEL_COLORS.length] }}
                     />
-                    <span className="flex-1 text-sm text-body truncate">
+                    <span className="min-w-0 flex-1 text-sm text-body [overflow-wrap:anywhere]">
                       {item}
+                      {menuMode && menuRound.excluded.includes(item.trim()) && <span className="block text-xs text-muted">{t('menuRound.excludedBadge')}</span>}
                     </span>
                     <button
                       onClick={() => removeRouletteItem(i)}
@@ -584,6 +728,8 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
             </div>
 
             {/* History */}
+            {menuMode && <MealHistoryPanel records={meals} excludeDays={excludeDays} today={today} ready={mealReady} busy={isSpinning} pick={spinResult ?? undefined} candidates={wheelItems.length} suggestions={[...new Set(Object.entries(PRESETS).filter(([key]) => key !== '벌칙').flatMap(([, items]) => items))]} onExclude={changeExclusion} onAdd={addMeal} onDelete={deleteMeal} error={mealError} notice={mealNotice} />}
+            {menuMode && <MealPlanPanel candidates={mealEligibleItems} today={today} history={meals} ready={mealReady} busy={isSpinning} onAddMeal={addMeal} />}
             {spinHistory.length > 0 && (
               <div className={`${glassCard} ${glassInset} p-5`}>
                 <button
@@ -622,6 +768,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     </button>
                   ))}
                 </div>
+                <a href="#meal-history" className="min-h-11 inline-flex items-center text-sm text-primary font-medium mr-3">{t('weekly.title')} · {t('weekly.days' + excludeDays)}</a>
                 <a href="#roulette-items" className="min-h-11 inline-flex items-center text-sm text-primary font-medium">{t('menu.edit', { count: rouletteItems.length })}</a>
               </div>
             )}
@@ -648,7 +795,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     height={canvasSize}
                     className="rounded-full max-w-full"
                     role="img"
-                    aria-label={t('roulette.wheelLabel', { items: rouletteItems.join(', ') })}
+                    aria-label={t('roulette.wheelLabel', { items: wheelItems.join(', ') })}
                   />
                   <canvas
                     ref={confettiCanvasRef}
@@ -662,7 +809,8 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 {/* Spin button */}
                 <button
                   onClick={spin}
-                  disabled={isSpinning || rouletteItems.length < 2}
+                  ref={menuSpinRef}
+                  disabled={isSpinning || wheelItems.length < 2}
                   id="roulette-spin"
                   className="ui-btn order-1 w-full min-h-12 px-6 py-3 font-bold text-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
@@ -673,6 +821,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     {t('roulette.resultAnnounce', { result: spinResult })}
                   </a>
                 )}
+                {menuMode && mealNotice && <p role="status" className="order-1 text-sm text-sub">{mealNotice}</p>}
               </div>
             </div>
 
@@ -692,15 +841,26 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     </button>
                     <button
                       onClick={copyRouletteResult}
+                      ref={rouletteCopyRef}
+                      data-roulette-copy=""
+                      data-roulette-copied={copiedTarget === 'roulette'}
+                      disabled={copyPending}
                       className="ui-btn-soft min-h-11 flex items-center gap-1 px-3 py-2 text-sm"
                     >
-                      {rouletteCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
-                      {rouletteCopied ? t('common.copied') : t('roulette.copy')}
+                      {copiedTarget === 'roulette' ? <Check size={14} /> : <Copy size={14} />}
+                      {copiedTarget === 'roulette' ? t('common.copied') : t('roulette.copy')}
                     </button>
                   </div>
                 </div>
+                {menuMode && <div className="mt-3 space-y-2">
+                  <button type="button" data-menu-exclude-result="" onClick={excludeCurrentMenu} disabled={!mealReady || isSpinning || !excludePreview?.ok} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-40">{t('menuRound.exclude')}</button>
+                  {excludePreview && !excludePreview.ok && excludePreview.error === 'minimum' && <p role="status" className="text-sm text-sub">{t('menuRound.minimum')}</p>}
+                  <button type="button" onClick={() => addMeal(spinResult, today)} disabled={!mealReady || isSpinning || meals.some(record => record.name === spinResult && record.date === today)} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-40">{t('weekly.savePick', { name: spinResult })}</button>
+                  {mealError && <p role="alert" className="text-sm text-body">{t(mealError)}</p>}
+                </div>}
               </div>
             )}
+            {menuMode && <MenuRoundExclusions state={menuRound} busy={!mealReady || isSpinning} onRestore={restoreMenu} onRestoreAll={restoreMenus} />}
           </div>
         </div>
       )}
@@ -709,8 +869,9 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
       {activeTab === 'order' && (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left: participants */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="min-w-0 lg:col-span-2 space-y-4">
             <div className={`${glassCard} ${glassInset} p-5 space-y-4`}>
+              <MobileResultLink href="#order-picker-result" label={t('order.resultLink')} value={t('order.revealProgress', { count: revealedCount, total: orderResult.length || orderItems.length })} />
               <h2 className="font-semibold text-fg">{t('order.participantsTitle')}</h2>
 
               <ul className="space-y-2 max-h-72 overflow-y-auto">
@@ -719,14 +880,15 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                     <span className="w-6 h-6 flex items-center justify-center rounded-full bg-soft text-sub text-xs font-bold flex-shrink-0">
                       {i + 1}
                     </span>
-                    <span className="flex-1 text-sm text-body truncate">
+                    <span className="min-w-0 flex-1 text-sm text-body [overflow-wrap:anywhere]">
                       {item}
                     </span>
                     <button
                       onClick={() => removeOrderItem(i)}
-                      disabled={orderItems.length <= 2}
+                      data-order-remove={i}
+                      disabled={orderBusy || orderItems.length <= 2}
                       aria-label={t('common.removeItem', { item })}
-                      className="text-gray-400 hover:text-red-500 disabled:opacity-30 transition-colors"
+                      className="min-h-11 min-w-11 inline-flex items-center justify-center text-sub hover:text-body disabled:opacity-30"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -739,80 +901,105 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
                 <input
                   type="text"
                   value={newOrderItem}
-                  onChange={e => setNewOrderItem(e.target.value)}
+                  onChange={e => { if (!isOrderBusy(orderController.getSnapshot())) setNewOrderItem(e.target.value) }}
                   onKeyDown={e => e.key === 'Enter' && addOrderItem()}
                   placeholder={t('order.addPlaceholder')}
                   aria-label={t('order.addInputLabel')}
                   maxLength={20}
-                  className={`${glassInput} flex-1 px-3 py-2 text-sm`}
+                  disabled={orderBusy}
+                  data-order-input=""
+                  className={`${glassInput} min-w-0 min-h-11 flex-1 px-3 py-2 text-base`}
                 />
                 <button
                   onClick={addOrderItem}
-                  disabled={!newOrderItem.trim()}
+                  data-order-add=""
+                  disabled={orderBusy || !newOrderItem.trim()}
                   aria-label={t('order.addButton')}
-                  className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  className="ui-btn min-h-11 min-w-11 px-3 py-2 disabled:opacity-50"
                 >
                   <Plus size={16} />
                 </button>
+              </div>
+              {orderBusy && <p className="text-sm text-sub">{t('order.inputLocked')}</p>}
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-body">{t('order.revealMode')}</p>
+                <div role="group" aria-label={t('order.revealMode')} className="flex flex-wrap gap-2">
+                  {(['auto', 'manual'] as const).map(mode => <button key={mode} type="button" data-order-mode={mode} aria-pressed={orderState.mode === mode}
+                    onClick={() => { if (mounted.current && tabRef.current === 'order') orderController.setMode(mode) }}
+                    className={`min-h-11 rounded-xl px-3 py-2 text-sm ${orderState.mode === mode ? 'bg-primary text-white' : 'bg-soft text-body'}`}>{t(mode === 'auto' ? 'order.autoReveal' : 'order.manualReveal')}</button>)}
+                </div>
+                <p className="text-xs text-sub">{t('order.fixedOrderHint')}</p>
               </div>
 
               {/* Action buttons */}
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={startOrder}
-                  disabled={isShuffling || isRevealing || orderItems.length < 2}
-                  className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white rounded-xl px-4 py-3 font-bold disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow active:scale-95"
+                  ref={drawRef}
+                  data-order-draw=""
+                  disabled={orderBusy || orderItems.length < 2}
+                  className="ui-btn min-h-11 min-w-0 flex-1 flex items-center justify-center gap-2 px-4 py-3 font-bold disabled:opacity-60"
                 >
                   <Shuffle size={18} />
                   {isShuffling ? t('order.shuffling') : t('order.draw')}
                 </button>
-                {orderResult.length > 0 && (
-                  <button
+                  <button type="button"
                     onClick={resetOrder}
-                    className="px-3 py-2 bg-soft text-sub rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    data-order-reset=""
+                    disabled={orderState.phase === 'idle'}
+                    className="ui-btn-soft min-h-11 min-w-11 px-3 py-2 disabled:opacity-40"
                     title={t('order.reset')}
                     aria-label={t('order.reset')}
                   >
                     <RotateCcw size={18} />
                   </button>
-                )}
               </div>
             </div>
           </div>
 
           {/* Right: result cards */}
-          <div className="lg:col-span-3">
-            <div className={`${glassCard} ${glassInset} p-5`}>
-              <div className="flex items-center justify-between mb-4">
+          <div className="min-w-0 lg:col-span-3">
+            <div id="order-picker-result" data-order-revealed-count={revealedCount} data-order-phase={orderState.phase} data-order-run={orderState.runId} data-order-reveal-mode={orderState.mode} className={`${glassCard} ${glassInset} p-5 scroll-mt-20`}>
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <h2 className="font-semibold text-fg">
                   {t('order.resultTitle')}
-                  {isRevealing && (
-                    <span className="ml-2 text-sm text-gray-400">
+                  {orderResult.length > 0 && (
+                    <span className="ml-2 text-sm text-sub">
                       {revealedCount}/{orderResult.length}
                     </span>
                   )}
                 </h2>
-                <div className="flex gap-2">
-                  {isRevealing && revealedCount < orderResult.length && (
-                    <button
+                <div className="flex flex-wrap gap-2">
+                  {orderState.mode === 'manual' && <button type="button" data-order-next="" onClick={revealNext} disabled={!canRevealNext(orderState)} className="ui-btn min-h-11 px-3 py-2 text-sm disabled:opacity-40">{t('order.nextPerson')}</button>}
+                    <button type="button"
                       onClick={revealAll}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      data-order-reveal-all=""
+                      disabled={!canRevealAll(orderState)}
+                      className="ui-btn-soft min-h-11 flex items-center gap-1 px-3 py-2 text-sm disabled:opacity-40"
                     >
                       <Eye size={14} />
                       {t('order.revealAll')}
                     </button>
-                  )}
                   {orderResult.length > 0 && revealedCount === orderResult.length && (
-                    <button
+                    <button type="button"
                       onClick={copyOrderResult}
-                      className="flex items-center gap-1 px-3 py-1.5 text-sm bg-soft text-sub rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      ref={orderCopyRef}
+                      data-order-copy=""
+                      data-order-copied={copiedTarget === 'order'}
+                      disabled={!canExportOrder(orderState) || copyPending}
+                      className="ui-btn-soft min-h-11 flex items-center gap-1 px-3 py-2 text-sm disabled:opacity-40"
                     >
-                      {orderCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
-                      {orderCopied ? t('common.copied') : t('order.copyResult')}
+                      {copiedTarget === 'order' ? <Check size={14} /> : <Copy size={14} />}
+                      {copiedTarget === 'order' ? t('common.copied') : t('order.copyResult')}
                     </button>
                   )}
+                  {canExportOrder(orderState) && <button type="button" data-order-download="" onClick={downloadOrder} className="ui-btn-soft min-h-11 px-3 py-2 text-sm">{t('order.downloadText')}</button>}
                 </div>
               </div>
+              <p role="status" className="mb-3 text-sm text-sub">{orderState.phase === 'complete' ? t('order.revealComplete', { total: orderResult.length }) : orderBusy ? t('order.revealProgress', { count: revealedCount, total: orderResult.length }) : ''}</p>
+              {orderState.mode === 'manual' && orderBusy && <p className="mb-3 text-sm text-body">{t('order.manualReady')}</p>}
+              <p className="mb-3 text-xs text-sub">{t('order.exportHint')}</p>
+              {downloadError && <p role="alert" className="mb-3 text-sm text-body">{t('order.downloadFailed')}</p>}
 
               {orderResult.length === 0 && !isShuffling && (
                 <div className="flex flex-col items-center justify-center py-16 text-faint">
@@ -823,30 +1010,31 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
 
               {isShuffling && (
                 <div className="flex flex-col items-center justify-center py-16">
-                  <div className="text-4xl animate-bounce mb-3" aria-hidden="true">🎴</div>
                   <p className="text-sm text-muted">{t('order.shuffling')}</p>
                 </div>
               )}
 
               {!isShuffling && orderResult.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3" aria-live="polite">
+                <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 gap-3" data-order-cards="">
                   {orderResult.map((name, i) => {
                     const revealed = i < revealedCount
                     return (
                       <div
                         key={i}
-                        className={`relative rounded-xl overflow-hidden transition-all duration-500 ${
+                        data-order-card={i}
+                        data-order-visible={revealed}
+                        className={`relative min-w-0 rounded-xl overflow-hidden transition-opacity motion-reduce:transition-none duration-500 ${
                           revealed ? 'opacity-100 scale-100' : 'opacity-60 scale-95'
                         }`}
                         style={{ minHeight: 96 }}
                       >
                         {revealed ? (
                           <div
-                            className={`flex flex-col items-center justify-center h-full p-3 bg-gradient-to-br ${rankColor(i)} text-white`}
+                            className="flex min-w-0 flex-col items-center justify-center h-full p-3 bg-subtle text-fg"
                             style={{ minHeight: 96 }}
                           >
-                            <span className="text-xs font-bold opacity-90 mb-1">{rankLabel(i)}</span>
-                            <span className="text-base font-bold text-center break-words leading-tight">
+                            <span className="text-xs font-bold text-sub mb-1">{t('order.rank', { rank: i + 1 })}</span>
+                            <span className="text-base font-bold text-center [overflow-wrap:anywhere] leading-tight">
                               {name}
                             </span>
                           </div>
@@ -867,6 +1055,7 @@ export default function DecisionTools({ initialTab = 'roulette', single = false,
           </div>
         </div>
       )}
+      {copyRecovery && <DecisionResultCopyRecovery key={copyRecovery.request} text={copyRecovery.snapshot.text} busy={copyPending} onRetry={() => { void copyResult(copyRecovery.snapshot) }} onClose={closeCopyRecovery} />}
     </div>
   )
 }

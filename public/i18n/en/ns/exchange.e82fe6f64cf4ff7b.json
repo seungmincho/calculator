@@ -1,0 +1,1 @@
+{"exchange":{"title":"Exchange Rate Calculator","description":"Convert currencies with real-time exchange rates.","input":{"fromCurrency":"From Currency","toCurrency":"To Currency","amount":"Amount","exchangeRate":"Exchange Rate"},"result":{"convertedAmount":"Converted Amount","exchangeRate":"Current Rate","lastUpdated":"Last Updated"}}}

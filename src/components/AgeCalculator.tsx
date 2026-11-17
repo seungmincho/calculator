@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { useSearchParams } from '@/hooks/useSearchParams'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/ageCalculator'
@@ -188,6 +189,9 @@ export default function AgeCalculator() {
                 </div>
               )}
               {error && <p className="mt-2 text-sm text-red-600" role="alert">{error}</p>}
+              <Link href="/lunar-converter/" className="mt-2 inline-block text-sm text-primary hover:underline">
+                {t('input.convertLunarBirthday')}
+              </Link>
             </div>
 
             <div>

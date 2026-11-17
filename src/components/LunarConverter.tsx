@@ -1,11 +1,15 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/lunarConverter'
 import { ArrowRightLeft, Copy, Check, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
 import ShareResult from '@/components/ShareResult'
+import LunarAnniversaryCalendar from '@/components/LunarAnniversaryCalendar'
+import LunarSavedAnniversaries from '@/components/LunarSavedAnniversaries'
+import LunarCopyRecovery from '@/components/LunarCopyRecovery'
+import { isSavedLunarDate, type SavedLunarAnniversary } from '@/utils/lunarSavedAnniversaries'
 import { CALENDAR_YEARS } from '@/utils/yearCalendar'
 import {
   MIN_YEAR, MAX_YEAR, leapMonth, lunarMonthDays, lunarToSolar, solarToLunar,
@@ -14,6 +18,7 @@ import {
 } from '@/utils/lunarCalendar'
 
 type ConversionMode = 'solarToLunar' | 'lunarToSolar'
+type CopyTarget = 'result' | 'table'
 
 const YEARS = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => MIN_YEAR + i)
 const clampYear = (y: number, fallback: number) => (y >= MIN_YEAR && y <= MAX_YEAR ? y : fallback)
@@ -22,9 +27,14 @@ const fmt = (s: SolarDate) => `${s.year}.${String(s.month).padStart(2, '0')}.${S
 const INIT_LUNAR = { year: 2026, month: 1, day: 1 }
 const INIT_SOLAR = { year: 2026, month: 2, day: 17 }
 
-export default function LunarConverter() {
+export default function LunarConverter({ guide }: { guide?: React.ReactNode }) {
   const t = useTranslations('lunarConverter')
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [copyState, setCopyState] = useState<{ target: CopyTarget; phase: 'pending' | 'copied' | 'failed'; text: string } | null>(null)
+  const copyRequest = useRef(0)
+  const mounted = useRef(false)
+  const [calendarLoad, setCalendarLoad] = useState({ revision: 0, title: '' })
+  const [calendarEditRevision, setCalendarEditRevision] = useState(0)
+  const calendarEdited = useCallback(() => setCalendarEditRevision(revision => revision + 1), [])
   // null = 마운트 전 (D-day·지난 해 표시는 마운트 후에만)
   const [today, setToday] = useState<SolarDate | null>(null)
 
@@ -80,7 +90,7 @@ export default function LunarConverter() {
     const start = today ? (solarToLunar(today.year, today.month, today.day)?.year ?? today.year) : INIT_LUNAR.year
     const rows = Array.from({ length: 11 }, (_, i) => lunarAnniversary(start + i, month, day, leap)).filter(r => r !== null)
     const next = today && nextLunarAnniversary(today, month, day, leap)
-    return { rows, next: today && next ? { ...next, dday: daysBetween(today, next.solar) } : null }
+    return { rows, start, next: today && next ? { ...next, dday: daysBetween(today, next.solar) } : null }
   }, [pair, today])
 
   // URL 동기화 (공유 링크) — 마운트 전엔 공유 링크 값을 덮어쓰지 않도록 건너뜀
@@ -96,25 +106,6 @@ export default function LunarConverter() {
     }
     window.history.replaceState({}, '', `?${params.toString()}`)
   }, [today, mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, leapValid])
-
-  const copyToClipboard = useCallback(async (text: string, id: string) => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text)
-      } else {
-        const textarea = document.createElement('textarea')
-        textarea.value = text
-        textarea.style.position = 'fixed'
-        textarea.style.left = '-999999px'
-        document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
-      }
-    } catch { /* ignore */ }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }, [])
 
   const lunarLabel = (l: LunarDate) => t('lunarDate', { year: l.year, leap: l.isLeap ? t('leapPrefix') : '', month: l.month, day: l.day })
   const solarLabel = (s: SolarDate) => t('solarDate', { year: s.year, month: s.month, day: s.day })
@@ -138,7 +129,49 @@ export default function LunarConverter() {
     ? anniversaries.rows.map(r => `${lunarLabel({ year: r.lunarYear, month: pair!.lunar.month, day: pair!.lunar.day, isLeap: pair!.lunar.isLeap && !r.leapFallback })} → ${fmt(r.solar)} (${wd(r.solar)})${r.dayFallback ? ` · ${t('yearly.dayFallback')}` : ''}`).join('\n')
     : ''
 
-  const selectCls = 'ui-field px-3 py-2 w-full'
+  const inputKey = JSON.stringify([mode, solarYear, solarMonth, solarDay, lunarYear, lunarMonth, lunarDay, isLeap, calendarLoad.revision, calendarEditRevision])
+  const copyKey = JSON.stringify([inputKey, resultText, tableText])
+  const [lastCopyKey, setLastCopyKey] = useState(copyKey)
+  if (lastCopyKey !== copyKey) { setLastCopyKey(copyKey); setCopyState(null) }
+  const invalidateCopy = useCallback(() => { copyRequest.current++ }, [])
+  useLayoutEffect(() => { invalidateCopy() }, [copyKey, invalidateCopy])
+  useLayoutEffect(() => { mounted.current = true; return () => { mounted.current = false; invalidateCopy() } }, [invalidateCopy])
+  const copiedId = copyState?.phase === 'copied' ? copyState.target : null
+  const copyToClipboard = useCallback(async (text: string, target: CopyTarget) => {
+    const request = ++copyRequest.current
+    const current = () => mounted.current && copyRequest.current === request
+    setCopyState({ target, text, phase: 'pending' })
+    let copied = false
+    try {
+      if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); copied = true }
+    } catch { /* A current request may try the legacy clipboard path. */ }
+    if (!current()) return
+    if (!copied) {
+      const active = document.activeElement
+      const field = document.createElement('textarea')
+      field.value = text; field.readOnly = true
+      field.style.position = 'fixed'; field.style.left = '-999999px'
+      try {
+        document.body.appendChild(field)
+        field.focus(); field.select(); field.setSelectionRange(0, text.length)
+        copied = document.execCommand('copy') === true
+      } catch { copied = false }
+      finally { field.remove(); try { if (active instanceof HTMLElement) active.focus({ preventScroll: true }) } catch { /* Copy result is independent of focus restoration. */ } }
+    }
+    if (!current()) return
+    setCopyState({ target, text, phase: copied ? 'copied' : 'failed' })
+    if (copied) setTimeout(() => { if (current()) setCopyState(null) }, 2000)
+  }, [])
+  const loadSaved = useCallback((record: SavedLunarAnniversary) => {
+    if (!today || !isSavedLunarDate(record.lunar)) return false
+    const date = record.lunar
+    setMode('lunarToSolar')
+    setLunarYear(date.year); setLunarMonth(date.month); setLunarDay(date.day); setIsLeap(date.isLeap)
+    setCalendarLoad(previous => ({ revision: previous.revision + 1, title: record.name }))
+    return true
+  }, [today])
+
+  const selectCls = 'ui-field min-h-11 min-w-0 px-3 py-2 w-full text-base'
   const range = (n: number) => Array.from({ length: n }, (_, i) => i + 1)
 
   return (
@@ -146,11 +179,12 @@ export default function LunarConverter() {
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
+        {guide && <p className="mt-2 text-sm">{guide}</p>}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* 입력 */}
-        <div className="lg:col-span-1">
+        <div className="min-w-0 lg:col-span-1">
           <div className="ui-card p-6 space-y-6">
             <div className="grid grid-cols-2 gap-2" role="tablist">
               {(['lunarToSolar', 'solarToLunar'] as const).map(m => (
@@ -159,7 +193,7 @@ export default function LunarConverter() {
                   role="tab"
                   aria-selected={mode === m}
                   onClick={() => (mode === m ? undefined : toggleMode())}
-                  className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors ${mode === m ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+                  className={`min-h-11 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${mode === m ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
                 >
                   {t(`mode.${m}`)}
                 </button>
@@ -169,8 +203,8 @@ export default function LunarConverter() {
             {mode === 'solarToLunar' ? (
               <div className="space-y-3">
                 <h3 className="text-sm font-medium text-body">{t('solar')}</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  <select aria-label={t('year')} value={solarYear} onChange={e => setSolarYear(Number(e.target.value))} className={selectCls}>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <select aria-label={t('year')} value={solarYear} onChange={e => setSolarYear(Number(e.target.value))} className={`${selectCls} col-span-2 sm:col-span-1`}>
                     {YEARS.map(y => <option key={y} value={y}>{y}{t('year')}</option>)}
                   </select>
                   <select aria-label={t('month')} value={solarMonth} onChange={e => setSolarMonth(Number(e.target.value))} className={selectCls}>
@@ -184,8 +218,8 @@ export default function LunarConverter() {
             ) : (
               <div className="space-y-3">
                 <h3 className="text-sm font-medium text-body">{t('lunar')}</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  <select aria-label={t('year')} value={lunarYear} onChange={e => setLunarYear(Number(e.target.value))} className={selectCls}>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <select aria-label={t('year')} value={lunarYear} onChange={e => setLunarYear(Number(e.target.value))} className={`${selectCls} col-span-2 sm:col-span-1`}>
                     {YEARS.map(y => <option key={y} value={y}>{y}{t('year')}</option>)}
                   </select>
                   {/* 윤달이 있는 해엔 "윤N월"을 월 목록에 끼워 넣음 */}
@@ -214,13 +248,13 @@ export default function LunarConverter() {
                     ? t('leapInfo', { year: lunarYear, month: leapInLunarYear })
                     : t('noLeapInfo', { year: lunarYear })}
                 </p>
-                <label className="flex items-center gap-2 text-sm text-body">
+                <label className="flex min-h-11 items-center gap-2 text-sm text-body">
                   <input
                     type="checkbox"
                     checked={isLeap}
                     disabled={leapInLunarYear !== lunarMonth}
                     onChange={e => setIsLeap(e.target.checked)}
-                    className="w-4 h-4 accent-blue-600"
+                    className="w-5 h-5 accent-primary"
                   />
                   {t('leapMonth')}
                 </label>
@@ -228,20 +262,21 @@ export default function LunarConverter() {
             )}
 
             <div className="flex gap-2">
-              <button onClick={toggleMode} className="ui-btn-soft flex-1 px-4 py-2 flex items-center justify-center gap-2">
+              <button onClick={toggleMode} className="ui-btn-soft min-h-11 flex-1 px-4 py-2 flex items-center justify-center gap-2">
                 <ArrowRightLeft className="w-4 h-4" aria-hidden />
                 {t('swap')}
               </button>
-              <button onClick={handleReset} title={t('reset')} aria-label={t('reset')} className="ui-btn-soft px-4 py-2">
+              <button onClick={handleReset} title={t('reset')} aria-label={t('reset')} className="ui-btn-soft min-h-11 min-w-11 px-4 py-2">
                 <RotateCcw className="w-4 h-4" />
               </button>
             </div>
             <p className="text-xs text-muted">{t('rangeNote')}</p>
+            <a href="#lunar-saved-anniversaries" className="inline-flex min-h-11 items-center text-sm text-primary hover:underline">{t('savedAnniversaries.title')}</a>
           </div>
         </div>
 
         {/* 결과 */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="min-w-0 lg:col-span-2 space-y-6">
           <div className="ui-card p-6">
             <h2 className="text-xl font-semibold text-fg mb-4">{t('result.title')}</h2>
             {pair ? (
@@ -259,10 +294,12 @@ export default function LunarConverter() {
                       {pair.lunar.isLeap && <span className="ml-2 text-primary font-medium">{t('result.leapMonth')}</span>}
                     </div>
                   </div>
-                  <button onClick={() => copyToClipboard(resultText, 'result')} aria-label={t('copy')} className="ui-btn-soft px-3 py-2 shrink-0">
+                  <button data-lunar-copy="result" disabled={!today} onClick={() => { void copyToClipboard(resultText, 'result') }} aria-label={t('copy')} aria-busy={copyState?.target === 'result' && copyState.phase === 'pending'} className="ui-btn-soft min-h-11 min-w-11 px-3 py-2 shrink-0">
                     {copiedId === 'result' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
+
+                {copyState?.target === 'result' && copyState.phase === 'failed' && <LunarCopyRecovery target="result" text={copyState.text} onRetry={() => { void copyToClipboard(resultText, 'result') }} onClose={() => setCopyState(null)} />}
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
@@ -316,10 +353,12 @@ export default function LunarConverter() {
                   </h2>
                   <p className="text-sm text-muted mt-1">{t('yearly.description')}</p>
                 </div>
-                <button onClick={() => copyToClipboard(tableText, 'table')} aria-label={t('copy')} className="ui-btn-soft px-3 py-2 shrink-0">
+                <button data-lunar-copy="table" disabled={!today} onClick={() => { void copyToClipboard(tableText, 'table') }} aria-label={t('copy')} aria-busy={copyState?.target === 'table' && copyState.phase === 'pending'} className="ui-btn-soft min-h-11 min-w-11 px-3 py-2 shrink-0">
                   {copiedId === 'table' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
+
+              {copyState?.target === 'table' && copyState.phase === 'failed' && <LunarCopyRecovery target="table" text={copyState.text} onRetry={() => { void copyToClipboard(tableText, 'table') }} onClose={() => setCopyState(null)} />}
 
               {/* 마운트 전(오늘 날짜 모름)엔 같은 높이의 빈 자리 → 레이아웃 이동 없음 */}
               {(!today || anniversaries.next) && (
@@ -369,10 +408,15 @@ export default function LunarConverter() {
                 </table>
               </div>
               <p className="text-xs text-muted mt-3">{t('yearly.rule')}</p>
+              <div className="mt-4">
+                <LunarAnniversaryCalendar key={calendarLoad.revision} spec={pair.lunar} startLunarYear={anniversaries.start} today={today} initialTitle={calendarLoad.title} onEdit={calendarEdited} />
+              </div>
             </div>
           )}
         </div>
       </div>
+
+      <LunarSavedAnniversaries lunar={pair?.lunar ?? null} today={today} ready={!!today} inputKey={inputKey} onLoad={loadSaved} />
 
       {/* 가이드 */}
       <div className="ui-card p-6">

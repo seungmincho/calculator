@@ -3,9 +3,29 @@ export type TranslationFn = {
   raw: (key: string) => unknown
 }
 
-// Preserve the synchronous legacy lookup contract, including missing-key fallback
-// and raw array/object values. No provider or asynchronous hydration is required.
-export function createTranslations(messages: Record<string, unknown>) {
+const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value)
+
+function sameShape(value: unknown, fallback: unknown): boolean {
+  if (Array.isArray(fallback)) return Array.isArray(value) && value.length === fallback.length && fallback.every((item, index) => sameShape(value[index], item))
+  if (object(fallback)) return object(value) && Object.entries(fallback).every(([key, item]) => sameShape(value[key], item))
+  return fallback === null ? value === null : typeof value === typeof fallback
+}
+
+/** Keep arrays atomic: mixing translated indices can change their meaning. */
+export function withTranslationFallback(primary: unknown, fallback: unknown): unknown {
+  if (fallback === undefined) return primary
+  if (Array.isArray(fallback)) return sameShape(primary, fallback) ? primary : fallback
+  if (object(fallback)) {
+    if (!object(primary)) return fallback
+    return Object.fromEntries([...new Set([...Object.keys(fallback), ...Object.keys(primary)])]
+      .map(key => [key, withTranslationFallback(primary[key], fallback[key])]))
+  }
+  return sameShape(primary, fallback) ? primary : fallback
+}
+
+// Pure lookup remains callable outside React, including SSR/data verification.
+export function createTranslations(primary: Record<string, unknown>, fallback?: Record<string, unknown>) {
+  const messages = (fallback ? withTranslationFallback(primary, fallback) : primary) as Record<string, unknown>
   // Generic retained for compatibility with existing next-intl-style callers.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return function useTranslations<T extends string = string>(namespace?: string): TranslationFn {

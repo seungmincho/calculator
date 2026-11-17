@@ -1,60 +1,121 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/characterCounter'
 import { Copy, Check, Trash2, Undo2, ExternalLink } from 'lucide-react'
 import GuideSection from '@/components/GuideSection'
+import WritingVersionsPanel from '@/components/WritingVersionsPanel'
+import CharacterCopyRecovery from '@/components/CharacterCopyRecovery'
+import { useOptionalLanguage } from '@/contexts/LanguageContext'
+import { parseWritingDraft, withWritingStorageLock, WRITING_DRAFT_KEY, type WritingDraft } from '@/utils/writingVersions'
+import { createCharacterDraft, initializeCharacterDraft, patchCharacterDraft, selectCharacterTab, undoCharacterDraft, clearCharacterDraft, characterDraftRaw, emptyCharacterTabs, type CharacterDraftState } from '@/utils/characterCounterDraft'
+import { createCharacterCopy, type CharacterCopyState } from '@/utils/characterCounterActions'
 import {
   analyze, measure, PRESETS, tidy, collapseSpaces, joinLines, stripSpecial, topWords, splitHighlights, type Basis,
 } from '@/utils/charCount'
 
-interface Tab { title: string; text: string; target: number; basis: Basis }
+type Tab = WritingDraft
 
-const TAB_COUNT = 5
-const STORAGE_KEY = 'characterCounter.v2'
+const STORAGE_KEY = WRITING_DRAFT_KEY
 const BASES: Basis[] = ['chars', 'charsNoSpace', 'bytesKr', 'x']
 const SPELLER_URL = 'https://nara-speller.co.kr/speller/'
-const newTabs = (): Tab[] => Array.from({ length: TAB_COUNT }, () => ({ title: '', text: '', target: 500, basis: 'chars' }))
-
-async function copyText(text: string) {
-  try {
-    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return }
-  } catch { /* fallback below */ }
-  const ta = document.createElement('textarea')
-  ta.value = text
-  ta.style.position = 'fixed'
-  ta.style.left = '-999999px'
-  document.body.appendChild(ta)
-  ta.select()
-  document.execCommand('copy')
-  document.body.removeChild(ta)
-}
 
 export default function CharacterCounter() {
   const t = useTranslations('characterCounter')
-  const [tabs, setTabs] = useState<Tab[]>(newTabs)
-  const [active, setActive] = useState(0)
-  const [loaded, setLoaded] = useState(false)
-  const [undo, setUndo] = useState<{ tab: number; text: string } | null>(null)
-  const [copied, setCopied] = useState(false)
+  const language = useOptionalLanguage()?.language ?? 'ko'
+  const [model, setModel] = useState(createCharacterDraft)
+  const { tabs, active, loaded, undo } = model
+  const live = useRef(model), life = useRef({ alive: false, epoch: 0, operation: 0 })
+  const clearOwner = useRef<object | null>(null)
+  const copyOwner = useRef<ReturnType<typeof createCharacterCopy> | null>(null)
+  const [copyState, setCopyState] = useState<CharacterCopyState | null>(null)
+  const [actionNotice, setActionNotice] = useState<'clearCancelled' | 'spellerOpened' | 'spellerFailed' | null>(null)
   const [marks, setMarks] = useState('')
+  const [clearing, setClearing] = useState(false)
+  const [saveStatus, setSaveStatus] = useState<'loading' | 'saving' | 'autosaved' | 'failed' | 'corrupt' | 'unavailable' | 'conflict'>('loading')
+  const draftRaw = useRef<string | null>(null)
+  const draftBaseline = useRef('')
+  const draftBlocked = useRef(false)
 
-  // 자동 저장: 마운트 후 복원(SSR 불일치 방지) → 이후 변경마다 저장
+  const commit = useCallback((next: CharacterDraftState) => {
+    if (!life.current.alive || next === live.current) return
+    life.current.operation++; live.current = next; setModel(next); copyOwner.current?.invalidate()
+    if (clearOwner.current) { clearOwner.current = null; setClearing(false); setActionNotice('clearCancelled') }
+    else setActionNotice(null)
+    if (next.loaded && !draftBlocked.current) setSaveStatus(characterDraftRaw(next) === draftBaseline.current ? 'autosaved' : 'saving')
+  }, [])
+  useLayoutEffect(() => {
+    const lifetime = life.current
+    lifetime.alive = true; lifetime.epoch++
+    const owner = createCharacterCopy({ after: (callback, ms) => { const timer = setTimeout(callback, ms); return () => clearTimeout(timer) } }, setCopyState)
+    copyOwner.current = owner
+    const epoch = lifetime.epoch
+    queueMicrotask(() => { if (lifetime.alive && lifetime.epoch === epoch) { setClearing(false); setCopyState(null) } })
+    return () => { lifetime.alive = false; lifetime.epoch++; lifetime.operation++; clearOwner.current = null; owner.dispose(); copyOwner.current = null }
+  }, [])
+  const copyLocale = language + ':' + t('copyRecovery.failed')
+  useLayoutEffect(() => { copyOwner.current?.invalidate() }, [copyLocale])
+
+  // Invalid or inaccessible drafts stay untouched; saving is confirmed only after setItem succeeds.
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
-      if (Array.isArray(saved?.tabs)) {
-        setTabs(newTabs().map((d, i) => ({ ...d, ...saved.tabs[i], basis: BASES.includes(saved.tabs[i]?.basis) ? saved.tabs[i].basis : d.basis })))
-        if (Number.isInteger(saved.active) && saved.active >= 0 && saved.active < TAB_COUNT) setActive(saved.active)
+    let mounted = true
+    queueMicrotask(function restoreInitialCharacterDraft() {
+      if (!mounted || !life.current.alive || live.current.loaded) return
+      let raw: string | null
+      try { raw = localStorage.getItem(STORAGE_KEY) } catch {
+        draftBlocked.current = true
+        setSaveStatus('unavailable')
+        commit(initializeCharacterDraft(live.current, null))
+        return
       }
-    } catch { /* 저장소 차단·손상 → 빈 상태 */ }
-    setLoaded(true)
+      draftRaw.current = raw
+      try {
+        const saved = parseWritingDraft(raw) ?? { tabs: emptyCharacterTabs(), active: 0 }
+        draftBaseline.current = JSON.stringify(saved)
+        commit(initializeCharacterDraft(live.current, saved))
+      } catch {
+        draftBlocked.current = true
+        setSaveStatus('corrupt')
+        commit(initializeCharacterDraft(live.current, null))
+      }
+    })
+    return () => { mounted = false }
+  }, [commit])
+
+  const saveDraft = useCallback(async () => {
+    const state = live.current, lifetime = life.current
+    if (!lifetime.alive || !state.loaded || draftBlocked.current || clearOwner.current) return
+    const next = characterDraftRaw(state)
+    if (next === draftBaseline.current) return
+    const expectedRaw = draftRaw.current, epoch = lifetime.epoch, request = ++lifetime.operation
+    const current = () => lifetime.alive && lifetime.epoch === epoch && lifetime.operation === request && live.current.revision === state.revision && !draftBlocked.current
+    setSaveStatus('saving')
+    try {
+      await withWritingStorageLock(STORAGE_KEY, () => {
+        if (!current() || next === draftBaseline.current) return
+        if (localStorage.getItem(STORAGE_KEY) !== expectedRaw) {
+          draftBlocked.current = true
+          setSaveStatus('conflict')
+          return
+        }
+        localStorage.setItem(STORAGE_KEY, next)
+        if (localStorage.getItem(STORAGE_KEY) !== next) {
+          draftBlocked.current = true
+          setSaveStatus('conflict')
+          return
+        }
+        draftRaw.current = next
+        draftBaseline.current = next
+        setSaveStatus('autosaved')
+      })
+    } catch { if (current()) setSaveStatus('failed') }
   }, [])
   useEffect(() => {
-    if (!loaded) return
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ tabs, active })) } catch { /* 용량 초과·차단 */ }
-  }, [tabs, active, loaded])
+    let cancelled = false
+    queueMicrotask(() => { if (!cancelled) void saveDraft() })
+    return () => { cancelled = true }
+  }, [saveDraft, model])
 
   const tab = tabs[active]
   const stats = useMemo(() => analyze(tab.text), [tab.text])
@@ -63,40 +124,71 @@ export default function CharacterCounter() {
   const markList = useMemo(() => marks.split(',').map(s => s.trim()).filter(Boolean), [marks])
   const pieces = useMemo(() => splitHighlights(tab.text, markList), [tab.text, markList])
 
-  const patch = useCallback((p: Partial<Tab>) => setTabs(ts => ts.map((x, i) => (i === active ? { ...x, ...p } : x))), [active])
+  const patch = useCallback((p: Partial<Tab>) => {
+    if (live.current.active === active) commit(patchCharacterDraft(live.current, active, p))
+  }, [active, commit])
 
   const transform = (fn: (s: string) => string) => {
-    const next = fn(tab.text)
-    if (next === tab.text) return
-    setUndo({ tab: active, text: tab.text })
-    patch({ text: next })
+    const current = live.current
+    if (!current.loaded || current.active !== active) return
+    commit(patchCharacterDraft(current, active, { text: fn(current.tabs[active].text) }, true))
   }
 
-  const handleCopy = async () => {
-    if (!tab.text) return
-    await copyText(tab.text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  const handleCopy = (kind: 'copy' | 'speller' = 'copy') => {
+    const current = live.current
+    if (!life.current.alive || !current.loaded || current.active !== active) return
+    const text = current.tabs[active].text
+    if (!text) { copyOwner.current?.invalidate(); return }
+    return copyOwner.current?.request({ text, tab: active, revision: current.revision, kind })
   }
 
   const handleClear = () => {
-    if (tab.text && !window.confirm(t('save.confirmClear'))) return
-    setUndo({ tab: active, text: tab.text })
-    patch({ text: '' })
+    const current = live.current
+    if (!life.current.alive || !current.loaded || current.active !== active || !current.tabs[active].text || !window.confirm(t('save.confirmClear'))) return
+    if (live.current === current) commit(patchCharacterDraft(current, active, { text: '' }, true))
   }
 
-  const handleClearAll = () => {
-    if (!window.confirm(t('save.confirmClearAll'))) return
-    setTabs(newTabs())
-    setActive(0)
-    setUndo(null)
-    try { localStorage.removeItem(STORAGE_KEY) } catch { /* ignore */ }
+  const handleClearAll = async () => {
+    const state = live.current, lifetime = life.current
+    if (!lifetime.alive || !state.loaded || clearOwner.current || !window.confirm(t('save.confirmClearAll')) || live.current !== state) return
+    const owner = {}, epoch = lifetime.epoch, request = ++lifetime.operation, expectedRaw = draftRaw.current
+    clearOwner.current = owner; copyOwner.current?.invalidate(); setClearing(true); setActionNotice(null)
+    const current = () => lifetime.alive && lifetime.epoch === epoch && lifetime.operation === request && live.current.revision === state.revision && clearOwner.current === owner
+    // This explicit confirmation also allows replacing a damaged automatic draft.
+    try {
+      await withWritingStorageLock(STORAGE_KEY, () => {
+        if (!current()) return
+        if (localStorage.getItem(STORAGE_KEY) !== expectedRaw) {
+          draftBlocked.current = true
+          setSaveStatus('conflict')
+          return
+        }
+        localStorage.removeItem(STORAGE_KEY)
+        if (localStorage.getItem(STORAGE_KEY) !== null) {
+          draftBlocked.current = true
+          setSaveStatus('conflict')
+          return
+        }
+        draftRaw.current = null
+        const empty = clearCharacterDraft(live.current)
+        draftBaseline.current = characterDraftRaw(empty)
+        draftBlocked.current = false
+        clearOwner.current = null; setClearing(false); commit(empty)
+        setSaveStatus('autosaved')
+      })
+    } catch {
+      if (current()) setSaveStatus('failed')
+    }
+    if (current()) { clearOwner.current = null; setClearing(false) }
   }
 
-  const openSpeller = async () => {
-    if (tab.text) await copyText(tab.text)
-    window.open(SPELLER_URL, '_blank', 'noopener,noreferrer')
+  const openSpeller = () => {
+    if (!life.current.alive || !live.current.loaded || live.current.active !== active) return
+    void handleCopy('speller')
+    try { window.open(SPELLER_URL, '_blank', 'noopener,noreferrer'); setActionNotice('spellerOpened') }
+    catch { setActionNotice('spellerFailed') }
   }
+  const copied = copyState?.status === 'copied', copying = copyState?.status === 'copying'
 
   const toggleMark = (w: string) =>
     setMarks(markList.includes(w) ? markList.filter(x => x !== w).join(', ') : [...markList, w].join(', '))
@@ -123,10 +215,10 @@ export default function CharacterCounter() {
     { label: t('stats.x'), value: `${n(stats.x)} / 280` },
   ]
 
-  const btnSoft = 'px-3 py-2 rounded-xl text-sm font-medium bg-soft hover:bg-subtle text-body disabled:opacity-45 disabled:pointer-events-none'
+  const btnSoft = 'min-h-11 px-3 py-2 rounded-xl text-sm font-medium bg-soft hover:bg-subtle text-body disabled:opacity-45 disabled:pointer-events-none'
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div data-character-root="" data-character-ready={loaded} data-character-active={active} data-character-revision={model.revision} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
         <p className="text-sm text-muted mt-1">{t('description')}</p>
@@ -138,9 +230,10 @@ export default function CharacterCounter() {
           <button
             key={i}
             role="tab"
+            data-character-tab={i}
             aria-selected={i === active}
-            onClick={() => setActive(i)}
-            className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium text-left ${i === active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+            onClick={() => commit(selectCharacterTab(live.current, i))}
+            className={`min-h-11 shrink-0 px-4 py-2 rounded-xl text-sm font-medium text-left ${i === active ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
           >
             <span className="block">{tb.title.trim() || t('tabs.label', { n: i + 1 })}</span>
             <span className={`block text-xs tabular-nums ${i === active ? 'text-white/70' : 'text-muted'}`}>
@@ -150,18 +243,20 @@ export default function CharacterCounter() {
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 입력 */}
         <div className="lg:col-span-2 ui-card overflow-hidden">
           <input
+            data-character-title=""
             value={tab.title}
             onChange={e => patch({ title: e.target.value })}
             placeholder={t('tabs.titlePlaceholder', { n: active + 1 })}
             aria-label={t('tabs.titleAria')}
             maxLength={40}
-            className="w-full px-4 pt-4 pb-2 bg-transparent text-fg font-semibold focus:outline-none placeholder:text-faint"
+            className="w-full min-h-11 px-4 pt-4 pb-2 bg-transparent text-base text-fg font-semibold focus:outline-none placeholder:text-faint"
           />
           <textarea
+            data-character-content=""
             value={tab.text}
             onChange={e => patch({ text: e.target.value })}
             placeholder={t('input.placeholder')}
@@ -170,17 +265,23 @@ export default function CharacterCounter() {
             spellCheck={false}
           />
           <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-subtle border-t border-line">
-            <span className="text-xs text-muted">{t('save.autosaved')}</span>
+            <div className="space-y-1">
+              <p data-character-save-status={saveStatus} role={saveStatus === 'autosaved' || saveStatus === 'loading' || saveStatus === 'saving' ? 'status' : 'alert'} className={`text-xs ${saveStatus === 'autosaved' || saveStatus === 'loading' || saveStatus === 'saving' ? 'text-muted' : 'text-amber-800'}`}>{t(`save.${saveStatus}`)}</p>
+              {saveStatus === 'failed' && <button data-character-save-retry="" onClick={saveDraft} className={btnSoft}>{t('save.retry')}</button>}
+            </div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={handleCopy} disabled={!tab.text} className="ui-btn px-4 py-2 text-sm">
+              <button data-character-copy="" onClick={() => void handleCopy()} disabled={!loaded || !tab.text || copying} className="ui-btn min-h-11 px-4 py-2 text-sm disabled:opacity-45">
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? t('actions.copied') : t('actions.copy')}
+                {copied ? t('actions.copied') : copying ? t('copyRecovery.copying') : t('actions.copy')}
               </button>
-              <button onClick={handleClear} disabled={!tab.text} className={`${btnSoft} inline-flex items-center gap-1.5`}>
+              <button data-character-clear="" onClick={handleClear} disabled={!loaded || !tab.text} className={`${btnSoft} inline-flex items-center gap-1.5`}>
                 <Trash2 className="w-4 h-4" />{t('actions.clear')}
               </button>
             </div>
           </div>
+          {copyState?.status === 'failed' && <div className="p-4"><CharacterCopyRecovery text={copyState.text} tab={copyState.tab}
+            onRetry={() => { void copyOwner.current?.retry(copyState.token) }} onClose={() => copyOwner.current?.close(copyState.token)} /></div>}
+          {actionNotice && <p data-character-action-notice={actionNotice} role={actionNotice === 'spellerFailed' ? 'alert' : 'status'} className="px-4 pb-4 text-sm text-sub">{t(`editing.${actionNotice}`)}</p>}
         </div>
 
         {/* 목표 */}
@@ -210,9 +311,10 @@ export default function CharacterCounter() {
                 {BASES.map(b => (
                   <button
                     key={b}
+                    data-character-basis={b}
                     onClick={() => patch({ basis: b })}
                     aria-pressed={tab.basis === b}
-                    className={`px-3 py-2 rounded-xl text-sm font-medium ${tab.basis === b ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+                    className={`min-h-11 px-3 py-2 rounded-xl text-sm font-medium ${tab.basis === b ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
                   >
                     {t(`target.basis.${b}`)}
                   </button>
@@ -222,12 +324,13 @@ export default function CharacterCounter() {
             <label className="block">
               <span className="text-sm font-medium text-body">{t('target.limit')}</span>
               <input
+                data-character-target=""
                 type="number"
                 inputMode="numeric"
                 min={0}
                 value={tab.target || ''}
-                onChange={e => patch({ target: Math.max(0, Math.floor(Number(e.target.value) || 0)) })}
-                className="ui-field px-4 py-2.5 mt-1.5 tabular-nums"
+                onChange={e => { const value = Number(e.target.value); patch({ target: Number.isFinite(value) ? Math.min(Number.MAX_SAFE_INTEGER, Math.max(0, Math.floor(value))) : 0 }) }}
+                className="ui-field min-h-11 text-base px-4 py-2.5 mt-1.5 tabular-nums"
               />
             </label>
             <div>
@@ -241,7 +344,7 @@ export default function CharacterCounter() {
                       key={p.id}
                       onClick={() => patch({ target: p.limit, basis: p.basis })}
                       aria-pressed={on}
-                      className={`px-2.5 py-1.5 rounded-lg text-xs font-medium ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+                      className={`min-h-11 px-2.5 py-1.5 rounded-lg text-xs font-medium ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
                     >
                       {t(`target.presetNames.${p.id}`)}
                     </button>
@@ -253,6 +356,12 @@ export default function CharacterCounter() {
           </div>
         </div>
       </div>
+
+      <fieldset disabled={!loaded} className="min-w-0"><WritingVersionsPanel current={tab} activeTab={active} onRestore={draft => {
+        const current = live.current
+        if (!current.loaded || current.active !== active || current.tabRevisions[active] !== model.tabRevisions[active]) return
+        commit(patchCharacterDraft(current, active, draft, true))
+      }} /></fieldset>
 
       {/* 통계 */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -270,32 +379,33 @@ export default function CharacterCounter() {
         </p>
       )}
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 정리 도구 */}
         <div className="ui-card p-6 space-y-4">
           <h2 className="text-lg font-semibold text-fg">{t('tools.title')}</h2>
           <div className="flex flex-wrap gap-2">
-            <button className={btnSoft} disabled={!tab.text} onClick={() => transform(tidy)}>{t('tools.tidy')}</button>
-            <button className={btnSoft} disabled={!tab.text} onClick={() => transform(collapseSpaces)}>{t('tools.collapse')}</button>
-            <button className={btnSoft} disabled={!tab.text} onClick={() => transform(joinLines)}>{t('tools.joinLines')}</button>
-            <button className={btnSoft} disabled={!tab.text} onClick={() => transform(stripSpecial)}>{t('tools.stripSpecial')}</button>
-            <button className={btnSoft} disabled={!tab.text} onClick={() => transform(s => s.toUpperCase())}>{t('tools.upper')}</button>
-            <button className={btnSoft} disabled={!tab.text} onClick={() => transform(s => s.toLowerCase())}>{t('tools.lower')}</button>
+            <button data-character-transform="tidy" className={btnSoft} disabled={!loaded || !tab.text} onClick={() => transform(tidy)}>{t('tools.tidy')}</button>
+            <button data-character-transform="collapse" className={btnSoft} disabled={!loaded || !tab.text} onClick={() => transform(collapseSpaces)}>{t('tools.collapse')}</button>
+            <button data-character-transform="joinLines" className={btnSoft} disabled={!loaded || !tab.text} onClick={() => transform(joinLines)}>{t('tools.joinLines')}</button>
+            <button data-character-transform="stripSpecial" className={btnSoft} disabled={!loaded || !tab.text} onClick={() => transform(stripSpecial)}>{t('tools.stripSpecial')}</button>
+            <button data-character-transform="upper" className={btnSoft} disabled={!loaded || !tab.text} onClick={() => transform(s => s.toUpperCase())}>{t('tools.upper')}</button>
+            <button data-character-transform="lower" className={btnSoft} disabled={!loaded || !tab.text} onClick={() => transform(s => s.toLowerCase())}>{t('tools.lower')}</button>
             <button
               className={`${btnSoft} inline-flex items-center gap-1.5`}
-              disabled={!undo || undo.tab !== active}
-              onClick={() => { if (undo) { patch({ text: undo.text }); setUndo(null) } }}
+              data-character-undo=""
+              disabled={!loaded || !undo || undo.tab !== active || undo.afterRevision !== model.tabRevisions[active]}
+              onClick={() => { if (undo) commit(undoCharacterDraft(live.current, undo.token)) }}
             >
               <Undo2 className="w-4 h-4" />{t('tools.undo')}
             </button>
           </div>
           <div className="bg-subtle rounded-2xl p-4 space-y-2">
-            <button onClick={openSpeller} className="ui-btn-soft px-4 py-2 text-sm">
+            <button data-character-speller="" onClick={openSpeller} disabled={!loaded} className="ui-btn-soft min-h-11 px-4 py-2 text-sm disabled:opacity-45">
               {t('tools.spell')}<ExternalLink className="w-4 h-4" />
             </button>
             <p className="text-xs text-sub">{t('tools.spellHint')}</p>
           </div>
-          <button onClick={handleClearAll} className="text-xs text-muted underline hover:text-body">{t('save.clearAll')}</button>
+          <button data-character-clear-all="" onClick={handleClearAll} disabled={!loaded || clearing} className="min-h-11 text-xs text-muted underline hover:text-body disabled:opacity-45">{t('save.clearAll')}</button>
         </div>
 
         {/* 반복어 */}
@@ -313,7 +423,7 @@ export default function CharacterCounter() {
                     key={w.word}
                     onClick={() => toggleMark(w.word)}
                     aria-pressed={on}
-                    className={`px-2.5 py-1.5 rounded-lg text-sm ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
+                    className={`min-h-11 px-2.5 py-1.5 rounded-lg text-sm ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`}
                   >
                     {w.word} <span className={on ? 'text-white/70' : 'text-muted'}>{t('words.times', { n: w.count })}</span>
                   </button>
@@ -329,14 +439,14 @@ export default function CharacterCounter() {
               value={marks}
               onChange={e => setMarks(e.target.value)}
               placeholder={t('words.marksPlaceholder')}
-              className="ui-field px-4 py-2.5 mt-1.5"
+              className="ui-field min-h-11 text-base px-4 py-2.5 mt-1.5"
             />
           </label>
           {markList.length > 0 && tab.text && (
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-sm font-medium text-body">{t('words.preview', { n: pieces.filter(p => p.hit).length })}</span>
-                <button onClick={() => setMarks('')} className="text-xs text-muted underline hover:text-body">{t('words.clearMarks')}</button>
+                <button onClick={() => setMarks('')} className="min-h-11 text-xs text-muted underline hover:text-body">{t('words.clearMarks')}</button>
               </div>
               <div className="bg-subtle rounded-2xl p-4 text-sm text-body whitespace-pre-wrap break-words max-h-64 overflow-y-auto leading-relaxed">
                 {pieces.map((p, i) => p.hit
