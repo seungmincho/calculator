@@ -53000,7 +53000,7 @@
         "reset": "Reset prices",
         "refBadge": "Est.",
         "boxes": "about {n} boxes of 20kg",
-        "atNote": "Default prices come from aT (Korea Agro-Fisheries & Food Trade Corp.)'s kimjang cost survey of Nov 21, 2024, the latest with published per-item amounts (family of four, 20 heads, 14 items, 204,315 KRW). The Nov 17, 2025 survey total was {total} KRW without a per-item breakdown.",
+        "atNote": "Default prices come from aT (Korea Agro-Fisheries & Food Trade Corp.)'s kimjang cost survey of Nov 21, 2024, the latest with published per-item amounts (family of four, 20 heads, 14 items, 204,315 KRW). The Nov 16, 2026 survey total (released Nov 17) was {total} KRW without a per-item breakdown.",
         "refNote": "Items marked 'Est.' are not official survey values. Rice flour and sugar amounts follow the Nongsaro (RDA) kimchi recipe ratio; prices of pre-salted cabbage, rice flour, sugar, oysters and shrimp are rough market estimates, so replace them with your local prices."
       },
       "disclaimer": "Actual prices vary widely by region, market and promotions. Amounts scale the standard recipe linearly by the number of heads; adjust to your family recipe."
@@ -53072,7 +53072,7 @@
         "items": [
           {
             "q": "How much does kimjang for 20 heads of cabbage cost?",
-            "a": "aT's survey of Nov 17, 2025 put kimjang for a family of four (20 heads) at 201,151 KRW, 5.6% lower than a year earlier. This calculator uses the Nov 21, 2024 aT survey (204,315 KRW), the latest with per-item values, as default prices, and you can edit any price to match today's market."
+            "a": "aT's survey released Nov 17, 2026 (as of Nov 16) put kimjang for a family of four (20 heads) at 187,613 KRW, 9.6% lower than mid-November last year (207,634 KRW). This calculator uses the Nov 21, 2024 aT survey (204,315 KRW), the latest with per-item values, as default prices, and you can edit any price to match today's market."
           },
           {
             "q": "How many heads are in a 20kg box of pre-salted cabbage?",
@@ -53107,6 +53107,10 @@
       "sources": {
         "title": "Sources",
         "items": [
+          {
+            "label": "aT 2026 kimjang cost survey (as of Nov 16, 2026, 187,613 KRW) — Food Today",
+            "url": "https://www.foodtoday.or.kr/news/article.html?no=209808"
+          },
           {
             "label": "aT 2025 kimjang cost survey (Nov 17, 2025, 201,151 KRW) — Food Today",
             "url": "https://www.foodtoday.or.kr/news/article.html?no=200149"

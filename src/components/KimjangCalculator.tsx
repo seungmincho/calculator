@@ -9,7 +9,7 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import {
-  ITEMS, ITEM_IDS, OPTIONAL_IDS, DEFAULT_ON, METHODS, TASTES, AT_TOTAL_2025, BOX_KG,
+  ITEMS, ITEM_IDS, OPTIONAL_IDS, DEFAULT_ON, METHODS, TASTES, AT_TOTAL_2026, BOX_KG,
   calc, compareMethods, headsFromKg, kgFromHeads, recommendHeads,
   type ItemId, type Method, type Taste, type Unit,
 } from '@/utils/kimjang'
@@ -353,7 +353,7 @@ export default function KimjangCalculator() {
               <span className="tabular-nums font-bold text-fg">{won(r.total)}{t('u.won')}</span>
             </div>
             <div className="bg-subtle rounded-2xl p-4 text-xs text-sub space-y-1">
-              <p>{t('u.table.atNote', { total: won(AT_TOTAL_2025) })}</p>
+              <p>{t('u.table.atNote', { total: won(AT_TOTAL_2026) })}</p>
               <p>{t('u.table.refNote')}</p>
             </div>
           </div>
