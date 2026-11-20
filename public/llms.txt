@@ -146,6 +146,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [해외주식 양도세 계산기](https://toolhub.ai.kr/overseas-stock-tax/): 250만원 공제·22% 양도세, 연말 손실 상계·공제 채우기 절세
 - [카드 수수료 계산기](https://toolhub.ai.kr/card-fee-calculator/): 연매출 구간별 우대수수료율, 월·연 카드 수수료와 세액공제 후 실부담
 - [중도상환수수료 계산기](https://toolhub.ai.kr/prepayment-fee/): 중도상환수수료와 대출 갈아타기 이득 여부(이자 절감 − 수수료)
+- [수험표 할인 모음](https://toolhub.ai.kr/csat-discounts/): 놀이공원·영화·외식·여행 수험생 할인을 기간·조건·출처와 함께, 오늘 쓸 수 있는 것부터 보기
+- [정시 환산점수 계산기](https://toolhub.ai.kr/jeongsi-score/): 표준점수·백분위와 대학별 반영 비율·영어·한국사 점수로 환산점수 계산, 공식 6개 저장·비교
 
 ## 개발 도구
 

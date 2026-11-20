@@ -102,6 +102,7 @@ export interface TimelineItem { key: string; start: string; end?: string; until?
 export const TIMELINE: TimelineItem[] = [
   { key: 'exam', start: CSAT_EXAM_DATE },
   { key: 'objection', start: CSAT_EXAM_DATE, end: '2026-11-23' }, // 평가원 전용 게시판, 23일 18시 마감
+  { key: 'scholarship', start: '2026-11-24', end: '2027-01-07' }, // 국가장학금 1차(신입생 포함) 09시~18시, 서류·가구원 동의 1/14 18시 — 한국장학재단, 대학 공지 2026-11-20 확인
   { key: 'answerFinal', start: '2026-12-01' }, // 17시 발표
   { key: 'score', start: '2026-12-11' },
   { key: 'susiResult', start: '2026-12-18', until: true },

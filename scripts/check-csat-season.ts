@@ -55,7 +55,8 @@ check('answer counts, answer cleaning, and old checklist keys remain compatible'
 
 check('ICS source dates stay unchanged when additional-offer labels become precise', () => {
   assert.deepEqual(TIMELINE.map(item => [item.key, item.start, item.end ?? null]), [
-    ['exam', '2026-11-19', null], ['score', '2026-12-11', null], ['susiResult', '2026-12-18', null],
+    ['exam', '2026-11-19', null], ['objection', '2026-11-19', '2026-11-23'], ['scholarship', '2026-11-24', '2027-01-07'],
+    ['answerFinal', '2026-12-01', null], ['score', '2026-12-11', null], ['susiResult', '2026-12-18', null],
     ['susiReg', '2026-12-21', '2026-12-23'], ['susiExtra', '2026-12-24', '2026-12-29'],
     ['jeongsiApply', '2027-01-04', '2027-01-07'], ['jeongsiResult', '2027-02-05', null],
     ['jeongsiReg', '2027-02-10', '2027-02-12'], ['jeongsiExtra', '2027-02-13', '2027-02-17'], ['addRecruit', '2027-02-19', '2027-02-26'],

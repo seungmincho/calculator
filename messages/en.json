@@ -3116,6 +3116,8 @@
       "overseasStockTax": "Overseas Stock Tax Calculator",
       "cardFeeCalculator": "Card Fee Calculator",
       "prepaymentFee": "Prepayment Fee Calculator",
+      "csatDiscounts": "CSAT Ticket Discounts",
+      "jeongsiScore": "Regular Admission Score Calculator",
       "windChill": "Wind Chill Calculator",
       "dependentEligibility": "Health Insurance Dependent Check",
       "youthFutureSavings": "Youth Future Savings Calculator",
@@ -9299,6 +9301,14 @@
       "prepaymentFee": {
         "title": "Prepayment Fee Calculator",
         "description": "Early loan repayment fee and whether refinancing pays off"
+      },
+      "csatDiscounts": {
+        "title": "2027 CSAT Ticket Discounts",
+        "description": "Theme park, movie, dining and travel deals for CSAT takers with dates, conditions and sources, starting with what you can use today"
+      },
+      "jeongsiScore": {
+        "title": "Regular Admission Score Calculator",
+        "description": "Convert standard scores and percentiles with each university's area weights, English and Korean History points; save and compare 6 formulas"
       },
       "windChill": {
         "title": "Wind Chill Calculator",
@@ -40362,6 +40372,45 @@
     }
   },
   "csatGrade": {
+    "min": {
+      "details": "More conditions (Inquiry, eligible areas, required areas, Korean History)",
+      "inqLabel": "Inquiry counted as",
+      "inq": {
+        "top1": "Best 1 subject",
+        "avgFloor": "2-subject average (truncated)",
+        "avgRound": "2-subject average (rounded)",
+        "avg": "2-subject average (as is)"
+      },
+      "poolLabel": "Eligible areas",
+      "reqLabel": "Required areas",
+      "reqHint": "Areas that must be in the sum, e.g. 3 areas including Math, 2 including English",
+      "histLabel": "Korean History",
+      "histNone": "No condition",
+      "histOpt": "Grade {g} or better",
+      "area": {
+        "kor": "Korean",
+        "math": "Math",
+        "eng": "English",
+        "inq": "Inquiry"
+      },
+      "status": {
+        "within": "Met (preliminary grades)",
+        "over": "Not met (preliminary grades)",
+        "needsInput": "More input needed",
+        "invalidCondition": "Check the condition"
+      },
+      "invalidHint": "Areas to add must not exceed eligible areas, required areas must not exceed areas to add, and the grade sum must be {min}–{max}.",
+      "sum": "Sum of {areas}: {sum} / limit {max}",
+      "overBy": "{amount} over the limit",
+      "hist": "Korean History grade {grade} / required {max} or better",
+      "histFail": "Korean History requirement not met",
+      "histMissing": "Enter a Korean History score",
+      "missing": "Areas that need a grade: {areas}",
+      "inqAvgNeedsTwo": "The 2-subject Inquiry average needs scores for two different subjects.",
+      "used": "Areas used in the sum",
+      "usedArea": "{label} · grade {grade}",
+      "sumsBasis": "The 2/3/4-area sums below use the same Inquiry rule and eligible areas, without required areas or Korean History."
+    },
     "est": {
       "toggleLabel": "Cutoff basis for Korean, Math and Inquiry",
       "opt2027": "2027 preliminary",
@@ -40427,8 +40476,9 @@
       "lt": "below {v}",
       "toNext": "+{n} pts to grade {g}",
       "geoNote": "Previous academic-year reference estimates for Geometry",
+      "toJeongsiScore": "Calculate a regular-admission score with these",
       "minTitle": "Reference grade sum for minimum requirements",
-      "minNote": "Adds the best areas among Korean, Math, English and Inquiry (the better one of two subjects). This uses Inquiry differently from the average above.",
+      "minNote": "Korean, Math, English and Inquiry each count as one area, adding the best grades first. Change the Inquiry rule, required areas and Korean History condition below to match the university prospectus. This differs from the grade averages above.",
       "nSum": "Best {n}",
       "minSumAria": "Required grade sum",
       "within": "or less",
@@ -40537,7 +40587,7 @@
       "relativeRow": "Reference grade using {year} cutoffs",
       "toNextReference": "+{n} points to grade {g} in the reference table",
       "interpolation": "Standard scores and percentiles are simple interpolations between points in the {year} reference tables. They do not model Korean/Math common-section and elective adjustments or this year's score distribution, and cannot convert raw scores into official results.",
-      "minimumLimit": "This sum includes grade estimates based on {year} reference data. It does not apply university-specific required areas, Inquiry averaging/rounding or Korean History conditions, and does not determine admission or actual minimum-requirement eligibility.",
+      "minimumLimit": "This sum includes grade estimates based on {year} reference data. Only the conditions you pick are applied; it does not reproduce every university rule (ties, rounding order) and does not determine admission or actual minimum-requirement eligibility.",
       "relativeCaption": "{year} academic-year reference table · estimated raw cutoffs",
       "absoluteCaption": "{year} academic-year English/History absolute grading rules",
       "absoluteCut": "Raw-score boundary",
@@ -49709,6 +49759,35 @@
     "title": "CSAT D-day · Timetable · Checklist",
     "description": "Countdown to the 2027 CSAT (Thu, Nov 19, 2026), the period timetable, a packing checklist, an answer sheet for self-scoring, and the admissions schedule after the exam.",
     "descriptionAfter": "The 2027 CSAT (Nov 19, 2026) is over. Objection, final-answer, score-release and regular-admissions dates, your self-scoring sheet and the 2028 CSAT countdown in one place.",
+    "afterLinks": {
+      "title": "CSAT done — what to take care of next",
+      "items": {
+        "discounts": {
+          "label": "CSAT ticket discounts",
+          "desc": "Theme park, movie and dining deals for test takers, usable-today first"
+        },
+        "grade": {
+          "label": "Preliminary grades & minimums",
+          "desc": "Estimate grades with preliminary cutoffs and check early-admission minimums"
+        },
+        "jeongsiScore": {
+          "label": "Regular admission score calculator",
+          "desc": "Compare converted scores with each university's weights, English and Korean History points"
+        },
+        "jeongsi": {
+          "label": "2027 regular admission dates",
+          "desc": "Applications Jan 4–7, group A/B/C screening and result D-days"
+        },
+        "scholarship": {
+          "label": "National Scholarship round 1",
+          "desc": "Freshmen apply in round 1 too, Nov 24 09:00 – Jan 7 18:00 (KOSAF)"
+        },
+        "wage": {
+          "label": "Part-time wage & holiday pay",
+          "desc": "Monthly pay and weekly holiday allowance from hourly wage and hours"
+        }
+      }
+    },
     "md": "{w} {m}/{d}",
     "weekdays": [
       "Sun",
@@ -49878,6 +49957,7 @@
       "items": {
         "exam": "CSAT",
         "objection": "Question/answer objections (until 18:00 on the 23rd)",
+        "scholarship": "National Scholarship round 1 (freshmen too, until Jan 7 18:00)",
         "answerFinal": "Final answer key (17:00)",
         "score": "Scores released",
         "susiResult": "Early admission results",
@@ -49889,7 +49969,7 @@
         "jeongsiExtra": "Regular admission additional offers",
         "addRecruit": "Additional recruitment"
       },
-      "note": "Objections go to the KICE website board until Nov 23, 18:00; the final answer key is published Dec 1 at 17:00. Based on the 2027 admissions plan. Regular applications run for at least three university-selected days within Jan 4–7. Early additional offers end Dec 29 at 18:00, registration Dec 30 at 22:00; regular additional offers end Feb 17 at 18:00, registration Feb 18 at 22:00. Check each university's latest prospectus.",
+      "note": "Incoming freshmen can apply in National Scholarship round 1; documents and household consent are due Jan 14, 18:00 (KOSAF). Objections go to the KICE website board until Nov 23, 18:00; the final answer key is published Dec 1 at 17:00. Based on the 2027 admissions plan. Regular applications run for at least three university-selected days within Jan 4–7. Early additional offers end Dec 29 at 18:00, registration Dec 30 at 22:00; regular additional offers end Feb 17 at 18:00, registration Feb 18 at 22:00. Check each university's latest prospectus.",
       "linkGrade": "CSAT grade calculator",
       "linkDday": "D-day calculator"
     },
@@ -59960,6 +60040,546 @@
       "eok": "₩{won}",
       "man": "₩{won}",
       "won": "₩{won}"
+    }
+  },
+  "jeongsiScore": {
+    "title": "Jeongsi Converted Score Calculator",
+    "subtitle": "Enter your CSAT scores and the scoring formula from a university's admissions guide to get its converted score. Save formulas for your Ga, Na and Da group choices and compare them at once.",
+    "validation": {
+      "range": "Enter a number from {min} to {max}"
+    },
+    "gradeN": "Grade {g}",
+    "areas": {
+      "kor": "Korean",
+      "math": "Math",
+      "eng": "English",
+      "inq": "Inquiry",
+      "hist": "Korean History"
+    },
+    "scores": {
+      "title": "My CSAT scores",
+      "desc": "Enter the standard scores and percentiles from your score report. Before the report arrives on December 11, use values estimated from your self-graded answers. The scores shown at first are examples.",
+      "inq1": "Inquiry 1",
+      "inq2": "Inquiry 2",
+      "mathSel": "Elective",
+      "inqType": "Social/Science",
+      "std": "Standard score",
+      "pct": "Percentile"
+    },
+    "sel": {
+      "prob": "Probability & Statistics",
+      "calc": "Calculus",
+      "geo": "Geometry"
+    },
+    "inqType": {
+      "soc": "Social studies",
+      "sci": "Science"
+    },
+    "templates": {
+      "pct": {
+        "name": "Percentile, equal weights",
+        "desc": "Example that weights Korean, Math, English and Inquiry 25% each using percentiles. English uses a grade conversion table (grade 1 = 100) inside the ratio, and Korean History adds bonus points by grade."
+      },
+      "hum": {
+        "name": "Standard score, humanities",
+        "desc": "Example that weights Korean 40%, Math 30% and Inquiry 30% using standard scores. English is outside the ratio and deducts points from grade 2 down; Korean History adds bonus points."
+      },
+      "sci": {
+        "name": "Standard score, sciences",
+        "desc": "Example that weights Korean 20%, Math 35%, English 15% and Inquiry 30% using standard scores, with a 5% bonus for Calculus/Geometry and for science subjects. Korean History adds bonus points."
+      }
+    },
+    "formula": {
+      "title": "University formula",
+      "desc": "Copy the 'CSAT scoring method' table from the admissions guide of the university you plan to apply to. Formulas can differ between departments of the same university.",
+      "template": "Start from an example",
+      "templateNote": "The examples are not any specific university's formula. Pick one, then adjust the ratios and tables to match the admissions guide.",
+      "custom": "Edited formula",
+      "customDesc": "This formula was edited from an example. Tap an example above to restore its original values.",
+      "idx": "Score basis",
+      "idxOpt": {
+        "std": "Standard score",
+        "pct": "Percentile"
+      },
+      "eng": "English method",
+      "engOpt": {
+        "ratio": "Inside the ratio",
+        "add": "Add/deduct points"
+      },
+      "ratio": "Weight by area",
+      "ratioSum": "Total {sum}%",
+      "ratioHintIn": "Korean, Math, English and Inquiry weights should add up to 100%.",
+      "ratioHintAdd": "English is added to or deducted from the total separately, so Korean, Math and Inquiry weights should add up to 100%.",
+      "inq": "Inquiry subjects",
+      "inqOpt": {
+        "avg2": "Average of 2 (sum)",
+        "top1": "Best 1 subject"
+      },
+      "mathBonus": "Calculus/Geometry bonus",
+      "sciBonus": "Science bonus",
+      "total": "Full score",
+      "bonusHint": "A bonus multiplies that area's score (5% means ×1.05). The science bonus applies per subject. The full score is the total split by the area weights, excluding English points and Korean History bonus.",
+      "base": "Standard score reference maximum",
+      "baseCta": "Replace with the reference score in the admissions guide",
+      "baseInq": "Inquiry (per subject)",
+      "baseHint": "Each standard score is divided by this value before the weight is applied. The defaults (150 for Korean and Math, 80 per inquiry subject) are rough values near recent CSAT top standard scores. This year's top scores are released with the official results on December 11. Use them if the guide divides by each area's top score, or the fixed value (such as 200) if it uses one.",
+      "basePct": "Percentiles are out of 100, so there is nothing to change.",
+      "advanced": "English and Korean History grade tables",
+      "engTableRatio": "English points by grade",
+      "engTableAdd": "English bonus/deduction by grade",
+      "engTableHintRatio": "Enter the English conversion table from the guide. The highest value counts as full marks before the English weight is applied.",
+      "engTableHintAdd": "These points are added to the total as is. Enter deductions as negative numbers, such as -3.",
+      "histTable": "Korean History bonus by grade",
+      "histTableHint": "Added to the total as is. Use negative numbers for deductions, or all zeros if it is not used."
+    },
+    "result": {
+      "label": "{name} converted score",
+      "outOf": "/ {total}",
+      "ofMax": "{p}% of full score",
+      "issues": {
+        "ratioSum": "The weights add up to {sum}%. Make them total 100% for a correct score.",
+        "engTable": "The English table needs at least one value above 0."
+      },
+      "breakdown": "Points by area",
+      "add": "added",
+      "ratio": "{r}%",
+      "bonus": "+{p}% bonus",
+      "estimate": "Before scores are released on December 11, this is an estimate from self-graded answers and may differ from your real score. Confirm your final score with the university's own calculator before applying.",
+      "links": {
+        "schedule": "See the 2027 jeongsi application and Ga/Na/Da schedule",
+        "grade": "Estimate CSAT grades from raw scores"
+      }
+    },
+    "share": {
+      "tool": "Jeongsi Converted Score Calculator",
+      "sub": "{idx} basis · formula entered from the admissions guide",
+      "text": "My jeongsi converted score for {name} is {score} out of {total}."
+    },
+    "saved": {
+      "title": "Compare saved formulas",
+      "count": "{n}/{max}",
+      "desc": "Save the current formula with a name and group. Whenever you change your scores above, every saved formula is recalculated. Formulas are stored only in this browser.",
+      "name": "Formula name",
+      "namePlaceholder": "e.g. Ga group, XX Univ. Business",
+      "group": "Group",
+      "save": "Save current formula",
+      "full": "You can save up to {max} formulas. Delete one to save another.",
+      "storageError": "Browser storage is unavailable, so the formula could not be saved. Copy the link to keep it instead.",
+      "empty": "No saved formulas yet. Save one formula for each university you are considering in the Ga, Na and Da groups.",
+      "caption": "Converted score under each formula with your current scores",
+      "th": {
+        "group": "Group",
+        "name": "Formula",
+        "score": "Score",
+        "rate": "Of full",
+        "actions": "Actions"
+      },
+      "checkFormula": "Check weights",
+      "load": "Load",
+      "loadAria": "Load formula {name}",
+      "delete": "Delete",
+      "deleteAria": "Delete formula {name}",
+      "confirm": "Tap again to delete",
+      "confirmAria": "Confirm deleting formula {name}",
+      "compareNote": "Each university has its own full score and cutoff, so converted scores cannot be compared directly. Compare each one with that university's admitted scores from last year.",
+      "nameRequired": "Enter a formula name.",
+      "done": "Saved '{name}'.",
+      "loaded": "Loaded '{name}'.",
+      "deleted": "Deleted '{name}'."
+    },
+    "groups": {
+      "ga": "Ga group",
+      "na": "Na group",
+      "da": "Da group",
+      "etc": "Other"
+    },
+    "guide": {
+      "title": "Converted score guide",
+      "howTo": {
+        "title": "How to use",
+        "items": [
+          "Enter standard scores and percentiles for Korean, Math and Inquiry, plus your English and Korean History grades, from your score report or self-graded estimate.",
+          "Pick an example formula, then change the score basis, weights, English method, bonuses and full score to match the admissions guide.",
+          "Open 'English and Korean History grade tables' and fill in all nine grades from the guide.",
+          "Save with a name and group to compare up to six formulas with the same scores. Copying the link keeps both your scores and the current formula."
+        ]
+      },
+      "findFormula": {
+        "title": "Finding the formula in the admissions guide",
+        "items": [
+          "Open the university's '2027 regular admission (jeongsi) guide' on its admissions site and look for the 'CSAT scoring method' or 'CSAT weights' table.",
+          "Check the area weights, score basis (standard score, percentile or converted standard score) and number of inquiry subjects for your department (humanities, sciences, arts and so on).",
+          "The English conversion table, Korean History bonus (or deduction) table and Math/science bonus rules are usually in tables further down the same section.",
+          "Adiga (adiga.kr) also lists jeongsi information by university. After scores are released, many universities open an official converted score calculator on their admissions site."
+        ]
+      },
+      "model": {
+        "title": "How this calculator works",
+        "items": [
+          "Area points = weight × (percentile ÷ 100, or standard score ÷ reference maximum) × full score",
+          "Inquiry uses the average of two subjects (the same as their sum divided by the sum of reference scores), or the better subject after bonuses.",
+          "With English inside the ratio, the grade's table value is divided by the table's highest value. With add/deduct, the table value is added to the total as is.",
+          "Total = Korean, Math, Inquiry (and English) points + English points + Korean History bonus. Calculations keep full precision; results are shown to two decimal places.",
+          "Formulas that choose areas, such as giving more weight to the better of Korean or Math or using only the top three areas, are not supported yet."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Should I use standard scores or percentiles?",
+            "a": "Use whatever the university specifies in the 'score basis' column of its guide. A standard score shows how far your raw score is from the average (mean 100 for Korean and Math, 50 for inquiry), so the top score rises when the exam is harder. A percentile is the share of test takers who scored below you (0-100). Many top universities use standard scores, and many others use percentiles."
+          },
+          {
+            "q": "Where do I enter converted standard scores?",
+            "a": "Inquiry subjects differ in difficulty, so raw standard scores can favor some subjects. Many universities therefore build their own converted standard score table from percentiles. Once a university publishes its table after scores are released, enter that value in the inquiry standard score field and set the inquiry reference maximum to that table's highest value."
+          },
+          {
+            "q": "Why are there two English methods?",
+            "a": "English is graded on an absolute scale, so you only get a grade. Some universities convert grades to points (for example, grade 1 = 100, grade 2 = 95) and weight them like other areas. Others leave English out of the ratio and add or deduct points by grade. Choose 'Inside the ratio' if the weight table has an English column, and 'Add/deduct points' if English is listed as a separate bonus or deduction."
+          },
+          {
+            "q": "How is Korean History counted?",
+            "a": "Korean History is also graded on an absolute scale. Most universities give full bonus points down to a certain grade and slightly fewer below that. Enter the guide's points for all nine grades; use negative numbers if it is a deduction."
+          },
+          {
+            "q": "How are science and Calculus bonuses calculated?",
+            "a": "Many science-track departments give a bonus to students who took Calculus or Geometry, or science inquiry subjects. This calculator multiplies the area's score by the bonus (5% means ×1.05) before applying the weight. The science bonus applies per subject, and with 'Best 1 subject' the bonus is applied before choosing the better one. Universities differ in what the bonus applies to (standard score, percentile or converted score) and in what order, so results may differ slightly."
+          },
+          {
+            "q": "What is the reference maximum, and why 150 and 80?",
+            "a": "It is the value a standard score is divided by before weighting. Depending on the university, it may be that year's top standard score per area, a fixed value such as 200, or the top converted standard score. The defaults are rough values near recent CSAT top scores, so replace them with this year's top scores or the guide's reference values once official results are released on December 11. Percentiles are always out of 100."
+          },
+          {
+            "q": "Why is my result different from the university's calculator?",
+            "a": "Universities differ in the details: converted standard scores for inquiry, fixed reference values instead of top scores, rounding (when and how decimals are rounded or truncated), extra weight on the better of Korean or Math, and when bonuses are applied. This calculator is for rough scores and comparing formulas while reading guides. Always confirm your final score with the university's own calculator before applying."
+          },
+          {
+            "q": "Can I trust a score calculated before results are released?",
+            "a": "Scores for the 2027 CSAT are released on December 11, 2026. Until then you are entering standard scores and percentiles estimated from self-graded answers, so the result may differ from your real score. Use it to gauge your range for now, and recalculate with your actual scores and this year's reference maximums once you get your report."
+          },
+          {
+            "q": "Where are saved formulas stored?",
+            "a": "Up to six formulas are stored in this browser's local storage and are never sent to a server. To use one on another device, load it and copy the link: the page opens with your scores and that formula. Clearing browser data also deletes saved formulas."
+          },
+          {
+            "q": "Does a higher converted score mean better chances?",
+            "a": "No. Each university has its own full score, formula and cutoff, so converted scores cannot be compared across universities. Compare each score with that university's admitted students' scores from last year, available on Adiga or the university's admissions site."
+          }
+        ]
+      }
+    }
+  },
+  "csatDiscounts": {
+    "title": "2027 CSAT Ticket Discounts",
+    "subtitle": "Theme park, movie, dining and travel deals for 2027 CSAT takers, starting with what you can use today. Each card lists the dates, conditions and source.",
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "weekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "date": "{m} {d} ({w})",
+    "dateYear": "{m} {d}, {y} ({w})",
+    "period": {
+      "range": "{a} – {b}",
+      "until": "Until {b}",
+      "from": "From {a} · end date not announced"
+    },
+    "cats": {
+      "all": "All",
+      "park": "Theme parks & aquariums",
+      "culture": "Movies, shows & exhibitions",
+      "food": "Dining & cafés",
+      "travel": "Flights, stays & trips",
+      "shop": "Shopping & beauty",
+      "etc": "Other"
+    },
+    "status": {
+      "endsIn": "Ends in {n}d",
+      "lastDay": "Ends today",
+      "startsIn": "Starts in {n}d",
+      "ongoing": "Ongoing",
+      "ended": "Ended"
+    },
+    "summary": {
+      "labelStatic": "CSAT discounts with checked dates, terms and sources",
+      "labelToday": "CSAT discounts you can use today",
+      "labelCat": "{cat} discounts you can use today",
+      "labelFav": "Your saved CSAT discounts",
+      "count": "{n}",
+      "sub": "{soon} ending within 7 days · {upcoming} starting soon",
+      "staticSub": "Dates and terms checked against company notices and news reports",
+      "asOf": "Checked {date}"
+    },
+    "listTitle": "All deals",
+    "filter": {
+      "group": "Category",
+      "fav": "Saved only",
+      "ended": "Show ended",
+      "shown": "Showing {n}"
+    },
+    "card": {
+      "fav": "Save {brand}",
+      "source": "Source",
+      "checked": "Checked {date}",
+      "newTab": "(opens in a new tab)",
+      "companions": "Up to {n} companion(s)"
+    },
+    "empty": {
+      "fav": "No saved deals yet. Tap the star on a card to save it.",
+      "list": "No ongoing deals match this filter. Turn on 'Show ended' to see past events."
+    },
+    "note": "Events can end early or change. Check the source link or the company's notice on each card before you go.",
+    "share": {
+      "tool": "2027 CSAT Ticket Discounts",
+      "text": "{label}: {headline} · Theme park, movie, dining and travel deals for CSAT takers with dates and conditions"
+    },
+    "items": {
+      "everland": {
+        "brand": "Everland",
+        "benefit": "Day pass ₩20,000 for you, ₩30,000 per companion",
+        "condition": "Up to 3 companions. Buy first through Smart Reservation, then show the original photo admission ticket (or early-admission application receipt or acceptance letter) and ID on site. Cannot be combined with other coupons or card deals.",
+        "internal": "See Everland visit recommendations"
+      },
+      "lotteWorld": {
+        "brand": "Lotte World Adventure (Seoul, Busan)",
+        "benefit": "All-access pass ₩27,000 in Seoul, ₩20,000 in Busan",
+        "condition": "Test taker only. Show your 2027 admission ticket and ID at the on-site ticket booth.",
+        "internal": "See Lotte World visit recommendations"
+      },
+      "lotteAquaSky": {
+        "brand": "Lotte World Aquarium & Seoul Sky",
+        "benefit": "Aquarium ₩18,500, Seoul Sky ₩16,500",
+        "condition": "Test taker only. Show your admission ticket and ID at the on-site ticket booth. Ends a month earlier than Adventure."
+      },
+      "seoulLand": {
+        "brand": "Seoul Land",
+        "benefit": "Day park pass ₩20,500 (regular ₩52,000)",
+        "condition": "Same price for you and up to 2 companions. Show one original (admission ticket, application receipt or early-admission acceptance) plus ID (student or youth ID accepted) at the ticket booth. Cannot be combined with other coupons or card deals."
+      },
+      "legoland": {
+        "brand": "LEGOLAND Korea",
+        "benefit": "40% off your ticket, 30% off companions",
+        "condition": "Up to 3 companions. On-site same-day purchase only (no online pre-purchase). 10% off regular-price gift shop items and food in the park."
+      },
+      "seaLife": {
+        "brand": "SEA LIFE Aquarium (COEX, Busan)",
+        "benefit": "50% off admission (COEX ₩17,500, Busan ₩16,000)",
+        "condition": "Test taker only. No booking needed; show your admission ticket on site. 20% off food and souvenirs at COEX, 10% off souvenirs in Busan."
+      },
+      "oWorld": {
+        "brand": "Daejeon O-World",
+        "benefit": "Day pass ₩14,000 (50% off)",
+        "condition": "Test taker only. Show your admission ticket and ID at the on-site ticket booth."
+      },
+      "aquaPlanetYeosu": {
+        "brand": "Aqua Planet Yeosu",
+        "benefit": "50% off for you and 1 companion",
+        "condition": "You and up to 1 companion. Ask Aqua Planet which proof it accepts before you go."
+      },
+      "sono": {
+        "brand": "Sono water parks & Samaksan cable car",
+        "benefit": "50% off for you, 45% off companions",
+        "condition": "8 water parks including Ocean World, plus the Chuncheon Samaksan Lake cable car. Up to 2 companions. Buy on the Sono Hotels & Resorts website by Dec 9 and use Nov 20 – Dec 31."
+      },
+      "waterpia": {
+        "brand": "Hanwha Resort Seorak Waterpia",
+        "benefit": "₩20,000 for you, 1 companion free",
+        "condition": "You and 1 companion. Ask the resort which proof it accepts before you go."
+      },
+      "spaVis": {
+        "brand": "Asan Spavis",
+        "benefit": "Water park day pass ₩10,000 for you, ₩20,000 per companion",
+        "condition": "No limit on companions at ₩20,000 each. Show your admission ticket at entry."
+      },
+      "cgv": {
+        "brand": "CGV",
+        "benefit": "2D standard movies for ₩7,000",
+        "condition": "Members aged 13–18 get 2 coupons on the event page (first 5,000). At the box office, show your admission ticket or student ID. Members 19+ get a ₩3,000-off coupon."
+      },
+      "megabox": {
+        "brand": "Megabox",
+        "benefit": "Movies for ₩7,000, ₩3,000 off snack combos",
+        "condition": "Teens download the coupon on the website or app event page. Adult test takers verify with their admission ticket at the box office."
+      },
+      "arko": {
+        "brand": "Arko & Daehangno Arts Theater plays",
+        "benefit": "50% off 'Hongju' and 'Freediving'",
+        "condition": "'Hongju' Nov 20–22, 'Freediving' Nov 27–29. Choose the test-taker discount when booking, up to 2 tickets per show including you. Show your admission ticket or early-admission acceptance when collecting tickets."
+      },
+      "sweeneyTodd": {
+        "brand": "Musical 'Sweeney Todd'",
+        "benefit": "30% off R, S and A seats",
+        "condition": "Test taker only. Applies to shows from Dec 4 to Jan 17, 2027; book the test-taker ticket type. Bring your admission ticket and ID on the day."
+      },
+      "christmasCarol": {
+        "brand": "Seoul Metropolitan Musical Theatre 'A Christmas Carol'",
+        "benefit": "35% off any seat",
+        "condition": "Sejong Center M Theater, Dec 2–27. Up to 2 tickets per person including the test taker."
+      },
+      "gansong": {
+        "brand": "Daegu Gansong Art Museum 'Jeong Seon'",
+        "benefit": "30% off admission",
+        "condition": "You and 1 companion. Show your admission ticket or early-admission acceptance."
+      },
+      "shabuAllday": {
+        "brand": "Shabu Allday",
+        "benefit": "Meal for ₩13,900 (elementary-school price)",
+        "condition": "Test taker only with the physical admission ticket, once per ticket. Companions pay full price; no stacking with other coupons. All stores."
+      },
+      "kukuku": {
+        "brand": "Kukuku & Always Shabu",
+        "benefit": "₩7,000-off coupon",
+        "condition": "Download the coupon in the Kukuku app and show your admission ticket and ID when paying."
+      },
+      "restaurant63": {
+        "brand": "63 Building restaurants",
+        "benefit": "40% off selected course meals",
+        "condition": "Walking on the Cloud, Shuchiku and Baekrihyang. Test taker only, 1 per table. Mention the test-taker discount when booking and bring your admission ticket and ID."
+      },
+      "parkView": {
+        "brand": "The Shilla Jeju 'The Parkview'",
+        "benefit": "30% off dinner buffet",
+        "condition": "Bring your admission ticket. Ask about companions when booking."
+      },
+      "laGrillia": {
+        "brand": "La Grillia",
+        "benefit": "50% off flat-iron steak and BBQ rib platter",
+        "condition": "Order ₩50,000 or more, add the KakaoTalk channel and show your admission ticket or application receipt. Some stores excluded."
+      },
+      "street": {
+        "brand": "Street",
+        "benefit": "1 free milk tea or lemonade",
+        "condition": "Show your admission ticket or application receipt. Some stores, such as airport branches, excluded."
+      },
+      "madForGarlic": {
+        "brand": "Mad for Garlic",
+        "benefit": "30% off the whole menu (up to ₩30,000)",
+        "condition": "Show your physical admission ticket."
+      },
+      "jejuAir": {
+        "brand": "Jeju Air",
+        "benefit": "20% off domestic FLEX fares",
+        "condition": "You and 1 companion (an adult on the same booking). Book on the website or app by Dec 16 and fly by Feb 25, 2027 (peak dates excluded). Show one original (admission ticket, application receipt or university application) at the airport counter."
+      },
+      "eastarJet": {
+        "brand": "Eastar Jet",
+        "benefit": "25% off domestic, up to 10% off international",
+        "condition": "You and 1 companion. Choose 'test taker' or 'test taker's companion' on the website, buy by Dec 31 and fly by Mar 27, 2027. Show proof such as your admission ticket at the airport."
+      },
+      "trinity": {
+        "brand": "Trinity Airways",
+        "benefit": "25% off domestic, up to 20% off international",
+        "condition": "You and 1 companion. Book by Jan 31, 2027 and fly Nov 20 – Feb 21, 2027 (blackout dates vary by route). Show one original (admission ticket, application receipt or university application) at the airport; no photos or copies, and the companion checks in with you."
+      },
+      "korailTour": {
+        "brand": "Korail Tourism train trips",
+        "benefit": "20% off rail tour products",
+        "condition": "About 20 train packages, rail bikes and more. Companions on packages get the discount too. Bring your admission ticket on the trip."
+      },
+      "forestStay": {
+        "brand": "National forest healing centers (stays)",
+        "benefit": "30% off weekday stays, 10% off weekends",
+        "condition": "10 national forest welfare facilities. Book through Sup-e-rang and show your admission ticket on site."
+      },
+      "himart": {
+        "brand": "Lotte Hi-Mart 'CSAT Pass'",
+        "benefit": "Storage upgrades or AirPods 4 with a smartphone purchase",
+        "condition": "With your admission ticket, worth up to ₩310,000 depending on the phone plan. No end date announced; check terms in store."
+      }
+    },
+    "guide": {
+      "title": "Before you use your admission ticket",
+      "prep": {
+        "title": "What to bring",
+        "items": [
+          "Bring the original admission ticket and a photo ID (student ID, youth ID, resident card, passport or mobile ID). Most places check both.",
+          "Many places do not accept a phone photo or a copy of the ticket. Some airlines say they accept originals only.",
+          "Some places accept an application receipt or early-admission acceptance instead (Seoul Land, Everland, Jeju Air and others). Check each card's terms.",
+          "Some deals need advance booking (Everland Smart Reservation, Sono website, flights), while others only work on site (LEGOLAND, Seoul Land)."
+        ]
+      },
+      "who": {
+        "title": "Repeat test takers and GED graduates",
+        "items": [
+          "Most deals are for anyone who sat the 2027 CSAT, so repeat test takers and GED graduates qualify with this year's admission ticket.",
+          "Age-based deals such as cinema teen coupons may not reach adult test takers in the app. Verify with your admission ticket at the box office instead.",
+          "Last year's (2026) admission ticket does not count. Check the year printed on your ticket."
+        ]
+      },
+      "lost": {
+        "title": "If you lost your admission ticket",
+        "items": [
+          "See whether the place accepts an application receipt or early-admission acceptance. Seoul Land, Jeju Air and Trinity Airways accept original receipts.",
+          "Ask where you applied (your school or the district education office) whether the ticket can be reissued.",
+          "Whether the score report (issued Dec 11) counts as proof differs by company. Call before you go."
+        ]
+      },
+      "rules": {
+        "title": "Companion and stacking rules",
+        "items": [
+          "Companion discounts need you to enter together or book on the same reservation. The number of companions ranges from 1 to 3.",
+          "Test-taker discounts usually cannot be combined with other coupons, card deals or memberships. Pick the cheaper one.",
+          "Some places allow one use per ticket (Shabu Allday), others allow repeat visits during the period (LEGOLAND).",
+          "Events can end early or change, and first-come coupons can run out before the end date."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Can I get the discount with just a photo of my admission ticket?",
+            "a": "Usually not. Theme parks and airlines often check the original ticket and ID, and some, like Trinity Airways, say photos and copies are not accepted. Bring the original."
+          },
+          {
+            "q": "Do repeat test takers get the discounts too?",
+            "a": "Yes. Most deals are for anyone who sat the 2027 CSAT regardless of age. Age-based offers like cinema teen coupons may need verification with your admission ticket at the box office."
+          },
+          {
+            "q": "I lost my admission ticket. Can I use another document?",
+            "a": "Seoul Land also accepts the original application receipt or early-admission acceptance, and Jeju Air and Trinity Airways accept the original application receipt or university application. Accepted documents differ, so check each card and ask in advance."
+          },
+          {
+            "q": "How many companions get the discount?",
+            "a": "Three at Everland and LEGOLAND, two at Seoul Land and Sono water parks, and one for the airlines and Aqua Planet Yeosu. Asan Spavis has no limit at ₩20,000 each. Companions must enter with you or book on the same reservation."
+          },
+          {
+            "q": "Can I combine the test-taker discount with a card discount?",
+            "a": "Usually not. Everland and Seoul Land say it cannot be combined with other coupons or card deals. If your card discount is bigger, that may be the better choice."
+          },
+          {
+            "q": "Can I just show my ticket at Everland?",
+            "a": "No. At Everland you buy the pass through Smart Reservation first, then show your admission ticket and ID on site. LEGOLAND is the opposite: the discount only applies to same-day purchases at the ticket booth."
+          },
+          {
+            "q": "Can a deal end before the listed date?",
+            "a": "Yes. First-come offers like the CGV coupons can run out, and companies can change or end events early. This page was checked on Nov 20, 2026, so confirm with the source link before you go."
+          }
+        ]
+      },
+      "sources": {
+        "title": "Sources and how we checked",
+        "body": "Each card links to the company's notice or a news report quoting the company. We left out events found only on blogs, events where sources disagree on prices or dates, and last year's (2026) events.",
+        "asOf": "Checked on Nov 20, 2026. We will update this page when new events appear or terms change."
+      }
     }
   },
   "jeongsi2027": {

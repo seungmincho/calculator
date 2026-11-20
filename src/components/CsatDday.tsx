@@ -82,6 +82,7 @@ export default function CsatDday({ after = false }: { after?: boolean }) {
       {after ? (
         <>
           <Hero />
+          <AfterLinks />
           <Timeline />
           <AnswerSheet />
           <Cheer name={name} setName={setName} />
@@ -181,6 +182,46 @@ function Hero() {
         {t('hero.date', { exam: fmt(CSAT_EXAM_DATE), time: EXAM_START, score: fmt(SCORE_DATE) })}
       </p>
     </div>
+  )
+}
+
+/** 시험 뒤 같이 챙길 도구·신청 (href 가 http 로 시작하면 외부 링크) */
+const AFTER_LINKS = [
+  { key: 'discounts', href: '/csat-discounts/' },
+  { key: 'grade', href: '/csat-grade/' },
+  { key: 'jeongsiScore', href: '/jeongsi-score/' },
+  { key: 'jeongsi', href: '/jeongsi-2027/' },
+  { key: 'scholarship', href: 'https://www.kosaf.go.kr/' },
+  { key: 'wage', href: '/hourly-wage/' },
+] as const
+
+function AfterLinks() {
+  const t = useTranslations(NS)
+  return (
+    <section aria-labelledby="csat-after-title" className="ui-card min-w-0 p-4 sm:p-6 space-y-4">
+      <h2 id="csat-after-title" className="text-lg font-semibold text-fg">{t('afterLinks.title')}</h2>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {AFTER_LINKS.map(({ key, href }) => {
+          const body = (
+            <>
+              <span className="flex items-center gap-1 font-semibold text-fg">
+                {t(`afterLinks.items.${key}.label`)}
+                {href.startsWith('http') && <ExternalLink className="w-3.5 h-3.5 shrink-0 text-muted" aria-hidden />}
+              </span>
+              <span className="block text-sm text-muted mt-0.5">{t(`afterLinks.items.${key}.desc`)}</span>
+            </>
+          )
+          const cls = 'block h-full rounded-2xl bg-subtle hover:bg-soft px-4 py-3 transition-colors'
+          return (
+            <li key={key}>
+              {href.startsWith('http')
+                ? <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{body}</a>
+                : <Link href={href} className={cls}>{body}</Link>}
+            </li>
+          )
+        })}
+      </ul>
+    </section>
   )
 }
 

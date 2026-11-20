@@ -155,6 +155,8 @@ export const menuConfig: MenuConfig = {
       { href: '/overseas-stock-tax', labelKey: 'footer.links.overseasStockTax', descriptionKey: 'toolsShowcase.tools.overseasStockTax.description', icon: '🌎', addedDate: '2026-11-08', subcategory: 'subcategory.investSavings' },
       { href: '/card-fee-calculator', labelKey: 'footer.links.cardFeeCalculator', descriptionKey: 'toolsShowcase.tools.cardFeeCalculator.description', icon: '💳', addedDate: '2026-11-08', subcategory: 'subcategory.others' },
       { href: '/prepayment-fee', labelKey: 'footer.links.prepaymentFee', descriptionKey: 'toolsShowcase.tools.prepaymentFee.description', icon: '🏦', addedDate: '2026-11-08', subcategory: 'subcategory.loanFinance' },
+      { href: '/csat-discounts', labelKey: 'footer.links.csatDiscounts', descriptionKey: 'toolsShowcase.tools.csatDiscounts.description', icon: '🎟️', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
+      { href: '/jeongsi-score', labelKey: 'footer.links.jeongsiScore', descriptionKey: 'toolsShowcase.tools.jeongsiScore.description', icon: '🧮', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
     ],
   },
   tools: {

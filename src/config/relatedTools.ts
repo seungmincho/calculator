@@ -117,8 +117,10 @@ export const curatedRelated: Record<string, string[]> = {
   '/gpa-converter': ['/gpa-calculator', '/grade-calculator', '/average-calculator', '/percent-calculator'],
   '/grade-calculator': ['/gpa-calculator', '/gpa-converter', '/average-calculator', '/csat-grade'],
   '/average-calculator': ['/grade-calculator', '/gpa-calculator', '/percent-calculator', '/csat-grade'],
-  '/csat-grade': ['/csat-dday', '/jeongsi-2027', '/grade-calculator', '/average-calculator', '/gpa-converter', '/dday-calculator'],
-  '/csat-dday': ['/csat-grade', '/jeongsi-2027', '/dday-calculator', '/timer', '/pomodoro', '/calendar-2027'],
+  '/csat-grade': ['/csat-dday', '/jeongsi-score', '/jeongsi-2027', '/csat-discounts', '/grade-calculator', '/gpa-converter'],
+  '/csat-dday': ['/csat-grade', '/jeongsi-2027', '/csat-discounts', '/jeongsi-score', '/dday-calculator', '/timer'],
+  '/csat-discounts': ['/csat-grade', '/csat-dday', '/everland', '/lotte-world', '/hourly-wage', '/jeongsi-2027'],
+  '/jeongsi-score': ['/csat-grade', '/jeongsi-2027', '/csat-dday', '/gpa-converter'],
 
   // 건강 — 체중·식단·운동
   '/health-checkup': ['/bmi-calculator', '/blood-pressure', '/blood-sugar', '/body-fat-calculator', '/calorie-calculator', '/age-calculator'],
@@ -195,7 +197,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/youth-future-savings': ['/savings-calculator', '/compound-calculator', '/youth-rent-subsidy', '/salary-calculator', '/dividend-calculator', '/government-subsidy'],
   '/basic-pension': ['/national-pension', '/median-income', '/government-subsidy', '/dependent-eligibility', '/pension-calculator', '/health-insurance'],
   '/civil-servant-pay': ['/salary-calculator', '/year-end-tax', '/salary-table', '/changes-2027', '/health-insurance', '/income-tax'],
-  '/jeongsi-2027': ['/csat-grade', '/csat-dday', '/gpa-converter', '/dday-calculator'],
+  '/jeongsi-2027': ['/csat-grade', '/jeongsi-score', '/csat-dday', '/dday-calculator'],
   '/seasonal-food': ['/kimjang-calculator', '/kimjang-timing', '/nutrition-calculator', '/meal-diary', '/calorie-calculator', '/menu-picker'],
   '/winter-festivals': ['/ski-resorts', '/wind-chill', '/new-year-sunrise', '/calendar-2027', '/holiday-planner', '/fuel-calculator'],
   '/toast-speech': ['/greeting-generator', '/manito', '/dutch-pay', '/calendar-2027'],
