@@ -157,6 +157,8 @@ export const menuConfig: MenuConfig = {
       { href: '/prepayment-fee', labelKey: 'footer.links.prepaymentFee', descriptionKey: 'toolsShowcase.tools.prepaymentFee.description', icon: '🏦', addedDate: '2026-11-08', subcategory: 'subcategory.loanFinance' },
       { href: '/csat-discounts', labelKey: 'footer.links.csatDiscounts', descriptionKey: 'toolsShowcase.tools.csatDiscounts.description', icon: '🎟️', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
       { href: '/jeongsi-score', labelKey: 'footer.links.jeongsiScore', descriptionKey: 'toolsShowcase.tools.jeongsiScore.description', icon: '🧮', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
+      { href: '/national-scholarship', labelKey: 'footer.links.nationalScholarship', descriptionKey: 'toolsShowcase.tools.nationalScholarship.description', icon: '🎓', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
+      { href: '/scientific-calculator', labelKey: 'footer.links.scientificCalculator', descriptionKey: 'toolsShowcase.tools.scientificCalculator.description', icon: '🔣', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
     ],
   },
   tools: {
@@ -289,6 +291,7 @@ export const menuConfig: MenuConfig = {
       { href: '/json-to-typescript', labelKey: 'footer.links.jsonToTypescript', descriptionKey: 'toolsShowcase.tools.jsonToTypescript.description', icon: '🧩', addedDate: '2026-11-07', subcategory: 'subcategory.devTools' },
       { href: '/winter-festivals', labelKey: 'footer.links.winterFestivals', descriptionKey: 'toolsShowcase.tools.winterFestivals.description', icon: '❄️', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
       { href: '/toast-speech', labelKey: 'footer.links.toastSpeech', descriptionKey: 'toolsShowcase.tools.toastSpeech.description', icon: '🥂', addedDate: '2026-11-07', subcategory: 'subcategory.generators' },
+      { href: '/daily-schedule', labelKey: 'footer.links.dailySchedule', descriptionKey: 'toolsShowcase.tools.dailySchedule.description', icon: '🕘', addedDate: '2026-11-20', subcategory: 'subcategory.generators' },
     ],
   },
   media: {
@@ -345,6 +348,7 @@ export const menuConfig: MenuConfig = {
       { href: '/health-checkup', labelKey: 'footer.links.healthCheckup', descriptionKey: 'toolsShowcase.tools.healthCheckup.description', icon: '🩺', addedDate: '2026-10-04' },
       { href: '/child-growth', labelKey: 'footer.links.childGrowth', descriptionKey: 'toolsShowcase.tools.childGrowth.description', icon: '📏', addedDate: '2026-11-07' },
       { href: '/seasonal-food', labelKey: 'footer.links.seasonalFood', descriptionKey: 'toolsShowcase.tools.seasonalFood.description', icon: '🥬', addedDate: '2026-11-07' },
+      { href: '/fever-medicine-dose', labelKey: 'footer.links.feverMedicineDose', descriptionKey: 'toolsShowcase.tools.feverMedicineDose.description', icon: '💊', addedDate: '2026-11-20' },
     ],
   },
   games: {

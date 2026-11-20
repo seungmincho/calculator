@@ -3118,6 +3118,10 @@
       "prepaymentFee": "Prepayment Fee Calculator",
       "csatDiscounts": "CSAT Ticket Discounts",
       "jeongsiScore": "Regular Admission Score Calculator",
+      "nationalScholarship": "National Scholarship Calculator",
+      "scientificCalculator": "Scientific Calculator",
+      "dailySchedule": "Daily Schedule Maker",
+      "feverMedicineDose": "Kids Fever Medicine Dose",
       "windChill": "Wind Chill Calculator",
       "dependentEligibility": "Health Insurance Dependent Check",
       "youthFutureSavings": "Youth Future Savings Calculator",
@@ -9309,6 +9313,22 @@
       "jeongsiScore": {
         "title": "Regular Admission Score Calculator",
         "description": "Convert standard scores and percentiles with each university's area weights, English and Korean History points; save and compare 6 formulas"
+      },
+      "nationalScholarship": {
+        "title": "National Scholarship · Income Bracket",
+        "description": "Estimate your student-aid income bracket (5 tiers, Ga–Ma) from household income and assets and see the expected 2027 spring-semester National Scholarship"
+      },
+      "scientificCalculator": {
+        "title": "Scientific Calculator",
+        "description": "Online scientific calculator with trig, logs, powers, parentheses, degree/radian modes and history"
+      },
+      "dailySchedule": {
+        "title": "Daily Schedule Maker",
+        "description": "Build a 24-hour circular vacation schedule, then save it as an image, print or share a link"
+      },
+      "feverMedicineDose": {
+        "title": "Kids Fever Medicine Dose Calculator",
+        "description": "Find the single syrup dose (mL) and dosing interval of acetaminophen, ibuprofen and dexibuprofen by weight and age"
       },
       "windChill": {
         "title": "Wind Chill Calculator",
@@ -49780,7 +49800,7 @@
         },
         "scholarship": {
           "label": "National Scholarship round 1",
-          "desc": "Freshmen apply in round 1 too, Nov 24 09:00 – Jan 7 18:00 (KOSAF)"
+          "desc": "Freshmen apply in round 1 (Nov 24 – Jan 7); estimate your bracket and amount"
         },
         "wage": {
           "label": "Part-time wage & holiday pay",
@@ -60580,6 +60600,958 @@
         "body": "Each card links to the company's notice or a news report quoting the company. We left out events found only on blogs, events where sources disagree on prices or dates, and last year's (2026) events.",
         "asOf": "Checked on Nov 20, 2026. We will update this page when new events appear or terms change."
       }
+    }
+  },
+  "scientificCalculator": {
+    "title": "Scientific Calculator",
+    "subtitle": "From basic arithmetic to trig, logs, powers and factorials. Type on your keyboard if you like — the result previews as you write.",
+    "display": {
+      "label": "Calculator display",
+      "expression": "Expression",
+      "result": "Result",
+      "preview": "Preview result"
+    },
+    "angle": {
+      "label": "Angle unit",
+      "deg": "DEG",
+      "rad": "RAD",
+      "degFull": "Degrees (DEG)",
+      "radFull": "Radians (RAD)"
+    },
+    "grouping": "1,000 separators",
+    "sci": {
+      "show": "Show scientific keys",
+      "hide": "Hide scientific keys",
+      "label": "Scientific keys",
+      "basicLabel": "Basic keys"
+    },
+    "keys": {
+      "ac": "All clear",
+      "back": "Delete last character",
+      "lp": "Open parenthesis",
+      "rp": "Close parenthesis",
+      "div": "Divide",
+      "mul": "Multiply",
+      "sub": "Subtract",
+      "add": "Add",
+      "eq": "Calculate",
+      "dot": "Decimal point",
+      "percent": "Percent",
+      "sin": "Sine",
+      "cos": "Cosine",
+      "tan": "Tangent",
+      "asin": "Arcsine",
+      "acos": "Arccosine",
+      "atan": "Arctangent",
+      "sinh": "Hyperbolic sine",
+      "cosh": "Hyperbolic cosine",
+      "tanh": "Hyperbolic tangent",
+      "log": "Common log",
+      "ln": "Natural log",
+      "log2": "Log base 2",
+      "pow10": "10 to the power",
+      "exp": "e to the power",
+      "sq": "Square",
+      "cube": "Cube",
+      "pow": "Power",
+      "sqrt": "Square root",
+      "cbrt": "Cube root",
+      "inv": "Reciprocal",
+      "fact": "Factorial",
+      "abs": "Absolute value",
+      "npr": "Permutations nPr",
+      "ncr": "Combinations nCr",
+      "pi": "Pi",
+      "e": "Euler's number e",
+      "ans": "Previous answer Ans",
+      "ee": "Times ten to the power EXP"
+    },
+    "copy": {
+      "label": "Copy result",
+      "done": "Copied"
+    },
+    "keyboardHint": "Keyboard: digits, + − * / ^ ( ) ! %, Enter to calculate, Backspace to delete, Esc to clear. You can also type function names such as sin or log.",
+    "errors": {
+      "syntax": "Invalid expression. Check for a missing number or operator.",
+      "paren": "Parentheses don't match — there are too many closing ones.",
+      "divZero": "Can't divide by zero.",
+      "domain": "Value is outside the domain (e.g. square root of a negative, log of 0 or less, sin⁻¹ of a value above 1).",
+      "undefined": "Undefined — the angle has no value, like tan 90°.",
+      "overflow": "The number is too large to calculate."
+    },
+    "history": {
+      "title": "History",
+      "desc": "The last 20 calculations are kept in this browser only. Tap an expression to edit it again, or a result to insert it.",
+      "empty": "Press = and your calculations will show up here.",
+      "clear": "Clear history",
+      "useExpr": "Reuse expression: {expr}",
+      "useResult": "Insert result: {result}",
+      "storageError": "This browser can't save the history."
+    },
+    "share": {
+      "tool": "Scientific Calculator",
+      "label": "Result",
+      "text": "{expr} = {result}"
+    },
+    "guide": {
+      "title": "How to Use the Scientific Calculator",
+      "howTo": {
+        "title": "Getting started",
+        "items": [
+          "Build an expression with the number and operator keys and the result previews below it. Press = to show the result in large type and save it to the history.",
+          "After a result, pressing an operator such as + − × ÷ continues from the previous answer (Ans). Pressing a number starts a new expression.",
+          "Function keys such as sin, log and √ insert the opening parenthesis for you. If you forget to close it, = closes it automatically.",
+          "On a phone, tap 'Show scientific keys' to reveal trig, log and factorial keys.",
+          "Keyboard works too: Enter calculates, Backspace deletes one character, Esc clears everything.",
+          "Use the share buttons under the result to copy a link — whoever opens it sees the same expression and result."
+        ]
+      },
+      "order": {
+        "title": "Order of operations",
+        "items": [
+          "Parentheses → functions (sin, log, √ …) → factorial and percent (!, %) → powers (^) → sign (−) → implied multiplication (2π) → nPr and nCr → multiplication and division → addition and subtraction.",
+          "Powers are evaluated right to left: 2^3^2 = 2^9 = 512.",
+          "−2^2 is −(2^2) = −4. To square a negative number, wrap it: (−2)^2.",
+          "Implied multiplication (2π, 3(4+5), 2sin(30)) binds tighter than ÷, so 1÷2π means 1÷(2π).",
+          "% divides by 100: 50% = 0.5 and 200×10% = 20."
+        ]
+      },
+      "angle": {
+        "title": "Degrees (DEG) and radians (RAD)",
+        "items": [
+          "This switch sets the angle unit for trig functions. The default is degrees, and your choice is remembered in this browser.",
+          "Degrees split a full turn into 360°, radians into 2π. 180° = π radians.",
+          "School geometry and physics angles (30°, 45°, 60°) use DEG; calculus and programming formulas usually use RAD.",
+          "In DEG, sin 180° and cos 90° are exactly 0 and tan 45° is exactly 1. tan 90° has no value and is reported as 'Undefined'.",
+          "Inverse trig results (sin⁻¹, cos⁻¹, tan⁻¹) also use the selected unit: in DEG, sin⁻¹(0.5) = 30."
+        ]
+      },
+      "functions": {
+        "title": "Function keys",
+        "th": {
+          "key": "Key",
+          "desc": "Meaning",
+          "example": "Example"
+        },
+        "rows": [
+          {
+            "key": "sin cos tan",
+            "desc": "Trig functions, using the DEG/RAD setting",
+            "example": "sin(30) = 0.5"
+          },
+          {
+            "key": "sin⁻¹ cos⁻¹ tan⁻¹",
+            "desc": "Inverse trig: angle from a value",
+            "example": "tan⁻¹(1) = 45"
+          },
+          {
+            "key": "sinh cosh tanh",
+            "desc": "Hyperbolic functions",
+            "example": "cosh(0) = 1"
+          },
+          {
+            "key": "log",
+            "desc": "Common log (base 10)",
+            "example": "log(1000) = 3"
+          },
+          {
+            "key": "ln",
+            "desc": "Natural log (base e ≈ 2.71828)",
+            "example": "ln(e) = 1"
+          },
+          {
+            "key": "log₂",
+            "desc": "Log base 2",
+            "example": "log₂(8) = 3"
+          },
+          {
+            "key": "√ ∛",
+            "desc": "Square root and cube root",
+            "example": "√(16) = 4, ∛(27) = 3"
+          },
+          {
+            "key": "x² x³ xʸ",
+            "desc": "Square, cube, any power",
+            "example": "2^10 = 1024"
+          },
+          {
+            "key": "10ˣ eˣ",
+            "desc": "Powers of 10 and e",
+            "example": "10^(3) = 1000"
+          },
+          {
+            "key": "1/x",
+            "desc": "Reciprocal (power of −1)",
+            "example": "4^(−1) = 0.25"
+          },
+          {
+            "key": "x!",
+            "desc": "Factorial, integers 0–170",
+            "example": "5! = 120"
+          },
+          {
+            "key": "|x|",
+            "desc": "Absolute value",
+            "example": "abs(−3) = 3"
+          },
+          {
+            "key": "nPr nCr",
+            "desc": "Permutations and combinations",
+            "example": "5P2 = 20, 5C2 = 10"
+          },
+          {
+            "key": "EXP",
+            "desc": "Enter a power-of-ten exponent",
+            "example": "1.2E3 = 1200"
+          },
+          {
+            "key": "Ans",
+            "desc": "Previous result",
+            "example": "Ans×2"
+          }
+        ]
+      },
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "items": [
+          {
+            "q": "Why doesn't sin 30 give 0.5?",
+            "a": "The angle unit is probably set to radians (RAD). Tap DEG at the top of the display to calculate in degrees and sin(30) becomes 0.5. In radians, sin(30) is the sine of 30 radians, which is −0.988."
+          },
+          {
+            "q": "Why is −2^2 equal to −4?",
+            "a": "By the usual math convention, powers are evaluated before the sign: −2^2 = −(2×2) = −4. To square −2, wrap it in parentheses — (−2)^2 = 4. Excel applies the sign first and returns 4, so the two can differ."
+          },
+          {
+            "q": "Doesn't 0.1 + 0.2 come out as 0.30000000000000004?",
+            "a": "Computers store decimals in binary, which leaves tiny errors. This calculator rounds results to 12 significant digits, so you see a clean 0.3. Numbers of 1e15 or more, or below 0.000001, are shown in exponent form such as 1.5E+20."
+          },
+          {
+            "q": "Why is tan 90° 'Undefined'?",
+            "a": "tan is sin ÷ cos, and cos 90° is 0, so the division has no value. The same goes for 270°, −90° and any angle 180° apart from 90°. Many calculators show a huge number or a generic error here; this one tells you it's undefined."
+          },
+          {
+            "q": "How does the % key work?",
+            "a": "% divides the number before it by 100: 50% is 0.5 and 200×10% is 20. Unlike some pocket calculators it does not turn 200+10% into 220 — that gives 200.1 — so write 200×(1+10%) for markups or use the percent calculator."
+          },
+          {
+            "q": "How large a factorial can it calculate?",
+            "a": "Integers from 0 to 170. 171! is about 1.2×10^309, beyond the largest number a computer can hold (about 1.8×10^308). Factorials of decimals or negative numbers are reported as outside the domain."
+          },
+          {
+            "q": "Can I write 2π or 3(4+5) without a multiplication sign?",
+            "a": "Yes. A number followed by a parenthesis, constant or function is multiplied: 2π = 6.283…, 3(4+5) = 27, 2sin(30) = 1. This implied multiplication binds tighter than ÷, so 1÷2π means 1÷(2π)."
+          },
+          {
+            "q": "Where is my history stored?",
+            "a": "Only the last 20 calculations are saved, in this browser's localStorage, and nothing is sent to a server. It isn't shared across devices, and you can remove it with 'Clear history' or by clearing your browser data."
+          }
+        ]
+      }
+    }
+  },
+  "dailySchedule": {
+    "title": "Daily Schedule Maker",
+    "subtitle": "Build a 24-hour circular daily schedule. Start from a vacation template for elementary, middle/high school or exam-prep students, adjust the times, then save it as an image or print it on A4.",
+    "labels": {
+      "sleep": "Sleep",
+      "wash": "Wash & get ready",
+      "meal": "Meals",
+      "study": "Study",
+      "homework": "Homework",
+      "reading": "Reading",
+      "exercise": "Exercise",
+      "academy": "Classes",
+      "free": "Free time",
+      "family": "Family time",
+      "commute": "Commute",
+      "rest": "Break",
+      "selfDev": "Self-development",
+      "partTime": "Part-time job",
+      "work": "Work"
+    },
+    "colors": [
+      "blue",
+      "yellow",
+      "green",
+      "orange",
+      "purple",
+      "teal",
+      "pink",
+      "gray"
+    ],
+    "templates": {
+      "title": "Start from a template",
+      "desc": "Pick the day closest to yours and the schedule fills in. If you have edited it, you will be asked before it is replaced.",
+      "confirm": "Your edited schedule will be replaced by this template. Continue?",
+      "elementary": "Elementary (vacation)",
+      "teen": "Middle/high school (vacation)",
+      "exam": "Exam prep (retake)",
+      "college": "College (break)",
+      "worker": "Office worker (weekday)"
+    },
+    "fields": {
+      "heading": "Title and goal",
+      "title": "Title",
+      "defaultTitle": "Winter Break Schedule",
+      "goal": "My goal (optional)",
+      "goalPlaceholder": "e.g. Read for 30 minutes a day"
+    },
+    "chart": {
+      "untitled": "Untitled schedule",
+      "aria": "{title} circular daily schedule: {items}",
+      "empty": "No activities yet",
+      "active": "{name} · {range} · {time}",
+      "hint": "Hover over a slice or pick an activity in the list to see its time."
+    },
+    "export": {
+      "png": "Save image",
+      "print": "Print",
+      "copy": "Copy link",
+      "saved": "Image downloaded.",
+      "saveFailed": "Could not create the image. Try Print and save as PDF instead.",
+      "copied": "Link copied. Opening it shows the same schedule.",
+      "copyFailed": "Automatic copy failed. Copy the address below yourself.",
+      "note": "Every change is saved in this browser automatically. The link contains the whole schedule."
+    },
+    "list": {
+      "title": "Activities",
+      "count": "{n}/{max}",
+      "desc": "Edit the name and start/end times. If the end is earlier than the start (23:00–07:00), the activity runs past midnight. Tap the color square to change its color.",
+      "empty": "No activities. Tap Add activity below or pick a template above.",
+      "untitled": "Untitled",
+      "labelAria": "Activity {n} name",
+      "color": "Change color of {name}, currently {color}",
+      "duplicate": "Duplicate {name} right after it",
+      "delete": "Delete {name}",
+      "start": "Start",
+      "end": "End",
+      "startAria": "{name} start time",
+      "endAria": "{name} end time",
+      "zero": "Start and end are the same, so it lasts 0 minutes. Change the end time.",
+      "add": "Add activity",
+      "sort": "Sort by time",
+      "max": "You can add up to {max} activities.",
+      "timeHint": "Times snap to 10-minute steps. Tap a slice of the chart to jump to that activity's name field."
+    },
+    "overlap": {
+      "title": "Some times overlap",
+      "item": "{a} and {b}: {time} overlap"
+    },
+    "fmt": {
+      "range": "{from}–{to}",
+      "h": "{h}h",
+      "m": "{m}m",
+      "hm": "{h}h {m}m"
+    },
+    "summary": {
+      "title": "Daily time totals",
+      "free": "Unplanned",
+      "ok": "Planned {planned} + unplanned {free} = 24h",
+      "over": "Because {over} overlaps, planned time adds up to {planned}, more than 24 hours. Fix the overlapping times."
+    },
+    "guide": {
+      "title": "Daily schedule guide",
+      "howTo": {
+        "title": "How to make one",
+        "items": [
+          "Pick the template closest to your day (elementary, middle/high school, exam prep, college or office worker) and the circular chart fills in right away.",
+          "Edit names and start/end times in the list and the chart updates instantly. Times use 10-minute steps; if the end is earlier than the start (23:00–07:00) the activity runs past midnight.",
+          "Tap the color square to change its color. Duplicate adds an activity of the same length right after, handy for alternating study and breaks.",
+          "Overlapping activities trigger a yellow notice, and time with no activity shows up as Unplanned in the totals.",
+          "Add a title and your goal, then save a PNG or print one A4 page for your desk. Copy link sends the exact schedule to parents or friends."
+        ]
+      },
+      "tips": {
+        "title": "Tips for a schedule that sticks",
+        "items": [
+          "Set bedtime and wake-up time first. Keeping your vacation wake-up time close to your school-day one makes the return to school easier.",
+          "The American Academy of Sleep Medicine (AASM) recommends 9–12 hours of sleep for ages 6–12, 8–10 hours for ages 13–18, and 7 or more hours for adults. The templates keep sleep within these ranges.",
+          "The World Health Organization (WHO) recommends an average of at least 60 minutes a day of moderate-to-vigorous physical activity for ages 5–17, and 150–300 minutes a week of moderate activity for adults. Add an exercise slot at least once a day.",
+          "Split long study sessions and put breaks in between. Naming the slot after the task (e.g. Math workbook) makes it easier to follow through.",
+          "Plan free time too. Start with what you can actually keep, try it for a week, then adjust it to the times you really kept."
+        ]
+      },
+      "sources": {
+        "title": "Sources",
+        "items": [
+          {
+            "label": "CDC — Recommended sleep by age (AASM recommendations)",
+            "url": "https://www.cdc.gov/sleep/about/index.html"
+          },
+          {
+            "label": "Paruthi et al. (2016), AASM consensus on recommended sleep for pediatric populations",
+            "url": "https://doi.org/10.5664/jcsm.5866"
+          },
+          {
+            "label": "WHO guidelines on physical activity and sedentary behaviour (2020)",
+            "url": "https://www.who.int/publications/i/item/9789240015128"
+          }
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "q": "How do I make a daily schedule?",
+            "a": "Pick a template close to your day, then edit names and start/end times in the list; the circular schedule updates instantly. Add a title and goal and choose Save image or Print. It is free, with no sign-up or install."
+          },
+          {
+            "q": "What should a vacation schedule include?",
+            "a": "Put in daily routines first (sleep, meals, washing up), then homework, study or classes, exercise, reading and free time. Daily time totals shows whether all 24 hours are filled."
+          },
+          {
+            "q": "How much sleep do elementary and teenage students need?",
+            "a": "The American Academy of Sleep Medicine (AASM) recommends 9–12 hours a day for ages 6–12 and 8–10 hours for ages 13–18. The elementary template uses 21:30–07:30 (10 hours) and the middle/high school template 23:30–07:30 (8 hours)."
+          },
+          {
+            "q": "How do I enter something that runs past midnight, like 11 pm to 7 am?",
+            "a": "Set the start to 23:00 and the end to 07:00; it counts as one activity crossing midnight and is drawn as a single slice passing 0 o'clock."
+          },
+          {
+            "q": "What happens if activities overlap or leave gaps?",
+            "a": "A yellow notice above the list shows which activities overlap and by how many minutes. Time with no activity stays gray on the chart and appears as Unplanned in the totals."
+          },
+          {
+            "q": "Can I print the schedule or save it as an image?",
+            "a": "Save image downloads a PNG with the title, the circular chart and your goal. Print fits just the schedule on one portrait A4 page, and the print dialog can also save it as a PDF."
+          },
+          {
+            "q": "Where are my edits saved?",
+            "a": "Every change is saved automatically in this browser, so you can pick up where you left off. Nothing is sent to a server. To view it on another device or send it to someone, copy the link; opening it shows the same schedule."
+          },
+          {
+            "q": "Can exam-prep students or office workers use it?",
+            "a": "Yes. The exam-prep template has 12 hours of study and 7 hours of sleep, and the office worker weekday template has 8 hours of work and 2 hours of commuting. For weekends or shift work, just edit the times and names in the list."
+          }
+        ]
+      }
+    }
+  },
+  "nationalScholarship": {
+    "title": "National Scholarship Calculator · Student Aid Bracket",
+    "subtitle": "Estimate your 2027 spring-semester student aid bracket (Ga–Ma) from household income and assets, then see the expected National Scholarship and what you still pay in tuition.",
+    "schedule": {
+      "title": "2027 spring semester, round 1 application",
+      "apply": "Apply: Nov 24, 2026 (Tue) 09:00 – Jan 7, 2027 (Thu) 18:00 KST",
+      "docs": "Documents and family consent: until Jan 14, 2027 (Thu) 18:00 KST",
+      "note": "Open to incoming, transfer, readmitted, returning and current students. Current students can, in principle, apply only in round 1 (round 2 allows relief review up to twice while enrolled).",
+      "cta": "Apply at KOSAF",
+      "phase": {
+        "before": "{d} days until applications open",
+        "open": "Open now · {d} days left",
+        "docs": "Applications closed · {d} days left for documents and consent",
+        "closed": "Round 1 has ended · check KOSAF for round 2"
+      }
+    },
+    "input": {
+      "title": "Household details"
+    },
+    "mode": {
+      "label": "How to calculate",
+      "est": "Estimate from income and assets",
+      "known": "I know my bracket",
+      "hint": {
+        "est": "Enter household income and assets to estimate your monthly recognized income and bracket using KOSAF's published method.",
+        "known": "Pick the bracket you were notified of to see the award right away."
+      }
+    },
+    "family": {
+      "title": "Student and family",
+      "status": "Student marital status",
+      "statusOpt": {
+        "s": "Single",
+        "m": "Married"
+      },
+      "statusHint": {
+        "s": "For single students, the household is you and your parents. Add up your parents' income and assets; do not include siblings' income.",
+        "m": "For married students, the household is you and your spouse. Do not include your parents."
+      },
+      "siblings": "Number of children incl. you",
+      "siblingsOpt": "{n}",
+      "siblingsHint": "With 3 or more children, (children − 2) × ₩400,000 is deducted from recognized income and you qualify for the multi-child scholarship.",
+      "order": "Your birth order",
+      "orderOpt": {
+        "first": "1st or 2nd",
+        "third": "3rd or later"
+      },
+      "orderHint": "Third and later children get full tuition in the basic-livelihood, Ga, Na and Da brackets."
+    },
+    "income": {
+      "title": "Monthly income (pre-tax average)",
+      "desc": "Enter wages, business, pension and rental income as a monthly average.",
+      "parent": {
+        "s": "Parents' combined monthly income",
+        "m": "Spouse's monthly income"
+      },
+      "parentHint": "Enter daily-wage income separately in the next field.",
+      "daily": {
+        "s": "Parents' daily-wage income (monthly)",
+        "m": "Spouse's daily-wage income (monthly)"
+      },
+      "dailyHint": "Only 50% of daily-wage income counts.",
+      "student": "Your own wage/business income (monthly)",
+      "studentHint": "₩1.3M per month is deducted from the student's income."
+    },
+    "property": {
+      "title": "Assets and debt (₩10,000 units)",
+      "desc": {
+        "s": "Add up everything held by you and your parents.",
+        "m": "Add up everything held by you and your spouse."
+      },
+      "re": {
+        "label": "Homes, land, buildings",
+        "hint": "Use the official standard value (e.g., published price), not the market price."
+      },
+      "dep": {
+        "label": "Rental deposit you paid",
+        "hint": "Only 95% of a lease deposit counts."
+      },
+      "fin": {
+        "label": "Financial assets",
+        "hint": "Deposits, savings, stocks, insurance, etc."
+      },
+      "car": {
+        "label": "Cars",
+        "hint": "Based on the Korea Insurance Development Institute value. Leave out one car owned by a person with a disability."
+      },
+      "debt": {
+        "label": "Debt",
+        "hint": "Bank loans, student loans, deposits received from tenants. Exclude overdraft and credit-line loans and card loans."
+      }
+    },
+    "known": {
+      "label": "Student aid bracket",
+      "hint": "You can check your notified bracket on KOSAF's bracket lookup page. If you know a numbered bracket (1–10) used until 2026, use the former-bracket labels."
+    },
+    "bracket": {
+      "basic": "Basic livelihood · near-poverty",
+      "ga": "Bracket Ga",
+      "na": "Bracket Na",
+      "da": "Bracket Da",
+      "ra": "Bracket Ra",
+      "ma": "Bracket Ma"
+    },
+    "old": {
+      "basic": "Checked by benefit status",
+      "ga": "Former 1–3",
+      "na": "Former 4–6",
+      "da": "Former 7–8",
+      "ra": "Former 9",
+      "ma": "Former 10"
+    },
+    "tuition": {
+      "label": "Semester tuition (optional)",
+      "hint": "Enter the tuition (required fees) on your bill to see what you pay after the scholarship."
+    },
+    "unit": {
+      "won": "₩{v}",
+      "man": "₩{won}",
+      "wonShort": "KRW",
+      "manShort": "×₩10k",
+      "pct": "{p}%"
+    },
+    "fmt": {
+      "eokMan": "₩{won}",
+      "eok": "₩{won}",
+      "man": "₩{won}",
+      "won": "₩{won}"
+    },
+    "result": {
+      "label": "Expected scholarship, spring 2027 (per semester)",
+      "full": "Full tuition",
+      "none": "Not eligible",
+      "kind": {
+        "type1": "National Scholarship Type I",
+        "multi12": "Multi-child Scholarship (1st/2nd child)",
+        "multi3": "Multi-child Scholarship (3rd+ child)"
+      },
+      "line": "{bracket} · {kind}",
+      "perYear": "Up to {v} per year",
+      "recognized": "Estimated monthly recognized income",
+      "ofMedian": "{p}% of the 2027 standard median income (4-person, {m})",
+      "down": "{v} less per month would put you in {to}",
+      "up": "You can go up to {v} more per month and stay in {bracket}",
+      "upEdge": "Exactly on the threshold. One won more moves you to the next bracket.",
+      "breakdown": {
+        "title": "Show calculation",
+        "income": "Assessed income",
+        "general": "General assets converted",
+        "financial": "Financial assets converted",
+        "car": "Cars converted",
+        "sibling": "Sibling deduction",
+        "total": "Monthly recognized income"
+      },
+      "basicNote": "Basic livelihood recipients and near-poverty households are identified by benefit status, not recognized income, and receive full tuition (required fees).",
+      "maNote": "Bracket Ma (over 300% of median income) is not eligible for Type I or the multi-child scholarship. Check your university's own scholarships.",
+      "tuition": {
+        "title": "What you pay",
+        "tuition": "Semester tuition",
+        "aid": "National Scholarship",
+        "net": "You pay"
+      },
+      "tuitionHint": "Enter semester tuition to see what you pay.",
+      "amountNote": "Amounts follow KOSAF's notice for spring 2027, based on the 2027 government budget proposal, and may change once the National Assembly passes the budget. Current students must have earned 12 credits with a score of 80+ last semester (70+ for basic livelihood/near-poverty).",
+      "boundaryNote": "KOSAF has not finalized the 2027 thresholds, so they are estimated from the 2027 standard median income (4-person, ₩{m}). Your official bracket is set by KOSAF using the Social Security Information System.",
+      "links": {
+        "boundary": "Bracket thresholds (KOSAF)",
+        "method": "Recognized income method and simulator (KOSAF)"
+      }
+    },
+    "share": {
+      "tool": "National Scholarship Calculator",
+      "text": "Expected National Scholarship, spring 2027: {bracket}, {amount} per semester",
+      "rows": {
+        "bracket": "Bracket",
+        "annual": "Per year (max)",
+        "recognized": "Recognized income (est.)",
+        "pct": "Of median income"
+      }
+    },
+    "table": {
+      "title": "2027 bracket thresholds and award amounts",
+      "desc": "If your monthly recognized income is at or below a threshold, you are in that bracket. Thresholds are a single line for every household size: the 4-person standard median income (2027: ₩{m}) times the bracket ratio. Amounts are annual maximums and never exceed tuition (required fees).",
+      "caption": "Median-income ratio, monthly recognized-income threshold and annual National Scholarship amount by bracket",
+      "th": {
+        "bracket": "Bracket",
+        "pct": "Of median income",
+        "est": "{y} threshold (est.)",
+        "prev": "{p} published threshold",
+        "type1": "Type I per year",
+        "multi12": "Multi-child 1st/2nd",
+        "multi3": "Multi-child 3rd+"
+      },
+      "over": "Over {v}",
+      "mine": "Your bracket",
+      "basicPct": "Benefit status",
+      "pctUpTo": "Up to {p}%",
+      "pctOver": "Over {p}%",
+      "note": "The 2026 thresholds are KOSAF's published values in the new Ga–Ma format; the 2027 thresholds are estimates until KOSAF confirms them. Amounts follow KOSAF's spring 2027 notice (2027 budget proposal)."
+    },
+    "accuracy": {
+      "title": "Why your official bracket may differ",
+      "items": [
+        "Your official bracket uses income, assets and debt of your household (parents if single, spouse if married) collected by KOSAF through the Social Security Information System. The numbers you enter here may differ from those records.",
+        "Each item is taken from public records as of a set date, so recent changes in income or assets may not be reflected (see KOSAF's per-semester bracket guidelines).",
+        "Homes and land are valued at the official standard value (e.g., published price), not market price; cars at the Korea Insurance Development Institute value.",
+        "Only bank loans, student loans, lease deposits received and similar debts count; overdraft and credit-line loans, business loans and card loans do not. Unpaid card balances count only if 3+ months overdue and ₩500,000 or more (principal only).",
+        "Details such as the 50% deduction for a student's daily-wage income (larger than the ₩1.3M deduction only above ₩2.6M a month), overseas income and asset reporting, and sibling-deduction exclusions are simplified.",
+        "KOSAF has not finalized the 2027 thresholds, so they are estimated as the 2027 standard median income times each ratio. KOSAF plans to announce the final thresholds separately.",
+        "Amounts are based on the 2027 budget proposal and may change after the National Assembly passes the budget. Grade requirements and university eligibility restrictions also apply."
+      ]
+    },
+    "sources": {
+      "title": "Sources",
+      "checked": "Checked {date}",
+      "items": {
+        "boundary": "Student aid bracket thresholds — KOSAF",
+        "method": "Recognized income method — KOSAF",
+        "type1": "National Scholarship Type I amounts — KOSAF",
+        "multi": "Multi-child National Scholarship amounts — KOSAF"
+      }
+    },
+    "guide": {
+      "title": "National Scholarship bracket guide",
+      "howTo": {
+        "title": "How to use",
+        "items": [
+          "Enter income and assets for you and your parents if single, or you and your spouse if married. Do not include siblings' income or assets.",
+          "Enter income as a pre-tax monthly average and assets in ₩10,000 units. For homes, use the official standard value, not the market price.",
+          "The result shows your estimated bracket, the ratio to median income and how far you are from the next threshold. Add semester tuition to see what you pay.",
+          "If KOSAF already notified your bracket, choose 'I know my bracket'. Copying the link keeps all your inputs."
+        ]
+      },
+      "method": {
+        "title": "How the bracket is set",
+        "items": [
+          "Monthly recognized income = assessed income + income-converted assets − sibling deduction",
+          "Income-converted assets = (assets − basic asset allowance ₩69M − debt) × monthly rate. The allowance and debt come off general assets first, then financial assets. Cars get neither.",
+          "Monthly rates: general assets and cars 4.17% ÷ 3, financial assets 6.26% ÷ 3. Every ₩10M counts as ₩139,000 a month (about ₩209,000 for financial assets).",
+          "₩1.3M is deducted from a student's wage or business income, and only 50% of daily-wage income counts. Single students in families with 3+ children get (children − 2) × ₩400,000 off.",
+          "Threshold = 4-person standard median income × bracket ratio (Ga 70%, Na 130%, Da 200%, Ra 300%), the same for every household size."
+        ]
+      },
+      "changes": {
+        "title": "What changes in 2027",
+        "items": [
+          "From spring 2027, brackets 1–10 become five brackets Ga–Ma: former 1–3 → Ga, 4–6 → Na, 7–8 → Da, 9 → Ra, 10 → Ma.",
+          "Brackets that already received the same amount were merged, so Type I annual amounts are listed as Ga ₩6M, Na ₩4.4M, Da ₩3.6M and Ra ₩1M.",
+          "Multi-child 1st/2nd children: Ga ₩6.1M, Na ₩5.05M, Da ₩4.65M, Ra ₩1.35M a year; 3rd+ children: full tuition in Ga–Da and ₩2M in Ra.",
+          "The 2027 standard median income (4-person ₩6,929,885) is 6.7% higher than 2026, so thresholds are expected to rise. KOSAF will announce the final 2027 thresholds separately."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How is my National Scholarship bracket decided?",
+            "a": "KOSAF collects the income, assets and debt of the student and household (parents if single, spouse if married) through the Social Security Information System, calculates monthly recognized income, and compares it with thresholds equal to the standard median income times each bracket ratio. Because the numbered brackets were often confused with statistical income deciles, they are renamed Ga–Ma from 2027."
+          },
+          {
+            "q": "Which old brackets do Ga, Na, Da, Ra and Ma correspond to?",
+            "a": "Former 1–3 is Ga (up to 70% of median income), 4–6 is Na (up to 130%), 7–8 is Da (up to 200%), 9 is Ra (up to 300%) and 10 is Ma (over 300%). Basic livelihood recipients and near-poverty households remain a separate group."
+          },
+          {
+            "q": "Do thresholds change with household size?",
+            "a": "No. KOSAF publishes one set of thresholds based on the 4-person standard median income times each ratio. Instead, single students in families with 3 or more children get (children − 2) × ₩400,000 off their recognized income, for example ₩800,000 a month with 4 children."
+          },
+          {
+            "q": "How much is Type I?",
+            "a": "Per KOSAF's spring 2027 notice, the annual maximum is ₩6M for Ga (₩3M per semester), ₩4.4M for Na (₩2.2M), ₩3.6M for Da (₩1.8M) and ₩1M for Ra (₩0.5M); basic livelihood and near-poverty students get full tuition. Ma is not eligible. Awards never exceed tuition (required fees) and are based on the 2027 budget proposal, so they may change after the budget passes."
+          },
+          {
+            "q": "Who gets the multi-child scholarship, and how much?",
+            "a": "Single students from families with 3 or more Korean-national children in bracket Ra or below. Students admitted from fall 2023 must have been 39 or younger at admission (40+ receive Type I instead). Annual amounts for 1st/2nd children are Ga ₩6.1M, Na ₩5.05M, Da ₩4.65M and Ra ₩1.35M; 3rd+ children get full tuition in basic livelihood/near-poverty and Ga–Da, and ₩2M in Ra. It takes priority over Type I and the two cannot be combined."
+          },
+          {
+            "q": "Should incoming freshmen apply now?",
+            "a": "Yes. Round 1 for spring 2027 (Nov 24, 2026 09:00 – Jan 7, 2027 18:00 KST) is open to incoming, transfer, readmitted, returning and current students. Documents and family consent are due by Jan 14, 2027 18:00. Current students can, in principle, apply only in round 1; applying in round 2 is reviewed as relief, up to twice while enrolled."
+          },
+          {
+            "q": "What are the grade requirements?",
+            "a": "Incoming, transfer and readmitted students have no grade requirement in their first semester. Current students need 12+ credits and a score of 80/100 or higher last semester; basic livelihood and near-poverty students need 70+, and students with disabilities are exempt. In bracket Ga, a score of 70–79 is allowed up to twice with a warning (C-grade warning system). Graduating or extra-semester students are exempt from the credit requirement."
+          },
+          {
+            "q": "What if my result differs from the bracket I was notified of?",
+            "a": "The notified bracket is official because KOSAF uses public records. This calculator estimates from your inputs and the published method, so standard values, which debts count and record dates can cause differences. If your household income or assets changed a lot after the survey, check KOSAF's update request guide."
+          }
+        ]
+      }
+    }
+  },
+  "feverMedicineDose": {
+    "title": "Children's Fever Medicine Dose Calculator",
+    "subtitle": "Work out a single syrup dose (mL) and dosing interval from your child's weight, and compare it with the matching row of the product's label table. Based on Korea MFDS guidance and approved Korean product labels.",
+    "ing": {
+      "apap": "Acetaminophen",
+      "ibu": "Ibuprofen",
+      "dexi": "Dexibuprofen"
+    },
+    "input": {
+      "title": "Child and medicine",
+      "weight": "Weight",
+      "weightHint": "Use a recent weight. The single dose is based on weight.",
+      "weightErr": "Enter a weight between {min} and {max} kg.",
+      "age": "Age",
+      "yearsAria": "Age in years",
+      "yearsOpt": "{n} yr",
+      "monthsAria": "Months",
+      "monthsOpt": "{n} mo",
+      "ageHint": "Used as {n} months to check the minimum age and the label table.",
+      "ingredient": "Ingredient",
+      "ingredientHint": "Tylenol, Champ, Setopen and Coldaewon Kids Pen are acetaminophen; Brufen, Champ Ibufen and Coldaewon Kids Ibufen are ibuprofen; Maxibufen is dexibuprofen.",
+      "product": "Product",
+      "generic": "By ingredient (check strength)",
+      "genericDesc": "For products not listed, enter the strength from the leaflet",
+      "productDesc": "{maker} · {c} mg/mL",
+      "conc": "Syrup strength",
+      "concHint": "On a Korean label, multiply the grams per 100 mL under 'ingredients and amounts' by 10 to get mg/mL. Common syrups of this ingredient are {c} mg/mL.",
+      "concErr": "Enter a strength between {min} and {max} mg/mL."
+    },
+    "result": {
+      "genericName": "{ing} {c} mg/mL syrup",
+      "label": "{w} kg · {ing} single dose",
+      "mg": "{mg} mg ({kLo}–{kHi} mg per kg) · at {c} mg/mL",
+      "under3m": "If a baby under 3 months has a temperature of 38°C or higher, see a doctor right away before giving any fever medicine.",
+      "tooYoung": "{ing}: can be given from {m} months of age (MFDS). For a younger baby, see a doctor and follow their instructions.",
+      "tooYoungApap": "Acetaminophen can be given from {m} months. You can switch the ingredient above.",
+      "invalid": "Check the weight and strength to see the dose.",
+      "interval": "Interval",
+      "times": "Max doses a day",
+      "daily": "Max total a day",
+      "intervalVal": {
+        "apap": "4–6 hours",
+        "ibu": "6–8 hours",
+        "dexi": "6–8 hours"
+      },
+      "timesVal": "{n} doses",
+      "dailyVal": "{mg} mg ({ml} mL)",
+      "dailyHow": "The daily maximum is the largest single dose × {n} doses. Give it only when the fever makes your child uncomfortable, and keep to the interval.",
+      "capped": "The weight-based amount was above the single-dose cap of {max} mg, so it was capped ({why}).",
+      "cappedWhy": {
+        "apap": "product label",
+        "ibu": "label: adult cold dose 200–400 mg",
+        "dexi": "label table: up to 300 mg at age 12"
+      },
+      "dailyCap": "Acetaminophen stays at or below 4,000 mg a day (product label).",
+      "dexiInterval": "The interval follows MFDS guidance (6–8 hours). The Maxibufen syrup label says 4–6 hours. The dose log uses 6 hours.",
+      "under2": "The product labels say to talk to a doctor or pharmacist before giving it to a child under 2.",
+      "disclaimer": "This is a reference calculation taken from MFDS guidance and approved product labels. A prescription, your doctor's or pharmacist's instructions and your product's leaflet come first. If you see emergency signs such as a floppy child or trouble breathing, get medical care right away."
+    },
+    "label": {
+      "title": "Matching row in the product label table",
+      "noStd": "This strength differs from the products whose label tables were checked ({c} mg/mL), so no table is shown. Check the table in your product's leaflet.",
+      "from": "Source: approved dosage of {name}.",
+      "sameValues": "{names} have the same table values.",
+      "cols": {
+        "age": "Age",
+        "weight": "Weight",
+        "doseMg": "Dose (mg)",
+        "doseMl": "Dose (mL)",
+        "dose": "Single dose",
+        "daily": "Max per day",
+        "doseMlMg": "Dose mL (mg)",
+        "dailyMlMg": "Max per day mL (mg)"
+      },
+      "by": {
+        "weight": "The row was chosen by weight. The label also says a weight-based dose is more appropriate when the weight is known.",
+        "age": "This product's table is split by age only."
+      },
+      "match": "It falls within the weight-based range.",
+      "differ": "It differs from the weight-based range. Follow your product's leaflet and your doctor's or pharmacist's instructions.",
+      "none": "No row in the table matches this child's age and weight. Talk to a doctor or pharmacist before giving it.",
+      "all": "Show full table",
+      "caption": "{name} label table",
+      "link": "Open the approved label of {name} (MFDS)"
+    },
+    "share": {
+      "tool": "Children's Fever Medicine Dose Calculator",
+      "headline": "{ml} mL per dose",
+      "sub": "{product} · {w} kg",
+      "rows": {
+        "mg": "Single dose (mg)",
+        "daily": "Max a day",
+        "label": "Label table"
+      },
+      "text": "For a {w} kg child, {product}: {ml} mL ({mg} mg) per dose, every {interval}. Check the leaflet and your doctor's or pharmacist's advice too."
+    },
+    "redFlags": {
+      "title": "See a doctor first in these cases",
+      "items": [
+        "A baby under 3 months with a temperature of 38°C or higher",
+        "39°C or higher with a child who is clearly struggling, or any fever of 40.5°C or higher",
+        "A child who has febrile seizures, or for whom fever is risky, such as heart disease, poor nutrition or after surgery",
+        "Floppy or unusually sleepy, trouble breathing, or crying that cannot be soothed",
+        "Tiny purple spots or bruise-like patches on the skin",
+        "Stiff neck or severe headache with confusion",
+        "Fever that continues or gets worse after 3 days of fever medicine"
+      ],
+      "src": "Sources: MFDS card news (2023), MSD Manual consumer version, product labels"
+    },
+    "log": {
+      "title": "Dose log",
+      "desc": "Record when and how much you gave, and it works out when each ingredient can be given next. Stored only in this browser and deleted after 72 hours.",
+      "ready": "OK now by interval and count",
+      "after": "After {when} {time}",
+      "reason": {
+        "interval": "{h} hours within the same class",
+        "cross": "At least {c} hours after another fever medicine",
+        "count": "Up to {n} doses in 24 hours",
+        "total": "24-hour maximum total reached"
+      },
+      "usage": "Last 24 h: {n}/{max} doses · {mg}/{maxMg} mg",
+      "mixedNsaid": "Both ibuprofen and dexibuprofen are logged within 24 hours. They are the same class and should not be alternated (MFDS).",
+      "ing": "Ingredient",
+      "ml": "Amount given",
+      "time": "Time given",
+      "add": "Add",
+      "mlErr": "Enter between {min} and {max} mL.",
+      "mgPreview": "= {mg} mg (at {c} mg/mL)",
+      "timeHint": "The time is prefilled with now. A time later than now is recorded as yesterday.",
+      "storageError": "Storage is not available in this browser, so the log is not saved.",
+      "empty": "No doses logged yet. After giving a fever medicine, record the amount and time.",
+      "amount": "{ml} mL ({mg} mg)",
+      "overDose": "More than the {mg} mg single-dose maximum",
+      "deleteAria": "Delete {ing} dose at {time}",
+      "delete": "Delete",
+      "clearConfirm": "Tap again to delete all",
+      "clear": "Delete all records",
+      "crossNote": "Alternate fever medicines only as prescribed or directed by a doctor. When switching to the other class, wait at least {c} hours (MFDS says 2–3 hours), and never repeat the same ingredient within its interval. Ibuprofen and dexibuprofen are the same class and are not alternated.",
+      "day": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "tomorrow": "Tomorrow",
+        "ago": "{n} days ago"
+      }
+    },
+    "guide": {
+      "title": "Giving fever medicine safely",
+      "ingredients": {
+        "title": "How the ingredients differ",
+        "items": [
+          "Acetaminophen (the same ingredient as paracetamol): the first-choice fever reducer for children, from 4 months. 10–15 mg/kg per dose every 4–6 hours, up to 5 doses a day.",
+          "Ibuprofen: from 6 months, 5–10 mg/kg per dose every 6–8 hours, up to 4 doses a day. It also eases inflammation.",
+          "Dexibuprofen: an isomer of ibuprofen in the same class. From 6 months, 5–7 mg/kg per dose every 6–8 hours, up to 4 doses a day, sold only at pharmacies in Korea.",
+          "Common syrup strengths are acetaminophen 32 mg/mL, ibuprofen 20 mg/mL and dexibuprofen 12 mg/mL, so the same mL holds different amounts.",
+          "Too much acetaminophen can damage the liver, and ibuprofen or dexibuprofen can upset the stomach. Do not exceed the daily maximum."
+        ]
+      },
+      "alternate": {
+        "title": "Alternating medicines",
+        "items": [
+          "Alternating does not mean giving two medicines at once. It means giving fever medicines of different classes in turn, at least 2 hours apart.",
+          "If the fever continues 2 hours after a dose, the other ingredient may be used. MFDS advises keeping a 2–3 hour gap as prescribed by a doctor.",
+          "Ibuprofen and dexibuprofen are the same class and are not alternated.",
+          "One medicine is usually enough. Alternating makes it easy to give too much, so talk to a professional.",
+          "Combination cold medicines and prescriptions may also contain a fever reducer. Check with a doctor or pharmacist before combining."
+        ]
+      },
+      "doctor": {
+        "title": "When to see a doctor",
+        "items": [
+          "A temperature 1°C above usual or 38°C or higher usually counts as fever, and medicine can be considered depending on how the child is. Fever is a sign the body is fighting an infection, not an illness in itself.",
+          "Any fever in a baby under 3 months needs prompt medical care.",
+          "From 3 months to 3 years, see a doctor even without warning signs if the fever is 39°C or higher, there are no cold symptoms such as runny nose or sneezing, or it lasts more than 1–2 days.",
+          "From age 3, see a doctor if fever lasts more than 5 days, even if the child seems well.",
+          "Do not give fever medicine for more than 3 days without a doctor's or pharmacist's advice. The labels note that ibuprofen can strain the kidneys of a dehydrated child and that it is better avoided with chickenpox."
+        ]
+      },
+      "measure": {
+        "title": "Measuring syrup accurately",
+        "items": [
+          "Shake suspensions well before each dose.",
+          "Measure with a cup or oral syringe marked in mL, not a kitchen spoon.",
+          "Strengths differ between products. Recalculate the mL when you switch medicines.",
+          "The single dose, interval and daily maximum are on the container, box or enclosed leaflet.",
+          "Logging the time and amount makes it easier to keep to the interval and daily maximum."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How many mL of Children's Tylenol suspension should I give?",
+            "a": "It is 32 mg/mL acetaminophen, so 10–15 mg/kg is about 0.31–0.46 mL per kg. For 12 kg that is 3.8–5.6 mL, and the label row for 12–15.9 kg is 5 mL (160 mg). Give every 4–6 hours and no more than 5 doses (75 mg/kg) a day. Champ syrup, Setopen and Coldaewon Kids Pen have the same strength and table."
+          },
+          {
+            "q": "How many mL of Brufen (ibuprofen) syrup should I give?",
+            "a": "It is 20 mg/mL ibuprofen, so 5–10 mg/kg is 0.25–0.5 mL per kg. For 12 kg that is 3–6 mL, every 6–8 hours, up to 4 doses a day. The Children's Brufen label table is split by age: 1–2 years 2.5–5 mL, 3–6 years 5–7.5 mL, 7–10 years 7.5–10 mL, 11–14 years 10–12.5 mL, 3–4 times a day, avoiding an empty stomach."
+          },
+          {
+            "q": "How is Maxibufen (dexibuprofen) different from Brufen?",
+            "a": "Dexibuprofen is an isomer of ibuprofen in the same class. Maxibufen syrup is 12 mg/mL, so a dose is 0.4–0.6 mL/kg (5–7 mg/kg), up to 4 doses (28 mg/kg) a day. Because it is the same class, do not alternate it with Brufen."
+          },
+          {
+            "q": "How far apart should alternated fever medicines be?",
+            "a": "MFDS advises at least 2 hours (2–3 hours in its 2025 guidance) between fever medicines of different classes. Do it as prescribed by a doctor, and never repeat the same ingredient within its interval (acetaminophen 4–6 hours, ibuprofen and dexibuprofen 6–8 hours). Ibuprofen and dexibuprofen are never alternated with each other."
+          },
+          {
+            "q": "From what age can I give fever medicine?",
+            "a": "Acetaminophen from 4 months, ibuprofen and dexibuprofen from 6 months. A baby under 3 months with 38°C or higher should see a doctor first. The labels say to consult a doctor or pharmacist before giving it to a child under 2."
+          },
+          {
+            "q": "Should I go by age or by weight?",
+            "a": "The acetaminophen and Maxibufen labels say a weight-based dose is more appropriate when the weight is known. This calculator works out the range from weight and shows the matching row of the label table next to it. If they differ, follow the leaflet and your doctor's or pharmacist's advice."
+          },
+          {
+            "q": "The fever did not come down. Can I give another dose?",
+            "a": "Do not repeat the same medicine within its interval. If fever continues after 2 hours, the other class may be used as prescribed by a doctor. Fever medicine lowers temperature to make your child comfortable but does not treat the cause. If your child is struggling or the fever lasts more than 3 days, see a doctor."
+          },
+          {
+            "q": "Can I give a cold medicine together with a fever medicine?",
+            "a": "Combination cold medicines and prescriptions may contain a fever reducer, which can double the dose of the same ingredient. Ask a doctor or pharmacist whether they contain one before combining. Paracetamol in foreign products is the same ingredient as acetaminophen."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "mfds2025": "Korea MFDS press note (2025-12-26), 'Don't panic when your child has a fever' — minimum ages, mg/kg, intervals, max doses a day, alternating",
+      "mfds2023": "Korea MFDS card news (Korea.kr, 2023-11-17), 'Using fever and pain relievers safely for children' — 2-hour alternating gap and when to see a doctor",
+      "msd": "MSD Manual consumer version (Korean), 'Fever in infants and children' (reviewed 2025-03) — warning signs and when to see a doctor",
+      "product": "MFDS approved label — {name} ({maker}): strength, dosage and precautions",
+      "method": "The range is MFDS mg/kg × weight. The lower mL is rounded up and the upper mL rounded down to 0.1 mL, so rounding never exceeds the single-dose maximum. Single-dose caps are ibuprofen 400 mg (label adult cold maximum) and dexibuprofen 300 mg (label table maximum); the daily cap for acetaminophen is 4,000 mg (label). The dose log uses the minimum same-class interval (acetaminophen 4 hours, ibuprofen and dexibuprofen 6 hours), 2 hours across classes, and the 24-hour count and total.",
+      "asOf": "Checked {date}. Labels can change, so also check your product's leaflet."
     }
   },
   "jeongsi2027": {

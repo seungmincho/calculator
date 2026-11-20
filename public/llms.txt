@@ -148,6 +148,8 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [중도상환수수료 계산기](https://toolhub.ai.kr/prepayment-fee/): 중도상환수수료와 대출 갈아타기 이득 여부(이자 절감 − 수수료)
 - [수험표 할인 모음](https://toolhub.ai.kr/csat-discounts/): 놀이공원·영화·외식·여행 수험생 할인을 기간·조건·출처와 함께, 오늘 쓸 수 있는 것부터 보기
 - [정시 환산점수 계산기](https://toolhub.ai.kr/jeongsi-score/): 표준점수·백분위와 대학별 반영 비율·영어·한국사 점수로 환산점수 계산, 공식 6개 저장·비교
+- [국가장학금 계산기](https://toolhub.ai.kr/national-scholarship/): 가구 소득·재산으로 학자금 지원구간(가~마 5구간)을 추정하고 2027학년도 1학기 국가장학금 예상 금액 확인
+- [공학용 계산기](https://toolhub.ai.kr/scientific-calculator/): 삼각함수·로그·거듭제곱·괄호·도/라디안 전환과 계산 기록을 지원하는 온라인 공학용 계산기
 
 ## 개발 도구
 
@@ -274,6 +276,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [JSON → TypeScript 변환기](https://toolhub.ai.kr/json-to-typescript/): JSON을 interface·type으로 변환, 선택 필드·배열 타입 추론
 - [겨울 축제 일정](https://toolhub.ai.kr/winter-festivals/): 산천어·송어 얼음축제, 태백산·대관령 눈축제, 빛축제의 이번 시즌 일정과 예년 시기
 - [건배사 모음](https://toolhub.ai.kr/toast-speech/): 송년회·회식·모임 자리별 건배사 만들기와 짧은 건배 구호 뜻·선창 후창
+- [생활계획표 만들기](https://toolhub.ai.kr/daily-schedule/): 방학 생활계획표를 24시간 원형으로 만들고 이미지 저장·인쇄·링크 공유
 
 ## 이미지/미디어 도구
 
@@ -326,6 +329,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [건강검진 대상 조회](https://toolhub.ai.kr/health-checkup/): 출생연도로 올해 국가건강검진·암검진 대상 확인
 - [아이 키 성장 백분위](https://toolhub.ai.kr/child-growth/): 성장도표로 키·몸무게 백분위와 부모 키로 예상 키 계산
 - [이달의 제철 음식](https://toolhub.ai.kr/seasonal-food/): 월별 제철 채소·과일·수산물과 고르는 법·보관법, 연중 제철 달력
+- [어린이 해열제 용량 계산기](https://toolhub.ai.kr/fever-medicine-dose/): 체중·나이로 아세트아미노펜·이부프로펜·덱시부프로펜 시럽 1회 용량(mL)과 복용 간격 확인
 
 ## 간단 게임
 

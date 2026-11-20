@@ -191,7 +191,7 @@ const AFTER_LINKS = [
   { key: 'grade', href: '/csat-grade/' },
   { key: 'jeongsiScore', href: '/jeongsi-score/' },
   { key: 'jeongsi', href: '/jeongsi-2027/' },
-  { key: 'scholarship', href: 'https://www.kosaf.go.kr/' },
+  { key: 'scholarship', href: '/national-scholarship/' },
   { key: 'wage', href: '/hourly-wage/' },
 ] as const
 

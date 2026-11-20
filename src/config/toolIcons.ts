@@ -19,7 +19,7 @@ import {
   Minimize2, Video, Mic, Film, Scissors, Download, Apple, Dumbbell, Wine, PartyPopper, Stethoscope, Wind, BedDouble, Salad, ThermometerSnowflake, Snowflake, Sunrise, Sunset, TableProperties,
   NotebookText, Brain, HeartHandshake, Users, Flower2, BookOpenCheck, Hexagon, Gamepad2, CircleDot, Circle,
   Grid2x2, Crown, Ship, Spline, Hand, Rows3, Bomb, LayoutPanelTop, Swords, Blocks, Spade, Bird, Ghost,
-  SquareDashed, Calculator, Server, ListChecks, Gem, Bot, Home, Sigma, SquareStack, Newspaper, CircleHelp, Disc3,
+  SquareDashed, Calculator, Pill, Server, ListChecks, Gem, Bot, Home, Sigma, SquareStack, Newspaper, CircleHelp, Disc3,
 } from 'lucide-react'
 import type { CategoryKey } from './menuConfig'
 
@@ -81,6 +81,10 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/jeongsi-2027': GraduationCap,
   '/jeongsi-score': Calculator,
   '/csat-discounts': TicketPercent,
+  '/national-scholarship': GraduationCap,
+  '/scientific-calculator': Calculator,
+  '/daily-schedule': Clock,
+  '/fever-medicine-dose': Pill,
   '/seasonal-food': Apple,
   '/winter-festivals': PartyPopper,
   '/toast-speech': Wine,

@@ -99,11 +99,11 @@ export const curatedRelated: Record<string, string[]> = {
   '/kimjang-calculator': ['/kimjang-timing', '/seasonal-food', '/budget-calculator', '/dutch-pay', '/discount-calculator', '/nutrition-calculator'],
   '/kimjang-timing': ['/kimjang-calculator', '/seasonal-food', '/wind-chill', '/holiday-planner', '/sunrise-sunset', '/calendar-2027'],
   '/exchange-calculator': ['/customs-duty', '/shipping-calculator', '/world-clock', '/stock-calculator', '/percent-calculator', '/holiday-planner'],
-  '/percent-calculator': ['/discount-calculator', '/average-calculator', '/margin-calculator', '/vat-calculator', '/cagr-calculator', '/stock-calculator'],
+  '/percent-calculator': ['/discount-calculator', '/average-calculator', '/scientific-calculator', '/margin-calculator', '/vat-calculator', '/cagr-calculator'],
 
   // 정부지원·복지
   '/government-subsidy': ['/median-income', '/eitc', '/energy-voucher', '/basic-pension', '/youth-rent-subsidy', '/child-benefit'],
-  '/median-income': ['/basic-pension', '/government-subsidy', '/youth-rent-subsidy', '/youth-future-savings', '/child-benefit', '/salary-rank'],
+  '/median-income': ['/basic-pension', '/government-subsidy', '/youth-rent-subsidy', '/youth-future-savings', '/child-benefit', '/national-scholarship'],
   '/youth-rent-subsidy': ['/rent-tax-credit', '/median-income', '/government-subsidy', '/rent-converter', '/jeonse-loan', '/lease-contract'],
   '/child-benefit': ['/parental-leave', '/government-subsidy', '/due-date', '/median-income', '/year-end-tax', '/budget-calculator'],
 
@@ -118,7 +118,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/grade-calculator': ['/gpa-calculator', '/gpa-converter', '/average-calculator', '/csat-grade'],
   '/average-calculator': ['/grade-calculator', '/gpa-calculator', '/percent-calculator', '/csat-grade'],
   '/csat-grade': ['/csat-dday', '/jeongsi-score', '/jeongsi-2027', '/csat-discounts', '/grade-calculator', '/gpa-converter'],
-  '/csat-dday': ['/csat-grade', '/jeongsi-2027', '/csat-discounts', '/jeongsi-score', '/dday-calculator', '/timer'],
+  '/csat-dday': ['/csat-grade', '/jeongsi-2027', '/csat-discounts', '/jeongsi-score', '/national-scholarship', '/dday-calculator'],
   '/csat-discounts': ['/csat-grade', '/csat-dday', '/everland', '/lotte-world', '/hourly-wage', '/jeongsi-2027'],
   '/jeongsi-score': ['/csat-grade', '/jeongsi-2027', '/csat-dday', '/gpa-converter'],
 
@@ -204,7 +204,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/energy-voucher': ['/gas-bill', '/electricity-calculator', '/basic-pension', '/median-income', '/government-subsidy', '/wind-chill'],
   '/eitc': ['/salary-calculator', '/median-income', '/government-subsidy', '/basic-pension', '/year-end-tax', '/child-benefit'],
   '/json-to-typescript': ['/json-formatter', '/json-csv-converter', '/yaml-json-converter', '/json-xml-converter', '/jwt-decoder', '/api-tester'],
-  '/child-growth': ['/bmi-calculator', '/due-date', '/calorie-calculator', '/age-calculator', '/child-benefit', '/nutrition-calculator'],
+  '/child-growth': ['/bmi-calculator', '/fever-medicine-dose', '/due-date', '/calorie-calculator', '/age-calculator', '/child-benefit'],
   '/yut-nori': ['/omok', '/othello', '/dice-roller', '/ladder-game', '/greeting-generator', '/calendar-2027'],
   '/wind-chill': ['/kimjang-timing', '/ski-resorts', '/winter-festivals', '/new-year-sunrise', '/gas-bill', '/sunrise-sunset'],
   '/calendar-2027': ['/holiday-planner', '/lunar-converter', '/dday-calculator', '/age-table', '/changes-2027', '/new-year-sunrise'],
@@ -307,4 +307,8 @@ export const curatedRelated: Record<string, string[]> = {
   '/overseas-stock-tax': ['/stock-calculator', '/dividend-calculator', '/exchange-calculator', '/income-tax', '/investment-calculator', '/year-end-tax'],
   '/card-fee-calculator': ['/vat-calculator', '/margin-calculator', '/sales-commission', '/income-tax', '/freelancer-tax', '/minimum-wage'],
   '/prepayment-fee': ['/loan-calculator', '/loan-schedule', '/dsr-calculator', '/jeonse-loan', '/bogeumjari-loan', '/car-loan-calculator'],
+  '/national-scholarship': ['/median-income', '/csat-dday', '/jeongsi-score', '/education-tax-credit', '/government-subsidy', '/csat-grade'],
+  '/scientific-calculator': ['/percent-calculator', '/unit-converter', '/base-converter', '/average-calculator'],
+  '/daily-schedule': ['/pomodoro', '/timer', '/dday-calculator', '/calendar-2027'],
+  '/fever-medicine-dose': ['/child-growth', '/bmi-calculator', '/sleep-calculator', '/health-checkup'],
 }
