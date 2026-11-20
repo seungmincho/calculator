@@ -98,9 +98,11 @@ export function countdown(nowMs: number, exam = CSAT_EXAM_DATE): Countdown {
 /** until: 해당 날짜'까지' (마감일) */
 export interface TimelineItem { key: string; start: string; end?: string; until?: boolean }
 
-/** 2027학년도 수능 이후 대입 일정 (대교협 대입전형 시행계획) */
+/** 2027학년도 수능 이후 대입 일정 (대교협 대입전형 시행계획, 이의신청·정답 확정은 평가원 2026-11-19 브리핑) */
 export const TIMELINE: TimelineItem[] = [
   { key: 'exam', start: CSAT_EXAM_DATE },
+  { key: 'objection', start: CSAT_EXAM_DATE, end: '2026-11-23' }, // 평가원 전용 게시판, 23일 18시 마감
+  { key: 'answerFinal', start: '2026-12-01' }, // 17시 발표
   { key: 'score', start: '2026-12-11' },
   { key: 'susiResult', start: '2026-12-18', until: true },
   { key: 'susiReg', start: '2026-12-21', end: '2026-12-23' },

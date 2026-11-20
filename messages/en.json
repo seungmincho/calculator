@@ -40473,7 +40473,7 @@
       "tips": {
         "title": "Notes",
         "items": [
-          "The 2026 academic-year CSAT was held in 2025. The 2027 academic-year exam is on November 19, 2026, and is distinct from this calculator's relative-grading reference data.",
+          "The default table holds 2027 preliminary cutoffs, which can shift after the answer key is finalized (Dec 1) and as samples grow. Pick '2026 reference' to compare with last year's exam (2026 academic year, held Nov 13, 2025).",
           "Distinguish estimated raw cutoffs from official standard-score grade boundaries. English and Korean History score reports show only absolute grades based on raw scores.",
           "Standard-score and percentile estimates are simple interpolations between previous-year reference points. Actual percentiles depend on the score distribution; do not treat these estimates as official conversions.",
           "Required areas, best-one versus average-of-two Inquiry rules, rounding and Korean History conditions vary by university and program.",
@@ -40499,11 +40499,11 @@
         "items": [
           {
             "q": "Are these predicted grades for the 2027 academic-year CSAT?",
-            "a": "Korean, Math and Inquiry results apply 2026 reference cutoffs. The calculator does not include 2027 cutoffs, so they cannot be read as this year's actual grades. English and Korean History use 2027 absolute raw-score rules."
+            "a": "By default, Korean, Math and Inquiry use the 2027 preliminary cutoffs estimated by Jongro Academy (checked Nov 20). They are not official and agencies differ by 1–7 points, so confirm actual grades, standard scores and percentiles on the December 11 score report. Switch to '2026 reference' to compare with last year's exam; English and Korean History use the 2027 absolute raw-score rules."
           },
           {
-            "q": "When are the 2027 exam and score reports?",
-            "a": "The exam is on Thursday, November 19, 2026, and score reports are issued on Friday, December 11, 2026. See the official Ministry of Education schedule linked below."
+            "q": "When are the 2027 final answers and score reports?",
+            "a": "The exam was held on Thursday, November 19, 2026. After objections are reviewed, the final answer key is published at 17:00 on Tuesday, December 1, and score reports are issued on Friday, December 11, 2026. See the official Ministry of Education schedule linked below."
           },
           {
             "q": "Can equal raw scores yield different standard scores or grades?",
@@ -40543,7 +40543,7 @@
       "absoluteCut": "Raw-score boundary",
       "estimatedCut": "Estimated raw cutoff",
       "sourcesTitle": "Official exam and scoring guidance",
-      "sourcesNote": "Checked Nov 17, 2026. These sources explain the 2027 schedule and scoring system; they do not certify this calculator's 2026 estimated raw-score tables.",
+      "sourcesNote": "Checked Nov 17, 2026. These sources explain the 2027 schedule and scoring system; they do not certify this calculator's estimated raw-score cutoffs (agency preliminary estimates or 2026 reference).",
       "planSource": "Ministry of Education · 2027 CSAT implementation plan",
       "scheduleSource": "Ministry of Education · 2027 exam and score-report dates",
       "scoringSource": "KICE · 2027 Q&A (PDF hosted by education office, pp. 28–30)"
@@ -49708,6 +49708,7 @@
   "csatDday": {
     "title": "CSAT D-day · Timetable · Checklist",
     "description": "Countdown to the 2027 CSAT (Thu, Nov 19, 2026), the period timetable, a packing checklist, an answer sheet for self-scoring, and the admissions schedule after the exam.",
+    "descriptionAfter": "The 2027 CSAT (Nov 19, 2026) is over. Objection, final-answer, score-release and regular-admissions dates, your self-scoring sheet and the 2028 CSAT countdown in one place.",
     "md": "{w} {m}/{d}",
     "weekdays": [
       "Sun",
@@ -49729,6 +49730,8 @@
       },
       "during": "CSAT in progress",
       "after": "CSAT is over! Great job",
+      "afterScore": "Scores out {date}",
+      "afterNext": "{year} CSAT {date}",
       "ctaGrade": "Check your estimated grades",
       "ctaTimeline": "See what comes next",
       "date": "Exam {exam} · Period 1 starts {time} · Scores released {score}"
@@ -49868,12 +49871,14 @@
     },
     "timeline": {
       "title": "After the CSAT",
-      "desc": "Key 2027 admissions dates, from score release to additional recruitment.",
+      "desc": "Key 2027 admissions dates, from answer objections and score release to additional recruitment.",
       "until": "by {date}",
       "past": "Past",
       "ongoing": "Now",
       "items": {
         "exam": "CSAT",
+        "objection": "Question/answer objections (until 18:00 on the 23rd)",
+        "answerFinal": "Final answer key (17:00)",
         "score": "Scores released",
         "susiResult": "Early admission results",
         "susiReg": "Early admission registration",
@@ -49884,7 +49889,7 @@
         "jeongsiExtra": "Regular admission additional offers",
         "addRecruit": "Additional recruitment"
       },
-      "note": "Based on the 2027 admissions plan. Regular applications run for at least three university-selected days within Jan 4–7. Early additional offers end Dec 29 at 18:00, registration Dec 30 at 22:00; regular additional offers end Feb 17 at 18:00, registration Feb 18 at 22:00. Check each university's latest prospectus.",
+      "note": "Objections go to the KICE website board until Nov 23, 18:00; the final answer key is published Dec 1 at 17:00. Based on the 2027 admissions plan. Regular applications run for at least three university-selected days within Jan 4–7. Early additional offers end Dec 29 at 18:00, registration Dec 30 at 22:00; regular additional offers end Feb 17 at 18:00, registration Feb 18 at 22:00. Check each university's latest prospectus.",
       "linkGrade": "CSAT grade calculator",
       "linkDday": "D-day calculator"
     },
@@ -49892,7 +49897,7 @@
       "title": "CSAT guide",
       "whatIs": {
         "title": "The 2027 CSAT at a glance",
-        "desc": "The 2027 CSAT takes place on November 19, 2026, with scores reported on December 11. This tool helps with supplies, the standard timetable, advance timing practice, and post-exam answer records. Official guidance and proctor instructions take priority at the test center."
+        "desc": "The 2027 CSAT was held on November 19, 2026. The answer key is finalized on December 1 and scores are reported on December 11; the next (2028) CSAT is on November 18, 2027. This tool helps with supplies, the standard timetable, advance timing practice, and post-exam answer records. Official guidance and proctor instructions take priority at the test center."
       },
       "dayBefore": {
         "title": "The day before",
@@ -49925,8 +49930,16 @@
         "title": "FAQ",
         "items": [
           {
-            "q": "When is the 2027 CSAT?",
-            "a": "November 19, 2026. Every candidate must be in their assigned room by 08:10. Scores are reported on December 11."
+            "q": "When are the 2027 CSAT final answers and scores released?",
+            "a": "The exam was held on Thursday, November 19, 2026. Objections to questions and answers are accepted on the KICE website board until 18:00 on Monday, November 23; after review, the final answer key is published at 17:00 on Tuesday, December 1. Scores are reported on Friday, December 11."
+          },
+          {
+            "q": "When is the 2028 CSAT?",
+            "a": "Thursday, November 18, 2027, with scores due on Friday, December 10 (Ministry of Education). From 2028 the Korean, Math and Inquiry electives are removed, and Social/Science Inquiry become Integrated Social Studies and Integrated Science. Check the timetable and detailed rules after KICE publishes the basic plan in March 2027."
+          },
+          {
+            "q": "How many took the 2027 CSAT?",
+            "a": "By the Ministry's provisional count (13:30 on Nov 19), 490,915 of 545,253 Korean-section applicants sat period 1, an absence rate of 9.97%. Some test sites were not yet included, so final figures released with the scoring results may differ."
           },
           {
             "q": "May I bring writing supplies?",
@@ -49952,6 +49965,10 @@
           {
             "label": "Ministry's 2027 CSAT candidate guidance (Nov 9, 2026)",
             "url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=107599&lev=0"
+          },
+          {
+            "label": "Ministry: 2028 CSAT date and score release",
+            "url": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=103512&lev=0"
           },
           {
             "label": "Ministry guidance text — Korea Policy Briefing",

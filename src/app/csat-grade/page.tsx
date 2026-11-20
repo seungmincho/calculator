@@ -6,7 +6,7 @@ import { FaqJsonLd } from '@/components/ToolFaq'
 import csatGradeMessages from '../../../messages/generated/ko/ns/csatGrade.json'
 import { CUT_YEAR, CSAT_YEAR, EST_YEAR, EST_SOURCE } from '@/utils/csatGrade'
 
-const TITLE = `수능 등급컷 계산기 - ${CSAT_YEAR} 대비·목표 비교 | 툴허브`
+const TITLE = `수능 등급컷 ${EST_YEAR} 가채점 예상 - 원점수 등급 계산기 | 툴허브`
 const DESC = `${EST_YEAR}학년도 수능 가채점 예상 등급컷(${EST_SOURCE.agency} 추정)과 ${CUT_YEAR}학년도 참고 컷, 그리고 영어·한국사 절대평가를 참고하세요. 점수 기록 12개·단순 목표 6개를 저장하고 직접 입력한 등급도 별도로 비교합니다. 공식 확정컷(12월 11일 성적 통지)이나 대학별 지원 판정은 아닙니다.`
 
 const sources = [

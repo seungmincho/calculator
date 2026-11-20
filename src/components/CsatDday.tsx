@@ -10,7 +10,8 @@ import { useSearchParams } from '@/hooks/useSearchParams'
 import { useHydrated } from '@/hooks/useHydrated'
 import ShareResult from '@/components/ShareResult'
 import AddToCalendar from '@/components/AddToCalendar'
-import { CSAT_EXAM_DATE, daysUntil } from '@/utils/csatGrade'
+import { CSAT_EXAM_DATE, CSAT_YEAR, daysUntil } from '@/utils/csatGrade'
+import { csatDate } from '@/utils/dday'
 import {
   kstParts, toMin, fmtMin, slotAt, countdown, timelineStatus, progress, cleanAnswer, isShortAnswer,
   SCHEDULE, INQ_DETAIL, EXAM_START, TIMELINE, SHEET, PRACTICE_TIMERS, CSAT_GUIDANCE_CHECKED, CSAT_GUIDANCE_URL, type TimelineItem,
@@ -24,6 +25,8 @@ const CHECK_GROUPS: Record<string, string[]> = {
 }
 const CHECK_KEYS = Object.values(CHECK_GROUPS).flat()
 const SCORE_DATE = TIMELINE.find((x) => x.key === 'score')!.start
+/** 다음 학년도 수능 (CSAT 표는 시행 연도 키: 2027학년도는 2026, 그다음은 2027) */
+const NEXT_EXAM = csatDate(CSAT_YEAR).date
 
 const load = <T,>(k: string, fb: T): T => {
   try { const v = localStorage.getItem(k); return v ? (JSON.parse(v) as T) : fb } catch { return fb }
@@ -53,7 +56,8 @@ function useDateFmt() {
   }
 }
 
-export default function CsatDday() {
+/** after: 빌드 시점(KST)이 시험 뒤 — 정적 HTML부터 시험 후 순서로 그린다 */
+export default function CsatDday({ after = false }: { after?: boolean }) {
   const t = useTranslations(NS)
   const sp = useSearchParams()
   const hydrated = useHydrated()
@@ -72,16 +76,29 @@ export default function CsatDday() {
 
       <div>
         <h1 className="text-2xl font-bold text-fg">{t('title')}</h1>
-        <p className="text-sm text-muted mt-1">{t('description')}</p>
+        <p className="text-sm text-muted mt-1">{t(after ? 'descriptionAfter' : 'description')}</p>
       </div>
 
-      <ExamEssentials />
-      <Hero />
-      <Checklist />
-      <Schedule />
-      <AnswerSheet />
-      <Timeline />
-      <Cheer name={name} setName={setName} />
+      {after ? (
+        <>
+          <Hero />
+          <Timeline />
+          <AnswerSheet />
+          <Cheer name={name} setName={setName} />
+          <Schedule />
+          <Checklist />
+        </>
+      ) : (
+        <>
+          <ExamEssentials />
+          <Hero />
+          <Checklist />
+          <Schedule />
+          <AnswerSheet />
+          <Timeline />
+          <Cheer name={name} setName={setName} />
+        </>
+      )}
       <Guide />
     </div>
   )
@@ -142,7 +159,18 @@ function Hero() {
       {c?.phase === 'after' && (
         <>
           <p className="mt-1 text-4xl sm:text-5xl font-bold tracking-tight">{t('hero.after')}</p>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3">
+            {([
+              ...(daysUntil(kstParts(now!).date, SCORE_DATE) >= 0 ? [['afterScore', SCORE_DATE] as const] : []),
+              ['afterNext', NEXT_EXAM] as const,
+            ]).map(([k, date]) => (
+              <div key={k} className="min-w-0 rounded-2xl bg-white/15 px-3 py-3 sm:p-4">
+                <p className="text-xs text-white/70">{t(`hero.${k}`, { year: CSAT_YEAR + 1, date: fmt(date) })}</p>
+                <p className="mt-0.5 text-2xl sm:text-3xl font-bold tabular-nums">{ddayText(daysUntil(kstParts(now!).date, date))}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
             <Link href="/csat-grade/" className="inline-flex items-center px-4 py-2.5 rounded-xl bg-white text-primary text-sm font-semibold">{t('hero.ctaGrade')}</Link>
             <a href="#csat-timeline" className="inline-flex items-center px-4 py-2.5 rounded-xl bg-white/15 text-white text-sm font-semibold">{t('hero.ctaTimeline')}</a>
           </div>

@@ -46,6 +46,8 @@ eq(timelineStatus(reg, '2026-12-20'), 'future', '등록 전')
 eq(timelineStatus(reg, '2026-12-22'), 'now', '등록 중')
 eq(timelineStatus(reg, '2026-12-24'), 'past', '등록 후')
 eq(timelineStatus(TIMELINE[0], '2026-11-19'), 'now', '수능 당일')
+eq(TIMELINE.every((x, i) => i === 0 || TIMELINE[i - 1].start <= x.start), true, '일정 시작일 오름차순')
+eq(timelineStatus(TIMELINE.find((x) => x.key === 'objection')!, '2026-11-23'), 'now', '이의신청 마감일')
 
 eq(progress({ a: true, b: false, c: true }, ['a', 'b', 'c', 'd']), { done: 2, total: 4 }, '체크리스트 진행')
 

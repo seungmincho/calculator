@@ -5,8 +5,22 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Tue, 17 Nov 2026 06:47:23 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2026 04:35:09 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[수능 D-day · 시간표]]></title>
+    <link>https://toolhub.ai.kr/csat-dday/</link>
+    <guid>https://toolhub.ai.kr/csat-dday/</guid>
+    <description><![CDATA[수능 날짜·시간표·준비물·공식 안내와 과목별 연습 타이머]]></description>
+    <pubDate>Thu, 19 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[수능 등급컷 계산기]]></title>
+    <link>https://toolhub.ai.kr/csat-grade/</link>
+    <guid>https://toolhub.ai.kr/csat-grade/</guid>
+    <description><![CDATA[전년도 추정컷·원점수 기록과 직접 입력 등급의 단순 목표 비교]]></description>
+    <pubDate>Thu, 19 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[화면 비율 계산]]></title>
     <link>https://toolhub.ai.kr/aspect-ratio/</link>
@@ -33,20 +47,6 @@
     <link>https://toolhub.ai.kr/color-converter/</link>
     <guid>https://toolhub.ai.kr/color-converter/</guid>
     <description><![CDATA[HEX3·6자리 변환·유효 색 공유·색상 값 복사 복구]]></description>
-    <pubDate>Mon, 16 Nov 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[수능 D-day · 시간표]]></title>
-    <link>https://toolhub.ai.kr/csat-dday/</link>
-    <guid>https://toolhub.ai.kr/csat-dday/</guid>
-    <description><![CDATA[수능 날짜·시간표·준비물·공식 안내와 과목별 연습 타이머]]></description>
-    <pubDate>Mon, 16 Nov 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[수능 등급컷 계산기]]></title>
-    <link>https://toolhub.ai.kr/csat-grade/</link>
-    <guid>https://toolhub.ai.kr/csat-grade/</guid>
-    <description><![CDATA[전년도 추정컷·원점수 기록과 직접 입력 등급의 단순 목표 비교]]></description>
     <pubDate>Mon, 16 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
