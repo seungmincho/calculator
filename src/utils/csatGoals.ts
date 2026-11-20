@@ -1,4 +1,4 @@
-import { CUTS, INQ_SOC, INQ_SCI, gradeOf, type CutKey } from './csatGrade.ts'
+import { CUTS, cutsFor, INQ_SOC, INQ_SCI, gradeOf, type CutKey } from './csatGrade.ts'
 import { evaluateCsatGradeAreas } from './csatGradeGoalEvaluation.ts'
 import { csatScoreSubject, isCsatRawScore, csatScoreStorageError, type CsatScoreField, type CsatScoreSnapshot, type CsatScoreError } from './csatScoreRecords.ts'
 
@@ -47,7 +47,7 @@ export function evaluateCsatGoal(snapshot: CsatScoreSnapshot, condition: { areas
       || field === 'math' && !['prob', 'calc', 'geo'].includes(snapshot.selection.math)
       || (field === 'inq1' || field === 'inq2') && !inquirySubjects.has(snapshot.selection[field])
     if (invalidElective || !isCsatRawScore(raw, field) || !Object.hasOwn(CUTS, subject)) { invalidFields.push(field); return null }
-    return { id, field, subject: subject as CutKey, grade: gradeOf(subject as CutKey, Number(raw)) }
+    return { id, field, subject: subject as CutKey, grade: gradeOf(subject as CutKey, Number(raw), cutsFor(snapshot.referenceYear)) }
   }
   for (const field of ['kor', 'math', 'eng'] as const) { const area = candidate(field, field); if (area) available.push(area) }
   const inquiry = (['inq1', 'inq2'] as const).map(field => candidate(field, 'inq')).filter((value): value is CsatGoalArea => value !== null)

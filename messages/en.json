@@ -40362,6 +40362,15 @@
     }
   },
   "csatGrade": {
+    "est": {
+      "toggleLabel": "Cutoff basis for Korean, Math and Inquiry",
+      "opt2027": "2027 preliminary",
+      "opt2026": "2026 reference",
+      "relative": "Korean, Math and Inquiry: uses preliminary cutoff estimates for the {year} CSAT (held November 19, 2026). These are {agency} estimates (checked {checked}); official cutoffs are confirmed with the December 11 score release.",
+      "referenceLabel": "Average grade on {year} preliminary estimates",
+      "dataSource": "Source: {agency} estimated cutoffs (checked {checked}). Compared with Etoos and Megastudy tables, grades 1–2 mostly agree within 2 points, while middle grades for some Inquiry subjects (Earth Science I, Physics I, Society and Culture, Economics, etc.) differ by 3–7 points between academies. Live preliminary estimates may change.",
+      "sourceLink": "{agency} estimated cutoff table (original)"
+    },
     "u": {
       "cut": {
         "korHj": "Korean · Speech & Writing",
@@ -40433,7 +40442,7 @@
       "cumTop": "Nominal cumulative band"
     },
     "title": "CSAT Grade Calculator",
-    "description": "Estimate Korean, Math and Inquiry grades using 2026 academic-year reference cutoffs; calculate English and Korean History using absolute grading rules.",
+    "description": "Estimate Korean, Math and Inquiry grades using 2027 preliminary (self-scored) cutoff estimates or 2026 reference cutoffs; calculate English and Korean History using absolute grading rules.",
     "subject": "Select Subject",
     "grade": "Grade",
     "cutoff": "Cutoff",
@@ -40448,7 +40457,7 @@
     "absoluteGrade": "Absolute Grading",
     "gradeTable": "Grade Cutoff Table",
     "gradeRange": "Score Range",
-    "disclaimer": "The Korean, Math and Inquiry tables are 2026 academic-year reference data. Use the official KICE score report for actual 2027 grades, standard scores and percentiles. Estimated raw-score cutoffs are distinct from official standard-score grade boundaries.",
+    "disclaimer": "The Korean, Math and Inquiry tables are prep-academy preliminary estimates (2027) or 2026 academic-year reference data. Use the official KICE score report released on December 11 for actual 2027 grades, standard scores and percentiles. Estimated raw-score cutoffs are distinct from official standard-score grade boundaries.",
     "guide": {
       "title": "CSAT Grade Guide",
       "grading": {
@@ -40473,7 +40482,7 @@
       },
       "whatIs": {
         "title": "What is the CSAT Grade Calculator?",
-        "description": "This tool calculates reference grades and grade sums from raw scores. It displays the 2027 academic-year schedule but uses 2026 reference raw-score estimates for Korean, Math and Inquiry. English and Korean History use 2027 absolute grading rules. It does not predict this year's relative grades or decide university-specific minimum requirements."
+        "description": "This tool calculates reference grades and grade sums from raw scores. For Korean, Math and Inquiry it uses 2027 CSAT preliminary cutoff estimates published by a prep academy by default, and you can switch to 2026 reference cutoffs. English and Korean History use 2027 absolute grading rules. It does not replace official grades or university-specific minimum requirements."
       },
       "howToUse": {
         "title": "How to Use",

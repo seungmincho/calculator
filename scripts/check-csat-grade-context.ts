@@ -98,9 +98,12 @@ for (const language of ['ko', 'en'] as const) {
   check(`${language}: static first render explains both years and calculation limits`, () => {
     const { html, t } = render(language)
     assert.ok(html.includes('id="csat-grade-context"'))
-    assert.ok(html.includes(t('context.relative', { year: 2026, currentYear: 2027 })))
-    assert.ok(html.includes(t('context.interpolation', { year: 2026 })))
-    assert.ok(html.includes(t('context.minimumLimit', { year: 2026 })))
+    // 기본 = 2027 가채점 예상(종로학원 추정), 출처 링크 포함
+    assert.ok(html.includes(t('est.relative', { year: 2027, agency: '종로학원', checked: '2026-11-20 09:03' })))
+    assert.ok(html.includes(t('context.interpolation', { year: 2027 })))
+    assert.ok(html.includes(t('context.minimumLimit', { year: 2027 })))
+    assert.ok(html.includes('b.jongro.co.kr/exam/ex261119/go3_cut.asp'))
+    assert.ok(html.includes('aria-pressed="true"'))
     assert.ok(html.includes('boardSeq=105756'))
     assert.ok(!html.includes('{year}'))
     assert.ok(!html.includes('확정 등급컷'))
@@ -108,9 +111,13 @@ for (const language of ['ko', 'en'] as const) {
   })
   check(`${language}: image and share text retain year, estimate and absolute-grading qualifiers`, () => {
     const { share, t } = render(language, 'kor=85&math=87&eng=90&hist=40&inq1=44&inq2=41', undefined, true)
-    assert.equal(share.card.label, t('context.referenceLabel', { year: 2026 }))
+    assert.equal(share.card.label, t('est.referenceLabel', { year: 2027 }))
     assert.equal(share.card.sub, t('context.shareScope', { year: 2027 }))
-    assert.ok(share.text.includes('2026')); assert.ok(share.text.includes('2027'))
+    assert.ok(share.text.includes('2027'))
+    // cut=2026 공유 링크는 2026 참고 표로 복원
+    const old = render(language, 'kor=85&math=87&eng=90&hist=40&inq1=44&inq2=41&cut=2026', undefined, true)
+    assert.equal(old.share.card.label, t('context.referenceLabel', { year: 2026 }))
+    assert.ok(old.share.text.includes('2026')); assert.ok(old.share.text.includes('2027'))
     assert.ok(share.card.rows[0].value.includes(t('context.estimatedShort')))
     assert.ok(share.card.rows[1].value.includes(t('context.estimatedShort')))
     assert.ok(share.card.rows[2].value.includes(t('context.absoluteShort')))
@@ -119,7 +126,7 @@ for (const language of ['ko', 'en'] as const) {
   })
   check(`${language}: table captions distinguish estimated raw cutoffs and absolute boundaries`, () => {
     const relative = render(language)
-    assert.ok(relative.html.includes(`<caption class="text-left text-sm font-medium text-body pb-3">${relative.t('context.relativeCaption', { year: 2026 })}</caption>`))
+    assert.ok(relative.html.includes(`<caption class="text-left text-sm font-medium text-body pb-3">${relative.t('context.relativeCaption', { year: 2027 })}</caption>`))
     const absolute = render(language, '', 'english')
     const table = absolute.html.slice(absolute.html.indexOf('<table'), absolute.html.indexOf('</table>'))
     assert.ok(table.includes(absolute.t('context.absoluteCaption', { year: 2027 })))

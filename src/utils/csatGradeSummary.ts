@@ -1,4 +1,4 @@
-import { CUTS, INQ_SOC, INQ_SCI, gradeOf, estimate, pointsToNext, gradeAverages, type CutKey } from './csatGrade.ts'
+import { CUTS, cutsFor, INQ_SOC, INQ_SCI, gradeOf, estimate, pointsToNext, gradeAverages, type CutKey } from './csatGrade.ts'
 import { CSAT_SCORE_FIELDS, csatScoreSubject, isCsatRawScore, type CsatScoreField, type CsatScoreSnapshot } from './csatScoreRecords.ts'
 
 interface RowBase { id: CsatScoreField; cut: CutKey | null; max: number; absolute: boolean }
@@ -14,12 +14,13 @@ export function csatRawGradeRow(snapshot: CsatScoreSnapshot, id: CsatScoreField)
   const validSubject = id === 'kor' ? ['lm', 'hj'].includes(snapshot.selection.kor)
     : id === 'math' ? ['prob', 'calc', 'geo'].includes(snapshot.selection.math)
       : id === 'inq1' || id === 'inq2' ? inquirySubjects.has(snapshot.selection[id]) : true
+  const set = cutsFor(snapshot.referenceYear)
   const cut = validSubject && Object.hasOwn(CUTS, subject) ? subject as CutKey : null
   const base = { id, cut, max: id === 'hist' || id === 'inq1' || id === 'inq2' ? 50 : 100, absolute: id === 'eng' || id === 'hist' }
   if (raw === '') return { ...base, status: 'missing', score: null, grade: null, est: null, next: null }
   if (!cut || !isCsatRawScore(raw, id)) return { ...base, status: 'invalid', score: null, grade: null, est: null, next: null }
   const score = Number(raw)
-  return { ...base, status: 'valid', score, grade: gradeOf(cut, score), est: estimate(cut, score), next: pointsToNext(cut, score) }
+  return { ...base, status: 'valid', score, grade: gradeOf(cut, score, set), est: estimate(cut, score, set), next: pointsToNext(cut, score, set) }
 }
 
 export function summarizeCsatRawGrades(snapshot: CsatScoreSnapshot) {

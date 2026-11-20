@@ -12,8 +12,8 @@ import type { CsatScoreSnapshot } from '@/utils/csatScoreRecords'
 import { evaluateCsatGoal } from '@/utils/csatGoals'
 import { summarizeCsatRawGrades, type CsatRawGradeRow } from '@/utils/csatGradeSummary'
 import {
-  CUTS, CUT_YEAR, CSAT_YEAR, TOP_PCT, INQ_SOC, INQ_SCI, type CutKey,
-  topRange, daysUntil, csatToday,
+  CUTS, CUT_YEAR, CSAT_YEAR, EST_YEAR, EST_SOURCE, TOP_PCT, INQ_SOC, INQ_SCI, type CutKey,
+  cutsFor, topRange, daysUntil, csatToday,
 } from '@/utils/csatGrade'
 
 type Id = 'kor' | 'math' | 'eng' | 'hist' | 'inq1' | 'inq2'
@@ -47,6 +47,8 @@ export default function CsatGrade() {
   const [minN, setMinN] = useState(3)
   const [minSum, setMinSum] = useState(7)
   const [tableKey, setTableKey] = useState<CutKey>('korLm')
+  // 기본 = 2027 가채점 예상. URL 에는 기본값이 아닐 때만 cut=2026
+  const [cutYear, setCutYear] = useState(EST_YEAR)
   const [today, setToday] = useState<string | null>(null)
 
   // Match static HTML first; restore the incoming query once before URL synchronization.
@@ -70,7 +72,8 @@ export default function CsatGrade() {
     setScores(restoredScores)
     setMinN([2, 3, 4].includes(Number(sp.get('minN'))) ? Number(sp.get('minN')) : 3)
     setMinSum(Number.isInteger(v) && v >= 2 && v <= 36 ? v : 7)
-    setFromLink([...IDS, ...Object.values(SEL_PARAM), 'subject', 'score', 'minN', 'minSum'].some(key => sp.has(key)))
+    setCutYear(sp.get('cut') === String(CUT_YEAR) ? CUT_YEAR : EST_YEAR)
+    setFromLink([...IDS, ...Object.values(SEL_PARAM), 'subject', 'score', 'minN', 'minSum', 'cut'].some(key => sp.has(key)))
     setUrlRestored(true)
   }
   useEffect(() => {
@@ -88,12 +91,15 @@ export default function CsatGrade() {
     for (const k of Object.keys(SEL_PARAM) as (keyof Sel)[]) q.set(SEL_PARAM[k], sel[k])
     q.set('minN', String(minN))
     q.set('minSum', String(minSum))
+    if (cutYear === EST_YEAR) q.delete('cut')
+    else q.set('cut', String(cutYear))
     q.delete('subject')
     q.delete('score')
     if (url.href !== window.location.href) window.history.replaceState(window.history.state, '', url)
-  }, [scores, sel, minN, minSum, urlRestored])
+  }, [scores, sel, minN, minSum, cutYear, urlRestored])
 
-  const currentSnapshot = useMemo<CsatScoreSnapshot>(() => ({ examYear: CSAT_YEAR, referenceYear: CUT_YEAR, scores, selection: sel as CsatScoreSnapshot['selection'] }), [scores, sel])
+  const isEst = cutYear === EST_YEAR
+  const currentSnapshot = useMemo<CsatScoreSnapshot>(() => ({ examYear: CSAT_YEAR, referenceYear: cutYear, scores, selection: sel as CsatScoreSnapshot['selection'] }), [scores, sel, cutYear])
   const summary = useMemo(() => summarizeCsatRawGrades(currentSnapshot), [currentSnapshot])
   const { rows, averages: avg } = summary
   const sums = [2, 3, 4].map(n => ({ n, result: evaluateCsatGoal(currentSnapshot, { areas: n, maxSum: n * 9 }) }))
@@ -121,10 +127,11 @@ export default function CsatGrade() {
     : t('rawSummary.inquiryPair', { a: rowGrade(rows[4]), b: rowGrade(rows[5]) })
   const bestThree = sums[1].result.sum ?? t('goals.needsInputShort')
   const heroSub = t('rawSummary.heroSub', { noEng: noEnglishAverage, s3: bestThree })
-  const referenceLabel = t('context.referenceLabel', { year: CUT_YEAR })
+  const referenceLabel = isEst ? t('est.referenceLabel', { year: EST_YEAR }) : t('context.referenceLabel', { year: CUT_YEAR })
   const shareScope = t('context.shareScope', { year: CSAT_YEAR })
+  const estArgs = { year: EST_YEAR, agency: EST_SOURCE.agency, checked: EST_SOURCE.checked }
 
-  const table = CUTS[tableKey]
+  const table = cutsFor(cutYear)[tableKey]
   const tableRow = rows.find((r) => r.cut === tableKey)
   const hasStd = table.cuts[0].std != null
 
@@ -137,7 +144,15 @@ export default function CsatGrade() {
 
       <section id="csat-grade-context" aria-labelledby="csat-grade-context-title" className="bg-subtle rounded-2xl p-5 space-y-2">
         <h2 id="csat-grade-context-title" className="font-semibold text-fg">{t('context.title')}</h2>
-        <p className="text-sm text-body">{t('context.relative', { year: CUT_YEAR, currentYear: CSAT_YEAR })}</p>
+        <div role="group" aria-label={t('est.toggleLabel')} className="flex flex-wrap items-center gap-2 pt-1">
+          <span className="text-sm text-sub">{t('est.toggleLabel')}</span>
+          {[EST_YEAR, CUT_YEAR].map((y) => (
+            <button key={y} type="button" onClick={() => setCutYear(y)} aria-pressed={cutYear === y} className={seg(cutYear === y)}>
+              {t(y === EST_YEAR ? 'est.opt2027' : 'est.opt2026')}
+            </button>
+          ))}
+        </div>
+        <p className="text-sm text-body">{isEst ? t('est.relative', estArgs) : t('context.relative', { year: CUT_YEAR, currentYear: CSAT_YEAR })}</p>
         <p className="text-sm text-body">{t('context.absolute', { year: CSAT_YEAR })}</p>
         <p className="text-sm text-sub">{t('context.schedule', { year: CSAT_YEAR })}</p>
         {days != null && days >= 0 && <p className="text-sm text-sub tabular-nums">{t('u.dday', { year: CSAT_YEAR, d: days === 0 ? 'D-Day' : `D-${days}` })}</p>}
@@ -176,7 +191,7 @@ export default function CsatGrade() {
               { label: t('u.inq'), value: t('context.shareInquiry', { grades: inq }) },
             ],
           }}
-          text={t('rawSummary.shareText', { avg: allAverage, s3: bestThree, year: CUT_YEAR, currentYear: CSAT_YEAR })}
+          text={t('rawSummary.shareText', { avg: allAverage, s3: bestThree, year: cutYear, currentYear: CSAT_YEAR })}
           fileName="csat-grade"
         />
       </div>
@@ -184,7 +199,7 @@ export default function CsatGrade() {
       {/* ── 과목별 입력 + 등급 ── */}
       <div className="ui-card p-4 sm:p-6">
         <h2 className="text-lg font-semibold text-fg">{t('u.inputTitle')}</h2>
-        <p className="text-xs text-muted mt-1">{t('u.inputNote', { year: CUT_YEAR })}</p>
+        <p className="text-xs text-muted mt-1">{t('u.inputNote', { year: cutYear })}</p>
         <ul className="mt-4 divide-y divide-line">
           {rows.map((r) => {
             const selKey = (r.id in SEL_OPTS ? r.id : null) as keyof Sel | null
@@ -232,7 +247,7 @@ export default function CsatGrade() {
                   </div>
                 </div>
                 {r.status === 'valid' && <p className="mt-2 text-xs text-sub tabular-nums">
-                  {r.absolute ? t('u.absNote') : t('context.relativeRow', { year: CUT_YEAR })}
+                  {r.absolute ? t('u.absNote') : t('context.relativeRow', { year: cutYear })}
                   {!r.absolute && from !== null && to !== null && <> · {t('u.topRange', { from, to })}</>}
                   {r.est && (
                     <> · {t('u.estStdPct', {
@@ -246,7 +261,7 @@ export default function CsatGrade() {
             )
           })}
         </ul>
-        <p className="text-xs text-sub mt-4">{t('context.interpolation', { year: CUT_YEAR })}</p>
+        <p className="text-xs text-sub mt-4">{t('context.interpolation', { year: cutYear })}</p>
       </div>
 
       <CsatScoreRecords
@@ -291,7 +306,7 @@ export default function CsatGrade() {
             ))}
           </div>
           <p className="text-xs text-muted mt-3">{t('goals.historyExcluded')}</p>
-          <p className="text-xs text-sub mt-2">{t('context.minimumLimit', { year: CUT_YEAR })}</p>
+          <p className="text-xs text-sub mt-2">{t('context.minimumLimit', { year: cutYear })}</p>
         </div>
       </div>
 
@@ -310,11 +325,16 @@ export default function CsatGrade() {
             {TABLE_KEYS.map((k) => <option key={k} value={k}>{t(`u.cut.${k}`)}</option>)}
           </select>
         </div>
-        <p className="text-xs text-muted">{table.absolute ? t('u.tableAbs') : t('u.tableRel', { year: CUT_YEAR })}</p>
-        {!table.absolute && <p className="text-xs text-faint">{t('u.dataSource', { year: CUT_YEAR })}</p>}
+        <p className="text-xs text-muted">{table.absolute ? t('u.tableAbs') : t('u.tableRel', { year: cutYear })}</p>
+        {!table.absolute && (isEst ? (
+          <p className="text-xs text-faint">
+            {t('est.dataSource', estArgs)}{' '}
+            <a href={EST_SOURCE.url} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4">{t('est.sourceLink', estArgs)}</a>
+          </p>
+        ) : <p className="text-xs text-faint">{t('u.dataSource', { year: CUT_YEAR })}</p>)}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <caption className="text-left text-sm font-medium text-body pb-3">{table.absolute ? t('context.absoluteCaption', { year: CSAT_YEAR }) : t('context.relativeCaption', { year: CUT_YEAR })}</caption>
+            <caption className="text-left text-sm font-medium text-body pb-3">{table.absolute ? t('context.absoluteCaption', { year: CSAT_YEAR }) : t('context.relativeCaption', { year: cutYear })}</caption>
             <thead>
               <tr className="border-b border-line text-left text-sub">
                 <th className="py-2 px-2 font-medium">{t('grade')}</th>

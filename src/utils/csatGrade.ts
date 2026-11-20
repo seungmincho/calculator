@@ -3,7 +3,7 @@
 // 상대평가 등급컷(국어·수학·탐구)은 2026학년도 수능(2025-11-13 시행) 참고 자료.
 // 기존 수록표는 평가원 표준점수·종로학원 원점수 역산 자료로 작성되었으나,
 // 각 수치의 원문 대응을 이번 변경에서 재검증하지 않았다. 공식 확정 원점수 컷으로 표시하지 않는다.
-// 2027학년도 자료로 자동 전환하지 않는다. 수치 갱신은 해당 학년도 원문 검증 후 별도로 수행한다.
+// 2027학년도 가채점 예상 컷(CUTS_2027_EST)은 별도 표이며 cutsFor(referenceYear)로 고른다.
 // 영어(100점, 10점 단위)·한국사(50점, 5점 단위)는 절대평가라 고정 규칙.
 
 /** 2027학년도 수능 시행일. ponytail: 매년 갱신 (평가원 시행기본계획 공고 기준) */
@@ -77,14 +77,53 @@ export const CUTS: Record<CutKey, CutTable> = {
   koreanHistory: { max: 50, absolute: true, cuts: absCuts(5, 40) },
 }
 
+/** 2027학년도 가채점 예상 컷의 학년도 (공식 확정 아님) */
+export const EST_YEAR = 2027
+/** 가채점 예상 컷 출처·확인 시각 (KST). 12/11 성적 통지 뒤 평가원 확정 표준점수로 교체 */
+export const EST_SOURCE = { agency: '종로학원', checked: '2026-11-20 09:03', url: 'https://b.jongro.co.kr/exam/ex261119/go3_cut.asp' }
+
+// 2027학년도 가채점 예상 — 종로학원 추정 등급컷(원점수/표준점수/백분위, 최고점 행 포함)을 그대로 옮김.
+// 교차 확인: 이투스·메가스터디 같은 시점 표와 1~2등급은 대체로 ±2점 안. 사탐·과탐 일부(지1·물1·사문 4~5등급,
+// 경제 2~4등급, 생2)는 기관 간 3~7점 차이. 국어·수학 표준점수는 기관 안내대로 실제와 1~2점 차이 날 수 있음.
+export const CUTS_2027_EST: Record<CutKey, CutTable> = {
+  korHj: rel('100,136,99|95,131,96|89,125,89|81,118,77|69,107,60|58,97,40|46,85,23|34,74,11|24,65,4'),
+  korLm: rel('100,139,100|91,131,96|84,125,89|77,118,77|65,107,60|54,97,40|41,85,23|30,74,11|20,65,4'),
+  mathProb: rel('100,137,100|89,129,96|83,124,89|76,119,77|65,111,60|42,94,40|22,79,23|15,74,11|10,70,4'),
+  mathCalc: rel('100,139,100|86,129,96|80,124,89|73,119,77|62,111,60|39,94,40|19,79,23|12,74,11|7,70,4'),
+  mathGeo: rel('100,139,100|87,129,96|81,124,89|74,119,77|63,111,60|40,94,40|20,79,23|13,74,11|8,70,4'),
+  ethics: rel('50,65,99|48,63,97|46,62,91|43,59,79|39,56,62|30,49,41|22,42,24|13,35,12|9,32,5'),
+  thought: rel('50,68,99|47,66,97|44,63,90|40,60,78|33,55,61|20,45,41|14,41,24|11,38,13|7,35,5'),
+  kgeo: rel('50,68,99|47,66,97|44,63,90|40,60,78|33,54,61|24,47,41|17,41,24|12,37,12|8,34,5'),
+  wgeo: rel('50,67,99|48,66,97|45,63,90|41,60,78|33,54,61|24,47,41|17,42,24|11,37,12|8,35,5'),
+  eastAsia: rel('50,70,100|45,66,96|41,62,90|37,59,78|32,55,62|23,48,41|13,40,24|9,37,12|7,35,6'),
+  world: rel('50,71,100|45,67,96|42,64,90|36,60,78|28,53,61|18,46,41|12,41,24|8,38,12|6,36,6'),
+  econ: rel('50,71,99|46,68,96|41,64,90|36,60,78|28,53,61|20,47,41|13,41,24|10,38,13|7,36,5'),
+  law: rel('50,73,100|43,67,96|40,64,90|33,58,78|28,54,62|20,47,41|14,41,24|10,38,12|7,35,5'),
+  society: rel('50,67,99|47,65,97|44,63,90|40,59,78|34,55,61|26,48,41|17,41,24|11,36,12|7,33,5'),
+  phy1: rel('50,70,99|46,66,96|42,63,90|38,60,78|30,54,61|22,47,41|14,41,24|11,38,13|7,35,5'),
+  chem1: rel('50,69,99|46,66,96|42,63,90|37,59,78|32,55,62|22,47,41|15,41,24|10,37,12|7,35,5'),
+  bio1: rel('50,68,99|48,67,97|43,63,90|39,59,78|32,53,61|26,48,42|19,42,24|12,37,12|8,33,5'),
+  earth1: rel('50,70,99|46,67,96|42,64,90|36,59,78|30,54,61|21,47,41|15,42,24|10,38,12|6,34,5'),
+  phy2: rel('50,70,99|46,67,96|42,64,90|36,59,78|31,55,62|17,45,41|12,41,25|9,38,13|6,36,5'),
+  chem2: rel('50,72,100|45,68,96|39,63,90|35,60,78|26,53,61|18,46,41|12,41,24|8,38,12|5,36,5'),
+  bio2: rel('50,71,100|45,66,96|41,63,90|37,60,78|30,54,61|18,45,41|14,42,25|10,38,12|7,36,5'),
+  earth2: rel('50,68,98|50,68,98|45,65,90|40,61,78|27,52,61|18,45,41|12,41,24|10,39,14|6,37,5'),
+  english: CUTS.english,
+  koreanHistory: CUTS.koreanHistory,
+}
+
+export type CutSet = Record<CutKey, CutTable>
+/** 참고 학년도 → 컷 표. 2027 = 가채점 예상, 그 밖 = 2026 참고 표 */
+export const cutsFor = (year: number): CutSet => (year === EST_YEAR ? CUTS_2027_EST : CUTS)
+
 /** 상대평가 등급별 누적 비율 상한(%) — 1등급 상위 4%, 2등급 11% … (평가원 9등급 기준) */
 export const TOP_PCT = [4, 11, 23, 40, 60, 77, 89, 96, 100]
 
 export const clampScore = (key: CutKey, v: number) =>
   Math.min(CUTS[key].max, Math.max(0, Math.round(Number.isFinite(v) ? v : 0)))
 
-export function gradeOf(key: CutKey, score: number): number {
-  for (const c of CUTS[key].cuts) if (score >= c.raw) return c.grade
+export function gradeOf(key: CutKey, score: number, set: CutSet = CUTS): number {
+  for (const c of set[key].cuts) if (score >= c.raw) return c.grade
   return 9
 }
 
@@ -92,10 +131,10 @@ export function gradeOf(key: CutKey, score: number): number {
 export const topRange = (grade: number): [number, number] => [grade === 1 ? 0 : TOP_PCT[grade - 2], TOP_PCT[grade - 1]]
 
 /** 한 등급 올리려면 필요한 원점수 (1등급이면 null) */
-export function pointsToNext(key: CutKey, score: number): number | null {
-  const g = gradeOf(key, score)
+export function pointsToNext(key: CutKey, score: number, set: CutSet = CUTS): number | null {
+  const g = gradeOf(key, score, set)
   if (g === 1) return null
-  return CUTS[key].cuts[g - 2].raw - score
+  return set[key].cuts[g - 2].raw - score
 }
 
 const lerp = (x: number, x0: number, y0: number, x1: number, y1: number) =>
@@ -106,8 +145,8 @@ const lerp = (x: number, x0: number, y0: number, x1: number, y1: number) =>
  * 표준점수: 수록 상단점 초과는 'ge'(이상), 최하단점 미만은 'lt'(미만)로 경계값만 반환.
  * 백분위: (만점,100) … 등급컷 … (0,0) 사이 보간.
  */
-export function estimate(key: CutKey, score: number): { std: number; bound: 'ge' | 'lt' | null; pct: number } | null {
-  const { max, cuts, top } = CUTS[key]
+export function estimate(key: CutKey, score: number, set: CutSet = CUTS): { std: number; bound: 'ge' | 'lt' | null; pct: number } | null {
+  const { max, cuts, top } = set[key]
   const stdPts = [...(top ? [{ raw: max, std: top.std }] : []), ...cuts.filter((c) => c.std != null)] as { raw: number; std: number }[]
   if (!stdPts.length) return null
 
