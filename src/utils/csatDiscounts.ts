@@ -5,7 +5,7 @@
 // 내년: 목록을 비우고 새로 조사한다. 지난해 행사를 그대로 두지 않는다.
 import { daysBetween } from './dday.ts'
 
-export const CHECKED = '2026-11-20'
+export const CHECKED = '2026-11-22'
 export const CATS = ['park', 'culture', 'food', 'travel', 'shop', 'etc'] as const
 export type Cat = (typeof CATS)[number]
 export type Status = 'upcoming' | 'ongoing' | 'ended'
@@ -37,6 +37,9 @@ export const DISCOUNTS: Discount[] = [
   { id: 'sono', cat: 'park', start: '2026-11-19', end: '2026-12-09', companions: 2, checked: c, url: 'https://www.koreancenter.or.kr/news/articleView.html?idxno=1440463' },
   { id: 'waterpia', cat: 'park', start: '2026-11-20', end: '2026-12-11', companions: 1, checked: c, url: 'https://biz.heraldcorp.com/article/10942153' },
   { id: 'spaVis', cat: 'park', end: '2026-12-31', checked: c, url: 'https://www.segye.com/newsView/20261114501445' },
+  // 11/22 추가 — 경주월드는 이투데이 11/19·세계일보 11/20 일치(12/31·부모 2명), 아쿠아플라넷 일산·광교는 연합 11/19·마이데일리 11/20(11/30)
+  { id: 'gyeongjuWorld', cat: 'park', end: '2026-12-31', companions: 2, checked: c, url: 'https://www.segye.com/newsView/20261120503208' },
+  { id: 'aquaPlanetIlsan', cat: 'park', start: '2026-11-19', end: '2026-11-30', companions: 3, checked: c, url: 'https://www.koreancenter.or.kr/news/articleView.html?idxno=1441764' },
   // culture
   { id: 'cgv', cat: 'culture', start: '2026-11-19', end: '2026-11-30', checked: c, url: 'https://www.newspim.com/news/view/20261118000244' },
   { id: 'megabox', cat: 'culture', start: '2026-11-17', end: '2026-12-02', checked: c, url: 'https://www.segye.com/newsView/20261118515168' },
@@ -44,6 +47,7 @@ export const DISCOUNTS: Discount[] = [
   { id: 'sweeneyTodd', cat: 'culture', start: '2026-12-04', end: '2027-01-17', checked: c, url: 'https://www.ajunews.com/view/20261119095157279' },
   { id: 'christmasCarol', cat: 'culture', start: '2026-12-02', end: '2026-12-27', companions: 1, checked: c, url: 'https://www.hankyung.com/article/202611196806i' },
   { id: 'gansong', cat: 'culture', start: '2026-11-19', end: '2026-12-27', companions: 1, checked: c, url: 'https://www.ajunews.com/view/20261119095157279' },
+  { id: 'sehwa', cat: 'culture', start: '2026-11-20', end: '2026-12-27', companions: 1, checked: c, url: 'https://www.ajunews.com/view/20261119095157279' },
   // food
   { id: 'shabuAllday', cat: 'food', start: '2026-11-19', end: '2026-11-22', checked: c, url: 'https://www.news1.kr/industry/distribution/6357579' },
   { id: 'kukuku', cat: 'food', end: '2026-11-23', checked: c, url: 'https://www.kmib.co.kr/article/20261119501605' },
@@ -52,14 +56,23 @@ export const DISCOUNTS: Discount[] = [
   { id: 'laGrillia', cat: 'food', end: '2026-11-30', checked: c, url: 'https://www.etoday.co.kr/news/view/2649658' },
   { id: 'street', cat: 'food', end: '2026-11-30', checked: c, url: 'https://www.etoday.co.kr/news/view/2649658' },
   { id: 'madForGarlic', cat: 'food', start: '2026-11-19', end: '2026-12-06', checked: c, url: 'https://www.kmib.co.kr/article/20261119501605' },
+  // 11/22 추가 — 호텔 뷔페는 연합 11/19·세계일보 11/20·21 일치, 아웃백·창고43은 다이닝브랜즈그룹 발표(더페어 11/19)·세계일보 11/21
+  { id: 'kensington', cat: 'food', start: '2026-11-19', end: '2026-11-30', checked: c, url: 'https://www.koreancenter.or.kr/news/articleView.html?idxno=1441764' },
+  { id: 'jwMarriott', cat: 'food', start: '2026-11-19', end: '2026-11-30', checked: c, url: 'https://www.koreancenter.or.kr/news/articleView.html?idxno=1441764' },
+  { id: 'changgo43', cat: 'food', start: '2026-11-19', end: '2026-11-30', checked: c, url: 'https://www.thefairnews.co.kr/news/articleView.html?idxno=94751' },
+  { id: 'outback', cat: 'food', end: '2026-12-11', checked: c, url: 'https://www.thefairnews.co.kr/news/articleView.html?idxno=94751' },
   // travel
   { id: 'jejuAir', cat: 'travel', end: '2026-12-16', companions: 1, checked: c, url: 'https://view.asiae.co.kr/article/2026111709171270673' },
   { id: 'eastarJet', cat: 'travel', start: '2026-11-19', end: '2026-12-31', companions: 1, checked: c, url: 'https://biz.heraldcorp.com/article/10938348' },
   { id: 'trinity', cat: 'travel', start: '2026-11-12', end: '2027-01-31', companions: 1, checked: c, url: 'https://economist.co.kr/article/view/ecn202611120016' },
   { id: 'korailTour', cat: 'travel', end: '2026-12-31', checked: c, url: 'https://www.news1.kr/realestate/general/6360032' },
   { id: 'forestStay', cat: 'travel', start: '2026-11-20', end: '2027-02-28', checked: c, url: 'https://www.news1.kr/local/daejeon-chungnam/6313891' },
+  // shop — 준오헤어 발표(서울경제TV 11/16), 세계일보 11/21 일치
+  { id: 'junoHair', cat: 'shop', start: '2026-11-19', end: '2026-12-31', companions: 1, checked: c, url: 'https://www.sentv.co.kr/article/view/sentv202611160183' },
   // etc
   { id: 'himart', cat: 'etc', start: '2026-11-19', checked: c, url: 'https://www.kmib.co.kr/article/20261119501605' },
+  // SKT 뉴스룸 보도자료(11/19). end = 그라운드시소·구글 AI 쿠폰 등록 마감
+  { id: 'skt', cat: 'etc', start: '2026-11-19', end: '2027-01-31', checked: c, url: 'https://news.sktelecom.com/233220' },
 ]
 
 export const isCat = (v: unknown): v is Cat => CATS.includes(v as Cat)

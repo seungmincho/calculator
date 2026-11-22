@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/connect4'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 
 const ROWS = 6
 const COLS = 7
@@ -49,8 +50,14 @@ export default function Connect4BoardComponent({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
-  const [kbActive, setKbActive] = useState(false) // hoverCol 을 키보드가 옮겼을 때만 커서 열을 읽어 준다
   const t = useTranslations('connect4')
+  const canPlay = !disabled && isMyTurn && !!myColor && !gameState.winner
+
+  // 클릭·터치·Enter 공통: 빈 칸이 남은 열이면 디스크를 떨어뜨린다. 키보드는 열만 고른다(1줄 보드).
+  const activate = (col: number) => {
+    if (canPlay && getDropRow(gameState.board, col) !== -1) onMove(col)
+  }
+  const kb = useBoardKeyboard(1, COLS, (_row, col) => activate(col), { row: 0, col: 3 })
 
   // Drop animation state
   const animRef = useRef<{
@@ -217,6 +224,13 @@ export default function Connect4BoardComponent({
         drawDisc(animPx, animY!, animColorRef.current)
       }
 
+      // 키보드 커서: 열 전체 테두리(가득 찬 열·상대 차례에도 보인다)
+      if (kb.active) {
+        ctx.strokeStyle = '#FFFFFF'
+        ctx.lineWidth = 3
+        ctx.strokeRect(PADDING + kb.cursor.col * CELL_SIZE + 2, PADDING + 2, CELL_SIZE - 4, ROWS * CELL_SIZE - 4)
+      }
+
       // 열 번호
       ctx.font = 'bold 14px sans-serif'
       ctx.fillStyle = '#BBDEFB'
@@ -229,7 +243,7 @@ export default function Connect4BoardComponent({
         )
       }
     },
-    [gameState, hoverCol, isMyTurn, myColor, disabled, animY]
+    [gameState, hoverCol, isMyTurn, myColor, disabled, animY, kb.active, kb.cursor]
   )
 
   // 캔버스 렌더링
@@ -261,21 +275,13 @@ export default function Connect4BoardComponent({
 
   // 클릭 처리
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
     const col = getCol(e)
-    if (col !== null) {
-      const row = getDropRow(gameState.board, col)
-      if (row !== -1) {
-        onMove(col)
-      }
-    }
+    if (col !== null) activate(col)
   }
 
   // 마우스 이동 처리
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const col = getCol(e)
-    setKbActive(false)
     setHoverCol(col)
   }
 
@@ -283,30 +289,6 @@ export default function Connect4BoardComponent({
   const handleMouseLeave = () => {
     setHoverCol(null)
   }
-
-  // 키보드 처리
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
-    const key = e.key
-    if (['ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
-      e.preventDefault()
-      setKbActive(true)
-
-      if (key === 'ArrowLeft') {
-        setHoverCol(prev => prev === null ? 3 : Math.max(0, prev - 1))
-      } else if (key === 'ArrowRight') {
-        setHoverCol(prev => prev === null ? 3 : Math.min(COLS - 1, prev + 1))
-      } else if (key === 'Enter' || key === ' ') {
-        if (hoverCol !== null) {
-          const row = getDropRow(gameState.board, hoverCol)
-          if (row !== -1) {
-            onMove(hoverCol)
-          }
-        }
-      }
-    }
-  }, [disabled, isMyTurn, myColor, gameState.winner, gameState.board, hoverCol, onMove])
 
   // 터치 위치를 열로 변환
   const getTouchCol = (e: React.TouchEvent<HTMLCanvasElement>): number | null => {
@@ -331,9 +313,10 @@ export default function Connect4BoardComponent({
     : winner ? (winner === 'draw' ? t('draw') : winner === myColor ? t('youWin') : t('youLose'))
     : currentTurn === myColor ? t('yourTurn') : t('opponentTurn')
   let cursorText = ''
-  if (kbActive && hoverCol !== null) {
-    const free = getDropRow(board, hoverCol) + 1
-    cursorText = `${t('keyboard.column', { col: hoverCol + 1 })}, ${free ? t('keyboard.free', { count: free }) : t('keyboard.full')}`
+  if (kb.active) {
+    const col = kb.cursor.col
+    const free = getDropRow(board, col) + 1
+    cursorText = `${t('keyboard.column', { col: col + 1 })}, ${free ? t('keyboard.free', { count: free }) : t('keyboard.full')}`
   }
 
   return (
@@ -343,9 +326,8 @@ export default function Connect4BoardComponent({
         ref={canvasRef}
         width={BOARD_WIDTH}
         height={BOARD_HEIGHT}
-        tabIndex={0}
+        {...kb.boardProps}
         aria-label={t('keyboard.board')}
-        role="application"
         style={{
           width: BOARD_WIDTH * scale,
           height: BOARD_HEIGHT * scale,
@@ -356,10 +338,8 @@ export default function Connect4BoardComponent({
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onKeyDown={handleKeyDown}
         onTouchStart={(e) => {
           e.preventDefault()
-          setKbActive(false)
           const col = getTouchCol(e)
           if (col !== null) setHoverCol(col)
         }}
@@ -371,14 +351,7 @@ export default function Connect4BoardComponent({
         onTouchEnd={(e) => {
           e.preventDefault()
           const col = getTouchCol(e)
-          if (col !== null) {
-            if (!disabled && isMyTurn && myColor && !gameState.winner) {
-              const row = getDropRow(gameState.board, col)
-              if (row !== -1) {
-                onMove(col)
-              }
-            }
-          }
+          if (col !== null) activate(col)
           setHoverCol(null)
         }}
         className="rounded-lg shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

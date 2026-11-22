@@ -8,6 +8,7 @@ import { nextLumpWindow } from './annualCarTax.ts'
 import { jongbuDates } from './propertyHoldingTax.ts'
 import { APPLY } from './jeongsi.ts'
 import { APPLY_PERIOD as EV_APPLY } from './energyVoucher.ts'
+import { SCHEDULE as SCHOLARSHIP } from './nationalScholarship.ts'
 
 /** due = 카드에 붙는 캘린더 일정 (key = homePage.deadline.<key>) */
 export interface SeasonPick { key: string; href: string; n: number; due?: { key: string; date: string } }
@@ -74,6 +75,7 @@ export function upcomingDeadlines(now: Date, picks: SeasonPick[] = [], within = 
   const list = [
     { key: 'csat', href: '/csat-dday', date: CSAT_EXAM_DATE },
     { key: 'jeongsiApplyEnd', href: '/jeongsi-2027', date: APPLY.end! },
+    { key: 'scholarship', href: '/national-scholarship', date: SCHOLARSHIP.end.slice(0, 10) }, // 국가장학금 1차 신청 마감(18시) — 해마다 재단 공고로 SCHEDULE 갱신
     { key: lump.open ? 'carTaxLumpDue' : 'carTaxLumpStart', href: '/annual-car-tax', date: lump.open ? lump.due : lump.start },
     { key: 'incomeTax', href: '/freelancer-tax', date: nextFiling(new Date(`${today}T00:00`)).dateStr },
     ...[y, y + 1].flatMap(yy => [

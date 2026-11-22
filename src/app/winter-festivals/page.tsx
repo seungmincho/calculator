@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 const ns = messages.winterFestivals
 const faqs = ns.guide.faq.items
 
-// Event 마크업은 넣지 않는다: 12곳 중 4곳만 날짜가 나왔고, 얼음 축제는 날씨로 자주 바뀌어 낡은 Event 정보가 남기 쉽다.
+// Event 마크업은 넣지 않는다: 날짜가 나온 곳이 일부뿐이고, 얼음 축제는 날씨로 자주 바뀌어 낡은 Event 정보가 남기 쉽다.
 export default function WinterFestivalsPage() {
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebPage',
@@ -35,7 +35,7 @@ export default function WinterFestivalsPage() {
     description: DESC,
     url: PAGE_URL,
     inLanguage: 'ko',
-    dateModified: '2026-11-07',
+    dateModified: '2026-11-22',
     mainEntity: {
       '@type': 'ItemList',
       name: '2026-27 겨울 축제',

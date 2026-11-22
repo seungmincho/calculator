@@ -23,6 +23,10 @@ assert.equal(g38('2026-12-31').promoUntil, '2026-12-31')
 assert.deepEqual(g38('2027-01-01').price, { input: 1.5, output: 7.5, cached: 0.15 })
 assert.equal(g38('2027-01-01').promoUntil, undefined)
 assert.equal(modelsOn('2027-01-01').find((x) => x.id === 'claude-sonnet-5-5'), m('claude-sonnet-5-5'), '프로모션 없는 모델은 그대로')
+// Gemini 4 Carbon: 11/30까지 $2/$10, 12/1부터 $4/$20
+const g4c = (d: string) => modelsOn(d).find((x) => x.id === 'gemini-4-carbon')!
+assert.equal(g4c('2026-11-30').price.input, 2)
+assert.deepEqual(g4c('2026-12-01').price, { input: 4, output: 20, cached: 0.2 })
 
 // 1M 입력 + 1M 출력, 캐시 없음 = 입력단가 + 출력단가
 const base = { rpd: 1, inTok: 1_000_000, outTok: 1_000_000, prefixPct: 0, hitPct: 0, batch: false }
@@ -38,16 +42,19 @@ close(requestCost(m('claude-opus-5-5'), { ...base, outTok: 0, prefixPct: 100, hi
 // 적중 0% → 캐시 쓰기 단가(1.25x)
 close(requestCost(m('claude-opus-5-5'), { ...base, outTok: 0, prefixPct: 100, hitPct: 0 }).total, 5, 'Opus 5.5 캐시 쓰기')
 // 캐시 쓰기 단가 없는 모델은 입력 단가
-close(requestCost(m('gemini-3.5-flash'), { ...base, outTok: 0, prefixPct: 100, hitPct: 0 }).total, 1.5, 'Gemini 캐시 쓰기=입력')
-// 50/50 혼합
-close(requestCost(m('claude-sonnet-5-5'), { ...base, outTok: 0, prefixPct: 50, hitPct: 50 }).total, 0.5 * 2 + 0.25 * 0.2 + 0.25 * 2.5, 'Sonnet 혼합')
-// Gemini 3.1 Pro 배치: 캐시 적중은 할인 없음
-close(requestCost(m('gemini-3.1-pro-preview'), { ...base, inTok: 100_000, outTok: 0, prefixPct: 100, hitPct: 100, batch: true }).total, 0.1 * 0.2, 'Gemini Pro 배치 캐시')
+close(requestCost(m('gemini-4-hydrogen'), { ...base, outTok: 0, prefixPct: 100, hitPct: 0 }).total, 1.5, 'Gemini 캐시 쓰기=입력')
+// 50/50 혼합 (Sonnet 5.5 캐시 읽기 $0.10 = 입력 0.05배)
+close(requestCost(m('claude-sonnet-5-5'), { ...base, outTok: 0, prefixPct: 50, hitPct: 50 }).total, 0.5 * 2 + 0.25 * 0.1 + 0.25 * 2.5, 'Sonnet 혼합')
+// batchCachedFull 모델의 배치: 캐시 적중은 할인 없음 (현재 목록엔 없어 가상 모델로 검사)
+close(requestCost({ ...m('gemini-4-hydrogen'), batchCachedFull: true }, { ...base, inTok: 100_000, outTok: 0, prefixPct: 100, hitPct: 100, batch: true }).total, 0.1 * 0.075, '배치 캐시 할인 없음')
 
 // 장문 단가: 272K 초과 시 전체 요청에 적용
-assert.equal(tierPrice(m('gpt-6.1-sol'), 272_000).input, 2)
-assert.equal(tierPrice(m('gpt-6.1-sol'), 272_001).input, 4)
-close(requestCost(m('gpt-6.1-sol'), { ...base, inTok: 500_000, outTok: 0 }).total, 0.5 * 4, 'GPT-6.1 Sol 장문')
+assert.equal(tierPrice(m('gpt-6.2-sol'), 272_000).input, 2)
+assert.equal(tierPrice(m('gpt-6.2-sol'), 272_001).input, 4)
+close(requestCost(m('gpt-6.2-sol'), { ...base, inTok: 500_000, outTok: 0 }).total, 0.5 * 4, 'GPT-6.2 Sol 장문')
+// Claude Haiku 5.5: 입력 100K 초과 요청 전체에 $0.5/$2.5
+assert.equal(tierPrice(m('claude-haiku-5-5'), 100_000).input, 0.1)
+close(requestCost(m('claude-haiku-5-5'), { ...base, inTok: 200_000, outTok: 100_000 }).total, 0.2 * 0.5 + 0.1 * 2.5, 'Haiku 5.5 장문')
 
 // 월 = 일 × 30, 절감액
 const s = { rpd: 1000, inTok: 2000, outTok: 500, prefixPct: 50, hitPct: 90, batch: false }
@@ -61,8 +68,8 @@ assert.equal(requestCost(m('gpt-6-luna'), { ...s, inTok: NaN, outTok: -5 }).tota
 // 컨텍스트
 assert.equal(contextFit(m('claude-haiku-4-5'), 190_000, 5_000).ok, true)
 assert.equal(contextFit(m('claude-haiku-4-5'), 199_000, 5_000).ok, false)
-assert.equal(contextFit(m('gpt-6-astra'), 950_000, 1_000).ok, false, 'OpenAI 최대 입력 922K')
-assert.equal(contextFit(m('gemini-3.5-flash'), 1000, 70_000).outOver, true, '최대 출력 초과')
+assert.equal(contextFit(m('gpt-6.2-astra'), 950_000, 1_000).ok, false, 'OpenAI 최대 입력 922K')
+assert.equal(contextFit(m('gemini-4-carbon'), 1000, 70_000).outOver, true, '최대 출력 초과')
 
 // 비교: 오름차순
 const rows = compareModels(MODELS, s)

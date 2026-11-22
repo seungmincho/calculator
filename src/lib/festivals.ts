@@ -4,7 +4,8 @@
 //
 // 공지가 나오면(날짜만 바꾸면 된다):
 //   1) SOURCES 에 출처 한 줄 추가(키 = <id>2027) — 주최 측 누리집·지자체 보도자료·visitkorea.or.kr 만. 여행사·블로그 날짜는 쓰지 않는다
-//      (visitkorea 에 "2026년 축제 기준, 2027년은 업데이트 예정" 문구가 붙은 날짜는 잠정치라 쓰지 않는다)
+//      (visitkorea 에 "2026년 축제 기준, 2027년은 업데이트 예정" 문구가 붙은 날짜는 잠정치라 쓰지 않는다.
+//       visitkorea 는 바뀐 날짜를 늦게 반영한다 — 해운대 2026-11-22 에도 옛 11.29~1.18 그대로. 지자체 공지가 우선)
 //   2) 그 축제 dates 에 { start, end, source }  3) messages ko·en guide.sources.items.<키> 라벨
 //   4) node scripts/check-winter-festivals.ts
 // 연기·조기 종료되면 dates 를 실제 기간으로 고친다. 시즌이 끝나면 last ← 실제 기간, dates ← null, SEASON 을 한 해 올린다.
@@ -20,6 +21,8 @@ export type FestivalType = typeof FESTIVAL_TYPES[number]
 export type FestivalRegion = typeof FESTIVAL_REGIONS[number]
 export type Sort = typeof SORTS[number]
 
+// 2026-11-22 재확인: hwacheon2027(누리집 2027.1.9~1.31, D-48)·morningcalm2027(누리집 "12월4일 오픈")·seoulLantern2027(누리집 2026.12.11~2027.1.31) 그대로.
+// 공지 전 유지(11-22): 평창·홍천(11/16 "내년 1월"만)·철원·포천·태백·대관령, 광복로(중구청 "2026.12.~2027.1."만, 날짜 없음).
 export const SOURCES = {
   hwacheon2027: 'https://www.narafestival.com/01_icenara/',
   hwacheon2026: 'https://www.asiae.co.kr/en/article/2026010619092329306',
@@ -33,8 +36,9 @@ export const SOURCES = {
   morningcalm2026: 'https://www.gg.go.kr/myggd/vol198/1_1.php',
   seoulLantern2027: 'https://www.stolantern.com/',
   seoulLantern2026: 'https://mediahub.seoul.go.kr/archives/2016499',
-  haeundae2027: 'https://english.visitkorea.or.kr/enu/ATR/SI_EN_3_2_1.jsp?cid=3565954',
+  haeundae2027: 'https://www.busan.go.kr/eng/bsevents/1762645', // 2026-11-22 확인. 해운대구 누리집도 점등식 11.28(토)
   haeundae2026: 'https://www.busan.go.kr/eng/bsevents/1705138',
+  hampyeong2027: 'https://www.hpftf.or.kr/contentsView.do?pageId=www259', // 2026-11-22 확인(함평축제관광재단 축제개요)
   hampyeong2026: 'https://m.go.seoul.co.kr/news/2025/11/30/20251130500111',
   gwangbok2026: 'https://busan.breaknews.com/41979',
   cancel2026: 'https://www.twig24.com/news/2026/01/07/20260107500018',
@@ -75,9 +79,11 @@ export const FESTIVALS = [
     dates: { start: '2026-12-11', end: '2027-01-31', source: 'seoulLantern2027' },
     last: { start: '2025-12-12', end: '2026-01-18', source: 'seoulLantern2026' } },
   { id: 'haeundae', type: 'light', region: 'other', url: 'https://www.haeundae.go.kr/tour/index.do?menuCd=DOM_000000309006000000',
-    dates: { start: '2026-11-29', end: '2027-01-18', source: 'haeundae2027' },
+    dates: { start: '2026-11-28', end: '2027-01-10', source: 'haeundae2027' },
     last: { start: '2025-11-29', end: '2026-01-18', source: 'haeundae2026' } },
-  { id: 'hampyeong', type: 'light', region: 'other', url: 'https://www.hpftf.or.kr/', dates: null,
+  // 2026 은 축제 12.18~12.31(14일). 경관 조명은 2027-01-17 까지 켠다는 보도(위키트리 2026-11-18)만 있어 축제 기간으로 둔다
+  { id: 'hampyeong', type: 'light', region: 'other', url: 'https://www.hpftf.or.kr/',
+    dates: { start: '2026-12-18', end: '2026-12-31', source: 'hampyeong2027' },
     last: { start: '2025-11-28', end: '2026-01-11', source: 'hampyeong2026' } },
   { id: 'gwangbok', type: 'light', region: 'other', url: 'https://www.bsjunggu.go.kr/', dates: null,
     last: { start: '2025-12-05', end: '2026-02-22', source: 'gwangbok2026' } },

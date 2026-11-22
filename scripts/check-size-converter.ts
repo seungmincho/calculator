@@ -153,4 +153,22 @@ for (const t of TABS) {
 assert.equal(limitUsd('us', 'list'), 200)
 assert.equal(limitUsd('other', 'list'), 150)
 
+// ── 체계만 바꿔도 고른 줄이 그대로(같은 표기가 여러 줄인 열: 반지 US, 아동 JP 등) — 컴포넌트 pick(i, j) 와 같은 규칙, URL 왕복 포함
+for (const t of TABS) {
+  const tb = TABLES[t]
+  tb.rows.forEach((r, i) => tb.cols.forEach((c, j) => {
+    const v = r.cells[j]
+    const st: State = rowOf(t, j, v) === i ? { t, s: c, v } : { t, s: c, v, a: r.cells[0] }
+    assert.equal(selectedRow(st), i, t + " row " + i + " col " + c)
+    const q = new URLSearchParams(toQuery(st))
+    assert.equal(selectedRow(parseState((k) => q.get(k))), i, t + " row " + i + " col " + c + " url " + q)
+  }))
+}
+{ // 반지 6호 → US 로 바꾸면 3.5 이고 여전히 6호
+  const i = TABLES.r.rows.findIndex((r) => r.cells[0] === '6'), j = col('r', 'us')
+  const v = TABLES.r.rows[i].cells[j]
+  assert.notEqual(rowOf('r', j, v), i) // 겹치는 표기라 a 가 필요
+  assert.equal(selectedRow({ t: 'r', s: 'us', v, a: '6' }), i)
+  assert.equal(selectedRow({ t: 'r', s: 'us', v, a: '999' }), rowOf('r', j, v)) // 엉뚱한 a 는 무시
+}
 console.log('check-size-converter: all passed')

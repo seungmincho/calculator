@@ -51,11 +51,12 @@ export default function SizeConverter() {
     const qs = toQuery(next)
     window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`)
   }
-  // 이 줄을 고른다. 지금 체계의 표기가 다른 줄과 겹치면(반지 US 등) 첫 열로 바꿔 그 줄을 정확히 고른다
-  const selectRow = (i: number) => {
-    const v = tb.rows[i].cells[ci]
-    commit(rowOf(s.t, ci, v) === i ? { ...s, v } : { t: s.t, s: tb.cols[0], v: tb.rows[i].cells[0] })
+  // 체계 j 로 줄 i 를 고른다. 그 표기가 다른 줄과 겹치면(반지 US 3.5 = 5·6호 등) 첫 열 값 a 로 줄을 지킨다
+  const pick = (i: number, j: number) => {
+    const v = tb.rows[i].cells[j]
+    commit(rowOf(s.t, j, v) === i ? { t: s.t, s: tb.cols[j], v } : { t: s.t, s: tb.cols[j], v, a: tb.rows[i].cells[0] })
   }
+  const selectRow = (i: number) => pick(i, ci)
   const switchTab = (tab: TabId) => {
     if (tab === s.t) return
     setMeasure('')
@@ -112,14 +113,14 @@ export default function SizeConverter() {
             <div className="min-w-0">
               <label htmlFor="sc-system" className={labelCls}>{t('input.system')}</label>
               <select id="sc-system" value={s.s}
-                onChange={(e) => { const j = tb.cols.indexOf(e.target.value); commit({ t: s.t, s: e.target.value, v: tb.rows[ri].cells[j] }) }}
+                onChange={(e) => pick(ri, tb.cols.indexOf(e.target.value))}
                 className="ui-field w-full min-h-11 px-3 py-3 text-base">
                 {tb.cols.map((c) => <option key={c} value={c}>{t(`cols.${c}`)}</option>)}
               </select>
             </div>
             <div className="min-w-0">
               <label htmlFor="sc-size" className={labelCls}>{t('input.size')}</label>
-              <select id="sc-size" value={s.v} onChange={(e) => commit({ ...s, v: e.target.value })}
+              <select id="sc-size" value={s.v} onChange={(e) => commit({ t: s.t, s: s.s, v: e.target.value })}
                 className="ui-field w-full min-h-11 px-3 py-3 text-base tabular-nums">
                 {opts.map((o) => <option key={o.v} value={o.v}>{o.v}</option>)}
               </select>

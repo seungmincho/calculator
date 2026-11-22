@@ -7,6 +7,7 @@ import { Trophy, RotateCcw, Undo2, Lightbulb, Volume2, VolumeX, Play } from 'luc
 import { glassCard, glassInset } from '@/lib/glass'
 import { useGameAchievements } from '@/hooks/useGameAchievements'
 import GameAchievements, { AchievementToast } from '@/components/GameAchievements'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 
 // ══════════════════════════════════════════════════════════════════════════════
 // Types
@@ -43,6 +44,9 @@ interface MoveRecord {
   scoreChange: number
   wasFromStock: boolean // stock -> waste
 }
+
+// 키보드로 집은 카드: 커서 칸(row, col)에 있는 더미의 맨 위 count 장
+interface Held { row: number; col: number; count: number }
 
 interface HintInfo {
   fromType: PileType
@@ -140,6 +144,19 @@ function canStackOnFoundation(card: Card, pile: Card[]): boolean {
   if (pile.length === 0) return card.rank === 1
   const top = pile[pile.length - 1]
   return card.suit === top.suit && card.rank === top.rank + 1
+}
+
+// 키보드 커서 격자 2×7 = 화면 배치 그대로. 윗줄 스톡·웨이스트·(빈 칸)·파운데이션 4개, 아랫줄 태블로 7열.
+function pileAt(row: number, col: number): { type: PileType; index: number } {
+  if (row === 1) return { type: 'tableau', index: col }
+  if (col === 0) return { type: 'stock', index: 0 }
+  if (col === 1) return { type: 'waste', index: 0 }
+  return { type: 'foundation', index: col - 3 }
+}
+
+// 태블로 더미에 놓을 때 집은 줄에서 그 더미 맨 위에 이어지는 카드 위치(빈 열이면 K). 없으면 -1.
+function fitIndex(cards: Card[], pile: Card[]): number {
+  return cards.findIndex(c => pile.length ? canStackOnTableau(c, pile[pile.length - 1]) : c.rank === 13)
 }
 
 function loadHighScore(): number {
@@ -267,6 +284,8 @@ export default function Solitaire() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [, forceRender] = useState(0)
+  const [held, setHeld] = useState<Held | null>(null)
+  const [kbMsg, setKbMsg] = useState('')
 
   const { achievements, newlyUnlocked, unlockedCount, totalCount, recordGameResult, dismissNewAchievements } = useGameAchievements()
   const resultRecordedRef = useRef(false)
@@ -295,6 +314,8 @@ export default function Solitaire() {
   const rafRef = useRef(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const gameStartedRef = useRef(false)
+  // 첫 조작 때 타이머 시작: ref 만 바꾸면 effect 가 다시 돌지 않아(이미 playing) 시간이 0:00 에 멈췄다 → state 로 트리거
+  const [started, setStarted] = useState(false)
   const gameStateRef = useRef<GameState>('playing')
   const scoreRef = useRef(0)
   const moveCountRef = useRef(0)
@@ -395,6 +416,7 @@ export default function Solitaire() {
     wasteRef.current = []
     undoStackRef.current = []
     dragRef.current = null
+    setHeld(null)
     hintRef.current = null
     animatingRef.current = []
     celebrationRef.current = []
@@ -405,6 +427,7 @@ export default function Solitaire() {
     setScore(0)
     setElapsedTime(0)
     gameStartedRef.current = false
+    setStarted(false)
     resultRecordedRef.current = false
 
     soundEngineRef.current.shuffle(soundEnabledRef.current)
@@ -428,13 +451,13 @@ export default function Solitaire() {
   // ── Timer ──
   useEffect(() => {
     if (timerRef.current) clearInterval(timerRef.current)
-    if (gameState === 'playing' && gameStartedRef.current) {
+    if (gameState === 'playing' && started) {
       timerRef.current = setInterval(() => {
         setElapsedTime(prev => prev + 1)
       }, 1000)
     }
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [gameState])
+  }, [gameState, started])
 
   const formatTime = useCallback((seconds: number): string => {
     const m = Math.floor(seconds / 60)
@@ -537,8 +560,7 @@ export default function Solitaire() {
     if (!gameStartedRef.current) {
       gameStartedRef.current = true
       setElapsedTime(0)
-      // re-trigger timer
-      setGameState(prev => prev)
+      setStarted(true)
     }
 
     if (stockRef.current.length === 0) {
@@ -584,6 +606,7 @@ export default function Solitaire() {
     if (undoStackRef.current.length === 0 || gameStateRef.current !== 'playing') return
 
     const record = undoStackRef.current.pop()!
+    setHeld(null)
 
     if (record.wasFromStock) {
       if (record.from.type === 'waste' && record.to.type === 'stock') {
@@ -856,7 +879,7 @@ export default function Solitaire() {
     if (!gameStartedRef.current) {
       gameStartedRef.current = true
       setElapsedTime(0)
-      setGameState('playing') // retrigger timer
+      setStarted(true)
     }
 
     hintRef.current = null
@@ -1133,6 +1156,89 @@ export default function Solitaire() {
     }
   }, [hitTest, tryMoveToFoundation])
 
+  // ── Keyboard play: 방향키로 더미를 고르고 Enter 로 집기·놓기, Esc 취소 ──
+  const pileCards = (row: number, col: number): Card[] => {
+    const p = pileAt(row, col)
+    if (p.type === 'tableau') return tableauRef.current[p.index]
+    if (p.type === 'foundation') return foundationRef.current[p.index]
+    return p.type === 'waste' ? wasteRef.current : stockRef.current
+  }
+  const cardName = (c: Card) => t('keyboard.card', { suit: t(`keyboard.suits.${c.suit}`), rank: rankLabel(c.rank) })
+  const runName = (cards: Card[]) => cards.length > 1 ? t('keyboard.run', { card: cardName(cards[0]), count: cards.length }) : cardName(cards[0])
+  const pileName = (p: { type: PileType; index: number }) =>
+    p.type === 'tableau' ? `${t('tableau')} ${p.index + 1}` : p.type === 'foundation' ? `${t('foundation')} ${p.index + 1}` : t(p.type)
+  // 파운데이션에는 맨 아래(마지막) 한 장만, 태블로에는 이어지는 카드부터 놓을 수 있다
+  const canDrop = (cards: Card[], row: number, col: number) => {
+    const p = pileAt(row, col)
+    if (!cards.length) return false
+    // 윗줄 빈 칸(0,2)은 pileAt 이 foundation -1 을 돌려준다 → 놓을 곳 아님
+    if (p.type === 'foundation') return !!foundationRef.current[p.index] && canStackOnFoundation(cards[cards.length - 1], foundationRef.current[p.index])
+    return p.type === 'tableau' && fitIndex(cards, tableauRef.current[p.index]) >= 0
+  }
+
+  const activate = (row: number, col: number) => {
+    if (gameStateRef.current !== 'playing' || autoCompleteRunning.current) return
+    hintRef.current = null
+
+    if (!held) {
+      if (row === 0 && col === 0) {
+        const drawing = stockRef.current.length > 0
+        const recycling = !drawing && wasteRef.current.length > 0
+        clickStock()
+        setKbMsg(drawing ? t('keyboard.drew', { card: cardName(wasteRef.current[wasteRef.current.length - 1]) }) : recycling ? t('keyboard.recycled') : '')
+        return
+      }
+      // 태블로는 앞면 카드 줄 전체, 웨이스트·파운데이션은 맨 위 한 장을 집는다(놓을 때 맞는 만큼만 옮긴다)
+      const pile = pileCards(row, col)
+      const first = pile.findIndex(c => c.faceUp)
+      const count = first < 0 ? 0 : row === 1 ? pile.length - first : 1
+      if (!count) {
+        soundEngineRef.current.invalidMove(soundEnabledRef.current)
+        return
+      }
+      const cards = pile.slice(-count)
+      const targets: string[] = []
+      for (let r = 0; r < 2; r++) for (let c = 0; c < 7; c++) if (canDrop(cards, r, c)) targets.push(pileName(pileAt(r, c)))
+      setHeld({ row, col, count })
+      setKbMsg(`${t('keyboard.picked', { cards: runName(cards) })} ${targets.length ? t('keyboard.targets', { targets: targets.join(', ') }) : t('keyboard.noTargets')}`)
+      return
+    }
+
+    // 놓기: 마우스 드롭과 같은 endDrag 로 처리해 점수·되돌리기·승리 판정을 그대로 쓴다.
+    // 같은 더미에서 다시 Enter = 그 자리 클릭 = 맨 위 카드를 파운데이션으로 보내기.
+    const src = pileAt(held.row, held.col)
+    const srcPile = pileCards(held.row, held.col)
+    const same = held.row === row && held.col === col
+    const target = pileAt(row, col)
+    let cards = srcPile.slice(-held.count)
+    if (cards.length !== held.count) { setHeld(null); return } // 집은 뒤 더미가 바뀌었으면 내려놓기만
+    if (same || target.type === 'foundation') cards = cards.slice(-1)
+    else if (target.type === 'tableau') cards = cards.slice(Math.max(0, fitIndex(cards, tableauRef.current[target.index])))
+    const layout = getLayout()
+    const at = (r: number, c: number) => ({ x: layout.tableauXs[c] + CARD_W / 2, y: (r ? TABLEAU_Y : FOUNDATION_Y) + CARD_H / 2 })
+    const from = at(held.row, held.col)
+    const to = at(row, col)
+    const before = undoStackRef.current[undoStackRef.current.length - 1]
+    dragRef.current = { cards, sourceType: src.type, sourceIndex: src.index, offsetX: 0, offsetY: 0, startX: from.x, startY: from.y }
+    endDrag(to.x, to.y)
+    const rec = undoStackRef.current[undoStackRef.current.length - 1]
+    if (rec !== before) {
+      setHeld(null)
+      const revealed = rec.flippedCard ? srcPile[srcPile.length - 1] : null
+      setKbMsg(`${t('keyboard.moved', { cards: runName(rec.cards), to: pileName(rec.to) })}${revealed ? ` ${t('keyboard.revealed', { card: cardName(revealed) })}` : ''}`)
+    } else if (same) {
+      setHeld(null)
+      setKbMsg(t('keyboard.putBack'))
+    } else {
+      setKbMsg(t('keyboard.cannotDrop'))
+    }
+  }
+  const kb = useBoardKeyboard(2, 7, activate, { row: 0, col: 0 }, (r, c) => r === 0 && c === 2)
+
+  // rAF 렌더 루프는 ref 만 읽는다
+  const kbViewRef = useRef<{ active: boolean; cursor: { row: number; col: number }; held: Held | null }>({ active: false, cursor: { row: 0, col: 0 }, held: null })
+  useEffect(() => { kbViewRef.current = { active: kb.active, cursor: kb.cursor, held } })
+
   // ── Canvas rendering ──
   const drawCard = useCallback((ctx: CanvasRenderingContext2D, card: Card, x: number, y: number, faceUp: boolean, highlighted: boolean = false) => {
     const dark = isDarkRef.current
@@ -1381,6 +1487,8 @@ export default function Solitaire() {
     const layout = getLayout()
     const hint = hintRef.current
     const hintBlink = hint ? Math.sin(hintBlinkRef.current * 4) > 0 : false
+    const kv = kbViewRef.current
+    const isHeld = (r: number, c: number) => kv.held?.row === r && kv.held.col === c
 
     // ── Draw stock pile ──
     if (stockRef.current.length === 0) {
@@ -1421,7 +1529,7 @@ export default function Solitaire() {
       const isDragging = dragRef.current && dragRef.current.sourceType === 'waste'
       if (!isDragging) {
         const wasteHighlight = !!(hintBlink && hint && hint.fromType === 'waste' && hint.cardId === topWaste.id)
-        drawCard(ctx, topWaste, layout.wasteX, layout.wasteY, true, wasteHighlight)
+        drawCard(ctx, topWaste, layout.wasteX, layout.wasteY, true, wasteHighlight || isHeld(0, 1))
       }
     }
 
@@ -1436,7 +1544,7 @@ export default function Solitaire() {
       } else {
         const top = pile[pile.length - 1]
         const isTargetHighlight = !!(hintBlink && hint && hint.toType === 'foundation' && hint.toIndex === fi)
-        drawCard(ctx, top, fx, FOUNDATION_Y, true, isTargetHighlight)
+        drawCard(ctx, top, fx, FOUNDATION_Y, true, isTargetHighlight || isHeld(0, fi + 3))
       }
     }
 
@@ -1473,8 +1581,22 @@ export default function Solitaire() {
 
         const isHinted = !!(hintBlink && hint && hint.fromType === 'tableau' && hint.fromIndex === ti && hint.cardId === card.id)
         const isTargetHint = !!(hintBlink && hint && hint.toType === 'tableau' && hint.toIndex === ti && ci === pile.length - 1)
-        drawCard(ctx, card, tx, cy, card.faceUp, isHinted || isTargetHint)
+        const isHeldCard = isHeld(1, ti) && ci >= pile.length - kv.held!.count
+        drawCard(ctx, card, tx, cy, card.faceUp, isHinted || isTargetHint || isHeldCard)
       }
+    }
+
+    // ── 키보드 커서 (Tab 으로 들어왔을 때만): 더미 전체를 흰 테두리로 ──
+    if (kv.active) {
+      const { row, col } = kv.cursor
+      const pile = row ? tableauRef.current[col] : []
+      const last = pile[pile.length - 1]
+      const ringH = last ? (pile.length - 1) * (last.faceUp ? CARD_GAP_FACE_UP : CARD_GAP_FACE_DOWN) + CARD_H : CARD_H
+      ctx.beginPath()
+      ctx.roundRect(layout.tableauXs[col] - 4, (row ? TABLEAU_Y : FOUNDATION_Y) - 4, CARD_W + 8, ringH + 8, CARD_RADIUS + 3)
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 3
+      ctx.stroke()
     }
 
     // ── Draw dragged cards ──
@@ -1678,6 +1800,7 @@ export default function Solitaire() {
   // ── Keyboard shortcuts ──
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable]')) return
       if (e.ctrlKey || e.metaKey) {
         if (e.key === 'z') {
           e.preventDefault()
@@ -1694,6 +1817,24 @@ export default function Solitaire() {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [performUndo, showHint, dealNewGame])
+
+  // 스크린리더 안내: 방금 한 동작 · 승리 + (키보드 사용 중) 커서 더미 내용과 놓을 수 있는지
+  let cursorText = ''
+  if (kb.active) {
+    const { row, col } = kb.cursor
+    const p = pileAt(row, col)
+    const pile = pileCards(row, col)
+    const parts = [pileName(p)]
+    if (!pile.length) parts.push(t('keyboard.empty'))
+    else if (p.type === 'stock') parts.push(t('keyboard.left', { count: pile.length }))
+    else if (p.type === 'tableau') {
+      const down = pile.filter(c => !c.faceUp).length
+      if (down) parts.push(t('keyboard.faceDown', { count: down }))
+      parts.push(...pile.filter(c => c.faceUp).map(cardName))
+    } else parts.push(cardName(pile[pile.length - 1]))
+    if (held && canDrop(pileCards(held.row, held.col).slice(-held.count), row, col)) parts.push(t('keyboard.canDrop'))
+    cursorText = parts.join(', ')
+  }
 
   return (
     <div className="space-y-6">
@@ -1777,8 +1918,22 @@ export default function Solitaire() {
 
       {/* Game canvas */}
       <div ref={containerRef} className={`${glassCard} ${glassInset} p-3 overflow-hidden`}>
+        <p className="sr-only" aria-live="polite"><span>{kbMsg}</span> <span>{gameState === 'won' ? t('congratulations') : ''}</span> <span>{cursorText}</span></p>
         <canvas
           ref={canvasRef}
+          {...kb.boardProps}
+          aria-label={t('keyboard.board')}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape' && held) {
+              e.preventDefault()
+              setHeld(null)
+              setKbMsg(t('keyboard.putBack'))
+            } else kb.boardProps.onKeyDown(e)
+          }}
+          onPointerDown={() => {
+            kb.boardProps.onPointerDown()
+            setHeld(null)
+          }}
           className="mx-auto cursor-pointer rounded-lg"
           style={{ touchAction: 'none' }}
           onMouseDown={handleMouseDown}

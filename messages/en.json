@@ -6141,7 +6141,8 @@
       "board": "Othello board, 8 by 8. Arrow keys move between squares, Enter places a stone",
       "moved": "{color} played {cell}, flipped {count}",
       "empty": "empty",
-      "canPlace": "can play here"
+      "canPlace": "can play here",
+      "validList": "You can play {cells}"
     },
     "shareLinkDesc": "Share the invite link with your opponent!",
     "title": "Online Othello",
@@ -24624,7 +24625,8 @@
       "carTaxLumpDue": "Annual car tax prepayment due",
       "incomeTax": "Comprehensive income tax filing due",
       "energyVoucher": "Energy voucher application deadline",
-      "jeongsiApplyEnd": "Regular admission applications close"
+      "jeongsiApplyEnd": "Regular admission applications close",
+      "scholarship": "National Scholarship round 1 deadline"
     },
     "dailyPuzzles": {
       "title": "Today's Puzzles",
@@ -31922,7 +31924,8 @@
       "Drag and drop cards to move them",
       "Double-click a card to auto-move to foundation",
       "Click stock to flip cards",
-      "Ctrl+Z: Undo / H: Hint / N: New Game"
+      "Ctrl+Z: Undo / H: Hint / N: New Game",
+      "Keyboard: Tab into the table, arrow keys choose a pile, Enter picks up and places, Esc cancels"
     ],
     "scoring": "Scoring System",
     "scoringItems": [
@@ -31937,7 +31940,31 @@
       "Prioritize columns with more face-down cards",
       "Don't create empty columns until you have a King",
       "Use the hint button to find valid moves"
-    ]
+    ],
+    "keyboard": {
+      "board": "Solitaire table. Arrow keys choose a pile, Enter picks up cards, then Enter again on the pile where they should go. Enter twice on the same pile sends the card to a foundation, Escape cancels. Enter on the stock turns over a card",
+      "card": "{rank} of {suit}",
+      "suits": {
+        "spades": "spades",
+        "hearts": "hearts",
+        "diamonds": "diamonds",
+        "clubs": "clubs"
+      },
+      "run": "{count} cards from {card}",
+      "left": "{count} left",
+      "faceDown": "{count} face down",
+      "empty": "empty",
+      "picked": "Picked up {cards}.",
+      "targets": "Can go to {targets}",
+      "noTargets": "Nowhere to place it right now",
+      "canDrop": "can place here",
+      "moved": "Placed {cards} on {to}.",
+      "revealed": "{card} turned face up",
+      "cannotDrop": "Can't place here",
+      "putBack": "Put the cards back",
+      "drew": "Turned over {card}",
+      "recycled": "Waste pile moved back to the stock"
+    }
   },
   "regexBuilder": {
     "flagTitles": {
@@ -33068,14 +33095,14 @@
       "checked": "As of {date}",
       "source": "Official pricing",
       "long": "{input}/{output} when input > {over}",
-      "promo": "Promo price until {date}",
+      "promo": "Limited-time price until {date}",
       "preview": "Preview",
       "noBatch": "No batch"
     },
     "vendorNote": {
       "anthropic": "Cache write uses the 5-minute cache (1-hour cache is 2x input). 4.7+ models use a new tokenizer that yields up to about 35% more tokens (1–1.35x, depending on content) for the same text.",
-      "openai": "If input exceeds 272K tokens, long-context prices apply to the whole request. Max input 922K.",
-      "google": "Paid Standard tier. Explicit caching adds an hourly storage fee.",
+      "openai": "If input exceeds 272K tokens, long-context prices apply to the whole request. Max input 922K. Cache write uses 30-minute retention (12-hour retention is 2x).",
+      "google": "Paid Standard tier. Gemini 4 supports implicit caching only; explicit caching on 3.x models adds an hourly storage fee.",
       "deepseek": "Peak-hour prices; off-peak is 50% off. No Batch API."
     },
     "disclaimer": "Prices checked on each vendor's official pricing page on the stated date. Excludes tax, data-residency uplifts and tool-call fees.",
@@ -33128,7 +33155,7 @@
           "Put fixed system prompts and documents first and use prompt caching to cut input cost",
           "Use the Batch API for non-urgent work to get 50% off input and output (not available on DeepSeek)",
           "Output costs 3–8x input (about 5x for most models), so cap responses with max_tokens",
-          "Long-context prices apply above 272K input on OpenAI and 200K on Gemini 3.1 Pro"
+          "Long-context prices apply to the whole request above 272K input on OpenAI and 100K on Claude Haiku 5.5"
         ]
       }
     }
@@ -57794,7 +57821,8 @@
     "opening": {
       "target": "Opening target {date}",
       "unknown": "Not announced · usually {usual}",
-      "source": "Announcement"
+      "source": "Announcement",
+      "opened": "Opened {date}"
     },
     "usual": {
       "lateNov": "late Nov",
@@ -57844,7 +57872,7 @@
     "scoreHelp": "A reference score: weather 60% (rain, strong wind, cold and warmth lower it; fresh snow raises it) and weekday/holiday crowds 40%. Winter break (late Dec–Feb) can be busy even on weekdays.",
     "share": "Best day at {resort}: {value} (ToolHub ski)",
     "openingTitle": "2026/27 ski resort opening dates",
-    "openingNote": "Opening targets announced by resorts; weather and snowmaking can change them. Where nothing is announced, last season’s timing is shown.",
+    "openingNote": "Resorts that have opened show their opening day; the rest show the target the resort announced, which weather and snowmaking can change. Where no date is announced, last season’s timing is shown.",
     "cols": {
       "resort": "Resort",
       "region": "Region",
@@ -57885,11 +57913,11 @@
         "items": [
           {
             "q": "When do Korean ski resorts open in 2026?",
-            "a": "As of Nov 6, Phoenix Snow Park targets Nov 27 and Alpensia Nov 28; the rest have not announced. Last season Mona Yongpyong and Phoenix opened first on Nov 21, and the Seoul area and south opened in early to mid December."
+            "a": "As of Nov 22, Mona Yongpyong and Phoenix Snow Park opened first on Nov 22. High1 targets Nov 24, Muju Deogyusan Nov 27, Alpensia Nov 28, Elysian Gangchon Dec 4 and Oak Valley Dec 11. Vivaldi Park, Welli Hilli, Konjiam, Jisan and Eden Valley have not announced a date yet."
           },
           {
             "q": "Which resort opens first?",
-            "a": "High, cold Pyeongchang resorts such as Mona Yongpyong and Phoenix usually open first. This year Phoenix announced its Nov 27 target first."
+            "a": "High, cold Pyeongchang resorts such as Mona Yongpyong and Phoenix usually open first. This year both opened on the same day, Nov 22."
           },
           {
             "q": "How do I pick a good day?",
@@ -57905,12 +57933,32 @@
         "title": "Sources",
         "items": [
           {
-            "label": "Phoenix targets Nov 27 opening — Aju News (Jul 25, 2026)",
-            "url": "https://www.ajunews.com/view/20260723100641522"
+            "label": "Mona Yongpyong opens Nov 22 — resort notice (Nov 17, 2026)",
+            "url": "https://www.yongpyong.co.kr/kor/guide/notice/read.do?noticeId=1701"
+          },
+          {
+            "label": "Phoenix opens Nov 22 — resort notice (Nov 13, 2026)",
+            "url": "https://phoenixhnr.co.kr/page/customer/notice/14512"
+          },
+          {
+            "label": "High1 opens Nov 24 — resort notice (Nov 18, 2026)",
+            "url": "https://www.high1.com/www/selectBbsNttView.do?key=611&bbsNo=85&nttNo=163145"
+          },
+          {
+            "label": "Muju Deogyusan plans to open Nov 27 — resort notice (Nov 19, 2026)",
+            "url": "https://www.mdysresort.com/guide/notice_con.asp?idx=2587"
           },
           {
             "label": "Alpensia targets Nov 28 opening — Aju News (Nov 5, 2026)",
             "url": "https://www.ajunews.com/view/20261105173644093"
+          },
+          {
+            "label": "Elysian Gangchon targets Dec 4 opening — Seoul Finance (Nov 20, 2026)",
+            "url": "https://www.seoulfn.com/news/articleView.html?idxno=643463"
+          },
+          {
+            "label": "Oak Valley plans to open Dec 11 — Gukje News (Nov 20, 2026)",
+            "url": "https://www.gukjenews.com/news/articleView.html?idxno=3758269"
           },
           {
             "label": "Last season (2025/26) opening dates — foxcg",
@@ -57921,7 +57969,7 @@
             "url": "https://api.met.no/weatherapi/locationforecast/2.0/documentation"
           }
         ],
-        "asOf": "Checked Nov 6, 2026. Opening dates are updated as resorts announce them."
+        "asOf": "Checked Nov 22, 2026. Opening dates are updated as resorts announce them."
       }
     }
   },
@@ -60554,6 +60602,51 @@
         "brand": "Lotte Hi-Mart 'CSAT Pass'",
         "benefit": "Storage upgrades or AirPods 4 with a smartphone purchase",
         "condition": "With your admission ticket, worth up to ₩310,000 depending on the phone plan. No end date announced; check terms in store."
+      },
+      "gyeongjuWorld": {
+        "brand": "Gyeongju World",
+        "benefit": "Day pass ₩24,000 for you, ₩27,000 per parent",
+        "condition": "Up to 2 parents. Show your admission ticket (early-admission application, acceptance or waitlist proof also works) and ID; if your parents come, bring a family relationship certificate or similar."
+      },
+      "aquaPlanetIlsan": {
+        "brand": "Aqua Planet Ilsan & Gwanggyo",
+        "benefit": "Up to 50% off for you, 30% off companions",
+        "condition": "Up to 3 companions. Ask Aqua Planet which proof and ticket types qualify before you go."
+      },
+      "sehwa": {
+        "brand": "Sehwa Museum of Art 'Georg Baselitz'",
+        "benefit": "Free entry for you and 1 companion",
+        "condition": "Show your CSAT admission ticket and ID."
+      },
+      "kensington": {
+        "brand": "Kensington Hotel Yeouido 'Broadway'",
+        "benefit": "50% off lunch and dinner buffet",
+        "condition": "Applies to 1 test taker per table. Ask which proof is accepted when booking."
+      },
+      "jwMarriott": {
+        "brand": "JW Marriott Hotel Seoul 'Flavors'",
+        "benefit": "1 of 3 adults (incl. you) eats free",
+        "condition": "Weekday lunch and dinner only. Book by phone in advance and show your admission ticket or other proof on the day."
+      },
+      "changgo43": {
+        "brand": "Changgo 43",
+        "benefit": "Free yukhoe (beef tartare)",
+        "condition": "Show your admission ticket at any branch (Changgo 43 On at Hyundai Jungdong gives a small half-moon beef pancake instead). Cannot be combined with other coupons or events."
+      },
+      "outback": {
+        "brand": "Outback Steakhouse",
+        "benefit": "7 free coconut shrimp",
+        "condition": "Bring your 2027 CSAT admission ticket and spend ₩70,000 or more to get Gold Coast Coconut Shrimp. Once per table per day."
+      },
+      "junoHair": {
+        "brand": "Juno Hair",
+        "benefit": "50% off for you, 30% off for 1 companion",
+        "condition": "Show your admission ticket or other proof that you took the test. Cannot be combined with other discounts. Spend ₩200,000 or more in a day for a free brand gift (while supplies last)."
+      },
+      "skt": {
+        "brand": "SK Telecom test-taker perks",
+        "benefit": "30% off Groundseesaw shows, 2-month Google AI Plus coupon",
+        "condition": "For SKT customers who took the test. Groundseesaw exhibitions are 30% off with a coupon when you book on NOL (up to 4 tickets each); the 'T Universe' Google AI Plus coupon goes to the first 5,000. New lines and device upgrades also get 2 Lotte Cinema tickets (first 5,000) and a ₩5,000 baro plan coupon. Sign up on SKT's test-taker promotion page."
       }
     },
     "guide": {
@@ -60609,7 +60702,7 @@
           },
           {
             "q": "How many companions get the discount?",
-            "a": "Three at Everland and LEGOLAND, two at Seoul Land and Sono water parks, and one for the airlines and Aqua Planet Yeosu. Asan Spavis has no limit at ₩20,000 each. Companions must enter with you or book on the same reservation."
+            "a": "Three at Everland, LEGOLAND and Aqua Planet Ilsan & Gwanggyo, two at Seoul Land and Sono water parks, and one for the airlines, Aqua Planet Yeosu and Juno Hair. Gyeongju World allows up to two parents. Asan Spavis has no limit at ₩20,000 each. Companions must enter with you or book on the same reservation."
           },
           {
             "q": "Can I combine the test-taker discount with a card discount?",
@@ -60621,14 +60714,14 @@
           },
           {
             "q": "Can a deal end before the listed date?",
-            "a": "Yes. First-come offers like the CGV coupons can run out, and companies can change or end events early. This page was checked on Nov 20, 2026, so confirm with the source link before you go."
+            "a": "Yes. First-come offers like the CGV coupons can run out, and companies can change or end events early. This page was checked on Nov 22, 2026, so confirm with the source link before you go."
           }
         ]
       },
       "sources": {
         "title": "Sources and how we checked",
         "body": "Each card links to the company's notice or a news report quoting the company. We left out events found only on blogs, events where sources disagree on prices or dates, and last year's (2026) events.",
-        "asOf": "Checked on Nov 20, 2026. We will update this page when new events appear or terms change."
+        "asOf": "Checked on Nov 22, 2026. We will update this page when new events appear or terms change."
       }
     }
   },
@@ -61860,6 +61953,11 @@
       "priceHeat": "Insight, TEREA suggested retail price ₩4,800 (2026-08-31)",
       "asOf": "Checked as of {date}.",
       "disclaimer": "This calculator is for motivation and reference only and is not medical advice. Talk to a doctor or pharmacist about cessation drugs and nicotine aids."
+    },
+    "link": {
+      "viewing": "You are viewing a shared quit record. Your own record on this device is unchanged.",
+      "adopt": "Save this as my record",
+      "mine": "Show my record"
     }
   },
   "babyVaccination": {
@@ -62691,7 +62789,8 @@
       "banner": "You're viewing a mandalart from a link. Your own chart is still saved as it was.",
       "keep": "Save as my chart",
       "back": "Back to my chart",
-      "error": "Couldn't read the chart in this link. Check that the address wasn't cut off."
+      "error": "Couldn't read the chart in this link. Check that the address wasn't cut off.",
+      "unsupported": "This browser cannot open shared links. Please open it in a recent version of Chrome, Safari or Edge."
     },
     "share": {
       "tool": "Mandalart Goal Planner",
@@ -62739,7 +62838,7 @@
           "On a phone, use 'Edit a block' to write one block at a time in large cells, and 'Full chart' to see all 81 cells at once.",
           "Your entries and checks are saved in this browser automatically. Come back in January, tap 'Done' on what you did and see your progress.",
           "Send the share link and the other person sees the same chart. Their own chart stays untouched until they press 'Save as my chart'.",
-          "To continue on another device, copy the link, open it there and press 'Save as my chart'."
+          "To continue on another device, copy the link and open it there. If that device has no saved chart, it becomes your chart right away; if it already has one, press 'Save as my chart' to replace it."
         ]
       },
       "faq": {
@@ -63596,7 +63695,7 @@
           },
           {
             "q": "Who gets the interest exemption?",
-            "a": "Basic livelihood recipients and near-poverty households, children of families with 3+ children, youths leaving care, students in support bracket 6 (130% of the standard median income) or below, and students at non-capital-area universities in bracket 8 (200%) or below are exempt from interest until they graduate and their income exceeds the threshold (Act Art. 16-2(2)). Bracket 6 applies to interest from July 1, 2026 and the non-capital-area bracket 8 to interest from November 20, 2026. Interest during military service is also waived."
+            "a": "Basic livelihood recipients and near-poverty households, children of families with 3+ children, youths leaving care, students in support bracket 6 (130% of the standard median income) or below, and students at non-capital-area universities in bracket 8 (200%) or below are exempt from interest after graduation until mandatory repayment starts once income exceeds the threshold (this calculator charges interest from the first payroll deduction month) (Act Art. 16-2(2)). Bracket 6 applies to interest from July 1, 2026 and the non-capital-area bracket 8 to interest from November 20, 2026. Interest during military service is also waived."
           }
         ]
       }
@@ -65221,7 +65320,7 @@
         "items": [
           {
             "q": "Are the 2026-27 winter festival dates out?",
-            "a": "As of November 7, dates are out for the Haeundae Light Festival (Nov 29, 2026–Jan 18, 2027), the Garden of Morning Calm Lighting Festival (Dec 4, 2026–Mar 14, 2027), the Seoul Lantern Festival (Dec 11, 2026–Jan 31, 2027) and the Hwacheon Sancheoneo Ice Festival (Jan 9–31, 2027). The other eight haven't announced yet, so we show their usual timing from last season."
+            "a": "As of November 22, dates are out for the Haeundae Light Festival (Nov 28, 2026–Jan 10, 2027), the Garden of Morning Calm Lighting Festival (Dec 4, 2026–Mar 14, 2027), the Seoul Lantern Festival (Dec 11, 2026–Jan 31, 2027), the Hampyeong Winter Light Festival (Dec 18–31, 2026) and the Hwacheon Sancheoneo Ice Festival (Jan 9–31, 2027). The other seven haven't announced yet, so we show their usual timing from last season."
           },
           {
             "q": "What does \"Not announced\" mean?",
@@ -65233,7 +65332,7 @@
           },
           {
             "q": "Is the 2027 Pyeongchang Trout Festival January 9 to February 9?",
-            "a": "As of November 7, those dates appear only as tentative dates on tour and listing sites; the organizer hasn't announced anything. Last season (Jan 9–Feb 9, 2026) was originally set to open on January 1 and was pushed back because of the weather."
+            "a": "As of November 22, those dates appear only as tentative dates on tour and listing sites; the organizer hasn't announced anything. Last season (Jan 9–Feb 9, 2026) was originally set to open on January 1 and was pushed back because of the weather."
           },
           {
             "q": "How thick does the ice need to be for ice fishing?",
@@ -65251,7 +65350,7 @@
       },
       "sources": {
         "title": "Sources",
-        "asOf": "Checked November 7, 2026. This season's dates come from organizers' official websites and the Korea Tourism Organization; last season's dates from official announcements and news reports.",
+        "asOf": "Checked November 22, 2026. This season's dates come from organizers' official websites, local governments and the Korea Tourism Organization; last season's dates from official announcements and news reports.",
         "items": {
           "hwacheon2027": "Hwacheon Sancheoneo Ice Festival official site (Jan 9–31, 2027)",
           "hwacheon2026": "Asia Economy: 2026 festival held Jan 10–Feb 1 (Jan 6, 2026)",
@@ -65265,11 +65364,12 @@
           "morningcalm2026": "Gyeonggi Province magazine: Lighting Festival Dec 5–Mar 15 (Dec 2025 issue)",
           "seoulLantern2027": "Seoul Lantern Festival official site (Dec 11, 2026–Jan 31, 2027)",
           "seoulLantern2026": "Seoul Media Hub: 2025 Seoul Lantern Festival Dec 12–Jan 18",
-          "haeundae2027": "Korea Tourism Organization: Haeundae Light Festival Nov 29, 2026–Jan 18, 2027",
+          "haeundae2027": "Busan City: 13th Haeundae Light Festival Nov 28, 2026–Jan 10, 2027",
           "haeundae2026": "Busan City: 12th Haeundae Light Festival Nov 29, 2025–Jan 18, 2026",
           "hampyeong2026": "Seoul Shinmun: 2025 Hampyeong Winter Light Festival Nov 28–Jan 11, 2026 (Nov 30, 2025)",
           "gwangbok2026": "Break News Busan: 2025 Gwangbok-ro tree festival Dec 5–Feb 22, 2026 (Nov 29, 2025)",
-          "cancel2026": "TWIG24: Mild weather delays and cancels winter festivals (Andong, Inje, Pyeongchang; Jan 7, 2026)"
+          "cancel2026": "TWIG24: Mild weather delays and cancels winter festivals (Andong, Inje, Pyeongchang; Jan 7, 2026)",
+          "hampyeong2027": "Hampyeong Festival & Tourism Foundation: 2026 Hampyeong Winter Light Festival Dec 18–31"
         }
       }
     }

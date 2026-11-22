@@ -70,6 +70,8 @@ export default function BabyVaccination() {
   const writeDone = (ids: Iterable<string>) => {
     const next = setDone(doneMap, birth, ids)
     setDoneMap(next)
+    // 생일을 넣기 전(예시)은 생일이 날마다 바뀌니 화면에서만 체크하고 저장하지 않는다
+    if (s.b === null) return
     try { window.localStorage.setItem(STORE_KEY, JSON.stringify(next)); setStorageOk(true) } catch { setStorageOk(false) }
   }
   const toggle = (id: string) => {

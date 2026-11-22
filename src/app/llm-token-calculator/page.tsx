@@ -5,7 +5,7 @@ import RelatedTools from '@/components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'LLM 토큰 계산기 - AI 비용 계산 | 툴허브',
-  description: 'Claude·GPT·Gemini·DeepSeek 최신 API 단가(2026-10 공식 요금표 기준)로 토큰 수와 월 비용을 계산하세요. 프롬프트 캐싱·배치 할인, 컨텍스트 초과 여부, 원화 환산까지.',
+  description: 'Claude·GPT·Gemini·DeepSeek 최신 API 단가(2026-11 공식 요금표 기준)로 토큰 수와 월 비용을 계산하세요. 프롬프트 캐싱·배치 할인, 컨텍스트 초과 여부, 원화 환산까지.',
   keywords: 'LLM 토큰 계산기, 토큰 카운터, GPT 토큰, Claude 토큰, Gemini 토큰, API 비용 계산, 토큰 수 추정, 프롬프트 캐싱 비용, 배치 API 할인, LLM 가격 비교, 한국어 토큰, token counter, token calculator',
   openGraph: {
     title: 'LLM 토큰 계산기 | 툴허브',

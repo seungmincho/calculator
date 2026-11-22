@@ -3,6 +3,10 @@ import SkiResorts from '@/components/SkiResorts'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import messages from '../../../messages/generated/ko/ns/skiResorts.json'
+import { todayKST } from '@/utils/dday'
+
+// 정적 HTML 은 빌드 날짜(KST)로 '개장/개장 목표'를 그리고, 브라우저는 마운트 후 오늘 날짜로 바꾼다
+const buildDate = todayKST()
 
 export const metadata: Metadata = {
   title: '스키장 개장일 2026 - 전국 스키장 개장 일정·날씨·가기 좋은 날 | 툴허브',
@@ -42,7 +46,7 @@ export default function SkiResortsPage() {
       <div className="min-h-screen py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <I18nWrapper>
-            <SkiResorts />
+            <SkiResorts buildDate={buildDate} />
             <div className="mt-8">
               <RelatedTools />
             </div>

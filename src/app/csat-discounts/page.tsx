@@ -3,10 +3,11 @@ import CsatDiscounts from '@/components/CsatDiscounts'
 import I18nWrapper from '@/components/I18nWrapper'
 import RelatedTools from '@/components/RelatedTools'
 import { FaqJsonLd } from '@/components/ToolFaq'
+import { DISCOUNTS } from '@/utils/csatDiscounts'
 import messages from '../../../messages/generated/ko/ns/csatDiscounts.json'
 
 const TITLE = '수험표 할인 2027 - 수능 끝 놀이공원·영화·외식 혜택 모음 | 툴허브'
-const DESC = '2027학년도 수능 수험표 할인 30개를 오늘 쓸 수 있는 것부터 정리했어요. 에버랜드 2만원·롯데월드 2만7천원·서울랜드·레고랜드, CGV·메가박스 7천원, 샤브올데이·매드포갈릭, 제주항공·이스타항공까지 기간·조건·출처를 함께 봐요.'
+const DESC = `2027학년도 수능 수험표 할인 ${DISCOUNTS.length}개를 오늘 쓸 수 있는 것부터 정리했어요. 에버랜드 2만원·롯데월드 2만7천원·서울랜드·레고랜드, CGV·메가박스 7천원, 매드포갈릭·아웃백·준오헤어, 제주항공·이스타항공까지 기간·조건·출처를 함께 봐요.`
 const PAGE_URL = 'https://toolhub.ai.kr/csat-discounts/'
 const OG = 'https://toolhub.ai.kr/og/csat-discounts.png'
 

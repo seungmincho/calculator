@@ -3,5 +3,5 @@ import { loadTranslationFallback } from '@/lib/i18n/translationFetch'
 import messages from '../../../../messages/generated/ko/ns/skiResorts.json'
 
 registerMessages(messages, context => context?.retry
-  ? loadTranslationFallback('/i18n/en/ns/skiResorts.1ce74edd74865574.json', ['skiResorts'])
+  ? loadTranslationFallback('/i18n/en/ns/skiResorts.4979f147a2f620d3.json', ['skiResorts'])
   : import('../../../../messages/generated/en/ns/skiResorts.json').then(module => module.default))

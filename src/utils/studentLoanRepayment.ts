@@ -189,7 +189,8 @@ export function simulateIcl(s: State, extra = 0): Plan<IclRow> {
     // 7~12월은 전년 소득분, 1~6월은 전전년 소득분을 원천공제
     const src = mon >= 6 ? yi - 1 : yi - 2
     const mand = src >= 0 ? rows[src].due / 12 : 0
-    if (mand > 0) started = true
+    // 의무가 생긴 해(raw>0)면 자발적 상환으로 원천공제액이 0이 돼도 면제는 끝난다(이자 면제는 의무 발생 전까지)
+    if (src >= 0 && rows[src].raw > 0) started = true
     const int = s.f && !started ? 0 : intOf(P, s.r)
     I += int
     yInt += int

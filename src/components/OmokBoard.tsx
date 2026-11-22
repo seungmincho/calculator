@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/omok'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 import { OmokGameState } from '@/utils/webrtc'
 import {
   BOARD_SIZE,
@@ -20,6 +21,13 @@ const STONE_RADIUS = 14
 const BOARD_PIXEL_SIZE = CELL_SIZE * (BOARD_SIZE - 1) + PADDING * 2
 const COL_LABELS = 'ABCDEFGHJKLMNOPQRST' // 바둑판 관례대로 I 제외
 const cellName = (x: number, y: number) => COL_LABELS[x] + (BOARD_SIZE - y)
+// 나무 질감 점 위치: 모듈에서 한 번만 만들어 다시 그려도 깜빡이지 않게
+const WOOD_TEXTURE = Array.from({ length: 50 }, () => ({
+  x: Math.random() * BOARD_PIXEL_SIZE,
+  y: Math.random() * BOARD_PIXEL_SIZE,
+  w: Math.random() * 3,
+  h: Math.random() * 20
+}))
 
 interface OmokBoardProps {
   gameState: OmokGameState
@@ -40,19 +48,14 @@ export default function OmokBoard({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
-  const [keyboardPos, setKeyboardPos] = useState<{ x: number; y: number } | null>(null)
-  const [useKeyboard, setUseKeyboard] = useState(false)
   const t = useTranslations('omok')
+  const canPlay = !disabled && isMyTurn && !!myColor && !gameState.winner
 
-  // Pre-generate wood texture positions to avoid flickering on redraw
-  const woodTextureRef = useRef<{ x: number; y: number; w: number; h: number }[]>(
-    Array.from({ length: 50 }, () => ({
-      x: Math.random() * BOARD_PIXEL_SIZE,
-      y: Math.random() * BOARD_PIXEL_SIZE,
-      w: Math.random() * 3,
-      h: Math.random() * 20
-    }))
-  )
+  // 클릭·터치·Enter 공통: 빈 교차점이면 착수 (커서는 row=y, col=x)
+  const activate = (y: number, x: number) => {
+    if (canPlay && gameState.board[y][x] === null) onMove(x, y)
+  }
+  const kb = useBoardKeyboard(BOARD_SIZE, BOARD_SIZE, activate)
 
   // 반응형 스케일 계산
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function OmokBoard({
   // 보드 그리기
   const drawBoard = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      const { board, lastMove, winner } = gameState
+      const { board, lastMove } = gameState
 
       // 배경
       ctx.fillStyle = '#DEB887'
@@ -80,7 +83,7 @@ export default function OmokBoard({
 
       // 나무 질감 효과 (pre-generated positions to prevent flickering)
       ctx.fillStyle = 'rgba(139, 90, 43, 0.1)'
-      for (const t of woodTextureRef.current!) {
+      for (const t of WOOD_TEXTURE) {
         ctx.fillRect(t.x, t.y, t.w, t.h)
       }
 
@@ -177,9 +180,8 @@ export default function OmokBoard({
       }
 
       // 호버 표시 (내 턴일 때만)
-      const showPos = useKeyboard ? keyboardPos : hoverPos
-      if (showPos && isMyTurn && myColor && !winner && !disabled) {
-        const { x, y } = showPos
+      if (hoverPos && canPlay) {
+        const { x, y } = hoverPos
         if (board[y][x] === null) {
           const px = PADDING + x * CELL_SIZE
           const py = PADDING + y * CELL_SIZE
@@ -188,13 +190,22 @@ export default function OmokBoard({
           ctx.arc(px, py, STONE_RADIUS, 0, Math.PI * 2)
           ctx.fillStyle = myColor === 'black' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.6)'
           ctx.fill()
-          ctx.strokeStyle = useKeyboard ? '#FFC107' : (myColor === 'black' ? '#333' : '#999')
-          ctx.lineWidth = useKeyboard ? 3 : 2
+          ctx.strokeStyle = myColor === 'black' ? '#333' : '#999'
+          ctx.lineWidth = 2
           ctx.stroke()
         }
       }
+
+      // 키보드 커서: 돌이 있든 없든, 차례가 아니어도 보인다
+      if (kb.active) {
+        ctx.beginPath()
+        ctx.arc(PADDING + kb.cursor.col * CELL_SIZE, PADDING + kb.cursor.row * CELL_SIZE, STONE_RADIUS + 2, 0, Math.PI * 2)
+        ctx.strokeStyle = '#3182F6'
+        ctx.lineWidth = 3
+        ctx.stroke()
+      }
     },
-    [gameState, hoverPos, keyboardPos, useKeyboard, isMyTurn, myColor, disabled]
+    [gameState, hoverPos, canPlay, myColor, kb.active, kb.cursor]
   )
 
   // 캔버스 렌더링
@@ -231,12 +242,8 @@ export default function OmokBoard({
 
   // 클릭 처리
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
     const pos = getPosition(e)
-    if (pos && gameState.board[pos.y][pos.x] === null) {
-      onMove(pos.x, pos.y)
-    }
+    if (pos) activate(pos.y, pos.x)
   }
 
   // 마우스 이동 처리
@@ -248,43 +255,6 @@ export default function OmokBoard({
   // 마우스 나감 처리
   const handleMouseLeave = () => {
     setHoverPos(null)
-  }
-
-  // 키보드 처리
-  const keyboardPosRef = useRef(keyboardPos)
-  keyboardPosRef.current = keyboardPos
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
-    const key = e.key
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
-      e.preventDefault()
-      setUseKeyboard(true)
-
-      const pos = keyboardPosRef.current || { x: Math.floor(BOARD_SIZE / 2), y: Math.floor(BOARD_SIZE / 2) }
-
-      if (key === 'Enter' || key === ' ') {
-        if (gameState.board[pos.y][pos.x] === null) {
-          onMove(pos.x, pos.y)
-        }
-      } else {
-        let newPos = pos
-        switch (key) {
-          case 'ArrowUp': newPos = { x: pos.x, y: Math.max(0, pos.y - 1) }; break
-          case 'ArrowDown': newPos = { x: pos.x, y: Math.min(BOARD_SIZE - 1, pos.y + 1) }; break
-          case 'ArrowLeft': newPos = { x: Math.max(0, pos.x - 1), y: pos.y }; break
-          case 'ArrowRight': newPos = { x: Math.min(BOARD_SIZE - 1, pos.x + 1), y: pos.y }; break
-        }
-        setKeyboardPos(newPos)
-      }
-    }
-  }, [disabled, isMyTurn, myColor, gameState.winner, gameState.board, onMove])
-
-  // Switch back to mouse mode on mouse move
-  const handleMouseMoveWrapped = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    setUseKeyboard(false)
-    handleMouseMove(e)
   }
 
   // 터치 위치를 보드 좌표로 변환
@@ -317,9 +287,10 @@ export default function OmokBoard({
     : winner ? (winner === 'draw' ? t('draw') : winner === myColor ? t('youWin') : t('youLose'))
     : currentTurn === myColor ? t('yourTurn') : t('opponentTurn')
   let cursorText = ''
-  if (useKeyboard && keyboardPos) {
-    const stone = board[keyboardPos.y][keyboardPos.x]
-    cursorText = `${cellName(keyboardPos.x, keyboardPos.y)}, ${stone ? t(stone) : t('keyboard.empty')}`
+  if (kb.active) {
+    const { row: y, col: x } = kb.cursor
+    const stone = board[y][x]
+    cursorText = `${cellName(x, y)}, ${stone ? t(stone) : t('keyboard.empty')}`
   }
 
   return (
@@ -329,23 +300,20 @@ export default function OmokBoard({
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
-        tabIndex={0}
+        {...kb.boardProps}
         aria-label={t('keyboard.board')}
-        role="application"
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,
-          cursor: isMyTurn && myColor && !gameState.winner && !disabled ? 'pointer' : 'default',
+          cursor: canPlay ? 'pointer' : 'default',
           outline: 'none',
           touchAction: 'none'
         }}
         onClick={handleClick}
-        onMouseMove={handleMouseMoveWrapped}
+        onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onKeyDown={handleKeyDown}
         onTouchStart={(e) => {
           e.preventDefault()
-          setUseKeyboard(false)
           const pos = getTouchPosition(e)
           if (pos) setHoverPos(pos)
         }}
@@ -357,13 +325,7 @@ export default function OmokBoard({
         onTouchEnd={(e) => {
           e.preventDefault()
           const pos = getTouchPosition(e)
-          if (pos) {
-            if (!disabled && isMyTurn && myColor && !gameState.winner) {
-              if (gameState.board[pos.y][pos.x] === null) {
-                onMove(pos.x, pos.y)
-              }
-            }
-          }
+          if (pos) activate(pos.y, pos.x)
           setHoverPos(null)
         }}
         className="rounded-lg shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

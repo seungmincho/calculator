@@ -16,7 +16,7 @@ assert.ok(ko && en, `csatDiscounts 네임스페이스 없음: ${dir}`)
 // ── 데이터
 const ids = DISCOUNTS.map((d) => d.id)
 assert.equal(new Set(ids).size, ids.length, 'id 중복')
-assert.ok(DISCOUNTS.length >= 15 && DISCOUNTS.length <= 30, `행사 수 ${DISCOUNTS.length}`)
+assert.ok(DISCOUNTS.length >= 15 && DISCOUNTS.length <= 45, `행사 수 ${DISCOUNTS.length}`)
 for (const d of DISCOUNTS) {
   assert.ok(/^[a-z][A-Za-z0-9]*$/.test(d.id), `${d.id} id 형식(camelCase)`)
   assert.ok(isCat(d.cat), `${d.id} 분류 ${d.cat}`)

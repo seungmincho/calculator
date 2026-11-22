@@ -28,7 +28,7 @@ export interface LlmModel {
   long?: Price & { over: number }
   /** 배치 할인 배율 (0.5 = 50% 할인). null = 배치 API 없음 */
   batch: number | null
-  /** 배치에서도 캐시 적중 단가는 할인 없음 (Gemini 3.1 Pro 'Same as Standard') */
+  /** 배치에서도 캐시 적중 단가는 할인 없음 (예: Gemini 3.1 Pro Preview 'Same as Standard'. 현재 목록에는 없음) */
   batchCachedFull?: boolean
   /** 이 날짜까지 프로모션 가격 */
   promoUntil?: string
@@ -37,11 +37,12 @@ export interface LlmModel {
   preview?: boolean
 }
 
+// 컨텍스트·최대 출력은 각 사 모델 페이지(Anthropic models/overview, OpenAI docs/models/<id>, Google docs/models) 2026-11-22 확인
 export const VENDORS: Record<VendorId, { name: string; url: string; checked: string }> = {
-  anthropic: { name: 'Anthropic', url: 'https://platform.claude.com/docs/en/docs/about-claude/pricing', checked: '2026-10-01' },
-  openai: { name: 'OpenAI', url: 'https://platform.openai.com/docs/pricing', checked: '2026-10-01' },
-  google: { name: 'Google', url: 'https://ai.google.dev/gemini-api/docs/pricing', checked: '2026-10-01' },
-  deepseek: { name: 'DeepSeek', url: 'https://api-docs.deepseek.com/quick_start/pricing', checked: '2026-10-01' },
+  anthropic: { name: 'Anthropic', url: 'https://platform.claude.com/docs/en/about-claude/pricing', checked: '2026-11-22' },
+  openai: { name: 'OpenAI', url: 'https://developers.openai.com/api/docs/pricing', checked: '2026-11-22' },
+  google: { name: 'Google', url: 'https://aistudio.google.com/docs/pricing', checked: '2026-11-22' },
+  deepseek: { name: 'DeepSeek', url: 'https://api-docs.deepseek.com/quick_start/pricing', checked: '2026-11-22' },
 }
 export const VENDOR_IDS = Object.keys(VENDORS) as VendorId[]
 
@@ -50,20 +51,28 @@ const OAI_CTX = { ctx: 1_050_000, maxInput: 922_000, maxOutput: 128_000, tok: 'o
 const GEM_CTX = { ctx: 1_048_576, maxOutput: 65_536, tok: 'gemini' as const, batch: 0.5 }
 
 export const MODELS: LlmModel[] = [
-  // Anthropic — 4.7 이후 모델은 새 토크나이저(같은 글 약 30%↑), Haiku 4.5는 이전 토크나이저. 1M 컨텍스트 전 구간 동일 단가.
-  { id: 'claude-fable-5-1', name: 'Claude Fable 5.1', vendor: 'anthropic', ctx: M, maxOutput: 128_000, tok: 'claude', batch: 0.5, price: { input: 10, output: 50, cached: 0.25, cacheWrite: 12.5 } },
+  // Anthropic — 4.7 이후 모델(Haiku 5.5 포함)은 새 토크나이저(같은 글 약 30%↑), Haiku 4.5는 이전 토크나이저.
+  // 캐시 쓰기 = 5분 캐시. Haiku 5.5만 입력 100K 초과 요청 전체에 장문 단가, 나머지는 1M 컨텍스트 전 구간 동일 단가.
+  // Fable 5.1($10/$50)은 Fable 5.2로 대체되어 목록에서 뺌(2026-11-22)
+  { id: 'claude-fable-5-2', name: 'Claude Fable 5.2', vendor: 'anthropic', ctx: M, maxOutput: 128_000, tok: 'claude', batch: 0.5, price: { input: 8, output: 40, cached: 0.2, cacheWrite: 10 } },
   { id: 'claude-opus-5-5', name: 'Claude Opus 5.5', vendor: 'anthropic', ctx: M, maxOutput: 128_000, tok: 'claude', batch: 0.5, price: { input: 4, output: 20, cached: 0.2, cacheWrite: 5 } },
-  { id: 'claude-sonnet-5-5', name: 'Claude Sonnet 5.5', vendor: 'anthropic', ctx: M, maxOutput: 128_000, tok: 'claude', batch: 0.5, price: { input: 2, output: 10, cached: 0.2, cacheWrite: 2.5 } },
+  { id: 'claude-sonnet-5-5', name: 'Claude Sonnet 5.5', vendor: 'anthropic', ctx: M, maxOutput: 128_000, tok: 'claude', batch: 0.5, price: { input: 2, output: 10, cached: 0.1, cacheWrite: 2.5 } },
+  { id: 'claude-haiku-5-5', name: 'Claude Haiku 5.5', vendor: 'anthropic', ctx: M, maxOutput: 128_000, tok: 'claude', batch: 0.5, price: { input: 0.1, output: 0.5, cached: 0.01, cacheWrite: 0.125 }, long: { over: 100_000, input: 0.5, output: 2.5, cached: 0.05, cacheWrite: 0.625 } },
   { id: 'claude-haiku-4-5', name: 'Claude Haiku 4.5', vendor: 'anthropic', ctx: 200_000, maxOutput: 64_000, tok: 'claudeLegacy', batch: 0.5, price: { input: 1, output: 5, cached: 0.1, cacheWrite: 1.25 } },
-  // OpenAI — 입력 272K 초과 시 장문 단가
-  { id: 'gpt-6-astra', name: 'GPT-6 Astra', vendor: 'openai', ...OAI_CTX, price: { input: 10, output: 50, cached: 1, cacheWrite: 12.5 }, long: { over: 272_000, input: 20, output: 75, cached: 2, cacheWrite: 25 } },
-  { id: 'gpt-6.1-sol', name: 'GPT-6.1 Sol', vendor: 'openai', ...OAI_CTX, price: { input: 2, output: 10, cached: 0.1, cacheWrite: 2.5 }, long: { over: 272_000, input: 4, output: 15, cached: 0.2, cacheWrite: 5 } },
+  // OpenAI — 입력 272K 초과 시 요청 전체에 장문 단가(입력·캐시 2배, 출력 1.5배). 캐시 쓰기 = 30분 보존.
+  // GPT-6 Astra($10/$50)·GPT-6.1 Sol은 6.2로 대체되어 목록에서 뺌(2026-11-22)
+  { id: 'gpt-6.2-astra', name: 'GPT-6.2 Astra', vendor: 'openai', ...OAI_CTX, price: { input: 8, output: 40, cached: 0.4, cacheWrite: 10 }, long: { over: 272_000, input: 16, output: 60, cached: 0.8, cacheWrite: 20 } },
+  { id: 'gpt-6.2-sol', name: 'GPT-6.2 Sol', vendor: 'openai', ...OAI_CTX, price: { input: 2, output: 10, cached: 0.1, cacheWrite: 2.5 }, long: { over: 272_000, input: 4, output: 15, cached: 0.2, cacheWrite: 5 } },
+  { id: 'gpt-6.1-terra', name: 'GPT-6.1 Terra', vendor: 'openai', ...OAI_CTX, price: { input: 1, output: 5, cached: 0.05, cacheWrite: 1.25 }, long: { over: 272_000, input: 2, output: 7.5, cached: 0.1, cacheWrite: 2.5 } },
   { id: 'gpt-6-luna', name: 'GPT-6 Luna', vendor: 'openai', ...OAI_CTX, price: { input: 0.1, output: 0.5, cached: 0.01, cacheWrite: 0.125 }, long: { over: 272_000, input: 0.2, output: 0.75, cached: 0.02, cacheWrite: 0.25 } },
-  // Google — 유료 Standard 단가. 명시적 캐시는 저장료(시간당) 별도
+  // Google — 유료 Standard 단가. Gemini 4는 암시적 캐시만(쓰기 요금 없음), 3.x 명시적 캐시는 저장료(시간당) 별도.
+  // 최대 출력은 기본 동기 한도 65,536(long decode 제외). 공식 표기는 '프로모션'이 아니라 '~까지 / ~부터' 날짜별 단가.
+  // Gemini 3.5 Flash는 gemini-3.6-flash로 자동 라우팅(요금표에서 빠짐), 3.1 Pro Preview는 Gemini 4로 대체되어 목록에서 뺌(2026-11-22)
+  { id: 'gemini-4-carbon', name: 'Gemini 4 Carbon', vendor: 'google', ...GEM_CTX, promoUntil: '2026-11-30', price: { input: 2, output: 10, cached: 0.1 }, regular: { input: 4, output: 20, cached: 0.2 } },
+  { id: 'gemini-4-neon', name: 'Gemini 4 Neon', vendor: 'google', ...GEM_CTX, price: { input: 3, output: 15, cached: 0.15 } },
+  { id: 'gemini-4-hydrogen', name: 'Gemini 4 Hydrogen', vendor: 'google', ...GEM_CTX, price: { input: 1.5, output: 7.5, cached: 0.075 } },
   { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash', vendor: 'google', ...GEM_CTX, promoUntil: '2026-12-31', price: { input: 0.75, output: 3.75, cached: 0.075 }, regular: { input: 1.5, output: 7.5, cached: 0.15 } },
-  { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash', vendor: 'google', ...GEM_CTX, price: { input: 1.5, output: 9, cached: 0.15 } },
   { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash-Lite', vendor: 'google', ...GEM_CTX, price: { input: 0.3, output: 2.5, cached: 0.03 } },
-  { id: 'gemini-3.1-pro-preview', name: 'Gemini 3.1 Pro', vendor: 'google', ...GEM_CTX, preview: true, batchCachedFull: true, price: { input: 2, output: 12, cached: 0.2 }, long: { over: 200_000, input: 4, output: 18, cached: 0.4 } },
   // DeepSeek — 피크 시간 단가(보수적). 비피크는 50%. 배치 API 없음
   { id: 'deepseek-flash', name: 'DeepSeek V4.1 Flash', vendor: 'deepseek', ctx: M, maxOutput: 384_000, tok: 'deepseek', batch: null, price: { input: 0.3, output: 1.2, cached: 0.006 } },
   { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', vendor: 'deepseek', ctx: M, maxOutput: 384_000, tok: 'deepseek', batch: null, price: { input: 1.32, output: 3.96, cached: 0.044 } },

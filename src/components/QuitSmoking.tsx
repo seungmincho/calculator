@@ -62,8 +62,12 @@ export default function QuitSmoking() {
   const [pDraft, setPDraft] = useState<string | null>(null)
   const [cDraft, setCDraft] = useState<string | null>(null)
   const [confirming, setConfirming] = useState(false)
+  // 남의 공유 링크를 열었는데 이 기기에 내 기록이 따로 있으면 "링크 보기": 고르기 전까지 저장도, 최장 기록 비교도 하지 않는다
+  const [linkChosen, setLinkChosen] = useState(false)
+  const linkMode = urlHas && !linkChosen && !!boot?.saved && toQuery(boot.saved) !== toQuery(fromUrl)
 
   const save = (next: State, b: number) => {
+    if (linkMode) return
     try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ q: toQuery(next), best: b })); setStorageOk(true) } catch { setStorageOk(false) }
   }
   const commit = (next: State, b = best) => {
@@ -81,10 +85,22 @@ export default function QuitSmoking() {
   const restart = () => {
     if (s.d !== null && !confirming) { setConfirming(true); return }
     const at = minuteNow()
-    const b = s.d !== null ? Math.max(best, elapsed(s.d, at)) : best
+    const b = s.d !== null && !linkMode ? Math.max(best, elapsed(s.d, at)) : best
     setBest(b)
     setConfirming(false)
     commit({ ...s, d: at }, b)
+  }
+
+  const adoptLink = () => {
+    setLinkChosen(true)
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ q: toQuery(s), best })); setStorageOk(true) } catch { setStorageOk(false) }
+  }
+  const backToMine = () => {
+    setLinkChosen(true)
+    const mine = boot!.saved!
+    setEdited(mine)
+    const qs = toQuery(mine)
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`)
   }
 
   // ── 계산
@@ -163,6 +179,15 @@ export default function QuitSmoking() {
         {/* 입력 */}
         <section className="ui-card p-6 space-y-6 min-w-0" aria-labelledby="qs-input">
           <MobileResultLink href="#quit-smoking-result" label={head} value={t('mobile.value', { v: won(saved) })} />
+          {linkMode && (
+            <div role="status" className="bg-subtle rounded-2xl p-4 text-sm text-sub space-y-3">
+              <p>{t('link.viewing')}</p>
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={adoptLink} className="ui-btn px-4 py-2 min-h-11 text-sm">{t('link.adopt')}</button>
+                <button type="button" onClick={backToMine} className="ui-btn-soft px-4 py-2 min-h-11 text-sm">{t('link.mine')}</button>
+              </div>
+            </div>
+          )}
           <h2 id="qs-input" className="text-lg font-semibold text-fg">{t('input.title')}</h2>
 
           <div>

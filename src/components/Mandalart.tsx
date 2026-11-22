@@ -245,7 +245,7 @@ export default function Mandalart() {
           </div>
         </section>
       )}
-      {linkError && <p role="alert" className={warnCls}>{t('link.error')}</p>}
+      {linkError && <p role="alert" className={warnCls}>{t(typeof DecompressionStream === 'undefined' ? 'link.unsupported' : 'link.error')}</p>}
 
       <section className="ui-card p-6" aria-labelledby="md-tpl">
         <h2 id="md-tpl" className="text-lg font-semibold text-fg">{t('templates.title')}</h2>
@@ -337,7 +337,9 @@ export default function Mandalart() {
             <h2 id="md-grid" className="text-lg font-semibold text-fg">{t('grid.title')}</h2>
             <p className="text-sm text-muted mt-1">{t('grid.desc')}</p>
           </div>
-          <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
+          {/* 휴대폰(375px)에선 칸이 37px라 글자가 안 읽힘 → 표만 540px로 두고 가로로 밀어 본다(페이지는 넘치지 않음) */}
+          <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+          <div className="grid min-w-[540px] grid-cols-3 gap-1 sm:min-w-0 sm:gap-1.5">
             {Array.from({ length: 9 }, (_, b) => (
               <button key={b} type="button" onClick={() => openBlock(b)} aria-label={t('grid.open', { name: blockName(b) })}
                 className={`grid min-w-0 grid-cols-3 gap-px overflow-hidden rounded-lg border bg-line transition-colors ${b === block ? 'border-primary' : 'border-line-strong hover:border-primary'}`}>
@@ -348,13 +350,14 @@ export default function Mandalart() {
                   const tone = !v ? 'text-faint' : i >= 0 && done[i] ? 'text-muted line-through' : cell.kind === 'act' ? 'text-body' : 'font-semibold text-fg'
                   return (
                     <span key={p} aria-hidden
-                      className={`flex aspect-square min-w-0 items-center justify-center overflow-hidden p-0.5 text-center text-[10px] leading-tight sm:text-xs ${cell.kind === 'act' ? 'bg-surface' : 'bg-primary-soft'} ${tone}`}>
-                      <span className="line-clamp-2 sm:line-clamp-3 [overflow-wrap:anywhere]">{v || textOf(example, cell)}</span>
+                      className={`flex aspect-square min-w-0 items-center justify-center overflow-hidden p-0.5 text-center text-[11px] leading-tight sm:text-xs ${cell.kind === 'act' ? 'bg-surface' : 'bg-primary-soft'} ${tone}`}>
+                      <span className="line-clamp-3 [overflow-wrap:anywhere]">{v || textOf(example, cell)}</span>
                     </span>
                   )
                 })}
               </button>
             ))}
+          </div>
           </div>
           <p aria-live="polite" className="text-sm text-sub tabular-nums">
             {pr.filled ? t('grid.progress', { done: pr.done, filled: pr.filled, p: pct(pr) }) : t('grid.progressEmpty')}

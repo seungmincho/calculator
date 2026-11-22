@@ -31,7 +31,7 @@ assert.equal(skiDays({ ...forecast, slots: forecast.slots.filter(x => Date.parse
 assert.equal(new Set(RESORTS.map(r => r.id)).size, RESORTS.length)
 for (const r of RESORTS) if (r.opening) assert.match(r.opening.date, /^2026-1[12]-\d\d$/)
 const konjiam = RESORTS.find(r => r.id === 'konjiam')!, phoenix = RESORTS.find(r => r.id === 'phoenix')!
-assert.deepEqual(openingFor(konjiam, '2026-11-09'), { date: '2026-12-01', estimated: true }, 'unknown → usual start')
-assert.deepEqual(openingFor(konjiam, '2027-01-15'), { date: '2026-12-01', estimated: true }, 'January belongs to the season that started last year')
-assert.deepEqual(openingFor(phoenix, '2026-11-09'), { date: '2026-11-27', estimated: false })
+assert.deepEqual(openingFor(konjiam, '2026-11-09'), { date: '2026-12-11', estimated: true }, 'unknown → usual start (midDec)')
+assert.deepEqual(openingFor(konjiam, '2027-01-15'), { date: '2026-12-11', estimated: true }, 'January belongs to the season that started last year')
+assert.deepEqual(openingFor(phoenix, '2026-11-09'), { date: '2026-11-22', estimated: false })
 console.log(`PASS: 09–17 KST aggregation, snow/rain split, scores ${s.map(x => x.score).join('/')}, rain/wind caution, holiday, partial day, resort data`)

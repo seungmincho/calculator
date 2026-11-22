@@ -10,6 +10,7 @@ import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import { RESORTS, SKI_REGIONS, isResort, openingFor, type ResortId, type SkiRegion } from '@/lib/ski/resorts'
 import { skiScore, type SkiDay, type SkiForecast } from '@/lib/ski/forecast'
+import { todayKST } from '@/utils/dday'
 
 const chip = (on: boolean) => `min-h-[44px] px-3.5 rounded-xl text-sm font-medium ${on ? 'bg-primary text-white' : 'bg-soft text-body hover:bg-subtle'}`
 const kstClock = (iso: string) => {
@@ -17,11 +18,13 @@ const kstClock = (iso: string) => {
   return `${d.getUTCMonth() + 1}/${d.getUTCDate()} ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`
 }
 
-export default function SkiResorts() {
+export default function SkiResorts({ buildDate }: { buildDate: string }) {
   const t = useTranslations('skiResorts')
   const sp = useSearchParams()
-  // The static HTML is rendered for Yongpyong; a shared resort is read after hydration.
-  const fromUrl = useHydrated() ? sp.get('resort') : null
+  // The static HTML is rendered for Yongpyong on the build date; the shared resort and today (KST) are read after hydration.
+  const hydrated = useHydrated()
+  const fromUrl = hydrated ? sp.get('resort') : null
+  const today = hydrated ? todayKST() : buildDate
   const [picked, setPicked] = useState<ResortId | null>(null)
   const id: ResortId = picked ?? (isResort(fromUrl) ? fromUrl : 'yongpyong')
   const [region, setRegion] = useState<SkiRegion | 'all'>('all')
@@ -41,7 +44,9 @@ export default function SkiResorts() {
   const md = (d: string) => t('md', { m: Number(d.slice(5, 7)), d: Number(d.slice(8)) })
   const dayLabel = (d: string) => t('day', { m: Number(d.slice(5, 7)), d: Number(d.slice(8)), w: weekdays[new Date(`${d}T00:00:00Z`).getUTCDay()] })
   const name = (r: ResortId) => t(`resorts.${r}.name`)
-  const openingText = (r: (typeof RESORTS)[number]) => r.opening ? t('opening.target', { date: md(r.opening.date) }) : t('opening.unknown', { usual: t(`usual.${r.usual}`) })
+  const openingText = (r: (typeof RESORTS)[number]) => r.opening
+    ? t(r.opening.date <= today ? 'opening.opened' : 'opening.target', { date: md(r.opening.date) })
+    : t('opening.unknown', { usual: t(`usual.${r.usual}`) })
   const choose = (r: ResortId) => { setPicked(r); history.replaceState(null, '', `?resort=${r}`) }
 
   const resort = RESORTS.find((r) => r.id === id)!

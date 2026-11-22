@@ -162,7 +162,8 @@ export function recommend(t: TabId, measured: number): { i: number | null; out: 
 }
 
 // ── 선택 상태와 URL: t 탭, s 체계(열), v 표기
-export type State = { t: TabId; s: string; v: string }
+/** a = 고른 줄의 첫 열 표기. 지금 체계에서 같은 표기가 여러 줄일 때(반지 US 3.5 = 5·6호 등)만 붙여 그 줄을 지킨다 */
+export type State = { t: TabId; s: string; v: string; a?: string }
 export const defaultOf = (t: TabId, s?: string): State => {
   const tb = TABLES[t]
   const col = s && tb.cols.includes(s) ? s : tb.cols[0]
@@ -175,7 +176,10 @@ export function parseState(get: (k: string) => string | null): State {
   const t = isTab(t0) ? t0 : DEFAULT.t
   const base = defaultOf(t, get('s') ?? undefined)
   const v = get('v')
-  return v !== null && rowOf(t, TABLES[t].cols.indexOf(base.s), v) !== null ? { ...base, v } : base
+  if (v === null || rowOf(t, TABLES[t].cols.indexOf(base.s), v) === null) return base
+  const a = get('a')
+  const st: State = { ...base, v, ...(a !== null ? { a } : {}) }
+  return a !== null && anchoredRow(st) === null ? { ...base, v } : st
 }
 
 /** 기본값과 다른 것만. v 는 그 탭 기본 줄의 같은 체계 표기와 다를 때만 */
@@ -184,12 +188,24 @@ export function toQuery(s: State): string {
   const d = defaultOf(s.t, s.s)
   if (s.t !== DEFAULT.t) q.set('t', s.t)
   if (s.s !== TABLES[s.t].cols[0]) q.set('s', s.s)
-  if (s.v !== d.v) q.set('v', s.v)
+  const ci = TABLES[s.t].cols.indexOf(s.s)
+  const anchored = anchoredRow(s)
+  const needA = anchored !== null && anchored !== rowOf(s.t, ci, s.v)
+  if (s.v !== d.v || needA) q.set('v', s.v)
+  if (needA) q.set('a', s.a!)
   return q.toString()
 }
 
+/** a 가 가리키는 줄(지금 체계 표기도 v 와 같아야 함). 없으면 null */
+function anchoredRow(s: State): number | null {
+  if (s.a === undefined) return null
+  const tb = TABLES[s.t], ci = tb.cols.indexOf(s.s)
+  const i = tb.rows.findIndex((r) => r.cells[0] === s.a && r.cells[ci] === s.v)
+  return i < 0 ? null : i
+}
+
 /** 선택한 줄 번호(없으면 기본 줄) */
-export const selectedRow = (s: State) => rowOf(s.t, TABLES[s.t].cols.indexOf(s.s), s.v) ?? TABLES[s.t].def
+export const selectedRow = (s: State) => anchoredRow(s) ?? rowOf(s.t, TABLES[s.t].cols.indexOf(s.s), s.v) ?? TABLES[s.t].def
 /** 열 키 → 표기 */
 export const cellsOf = (t: TabId, i: number): Record<string, string> =>
   Object.fromEntries(TABLES[t].cols.map((c, j) => [c, TABLES[t].rows[i].cells[j]]))

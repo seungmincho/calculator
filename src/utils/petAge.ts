@@ -150,7 +150,9 @@ export function monthsFromBirth(birth: string, today: Date): number | null {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birth)
   if (!m) return null
   const [by, bm, bd] = [+m[1], +m[2], +m[3]]
-  const n = (today.getFullYear() - by) * 12 + (today.getMonth() + 1 - bm) - (today.getDate() < bd ? 1 : 0)
+  // 그달에 생일 날짜가 없으면(1/31생의 2월) 말일에 한 달이 찬다 — dday.ymd 와 같은 규칙
+  const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
+  const n = (today.getFullYear() - by) * 12 + (today.getMonth() + 1 - bm) - (today.getDate() < Math.min(bd, lastDay) ? 1 : 0)
   return n < 0 ? null : n
 }
 

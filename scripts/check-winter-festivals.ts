@@ -30,8 +30,11 @@ for (const f of all) {
 assert.deepEqual(Object.keys(SOURCES).filter((k) => !used.has(k)), [], '쓰지 않는 출처')
 for (const url of Object.values(SOURCES)) assert.match(url, /^https:\/\//)
 
-// 확인된 날짜(2026-11-07)
+// 확인된 날짜(2026-11-07, 11-22 재확인)
 assert.deepEqual(byId('hwacheon').dates, { start: '2027-01-09', end: '2027-01-31', source: 'hwacheon2027' })
+assert.deepEqual(byId('haeundae').dates, { start: '2026-11-28', end: '2027-01-10', source: 'haeundae2027' }, '해운대 2026: 부산시 행사 안내(관광공사 11.29~1.18 은 옛 값)')
+assert.deepEqual(byId('hampyeong').dates, { start: '2026-12-18', end: '2026-12-31', source: 'hampyeong2027' }, '함평 2026: 재단 축제개요')
+assert.equal(all.filter((f) => f.dates).length, 5, '2026-11-22 확정 5곳')
 assert.deepEqual([byId('pyeongchang').last.start, byId('pyeongchang').last.end], ['2026-01-09', '2026-02-09'], '평창 2026 연기된 실제 기간')
 assert.equal(byId('pyeongchang').dates, null, '평창 2027 은 여행사 잠정치라 공지 전')
 
@@ -62,7 +65,7 @@ assert.deepEqual(byDate, [...byDate].sort(), '개막일 순')
 const byRegion = listFestivals('all', 'all', 'region').map((f) => FESTIVAL_REGIONS.indexOf(f.region))
 assert.deepEqual(byRegion, [...byRegion].sort((a, b) => a - b), '지역 순')
 assert.deepEqual(ids(listFestivals('all', 'all', 'region').slice(0, 3)), ['hwacheon', 'pyeongchang', 'hongcheon'], '강원 안에서는 개막일 순, 같은 날이면 배열 순')
-assert.equal(listFestivals('all', 'all', 'date')[0].id, 'hampyeong', '예상 시기 포함 가장 이른 개막')
+assert.equal(listFestivals('all', 'all', 'date')[0].id, 'haeundae', '예상 시기 포함 가장 이른 개막(11.28)')
 
 // 번역: 모든 축제·출처·칩 문구가 ko·en 둘 다
 type Msg = Record<string, unknown>

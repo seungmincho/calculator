@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { useTranslations } from '@/lib/i18n'
 import '@/lib/i18n/ns/othello'
+import { useBoardKeyboard } from '@/hooks/useBoardKeyboard'
 
 const BOARD_SIZE = 8
 const CELL_SIZE = 56
@@ -59,8 +60,14 @@ export default function OthelloBoard({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
-  const [kbActive, setKbActive] = useState(false) // hoverPos 를 키보드가 옮겼을 때만 커서 칸을 읽어 준다
   const t = useTranslations('othello')
+  const canPlay = !disabled && isMyTurn && !!myColor && !gameState.winner
+
+  // 클릭·터치·Enter 공통: 둘 수 있는 칸이면 착수 (커서는 row=y, col=x)
+  const activate = (y: number, x: number) => {
+    if (canPlay && gameState.validMoves.some(m => m.x === x && m.y === y)) onMove(x, y)
+  }
+  const kb = useBoardKeyboard(BOARD_SIZE, BOARD_SIZE, activate, { row: 3, col: 3 })
 
   // Flip animation state
   const [flipProgress, setFlipProgress] = useState(1) // 0→1, 1 = done
@@ -251,8 +258,15 @@ export default function OthelloBoard({
           ctx.stroke()
         }
       }
+
+      // 키보드 커서: 둘 수 없는 칸이나 상대 차례에도 보인다
+      if (kb.active) {
+        ctx.strokeStyle = '#3182F6'
+        ctx.lineWidth = 3
+        ctx.strokeRect(PADDING + kb.cursor.col * CELL_SIZE + 3, PADDING + kb.cursor.row * CELL_SIZE + 3, CELL_SIZE - 6, CELL_SIZE - 6)
+      }
     },
-    [gameState, hoverPos, isMyTurn, myColor, disabled, flipProgress]
+    [gameState, hoverPos, isMyTurn, myColor, disabled, flipProgress, kb.active, kb.cursor]
   )
 
   // 캔버스 렌더링
@@ -289,21 +303,13 @@ export default function OthelloBoard({
 
   // 클릭 처리
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
     const pos = getPosition(e)
-    if (pos) {
-      const isValid = gameState.validMoves.some(m => m.x === pos.x && m.y === pos.y)
-      if (isValid) {
-        onMove(pos.x, pos.y)
-      }
-    }
+    if (pos) activate(pos.y, pos.x)
   }
 
   // 마우스 이동 처리
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const pos = getPosition(e)
-    setKbActive(false)
     setHoverPos(pos)
   }
 
@@ -311,38 +317,6 @@ export default function OthelloBoard({
   const handleMouseLeave = () => {
     setHoverPos(null)
   }
-
-  // 키보드 처리
-  const hoverPosRef = useRef(hoverPos)
-  hoverPosRef.current = hoverPos
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLCanvasElement>) => {
-    if (disabled || !isMyTurn || !myColor || gameState.winner) return
-
-    const key = e.key
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(key)) {
-      e.preventDefault()
-      setKbActive(true)
-
-      const pos = hoverPosRef.current || { x: 3, y: 3 }
-
-      if (key === 'Enter' || key === ' ') {
-        const isValid = gameState.validMoves.some(m => m.x === pos.x && m.y === pos.y)
-        if (isValid) {
-          onMove(pos.x, pos.y)
-        }
-      } else {
-        let newPos = pos
-        switch (key) {
-          case 'ArrowUp': newPos = { x: pos.x, y: Math.max(0, pos.y - 1) }; break
-          case 'ArrowDown': newPos = { x: pos.x, y: Math.min(BOARD_SIZE - 1, pos.y + 1) }; break
-          case 'ArrowLeft': newPos = { x: Math.max(0, pos.x - 1), y: pos.y }; break
-          case 'ArrowRight': newPos = { x: Math.min(BOARD_SIZE - 1, pos.x + 1), y: pos.y }; break
-        }
-        setHoverPos(newPos)
-      }
-    }
-  }, [disabled, isMyTurn, myColor, gameState.winner, gameState.validMoves, onMove])
 
   // 터치 위치를 보드 좌표로 변환
   const getTouchPosition = (e: React.TouchEvent<HTMLCanvasElement>): { x: number; y: number } | null => {
@@ -380,12 +354,15 @@ export default function OthelloBoard({
     // makeMove 는 다음 사람이 둘 곳이 없으면 같은 사람에게 차례를 남긴다 = 패스
     const passed = lastMove && lastMove.player === currentTurn ? `${lastMove.player === myColor ? t('opponentPassed') : t('noValidMoves')} ` : ''
     statusText = passed + (currentTurn === myColor ? t('yourTurn') : t('opponentTurn'))
+    // 둘 곳을 판에서 찾지 않아도 되게 후보 칸을 함께 읽어 준다
+    if (currentTurn === myColor && validMoves.length) statusText += ` ${t('keyboard.validList', { cells: validMoves.map(m => cellName(m.x, m.y)).join(', ') })}`
   }
   let cursorText = ''
-  if (kbActive && hoverPos) {
-    const stone = board[hoverPos.y][hoverPos.x]
-    const parts = [cellName(hoverPos.x, hoverPos.y), stone ? t(stone) : t('keyboard.empty')]
-    if (isMyTurn && !winner && validMoves.some(m => m.x === hoverPos.x && m.y === hoverPos.y)) parts.push(t('keyboard.canPlace'))
+  if (kb.active) {
+    const { row: y, col: x } = kb.cursor
+    const stone = board[y][x]
+    const parts = [cellName(x, y), stone ? t(stone) : t('keyboard.empty')]
+    if (canPlay && validMoves.some(m => m.x === x && m.y === y)) parts.push(t('keyboard.canPlace'))
     cursorText = parts.join(', ')
   }
 
@@ -396,9 +373,8 @@ export default function OthelloBoard({
         ref={canvasRef}
         width={BOARD_PIXEL_SIZE}
         height={BOARD_PIXEL_SIZE}
-        tabIndex={0}
+        {...kb.boardProps}
         aria-label={t('keyboard.board')}
-        role="application"
         style={{
           width: BOARD_PIXEL_SIZE * scale,
           height: BOARD_PIXEL_SIZE * scale,
@@ -409,10 +385,8 @@ export default function OthelloBoard({
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onKeyDown={handleKeyDown}
         onTouchStart={(e) => {
           e.preventDefault()
-          setKbActive(false)
           const pos = getTouchPosition(e)
           if (pos) setHoverPos(pos)
         }}
@@ -424,14 +398,7 @@ export default function OthelloBoard({
         onTouchEnd={(e) => {
           e.preventDefault()
           const pos = getTouchPosition(e)
-          if (pos) {
-            if (!disabled && isMyTurn && myColor && !gameState.winner) {
-              const isValid = gameState.validMoves.some(m => m.x === pos.x && m.y === pos.y)
-              if (isValid) {
-                onMove(pos.x, pos.y)
-              }
-            }
-          }
+          if (pos) activate(pos.y, pos.x)
           setHoverPos(null)
         }}
         className="rounded-lg shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
