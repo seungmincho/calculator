@@ -149,6 +149,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [수험표 할인 모음](https://toolhub.ai.kr/csat-discounts/): 놀이공원·영화·외식·여행 수험생 할인을 기간·조건·출처와 함께, 오늘 쓸 수 있는 것부터 보기
 - [정시 환산점수 계산기](https://toolhub.ai.kr/jeongsi-score/): 표준점수·백분위와 대학별 반영 비율·영어·한국사 점수로 환산점수 계산, 공식 6개 저장·비교
 - [국가장학금 계산기](https://toolhub.ai.kr/national-scholarship/): 가구 소득·재산으로 학자금 지원구간(가~마 5구간)을 추정하고 2027학년도 1학기 국가장학금 예상 금액 확인
+- [학자금 대출 상환 계산기](https://toolhub.ai.kr/student-loan-repayment/): 취업 후 상환 학자금의 의무상환액과 일반 상환 월 납입액·총이자를 비교
 - [공학용 계산기](https://toolhub.ai.kr/scientific-calculator/): 삼각함수·로그·거듭제곱·괄호·도/라디안 전환과 계산 기록을 지원하는 온라인 공학용 계산기
 
 ## 개발 도구
@@ -177,6 +178,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [색상 변환기](https://toolhub.ai.kr/color-converter/): HEX3·6자리 변환·유효 색 공유·색상 값 복사 복구
 - [Lorem Ipsum 생성기](https://toolhub.ai.kr/lorem-ipsum/): 더미 텍스트 생성 (한글/영문)
 - [단위 변환기](https://toolhub.ai.kr/unit-converter/): 단일·최대1,000행 단위 변환, 변환 쌍 저장과 전체 TSV·CSV
+- [해외 사이즈 변환](https://toolhub.ai.kr/size-converter/): 해외직구 신발(mm·US·UK·EU)·옷·반지 호수를 한국 사이즈로 변환
 - [텍스트 변환기](https://toolhub.ai.kr/text-converter/): 케이스·줄 정리·단계 순서 편집과 30개 이력 되돌리기
 - [비밀번호 생성기](https://toolhub.ai.kr/password-generator/): 비밀번호·PIN·단어 조합 생성, 한 항목 재생성과 복사 실패 복구
 - [디데이 계산기](https://toolhub.ai.kr/dday-calculator/): D-Day·날짜 계산, 현재 일정 복사 복구와 선택 일정 ICS
@@ -277,6 +279,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [겨울 축제 일정](https://toolhub.ai.kr/winter-festivals/): 산천어·송어 얼음축제, 태백산·대관령 눈축제, 빛축제의 이번 시즌 일정과 예년 시기
 - [건배사 모음](https://toolhub.ai.kr/toast-speech/): 송년회·회식·모임 자리별 건배사 만들기와 짧은 건배 구호 뜻·선창 후창
 - [생활계획표 만들기](https://toolhub.ai.kr/daily-schedule/): 방학 생활계획표를 24시간 원형으로 만들고 이미지 저장·인쇄·링크 공유
+- [만다라트 계획표](https://toolhub.ai.kr/mandalart/): 핵심 목표 1개·세부 목표 8개·실천 64칸을 채우고 이미지 저장·인쇄·링크 공유
 
 ## 이미지/미디어 도구
 
@@ -330,6 +333,9 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [아이 키 성장 백분위](https://toolhub.ai.kr/child-growth/): 성장도표로 키·몸무게 백분위와 부모 키로 예상 키 계산
 - [이달의 제철 음식](https://toolhub.ai.kr/seasonal-food/): 월별 제철 채소·과일·수산물과 고르는 법·보관법, 연중 제철 달력
 - [어린이 해열제 용량 계산기](https://toolhub.ai.kr/fever-medicine-dose/): 체중·나이로 아세트아미노펜·이부프로펜·덱시부프로펜 시럽 1회 용량(mL)과 복용 간격 확인
+- [아기 예방접종 일정](https://toolhub.ai.kr/baby-vaccination/): 생년월일로 표준 예방접종 일정과 영유아 건강검진 시기, 다음 접종 D-day 확인
+- [금연 계산기](https://toolhub.ai.kr/quit-smoking/): 금연 시작일과 하루 흡연량으로 아낀 돈·안 피운 담배와 시간대별 건강 회복 단계 확인
+- [강아지·고양이 나이 계산기](https://toolhub.ai.kr/pet-age/): 반려견·반려묘 나이를 사람 나이로 환산하고 체중별 하루 권장 칼로리·사료량 확인
 
 ## 간단 게임
 

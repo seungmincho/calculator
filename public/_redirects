@@ -73,6 +73,7 @@
 /api-tester  /api-tester/  301
 /aspect-ratio  /aspect-ratio/  301
 /average-calculator  /average-calculator/  301
+/baby-vaccination  /baby-vaccination/  301
 /background-remover  /background-remover/  301
 /barcode-generator  /barcode-generator/  301
 /base-converter  /base-converter/  301
@@ -322,6 +323,7 @@
 /lunar-converter  /lunar-converter/  301
 /mahjong-solitaire  /mahjong-solitaire/  301
 /mancala  /mancala/  301
+/mandalart  /mandalart/  301
 /manito  /manito/  301
 /margin-calculator  /margin-calculator/  301
 /markdown-editor  /markdown-editor/  301
@@ -372,6 +374,7 @@
 /pension-tax-credit  /pension-tax-credit/  301
 /percent-calculator  /percent-calculator/  301
 /personal-color  /personal-color/  301
+/pet-age  /pet-age/  301
 /picross  /picross/  301
 /pomodoro  /pomodoro/  301
 /port-reference  /port-reference/  301
@@ -382,6 +385,7 @@
 /pyeong-calculator  /pyeong-calculator/  301
 /qr-generator  /qr-generator/  301
 /qr-scanner  /qr-scanner/  301
+/quit-smoking  /quit-smoking/  301
 /random-number  /random-number/  301
 /random-picker  /random-picker/  301
 /reaction-test  /reaction-test/  301
@@ -429,6 +433,7 @@
 /seasonal-food  /seasonal-food/  301
 /shipping-calculator  /shipping-calculator/  301
 /signature-generator  /signature-generator/  301
+/size-converter  /size-converter/  301
 /ski-resorts  /ski-resorts/  301
 /sleep-calculator  /sleep-calculator/  301
 /sme-tax-exemption  /sme-tax-exemption/  301
@@ -440,6 +445,7 @@
 /sql-formatter  /sql-formatter/  301
 /stamp-generator  /stamp-generator/  301
 /stock-calculator  /stock-calculator/  301
+/student-loan-repayment  /student-loan-repayment/  301
 /subnet-calculator  /subnet-calculator/  301
 /sudoku  /sudoku/  301
 /sunrise-sunset  /sunrise-sunset/  301

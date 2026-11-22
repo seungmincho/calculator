@@ -158,6 +158,7 @@ export const menuConfig: MenuConfig = {
       { href: '/csat-discounts', labelKey: 'footer.links.csatDiscounts', descriptionKey: 'toolsShowcase.tools.csatDiscounts.description', icon: '🎟️', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
       { href: '/jeongsi-score', labelKey: 'footer.links.jeongsiScore', descriptionKey: 'toolsShowcase.tools.jeongsiScore.description', icon: '🧮', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
       { href: '/national-scholarship', labelKey: 'footer.links.nationalScholarship', descriptionKey: 'toolsShowcase.tools.nationalScholarship.description', icon: '🎓', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
+      { href: '/student-loan-repayment', labelKey: 'footer.links.studentLoanRepayment', descriptionKey: 'toolsShowcase.tools.studentLoanRepayment.description', icon: '🎓', addedDate: '2026-11-22', subcategory: 'subcategory.loanFinance' },
       { href: '/scientific-calculator', labelKey: 'footer.links.scientificCalculator', descriptionKey: 'toolsShowcase.tools.scientificCalculator.description', icon: '🔣', addedDate: '2026-11-20', subcategory: 'subcategory.others' },
     ],
   },
@@ -188,6 +189,7 @@ export const menuConfig: MenuConfig = {
       { href: '/color-converter', labelKey: 'footer.links.colorConverter', descriptionKey: 'toolsShowcase.tools.colorConverter.description', icon: '🎨', subcategory: 'subcategory.convertEncode', updatedDate: '2026-11-17' },
       { href: '/lorem-ipsum', labelKey: 'footer.links.loremIpsum', descriptionKey: 'toolsShowcase.tools.loremIpsum.description', icon: '📝', subcategory: 'subcategory.textTools' },
       { href: '/unit-converter', labelKey: 'footer.links.unitConverter', descriptionKey: 'toolsShowcase.tools.unitConverter.description', icon: '📐', subcategory: 'subcategory.convertEncode', updatedDate: '2026-11-17' },
+      { href: '/size-converter', labelKey: 'footer.links.sizeConverter', descriptionKey: 'toolsShowcase.tools.sizeConverter.description', icon: '👟', addedDate: '2026-11-22', subcategory: 'subcategory.convertEncode' },
       { href: '/text-converter', labelKey: 'footer.links.textConverter', descriptionKey: 'toolsShowcase.tools.textConverter.description', icon: '🔄', subcategory: 'subcategory.textTools', updatedDate: '2026-11-17' },
       { href: '/password-generator', labelKey: 'footer.links.passwordGenerator', descriptionKey: 'toolsShowcase.tools.passwordGenerator.description', icon: '🔑', subcategory: 'subcategory.generators', updatedDate: '2026-11-17' },
       { href: '/dday-calculator', labelKey: 'footer.links.ddayCalculator', descriptionKey: 'toolsShowcase.tools.ddayCalculator.description', icon: '📅', subcategory: 'subcategory.otherTools', updatedDate: '2026-11-17' },
@@ -292,6 +294,7 @@ export const menuConfig: MenuConfig = {
       { href: '/winter-festivals', labelKey: 'footer.links.winterFestivals', descriptionKey: 'toolsShowcase.tools.winterFestivals.description', icon: '❄️', addedDate: '2026-11-07', subcategory: 'subcategory.otherTools' },
       { href: '/toast-speech', labelKey: 'footer.links.toastSpeech', descriptionKey: 'toolsShowcase.tools.toastSpeech.description', icon: '🥂', addedDate: '2026-11-07', subcategory: 'subcategory.generators' },
       { href: '/daily-schedule', labelKey: 'footer.links.dailySchedule', descriptionKey: 'toolsShowcase.tools.dailySchedule.description', icon: '🕘', addedDate: '2026-11-20', subcategory: 'subcategory.generators' },
+      { href: '/mandalart', labelKey: 'footer.links.mandalart', descriptionKey: 'toolsShowcase.tools.mandalart.description', icon: '🎯', addedDate: '2026-11-22', subcategory: 'subcategory.generators' },
     ],
   },
   media: {
@@ -349,6 +352,9 @@ export const menuConfig: MenuConfig = {
       { href: '/child-growth', labelKey: 'footer.links.childGrowth', descriptionKey: 'toolsShowcase.tools.childGrowth.description', icon: '📏', addedDate: '2026-11-07' },
       { href: '/seasonal-food', labelKey: 'footer.links.seasonalFood', descriptionKey: 'toolsShowcase.tools.seasonalFood.description', icon: '🥬', addedDate: '2026-11-07' },
       { href: '/fever-medicine-dose', labelKey: 'footer.links.feverMedicineDose', descriptionKey: 'toolsShowcase.tools.feverMedicineDose.description', icon: '💊', addedDate: '2026-11-20' },
+      { href: '/baby-vaccination', labelKey: 'footer.links.babyVaccination', descriptionKey: 'toolsShowcase.tools.babyVaccination.description', icon: '💉', addedDate: '2026-11-22' },
+      { href: '/quit-smoking', labelKey: 'footer.links.quitSmoking', descriptionKey: 'toolsShowcase.tools.quitSmoking.description', icon: '🚭', addedDate: '2026-11-22' },
+      { href: '/pet-age', labelKey: 'footer.links.petAge', descriptionKey: 'toolsShowcase.tools.petAge.description', icon: '🐾', addedDate: '2026-11-22' },
     ],
   },
   games: {

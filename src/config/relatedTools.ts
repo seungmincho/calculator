@@ -45,7 +45,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/health-insurance': ['/dependent-eligibility', '/salary-calculator', '/four-insurance', '/national-pension', '/freelancer-tax', '/unemployment-benefit'],
   '/inheritance-gift-tax': ['/acquisition-tax', '/capital-gains-tax', '/comprehensive-property-tax', '/iou-generator', '/wedding-calculator', '/real-estate-calculator'],
   '/lotto-tax': ['/lotto-generator', '/savings-calculator', '/compound-calculator', '/investment-calculator', '/inheritance-gift-tax', '/acquisition-tax'],
-  '/customs-duty': ['/exchange-calculator', '/shipping-calculator', '/vat-calculator', '/discount-calculator'],
+  '/customs-duty': ['/exchange-calculator', '/shipping-calculator', '/vat-calculator', '/size-converter'],
 
   // 저축·투자·연금
   '/savings-calculator': ['/compound-calculator', '/youth-future-savings', '/dividend-calculator', '/investment-calculator', '/budget-calculator', '/pension-tax-credit'],
@@ -109,7 +109,7 @@ export const curatedRelated: Record<string, string[]> = {
 
   // 날짜·나이
   '/age-table': ['/age-calculator', '/calendar-2027', '/lunar-converter', '/greeting-generator', '/dday-calculator', '/changes-2027'],
-  '/age-calculator': ['/lunar-converter', '/dday-calculator', '/health-checkup', '/biorhythm', '/national-pension', '/military-discharge'],
+  '/age-calculator': ['/lunar-converter', '/dday-calculator', '/health-checkup', '/pet-age', '/national-pension', '/military-discharge'],
   '/military-discharge': ['/dday-calculator', '/age-calculator', '/minimum-wage', '/gpa-calculator', '/youth-rent-subsidy', '/government-subsidy'],
 
   // 학업·수능
@@ -123,7 +123,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/jeongsi-score': ['/csat-grade', '/jeongsi-2027', '/csat-dday', '/gpa-converter'],
 
   // 건강 — 체중·식단·운동
-  '/health-checkup': ['/bmi-calculator', '/blood-pressure', '/blood-sugar', '/body-fat-calculator', '/calorie-calculator', '/age-calculator'],
+  '/health-checkup': ['/bmi-calculator', '/blood-pressure', '/blood-sugar', '/body-fat-calculator', '/calorie-calculator', '/quit-smoking'],
   '/bmi-calculator': ['/calorie-calculator', '/body-fat-calculator', '/exercise-calorie', '/nutrition-calculator', '/health-checkup', '/meal-diary'],
   '/calorie-calculator': ['/nutrition-calculator', '/meal-diary', '/exercise-calorie', '/bmi-calculator', '/body-fat-calculator', '/running-pace'],
   '/body-fat-calculator': ['/bmi-calculator', '/calorie-calculator', '/one-rep-max', '/exercise-calorie', '/nutrition-calculator', '/meal-diary'],
@@ -180,7 +180,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/text-to-speech': ['/speaking-practice', '/voice-memo', '/character-counter', '/presentation-timer'],
   '/speaking-practice': ['/voice-memo', '/text-to-speech', '/presentation-timer', '/meeting-minutes'],
   '/typing-test': ['/keyboard-converter', '/korean-wordle', '/character-counter', '/reaction-test'],
-  '/unit-converter': ['/pyeong-calculator', '/exchange-calculator', '/percent-calculator', '/time-converter'],
+  '/unit-converter': ['/pyeong-calculator', '/exchange-calculator', '/percent-calculator', '/size-converter'],
   '/roman-numeral': ['/number-to-korean', '/base-converter', '/morse-code', '/unit-converter'],
   '/resident-number': ['/business-number', '/age-calculator', '/lunar-converter', '/password-generator'],
 
@@ -204,7 +204,7 @@ export const curatedRelated: Record<string, string[]> = {
   '/energy-voucher': ['/gas-bill', '/electricity-calculator', '/basic-pension', '/median-income', '/government-subsidy', '/wind-chill'],
   '/eitc': ['/salary-calculator', '/median-income', '/government-subsidy', '/basic-pension', '/year-end-tax', '/child-benefit'],
   '/json-to-typescript': ['/json-formatter', '/json-csv-converter', '/yaml-json-converter', '/json-xml-converter', '/jwt-decoder', '/api-tester'],
-  '/child-growth': ['/bmi-calculator', '/fever-medicine-dose', '/due-date', '/calorie-calculator', '/age-calculator', '/child-benefit'],
+  '/child-growth': ['/bmi-calculator', '/fever-medicine-dose', '/due-date', '/calorie-calculator', '/baby-vaccination', '/child-benefit'],
   '/yut-nori': ['/omok', '/othello', '/dice-roller', '/ladder-game', '/greeting-generator', '/calendar-2027'],
   '/wind-chill': ['/kimjang-timing', '/ski-resorts', '/winter-festivals', '/new-year-sunrise', '/gas-bill', '/sunrise-sunset'],
   '/calendar-2027': ['/holiday-planner', '/lunar-converter', '/dday-calculator', '/age-table', '/changes-2027', '/new-year-sunrise'],
@@ -307,8 +307,14 @@ export const curatedRelated: Record<string, string[]> = {
   '/overseas-stock-tax': ['/stock-calculator', '/dividend-calculator', '/exchange-calculator', '/income-tax', '/investment-calculator', '/year-end-tax'],
   '/card-fee-calculator': ['/vat-calculator', '/margin-calculator', '/sales-commission', '/income-tax', '/freelancer-tax', '/minimum-wage'],
   '/prepayment-fee': ['/loan-calculator', '/loan-schedule', '/dsr-calculator', '/jeonse-loan', '/bogeumjari-loan', '/car-loan-calculator'],
-  '/national-scholarship': ['/median-income', '/csat-dday', '/jeongsi-score', '/education-tax-credit', '/government-subsidy', '/csat-grade'],
+  '/national-scholarship': ['/median-income', '/csat-dday', '/jeongsi-score', '/education-tax-credit', '/government-subsidy', '/student-loan-repayment'],
   '/scientific-calculator': ['/percent-calculator', '/unit-converter', '/base-converter', '/average-calculator'],
-  '/daily-schedule': ['/pomodoro', '/timer', '/dday-calculator', '/calendar-2027'],
-  '/fever-medicine-dose': ['/child-growth', '/bmi-calculator', '/sleep-calculator', '/health-checkup'],
+  '/daily-schedule': ['/pomodoro', '/mandalart', '/dday-calculator', '/calendar-2027'],
+  '/fever-medicine-dose': ['/child-growth', '/bmi-calculator', '/baby-vaccination', '/health-checkup'],
+  '/student-loan-repayment': ['/national-scholarship', '/loan-calculator', '/salary-calculator', '/loan-schedule'],
+  '/size-converter': ['/customs-duty', '/unit-converter', '/exchange-calculator', '/discount-calculator'],
+  '/mandalart': ['/daily-schedule', '/dday-calculator', '/pomodoro', '/kanban-board'],
+  '/baby-vaccination': ['/child-growth', '/fever-medicine-dose', '/dday-calculator', '/child-benefit'],
+  '/quit-smoking': ['/health-checkup', '/alcohol-calculator', '/blood-pressure', '/bmi-calculator'],
+  '/pet-age': ['/age-calculator', '/dday-calculator', '/calorie-calculator', '/unit-converter'],
 }
