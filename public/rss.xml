@@ -5,13 +5,27 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 22 Nov 2026 11:54:29 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 22 Nov 2026 13:12:30 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[아기 예방접종 일정]]></title>
     <link>https://toolhub.ai.kr/baby-vaccination/</link>
     <guid>https://toolhub.ai.kr/baby-vaccination/</guid>
     <description><![CDATA[생년월일로 표준 예방접종 일정과 영유아 건강검진 시기, 다음 접종 D-day 확인]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[수험표 할인 모음]]></title>
+    <link>https://toolhub.ai.kr/csat-discounts/</link>
+    <guid>https://toolhub.ai.kr/csat-discounts/</guid>
+    <description><![CDATA[놀이공원·영화·외식·여행 수험생 할인을 기간·조건·출처와 함께, 오늘 쓸 수 있는 것부터 보기]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[LLM 토큰 계산기]]></title>
+    <link>https://toolhub.ai.kr/llm-token-calculator/</link>
+    <guid>https://toolhub.ai.kr/llm-token-calculator/</guid>
+    <description><![CDATA[GPT, Claude, Gemini 등 LLM 모델별 토큰 수 추정 및 API 비용 계산]]></description>
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -43,6 +57,13 @@
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[스키장 개장일·날씨]]></title>
+    <link>https://toolhub.ai.kr/ski-resorts/</link>
+    <guid>https://toolhub.ai.kr/ski-resorts/</guid>
+    <description><![CDATA[전국 스키장 개장 일정과 9일 날씨로 가기 좋은 날 추천]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[학자금 대출 상환 계산기]]></title>
     <link>https://toolhub.ai.kr/student-loan-repayment/</link>
     <guid>https://toolhub.ai.kr/student-loan-repayment/</guid>
@@ -50,17 +71,17 @@
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[겨울 축제 일정]]></title>
+    <link>https://toolhub.ai.kr/winter-festivals/</link>
+    <guid>https://toolhub.ai.kr/winter-festivals/</guid>
+    <description><![CDATA[산천어·송어 얼음축제, 태백산·대관령 눈축제, 빛축제의 이번 시즌 일정과 예년 시기]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[수능 D-day · 시간표]]></title>
     <link>https://toolhub.ai.kr/csat-dday/</link>
     <guid>https://toolhub.ai.kr/csat-dday/</guid>
     <description><![CDATA[수능 날짜·시간표·준비물·공식 안내와 과목별 연습 타이머]]></description>
-    <pubDate>Thu, 19 Nov 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[수험표 할인 모음]]></title>
-    <link>https://toolhub.ai.kr/csat-discounts/</link>
-    <guid>https://toolhub.ai.kr/csat-discounts/</guid>
-    <description><![CDATA[놀이공원·영화·외식·여행 수험생 할인을 기간·조건·출처와 함께, 오늘 쓸 수 있는 것부터 보기]]></description>
     <pubDate>Thu, 19 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -1163,13 +1184,6 @@
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
-    <title><![CDATA[겨울 축제 일정]]></title>
-    <link>https://toolhub.ai.kr/winter-festivals/</link>
-    <guid>https://toolhub.ai.kr/winter-festivals/</guid>
-    <description><![CDATA[산천어·송어 얼음축제, 태백산·대관령 눈축제, 빛축제의 이번 시즌 일정과 예년 시기]]></description>
-    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
     <title><![CDATA[청년미래적금 계산기]]></title>
     <link>https://toolhub.ai.kr/youth-future-savings/</link>
     <guid>https://toolhub.ai.kr/youth-future-savings/</guid>
@@ -1223,13 +1237,6 @@
     <link>https://toolhub.ai.kr/salary-calculator/</link>
     <guid>https://toolhub.ai.kr/salary-calculator/</guid>
     <description><![CDATA[실수령액과 4대보험 계산]]></description>
-    <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[스키장 개장일·날씨]]></title>
-    <link>https://toolhub.ai.kr/ski-resorts/</link>
-    <guid>https://toolhub.ai.kr/ski-resorts/</guid>
-    <description><![CDATA[전국 스키장 개장 일정과 9일 날씨로 가기 좋은 날 추천]]></description>
     <pubDate>Thu, 05 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -1986,13 +1993,6 @@
     <link>https://toolhub.ai.kr/ladder-game/</link>
     <guid>https://toolhub.ai.kr/ladder-game/</guid>
     <description><![CDATA[온라인 사다리 타기]]></description>
-    <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[LLM 토큰 계산기]]></title>
-    <link>https://toolhub.ai.kr/llm-token-calculator/</link>
-    <guid>https://toolhub.ai.kr/llm-token-calculator/</guid>
-    <description><![CDATA[GPT, Claude, Gemini 등 LLM 모델별 토큰 수 추정 및 API 비용 계산]]></description>
     <pubDate>Tue, 15 Sep 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
