@@ -6,7 +6,7 @@ import { FaqJsonLd } from '@/components/ToolFaq'
 import messages from '../../../messages/generated/ko/ns/formulaAmount.json'
 
 const TITLE = '아기 분유량 계산기 - 신생아·100일 월령별 분유 하루 총량 | 툴허브'
-const DESC = '월령과 체중으로 아기 분유 하루 총량과 1회 수유량, 수유 간격, 분유 스푼 수를 계산해요. 보건복지부 아이사랑 기준(3개월까지 체중 1kg당 150~180mL, 3~6개월 약 120mL, 하루 960mL 이하)에 미국소아과학회 기준, 혼합수유 분유량, 분유 보관 시간까지 함께 보여 줘요.'
+const DESC = '월령과 체중으로 분유 하루 총량과 1회 수유량, 수유 간격, 분유 스푼 수를 계산해요. 보건복지부 아이사랑 기준(3개월까지 체중 1kg당 150~180mL, 3~6개월 약 120mL, 하루 960mL 이하)에 미국소아과학회 기준, 혼합수유 분유량, 분유 보관 시간까지 보여 줘요.'
 const PAGE_URL = 'https://toolhub.ai.kr/formula-amount/'
 const OG = 'https://toolhub.ai.kr/og/formula-amount.png'
 
