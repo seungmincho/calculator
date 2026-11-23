@@ -5,7 +5,7 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Sun, 22 Nov 2026 13:12:30 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 23 Nov 2026 01:05:17 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title><![CDATA[아기 예방접종 일정]]></title>
@@ -15,10 +15,24 @@
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[차례상 비용 계산기]]></title>
+    <link>https://toolhub.ai.kr/charye-cost/</link>
+    <guid>https://toolhub.ai.kr/charye-cost/</guid>
+    <description><![CDATA[인원·간소화 여부·전통시장/대형마트로 차례상 장보기 품목과 비용 계산]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[수험표 할인 모음]]></title>
     <link>https://toolhub.ai.kr/csat-discounts/</link>
     <guid>https://toolhub.ai.kr/csat-discounts/</guid>
     <description><![CDATA[놀이공원·영화·외식·여행 수험생 할인을 기간·조건·출처와 함께, 오늘 쓸 수 있는 것부터 보기]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[분유량 계산기]]></title>
+    <link>https://toolhub.ai.kr/formula-amount/</link>
+    <guid>https://toolhub.ai.kr/formula-amount/</guid>
+    <description><![CDATA[월령과 체중으로 하루 분유 총량·1회 수유량·수유 횟수를 계산하고 혼합수유 분배 확인]]></description>
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -36,6 +50,13 @@
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
+    <title><![CDATA[여권 영문 이름 변환]]></title>
+    <link>https://toolhub.ai.kr/passport-name/</link>
+    <guid>https://toolhub.ai.kr/passport-name/</guid>
+    <description><![CDATA[한글 이름을 로마자 표기법으로 바꾸고 성씨 관용 표기 후보와 여권 영문 이름 정할 때 주의점 확인]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
     <title><![CDATA[강아지·고양이 나이 계산기]]></title>
     <link>https://toolhub.ai.kr/pet-age/</link>
     <guid>https://toolhub.ai.kr/pet-age/</guid>
@@ -47,6 +68,20 @@
     <link>https://toolhub.ai.kr/quit-smoking/</link>
     <guid>https://toolhub.ai.kr/quit-smoking/</guid>
     <description><![CDATA[금연 시작일과 하루 흡연량으로 아낀 돈·안 피운 담배와 시간대별 건강 회복 단계 확인]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[연봉 인상률 계산기]]></title>
+    <link>https://toolhub.ai.kr/salary-raise/</link>
+    <guid>https://toolhub.ai.kr/salary-raise/</guid>
+    <description><![CDATA[인상률과 인상액을 서로 환산하고 월 실수령 차이·물가 대비 실질 인상·이직 제시 연봉 비교]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[세뱃돈 계산기]]></title>
+    <link>https://toolhub.ai.kr/sebaetdon/</link>
+    <guid>https://toolhub.ai.kr/sebaetdon/</guid>
+    <description><![CDATA[받을 사람 명단으로 세뱃돈 총액·신권 장수를 계산하고 나이대별 시세와 봉투 문구 확인]]></description>
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
@@ -68,6 +103,27 @@
     <link>https://toolhub.ai.kr/student-loan-repayment/</link>
     <guid>https://toolhub.ai.kr/student-loan-repayment/</guid>
     <description><![CDATA[취업 후 상환 학자금의 의무상환액과 일반 상환 월 납입액·총이자를 비교]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[타이어 사이즈 계산기]]></title>
+    <link>https://toolhub.ai.kr/tire-size/</link>
+    <guid>https://toolhub.ai.kr/tire-size/</guid>
+    <description><![CDATA[205/55R16 같은 타이어 규격을 풀어 외경·속도계 오차를 비교하고 하중지수·속도기호 확인]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[교통 범칙금·벌점 계산기]]></title>
+    <link>https://toolhub.ai.kr/traffic-fine/</link>
+    <guid>https://toolhub.ai.kr/traffic-fine/</guid>
+    <description><![CDATA[속도위반·신호위반·주정차·어린이보호구역 위반의 과태료·범칙금·벌점과 누적 벌점 면허정지 기준 확인]]></description>
+    <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
+  <item>
+    <title><![CDATA[대중교통 환급 비교]]></title>
+    <link>https://toolhub.ai.kr/transit-pass/</link>
+    <guid>https://toolhub.ai.kr/transit-pass/</guid>
+    <description><![CDATA[월 교통비와 이용 횟수로 K-패스 기본형·모두의카드 일반형·플러스형 중 가장 이득인 방식과 환급액 계산(서울 기후동행패스 포함)]]></description>
     <pubDate>Sat, 21 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>

@@ -19,7 +19,7 @@ import {
   Minimize2, Video, Mic, Film, Scissors, Download, Apple, Dumbbell, Wine, PartyPopper, Stethoscope, Wind, BedDouble, Salad, ThermometerSnowflake, Snowflake, Sunrise, Sunset, TableProperties,
   NotebookText, Brain, HeartHandshake, Users, Flower2, BookOpenCheck, Hexagon, Gamepad2, CircleDot, Circle,
   Grid2x2, Crown, Ship, Spline, Hand, Rows3, Bomb, LayoutPanelTop, Swords, Blocks, Spade, Bird, Ghost,
-  SquareDashed, Calculator, Pill, CigaretteOff, Syringe, PawPrint, Shirt, Server, ListChecks, Gem, Bot, Home, Sigma, SquareStack, Newspaper, CircleHelp, Disc3,
+  SquareDashed, Calculator, Pill, TrainFront, Siren, Soup, BookUser, Milk, CigaretteOff, Syringe, PawPrint, Shirt, Server, ListChecks, Gem, Bot, Home, Sigma, SquareStack, Newspaper, CircleHelp, Disc3,
 } from 'lucide-react'
 import type { CategoryKey } from './menuConfig'
 
@@ -91,6 +91,14 @@ export const toolIcons: Record<string, LucideIcon> = {
   '/baby-vaccination': Syringe,
   '/quit-smoking': CigaretteOff,
   '/pet-age': PawPrint,
+  '/salary-raise': TrendingUp,
+  '/transit-pass': TrainFront,
+  '/traffic-fine': Siren,
+  '/tire-size': Disc3,
+  '/charye-cost': Soup,
+  '/sebaetdon': HandCoins,
+  '/passport-name': BookUser,
+  '/formula-amount': Milk,
   '/seasonal-food': Apple,
   '/winter-festivals': PartyPopper,
   '/toast-speech': Wine,

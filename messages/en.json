@@ -3128,6 +3128,14 @@
       "babyVaccination": "Baby Vaccination Schedule",
       "quitSmoking": "Quit Smoking Calculator",
       "petAge": "Dog & Cat Age Calculator",
+      "salaryRaise": "Salary Raise Calculator",
+      "transitPass": "Transit Pass Refund Comparison",
+      "trafficFine": "Traffic Fine & Points Calculator",
+      "tireSize": "Tire Size Calculator",
+      "charyeCost": "Ancestral Rite Table Cost",
+      "sebaetdon": "Lunar New Year Money",
+      "passportName": "Passport Name Romanization",
+      "formulaAmount": "Baby Formula Calculator",
       "windChill": "Wind Chill Calculator",
       "dependentEligibility": "Health Insurance Dependent Check",
       "youthFutureSavings": "Youth Future Savings Calculator",
@@ -9360,6 +9368,38 @@
       "petAge": {
         "title": "Dog & Cat Age in Human Years",
         "description": "Convert your dog's or cat's age to human years and see the daily calories and food amount by weight"
+      },
+      "salaryRaise": {
+        "title": "Salary Raise Calculator · Take-home Difference",
+        "description": "Convert raise rate and amount, see the monthly take-home difference, the real raise after inflation and compare job offers"
+      },
+      "transitPass": {
+        "title": "K-Pass vs Modu Card Refund Comparison",
+        "description": "Find which K-Pass refund option (basic, Modu Card standard or plus) saves the most for your monthly fares, including the Seoul Climate Pass"
+      },
+      "trafficFine": {
+        "title": "Traffic Fine, Penalty & Points Calculator",
+        "description": "Check fines and penalty points for speeding, signals, parking and school zones, and when accumulated points suspend a license"
+      },
+      "tireSize": {
+        "title": "Tire Size Calculator · Size Comparison",
+        "description": "Decode tire sizes like 205/55R16, compare diameter and speedometer error, and look up load index and speed rating"
+      },
+      "charyeCost": {
+        "title": "Seollal & Chuseok Charye Table Cost",
+        "description": "Estimate shopping items and cost for an ancestral rite table by servings, simplified or traditional set, and market vs supermarket"
+      },
+      "sebaetdon": {
+        "title": "Sebaetdon Calculator · New Year Money by Age",
+        "description": "Total your Lunar New Year money by recipient, count new bills, and check typical amounts by age and envelope messages"
+      },
+      "passportName": {
+        "title": "Korean Passport Name Romanizer",
+        "description": "Romanize a Korean name, see common surname spellings and what to check before choosing your passport name"
+      },
+      "formulaAmount": {
+        "title": "Baby Formula Amount Calculator",
+        "description": "Calculate daily formula volume, amount per feeding and number of feedings by baby's age and weight, including mixed feeding"
       },
       "windChill": {
         "title": "Wind Chill Calculator",
@@ -63710,6 +63750,1794 @@
       "kosaf": "Korea Student Aid Foundation — income-contingent loan repayment guide",
       "asOf": "As of {date}. The 2027 threshold and rate will be updated once announced."
     }
+  },
+  "passportName": {
+    "title": "Korean Passport Name Romanizer",
+    "subtitle": "Turn a Korean name into Roman letters using the personal-name rules of the Revised Romanization of Korean, and check common surname spellings, airline ticket format and the passport MRZ line.",
+    "input": {
+      "title": "Enter the name",
+      "surname": "Surname (Hangul)",
+      "surnameHint": "Two-syllable surnames such as 남궁, 제갈, 선우 or 황보 go in as two syllables.",
+      "surnameErr": "Enter a Hangul surname of 1–{max} syllables.",
+      "given": "Given name (Hangul)",
+      "givenHint": "Use the Hangul name exactly as registered in the family relation register.",
+      "givenErr": "Enter a Hangul given name of 1–{max} syllables without spaces.",
+      "style": "Given name style",
+      "styleJoined": "Joined {ex}",
+      "styleHyphen": "Hyphen {ex}",
+      "styleHint": "Writing the syllables together is the rule, and a hyphen between syllables is allowed. Once chosen, the same style is used when the passport is renewed.",
+      "spelling": "Spelling of '{s}'",
+      "spellingStd": "Standard",
+      "spellingHint": "The first option follows the Revised Romanization; the others are customary spellings often seen on passports.",
+      "spellingNone": "Only the Revised Romanization spelling is shown for this surname. If your family already uses a spelling, check that one too."
+    },
+    "result": {
+      "label": "Passport name",
+      "surname": "Surname",
+      "given": "Given names",
+      "rr": "Revised Romanization",
+      "keepLast": "While you are editing, the last valid name is shown.",
+      "custom": "{v} differs from the standard spelling {std} but is commonly used on passports. Once chosen, the same spelling is kept at renewal, so match it with your family's spelling.",
+      "ll": "The name has 'ㄹㄹ' in a row, written as ll under the romanization rules (e.g. 울릉 Ulleung).",
+      "single": "One-letter spellings such as I, O or A can cause trouble with airline bookings or immigration. The Ministry of Foreign Affairs may accept this as a reason to change the spelling.",
+      "negative": "{words} is listed by the Ministry of Foreign Affairs as an example of a spelling with a negative meaning in English. Such spellings can later be a reason for change, so think it over when choosing.",
+      "ticket": "Airline booking name",
+      "ticketHint": "Booking forms usually split surname and given name and take the passport spelling without hyphens or spaces. Follow the airline's booking instructions.",
+      "mrz": "Passport MRZ first line preview",
+      "mrzHint": "A 44-character example for a multiple-entry passport (document type PM). Surname and given names are separated by <<, and hyphens or spaces become <. The second line (passport number, birth date, etc.) is omitted.",
+      "mrzCut": "The name is longer than 44 characters, so the rest is cut off. Real passports shorten it under the international standard.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyFailed": "Couldn't copy. Press and hold the text to copy it yourself.",
+      "copyAria": "Copy {what}",
+      "copyWhat": {
+        "passport": "passport name",
+        "ticket": "airline booking name",
+        "mrz": "MRZ first line"
+      },
+      "disclaimer": "An example based on the Revised Romanization of Korean and the Passport Act enforcement rules. The actual passport spelling is fixed by what you write on the passport application."
+    },
+    "keep": {
+      "title": "Before you decide on a passport name",
+      "items": [
+        "If you already have a passport, keep its romanized name. The same spelling is the rule at renewal, and it can only be changed for reasons set by law.",
+        "The name on an airline ticket must match the passport letter for letter. A mismatch can cause problems at check-in or immigration.",
+        "For a first passport, think about your family's surname spelling and the name you will use at schools or companies abroad.",
+        "The Ministry of Foreign Affairs notes that even a lawful change can make a passport look forged when you revisit a country you travelled to before."
+      ]
+    },
+    "share": {
+      "tool": "Korean Passport Name Romanizer",
+      "label": "Passport name example",
+      "sub": "Ticket {ticket}",
+      "text": "Passport name example: {passport} (ticket {ticket})",
+      "privacy": "The shared link and image include the name you entered. Check before sending it to others."
+    },
+    "guide": {
+      "title": "Passport name guide",
+      "rules": {
+        "title": "Name rules in the Revised Romanization",
+        "items": [
+          "Write the surname first and the given name after a space. The given name is written as one word, and a hyphen between syllables is allowed. Example: 민용하 Min Yongha (Min Yong-ha)",
+          "Sound changes inside a given name are not reflected. 한복남 is Han Boknam even though it sounds like 'Bongnam', and 홍빛나 is Hong Bitna. That is why this tool converts each syllable separately.",
+          "Final ㄱ, ㄷ, ㅂ are written k, t, p (복 bok, 빛 bit). 'ㄹ' is r before a vowel, l as a final, and 'ㄹㄹ' is ll.",
+          "'ㅢ' is written ui even when it sounds like 'ㅣ' (희 hui).",
+          "The rules say surnames are 'to be set separately', and no standard has been fixed yet. That is why many passports use long-standing customary spellings.",
+          "Passports romanize the Hangul name in the family relation register syllable by syllable (Passport Act Enforcement Rules, Article 2-2). A foreign-style name with the same sound, such as KIM ESTHER for 김에스더, is allowed."
+        ]
+      },
+      "change": {
+        "title": "When an existing passport name can be changed",
+        "items": [
+          "When it clearly differs from the Korean pronunciation. A spelling that follows the romanization rules, or one used by 50% or more or by 10,000 or more people with the same Hangul surname or name, cannot be changed (MOFA Notice 2024-10; given names are judged by syllable).",
+          "When you have used another spelling for work or study abroad and not changing it would seriously affect your stay or activities. Proof of employment or enrolment is needed; language test scores alone are not enough.",
+          "When family members travel together and need to show they are family, only the surname can be matched to the family. The given name cannot be changed.",
+          "Adding, changing or removing a spouse's surname ('spouse of' format), a spelling listed in dictionaries with a negative meaning, or a legal change of the Hangul name.",
+          "A first-ever passport that has not been used for any border crossing, or once after age 18 for a spelling chosen before 18 and used since.",
+          "Matching an emigration visa, someone with the same name being barred from entry, or other cases accepted by the Minister of Foreign Affairs (Passport Act Enforcement Decree, Article 3-2(2))."
+        ]
+      },
+      "tips": {
+        "title": "Check before you decide",
+        "items": [
+          "If you have an old passport, look at its romanized name first. Using the same spelling is the rule.",
+          "Check how your family spells the surname. For a child's first passport, matching the parents' spelling makes it easier to show you are a family at immigration.",
+          "If you already hold a foreign visa, changing the spelling may cause problems with it, so tell the officer when you apply.",
+          "Titles, honorifics, numbers, symbols (DR, SIR, 1ST, etc.) and baptismal names cannot be part of a passport name.",
+          "Book flights with the passport spelling and check that surname and given name are not swapped before paying."
+        ]
+      },
+      "surnames": {
+        "title": "Spellings of common surnames",
+        "desc": "Shows the Revised Romanization spelling together with customary spellings recorded as in actual use by the National Institute of Korean Language that are still common today. The order is not a usage ranking.",
+        "open": "Show the table of 30 surnames",
+        "cols": {
+          "surname": "Surname",
+          "std": "Standard",
+          "alts": "Common spellings"
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "Should 이 be written LEE or I?",
+            "a": "The romanization rules give I, but no standard has been set for surnames, so customary spellings such as LEE, YI and RHEE are common on passports. If your family already uses a spelling, matching it makes border checks easier."
+          },
+          {
+            "q": "Should the given name be joined or hyphenated?",
+            "a": "Joining is the rule, and a hyphen between syllables (GIL-DONG) is allowed. The Ministry of Foreign Affairs says a space is also allowed on request, but the style you choose is kept at renewal."
+          },
+          {
+            "q": "Can I change my passport name later?",
+            "a": "In principle it is hard. It can only be changed for reasons set in the Passport Act Enforcement Decree (pronunciation mismatch, long use abroad, matching the family surname, a legal name change, once after age 18, etc.). It is not a way to switch to a spelling you prefer."
+          },
+          {
+            "q": "What if my airline ticket name differs slightly from my passport?",
+            "a": "Airlines require the same name as the passport. A different spelling can lead to denied boarding or a name-correction fee, so check it letter by letter when booking. Correction rules vary by airline."
+          },
+          {
+            "q": "Why is 빛나 BITNA and not BINNA?",
+            "a": "The romanization rules do not reflect sound changes inside a given name. The official example writes 홍빛나 as Hong Bitna. So the tool shows each syllable converted separately."
+          },
+          {
+            "q": "What is the MRZ line?",
+            "a": "It is the two-line machine readable zone under the photo page. Under the ICAO standard it lists surname<<given names, fills gaps with < and makes each line 44 characters. Border control machines read it, so it uses the same spelling as your passport name."
+          },
+          {
+            "q": "Can a foreign-style name (e.g. 에스더) be written in its English spelling?",
+            "a": "If it sounds the same as the Hangul name in the family relation register, it can be written like KIM ESTHER. This tool shows the standard romanization (ESEUDEO), so check the foreign spelling separately when you apply."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Basis and sources",
+      "rr": "National Institute of Korean Language, Revised Romanization of Korean (MCST Notice 2014-42, 2014-12-05) — Chapter 3 Article 4 personal names, Chapter 2 tables",
+      "rule": "Korea Law Information Center, Passport Act Enforcement Rules Article 2-2 — romanized name and changes",
+      "decree": "Korea Law Information Center, Passport Act Enforcement Decree Article 3-2 (version in force from 2026-03-01) — reasons for change",
+      "notice": "MOFA Notice 2024-10 (2024-12-31) — spellings used by 50% or 10,000+ people cannot be changed",
+      "basic": "MOFA Passport portal, basic rules for romanized names",
+      "change": "MOFA Passport portal, requirements for changing romanized names",
+      "nikl1991": "National Institute of Korean Language, Saegugeosaenghwal Spring 1991, Seo Jeong-su, 'On romanizing Korean names' — surname spellings in actual use",
+      "method": "Given names are converted syllable by syllable using the romanization tables (finals k, t, p; ㄹㄹ as ll). For surnames the standard spelling is shown with customary options. The MRZ is an example of the first 44-character line of the ICAO Doc 9303 passport format (TD3). Surname options are not listed by usage share.",
+      "asOf": "Checked {date}. Passport rules can change, so check the MOFA passport portal before applying."
+    }
+  },
+  "formulaAmount": {
+    "title": "Baby Formula Amount Calculator",
+    "subtitle": "Calculate daily formula total, amount per feed, feeding interval and scoops from your baby's age and weight. Based on Korea's Ministry of Health i-Sarang guide, with the American Academy of Pediatrics figures for comparison.",
+    "input": {
+      "title": "Baby details",
+      "month": "Age",
+      "newborn": "Newborn",
+      "monthOpt": "{n} mo",
+      "monthHint": "Pick completed months. Newborn means up to 4 weeks old.",
+      "birth": "Pick by birth date (optional)",
+      "birthHint": "Enter a date to pick the age in completed months as of today. The birth date is not added to the link.",
+      "birthAge": "{days} days old · {months} months",
+      "birthOver": "Past 12 months, so the 12-month figures are shown.",
+      "birthErr": "Enter today or an earlier date.",
+      "weight": "Weight",
+      "weightHint": "Enter the latest weight to 0.1 kg.",
+      "weightErr": "Enter a weight between {min} and {max} kg.",
+      "times": "Feeds per day",
+      "timesVal": "{n} times",
+      "timesHint": "Default for this age {n} · i-Sarang table {lo}–{hi}",
+      "timesHintSolids": "Default with formula only {n} · i-Sarang table with solids {lo}–{hi}",
+      "timesReset": "Reset",
+      "breast": "Of these, breastfeeds (mixed feeding)",
+      "breastHint": "Leave at 0 if your baby only has formula.",
+      "scoop": "Water per scoop",
+      "scoopHint": "Enter the 'water per scoop' printed on the tin or scoop. It differs by product, so always check the tin.",
+      "scoopErr": "Enter a whole number between {min} and {max} mL.",
+      "minus": "Decrease {what}",
+      "plus": "Increase {what}"
+    },
+    "result": {
+      "label": "Daily formula total",
+      "labelFor": "Daily formula for a {w} kg baby ({age})",
+      "about": "About {v}",
+      "basis": "{w} kg × {k} mL per kg per day (i-Sarang, rounded to 10 mL)",
+      "feed": "Per feed",
+      "feedSub": "Split over {n} feeds a day",
+      "interval": "Feeding interval",
+      "intervalVal": "About every {h} h",
+      "intervalSub": "24 hours divided by feeds per day",
+      "scoops": "Scoops per feed",
+      "scoopsVal": "{v} scoops",
+      "scoopsSub": "{ml} mL water · {s} mL per scoop",
+      "over": "By weight the daily total would exceed {cap} mL, so it is capped at {cap} mL. Both i-Sarang and the AAP advise not going over {cap} mL a day. If your baby keeps wanting more, talk to a pediatrician.",
+      "feedAboveRow": "The per-feed amount is above the i-Sarang table for this age ({lo}–{hi} mL). Try more feeds with less each time.",
+      "firstWeek": "The AAP advises starting with no more than 30–60 mL per feed in the first week.",
+      "solids": "Once solids start around 6 months, formula intake drops. The daily total above is for formula only; with solids, see the daily amount in the age table below.",
+      "aap": "By the AAP rule (about 166 mL per kg a day, up to 960 mL) it is about {daily} mL a day · about {feed} mL per feed.",
+      "aapOlder": "The AAP describes about 180–240 mL per feed, 4–5 times a day, around 6 months.",
+      "mixed": {
+        "title": "Formula for mixed feeding (estimate)",
+        "body": "{times} formula feeds × {feed} = {daily} formula a day",
+        "note": "Breast milk intake can't be measured, so this assumes each breastfeed equals one formula feed. Watch weight gain and wet diapers too.",
+        "allBreast": "All feeds are breastfeeds, so no formula amount is calculated."
+      },
+      "row": {
+        "title": "i-Sarang formula table · {row}",
+        "timesVal": "{v} times",
+        "solidsNote": "The daily amount in this row assumes the baby also eats solids."
+      }
+    },
+    "rows": {
+      "newborn": {
+        "label": "Newborn",
+        "interval": "2–3 h"
+      },
+      "m1to4": {
+        "label": "1–4 months",
+        "interval": "2–4 h"
+      },
+      "m5to6": {
+        "label": "5–6 months (early solids)",
+        "interval": "Daytime"
+      },
+      "m7to8": {
+        "label": "7–8 months (middle solids)",
+        "interval": "Daytime, 5–6 h"
+      },
+      "m9to11": {
+        "label": "9–11 months (late solids)",
+        "interval": "Morning, lunch, evening"
+      },
+      "m12": {
+        "label": "12–24 months (finishing solids)",
+        "interval": "Morning, afternoon"
+      }
+    },
+    "share": {
+      "tool": "Baby Formula Amount Calculator",
+      "headline": "{daily} a day",
+      "sub": "{feed} per feed · {n} feeds a day",
+      "perScoop": "{s} mL water per scoop",
+      "mixed": "{times} formula feeds · {daily} a day",
+      "text": "Formula for a {w} kg baby ({age}): {daily} a day, {feed} per feed ({n} feeds a day)"
+    },
+    "care": {
+      "title": "These are averages",
+      "body": "The results are averages. Watch your baby's hunger and fullness cues, weight gain and wet diapers, and talk to a pediatrician if you are worried, for example if your baby feeds poorly or isn't gaining weight."
+    },
+    "guide": {
+      "title": "Formula amount guide",
+      "table": {
+        "title": "Formula feeding by age (i-Sarang table)",
+        "cols": {
+          "age": "Age",
+          "times": "Feeds",
+          "interval": "Interval",
+          "perFeed": "Per feed",
+          "daily": "Per day"
+        },
+        "note": "The formula feeding table from i-Sarang, the Ministry of Health and Welfare's parenting portal. Daily amounts from 5 months assume the baby also eats solids."
+      },
+      "basis": {
+        "title": "How it is calculated",
+        "items": [
+          "Daily total = weight × formula per kg per day. i-Sarang gives 150–180 mL until 3 months, about 120 mL at 3–6 months and about 90–100 mL at 6–12 months.",
+          "i-Sarang adds that some babies, especially premature ones, may need up to 200 mL per kg.",
+          "Even if the baby wants more, don't go over 960 mL a day (i-Sarang 4–6 months, AAP 32 ounces).",
+          "Per-feed amount is the daily total divided by feeds per day. Changing the number of feeds changes the per-feed amount, not the daily total.",
+          "The AAP gives 2½ ounces (75 mL) per pound (453 g) a day, about 166 mL per kg. It is shown for comparison."
+        ]
+      },
+      "cues": {
+        "title": "Hunger and fullness cues",
+        "items": [
+          "Hungry: puts hands to mouth, turns head toward the breast or bottle, puckers, smacks or licks lips, has clenched hands (CDC, birth to 5 months).",
+          "Full: closes mouth, turns head away from the breast or bottle, relaxes hands.",
+          "Getting fidgety or distracted during a feed may mean the baby is done. Smacking lips after emptying the bottle may mean the baby wants more (AAP).",
+          "Rather than making the baby finish a set amount, stop when the baby signals they've had enough (AAP)."
+        ]
+      },
+      "prep": {
+        "title": "Preparing and storing formula",
+        "items": [
+          "Wash your hands, clean the bottle and nipple, and make formula with boiled water cooled to at least 70°C (MFDS).",
+          "Follow the water and scoop amounts on the tin. Don't make it stronger or weaker.",
+          "Use prepared formula within 2 hours, and within 1 hour once feeding starts (CDC).",
+          "Put formula you won't use right away in the fridge immediately and use it within 24 hours (CDC).",
+          "Throw away formula left after a feed, because saliva can let bacteria grow (MFDS, CDC).",
+          "Warming in a microwave is not recommended (MSD Manual)."
+        ]
+      },
+      "check": {
+        "title": "Checking your baby is feeding well",
+        "items": [
+          "Around one week old, 6–8 wet cloth diapers (5–6 disposable) a day suggests enough feeding (i-Sarang newborn feeding).",
+          "Check steady weight gain at infant health checkups or in growth records. The child growth percentile tool shows how your baby compares.",
+          "Intake can vary from day to day (AAP). If your baby keeps feeding poorly, vomits often or has fewer wet diapers, see a pediatrician.",
+          "The AAP advises waking your baby to feed if they sleep longer than 4–5 hours in the first few weeks."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much formula does a newborn need?",
+            "a": "By i-Sarang, 150–180 mL per kg a day until 3 months. A 3.3 kg newborn needs about 500–590 mL a day, and the i-Sarang table lists 8–12 feeds of 50–100 mL for newborns. In the first week, start small at about 30–60 mL per feed."
+          },
+          {
+            "q": "How much formula at 100 days?",
+            "a": "At about 100 days (3 months), i-Sarang gives about 120 mL per kg a day. A 6.5 kg baby needs about 780 mL a day, or about 130 mL per feed over 6 feeds. Adjust to your baby's cues and weight gain."
+          },
+          {
+            "q": "What is the daily maximum?",
+            "a": "Both i-Sarang and the AAP advise not going over 960 mL (about 32 ounces) a day. If your baby keeps wanting more, or takes much less, talk to a pediatrician."
+          },
+          {
+            "q": "How much formula with mixed feeding?",
+            "a": "Breast milk can't be measured, so the calculator assumes each breastfeed equals one feed and splits the total by formula feeds. Adjust while watching weight gain and wet diapers."
+          },
+          {
+            "q": "How do I work out the number of scoops?",
+            "a": "Divide the water per feed by the water per scoop. For example, with 20 mL per scoop, 120 mL of water takes 6 scoops. Scoop size and water amount differ by product, so always check the tin."
+          },
+          {
+            "q": "How does formula change after 6 months?",
+            "a": "i-Sarang gives about 90–100 mL per kg a day at 6–12 months. With solids, the i-Sarang table drops to 700–800 mL a day at 7–8 months and 600–800 mL at 9–11 months."
+          },
+          {
+            "q": "How long can prepared formula be kept?",
+            "a": "The CDC says to use it within 2 hours of preparing and within 1 hour once feeding starts, and to refrigerate formula you won't use right away and use it within 24 hours. Throw away leftovers."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Basis and sources",
+      "isarang13": "Ministry of Health and Welfare i-Sarang portal, 'Feeding at 1–3 months' — 150–180 mL per kg until 3 months",
+      "isarang46": "i-Sarang, 'Feeding at 4–6 months' — about 120 mL per kg at 3–6 months, up to 960 mL a day, formula table",
+      "isarang79": "i-Sarang, 'Feeding and nutrition at 7–9 and 10–12 months' — about 90–100 mL per kg at 6–12 months",
+      "isarangNewborn": "i-Sarang, 'Newborn feeding' — feeds per day, judging intake by diapers",
+      "aap": "American Academy of Pediatrics HealthyChildren.org, 'Amount and Schedule of Baby Formula Feedings' (2022-05-16)",
+      "cdcStorage": "US CDC, 'Infant Formula Preparation and Storage' (2026-05-14) — 2 hours, 1 hour, 24 hours refrigerated",
+      "cdcCues": "US CDC, 'Signs Your Child is Hungry or Full' (2026-03-11)",
+      "mfds": "Korea MFDS, consumer guide to infant foods — water at 70°C or above, discard leftovers",
+      "msd": "MSD Manual Consumer Version, 'Formula Feeding' (reviewed 2023-09) — warming",
+      "method": "Daily total is weight × the i-Sarang per-kg figure, capped at 960 mL a day. mL is rounded to 10 mL and scoops to 0.5. Default feeds per age come from the i-Sarang table ranges; from 6 months the default is 5 feeds, for formula only.",
+      "asOf": "Checked {date}. Guidance can change, so also check at infant health checkups or appointments."
+    }
+  },
+  "salaryRaise": {
+    "title": "Salary Raise Calculator",
+    "subtitle": "Convert between raise rate, new salary and raise amount, then see how much your monthly take-home pay really grows and what the raise is worth after inflation.",
+    "won": "₩{n}",
+    "manVal": "₩{full}",
+    "unit": {
+      "won": "won"
+    },
+    "input": {
+      "title": "Salary details",
+      "salary": "Current annual salary",
+      "salaryHint": "{man} · pre-tax salary, excluding severance pay",
+      "salaryErr": "Enter an amount between {min} and {max}",
+      "mode": "Enter the raise as",
+      "modes": {
+        "rate": "Rate",
+        "after": "New salary",
+        "amt": "Amount"
+      },
+      "value": {
+        "rate": "Raise rate",
+        "after": "New annual salary",
+        "amt": "Annual raise amount"
+      },
+      "valueHint": "New salary ₩{after} · {raise} per year · {rate}%",
+      "valueErr": "Keep the new salary between ₩1M and ₩1B and the rate between -50% and 100%",
+      "nonTaxable": "Tax-free allowance per month",
+      "nonTaxableHint": "Meal allowance is tax-free up to ₩200,000 a month. Tax-free pay has no tax or social insurance.",
+      "nonTaxableErr": "Enter ₩0 to ₩{max}",
+      "dependents": "Dependents (including you)",
+      "dependentsOpt": "{n}",
+      "dependentsHint": "The family count used in the withholding tax table. Enter 1 if it is only you.",
+      "year": "Rate year",
+      "yearOpt": "{year} rates",
+      "yearHint": "Employee share: pension {pension} · health {health} · long-term care {ltc} of health premium · employment {emp}"
+    },
+    "result": {
+      "label": "Monthly take-home difference",
+      "from": "Take-home ₩{before} → ₩{after} per month",
+      "invalid": "Please check your inputs.",
+      "after": "New salary",
+      "raise": "Raise per year",
+      "raiseMonthly": "Raise per month (pre-tax)",
+      "netRate": "Take-home raise",
+      "why": "Your salary rises {rate}% on paper, but monthly take-home pay rises {netRate}%. Of the ₩{raise} annual raise, {share}% (about ₩{taken}) goes to income tax, local income tax and social insurance.",
+      "sameYear": "Before and after both use {year} rates, {dep} dependent(s) and a ₩{nt} monthly tax-free allowance."
+    },
+    "inflation": {
+      "title": "What the raise is worth after inflation",
+      "presetsAria": "Choose an inflation rate",
+      "presets": {
+        "f2026": "2026 forecast {v}%",
+        "f2027": "2027 forecast {v}%",
+        "y2025": "2025 actual {v}%"
+      },
+      "custom": "Inflation rate",
+      "customHint": "You can type your own. Forecasts are from the Bank of Korea (Aug 2026), actuals from Statistics Korea.",
+      "customErr": "Enter {min}% to {max}%",
+      "real": "Real raise (salary)",
+      "realNet": "Real raise (take-home)",
+      "negative": "The raise is below {cpi}% inflation, so your purchasing power goes down.",
+      "how": "Calculated as (1 + {rate}%) ÷ (1 + {cpi}%) − 1."
+    },
+    "ref": {
+      "title": "Compared with other figures",
+      "wage": "Wage growth (2025)",
+      "minWage": "Minimum wage increase (2027)",
+      "cpiOct": "Consumer prices (Oct 2026)",
+      "same": "Same as your raise",
+      "above": "Your raise is {d}%p higher",
+      "below": "Your raise is {d}%p lower",
+      "note": "Wage growth is the 2025 annual nominal wage increase from the Ministry of Employment and Labor's establishment survey (real wages +{real}%). Regular workers' average monthly pay went from {y24} to {y25}."
+    },
+    "share": {
+      "tool": "Salary Raise Calculator",
+      "label": "Salary {from} → {to} ({rate}%)",
+      "headline": "Take-home {diff} won/month",
+      "sub": "₩{before} → ₩{after} per month",
+      "cpi": "inflation {cpi}%",
+      "text": "A raise from {from} to {to} ({rate}%) changes my monthly take-home pay by {diff} won."
+    },
+    "table": {
+      "title": "Take-home pay by raise rate",
+      "desc": "How much monthly take-home pay grows at each raise rate from your current {salary}.",
+      "caption": "New salary, monthly take-home pay and the increase for raise rates from 0% to 15%",
+      "rate": "Rate",
+      "after": "New salary",
+      "net": "Monthly take-home",
+      "diff": "Change",
+      "note": "Even with equal rate steps, the take-home increase shrinks in some ranges, where you move into a higher tax bracket or the tax credit limit drops."
+    },
+    "years": {
+      "title": "If you get the same raise every year",
+      "desc": "Assumes a {rate}% raise and {cpi}% inflation every year.",
+      "caption": "Salary, monthly take-home pay and salary in today's money after 1 to 10 years",
+      "n": "After",
+      "nVal": "{n} yr",
+      "salary": "Salary",
+      "net": "Monthly take-home",
+      "real": "In today's money",
+      "note": "Tax and insurance rates are kept at today's levels. Law changes, promotions or job changes will make real numbers differ."
+    },
+    "offer": {
+      "title": "Compare with a job offer",
+      "desc": "Compare your current employer's raise with another company's offer in monthly take-home pay.",
+      "label": "Offered salary",
+      "hint": "Uses the same dependents and tax-free allowance.",
+      "example": "Leave it empty to compare with an example of 110% of your salary (₩{v}).",
+      "err": "Enter an amount between {min} and {max}",
+      "stay": "Stay with raise ({rate}%)",
+      "move": "Offer ({rate}% vs now)",
+      "moveExample": "Example: {rate}% vs now",
+      "netVal": "{salary} · ₩{net}/month",
+      "same": "Both give the same monthly take-home pay.",
+      "more": "The offer pays ₩{diff} more per month after tax (₩{annual} difference in salary).",
+      "less": "Staying pays ₩{diff} more per month after tax (₩{annual} difference in salary).",
+      "note": "Besides salary, compare bonus rules, retirement pension type (DB or DC), tax-free allowances, benefits and commuting time. At a new company, annual leave restarts at the under-one-year rate (1 day per month of full attendance)."
+    },
+    "guide": {
+      "title": "Salary raise guide",
+      "formula": {
+        "title": "Formulas",
+        "items": [
+          "Raise rate (%) = (new salary − current salary) ÷ current salary × 100. Going from ₩50M to ₩52.5M is 5%.",
+          "New salary = current salary × (1 + raise rate). The monthly raise (pre-tax) is the annual raise divided by 12.",
+          "Monthly take-home pay is calculated the same way as Toolhub's salary calculator: minus the employee share of social insurance, income tax from the withholding tax table and local income tax (10% of income tax).",
+          "Real raise = (1 + raise rate) ÷ (1 + inflation) − 1. A 5% raise with 2.7% inflation is about 2.24%."
+        ]
+      },
+      "why": {
+        "title": "Why take-home pay rises less",
+        "items": [
+          "Income tax is progressive, from 6% to 45% by bracket. The added salary is taxed at a higher rate than your current average.",
+          "The employee share of social insurance is proportional to taxable pay. With 2027 rates it adds up to about 10% of taxable pay.",
+          "National pension has a monthly earnings cap (₩6.59M from Jul 2026 to Jun 2027), so very high salaries pay no extra pension on the raise.",
+          "Tax-free allowances such as meals carry no tax or social insurance, so the same raise paid as a tax-free item increases take-home pay more.",
+          "Monthly income tax follows the withholding table. Your final tax is settled in the year-end tax settlement based on your deductions."
+        ]
+      },
+      "tips": {
+        "title": "Negotiation tips",
+        "items": [
+          "Anchor on official data: wages grew 3.1% in 2025 (Ministry of Employment and Labor) and the Bank of Korea expects 2.7% inflation in 2026. That supports asking for at least an inflation-matching raise.",
+          "Pay levels by industry, company size and occupation are available on the Ministry of Employment and Labor's wage portal (wagework.go.kr).",
+          "Check the monthly take-home increase with this calculator, not just the pre-tax rate, to avoid surprises.",
+          "Compare total compensation: salary plus bonuses, tax-free allowances, retirement pension and benefits.",
+          "Get the agreed salary in a written employment or salary contract. Article 17 of the Labor Standards Act requires the pay components, calculation and payment method to be stated in writing.",
+          "If your pay is close to the minimum wage, make sure it is not below the 2027 minimum wage (₩10,700 an hour, ₩2,236,300 for 209 hours a month)."
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "q": "How much does take-home pay grow with a 5% raise?",
+            "a": "For a ₩50M salary (₩200,000 monthly meal allowance, 1 dependent, 2027 rates), monthly take-home pay goes from about ₩3.56M to about ₩3.72M, roughly ₩158,000 more. About 24% of the ₩2.5M annual raise goes to income tax and social insurance, so take-home pay rises about 4.4%."
+          },
+          {
+            "q": "How is the raise rate calculated?",
+            "a": "(new salary − current salary) ÷ current salary × 100. From ₩42M to ₩45M is ₩3M ÷ ₩42M × 100, about 7.14%. Enter any one of rate, new salary or amount and the calculator converts the others."
+          },
+          {
+            "q": "Why doesn't take-home pay rise as much as my salary?",
+            "a": "Income tax is progressive, so the added salary is taxed above your current average rate, and social insurance applies to the added pay too. Take-home pay therefore usually rises a little less than the headline rate."
+          },
+          {
+            "q": "How do I read the real raise after inflation?",
+            "a": "It is (1 + raise rate) ÷ (1 + inflation) − 1. The Bank of Korea (Aug 2026) forecasts consumer prices to rise 2.7% in 2026 and 2.3% in 2027; actual 2025 inflation was 2.1% (Statistics Korea). If your raise is below inflation, your real income falls."
+          },
+          {
+            "q": "What is the average salary increase?",
+            "a": "In the Ministry of Employment and Labor's establishment survey, nominal wages per worker rose 3.1% in 2025 and real wages rose 0.9%. It varies widely by company size, industry and performance, so use it as a reference."
+          },
+          {
+            "q": "How should I compare a job offer?",
+            "a": "Enter the amount in 'Compare with a job offer' to see the monthly take-home difference against your current raise. Also weigh bonuses, retirement pension, tax-free allowances, benefits and commuting time."
+          },
+          {
+            "q": "What changes between 2026 and 2027 rates?",
+            "a": "In 2027 the employee pension share rises from 4.75% to 5% and long-term care rises from 13.14% to 13.9% of the health premium, so the same salary takes home slightly less. The proposed employment insurance increase (0.9% to 1.0%) is not yet in the enforcement decree, so 0.9% is used."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "cpi": "Statistics Korea consumer price trends: 2.1% for 2025 (released Dec 31, 2025, e-Nara Index)",
+      "cpiOct": "Statistics Korea consumer prices for October 2026: 2.8% year on year (Nov 3, 2026)",
+      "bok": "Bank of Korea Economic Outlook (August 2026): consumer prices 2.7% in 2026, 2.3% in 2027 (Aug 27, 2026)",
+      "wage": "Ministry of Employment and Labor establishment survey briefing: 2025 nominal wages +3.1%, real wages +0.9% (Feb 26, 2026)",
+      "wageIndex": "e-Nara Index wages (establishment survey): regular workers' average monthly pay ₩4.338M in 2024, ₩4.472M in 2025",
+      "minWage": "Ministry of Employment and Labor 2027 minimum wage notice: ₩10,700 an hour, up 3.7% from ₩10,320 in 2026 (Aug 5, 2026)",
+      "netSalary": "Take-home pay: same calculation as Toolhub's salary calculator (2026 and 2027 social insurance rates, withholding tax table revised Feb 27, 2026)",
+      "asOf": "Checked on {date}"
+    },
+    "disclaimer": "For reference only. Actual pay depends on your employer's payroll rules, tax-free items and year-end tax settlement."
+  },
+  "transitPass": {
+    "title": "Transit Refund Comparison: K-Pass, Modu Card, Climate Card",
+    "subtitle": "Enter your monthly fares and trips to compare K-Pass basic, Modu Card standard and Modu Card Plus refunds and see which one applies.",
+    "won": "₩{n}",
+    "unit": {
+      "won": "won",
+      "times": "trips"
+    },
+    "region": {
+      "seoul": "Seoul",
+      "metro": "Gyeonggi·Incheon",
+      "local": "Other regions",
+      "pref": "Priority support area",
+      "special": "Special support area"
+    },
+    "regionHint": {
+      "seoul": "Same thresholds as the capital area. Seoul residents get youth benefits up to age 39 through the Climate Pass (Modu Card).",
+      "metro": "Capital-area thresholds. Local extras such as Gyeonggi Pass or Incheon I-Pass are not included here.",
+      "local": "Outside the capital area. If you live in a depopulation area (priority or special support), choose that instead.",
+      "pref": "A depopulation area designated for priority support. Check your city or county by choosing your province on the Modu Card website.",
+      "special": "A depopulation area designated for special support. Check your city or county by choosing your province on the Modu Card website."
+    },
+    "group": {
+      "general": "General",
+      "youth": "Youth",
+      "senior": "Senior",
+      "kids2": "2 children",
+      "kids3": "3+ children",
+      "low": "Low income"
+    },
+    "groupHint": {
+      "general": "Age 19 or older and none of the other types.",
+      "youth": "Age 19 to 34.",
+      "youthSeoul": "Age 19 to 34. Seoul residents count as youth up to 39 through the Climate Pass.",
+      "senior": "Age 65 or older. This type was added in 2026.",
+      "kids2": "Parents with 2 children, at least one aged 18 or under. Verify via 'Multi-child info' in My menu on the website.",
+      "kids3": "Parents with 3 or more children, at least one aged 18 or under. Verify via 'Multi-child info' in My menu on the website.",
+      "low": "Basic livelihood recipients and near-poverty households."
+    },
+    "method": {
+      "basic": "Basic",
+      "general": "Standard",
+      "plus": "Plus"
+    },
+    "methodRule": {
+      "basic": "Refunds {rate}% of what you spend. Trips boarded in the off-peak windows get 30%p more.",
+      "general": "Refunds everything above ₩{base} spent on trips under ₩3,000.",
+      "plus": "Refunds everything above ₩{base} spent on all trips."
+    },
+    "input": {
+      "title": "Your travel",
+      "region": "Where you live",
+      "group": "Type",
+      "mode": "Enter fares as",
+      "modes": {
+        "trip": "Fare × trips",
+        "amt": "Monthly total"
+      },
+      "fare": "Average fare per trip",
+      "fareHint": "What you pay per journey, including transfers. The capital-area subway base fare (card) is ₩1,550.",
+      "fareErr": "Enter ₩{min} to ₩{max}. Put fares of ₩3,000 or more in the field below.",
+      "trips": "Trips per month",
+      "tripsTotal": "Trips per month (all)",
+      "tripsHint": "A journey with transfers counts once. Commuting 5 days a week is about 44 trips a month.",
+      "tripsErr": "Enter 0 to {max} trips",
+      "amount": "Monthly transit spending",
+      "amountHint": "Your card app's transit total for last month is the most accurate.",
+      "amountErr": "Enter ₩0 to ₩{max}",
+      "wide": "I also take trips of ₩3,000 or more, such as express buses, GTX or the Shinbundang Line",
+      "wideHint": "Journeys costing ₩{fare} or more in total (including transfers) are excluded from Standard and count only for Plus.",
+      "wideFare": "Fare for ₩3,000+ trips",
+      "wideFareHint": "Total fare per journey, including transfers.",
+      "wideFareErr": "Enter ₩{min} to ₩{max}",
+      "wideTrips": "Number of ₩3,000+ trips",
+      "wideAmount": "Spent on ₩3,000+ trips",
+      "wideAmountHint": "The part of your monthly spending on journeys of ₩3,000 or more, such as express buses or GTX.",
+      "wideAmountOver": "This is more than your monthly total, so the monthly total is used.",
+      "offpeak": "Trips boarded in off-peak windows",
+      "offpeakHint": "Trips boarded 5:30–6:30, 9–10, 16–17 or 19–20. Until {end}, the Basic refund rate is 30%p higher for these.",
+      "summary": "₩{total} a month · {trips} trips (₩{wide} on ₩3,000+ trips)",
+      "fareUnder": "Average fare of trips under ₩3,000",
+      "tripsUnder": "Trips under ₩3,000 per month"
+    },
+    "result": {
+      "label": "{method} applies · estimated refund",
+      "labelNone": "Estimated refund",
+      "perMonth": "₩{n}/month",
+      "pay": "You actually pay ₩{pay} a month (of ₩{total}) · ₩{year} refunded a year",
+      "under15": "You need at least {min} trips a month for a refund. You have {trips}, so {need} more would qualify. The first month after signing up is refunded even with fewer than 15.",
+      "disclaimer": "Estimated with the Modu Card website's calculation method. Actual refunds depend on your card records (transfers, fares), whether it is your first month and local extras."
+    },
+    "bars": {
+      "title": "Three methods compared",
+      "applied": "Applied",
+      "value": "Refund ₩{refund} · you pay ₩{pay}",
+      "auto": "You don't choose in advance. Each month all three are calculated from your spending and the largest refund is paid automatically."
+    },
+    "breakeven": {
+      "title": "When a flat-rate plan wins",
+      "at": "At your current pattern, {method} beats Basic from ₩{amount} a month (₩{fare} average × {trips} trips).",
+      "atAmount": "{method} beats Basic from ₩{amount} a month.",
+      "already": {
+        "general": "Standard already wins. Spending on trips under ₩3,000 above ₩{base} is fully refunded, so extra trips like that cost you nothing more.",
+        "plus": "Plus already wins. Everything you spend above ₩{base} is fully refunded."
+      },
+      "plusNow": "Your ₩3,000+ trips (₩{wide}) exceed ₩{x}, so Plus beats Standard.",
+      "plusAt": "Plus beats Standard once ₩3,000+ trips exceed ₩{x} a month (now ₩{wide}).",
+      "offpeak": "Off-peak extras are counted for trips boarded until {end}. Whether they continue in 2027 has not been announced."
+    },
+    "climate": {
+      "title": "What happened to the Climate Card",
+      "ended": "Seoul's 30-day Climate Card ended with trips on September 30, 2026 (prepaid top-ups until August 31). Since September 1, Seoul residents get the same kind of refund through the Climate Pass, which is based on the Modu Card. 1- to 7-day passes are still sold.",
+      "compare": "The old 30-day pass (₩62,000 general) worked mainly on Seoul subways and Seoul buses. Now you actually pay ₩{pay} of this month's ₩{total}, and the Shinbundang Line, express buses, GTX and transit in other regions also count.",
+      "youth": "Seoul residents count as youth up to age 39 (Basic 30%, Standard threshold ₩55,000)."
+    },
+    "share": {
+      "tool": "Transit Refund Comparison",
+      "label": "{region} · {group} · ₩{total}/month ({trips} trips)",
+      "headline": "{method} · ₩{n} refund a month",
+      "headlineNone": "Under 15 trips, no refund this month",
+      "sub": "You pay ₩{pay} a month · ₩{year} a year back",
+      "text": "With ₩{total} of transit a month, the Modu Card {method} method gives me ₩{n} back each month."
+    },
+    "guide": {
+      "title": "K-Pass, Modu Card and Climate Card guide",
+      "compare": {
+        "title": "How the options compare",
+        "cols": {
+          "name": "Option",
+          "how": "Refund or price",
+          "modes": "Transit covered",
+          "note": "Conditions"
+        },
+        "rows": [
+          {
+            "name": "K-Pass Basic",
+            "how": "Spending × rate (general 20%, youth, senior and 2 children 30%, 3+ children 50%, low income 53.3%)",
+            "modes": "City, village and express buses nationwide, subways, Shinbundang, GTX, airport railroad",
+            "note": "15+ trips a month. Off-peak boardings get 30%p extra until December 31, 2026"
+          },
+          {
+            "name": "Modu Card Standard",
+            "how": "Everything above the threshold refunded (capital area general ₩62,000)",
+            "modes": "Only journeys under ₩3,000 in total",
+            "note": "15+ trips a month. Thresholds by region and type in the table below"
+          },
+          {
+            "name": "Modu Card Plus",
+            "how": "Everything above the threshold refunded (capital area general ₩100,000)",
+            "modes": "All journeys, including ₩3,000 and over",
+            "note": "For frequent express bus or GTX riders"
+          },
+          {
+            "name": "Climate Card 30-day",
+            "how": "₩62,000 flat for unlimited rides (youth ₩55,000)",
+            "modes": "Mainly Seoul subways and Seoul buses (no Shinbundang or express buses)",
+            "note": "Ended September 30, 2026. Seoul residents moved to the Climate Pass"
+          }
+        ]
+      },
+      "base": {
+        "title": "Flat-rate thresholds by region and type (Standard / Plus, won)",
+        "caption": "Modu Card Standard and Plus refund thresholds",
+        "area": "Region",
+        "tier0": "General",
+        "tier1": "Youth, senior, 2 children",
+        "tier2": "3+ children, low income",
+        "areas": {
+          "capital": "Capital area (Seoul, Gyeonggi, Incheon)",
+          "local": "Other regions",
+          "pref": "Priority support area",
+          "special": "Special support area"
+        },
+        "note": "Thresholds for trips from October 1, 2026 (Modu Card website). The half-price thresholds of April to September have ended."
+      },
+      "howTo": {
+        "title": "How to sign up",
+        "items": [
+          "Get a Modu Card (K-Pass) from a card company. Both debit and credit cards are available, and an existing K-Pass card keeps working.",
+          "Sign up and register your card on the Modu Card website (korea-pass.kr) or app before refunds start counting.",
+          "For the multi-child type, apply under 'Multi-child info' in My menu; the higher rate applies once verification is done.",
+          "Refunds go to your card company the month after you travel. Payment date and form (points, bill credit) depend on the card company.",
+          "Seoul residents get Climate Pass benefits automatically without a separate application."
+        ]
+      },
+      "caution": {
+        "title": "Things to watch",
+        "items": [
+          "No refund with fewer than 15 trips a month (except your first month). Transfers count as one journey until your next first boarding.",
+          "Intercity, express and airport coaches, KTX and SRT, which need separate tickets, do not count.",
+          "Standard only counts journeys under ₩3,000 in total. Frequent express bus or GTX riders may get Plus instead.",
+          "The 60-trip monthly cap was removed in 2026, and there is no refund ceiling.",
+          "2027 thresholds, rates and any extension of the off-peak extra have not been announced. Check the website notices when they are.",
+          "Local extras such as Gyeonggi Pass or Incheon I-Pass are not included in this calculation."
+        ]
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "items": [
+          {
+            "q": "Are K-Pass and Modu Card different cards?",
+            "a": "They are the same program. From January 2026, flat-rate options (Modu Card Standard and Plus) were added to K-Pass, and existing K-Pass cards keep working. Each month Basic, Standard and Plus are all calculated and the largest refund applies automatically."
+          },
+          {
+            "q": "What is the difference between Standard and Plus?",
+            "a": "Standard counts only journeys under ₩3,000 in total (including transfers); Plus counts everything, including express buses, GTX and the Shinbundang Line. Plus has a higher threshold (capital area general ₩62,000 vs ₩100,000)."
+          },
+          {
+            "q": "Which is better, Climate Card or K-Pass?",
+            "a": "The 30-day Climate Card ended on September 30, 2026, and Seoul residents moved to the Climate Pass based on the Modu Card. The old pass price (₩62,000 general) equals the capital-area Standard threshold, so heavy riders within Seoul never pay more than ₩62,000 and lighter months still get the Basic refund."
+          },
+          {
+            "q": "How many trips do I need for a refund?",
+            "a": "At least 15 a month. Your first month after signing up is refunded even with fewer. The old 60-trip monthly cap was removed in 2026."
+          },
+          {
+            "q": "From what monthly amount does a flat-rate plan win for general users?",
+            "a": "In the capital area with only sub-₩3,000 journeys, Standard starts to beat Basic above ₩77,500 a month (₩77,500 − ₩62,000 = ₩15,500, equal to 20% of ₩77,500). For youth it is about ₩78,571, for low income about ₩96,360."
+          },
+          {
+            "q": "Are the half-price thresholds from April to September still available?",
+            "a": "No. The 2026 April–September threshold cut ended with September trips, and the regular thresholds apply from October 1. The off-peak extra continues until December 31, 2026."
+          },
+          {
+            "q": "What is the off-peak commuting extra?",
+            "a": "Boarding 5:30–6:30, 9–10, 16–17 or 19–20 adds 30%p to the Basic rate (general 20% → 50%). It does not apply to the flat-rate methods and runs for trips boarded until December 31, 2026."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "intro": "Modu Card (K-Pass) website, 'About Modu Card': refund rates, thresholds by region and type, youth and senior ages",
+      "accm": "Modu Card website, 'Earning refunds': calculation method, ₩3,000 rule for Standard and Plus, covered and excluded transit",
+      "pay": "Modu Card website, 'Refunds': 15+ trips a month, first-month exception, payment timing",
+      "notice": "Modu Card website notice 'Modu Card changes from October': threshold cut ended, off-peak extra until December 31",
+      "seoulPass": "Seoul Transportation, 'Climate Pass': youth up to age 39 for Seoul residents",
+      "climateEnd": "Seoul Transportation, 'Climate Card (30-day) end of service FAQ': ended September 30, short-term passes continue",
+      "seoulNews": "Seoul city news, 'Use the Climate Pass from September': no refund ceiling",
+      "asOf": "Checked on {date}"
+    }
+  },
+  "tireSize": {
+    "title": "Tire Size Calculator",
+    "subtitle": "Decode tire sizes, compare overall diameter and speedometer error, and check load index, speed rating and manufacture date.",
+    "input": {
+      "title": "Tire sizes",
+      "a": "A Current tire (original)",
+      "b": "B New tire",
+      "aHint": "Type the size from the sidewall as is, such as 205/55R16 91V.",
+      "bHint": "Enter a plus size or another size to compare it with A.",
+      "placeholder": "e.g. 205/55R16 91V",
+      "presets": "Common sizes",
+      "swap": "Swap A and B",
+      "err": {
+        "empty": "Enter a tire size, e.g. 205/55R16",
+        "format": "Use the 'width/aspectRrim' format, e.g. 205/55R16 91V",
+        "width": "Width (first three digits) must be between 100 and 400 mm.",
+        "aspect": "Aspect ratio (two digits after /) must be between 20 and 95.",
+        "rim": "Rim diameter (number after R) must be between 10 and 26 inches.",
+        "li": "Load index must be between 0 and 257.",
+        "speed": "Speed symbol must be one of B to Y (e.g. H, V, W, Y)."
+      }
+    },
+    "result": {
+      "mobileLabel": "Diameter difference (A → B)",
+      "label": "{a} → {b}",
+      "headline": "Diameter {pct}%",
+      "bigger": "B is {mm} mm larger",
+      "smaller": "B is {mm} mm smaller",
+      "same": "Same diameter",
+      "speedo": "At 100 km/h on the speedometer you actually drive {actual} km/h",
+      "band": {
+        "tight": "Small difference, within the -2% to +1.5% range some countries accept as an exception. Still check that the size is approved by the vehicle maker first.",
+        "common": "Within the commonly cited ±3%, but outside -2% to +1.5%. Check that the size is approved by the vehicle maker and does not rub the wheel arch.",
+        "over": "The diameter differs by more than 3%. Speedometer error grows and the tire may touch the body. Make sure the size is approved by the vehicle maker."
+      },
+      "loadLower": "B's load index ({b}) is lower than A's ({a}). Never use a lower load index than the original.",
+      "speedLower": "B's speed symbol ({b}) is lower than A's ({a}). Never use a lower speed rating than the original (snow tires are an exception).",
+      "noService": "Add the load index and speed symbol (e.g. 91V) to compare load and speed ratings too.",
+      "svgAria": "Tire side view: A diameter {a} mm, B diameter {b} mm",
+      "speedoTitle": "Speedometer reading vs actual speed",
+      "shown": "Shows {v} km/h",
+      "actual": "Actual {v} km/h",
+      "speedoHow": "Assumes the speedometer is calibrated for tire A: actual speed = shown speed × B diameter ÷ A diameter.",
+      "table": {
+        "caption": "Tire A and B comparison",
+        "item": "Item",
+        "width": "Section width",
+        "aspect": "Aspect ratio",
+        "rim": "Rim diameter",
+        "sidewall": "Sidewall height",
+        "diameter": "Overall diameter",
+        "circumference": "Circumference",
+        "revs": "Revolutions per km",
+        "load": "Load index (max load per tire)",
+        "speed": "Speed symbol (max speed)",
+        "cons": "Construction"
+      },
+      "inch": "{n} in",
+      "cons": {
+        "R": "Radial",
+        "ZR": "Radial (ZR high-speed marking)",
+        "D": "Bias",
+        "B": "Belted bias"
+      },
+      "loadVal": "{kg} kg (LI {li})",
+      "speedVal": "{kmh} km/h ({s})",
+      "speedY": "300 km/h or more (Y)",
+      "inchUp": {
+        "title": "Plus sizes close to {a}",
+        "desc": "Same or wider width, within ±1.5% diameter, closest first. Tap to compare as B. Choose a tire whose load index is at least A's.",
+        "none": "No size with a similar diameter",
+        "aria": "Compare {size} (diameter {pct}%) as B"
+      },
+      "disclaimer": "Theoretical values from the size marking. Real diameter varies slightly by maker, model, wear and pressure. Before changing sizes, confirm with a shop that the size is approved by the vehicle maker."
+    },
+    "share": {
+      "tool": "Tire Size Calculator",
+      "rows": {
+        "a": "A diameter · load",
+        "b": "B diameter · load",
+        "sidewall": "Sidewall height"
+      },
+      "text": "{a} → {b}: diameter {pct}%, actual {actual} km/h at 100 km/h on the speedometer"
+    },
+    "dot": {
+      "title": "Tire manufacture date (DOT)",
+      "desc": "Enter the last four digits of the DOT code on the sidewall to see when the tire was made and how old it is.",
+      "label": "Last 4 digits of DOT",
+      "hint": "The first two digits are the week, the last two the year. e.g. 2524 = week 25 of 2024",
+      "empty": "Enter four digits to see the manufacture date here.",
+      "err": {
+        "empty": "Enter four digits to see the manufacture date here.",
+        "format": "Enter the last four digits (week + year), e.g. 2524",
+        "week": "The first two digits (week) must be 01 to 53.",
+        "future": "That date is in the future. Please check the digits.",
+        "old": "Three digits is a pre-2000 code. The tire is far older than 10 years, so replacement is recommended."
+      },
+      "made": "Made in week {week} of {year} (around month {month})",
+      "age": "About {age} years old",
+      "status": {
+        "ok": "Less than {check} years old. Check wear, cracks and pressure before worrying about age.",
+        "check": "Over {check} years old. Have it inspected at least once a year and plan to replace it before {replace} years from manufacture.",
+        "replace": "Over {replace} years old. Replacement is recommended even if it looks fine (spares included)."
+      }
+    },
+    "guide": {
+      "title": "Tire sizes in a nutshell",
+      "anatomy": {
+        "title": "How to read 205/55R16 91V",
+        "aria": "Parts of the tire size 205/55R16 91V",
+        "parts": [
+          {
+            "code": "205",
+            "label": "Section width (mm)"
+          },
+          {
+            "code": "55",
+            "label": "Aspect ratio (%)"
+          },
+          {
+            "code": "R",
+            "label": "Radial"
+          },
+          {
+            "code": "16",
+            "label": "Rim diameter (in)"
+          },
+          {
+            "code": "91",
+            "label": "Load index 615 kg"
+          },
+          {
+            "code": "V",
+            "label": "Speed symbol 240 km/h"
+          }
+        ],
+        "items": [
+          "The aspect ratio is sidewall height as a percentage of width: 205 × 55% = 112.75 mm.",
+          "Overall diameter = rim × 25.4 + sidewall × 2. For 205/55R16: 406.4 + 225.5 = 631.9 mm.",
+          "Load index and speed symbols follow the table in Annex 1-2 of Korea's vehicle safety standards. 91 means 615 kg per tire, V means up to 240 km/h.",
+          "ZR marks a high-speed radial. The allowed speed is the symbol after it (e.g. 92Y).",
+          "XL (EXTRA LOAD, REINFORCED) is a reinforced tire built to carry more load at higher pressure.",
+          "A leading P marks a passenger tire (US style), LT a light truck tire and T a temporary spare."
+        ]
+      },
+      "inchUp": {
+        "title": "Before you plus-size",
+        "items": [
+          "Lower the aspect ratio as the wheel grows so the overall diameter stays close to the original. A different diameter makes the speedometer disagree with real speed.",
+          "Never use a lower load index or speed rating than the original (Michelin).",
+          "Stick to sizes approved by the vehicle maker. Some countries only allow a -2% to +1.5% diameter exception.",
+          "The often-quoted ±3% is an industry rule of thumb, not an official standard.",
+          "Plus sizing can reduce ride comfort and fuel economy (Michelin FAQ)."
+        ]
+      },
+      "dot": {
+        "title": "Manufacture date and replacement",
+        "items": [
+          "The last four digits of the 'DOT' code on the sidewall are the manufacture date. 2524 means week 25 of 2024.",
+          "The date may be on one sidewall only. If you cannot see it, check the other side.",
+          "Inspect tires at least once a year after five years, and use them for at most ten years from manufacture (Michelin).",
+          "Replace any tire older than ten years, spares included (Continental)."
+        ]
+      },
+      "season": {
+        "title": "Tread limit and winter tires",
+        "items": [
+          "Tread depth must stay at 1.6 mm or more (Korean vehicle safety standards, Annex 1-2). Replace the tire when the wear indicators in the grooves show.",
+          "Winter tires are recommended below 7°C (Michelin).",
+          "Winter tire compounds stay soft below 7°C, keeping grip in the cold (Hankook Tire)."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "What does 205/55R16 91V mean?",
+            "a": "Width 205 mm, aspect ratio 55% (sidewall 112.75 mm), radial construction (R), fits a 16-inch wheel, load index 91 (615 kg per tire) and speed symbol V (240 km/h). The overall diameter is about 631.9 mm."
+          },
+          {
+            "q": "How much can the diameter change when plus-sizing?",
+            "a": "Use sizes approved by the vehicle maker. Michelin notes some countries only allow a -2% to +1.5% diameter exception. The common ±3% is an industry rule of thumb, so this calculator shows both ranges."
+          },
+          {
+            "q": "What happens to the speedometer with a bigger tire?",
+            "a": "Each turn of the wheel covers more ground, so your real speed is higher than shown. Actual speed = shown speed × new diameter ÷ old diameter. A 1% larger tire means about 101 km/h at an indicated 100 km/h."
+          },
+          {
+            "q": "Can I use a lower load index or speed rating than the original?",
+            "a": "No. Choose the same or higher. Korean standards also require a tire's maximum speed to be at least the vehicle's top speed (snow and temporary tires are exceptions)."
+          },
+          {
+            "q": "Where is the manufacture date and how long do tires last?",
+            "a": "The last four digits of the DOT code (week + year). Michelin recommends yearly inspections after five years and at most ten years of use. Continental also says to replace tires older than ten years."
+          },
+          {
+            "q": "What is the minimum tread depth?",
+            "a": "Korean vehicle safety standards (Annex 1-2) require at least 1.6 mm of tread. Replace the tire when the wear indicators in the grooves show."
+          },
+          {
+            "q": "When should I fit winter tires?",
+            "a": "Michelin recommends winter tires when temperatures fall below 7°C. Switch when it regularly drops below that."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "rule": "Ministry of Land, Infrastructure and Transport, Rules on Performance and Standards for Motor Vehicles, Annex 1-2 (load index, speed symbols, date code, 1.6 mm tread) — National Law Information Center",
+      "michelinSize": "Michelin Korea — Can I change my tire size?",
+      "michelinAge": "Michelin Korea — When should I replace my tires?",
+      "continental": "Continental Tires — Tire damage and aging",
+      "michelinFaq": "Michelin Korea — Tire FAQ (winter tires below 7°C)",
+      "hankookWinter": "Hankook Tire — Winter driving tips (2021-11-25)",
+      "asOf": "Checked {date}. The ±3% diameter rule is an industry rule of thumb, not an official standard."
+    }
+  },
+  "trafficFine": {
+    "title": "Traffic Fine, Penalty & Points Calculator",
+    "subtitle": "Pick a violation and vehicle to see the camera fine, the on-the-spot fine and points, and whether your points lead to a suspension, based on the Korean statutes.",
+    "input": {
+      "title": "Violation",
+      "violation": "Violation type",
+      "limit": "Speed limit",
+      "speed": "Actual speed",
+      "limitPresets": "Common speed limits",
+      "speedErr": "Enter a speed limit of {lmin} to {lmax} and an actual speed of 1 to {smax}.",
+      "over": "{n} km/h over the limit",
+      "under": "Within the speed limit.",
+      "vehicle": "Vehicle",
+      "zone": "Location",
+      "hours": "It happened between 8 am and 8 pm",
+      "twoHour": "Parked in the same spot for 2 hours or more"
+    },
+    "v": {
+      "speed": {
+        "name": "Speeding",
+        "desc": "Enter the limit and your speed and the band is picked for you."
+      },
+      "signal": {
+        "name": "Signal violation",
+        "desc": "Running a red light, ignoring instruction signs, etc."
+      },
+      "centerline": {
+        "name": "Crossing the center line",
+        "desc": "Driving over the center line"
+      },
+      "crosswalk": {
+        "name": "Crosswalk pedestrian",
+        "desc": "Not stopping for or obstructing pedestrians at a crosswalk"
+      },
+      "intersection": {
+        "name": "Intersection / blocking",
+        "desc": "Improper intersection driving, entering a jammed intersection"
+      },
+      "cutIn": {
+        "name": "Cutting in",
+        "desc": "Cutting in front of a stopped or slowing car"
+      },
+      "solidLine": {
+        "name": "Solid-line lane change",
+        "desc": "Changing lanes where it is prohibited (solid white line, etc.)"
+      },
+      "distance": {
+        "name": "Tailgating",
+        "desc": "Not keeping a safe distance from the car ahead"
+      },
+      "phone": {
+        "name": "Phone while driving",
+        "desc": "Using a phone, including showing or operating video, while driving"
+      },
+      "belt": {
+        "name": "No seat belt / helmet",
+        "desc": "Driver not wearing a seat belt (helmet on motorcycles)"
+      },
+      "shoulder": {
+        "name": "Driving on the shoulder",
+        "desc": "Driving on the shoulder of an expressway"
+      },
+      "overtake": {
+        "name": "Illegal overtaking",
+        "desc": "Overtaking where or when it is prohibited"
+      },
+      "parking": {
+        "name": "Illegal parking",
+        "desc": "Stopping or parking where prohibited, improper parking"
+      },
+      "hydrant": {
+        "name": "Parking by a hydrant",
+        "desc": "Stopping or parking in a signed area around a hydrant or fire facility"
+      }
+    },
+    "veh": {
+      "car": {
+        "name": "Car",
+        "desc": "Passenger cars and trucks up to 4 tons"
+      },
+      "van": {
+        "name": "Van / heavy",
+        "desc": "Vans and buses, trucks over 4 tons, special vehicles, construction machinery"
+      },
+      "moto": {
+        "name": "Motorcycle",
+        "desc": "Motorcycles and mopeds (excluding e-scooters and other personal mobility devices)"
+      }
+    },
+    "zone": {
+      "none": "Regular road",
+      "child": "School zone",
+      "elder": "Senior / disabled zone"
+    },
+    "result": {
+      "labelSpeed": "{v} {over} km/h over · {veh}",
+      "label": "{v} · {veh}",
+      "none": "You did not exceed the limit, so this is not speeding.",
+      "crimeCard": "Criminal penalty",
+      "ptsShort": "{n} points",
+      "penaltyTitle": "Camera · Penalty",
+      "penaltyWho": "Charged to the vehicle owner · no points",
+      "noPenalty": "No camera penalty applies to this violation and vehicle.",
+      "cut": "Pay before the comment deadline: {v} (20% off)",
+      "fineTitle": "Police stop · Fine",
+      "fineWho": "Charged to the driver · {pts} points",
+      "distanceHw": "On expressways: {v}",
+      "crime": {
+        "over80": "More than 80 km/h over the limit is a criminal offense (fine up to KRW 300,000 or detention), not a traffic fine. Points: {pts} (Road Traffic Act Art. 154).",
+        "over100": "More than 100 km/h over means a fine up to KRW 1,000,000 or detention, and for a third offense up to 1 year in prison or KRW 5,000,000. Points: {pts} (Road Traffic Act Arts. 151-2, 153)."
+      },
+      "zoneOn": "Higher {zone} rates (8 am to 8 pm) applied.",
+      "zoneOff": "Even in a {zone}, regular rates apply outside 8 am to 8 pm.",
+      "zoneNa": "This violation has no protected-zone surcharge, so regular rates apply.",
+      "zoneCrosswalk": "The camera penalty for crosswalk violations in protected zones uses regular rates.",
+      "noCut": "This penalty is not eligible for the early-payment discount (Enforcement Rule Annex 39).",
+      "twoHourOn": "KRW 10,000 added for parking 2 hours or more in the same spot.",
+      "beltPassenger": "If a passenger is unbelted, the driver also gets a KRW 30,000 penalty (KRW 60,000 if the passenger is under 13).",
+      "intersectionNote": "Entering a jammed intersection past the stop line and blocking traffic is charged the same.",
+      "convert": "If you identify the driver when responding to a penalty notice, a fine and points replace the penalty (Road Traffic Act Art. 160(4)).",
+      "disclaimer": "Reference amounts calculated from the Road Traffic Act enforcement decree and rules. The actual notice prevails, and accidents, drunk or unlicensed driving change the penalty.",
+      "won": "KRW {v}"
+    },
+    "plan": {
+      "title": "Fine amount by payment deadline",
+      "first": "Within 10 days of notice",
+      "second": "Next 20 days (+20%)",
+      "court": "Before summary trial (+50%)",
+      "note": "If unpaid after the 20 days, a summary trial is requested. Paying 50% extra before the request or ruling ends it. Not attending the summary trial within 60 days after the deadline adds 40 points."
+    },
+    "points": {
+      "title": "Suspension or revocation by accumulated points",
+      "label": "Current points",
+      "unit": "pts",
+      "err": "Enter a number from 0 to {max}.",
+      "hint": "Enter your points from the police traffic portal (eFine). Points are added only for police-stop fines.",
+      "add": "This violation (police stop) +{pts}",
+      "zero": "This violation carries no points.",
+      "total": "Total {total} points",
+      "ok": "{left} points left before suspension ({at}).",
+      "suspend": "License suspension. At 1 day per point, that is {days} days.",
+      "revoke": "{y1}+ points within a year: license revocation.",
+      "rules": "{at}+ points means suspension (1 point = 1 day); {y1} in 1 year, {y2} in 2 years or {y3} in 3 years means revocation (Enforcement Rule Annex 28). Your input is treated as the last year's total."
+    },
+    "share": {
+      "tool": "Traffic Fine & Points Calculator",
+      "penaltyPart": "Penalty {v}",
+      "finePart": "Fine {v} + {pts} points",
+      "sub": "Camera: penalty. Police stop: fine and points",
+      "rows": {
+        "points": "Points (police stop)",
+        "cut": "Early-payment penalty",
+        "total": "Accumulated points"
+      },
+      "text": "{label}: {headline}"
+    },
+    "table": {
+      "title": "All violations — {veh}, regular road",
+      "violation": "Violation",
+      "points": "Points",
+      "speed": {
+        "b20": "Speeding up to 20 km/h",
+        "b40": "Speeding 20–40 km/h over",
+        "b60": "Speeding 40–60 km/h over",
+        "b80": "Speeding 60–80 km/h over",
+        "b100": "Speeding 80–100 km/h over",
+        "b100p": "Speeding over 100 km/h over"
+      },
+      "crime": "Criminal",
+      "note": "Parking penalties rise by KRW 10,000 after 2 hours in the same spot. For protected zones (8 am to 8 pm), pick the location above."
+    },
+    "guide": {
+      "title": "Penalties, fines and points in a nutshell",
+      "diff": {
+        "title": "Penalty vs fine",
+        "items": [
+          "A penalty (gwataeryo) goes to the vehicle owner when the driver is not identified, e.g. by a speed camera. No points.",
+          "A fine (beomchikgeum) is issued when police identify the driver on the spot. Points come with it.",
+          "For the same violation the penalty is equal to or higher than the fine, but carries no points.",
+          "If you identify the driver after a penalty notice, it becomes a fine with points."
+        ]
+      },
+      "pay": {
+        "title": "Paying and appealing",
+        "items": [
+          "Check, pay and respond on the police portal Gyotong Minwon 24 (eFine, efine.go.kr). Parking penalties are mostly issued by city or district offices, so check the payee on the notice.",
+          "Paying a penalty before the comment deadline gives 20% off only for violations listed in Enforcement Rule Annex 39, such as parking, speeding up to 20 km/h and unbelted passengers.",
+          "To dispute a penalty, file a written objection within 60 days of the notice. The penalty then loses effect and goes to court (Act on the Regulation of Violations of Public Order Art. 20).",
+          "Unpaid penalties get a 3% surcharge, then 1.2% per month for up to 60 months (same Act Art. 24).",
+          "Pay fines within 10 days, or within the next 20 days with 20% added. After that the case goes to summary trial (Road Traffic Act Arts. 164, 165)."
+        ]
+      },
+      "points": {
+        "title": "Managing and reducing points",
+        "items": [
+          "Points accumulate over the 3 years before a violation. 40+ points means suspension (1 day per point); 121 in 1 year, 201 in 2 or 271 in 3 means revocation.",
+          "Below 40 points, they expire after 1 year without violations or accidents since the last one.",
+          "Below 40 points, completing the recommended special traffic safety course (point reduction) removes 20 points.",
+          "If suspended, the law-compliance course cuts 20 days, and the field participation course cuts 30 more.",
+          "A no-violation pledge kept for 1 year earns 10 bonus points that offset a future suspension (National Police Agency notice)."
+        ]
+      },
+      "zone": {
+        "title": "School, senior and disabled zones",
+        "items": [
+          "Between 8 am and 8 pm, penalties for signal, speeding and parking violations in protected zones are higher (Decree Annex 7).",
+          "Fines are higher for signal, speeding, crosswalk, no-entry and parking violations (Decree Annex 10).",
+          "Points double for speeding over 20 km/h, signal violations and failing to protect pedestrians; over 80 km/h is 120 points. In school zones, even up to 20 km/h over is 15 points (Rule Annex 28).",
+          "Outside 8 am to 8 pm, regular rates apply."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much is a speeding penalty or fine?",
+            "a": "For a car: up to 20 km/h over is a KRW 40,000 penalty or KRW 30,000 fine; 20–40 over is 70,000 / 60,000 (15 points); 40–60 over is 100,000 / 90,000 (30 points); over 60 is 130,000 / 120,000 (60 points). More than 80 km/h over is a criminal offense, not a fine."
+          },
+          {
+            "q": "How much is a school zone penalty?",
+            "a": "Between 8 am and 8 pm, for a car: KRW 130,000 for a signal violation, 70,000 for up to 20 km/h over, 100,000 for 20–40 over and 120,000 for parking (130,000 after 2 hours). Police-stop fines are higher too and points double for signal and speeding."
+          },
+          {
+            "q": "Do I get points if I pay a penalty?",
+            "a": "No. A penalty is a charge on the vehicle owner and carries no points. If you identify the driver and switch to a fine, points apply."
+          },
+          {
+            "q": "Is the 20% early-payment discount available for every penalty?",
+            "a": "No. Only violations listed in Enforcement Rule Annex 39 (parking, speeding up to 20 km/h, unbelted passengers, etc.) get 20% off when paid before the comment deadline. Signal violations and speeding over 20 km/h get no discount."
+          },
+          {
+            "q": "How many points lead to a suspension?",
+            "a": "40 or more points means suspension, counted as 1 day per point. 121 points in 1 year, 201 in 2 or 271 in 3 means revocation."
+          },
+          {
+            "q": "When do points expire?",
+            "a": "Below 40 points, they expire after 1 year without violations or accidents since the last one. The point-reduction course can also remove 20 points."
+          },
+          {
+            "q": "What if I pay a fine late?",
+            "a": "If not paid within 10 days, pay 20% more within the next 20 days. After that a summary trial is requested, which is cancelled if you pay 50% extra before the ruling."
+          }
+        ]
+      },
+      "disclaimer": "A reference calculation based on the statutes, not legal advice. Follow the notice and the enforcing agency for the actual penalty."
+    },
+    "sources": {
+      "title": "Sources (current statutes, National Law Information Center)",
+      "enf": "Road Traffic Act Enforcement Decree Arts. 88, 93 and Annexes 6, 7, 8, 10 — effective 2026-10-02",
+      "rule": "Road Traffic Act Enforcement Rule Annex 28 (points, suspension, revocation) and Annex 39 (penalty reductions) — effective 2026-08-24",
+      "act": "Road Traffic Act Arts. 151-2, 153, 154, 156, 160, 164, 165 — effective 2026-10-13",
+      "qa": "Act on the Regulation of Violations of Public Order Arts. 16, 18, 20, 24 and its Decree Art. 5",
+      "efine": "National Police Agency Gyotong Minwon 24 (eFine) — check, pay and respond",
+      "asOf": "Checked {date}"
+    }
+  },
+  "sebaetdonCalculator": {
+    "title": "Sebaetdon (New Year Money) Calculator",
+    "subtitle": "List the nieces, nephews, grandkids and parents you give to and see the total, how many crisp new bills to get, and how many envelopes you need. Age-group reference ranges and short wishes included.",
+    "dday": {
+      "label": "Seollal {y}: {m}/{d} ({w})",
+      "left": "D-{n}",
+      "today": "Today is Seollal",
+      "weekdays": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ]
+    },
+    "fmt": {
+      "won": "₩{n}",
+      "man": "₩{won}",
+      "range": "₩{loWon}–{hiWon}"
+    },
+    "rel": {
+      "n": "Niece/Nephew",
+      "g": "Grandchild",
+      "c": "Child",
+      "s": "Younger sibling",
+      "u": "Cousin",
+      "p": "Parents",
+      "custom": "Custom"
+    },
+    "band": {
+      "pre": "Preschool",
+      "el": "Lower elementary",
+      "eh": "Upper elementary",
+      "mid": "Middle school",
+      "high": "High school",
+      "univ": "College / job seeker",
+      "adult": "Adults / parents"
+    },
+    "input": {
+      "title": "Who gets sebaetdon",
+      "desc": "Pick a relation and age group to fill in a reference amount. You can change the amount and headcount right away.",
+      "reset": "Back to default list",
+      "rowTitle": "#{n}",
+      "removeAria": "Remove row {n}",
+      "rel": "Relation",
+      "relCustomAria": "Relation name for row {n}",
+      "relCustomPh": "e.g. Granddaughter",
+      "band": "Age group",
+      "amount": "Amount per person",
+      "amountUnit": "×10k ₩",
+      "count": "People",
+      "minusAria": "One fewer person",
+      "plusAria": "One more person",
+      "amountErr": "Enter {min}–{max} (in units of ₩10,000, steps of ₩1,000).",
+      "refHint": "Reference {range} · most common {ref}",
+      "useRef": "Use {ref}",
+      "subtotal": "{amt} × {n} = {sum}",
+      "belowRef": "(below the reference range)",
+      "aboveRef": "(above the reference range)",
+      "add": "Add a person",
+      "addBand": "+ {band} {ref}",
+      "addHint": "Tap an age group to add a row with its reference amount. Up to {max} rows.",
+      "budget": "Budget (optional)",
+      "budgetPh": "e.g. 30",
+      "budgetErr": "Enter between 0.1 and 10,000 (×₩10,000).",
+      "budgetHint": "We compare it with the total and show what is left or over."
+    },
+    "result": {
+      "label": "Total sebaetdon",
+      "sub": "{people} people · {env} envelopes · {avg} on average",
+      "budgetLeft": "{left} left from your {budget} budget.",
+      "budgetOver": "{over} over your {budget} budget. Try adjusting amounts or headcount.",
+      "byBand": "By age group",
+      "people": "{n} people",
+      "envelopes": "Bills for each envelope",
+      "envCount": "{n} envelopes",
+      "note": "Amounts are split into the fewest bills, largest first. Thousands are counted as ₩1,000 bills."
+    },
+    "notes": {
+      "title": "New bills to get",
+      "b50000": "₩50,000 bills",
+      "b10000": "₩10,000 bills",
+      "b5000": "₩5,000 bills",
+      "b1000": "₩1,000 bills",
+      "sheets": "{n}",
+      "item": "{name} ×{n}",
+      "total": "{n} bills in all · {env} envelopes"
+    },
+    "share": {
+      "tool": "Sebaetdon Calculator",
+      "label": "Total for {n} people",
+      "budget": "Budget",
+      "left": "{n} left",
+      "over": "{n} over",
+      "text": "This year's sebaetdon: {total} for {n} people. Here are the age-group ranges and new-bill counts."
+    },
+    "tax": {
+      "title": "Sebaetdon and gift tax",
+      "items": [
+        "Gifts such as sebaetdon that are considered customary under social norms are not subject to gift tax (Inheritance and Gift Tax Act Art. 46, Enforcement Decree Art. 35).",
+        "If the money is saved in deposits or invested in stocks under the child's name, it is hard to treat as a tax-free gift and may count as a taxable gift. The National Tax Service says money received for living or education costs is not tax-free once it goes into savings or stock purchases.",
+        "A minor can receive up to ₩20 million over 10 years from parents or grandparents tax-free (gift deduction). Adults get ₩50 million, and gifts from other relatives such as aunts and uncles get ₩10 million over 10 years (Art. 53).",
+        "If you plan to keep saving in the child's name, filing a gift tax return even within the deduction makes it easier to explain where the money came from later."
+      ],
+      "link": "Check with the gift tax calculator"
+    },
+    "words": {
+      "title": "Wishes for the envelope",
+      "desc": "Short New Year wishes to write on the envelope or in a transfer message. Pick an age group and copy.",
+      "bandAria": "Age group for wishes",
+      "copy": "Copy",
+      "copied": "Copied",
+      "items": {
+        "pre": [
+          "Grow up strong and happy. Let's laugh a lot this year!",
+          "Play as much as you like this year, eat well and stay healthy.",
+          "What a lovely bow! Love you, this year too."
+        ],
+        "el": [
+          "Make lots of good friends and enjoy your new school year.",
+          "Ask lots of questions and read lots of fun books this year.",
+          "Stay healthy and go for the things you love this year!"
+        ],
+        "eh": [
+          "Congrats on being one of the big kids. Have a year of doing things on your own.",
+          "Plan how you spend your money, and grow your dreams one by one.",
+          "Hope you dig deeper into what you love this year."
+        ],
+        "mid": [
+          "Settle into the new term and explore whatever you like.",
+          "Studying matters, but health comes first. Eat well and sleep well.",
+          "Cheering for you to have a fun year, just being yourself."
+        ],
+        "high": [
+          "It'll be a busy year, so take care of your body and mind. Always rooting for you.",
+          "I'm proud of how hard you've worked, whatever the results.",
+          "Here's to a year of steps toward the path you want."
+        ],
+        "univ": [
+          "Hope you check off the studies and work you want, one by one.",
+          "Preparing for what's next is hard. Don't rush, and take care of yourself.",
+          "Have new experiences and meet good people this year."
+        ],
+        "adult": [
+          "Wishing you good health and many happy days. We love you.",
+          "Please stay healthy and by our side for a long, long time.",
+          "It's a small gift with a big heart. Enjoy something tasty and go somewhere nice."
+        ]
+      }
+    },
+    "guide": {
+      "title": "Sebaetdon guide",
+      "ref": {
+        "title": "Reference ranges by age group",
+        "desc": "There are no official statistics, so these ranges combine surveys and money-transfer data reported in the Korean press. The reference amount is the one mentioned most often.",
+        "cols": {
+          "band": "Age group",
+          "range": "Range",
+          "ref": "Reference",
+          "basis": "Basis"
+        },
+        "basis": {
+          "pre": "Maeil Shinmun 2026 roundup ₩10–30k; YTN 2024 survey most common answer ₩10k",
+          "el": "Maeil Shinmun 2026 roundup ₩10–30k; Hanwha Life 2023 staff survey 'elementary and younger' most common ₩30k",
+          "eh": "Maeil Shinmun 2026 roundup ₩30–50k; YTN 2024 survey elementary ₩30–50k",
+          "mid": "Maeil Shinmun and YTN ₩50–100k for middle/high school; Hanwha Life 2023 survey middle school most common ₩50k",
+          "high": "KakaoPay money envelopes, Seollal 2025: ₩100k was the most common for middle/high schoolers (42%); Hanwha Life 2023 high school ₩100k",
+          "univ": "Maeil Shinmun 2026 roundup ₩100–200k; Hanwha Life 2023 survey college most common ₩100k",
+          "adult": "KakaoPay money envelopes to parents averaged about ₩200k (Seollal 2024) and ₩227k (Seollal 2025); Hanwha Life 2023 survey most common ₩300k (36.2%)"
+        },
+        "note": "Surveys differ in who, when and how, so treat the ranges as a reference and decide by your own family's situation."
+      },
+      "exchange": {
+        "title": "Getting new bills",
+        "items": [
+          "Before Seollal and Chuseok, the Bank of Korea sets a period for exchanging new bills at its head office and regional branches. The 2027 Seollal schedule has not been announced yet, so the notes below follow previous years.",
+          "For Seollal 2026, the head office (Namdaemun, Seoul) exchanged bills on Feb 4–13 and the 16 regional branches on Feb 9–13, cash only.",
+          "The Bank of Korea head office's holiday limit per person per day is ₩1 million each in ₩50,000 and ₩10,000 bills, ₩500,000 in ₩5,000 bills and ₩200,000 in ₩1,000 bills. Regional branches may differ.",
+          "Ask your local bank branch ahead of time too. New bills run out quickly right before the holiday."
+        ]
+      },
+      "tips": {
+        "title": "Envelope tips",
+        "items": [
+          "You need one envelope per person. Writing names or relations on them in advance avoids mix-ups.",
+          "Bill counts use the fewest bills, largest first. If young children would rather get several ₩10,000 bills, prepare five ₩10,000 bills instead of one ₩50,000 bill.",
+          "Agreeing on amounts per age group with your siblings avoids hurt feelings when kids compare.",
+          "Your list is saved on this device, and a share link shows the same list to family."
+        ]
+      },
+      "origin": {
+        "title": "Where sebaetdon comes from",
+        "items": [
+          "Elders giving New Year wishes after a bow is an old custom, but the first record of money is said to be in Haedong Jukji (1925), which mentions giving 'sebaetgap' when a child bows.",
+          "Money in envelopes is seen in China from the 11th century and in Japan from the 17th century, and one view is that the custom came in after Korea's ports opened.",
+          "In harder times, families likely gave new clothes or food instead of money (National Folk Museum researcher, Seoul Shinmun, 2019)."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much sebaetdon is right for Seollal 2027?",
+            "a": "There is no fixed rule. Press reports around Seollal 2026 put it at about ₩10–30k for preschool and lower elementary, ₩30–50k for upper elementary, ₩50–100k for middle and high school, and ₩100–200k for college students and job seekers. This calculator fills in the most commonly mentioned amount within each range."
+          },
+          {
+            "q": "For middle and high schoolers, is ₩50,000 or ₩100,000 more common?",
+            "a": "KakaoPay money-envelope data show ₩100,000 was the most common amount at Seollal 2025 (42%). At Seollal 2024, ₩50,000 (39%) was slightly ahead of ₩100,000 (37%), with an average of ₩74,000."
+          },
+          {
+            "q": "How much do people give their parents?",
+            "a": "KakaoPay money envelopes to parents averaged about ₩200,000 at Seollal 2024 and ₩227,000 at Seollal 2025. In a 2023 Hanwha Life staff survey, ₩300,000 (36.2%) and ₩200,000 (26.6%) were the most common answers."
+          },
+          {
+            "q": "When and where can I get new bills?",
+            "a": "The Bank of Korea runs a new-bill exchange period at its head office and regional branches one to two weeks before Seollal. In 2026 it was Feb 4–13 at the head office and Feb 9–13 at regional branches, cash only. Check the Bank of Korea notice for 2027."
+          },
+          {
+            "q": "Is sebaetdon subject to gift tax?",
+            "a": "Customary sebaetdon is not taxed. But if it is saved or invested in the child's account, it may be treated as a gift. Keep in mind that a minor can receive up to ₩20 million over 10 years from parents or grandparents within the deduction."
+          },
+          {
+            "q": "How are the bills for each envelope worked out?",
+            "a": "Each amount is split into the fewest bills starting from ₩50,000. For example, ₩78,000 is one ₩50,000, two ₩10,000, one ₩5,000 and three ₩1,000 bills. The totals across the list are the new bills to prepare."
+          },
+          {
+            "q": "Is my list saved?",
+            "a": "The last list you edited is saved in this browser. Opening a share link shows the linked list first, and your saved list stays as it is until you edit."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "items": [
+        {
+          "label": "Financial News (Yonhap) 2025-01-24 — KakaoPay envelopes: average ₩74,000 for middle/high schoolers at Seollal 2024",
+          "url": "https://www.fnnews.com/news/202501241017020979"
+        },
+        {
+          "label": "Metro Seoul 2026-02-16 — KakaoPay Seollal 2025 envelopes (₩100k 42%, parents average ₩227k)",
+          "url": "https://www.metroseoul.co.kr/article/20260216500041"
+        },
+        {
+          "label": "Segye Ilbo 2026-02-15 — amount shares for middle/high schoolers (Seollal 2024, 2025)",
+          "url": "https://www.segye.com/newsView/20260213514771"
+        },
+        {
+          "label": "Maeil Shinmun 2026-02-14 — sebaetdon by age group",
+          "url": "https://www.imaeil.com/page/view/2026021217150788280"
+        },
+        {
+          "label": "YTN 2024-02-09 — sebaetdon survey (most common answers by age)",
+          "url": "https://www.ytn.co.kr/_ln/0102_202402091524540364"
+        },
+        {
+          "label": "Segye Ilbo 2023-01-19 — Hanwha Life survey of 2,600 staff",
+          "url": "https://www.segye.com/newsView/20230119510300"
+        },
+        {
+          "label": "Bank of Korea — holiday new-bill exchange period and limits",
+          "url": "https://www.bok.or.kr/portal/singl/coxhResve/viewCoxhLmt.do?menuNo=200997"
+        },
+        {
+          "label": "Etoday 2026-02-04 — Bank of Korea new-bill exchange for Seollal 2026",
+          "url": "https://www.etoday.co.kr/news/view/2553078"
+        },
+        {
+          "label": "National Tax Service — gift value (tax-free gifts, gift deductions)",
+          "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7960"
+        },
+        {
+          "label": "Korean Law Information Center — Inheritance and Gift Tax Act",
+          "url": "https://www.law.go.kr/법령/상속세및증여세법"
+        },
+        {
+          "label": "Seoul Shinmun 2019-02-04 — origins of sebaetdon",
+          "url": "https://m.seoul.co.kr/news/newsView.php?id=20190204800004"
+        }
+      ],
+      "asOf": "Checked {date}"
+    },
+    "disclaimer": "Age-group amounts are references compiled from surveys and transfer data, not rules. Tax notes are general information; confirm actual gift tax questions with the National Tax Service (126) or a tax professional."
+  },
+  "charyeCost": {
+    "title": "Charye Table Cost Calculator",
+    "subtitle": "Work out the cost of a Seollal or Chuseok ancestral-rite table (charyesang) from item prices in the Korea Agro-Fisheries & Food Trade Corporation (aT) survey. Compare traditional markets, large marts and a simplified table, and get a shopping list.",
+    "fmt": {
+      "won": "₩{n}"
+    },
+    "units": {
+      "g": "{n} g",
+      "kg": "{n} kg",
+      "ml": "{n} ml",
+      "l": "{n} L",
+      "ea": "{n} pcs",
+      "fish": "{n} fish",
+      "egg": "{n} eggs",
+      "block": "{n} blocks",
+      "box": "{n} box",
+      "bag": "{n} bag"
+    },
+    "survey": {
+      "label": "aT {y} {holiday} survey (as of {m}/{d})"
+    },
+    "holiday": {
+      "seol": "Seollal",
+      "chuseok": "Chuseok"
+    },
+    "shop": {
+      "market": "Traditional market",
+      "mart": "Large mart"
+    },
+    "table": {
+      "full": "Full survey list",
+      "simple": "Sungkyunkwan simplified"
+    },
+    "size": {
+      "s": "Small",
+      "m": "Standard",
+      "l": "Large"
+    },
+    "cat": {
+      "fruit": "Fruit",
+      "veg": "Namul & vegetables",
+      "meat": "Meat & eggs",
+      "fish": "Seafood",
+      "tteok": "Rice cakes",
+      "etc": "Other"
+    },
+    "item": {
+      "rice": "Rice",
+      "cabbage": "Napa cabbage",
+      "radish": "Korean radish",
+      "spinach": "Spinach",
+      "zucchini": "Korean zucchini",
+      "apple": "Apples",
+      "pear": "Korean pears",
+      "beefRound": "Beef round (for skewers)",
+      "beefBrisket": "Beef brisket (for soup)",
+      "pork": "Pork shoulder",
+      "egg": "Eggs",
+      "pollock": "Frozen pollock",
+      "croaker": "Yellow croaker",
+      "driedPollock": "Dried pollock",
+      "bracken": "Bracken",
+      "jujube": "Jujubes",
+      "chestnut": "Chestnuts",
+      "persimmon": "Dried persimmons",
+      "tteokguk": "Tteokguk rice cakes",
+      "songpyeon": "Songpyeon",
+      "pyeontteok": "Pyeon-tteok",
+      "tofu": "Tofu",
+      "flour": "Flour",
+      "cheongju": "Cheongju (rice wine)",
+      "sikhye": "Sikhye",
+      "yakgwa": "Yakgwa",
+      "sanja": "Sanja"
+    },
+    "input": {
+      "title": "Set up the table",
+      "holiday": "Holiday",
+      "holidayHint": {
+        "seol": "The Seollal table includes tteokguk rice cakes and pyeon-tteok.",
+        "chuseok": "The Chuseok table includes songpyeon and rice."
+      },
+      "table": "Table",
+      "tableHint": {
+        "full": "All 24 items aT surveys for a four-person table. Beef is shown as two lines (round and brisket).",
+        "simple": "Only the items matching the Sungkyunkwan standard dishes (tteokguk or songpyeon, namul, grilled dish, kimchi, four fruits, wine)."
+      },
+      "shop": "Where to buy",
+      "size": "Table size",
+      "sizeHint": "Scales the survey quantities (four-person family) by {mult}×. You can also change each item's quantity.",
+      "basis": "Basis: {survey} · average prices from {markets} traditional markets and {marts} large retailers in {regions} areas",
+      "reset": "Reset size, items and quantities"
+    },
+    "result": {
+      "label": "{holiday} table cost · {table}",
+      "sub": "{shop} · {n} items · {survey}",
+      "mixed": "Cheapest place per item",
+      "shopSame": "Traditional markets and large marts cost the same.",
+      "shopCheaper": "{shop} is {diff} cheaper than {other}.",
+      "shopPricier": "{shop} is {diff} more than {other}.",
+      "simpleSave": "Switching the full list ({full}) to the Sungkyunkwan simplified table costs {simple}, saving {diff}.",
+      "simpleVsFull": "{diff} less than the full survey list ({full}).",
+      "byCat": "By category",
+      "count": "{n} items",
+      "note": "Each cost is the survey's average price scaled by your quantity and rounded to the won. Actual prices vary by area, store and quality."
+    },
+    "share": {
+      "tool": "Charye Table Cost Calculator",
+      "simple": "Simplified table",
+      "size": "Size",
+      "text": "{label}: {total} at a {shop}. Calculated with aT survey prices."
+    },
+    "items": {
+      "title": "Item prices and quantities",
+      "desc": "Uncheck to remove an item, check to add it. Prices are averages from the {survey}.",
+      "resetQty": "Reset quantities",
+      "price": "{qty}: market {market} · mart {mart}",
+      "cheaper": {
+        "market": "· cheaper at market",
+        "mart": "· cheaper at mart"
+      },
+      "off": "Off",
+      "qtyAria": "{item} quantity",
+      "minusAria": "Less {item}",
+      "plusAria": "More {item}",
+      "note": "aT used Korea Institute for Animal Products Quality Evaluation prices for beef, pork and eggs. Quantities change in steps of 100 g (yakgwa 50 g), one piece, one bottle or 10 eggs."
+    },
+    "list": {
+      "header": "[{label}] Shopping list",
+      "footer": "About {total} at a {shop}",
+      "title": "Shopping checklist",
+      "desc": "Tick items as you buy them. Ticks are saved on this device only.",
+      "progress": "{done}/{total} done",
+      "copy": "Copy list",
+      "copied": "Copied",
+      "clear": "Clear all ticks",
+      "note": "Opening a share link keeps your own ticks as they are."
+    },
+    "guide": {
+      "title": "Charye table cost guide",
+      "method": {
+        "title": "Survey and calculation",
+        "items": [
+          "Prices are the per-item averages for a four-person charye table that aT surveys at 17 traditional markets and 36 large retailers nationwide one to two weeks before each holiday and publishes on KAMIS.",
+          "Seollal uses the survey as of Feb 6, 2026 (traditional markets ₩185,313, large retailers ₩227,876, overall average ₩202,691) and Chuseok the survey as of Sep 18, 2026 (₩195,911, ₩191,511, ₩196,630). The Seollal 2027 survey usually comes out two to three weeks before the holiday.",
+          "aT's published overall average is its own aggregate and differs from a simple average of the two. This calculator uses the prices of the place you choose.",
+          "Table size multiplies the survey quantities and rounds to buying units (100 g, one piece, one bottle and so on), and costs scale with the quantity."
+        ]
+      },
+      "tips": {
+        "title": "Where it's cheaper",
+        "items": [
+          "In aT's Seollal 2026 survey, 14 of 24 items, including spinach, zucchini and Korean beef, were cheaper at traditional markets, and the total was 18.7% lower there.",
+          "In aT's Chuseok 2026 survey, rice, vegetables, fruit and meat were cheaper at large retailers, while seafood, forest products and processed foods were cheaper at traditional markets. Large retailers were 7.6% cheaper than a year earlier thanks to government and store discounts.",
+          "Splitting your shopping by the 'cheaper at market / mart' marks in the item list gets you close to the 'cheapest place per item' total.",
+          "For Seollal 2026 there were farm-product discounts (up to 40%), a seafood sale (up to 50%) and Onnuri voucher refunds at traditional markets (up to ₩20,000 per person). Check the discount sites (sale.foodnuri.go.kr, fsale.kr) for Seollal 2027."
+        ]
+      },
+      "simple": {
+        "title": "The Sungkyunkwan simplified table",
+        "items": [
+          "In its September 2022 Chuseok standard, Sungkyunkwan's ritual committee named songpyeon, namul, a grilled dish, kimchi, fruit and wine as the basics, with meat, fish and rice cakes optional, for about nine dishes in all.",
+          "Its January 2023 Seollal guidance only swaps songpyeon for tteokguk and says four to six kinds of fruit are enough.",
+          "Fried or pan-fried dishes are not required, and the committee said layout rules such as 'red east, white west' do not appear in the classic ritual texts.",
+          "This calculator's simplified table picks tteokguk rice cakes (Seollal) or songpyeon (Chuseok), spinach, bracken and radish (namul), cabbage and radish (kimchi), beef round (grilled), apples, pears, chestnuts and dried persimmons (fruit) and cheongju from the aT items. Tick fish or jeon ingredients in the item list to add them."
+        ]
+      },
+      "faq": {
+        "title": "FAQ",
+        "items": [
+          {
+            "q": "How much will the Seollal 2027 table cost?",
+            "a": "The Seollal 2027 survey usually comes out two to three weeks before the holiday. In the latest Seollal survey (aT, as of Feb 6, 2026), a four-person table averaged ₩202,691 overall, ₩185,313 at traditional markets and ₩227,876 at large retailers."
+          },
+          {
+            "q": "Is a traditional market or a large mart cheaper?",
+            "a": "It depends on the holiday. In aT's Seollal 2026 survey traditional markets were 18.7% cheaper, but in the Chuseok 2026 survey large retailers (₩191,511) were slightly cheaper than traditional markets (₩195,911) because of discount events. In the Chuseok survey, rice, vegetables, fruit and meat were cheaper at large retailers, and seafood, forest products and processed foods at traditional markets."
+          },
+          {
+            "q": "What goes on the Sungkyunkwan simplified table?",
+            "a": "Songpyeon (tteokguk at Seollal), namul, a grilled dish, kimchi, fruit and wine are the basics, with meat, fish and rice cakes optional. Jeon is not required. At aT's Seollal 2026 prices, this calculator's simplified table comes to ₩108,035 at traditional markets."
+          },
+          {
+            "q": "Why do surveys give different costs?",
+            "a": "Each survey uses different items, quantities, grades and areas. For example, Korea Price Research Center's Seollal 2026 survey put a four-person table at ₩296,500 at traditional markets and ₩406,880 at large marts, higher than aT. aT also notes that results differ because survey methods differ."
+          },
+          {
+            "q": "What if my family is bigger or smaller?",
+            "a": "The aT survey assumes a family of four. Pick Large (1.5×) or Small (0.5×) as the table size, or change each item's quantity."
+          },
+          {
+            "q": "Do I have to make jeon?",
+            "a": "The Sungkyunkwan standard says fried or pan-fried dishes are not required. If you make jeon, tick flour, eggs, frozen pollock and zucchini in the item list."
+          },
+          {
+            "q": "Are my shopping ticks saved?",
+            "a": "Ticked items are saved in this browser. Share links carry only the holiday, table, store, size, items and quantities, not your ticks, so opening someone else's link won't change them."
+          }
+        ]
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "items": [
+        {
+          "label": "aT KAMIS press release 2026-02-07 — Seollal table cost for a family of four (item table, as of Feb 6)",
+          "url": "https://www.kamis.or.kr/customer/trend/peakseason_info/peakseason_info.do?action=detail&brdctsno=467816"
+        },
+        {
+          "label": "aT KAMIS press release 2026-09-18 — Chuseok table cost (item table, as of Sep 18)",
+          "url": "https://www.kamis.or.kr/customer/trend/peakseason_info/peakseason_info.do?action=detail&brdctsno=480238"
+        },
+        {
+          "label": "KAMIS holiday press releases",
+          "url": "https://www.kamis.or.kr/customer/trend/peakseason_info/peakseason_info.do"
+        },
+        {
+          "label": "Financial News 2022-09-05 — Sungkyunkwan charye table standard",
+          "url": "https://www.fnnews.com/news/202209051537005848"
+        },
+        {
+          "label": "Segye Ilbo 2023-01-20 — Sungkyunkwan simplified Seollal table (tteokguk)",
+          "url": "https://www.segye.com/newsView/20230119510264"
+        },
+        {
+          "label": "Kyunghyang Shinmun 2026-01-25 — Korea Price Research Center, Seollal 2026 table cost",
+          "url": "https://www.khan.co.kr/article/202601251514001/"
+        },
+        {
+          "label": "Weekly Kyunghyang 2026-09-06 — Korea Price Research Center, Chuseok 2026 table cost",
+          "url": "https://weekly.khan.co.kr/article/202609061315001"
+        }
+      ],
+      "asOf": "Checked {date}"
+    },
+    "disclaimer": "A reference amount based on average prices at the time of the survey. Actual costs vary by area, store, quality and discounts; check KAMIS for current prices."
   },
   "jeongsi2027": {
     "title": "2027 Regular Admission Schedule (Korea)",

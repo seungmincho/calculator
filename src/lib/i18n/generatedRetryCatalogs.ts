@@ -1,7 +1,7 @@
 // Generated from messages/ko.json and messages/en.json. Do not edit.
 export const retryCatalogs = {
   "shared": {
-    "url": "/i18n/en/shared.660a4af6be08a428.json",
+    "url": "/i18n/en/shared.240b4f5d0acc4806.json",
     "namespaces": [
       "accessibility",
       "common",

@@ -109,6 +109,7 @@
 /changes-2027  /changes-2027/  301
 /character-counter  /character-counter/  301
 /chart-studio  /chart-studio/  301
+/charye-cost  /charye-cost/  301
 /checkers  /checkers/  301
 /chess  /chess/  301
 /child-benefit  /child-benefit/  301
@@ -182,6 +183,7 @@
 /flappy-bird  /flappy-bird/  301
 /flexbox-grid  /flexbox-grid/  301
 /font-preview  /font-preview/  301
+/formula-amount  /formula-amount/  301
 /four-insurance  /four-insurance/  301
 /freelancer-tax  /freelancer-tax/  301
 /fuel-calculator  /fuel-calculator/  301
@@ -365,6 +367,7 @@
 /pac-man  /pac-man/  301
 /parental-leave  /parental-leave/  301
 /parking-fee  /parking-fee/  301
+/passport-name  /passport-name/  301
 /password-generator  /password-generator/  301
 /pay-slip  /pay-slip/  301
 /pc-electricity  /pc-electricity/  301
@@ -407,6 +410,7 @@
 /running-pace  /running-pace/  301
 /salary-calculator  /salary-calculator/  301
 /salary-comparison  /salary-comparison/  301
+/salary-raise  /salary-raise/  301
 /salary-rank  /salary-rank/  301
 /salary-table  /salary-table/  301
 /salary-table/10000  /salary-table/10000/  301
@@ -431,6 +435,7 @@
 /screen-info  /screen-info/  301
 /screen-recorder  /screen-recorder/  301
 /seasonal-food  /seasonal-food/  301
+/sebaetdon  /sebaetdon/  301
 /shipping-calculator  /shipping-calculator/  301
 /signature-generator  /signature-generator/  301
 /size-converter  /size-converter/  301
@@ -463,8 +468,11 @@
 /time-converter  /time-converter/  301
 /timer  /timer/  301
 /tips  /tips/  301
+/tire-size  /tire-size/  301
 /toast-speech  /toast-speech/  301
 /tools  /tools/  301
+/traffic-fine  /traffic-fine/  301
+/transit-pass  /transit-pass/  301
 /typing-test  /typing-test/  301
 /unemployment-benefit  /unemployment-benefit/  301
 /unit-converter  /unit-converter/  301
