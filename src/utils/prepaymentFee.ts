@@ -11,6 +11,7 @@
 //   인지세법 §3①·§6: 금융기관 금전소비대차 5천만 이하 비과세, 1억 이하 7만, 10억 이하 15만, 초과 35만 — 고객·은행 50%씩
 import { schedule, type Method } from './loanSchedule.ts'
 import { addDays, daysBetween } from './dday.ts'
+import { floorWon } from './won.ts'
 
 export const FEE_DAYS = 1095 // 3년
 export const REFORM_DATE = '2025-01-13' // 이날 이후 체결한 계약부터 실비용 기준 요율
@@ -56,7 +57,7 @@ export function prepaymentFee(i: FeeInput) {
     : left === 0 ? 'free'
       : i.waivedUntil && i.repay <= i.waivedUntil ? 'waived'
         : chargeable === 0 || i.rate <= 0 ? 'zero' : 'charged'
-  const fee = status === 'charged' ? Math.floor(chargeable * (i.rate / 100) * left / base) : 0
+  const fee = status === 'charged' ? floorWon(chargeable * (i.rate / 100) * left / base) : 0
   return { fee, status, elapsed, base, left, chargeable, freeDate }
 }
 

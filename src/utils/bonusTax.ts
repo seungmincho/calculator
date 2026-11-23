@@ -11,7 +11,8 @@
  *  - 건강·장기요양: 보수월액 연중 고정 → 지급월엔 없음, 다음 해 4월 보수총액 정산 때 성과급 × 요율 부과.
  *  - 고용보험: 대부분 급여명세서가 지급월 실지급액 × 0.9% 공제.
  */
-import { INSURANCE, floorWon } from './insuranceRates'
+import { INSURANCE } from './insuranceRates'
+import { floorWon } from './won'
 import { calculateNetSalary } from './netSalary'
 import { wageTax } from './wageTaxTable'
 

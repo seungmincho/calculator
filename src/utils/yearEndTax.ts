@@ -1,7 +1,8 @@
 // 연말정산(근로소득) 2026년 귀속 → 2027년 1~2월 정산. 회귀 체크: node scripts/check-year-end-tax.ts
 // 금액 단위: 원(정수). 근거 조문은 각 함수 주석. 기준일 2026-10-04 (2025.12·2026.4.21 개정 소득세법, 2025.12 개정 조특법 반영).
 // 미반영: 2026 세제개편안(2026.8.3 발표, 국회 심의 중 — 기본공제 소득요건 300만, 대중교통 추가공제 폐지, 출산·혼인공제 재정전환 등)
-import { INSURANCE, PENSION_ANNUAL_CAP, floorWon } from './insuranceRates.ts'
+import { INSURANCE, PENSION_ANNUAL_CAP } from './insuranceRates.ts'
+import { floorWon } from './won.ts'
 
 export const TAX_YEAR = 2026
 

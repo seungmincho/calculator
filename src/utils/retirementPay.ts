@@ -1,6 +1,7 @@
 // 퇴직금 + 퇴직소득세(2023.1.1 이후 퇴직분). 회귀 체크: node scripts/check-retirement.ts
 // 금액 단위: 원. 날짜: 'YYYY-MM-DD' (UTC 기준 산술, 시간대 무관).
 import { progressiveTax } from './yearEndTax.ts'
+import { floorWon } from './won.ts'
 
 const DAY = 86_400_000
 const toMs = (s: string) => { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d) }
@@ -47,10 +48,10 @@ export function serviceDeduction(years: number): number {
 // ── 환산급여공제 (소득세법 제48조 ①2호 가목 표, 2023.1.1 이후) ──
 export function convertedDeduction(c: number): number {
   if (c <= 8_000_000) return Math.max(0, c)
-  if (c <= 70_000_000) return Math.floor(8_000_000 + (c - 8_000_000) * 0.6)
-  if (c <= 100_000_000) return Math.floor(45_200_000 + (c - 70_000_000) * 0.55)
-  if (c <= 300_000_000) return Math.floor(61_700_000 + (c - 100_000_000) * 0.45)
-  return Math.floor(151_700_000 + (c - 300_000_000) * 0.35)
+  if (c <= 70_000_000) return floorWon(8_000_000 + (c - 8_000_000) * 0.6)
+  if (c <= 100_000_000) return floorWon(45_200_000 + (c - 70_000_000) * 0.55)
+  if (c <= 300_000_000) return floorWon(61_700_000 + (c - 100_000_000) * 0.45)
+  return floorWon(151_700_000 + (c - 300_000_000) * 0.35)
 }
 
 const floor10 = (n: number) => Math.floor(n / 10) * 10 // 국고금관리법 제47조: 10원 미만 절사

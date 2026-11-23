@@ -9,6 +9,7 @@ import ShareResult from '@/components/ShareResult'
 import MobileResultLink from '@/components/MobileResultLink'
 import GuideSection from '@/components/GuideSection'
 import { INSURANCE, pct } from '@/utils/insuranceRates'
+import { floor10Won } from '@/utils/won'
 import { HI, workplace, extraIncome, regional, dependent, afterRetirement, type Relation } from '@/utils/healthInsurance'
 
 type Tab = 'workplace' | 'regional' | 'dependent' | 'retire'
@@ -64,8 +65,8 @@ export default function HealthInsuranceCalculator() {
   const ex = extraIncome(n(f.extra))
   const exTotal = ex.health + ex.ltc
   const myMonthly = wp.employeeTotal + exTotal
-  const pension = base > 0 ? Math.floor(Math.min(Math.max(base, INSURANCE.pensionMonthlyFloor), INSURANCE.pensionMonthlyCap) * INSURANCE.pensionRate / 10) * 10 : 0
-  const employment = Math.floor(base * INSURANCE.employmentRate / 10) * 10
+  const pension = base > 0 ? floor10Won(Math.min(Math.max(base, INSURANCE.pensionMonthlyFloor), INSURANCE.pensionMonthlyCap) * INSURANCE.pensionRate) : 0
+  const employment = floor10Won(base * INSURANCE.employmentRate)
 
   // ── 지역 ──
   const rg = regional({

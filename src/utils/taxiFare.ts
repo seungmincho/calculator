@@ -1,4 +1,5 @@
 // 택시 요금 계산 (순수 로직). 회귀 체크: node scripts/check-taxi-fare.ts
+import { floorWon } from './won.ts'
 
 export type RegionKey =
   | 'seoul' | 'gyeonggi' | 'incheon'
@@ -127,8 +128,8 @@ export function computeFare(distanceKm: number, timeMin: number, hour: number, r
   const metered = s.base + distanceFare + timeFare
   const nightRate = nightRateFor(hour, s)
   const outRate = outOfCity ? (s.comboCap != null ? Math.max(0, Math.min(s.outRate, s.comboCap - nightRate)) : s.outRate) : 0
-  const nightSurcharge = Math.floor(metered * nightRate)
-  const outSurcharge = Math.floor(metered * outRate)
+  const nightSurcharge = floorWon(metered * nightRate)
+  const outSurcharge = floorWon(metered * outRate)
   const total = metered + nightSurcharge + outSurcharge
   return { base: s.base, distanceFare, timeFare, metered, nightRate, nightSurcharge, outRate, outSurcharge, total }
 }

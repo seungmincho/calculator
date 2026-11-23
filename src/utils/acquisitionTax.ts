@@ -16,6 +16,7 @@
  */
 import { getKoreanHolidays, isHoliday, isWeekend } from './koreanHolidays.ts'
 import { saleFee } from './brokerageFee.ts'
+import { floorWon } from './won.ts'
 
 export type Mode = 'buy' | 'inherit' | 'gift'
 /** house = 주택, building = 토지·상가·오피스텔·건물(4%), farmland = 농지 */
@@ -174,7 +175,7 @@ export interface Extras { broker: number; brokerVat: number; bond: number; stamp
 export function buyExtras(price: number, kind: Kind, metro: boolean): Extras {
   const broker = brokerFee(price, kind)
   const brokerVat = Math.floor(broker * 0.1)
-  const bond = Math.floor(price * STD_RATIO * bondRate(price * STD_RATIO, kind, metro) * BOND_DISCOUNT)
+  const bond = floorWon(price * STD_RATIO * bondRate(price * STD_RATIO, kind, metro) * BOND_DISCOUNT)
   const stamp = stampDuty(price, kind) / 2
   return { broker, brokerVat, bond, stamp, legal: LEGAL_FEE, total: broker + brokerVat + bond + stamp + LEGAL_FEE }
 }

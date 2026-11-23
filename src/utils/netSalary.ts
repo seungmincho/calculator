@@ -2,7 +2,8 @@
  * 연봉 → 실수령액 순수 계산 (2026). SalaryCalculator·연봉 실수령액 표(/salary-table)가 공유.
  * 월 소득세는 근로소득 간이세액표 실데이터(wageTaxTable.ts). 입력 의미도 간이세액표와 동일: 공제대상가족 수(본인 포함) + 그중 8~20세 자녀 수.
  */
-import { INSURANCE, floorWon, insuranceFor, type InsuranceYear } from './insuranceRates'
+import { INSURANCE, insuranceFor, type InsuranceYear } from './insuranceRates'
+import { floorWon } from './won'
 import { wageTax } from './wageTaxTable'
 import { childCredit } from './yearEndTax'
 

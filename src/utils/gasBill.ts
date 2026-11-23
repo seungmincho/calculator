@@ -1,5 +1,6 @@
 // 도시가스 주택용 요금 계산 (순수 함수). 요금 = 기본요금 + 사용열량(MJ)×단가, 부가세 10% 별도.
 // 주택용은 취사·난방 단가가 같고 계절 차등이 없다(한국가스공사 도매요금 기준, 2026-10-01).
+import { floorWon } from './won.ts'
 
 export type RegionKey = 'seoul' | 'gyeonggi' | 'daegu' | 'other' | 'custom'
 export type Insulation = 'good' | 'average' | 'poor'
@@ -34,7 +35,7 @@ export interface Bill { mj: number; basic: number; usageCharge: number; subtotal
 
 export function calcBill(mj: number, rate: { unit: number; basic: number }): Bill {
   const m = Math.max(0, mj || 0)
-  const usageCharge = Math.floor(m * rate.unit)
+  const usageCharge = floorWon(m * rate.unit)
   const subtotal = rate.basic + usageCharge
   const vat = Math.floor(subtotal * VAT)
   return { mj: m, basic: rate.basic, usageCharge, subtotal, vat, total: subtotal + vat }

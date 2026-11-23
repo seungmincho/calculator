@@ -9,6 +9,7 @@
  * - 시행규칙 제20조⑤: 임대차 거래금액 = 보증금 + 월차임 × 100, 그 합계가 5천만원 미만이면 보증금 + 월차임 × 70
  * - 상한 요율·한도액은 부가가치세 별도. 간이과세자 = 공급대가 × 업종별 부가가치율 40% × 10% = 4%
  */
+import { floorWon } from './won.ts'
 
 export type Deal = 'sale' | 'jeonse' | 'monthly'
 /** officetel = 주거용 요건(85㎡ 이하·부엌·화장실) 충족 오피스텔, officetelEtc = 그 밖의 오피스텔, nonHouse = 상가·토지 등 */
@@ -55,7 +56,6 @@ export function tradeAmount(deal: Deal, deposit: number, rent: number): number {
 
 export const bracketIndex = (amount: number, list: Bracket[]) => list.findIndex((b) => b.upTo === null || amount < b.upTo)
 
-const floorWon = (v: number) => Math.floor(v + 1e-6) // 1e-6: 부동소수 오차 보정 (예: 3천만 × 0.6%)
 
 export interface FeeInput { deal: Deal; prop: Prop; deposit: number; rent?: number; vat: VatType; rate?: number }
 export interface FeeResult {

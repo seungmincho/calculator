@@ -20,6 +20,7 @@
  * 국회 심의 중(미반영): 2026 세법개정안 — 2027·2028 중과 +5·10%p / +10·15%p, 2027 기본공제 2,500만원(10년 거주 1주택), 2028 장특공제 개편
  */
 import { getKoreanHolidays, isHoliday, isWeekend } from './koreanHolidays.ts'
+import { floorWon } from './won.ts'
 
 export type Kind = 'house' | 'land' | 'nonbiz' | 'presale'
 export interface CgtInput {
@@ -158,7 +159,7 @@ export function calcCgt(i: CgtInput): CgtResult {
     } else { lthdTable = 'general'; lthdHoldRate = generalLthd(hold) }
   }
   const lthdRate = lthdHoldRate + lthdResRate
-  const lthd = Math.floor(taxableProfit * lthdRate)
+  const lthd = floorWon(taxableProfit * lthdRate)
   const income = Math.max(0, Math.floor(taxableProfit) - lthd)
   const basic = Math.min(BASIC_DEDUCTION, income)
   const base = income - basic

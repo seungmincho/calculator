@@ -1,5 +1,6 @@
 // 영업 커미션·인센티브 계산 (순수 함수). 회귀 체크: node scripts/check-sales-commission.ts
 // 금액 단위: 원(정수). 비율 단위: %.
+import { floorWon } from './won.ts'
 
 export type Structure = 'flat' | 'tiered' | 'target' | 'perDeal'
 export type TierMode = 'marginal' | 'whole'
@@ -36,7 +37,6 @@ export const PLAN_A: Plan = {
 }
 export const PLAN_B: Plan = { ...PLAN_A, structure: 'flat', rate: 2, base: 2_000_000 }
 
-const floorWon = (x: number) => Math.floor(x + 1e-6)
 const pct = (amount: number, rate: number) => floorWon((amount * rate) / 100)
 
 /** 부가세 포함 매출 → 공급가액 (10%) */

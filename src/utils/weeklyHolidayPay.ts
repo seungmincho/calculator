@@ -9,6 +9,7 @@
 import { WEEKS_PER_MONTH } from './workHours.ts'
 import { MIN_WAGE_2026 } from './minimumWage.ts'
 import { INSURANCE } from './insuranceRates.ts'
+import { floor10Won } from './won.ts'
 import { withholding33 } from './salesCommission.ts'
 
 export { MIN_WAGE_2026, WEEKS_PER_MONTH }
@@ -87,10 +88,10 @@ export function monthlyDeduction(monthly: number, mode: DeductMode) {
   }
   if (mode === 'ins') {
     const base = Math.min(INSURANCE.pensionMonthlyCap, Math.max(INSURANCE.pensionMonthlyFloor, monthly))
-    const pension = Math.floor((base * INSURANCE.pensionRate) / 10) * 10
-    const health = Math.floor((monthly * INSURANCE.healthRate) / 10) * 10
-    const care = Math.floor((health * INSURANCE.longTermCareRate) / 10) * 10
-    const employment = Math.floor((monthly * INSURANCE.employmentRate) / 10) * 10
+    const pension = floor10Won(base * INSURANCE.pensionRate)
+    const health = floor10Won(monthly * INSURANCE.healthRate)
+    const care = floor10Won(health * INSURANCE.longTermCareRate)
+    const employment = floor10Won(monthly * INSURANCE.employmentRate)
     return { pension, health, care, employment, tax: 0, total: pension + health + care + employment }
   }
   return { pension: 0, health: 0, care: 0, employment: 0, tax: 0, total: 0 }

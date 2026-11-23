@@ -2,6 +2,7 @@
 // 이자 = floor(잔액 × 연이율/12) (원 미만 절사), 월 상환액·원금은 원 단위 반올림,
 // 마지막 회차가 남은 잔액을 전부 흡수 → 원금 합계 = 대출금 정확히 일치.
 // 은행 실제 이자는 일할(실제 일수/365)이라 월마다 몇 원~몇백 원 차이 날 수 있음.
+import { floorWon } from './won.ts'
 
 export type Method = 'equalPayment' | 'equalPrincipal' | 'bullet' | 'graduated'
 export type PrepayMode = 'shorten' | 'reduce'
@@ -54,7 +55,7 @@ export interface LoanResult {
 export function prepayFee(amount: number, feeRate: number, month: number, loanMonths: number, feeMonths = 36): number {
   const base = Math.min(feeMonths, loanMonths)
   if (base <= 0 || month >= base) return 0
-  return Math.floor(amount * (feeRate / 100) * (base - month) / base)
+  return floorWon(amount * (feeRate / 100) * (base - month) / base)
 }
 
 // 체증식: 원금 상환 k번째 달(0-base)의 상환액 = base × (1+g)^floor(k/12)
