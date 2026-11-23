@@ -39,8 +39,8 @@ assert.equal(valid({ ...DEFAULT, m: 'rate', v: 100 }), true)
   assert.equal(r.before.deductions.nationalPension, 2_380_000, '4,760만 × 5%')
   assert.equal(r.before.deductions.healthInsurance, 1_711_220, '4,760만 × 3.595%')
   assert.equal(r.before.deductions.longTermCare, 237_859, '1,711,220 × 13.9% = 237,859.58 내림')
-  // 4,760만 × 0.9% = 428,400 이지만 netSalary.ts 의 Math.floor(47,600,000 × 0.009) 가 부동소수(428,399.999…)로 428,399 — 1원 차이
-  assert.ok(Math.abs(r.before.deductions.employmentInsurance - 428_400) <= 1, '4,760만 × 0.9%')
+  // 4,760만 × 0.9% = 428,400 — 부동소수(428,399.999…) 내림 오차는 insuranceRates.floorWon 으로 보정
+  assert.equal(r.before.deductions.employmentInsurance, 428_400, '4,760만 × 0.9%')
   // 인상 후 과세급여 5,010만
   assert.equal(r.aft.deductions.nationalPension, 2_505_000)
   assert.equal(r.aft.deductions.healthInsurance, 1_801_095)

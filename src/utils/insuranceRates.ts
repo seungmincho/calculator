@@ -58,5 +58,9 @@ export const INSURANCE = insuranceFor(insuranceYearAt(Date.now()))
 /** 연 소득 기준 국민연금 상한 (기준소득월액 상한 × 12) */
 export const PENSION_ANNUAL_CAP = INSURANCE.pensionMonthlyCap * 12
 
+/** 보험료 원 단위 내림. 요율(0.009 등)이 2진수로 아주 조금 작게 저장돼 47,600,000 × 0.009 가
+ *  428,399.999…가 되므로 1e-6 을 더해 내린다(요율은 소수 5자리 이하라 정상 끝수는 0.00001 이상). */
+export const floorWon = (x: number) => Math.floor(x + 1e-6)
+
 /** 표시용 퍼센트 문자열 (예: 4.75%) */
 export const pct = (rate: number, digits = 3) => `${parseFloat((rate * 100).toFixed(digits))}%`

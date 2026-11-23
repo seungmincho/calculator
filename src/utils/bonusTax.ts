@@ -11,7 +11,7 @@
  *  - 건강·장기요양: 보수월액 연중 고정 → 지급월엔 없음, 다음 해 4월 보수총액 정산 때 성과급 × 요율 부과.
  *  - 고용보험: 대부분 급여명세서가 지급월 실지급액 × 0.9% 공제.
  */
-import { INSURANCE } from './insuranceRates'
+import { INSURANCE, floorWon } from './insuranceRates'
 import { calculateNetSalary } from './netSalary'
 import { wageTax } from './wageTaxTable'
 
@@ -66,9 +66,9 @@ export function calculateBonusTax(input: BonusTaxInput) {
   const monthlySalary = taxableSalary / 12
   const nowIncomeTax = Math.max(0, period * (monthlyTax(monthlySalary + bonus / period) - monthlyTax(monthlySalary)))
 
-  const employmentInsurance = Math.floor(bonus * INSURANCE.employmentRate)
-  const healthInsurance = Math.floor(bonus * INSURANCE.healthRate)
-  const longTermCare = Math.floor(healthInsurance * INSURANCE.longTermCareRate)
+  const employmentInsurance = floorWon(bonus * INSURANCE.employmentRate)
+  const healthInsurance = floorWon(bonus * INSURANCE.healthRate)
+  const longTermCare = floorWon(healthInsurance * INSURANCE.longTermCareRate)
 
   const now = sumDeductions({
     nationalPension: 0, healthInsurance: 0, longTermCare: 0, employmentInsurance,

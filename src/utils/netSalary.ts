@@ -2,7 +2,7 @@
  * 연봉 → 실수령액 순수 계산 (2026). SalaryCalculator·연봉 실수령액 표(/salary-table)가 공유.
  * 월 소득세는 근로소득 간이세액표 실데이터(wageTaxTable.ts). 입력 의미도 간이세액표와 동일: 공제대상가족 수(본인 포함) + 그중 8~20세 자녀 수.
  */
-import { INSURANCE, insuranceFor, type InsuranceYear } from './insuranceRates'
+import { INSURANCE, floorWon, insuranceFor, type InsuranceYear } from './insuranceRates'
 import { wageTax } from './wageTaxTable'
 import { childCredit } from './yearEndTax'
 
@@ -32,10 +32,10 @@ export function calculateNetSalary(grossAnnual: number, opt: NetSalaryInput = {}
 
   // 4대보험 (근로자 부담) — 요율·상한은 insuranceRates.ts 단일 관리
   const R = opt.year ? insuranceFor(opt.year) : INSURANCE
-  const nationalPension = opt.nationalPensionAnnual ?? Math.floor(Math.min(taxableAnnual, R.pensionMonthlyCap * 12) * R.pensionRate)
-  const healthInsurance = Math.floor(taxableAnnual * R.healthRate)
-  const longTermCare = Math.floor(healthInsurance * R.longTermCareRate)
-  const employmentInsurance = Math.floor(taxableAnnual * R.employmentRate)
+  const nationalPension = opt.nationalPensionAnnual ?? floorWon(Math.min(taxableAnnual, R.pensionMonthlyCap * 12) * R.pensionRate)
+  const healthInsurance = floorWon(taxableAnnual * R.healthRate)
+  const longTermCare = floorWon(healthInsurance * R.longTermCareRate)
+  const employmentInsurance = floorWon(taxableAnnual * R.employmentRate)
 
   // 근로소득공제 (총급여 기준, 한도 2천만). 총급여 = 연봉 − 비과세(소득세법 §20②) — 연봉으로 잡으면
   // 비과세가 연봉보다 클 때 과세급여 0인데 과세표준이 수천만 원으로 나온다
