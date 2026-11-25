@@ -96,7 +96,20 @@ export function RevealCard({ card, onDone }: { card: Card; onDone?: () => void }
       )}
       <p className="sr-only" aria-live="polite">{stage === 'open' ? t('reveal.announce', { from: card.f, to: card.t }) : ''}</p>
 
-      {stage === 'open' && !onDone && <Mission seed={`${card.f}>${card.t}`} />}
+      {stage === 'open' && !onDone && (
+        <div className="space-y-3">
+          <Mission seed={`${card.f}>${card.t}`} />
+          {/* 별냥 마니또 카드. 이름·배정은 넘기지 않고 툴허브에서 왔다는 것만 센다 */}
+          <a href="https://byeolnyang.toolhub.ai.kr/manito/?from=toolhub" target="_blank" rel="noopener" className="flex items-center gap-3 rounded-2xl bg-subtle hover:bg-soft p-4 text-left">
+            {/* eslint-disable-next-line @next/next/no-img-element -- 4.7KB 고정 그림 */}
+            <img src="/images/byeolnyang-face.webp" alt="" width={48} height={48} loading="lazy" className="w-12 h-12 shrink-0 rounded-full bg-white" />
+            <span className="min-w-0">
+              <span className="block font-semibold text-fg">{t('reveal.cardTitle')}</span>
+              <span className="block text-sm text-sub break-keep">{t('reveal.cardDesc')}</span>
+            </span>
+          </a>
+        </div>
+      )}
 
       {(card.b || card.d || card.m) && (
         <dl className="bg-subtle rounded-2xl p-5 text-sm text-left space-y-2">
