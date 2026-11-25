@@ -1,7 +1,7 @@
 // Service Worker for ToolHub PWA
-const CACHE_NAME = 'toolhub-v4.35.25'
-const STATIC_CACHE_NAME = 'toolhub-static-v4.35.25'
-const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.25'
+const CACHE_NAME = 'toolhub-v4.35.26'
+const STATIC_CACHE_NAME = 'toolhub-static-v4.35.26'
+const DYNAMIC_CACHE_NAME = 'toolhub-dynamic-v4.35.26'
 // Strict end assertion also rejects a trailing newline; model/unknown caches are not site-owned.
 const OWNED_CACHE_NAME = /^toolhub-(?:static-|dynamic-)?v\d+(?:\.\d+)*(?![\s\S])/
 
