@@ -1,6 +1,6 @@
 // node scripts/check-manito.ts (Node 24, 타입 제거 실행)
 import assert from 'node:assert/strict'
-import { decodeCard, drawCycle, duplicates, encodeCard, parseNames, pickMissions, seeded, type Pair } from '../src/utils/manito.ts'
+import { cardOf, cycleOrder, decodeCard, decodeGroup, drawCycle, duplicates, encodeCard, encodeGroup, parseNames, pickMissions, seeded, sortNames, type Group, type Pair } from '../src/utils/manito.ts'
 
 const isCycle = (names: string[], a: Record<string, string>) => {
   const seen = new Set<string>()
@@ -63,5 +63,28 @@ assert.deepEqual(m1, pickMissions(code, 12, 3))
 assert.equal(new Set(m1).size, 3)
 assert.ok(m1.every(i => i >= 0 && i < 12))
 assert.deepEqual(pickMissions('x', 2, 3).sort(), [0, 1])
+
+// 단톡방 링크: 왕복, 개인 카드가 배정과 같음, 30명도 짧음, 잘림·변조 거부
+for (let s = 1; s <= 50; s++) {
+  const a = drawCycle(names, ex, seeded(s))!
+  const order = cycleOrder(a)
+  assert.deepEqual([...order].sort(), [...names].sort())
+  const g = decodeGroup('#' + encodeGroup({ names: order }))!
+  for (const n of names) assert.deepEqual(cardOf(g, n), { f: n, t: a[n] })
+}
+const full: Group = { g: '3학년 2반 🎄', names: ['민지', 'Amy Kim', '1번', '🐰토끼', '서준'], b: 10000, d: '2026-12-24', m: '손편지 필수, 12/24 종례 때 공개' }
+assert.deepEqual(decodeGroup(encodeGroup(full)), full)
+assert.deepEqual(cardOf(full, '서준'), { g: full.g, b: 10000, d: full.d, m: full.m, f: '서준', t: '민지' }, 'last wraps to first')
+const klass = Array.from({ length: 30 }, (_, i) => '김이박최정'[i % 5] + '가나다라마바'[i % 6] + '하')
+const code30 = encodeGroup({ g: '3학년 2반', names: klass, d: '2026-12-24' })
+assert.ok(code30.length < 300, `30 people in ${code30.length} chars`)
+for (let cut = 1; cut < code30.length; cut++) assert.equal(decodeGroup(code30.slice(0, -cut)), null, `truncated by ${cut}`)
+for (const bad of ['', '#', '#2', '#2abc', '#2@@@@@', '#' + code, ...[
+  { names: ['a', 'b'] }, { names: ['a', 'b', 'a'] }, { names: ['a', 'b', ''] }, { names: ['a', 'b', 'x'.repeat(21)] },
+  { names: ['a', 'b', 'c'], b: -1 }, { names: ['a', 'b', 'c'], d: 'soon' },
+].map(encodeGroup)]) assert.equal(decodeGroup(bad), null, `reject group ${bad.slice(0, 20)}`)
+assert.equal(decodeCard('#' + code30), null)
+assert.deepEqual(sortNames(['10번', '2번', '1번']), ['1번', '2번', '10번'])
+assert.deepEqual(parseNames('민지\t서준\r\n하은'), ['민지', '서준', '하은'])
 
 console.log('check-manito: all passed')

@@ -87,8 +87,9 @@ export default function ToolShareButton() {
     }
   }, [isOpen])
 
-  // Don't render on home page or if tool not found
-  if (!currentTool || cleanPath === '/') return null
+  // Don't render on home page or if tool not found.
+  // 마니또는 본문에 '단톡방에 보내기'가 있어 이 버튼(도구 주소만 공유)과 헷갈린다.
+  if (!currentTool || cleanPath === '/' || cleanPath === '/manito') return null
 
   return (
     <div className="fixed bottom-20 right-4 z-40">

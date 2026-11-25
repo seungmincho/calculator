@@ -42,7 +42,7 @@ Model Context Protocol 클라이언트에서 `https://toolhub.ai.kr/mcp` 를 Str
 - [김장 시기 예보](https://toolhub.ai.kr/kimjang-timing/): 지역별 김장 적기를 날씨 예보와 평년 날짜로 확인
 - [새해 해돋이 시간](https://toolhub.ai.kr/new-year-sunrise/): 전국 해돋이 명소의 1월 1일 일출 시각과 구름 예보
 - [스키장 개장일·날씨](https://toolhub.ai.kr/ski-resorts/): 전국 스키장 개장 일정과 9일 날씨로 가기 좋은 날 추천
-- [마니또 뽑기](https://toolhub.ai.kr/manito/): 서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크
+- [마니또 뽑기](https://toolhub.ai.kr/manito/): 단톡방 링크 하나로 각자 자기 마니또만 몰래 확인
 - [배당금 계산기](https://toolhub.ai.kr/dividend-calculator/): 세후 배당금·월배당 목표 투자금·금융소득종합과세·고배당 분리과세
 
 ## 금융 계산기

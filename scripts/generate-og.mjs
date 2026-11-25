@@ -8,6 +8,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { toolIcons, categoryIcons } from '../src/config/toolIcons.ts'
 import { decisionTools } from '../src/config/decisionTools.ts'
+import { critterSvg, giftBody, giftLid } from '../src/utils/critters.ts'
 
 const SITE = 'https://toolhub.ai.kr'
 const only = process.argv.slice(2)
@@ -22,11 +23,18 @@ function pages(dir) {
   return out
 }
 
+// 아이콘 대신 그림을 쓰는 도구: 단톡방에 링크가 올라가면 이 이미지가 먼저 보인다
+const at = (x, y, size, box, svg) => `<svg width="${size}" height="${size}" viewBox="0 0 ${box} ${box}" style="position:absolute;left:${x}px;top:${y}px">${svg}</svg>`
+const ART = {
+  manito: at(800, 40, 190, 100, critterSvg('', 0, 1)) + at(990, 80, 170, 100, critterSvg('', 1, 2)) + at(790, 390, 180, 100, critterSvg('', 6, 0)) + at(985, 400, 175, 100, critterSvg('', 2, 0))
+    + at(835, 170, 290, 120, giftBody + giftLid),
+}
+
 const str = (block, key) => block.match(new RegExp(`\\b${key}:\\s*(['"\`])((?:(?!\\1).)*)\\1`))?.[2]
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
 
 const logo = readFileSync('public/logo.svg', 'utf8').replace('<svg ', '<svg width="52" height="52" ')
-const html = ({ title, desc, icon, path }) => `<html><head><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></head>
+const html = ({ title, desc, icon, art, path }) => `<html><head><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></head>
 <body style="margin:0;width:1200px;height:630px;word-break:keep-all;background:#fff;font-family:'Pretendard Variable',sans-serif;color:#191f28;position:relative;overflow:hidden">
   <div style="position:absolute;left:88px;top:80px;display:flex;align-items:center;gap:16px">${logo}<span style="font-size:34px;font-weight:800;letter-spacing:-0.5px">툴허브</span></div>
   <div style="position:absolute;left:88px;top:210px;width:700px">
@@ -34,7 +42,7 @@ const html = ({ title, desc, icon, path }) => `<html><head><link rel="stylesheet
     <div style="font-size:30px;color:#6b7684;margin-top:24px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(desc)}</div>
   </div>
   <div style="position:absolute;left:88px;bottom:72px;font-size:28px;font-weight:700;color:#3182f6">toolhub.ai.kr${esc(path)}</div>
-  <div style="position:absolute;right:88px;top:165px;width:300px;height:300px;border-radius:72px;background:#3182f6;display:flex;align-items:center;justify-content:center">${icon}</div>
+  ${art ?? `<div style="position:absolute;right:88px;top:165px;width:300px;height:300px;border-radius:72px;background:#3182f6;display:flex;align-items:center;justify-content:center">${icon}</div>`}
 </body></html>`
 
 const targets = []
@@ -53,7 +61,7 @@ for (const file of pages('src/app')) {
   if (!title) continue
   const Icon = toolIcons[`/${rel}`] ?? toolIcons[`/${rel}/`] ?? categoryIcons.tools
   const icon = renderToStaticMarkup(createElement(Icon, { size: 160, color: '#ffffff', strokeWidth: 1.75 }))
-  targets.push({ file, src, name: rel.replace(/\//g, '-'), title, desc, icon, path: `/${rel}` })
+  targets.push({ file, src, name: rel.replace(/\//g, '-'), title, desc, icon, art: ART[rel], path: `/${rel}` })
 }
 
 mkdirSync('public/og', { recursive: true })

@@ -5,8 +5,15 @@
     <link>https://toolhub.ai.kr</link>
     <description>급여 계산기, 개발 도구, 게임 등 250+ 무료 온라인 도구</description>
     <language>ko</language>
-    <lastBuildDate>Mon, 23 Nov 2026 01:05:17 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2026 02:37:41 GMT</lastBuildDate>
     <atom:link href="https://toolhub.ai.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title><![CDATA[마니또 뽑기]]></title>
+    <link>https://toolhub.ai.kr/manito/</link>
+    <guid>https://toolhub.ai.kr/manito/</guid>
+    <description><![CDATA[단톡방 링크 하나로 각자 자기 마니또만 몰래 확인]]></description>
+    <pubDate>Tue, 24 Nov 2026 15:00:00 GMT</pubDate>
+  </item>
   <item>
     <title><![CDATA[아기 예방접종 일정]]></title>
     <link>https://toolhub.ai.kr/baby-vaccination/</link>
@@ -1209,13 +1216,6 @@
     <link>https://toolhub.ai.kr/lotto-generator/</link>
     <guid>https://toolhub.ai.kr/lotto-generator/</guid>
     <description><![CDATA[로또 번호 자동 생성]]></description>
-    <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
-  </item>
-  <item>
-    <title><![CDATA[마니또 뽑기]]></title>
-    <link>https://toolhub.ai.kr/manito/</link>
-    <guid>https://toolhub.ai.kr/manito/</guid>
-    <description><![CDATA[서로 맞뽑기 없이 한 바퀴로 뽑고 각자 자기 마니또만 보는 링크]]></description>
     <pubDate>Fri, 06 Nov 2026 15:00:00 GMT</pubDate>
   </item>
   <item>
