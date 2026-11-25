@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   distDir: 'out',
+  // 16.3+ 는 next dev 가 AGENTS.md 에 자기 안내 블록을 써 넣는다. 규칙 정본이라 손대지 못하게 끈다
+  agentRules: false,
   // Pages Functions run on Cloudflare, not in next dev. Reuse the public, keyless
   // price proxy locally; the static production export keeps its same-origin API.
   ...(process.env.NODE_ENV === 'development' ? {
